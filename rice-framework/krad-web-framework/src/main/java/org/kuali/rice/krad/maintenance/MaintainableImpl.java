@@ -721,6 +721,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
                     ObjectPropertyUtils.setPropertyValue(model, bindingPath, null);
                 }
 
+                field.setReadOnlyDisplaySuffixPropertyName(null);
+                field.setReadOnlyDisplaySuffix(null);
+
                 helper.populateDefaultValueForField(model, field, bindingPath);
             }
         }

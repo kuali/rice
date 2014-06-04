@@ -30,7 +30,7 @@ import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @ChangeTracking
-@Link(path = "document")
+@Link(path = {"document", "newCollectionLines"})
 public class TravelAuthorizationForm extends TransactionalDocumentFormBase {
 	private static final long serialVersionUID = 6857088926834897587L;
 

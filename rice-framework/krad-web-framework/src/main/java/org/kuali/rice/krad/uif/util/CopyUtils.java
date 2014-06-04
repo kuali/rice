@@ -18,8 +18,6 @@ package org.kuali.rice.krad.uif.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -44,8 +42,6 @@ import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Provides a lightweight "hands-free" copy implementation to replace the need for copyProperties()
@@ -55,18 +51,16 @@ import org.slf4j.LoggerFactory;
  */
 public final class CopyUtils {
 
-    private static Logger LOG = LoggerFactory.getLogger(CopyUtils.class);
-
     private static Boolean delay;
 
     /**
      * Determine whether or not to use a delayed copy proxy.
      * 
      * <p>
-     * When true, and {@link #isUseClone()} is also true, then deep copy operations will be
-     * truncated where a copyable represented by an interfaces is specified by the field, array,
-     * list or map involved indicated. Rather than copy the object directly, a proxy wrapping the
-     * original will be placed, which when used will invoke the copy operation.
+     * When true, deep copy operations will be truncated where a copyable represented by an
+     * interfaces is specified by the field, array, list or map involved indicated. Rather than copy
+     * the object directly, a proxy wrapping the original will be placed, which when used will
+     * invoke the copy operation.
      * </p>
      * 
      * <p>
@@ -101,14 +95,6 @@ public final class CopyUtils {
             return null;
         }
 
-        if ((obj instanceof LifecycleAwareList) || (obj instanceof LifecycleAwareMap)) {
-            try {
-                return (T) obj.clone();
-            } catch (CloneNotSupportedException e) {
-                throw new IllegalStateException("Unexpected error in clone()", e);
-            }
-        }
-
         String cid = null;
         if (ViewLifecycle.isTrace()) {
             StackTraceElement[] trace = Thread.currentThread().getStackTrace();
@@ -125,32 +111,20 @@ public final class CopyUtils {
     }
 
     /**
-     * Determine if shallow copying is available on an object.
-     * 
-     * @param <T> copyable type
-     * @param obj The object to check.
-     * @return True if {@link #getShallowCopy(Object)} may be expected to return a shallow copy of
-     *         the object. False if a null return value is expected.
-     */
-    public static <T> boolean isShallowCopyAvailable(T obj) {
-        return obj != null &&
-                (isDeepCopyAvailable(obj.getClass()) ||
-                getMetadata(obj.getClass()).cloneMethod != null);
-    }
-
-    /**
      * Determine if deep copying is available for a type.
      * 
      * @param type The type to check.
      * @return True if {@link #getDeepCopy(Object)} may be expected to follow references to this
      *         type. False if the type should not be deeply copied.
      */
-    public static boolean isDeepCopyAvailable(Class<?> type) {
+    public static boolean isCopyAvailable(Class<?> type) {
         return type != null
                 && (Copyable.class.isAssignableFrom(type)
-                        || List.class.isAssignableFrom(type)
-                        || Map.class.isAssignableFrom(type)
-                        || (type.isArray() && isDeepCopyAvailable(type.getComponentType())));
+                        || ArrayList.class.isAssignableFrom(type)
+                        || LinkedList.class.isAssignableFrom(type)
+                        || HashMap.class.isAssignableFrom(type)
+                        || HashSet.class.isAssignableFrom(type)
+                        || type.isArray());
     }
 
     /**
@@ -178,22 +152,6 @@ public final class CopyUtils {
         }
 
         synchronized (obj) {
-            // Create new mutable, cloneable instances of List/Map to replace wrappers
-            if (!(obj instanceof Cloneable)) {
-                if (obj instanceof List) {
-                    return (T) new ArrayList<Object>((List<Object>) obj);
-                } else if (obj instanceof Map) {
-                    return (T) new HashMap<Object, Object>((Map<Object, Object>) obj);
-                } else {
-                    throw new UnsupportedOperationException(
-                            "Not cloneable, and not a supported collection.  This condition should not be reached.");
-                }
-            }
-
-            // Bypass reflection overhead for commonly used types.
-            // There is not need for these checks to be exhaustive - any Cloneable types
-            // that define a public clone method and aren't specifically noted below
-            // will be cloned by reflection.
             if (obj instanceof Copyable) {
                 return (T) ((Copyable) obj).clone();
             }
@@ -205,53 +163,24 @@ public final class CopyUtils {
             // synchronized on collections/maps below here is to avoid
             // concurrent modification
             if (obj instanceof ArrayList) {
-                synchronized (obj) {
-                    return (T) ((ArrayList<?>) obj).clone();
-                }
+                return (T) ((ArrayList<?>) obj).clone();
             }
 
             if (obj instanceof LinkedList) {
-                synchronized (obj) {
-                    return (T) ((LinkedList<?>) obj).clone();
-                }
+                return (T) ((LinkedList<?>) obj).clone();
             }
 
             if (obj instanceof HashSet) {
-                synchronized (obj) {
-                    return (T) ((HashSet<?>) obj).clone();
-                }
+                return (T) ((HashSet<?>) obj).clone();
             }
 
             if (obj instanceof HashMap) {
-                synchronized (obj) {
-                    return (T) ((HashMap<?, ?>) obj).clone();
-                }
+                return (T) ((HashMap<?, ?>) obj).clone();
             }
 
-            // Use reflection to invoke a public clone() method on the object, if available.
-            Method cloneMethod = getMetadata(obj.getClass()).cloneMethod;
-            if (cloneMethod == null) {
-                throw new CloneNotSupportedException(obj.getClass() + " does not define a public clone() method");
-            } else {
-                try {
-
-                    return (T) cloneMethod.invoke(obj);
-
-                } catch (IllegalAccessException e) {
-                    throw new IllegalStateException("Access error invoking clone()", e);
-                } catch (InvocationTargetException e) {
-                    Throwable cause = e.getCause();
-                    if (cause instanceof RuntimeException) {
-                        throw (RuntimeException) cause;
-                    } else if (cause instanceof Error) {
-                        throw (Error) cause;
-                    } else if (cause instanceof CloneNotSupportedException) {
-                        throw (CloneNotSupportedException) cause;
-                    } else {
-                        throw new IllegalStateException("Unexpected error invoking clone()", e);
-                    }
-                }
-            }
+            throw new CloneNotSupportedException(
+                    "Not a supported copyable type.  This condition should not be reached. " + obj.getClass() + " "
+                            + obj);
         }
     }
 
@@ -277,7 +206,7 @@ public final class CopyUtils {
                     .collectionTypeByField.get(field);
 
             if (!Object.class.equals(collectionType)
-                    && !isDeepCopyAvailable(collectionType)) {
+                    && !isCopyAvailable(collectionType)) {
                 return false;
             }
         }
@@ -342,7 +271,7 @@ public final class CopyUtils {
                 CopyReference<?> toCopy = copyState.queue.poll();
                 Object source = toCopy.get();
 
-                if (!isShallowCopyAvailable(source) || !isCopy(toCopy)) {
+                if (source == null || !isCopyAvailable(source.getClass()) || !isCopy(toCopy)) {
                     continue;
                 }
 
@@ -403,9 +332,8 @@ public final class CopyUtils {
      * Returns annotation of the given type for the given field (if present)
      *
      * @param clazz class containing the field to check
-     * @param propertyName name of the field to check
+     * @param fieldName name of the field to check
      * @param annotationClass class for the annotation to look for
-     * @return annnotation on field, or null
      */
     public static Annotation getFieldAnnotation(Class<?> clazz, String fieldName,
             Class<? extends Annotation> annotationClass) {
@@ -469,7 +397,7 @@ public final class CopyUtils {
         private void queueDeepCopyReferences(Object source, Object target, CopyReference<?> ref) {
             Class<?> type = source.getClass();
             Class<?> targetClass = ref.getTargetClass();
-            if (!isDeepCopyAvailable(type)) {
+            if (!isCopyAvailable(type)) {
                 return;
             }
 
@@ -1280,11 +1208,6 @@ public final class CopyUtils {
     private static class ClassMetadata {
 
         /**
-         * The public clone method, if defined for this type.
-         */
-        private final Method cloneMethod;
-
-        /**
          * All fields on the class that should have a shallow copy performed during a deep copy
          * operation.
          */
@@ -1307,8 +1230,6 @@ public final class CopyUtils {
          * @param targetClass The class to inspect for meta-data.
          */
         private ClassMetadata(Class<?> targetClass) {
-            cloneMethod = MethodUtils.getAccessibleMethod(targetClass, "clone", new Class[0]);
-
             // Create mutable collections for building meta-data indexes.
             List<Field> cloneList = new ArrayList<Field>();
             Map<Field, Class<?>> collectionTypeMap = new HashMap<Field, Class<?>>();
@@ -1339,15 +1260,13 @@ public final class CopyUtils {
 
                     Class<?> type = currentField.getType();
 
-                    if (type.isArray()
-                            || isDeepCopyAvailable(type)
-                            || Cloneable.class.isAssignableFrom(type)) {
+                    boolean isList = List.class.isAssignableFrom(type);
+                    boolean isMap = Map.class.isAssignableFrom(type);
+                    if (isList || isMap || isCopyAvailable(type)) {
                         currentField.setAccessible(true);
                         cloneList.add(currentField);
                     }
 
-                    boolean isList = List.class.isAssignableFrom(type);
-                    boolean isMap = Map.class.isAssignableFrom(type);
                     if (!isList && !isMap) {
                         continue;
                     }
@@ -1356,7 +1275,7 @@ public final class CopyUtils {
                             .getUpperBound(ObjectPropertyUtils
                                     .getComponentType(currentField.getGenericType()));
 
-                    if (collectionType.equals(Object.class) || isDeepCopyAvailable(collectionType)) {
+                    if (collectionType.equals(Object.class) || isCopyAvailable(collectionType)) {
                         collectionTypeMap.put(currentField, collectionType);
                     }
                 }

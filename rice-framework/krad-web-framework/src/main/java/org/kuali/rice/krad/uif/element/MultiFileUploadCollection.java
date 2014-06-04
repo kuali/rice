@@ -63,24 +63,24 @@ public class MultiFileUploadCollection extends ContentElementBase {
 
         // Set plugin convenience setters into templateOptions to be consumed by the plugin
         if (url == null && methodToCall != null) {
-            templateOptions.put(UifConstants.MultiFileUploadOptions.URL,
+            getTemplateOptions().put(UifConstants.MultiFileUploadOptions.URL,
                     "?methodToCall=" + methodToCall + "&formKey=" + form.getFormKey() + "&viewId=" + form.getViewId()
                             + "&bindingPath=" + collection.getBindingInfo().getBindingPath()
                             + "&updateComponentId=" + collection.getId() );
         } else if (url != null) {
-            templateOptions.put(UifConstants.MultiFileUploadOptions.URL, url.getHref());
+            getTemplateOptions().put(UifConstants.MultiFileUploadOptions.URL, url.getHref());
         }
 
         if (acceptFileTypes != null) {
-            templateOptions.put(UifConstants.MultiFileUploadOptions.ACCEPT_FILE_TYPES, acceptFileTypes);
+            getTemplateOptions().put(UifConstants.MultiFileUploadOptions.ACCEPT_FILE_TYPES, acceptFileTypes);
         }
 
         if (maxFileSize != null) {
-            templateOptions.put(UifConstants.MultiFileUploadOptions.MAX_SIZE, maxFileSize.toString());
+            getTemplateOptions().put(UifConstants.MultiFileUploadOptions.MAX_SIZE, maxFileSize.toString());
         }
 
         if (minFileSize != null) {
-            templateOptions.put(UifConstants.MultiFileUploadOptions.MIN_SIZE, minFileSize.toString());
+            getTemplateOptions().put(UifConstants.MultiFileUploadOptions.MIN_SIZE, minFileSize.toString());
         }
 
         this.propertyPath = collection.getBindingInfo().getBindingPath();

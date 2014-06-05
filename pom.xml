@@ -46,7 +46,6 @@
   </ciManagement>
 
   <properties>
-    <!-- This works for Linux/Windows. See the MacOSX profile for the equivalent of this for Mac -->
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
 
     <!-- These properties modify the release process -->
@@ -425,17 +424,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-    <profile>
-      <id>MacOSX</id>
-      <activation>
-        <file>
-          <exists>${java.home}/../Classes/classes.jar</exists>
-        </file>
-      </activation>
-      <properties>
-        <tools.jar.path>${java.home}/../Classes/classes.jar</tools.jar.path>
-      </properties>
     </profile>
     <profile>
       <id>license</id>

@@ -774,7 +774,7 @@
               <configuration>
                 <rules>
                   <requireJavaVersion>
-                    <version>1.6</version>
+                    <version>1.7</version>
                   </requireJavaVersion>
                   <requireMavenVersion>
                     <version>[3.0,4.0)</version>
@@ -954,10 +954,8 @@
             <fork>true</fork>
             <meminitial>256</meminitial>
             <maxmem>1024</maxmem>
-            <!--
               <source>1.7</source>
               <target>1.7</target>
-            -->
           </configuration>
         </plugin>
         <plugin>

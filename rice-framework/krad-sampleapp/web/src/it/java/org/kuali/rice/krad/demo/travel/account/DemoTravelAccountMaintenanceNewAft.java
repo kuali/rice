@@ -110,7 +110,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
         waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
-        waitAndClickByXpath("//a[@class='uif-actionLink icon-search']");
+        waitAndClickByXpath("icon-search link not found", "//a[@class='uif-actionLink icon-search']");
         gotoLightBox();
         waitAndClickButtonByText("Search");
         waitForElementNotPresent(By.xpath("//button[contains(text(),'Add New Line')]"));

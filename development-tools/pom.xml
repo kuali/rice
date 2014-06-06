@@ -38,10 +38,6 @@
       <artifactId>rice-krad-data</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.kuali.db.ojb</groupId>
-      <artifactId>db-ojb</artifactId>
-    </dependency>
      <dependency>
       <groupId>com.sun.codemodel</groupId>
       <artifactId>codemodel</artifactId>

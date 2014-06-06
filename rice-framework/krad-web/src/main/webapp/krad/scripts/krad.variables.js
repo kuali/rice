@@ -229,7 +229,7 @@ JavascriptKradVariables.prototype = {
         UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE,
         PAGE_UPDATE_COMPLETE : "pageUpdateComplete" + JavascriptKradVariables.EVENT_NAMESPACE,
         SHOW_MODAL : "show.bs.modal",
-        HIDE_MODAL : "hide.bs.modal"
+        HIDE_MODAL : "hidden.bs.modal"
     }
 }
 

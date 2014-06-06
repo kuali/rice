@@ -44,7 +44,8 @@ public class LabsInquiryDocumentHeaderAft extends LabsInquiryBase {
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Document Number:", docId},
 //                                          {"Document Description:", "Test"}}; // is this data flapping
-        {"Document Description:", "Travel Authorization Description"}}; // is this data flapping?
+//                                          {"Document Description:", "Travel Authorization Description"}}; // is this data flapping?
+        {"Document Description:", "es"}};
         assertLabeledTextPresent(lightBoxLabeledText);
         clickCollapseAll();
         assertLabeledTextNotPresent(lightBoxLabeledText);

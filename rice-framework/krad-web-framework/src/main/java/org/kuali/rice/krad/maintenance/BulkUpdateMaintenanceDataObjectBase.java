@@ -21,21 +21,28 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *  Default implementation of {@link BulkUpdateMaintenanceDataObject}
+ *  Default implementation of {@link BulkUpdateMaintenanceDataObject}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BulkUpdateMaintenanceDataObjectBase implements BulkUpdateMaintenanceDataObject {
+    private static final long serialVersionUID = -2703891255485833554L;
 
     private Map<String, ?> updateFieldValues = new HashMap<String, Object>();
 
     private List<?> targetUpdateDataObjects = new ArrayList<Object>();
 
+    /**
+     * @see BulkUpdateMaintenanceDataObjectBase#getUpdateFieldValues()
+     */
     @Override
     public Map<String, ?> getUpdateFieldValues() {
         return updateFieldValues;
     }
 
+    /**
+     * @see BulkUpdateMaintenanceDataObjectBase#getTargetUpdateDataObjects()
+     */
     @Override
     public List<?> getTargetUpdateDataObjects() {
         return targetUpdateDataObjects;

@@ -26,25 +26,19 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 /**
  * View type for Maintenance documents
  *
- * <p>
- * Supports primary display for a new maintenance record, in which case the
+ * <p>Supports primary display for a new maintenance record, in which case the
  * fields are display for populating the new record, and an edit maintenance
  * record, which is a comparison view with the old record read-only on the left
- * side and the new record (changed record) on the right side
- * </p>
+ * side and the new record (changed record) on the right side</p>
  *
- * <p>
- * The <code>MaintenanceDocumentView</code> provides the interface for the maintenance
+ * <p>The <code>MaintenanceDocumentView</code> provides the interface for the maintenance
  * framework. It works with the <code>Maintainable</code> service and
- * maintenance controller.
- * </p>
+ * maintenance controller.</p>
  *
- * <p>
- * Maintenance views are primarily configured by the object class they are
+ * <p>Maintenance views are primarily configured by the object class they are
  * associated with. This provides the default dictionary information for the
  * fields. If more than one maintenance view is needed for the same object
- * class, the view name can be used to further identify an unique view
- * </p>
+ * class, the view name can be used to further identify an unique view</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -113,12 +107,10 @@ public class MaintenanceDocumentView extends DocumentView {
     /**
      * Class name for the object the maintenance document applies to
      *
-     * <p>
-     * The object class name is used to pick up a dictionary entry which will
+     * <p>The object class name is used to pick up a dictionary entry which will
      * feed the attribute field definitions and other configuration. In addition
      * it is used to configure the <code>Maintainable</code> which will carry
-     * out the maintenance action
-     * </p>
+     * out the maintenance action</p>
      *
      * @return maintenance object class
      */
@@ -128,9 +120,7 @@ public class MaintenanceDocumentView extends DocumentView {
     }
 
     /**
-     * Setter for the object class name
-     *
-     * @param dataObjectClassName
+     * @see #getDataObjectClassName()
      */
     public void setDataObjectClassName(Class<?> dataObjectClassName) {
         this.dataObjectClassName = dataObjectClassName;
@@ -139,12 +129,10 @@ public class MaintenanceDocumentView extends DocumentView {
     /**
      * Name for the document type the maintenance document applies to
      *
-     * <p>
-     * The document type name is used to pick up a dictionary entry which will
+     * <p>The document type name is used to pick up a dictionary entry which will
      * feed the attribute field definitions and other configuration. In addition
      * it is used to configure the <code>Maintainable</code> which will carry
-     * out the maintenance action
-     * </p>
+     * out the maintenance action</p>
      *
      * @return document type name
      */
@@ -154,9 +142,7 @@ public class MaintenanceDocumentView extends DocumentView {
     }
 
     /**
-     * Setter for the document type name
-     *
-     * @param docTypeName
+     * @see #getDocTypeName()
      */
     public void setDocTypeName(String docTypeName) {
         this.docTypeName = docTypeName;
@@ -164,7 +150,7 @@ public class MaintenanceDocumentView extends DocumentView {
 
     /**
      * Gives the binding path to the old object (record being edited) to display
-     * for comparison
+     * for comparison.
      *
      * @return old object binding path
      */
@@ -174,17 +160,14 @@ public class MaintenanceDocumentView extends DocumentView {
     }
 
     /**
-     * Setter for the old object binding path
-     *
-     * @param oldObjectBindingPath
+     * @see #getOldObjectBindingPath()
      */
     public void setOldObjectBindingPath(String oldObjectBindingPath) {
         this.oldObjectBindingPath = oldObjectBindingPath;
     }
 
     /**
-     * Indicates what maintenance action (new, edit, copy) was
-     * requested
+     * Indicates what maintenance action (new, edit, copy) was requested.
      *
      * @return maintenance action
      */
@@ -194,9 +177,7 @@ public class MaintenanceDocumentView extends DocumentView {
     }
 
     /**
-     * Setter for the maintenance action
-     *
-     * @param maintenanceAction
+     * @see #getMaintenanceAction()
      */
     public void setMaintenanceAction(String maintenanceAction) {
         this.maintenanceAction = maintenanceAction;

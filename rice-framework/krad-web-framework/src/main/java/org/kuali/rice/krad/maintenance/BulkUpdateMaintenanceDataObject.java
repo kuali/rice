@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.maintenance;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface BulkUpdateMaintenanceDataObject {
+public interface BulkUpdateMaintenanceDataObject extends Serializable {
 
     /**
      * Returns the list of fields of the maintenance documents to be updated along with the new value.

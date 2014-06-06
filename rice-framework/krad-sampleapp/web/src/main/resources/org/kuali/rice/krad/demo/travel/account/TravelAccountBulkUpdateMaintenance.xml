@@ -21,7 +21,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="TravelAccountBulkUpdateMaintenanceDocument" parent="uifBulkUpdateMaintenanceDocumentEntry">
+  <bean id="TravelAccountBulkUpdateMaintenanceDocument" parent="bulkUpdateMaintenanceDocumentEntry">
     <property name="documentTypeName" value="TravelAccountBulkUpdateMaintenanceDocument"/>
     <property name="maintainableClass" value="org.kuali.rice.krad.maintenance.BulkUpdateMaintainableImpl"/>
   </bean>

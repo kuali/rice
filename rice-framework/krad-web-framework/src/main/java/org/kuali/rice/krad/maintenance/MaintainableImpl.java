@@ -63,7 +63,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
 /**
- * Default implementation of the <code>Maintainable</code> interface
+ * Default implementation of the <code>Maintainable</code> interface.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -161,7 +161,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     /**
-     * Persistable business objects are lockable
+     * Persistable business objects are lockable.
      *
      * @deprecated note used by Rice framework
      */
@@ -200,7 +200,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     /**
      * Note: as currently implemented, every key field for a given
-     * data object class must have a visible getter
+     * data object class must have a visible getter.
      *
      * @see org.kuali.rice.krad.maintenance.Maintainable#generateMaintenanceLocks
      */
@@ -209,6 +209,15 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         return generateMaintenanceLocks(getDocumentNumber(), getDocumentTypeName(), getDataObjectClass(), getDataObject());
     }
 
+    /**
+     * Allows locking of maintenance objects other than the one of the current maintenance object.
+     *
+     * @param documentNumber of the locking maintenance document
+     * @param documentTypeName of the maintenance document to be locked
+     * @param dataObjectClass of the maintenance document to be locked
+     * @param dataObject of the maintenance document to be locked
+     * @return
+     */
     protected List<MaintenanceLock> generateMaintenanceLocks(String documentNumber, String documentTypeName, Class<?> dataObjectClass, Object dataObject) {
         List<MaintenanceLock> maintenanceLocks = new ArrayList<MaintenanceLock>();
         StringBuffer lockRepresentation = new StringBuffer(dataObjectClass.getName());
@@ -363,7 +372,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     /**
-     * Checks whether the data object is not null and has its primary key values populated
+     * Checks whether the data object is not null and has its primary key values populated.
      *
      * @see org.kuali.rice.krad.maintenance.MaintainableImpl#isOldDataObjectInDocument
      */
@@ -448,7 +457,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     /**
-     * In the case of edit maintenance adds a new blank line to the old side
+     * In the case of edit maintenance adds a new blank line to the old side.
      *
      * TODO: should this write some sort of missing message on the old side
      * instead?
@@ -501,11 +510,9 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     /**
-     * In the case of edit maintenance deleted the item on the old side
+     * In the case of edit maintenance deleted the item on the old side.
      *
-     *
-     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(View,
-     *      org.kuali.rice.krad.uif.container.CollectionGroup, java.lang.Object,  int)
+     * @see org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl#processAfterDeleteLine(org.kuali.rice.krad.uif.view.ViewModel, String, String, int)
      */
     @Override
     public void processAfterDeleteLine(ViewModel model, String collectionId, String collectionPath, int lineIndex) {
@@ -564,7 +571,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     /**
-     * Retrieves the document number configured on this maintainable
+     * Retrieves the document number configured on this maintainable.
      *
      * @return String document number
      */
@@ -575,7 +582,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
 
     /**
-     * Hook for service overrides to perform custom apply model logic on the component
+     * Hook for service overrides to perform custom apply model logic on the component.
      *
      * @param element element instance to apply model to
      * @param model Top level object containing the data (could be the model or a top level business
@@ -587,7 +594,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         MaintenanceDocumentForm form = (MaintenanceDocumentForm) model;
 
         /**
-         *  Primary keys should not be editable on maintenance edit action
+         *  Primary keys should not be editable on maintenance edit action.
          *
          *  Determines if the maintenance action matches MAINTENANCE_EDIT_ACTION, that the element is of type InputField and
          *  if the bindingPath includes a new maintainable path
@@ -680,7 +687,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     }
 
     /**
-     * Applies the default value of a field if it was a field that was previously cleared
+     * Applies the default value of a field if it was a field that was previously cleared.
      *
      * @param view view instance that contains the fields being checked
      * @param model model instance that contains the fields being checked

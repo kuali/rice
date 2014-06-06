@@ -17,7 +17,6 @@ package org.kuali.rice.krad.maintenance;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 
 import java.util.ArrayList;
@@ -25,12 +24,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Default implementation of {@link BulkUpdateMaintainable}
+ * Default implementation of {@link BulkUpdateMaintainable}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BulkUpdateMaintainableImpl extends MaintainableImpl implements BulkUpdateMaintainable {
-
     private static final long serialVersionUID = 6656390440709425848L;
 
     /**
@@ -57,6 +55,9 @@ public class BulkUpdateMaintainableImpl extends MaintainableImpl implements Bulk
         return true;
     }
 
+    /**
+     * @see BulkUpdateMaintainable#generateUpdatableObjects()
+     */
     @Override
     public List<Object> generateUpdatableObjects() {
         List<Object> updatableObjects = new ArrayList<Object>();
@@ -83,6 +84,9 @@ public class BulkUpdateMaintainableImpl extends MaintainableImpl implements Bulk
         return updatableObjects;
     }
 
+    /**
+     * @see Maintainable#generateMaintenanceLocks()
+     */
     @Override
     public List<MaintenanceLock> generateMaintenanceLocks() {
         List<MaintenanceLock> maintenanceLocks = super.generateMaintenanceLocks();
@@ -90,16 +94,19 @@ public class BulkUpdateMaintainableImpl extends MaintainableImpl implements Bulk
         BulkUpdateMaintenanceDataObject dataObject = (BulkUpdateMaintenanceDataObject) getDataObject();
 
         for (Object targetUpdateDataObjects : dataObject.getTargetUpdateDataObjects()) {
-            String documentTypeName = KRADServiceLocatorWeb.getDocumentDictionaryService().getMaintenanceDocumentTypeName(targetUpdateDataObjects.getClass());
+            String documentTypeName = getDocumentDictionaryService().getMaintenanceDocumentTypeName(targetUpdateDataObjects.getClass());
             maintenanceLocks.addAll(generateMaintenanceLocks(getDocumentNumber(), documentTypeName, targetUpdateDataObjects.getClass(), targetUpdateDataObjects));
         }
 
         return maintenanceLocks;
     }
 
+    /**
+     * @see Maintainable#saveDataObject()
+     */
     @Override
     public void saveDataObject() {
-        for(Object updateableObject : generateUpdatableObjects()) {
+        for (Object updateableObject : generateUpdatableObjects()) {
             getLegacyDataAdapter().linkAndSave(updateableObject);
         }
     }

@@ -126,12 +126,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.kuali.db.ojb</groupId>
-      <artifactId>db-ojb</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>
       <artifactId>rice-krad-data</artifactId>

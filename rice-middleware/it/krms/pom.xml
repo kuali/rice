@@ -69,12 +69,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.kuali.db.ojb</groupId>
-      <artifactId>db-ojb</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-core</artifactId>
             <scope>test</scope>

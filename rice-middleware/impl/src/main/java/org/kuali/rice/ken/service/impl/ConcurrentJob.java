@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.log4j.Logger;
-import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.rice.ken.service.ProcessingResult;
-import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.UnexpectedRollbackException;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
-
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -37,6 +24,20 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+
+import javax.persistence.OptimisticLockException;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.ken.service.ProcessingResult;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Base class for jobs that must obtain a set of work items atomically
@@ -126,8 +127,11 @@ public abstract class ConcurrentJob<T> {
      * to obtain available work items, and process them concurrently
      * @return a ProcessingResult object containing the results of processing
      */
+    @SuppressWarnings("unchecked")
     public ProcessingResult run() {
-        LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] STARTING RUN");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] STARTING RUN");
+        }
 
         final ProcessingResult result = new ProcessingResult();
 
@@ -141,11 +145,9 @@ public abstract class ConcurrentJob<T> {
                     }
                 });
         } catch (DataAccessException dae) {
-            // Spring does not detect OJB's org.apache.ojb.broker.OptimisticLockException and turn it into a
-            // org.springframework.dao.OptimisticLockingFailureException?
-            if (ExceptionUtils.indexOfType(dae, OptimisticLockException.class) != -1) {
+            if ( dae instanceof OptimisticLockingFailureException || dae.contains(OptimisticLockingFailureException.class) || dae.contains(OptimisticLockException.class) ) {
                 // anticipated in the case that another thread is trying to grab items
-                LOG.info("Contention while taking work items");
+                LOG.info("Contention while taking work items: " + dae.getMessage() );
             } else {
                 // in addition to logging a message, should we throw an exception or log a failure here?
                 LOG.error("Error taking work items", dae);
@@ -154,11 +156,11 @@ public abstract class ConcurrentJob<T> {
                     SQLException sqle = (SQLException) t;
                     if (sqle.getErrorCode() == ORACLE_00054 && StringUtils.contains(sqle.getMessage(), "resource busy")) {
                         // this is expected and non-fatal given that these jobs will run again
-                        LOG.warn("Select for update lock contention encountered");
+                        LOG.warn("Select for update lock contention encountered: " + sqle.getMessage() );
                     } else if (sqle.getErrorCode() == ORACLE_00060 && StringUtils.contains(sqle.getMessage(), "deadlock detected")) {
                         // this is bad...two parties are waiting forever somewhere...
                         // database is probably wedged now :(
-                        LOG.error("Select for update deadlock encountered!");
+                        LOG.error("Select for update deadlock encountered! " + sqle.getMessage() );
                     }
                 }
             }
@@ -219,7 +221,9 @@ public abstract class ConcurrentJob<T> {
             }
         }
 
-        LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] FINISHED RUN - " + result);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] FINISHED RUN - " + result);
+        }
 
         return result;
     }

@@ -31,6 +31,7 @@
     <generateReports>false</generateReports>
     <codemodel.version>2.4.1</codemodel.version>
     <javaparser.version>1.0.9</javaparser.version>
+    <db-ojb.version>1.0.4-patch8</db-ojb.version>
   </properties>
   <dependencies>
     <dependency>
@@ -56,6 +57,47 @@
       <artifactId>javaparser</artifactId>
       <version>${javaparser.version}</version>
     </dependency>
-
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.kuali.db.ojb</groupId>
+        <artifactId>db-ojb</artifactId>
+        <version>${db-ojb.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>commons-beanutils</artifactId>
+            <groupId>commons-beanutils</groupId>
+          </exclusion>
+          <exclusion>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+          <!--Removing the asm 1.5.3 version that comes with OJB -->
+          <exclusion>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
 </project>

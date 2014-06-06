@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.kcb.quartz;
 
-import org.apache.log4j.Logger;
-import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.rice.core.api.util.RiceUtilities;
-import org.kuali.rice.kcb.quartz.ProcessingResult.Failure;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.UnexpectedRollbackException;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +25,21 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+
+import javax.persistence.OptimisticLockException;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.util.RiceUtilities;
+import org.kuali.rice.kcb.quartz.ProcessingResult.Failure;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Base class for jobs that must obtain a set of work items atomically
@@ -122,7 +124,9 @@ public abstract class ConcurrentJob<T> {
      * @return a ProcessingResult object containing the results of processing
      */
     public ProcessingResult<T> run() {
-        LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] STARTING RUN");
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] STARTING RUN");
+        }
 
         final ProcessingResult<T> result = new ProcessingResult<T>();
 
@@ -135,12 +139,14 @@ public abstract class ConcurrentJob<T> {
                 }
             });
         } catch (DataAccessException dae) {
-            // Spring does not detect OJB's org.apache.ojb.broker.OptimisticLockException and turn it into a
-            // org.springframework.dao.OptimisticLockingFailureException?
-            OptimisticLockException optimisticLockException = RiceUtilities.findExceptionInStack(dae, OptimisticLockException.class);
-            if (optimisticLockException != null) {
+            Exception ole = RiceUtilities.findExceptionInStack(dae, OptimisticLockingFailureException.class);
+            if ( ole == null ) {
+                ole = RiceUtilities.findExceptionInStack(dae, OptimisticLockException.class);
+            }
+            
+            if (ole != null) {
                 // anticipated in the case that another thread is trying to grab items
-                LOG.info("Contention while taking work items");
+                LOG.info("Contention while taking work items: " + ole.getMessage() );
             } else {
                 // in addition to logging a message, should we throw an exception or log a failure here?
                 LOG.error("Error taking work items", dae);
@@ -203,7 +209,9 @@ public abstract class ConcurrentJob<T> {
 
         finishProcessing(result);
 
-        LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] FINISHED RUN - " + result);
+        if ( LOG.isDebugEnabled() ) {
+            LOG.debug("[" + new Timestamp(System.currentTimeMillis()).toString() + "] FINISHED RUN - " + result);
+        }
 
         return result;
     }

@@ -39,7 +39,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
@@ -53,6 +52,7 @@ import org.kuali.rice.krad.bo.MultiDocumentAttachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachmentList;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.WorkflowAttributes;
 import org.kuali.rice.krad.datadictionary.WorkflowProperties;
@@ -70,7 +70,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.NoteType;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
 import org.w3c.dom.Document;
@@ -766,22 +765,14 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * properly handle the proxied attachment BO.  This is a hack and should be removed post JPA migration.
      */
     protected void refreshAttachment() {
-        if (KRADUtils.isNull(attachment)) {
-            this.refreshReferenceObject("attachment");
-            final boolean isProxy = attachment != null && ProxyHelper.isProxy(attachment);
-            if (isProxy && ProxyHelper.getRealObject(attachment) == null) {
-                attachment = null;
-            }
+        if ( attachment == null ) {
+            KradDataServiceLocator.getDataObjectService().wrap(this).fetchRelationship("attachment");
         }
     }
 
     protected void refreshAttachmentList() {
-        if (KRADUtils.isNull(attachments)) {
-            this.refreshReferenceObject("attachments");
-            final boolean isProxy = attachments != null && ProxyHelper.isProxy(attachments);
-            if (isProxy && ProxyHelper.getRealObject(attachments) == null) {
-                attachments = null;
-            }
+        if ( attachments == null ) {
+            KradDataServiceLocator.getDataObjectService().wrap(this).fetchRelationship("attachments");
         }
     }
 

@@ -240,11 +240,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.springmodules</groupId>
-      <artifactId>spring-modules-ojb</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>javax.transaction</groupId>
       <artifactId>jta</artifactId>
     </dependency>
@@ -257,11 +252,6 @@
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.kuali.db.ojb</groupId>
-      <artifactId>db-ojb</artifactId>
     </dependency>
 
     <dependency>

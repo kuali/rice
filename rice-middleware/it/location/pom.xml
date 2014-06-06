@@ -89,11 +89,6 @@
         </dependency>
 
       <dependency>
-        <groupId>org.kuali.db.ojb</groupId>
-        <artifactId>db-ojb</artifactId>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
         <groupId>mysql</groupId>
         <artifactId>${mysql.jdbc.artifactId}</artifactId>
       </dependency>

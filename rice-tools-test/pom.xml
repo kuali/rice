@@ -57,11 +57,6 @@
           <plugin>
             <groupId>com.lazerycode.jmeter</groupId>
             <artifactId>jmeter-maven-plugin</artifactId>
-<!--
-            <configuration>
-              <testFilesDirectory>${jmeter.jMeterTestFile}</testFilesDirectory>
-            </configuration>
--->
           </plugin>
         </plugins>
       </build>

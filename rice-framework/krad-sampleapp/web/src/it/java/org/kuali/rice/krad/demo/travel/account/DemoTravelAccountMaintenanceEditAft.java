@@ -110,10 +110,12 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
 
         waitAndClickButtonByText("Save");
         waitForTextPresent("Document was successfully saved.");
+        assertTextPresent("SAVED");
         waitAndClickButtonByText("submit");
         waitAndClickButtonByText("reload");
+        waitForTextPresent("Document was successfully reloaded.");
+        waitAndClickButtonByText("blanket approve");
         assertTextPresent("FINAL");
-
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
@@ -223,11 +225,22 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	testEditFiscalOfficer();
         passed();
     }
-    
+
+    @Test
+    public void testDemoTravelAccountMaintenanceEditFiscalOfficerNav() throws Exception {
+        testEditFiscalOfficer();
+        passed();
+    }
+
     @Test
     public void testDemoTravelAccountMaintenanceSubAccountOperationsBookmark() throws Exception {
     	testSubAccountOperations();
         passed();
     }
 
+    @Test
+    public void testDemoTravelAccountMaintenanceSubAccountOperationsNav() throws Exception {
+        testSubAccountOperations();
+        passed();
+    }
 }

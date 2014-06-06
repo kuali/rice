@@ -18,9 +18,10 @@ package org.kuali.rice.krad.service.impl;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
+import org.apache.ojb.broker.OptimisticLockException;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
@@ -30,15 +31,17 @@ import org.kuali.rice.kew.framework.postprocessor.DeleteEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentLockingEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.framework.postprocessor.IDocumentEvent;
 import org.kuali.rice.kew.framework.postprocessor.ProcessDocReport;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.PostProcessorService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.LegacyUtils;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -51,7 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class PostProcessorServiceImpl implements PostProcessorService {
 
-    private static final Logger LOG = Logger.getLogger(PostProcessorServiceImpl.class);
+    private static Logger LOG = Logger.getLogger(PostProcessorServiceImpl.class);
 
     private DocumentService documentService;
 
@@ -351,31 +354,12 @@ public class PostProcessorServiceImpl implements PostProcessorService {
      */
     private void logOptimisticDetails(int depth, Throwable t) {
         if ((depth > 0) && (t != null)) {
-			Object sourceObject = null;
-			boolean optLockException = false;
-			if ( t instanceof javax.persistence.OptimisticLockException ) {
-			    sourceObject = ((javax.persistence.OptimisticLockException)t).getEntity();
-			    optLockException = true;
-			} else if ( t instanceof OptimisticLockingFailureException ) {
-			    sourceObject = ((OptimisticLockingFailureException)t).getMessage();
-			    optLockException = true;
-			} else if ( t.getClass().getName().equals( "org.apache.ojb.broker.OptimisticLockException" ) ) {
-		        try {
-                    sourceObject = PropertyUtils.getSimpleProperty(t, "sourceObject");
-                } catch (Exception ex) {
-                    LOG.warn( "Unable to retrieve source object from OJB OptimisticLockException", ex );
-                }
-                optLockException = true;
-			}
-			if ( optLockException ) {
-                if (sourceObject != null) {
-                    if ( sourceObject instanceof String ) {
-                        LOG.error("source of OptimisticLockException Unknown.  Message: " + sourceObject);
-                    } else {
-                        LOG.error("source of OptimisticLockException = " + sourceObject.getClass().getName() + " ::= " + sourceObject);
-                    }
-                }
-            } else {
+            if (t instanceof OptimisticLockException) {
+                OptimisticLockException o = (OptimisticLockException) t;
+
+                LOG.error("source of OptimisticLockException = " + o.getSourceObject().getClass().getName() + " ::= " + o.getSourceObject());
+            }
+            else {
                 Throwable cause = t.getCause();
                 if (cause != t) {
                     logOptimisticDetails(--depth, cause);

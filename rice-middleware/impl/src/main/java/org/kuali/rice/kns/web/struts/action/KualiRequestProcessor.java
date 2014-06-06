@@ -15,17 +15,10 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
+import org.apache.ojb.broker.OptimisticLockException;
 import org.apache.struts.Globals;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -61,12 +54,17 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.LegacyUtils;
 import org.kuali.rice.krad.util.MessageMap;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springmodules.orm.ojb.OjbOperationException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * This class handles setup of user session and restoring of action form.
@@ -632,42 +630,19 @@ public class KualiRequestProcessor extends RequestProcessor {
 				OjbOperationException ooe = (OjbOperationException) rootCause;
 
 				Throwable subcause = ooe.getCause();
-				if ( subcause != null ) { 
-    				Object sourceObject = null;
-    				boolean optLockException = false;
-    				if ( subcause instanceof javax.persistence.OptimisticLockException ) {
-    				    javax.persistence.OptimisticLockException ole = (javax.persistence.OptimisticLockException) subcause;
-    				    sourceObject = ole.getEntity();
-    				    optLockException = true;
-    				} else if ( subcause instanceof OptimisticLockingFailureException ) {
-    				    OptimisticLockingFailureException ole = (OptimisticLockingFailureException) subcause;
-    				    sourceObject = ole.getMessage();
-    	                optLockException = true;
-    				} else {
-    				    if ( subcause.getClass().getName().equals( "org.apache.ojb.broker.OptimisticLockException" ) ) {
-    				        try {
-                                sourceObject = PropertyUtils.getSimpleProperty(subcause, "sourceObject");
-                            } catch (Exception ex) {
-                                LOG.warn( "Unable to retrieve source object from OJB OptimisticLockException", ex );
-                            }
-                            optLockException = true;
-                        }
-    				}
-    				if ( optLockException ) {
-                        StringBuilder message = new StringBuilder(e.getMessage());
-                        
-                        if (sourceObject != null) {
-                            if ( sourceObject instanceof String ) {
-                                message.append(" Embedded Message: ").append( sourceObject );
-                            } else {
-                                message.append(" (sourceObject is ");
-                                message.append(sourceObject.getClass().getName());
-                                message.append(")");
-                            }
-                        }
-    				    
-                        e = new ServletException(message.toString(), rootCause);
-    				}
+				if (subcause instanceof OptimisticLockException) {
+					OptimisticLockException ole = (OptimisticLockException) subcause;
+
+					StringBuffer message = new StringBuffer(e.getMessage());
+
+					Object sourceObject = ole.getSourceObject();
+					if (sourceObject != null) {
+						message.append(" (sourceObject is ");
+						message.append(sourceObject.getClass().getName());
+						message.append(")");
+					}
+
+					e = new ServletException(message.toString(), rootCause);
 				}
 			}
 

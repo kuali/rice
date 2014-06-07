@@ -204,6 +204,7 @@
               <bean id="field-label-top-external-help" parent="Uif-InputField" p:propertyName="inputField3">
                 <property name="help">
                   <bean parent="Uif-Help">
+                    <property name="externalHelpUrl" value="http://www.kuali.org/?label_top"/>
                     <property name="helpDefinition">
                       <bean parent="HelpDefinition" p:parameterNamespace="KR-SAP" p:parameterName="TEST_PARAM"
                             p:parameterDetailType="TEST_COMPONENT"/>

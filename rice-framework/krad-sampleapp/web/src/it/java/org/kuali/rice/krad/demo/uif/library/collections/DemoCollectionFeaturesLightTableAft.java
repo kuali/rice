@@ -68,7 +68,7 @@ public class DemoCollectionFeaturesLightTableAft extends WebDriverLegacyITBase {
     
     protected void testCollectionFeaturesLightTableBasicInput() throws Exception {
         waitAndClickByLinkText("Basic Input");
-        waitAndClickByLinkText("Basic DataFields LightTable");
+        waitAndClickByLinkText("Basic Inputs");
         switchToWindow("Kuali :: Light Table test");
         waitForElementPresentByXpath("//table[@id='Demo-LightTableGroup4_lightTable']/tbody/tr/td/div/input");
         assertElementPresentByXpath("//table[@id='Demo-LightTableGroup4_lightTable']/tbody/tr/td[3]/div/input[@type='checkbox']");

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.inquiries;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,7 +43,8 @@ public class LabsInquiryForceUppercaseAft extends LabsInquiryBase {
         
     	// Lightbox
         waitForTextNotPresent("No records found for the given parameters");
-        waitAndClickLinkContainingText("A");
+        waitAndClickLabeledLink("Travel Sub Account Number:", "A");
+//        waitAndClickLinkContainingText("A");
         gotoLightBox();
         String[][] lightBoxLabeledText = {{"Travel Account Number:", "a14"},
                                           {"Travel Sub Account Number:", "A"},

@@ -52,7 +52,6 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
 
         //verify expect suggest results
         waitForElementPresent(By.linkText(result), "Library Widget Suggest, " + result + " not suggested");
-        assertElementPresentByLinkText(result);
         waitAndClickByLinkText(result);
 
         //verify text is populated

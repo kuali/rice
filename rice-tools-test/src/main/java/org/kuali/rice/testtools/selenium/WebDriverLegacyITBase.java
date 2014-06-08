@@ -907,11 +907,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             }
 
             if (!allFound) {
-                assertTrue("Didn't find expected results in result pages", isNextLinkEnabled());
+                assertTrue("Didn't find expected results in result pages for " + this.getClass().getSimpleName(), isNextLinkEnabled());
                 waitAndClickByLinkText("Next");
             }
 
         }
+    }
+
+    protected void assertEmptyInputByName(String name) throws InterruptedException {
+        assertTrue(name + " not empty for " + this.getClass().getSimpleName(), waitForElementPresentByName(name).getAttribute("value").equals(""));
     }
 
     protected void assertFocusTypeBlurError(String field, String textToType) throws InterruptedException {
@@ -3848,6 +3852,11 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     protected void waitAndClickConfirmBlanketApproveOk() throws InterruptedException {
         jGrowl("Click OK Confirmation");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
+    }
+
+    protected void waitAndClickLabeledLink(String label, String linkText) throws InterruptedException {
+        jGrowl("Click link " + linkText + " labeled with " + label);
+        waitAndClick(By.xpath("//th/label[contains(text(), '" + label + "')]/../following-sibling::*/a[contains(text(), '" + linkText + "')]"));
     }
 
     protected void waitAndClickLinkContainingText(String linkText) throws InterruptedException {

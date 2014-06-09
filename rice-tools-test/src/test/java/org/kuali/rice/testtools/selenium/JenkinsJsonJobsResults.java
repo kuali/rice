@@ -15,25 +15,13 @@
  */
 package org.kuali.rice.testtools.selenium;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchWindowException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.io.File;
 import java.net.MalformedURLException;
-import java.util.concurrent.TimeUnit;
 
 /**
- * Retrieve Last Completed Build Jenkins Job(s) Results as JSON.
- * @See JenkinsJsonJobResultsBase for required and optional JVM args.
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JenkinsJsonJobsResults extends JenkinsJsonJobResultsBase {
@@ -49,10 +37,8 @@ public class JenkinsJsonJobsResults extends JenkinsJsonJobResultsBase {
     }
 
     @Test
-    public void testGetJobResults() {
-        String jobJson = null;
-        String json = null;
-        String outputFile = null;
+    public void testGetResults() {
+        String jobNumber = null;
         String url = null;
         String job = null;
 
@@ -61,21 +47,11 @@ public class JenkinsJsonJobsResults extends JenkinsJsonJobResultsBase {
                 job = jobs[i];
                 url = jenkinsBase + "/job/" + job + "/api/json";
 
-                jobJson = retrieveJson(url);
-                jobJson = jobJson.substring(jobJson.indexOf("\"lastCompletedBuild\":{\"number\":") + 31, jobJson.length());
-                jobJson = jobJson.substring(0, jobJson.indexOf(","));
+                jobNumber = retrieveJson(url);
+                jobNumber = jobNumber.substring(jobNumber.indexOf("\"lastCompletedBuild\":{\"number\":") + 31, jobNumber.length());
+                jobNumber = jobNumber.substring(0, jobNumber.indexOf(","));
 
-                url = jenkinsBase + "/job/" + job + "/" + jobJson + "/testReport/api/json";
-                json = retrieveJson(url);
-
-                outputFile = job + "-" + jobJson + ".json";
-                if (outputDirectory != null) {
-                    outputFile = outputDirectory + File.separatorChar + outputFile;
-                }
-
-                json = json.replace("},{", "},\n{");
-                json = json.replaceAll("}],", "}],\n\n\n");
-                FileUtils.writeStringToFile(new File(outputFile), json);
+                fetchAndWriteJobResults(job, jobNumber);
 
             } catch (Exception e) {
                 passed = false;

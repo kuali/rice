@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.field;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
@@ -46,6 +47,7 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.MultiValueControlBase;
+import org.kuali.rice.krad.uif.control.SelectControl;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinder;
@@ -1286,8 +1288,20 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         // Checks that the control is set
         if (getControl() == null) {
             if (Validator.checkExpressions(this, "control")) {
-                String currentValues[] = {"control =" + getConstraintText()};
+                String currentValues[] = {"propertyName =" + getPropertyName()};
                 tracer.createWarning("Control should be set", currentValues);
+            }
+        }
+
+
+        if (getControl() != null && !(getControl() instanceof TextControl
+                || getControl() instanceof TextAreaControl
+                || getControl() instanceof SelectControl)){
+
+            if (CollectionUtils.isNotEmpty(this.getPostInputAddons())) {
+                String currentValues[] = {"propertyName =" + getPropertyName()};
+                tracer.createWarning("Inputs which are not text or select should not use post input addons for "
+                        + "user experience reasons", currentValues);
             }
         }
 

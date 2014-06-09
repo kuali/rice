@@ -1,20 +1,20 @@
 # https://wiki.kuali.org/display/KULRICE/Rice+Performance+Benchmarks
 # If there is no pageId use NOT_USED_DELETE
-"Kitchen Sink Input Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page1,1000
-"Kitchen Sink Other Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page2,2000
-"Kitchen Sink Validation",/kr-krad/uicomponents,UifCompView,UifCompView-Page3,2000
-"Kitchen Sink Validation - Regex",/kr-krad/uicomponents,UifCompView,UifCompView-Page4,2000
-"Kitchen Sink Progressive Disclosure",/kr-krad/uicomponents,UifCompView,UifCompView-Page5,2000
-"Kitchen Sink Lookups etc",/kr-krad/uicomponents,UifCompView,UifCompView-Page6,2000
+"Kitchen Sink Input Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page1,2021
+"Kitchen Sink Other Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page2,1116
+"Kitchen Sink Validation",/kr-krad/uicomponents,UifCompView,UifCompView-Page3,622
+"Kitchen Sink Validation - Regex",/kr-krad/uicomponents,UifCompView,UifCompView-Page4,599
+"Kitchen Sink Progressive Disclosure",/kr-krad/uicomponents,UifCompView,UifCompView-Page5,1170
+"Kitchen Sink Lookups etc",/kr-krad/uicomponents,UifCompView,UifCompView-Page6,580
 "Kitchen Sink Collections",/kr-krad/uicomponents,UifCompView,UifCompView-Page7,2000
-"Kitchen Sink Button/Header Levels",/kr-krad/uicomponents,UifCompView,UifCompView-Page8,2000
+"Kitchen Sink Button/Header Levels",/kr-krad/uicomponents,UifCompView,UifCompView-Page8,515
 "Kitchen Sink Authorization",/kr-krad/uicomponents,UifCompView,UifCompView-Page9,2000
-"Kitchen Sink Other Examples",/kr-krad/uicomponents,UifCompView,UifCompView-Page10,2000
-"Kitchen Sink Event Examples",/kr-krad/uicomponents,UifCompView,UifCompView-Page11,2000
+"Kitchen Sink Other Examples",/kr-krad/uicomponents,UifCompView,UifCompView-Page10,1249
+"Kitchen Sink Event Examples",/kr-krad/uicomponents,UifCompView,UifCompView-Page11,967
 "Performance Medium page 1",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page1,2000
 "Performance Medium page 2",/kr-krad/labs,Lab-PerformanceMedium,Lab-Performance-Page2,2000
-"KSA Transaction",/kr-krad/transaction,TransactionView,NOT_USED_DELETE,822
-"Course Search Light Table",/kr-krad/kitchensinkperformance,Demo-Performance-LightTable,NOT_USED_DELETE,182
+"KSA Transaction",/kr-krad/transaction,TransactionView,NOT_USED_DELETE,1186
+"Course Search Light Table",/kr-krad/kitchensinkperformance,Demo-Performance-LightTable,NOT_USED_DELETE,191
 "Course Search Basic Table",/kr-krad/kitchensinkperformance,Demo-Performance-BasicTableCollection,NOT_USED_DELETE,1756
-"Course Search Rich Table Server Side Paging",/kr-krad/kitchensinkperformance,Demo-Performance-RichTable-ServerSidePaging,NOT_USED_DELETE,464
-"Course Search Rich Table Without Server Side Paging",/kr-krad/kitchensinkperformance,Demo-Performance-RichTable-NoServerSidePaging,NOT_USED_DELETE,1224
+"Course Search Rich Table Server Side Paging",/kr-krad/kitchensinkperformance,Demo-Performance-RichTable-ServerSidePaging,NOT_USED_DELETE,538
+"Course Search Rich Table Without Server Side Paging",/kr-krad/kitchensinkperformance,Demo-Performance-RichTable-NoServerSidePaging,NOT_USED_DELETE,1877

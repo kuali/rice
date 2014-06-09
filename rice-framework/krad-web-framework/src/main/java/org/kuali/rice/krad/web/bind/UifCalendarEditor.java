@@ -24,9 +24,8 @@ import java.text.ParseException;
 import java.util.Calendar;
 
 /**
- * PropertyEditor converts between date display strings and
- * <code>java.util.Calendar</code> objects using the
- * <code>org.kuali.rice.core.api.datetime.DateTimeService</code>
+ * PropertyEditor converts between date display strings and <code>java.util.Calendar</code> objects using the
+ * <code>org.kuali.rice.core.api.datetime.DateTimeService</code>.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -37,14 +36,13 @@ public class UifCalendarEditor extends UifDateEditor implements Serializable {
      * This overridden method uses the
      * <code>org.kuali.rice.core.api.datetime.DateTimeService</code> to convert
      * the calendar object to the display string.
-     *
-     * @see java.beans.PropertyEditorSupport#getAsText()
      */
     @Override
     public String getAsText() {
         if (this.getValue() == null) {
             return null;
         }
+
         if ("".equals(this.getValue())) {
             return null;
         }
@@ -70,9 +68,11 @@ public class UifCalendarEditor extends UifDateEditor implements Serializable {
             Date result = getDateTimeService().convertToSqlDate(text);
             Calendar calendar = getDateTimeService().getCalendar(result);
             calendar.setTime(result);
+
             if (calendar.get(Calendar.YEAR) < 1000 && verbatimYear(text).length() < 4) {
                 throw new FormatException("illegal year format", RiceKeyConstants.ERROR_DATE, text);
             }
+
             return calendar;
         } catch (ParseException e) {
             throw new FormatException("parsing", RiceKeyConstants.ERROR_DATE, text, e);

@@ -47,6 +47,7 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewIndex;
 import org.kuali.rice.krad.uif.widget.Tooltip;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 
 /**
@@ -435,6 +436,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
                         refreshPropertyName));
             }
             refreshWhenChangedPropertyNames = adjustedRefreshPropertyNames;
+            if (!retrieveViaAjax) {
+                //need to add the "refresh" method so that regular calls will work
+                ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(KRADConstants.RETURN_METHOD_TO_CALL);
+            }
         }
 
         // retrieveViaAjax forces session persistence because it assumes that this component will be retrieved by

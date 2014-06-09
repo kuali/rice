@@ -81,7 +81,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     @Column(name = "ALWAYS")
     private String alwaysId;
 
-    @ManyToOne(targetEntity = RuleBo.class, fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @ManyToOne(targetEntity = RuleBo.class, fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID", insertable = false, updatable = false)
     private RuleBo rule;
 
@@ -89,15 +89,15 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     @Version
     private Long versionNumber;
 
-    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH, CascadeType.PERSIST })
+    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "WHEN_TRUE", referencedColumnName = "AGENDA_ITM_ID", insertable = false, updatable = false)
     private AgendaItemBo whenTrue;
 
-    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH, CascadeType.PERSIST })
+    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "WHEN_FALSE", referencedColumnName = "AGENDA_ITM_ID", insertable = false, updatable = false)
     private AgendaItemBo whenFalse;
 
-    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH, CascadeType.PERSIST })
+    @ManyToOne(targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "ALWAYS", referencedColumnName = "AGENDA_ITM_ID", insertable = false, updatable = false)
     private AgendaItemBo always;
 

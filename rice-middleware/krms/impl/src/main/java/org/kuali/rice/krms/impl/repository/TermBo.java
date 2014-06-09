@@ -84,7 +84,7 @@ public class TermBo implements TermDefinitionContract, Serializable {
             return null;
         }
 
-        return org.kuali.rice.krms.api.repository.term.TermDefinition.Builder.create(bo).build();
+        return TermDefinition.Builder.create(bo).build();
     }
 
     /**

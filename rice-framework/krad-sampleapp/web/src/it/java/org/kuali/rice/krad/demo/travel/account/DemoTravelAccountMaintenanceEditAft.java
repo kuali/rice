@@ -216,25 +216,25 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	waitAndTypeByName("document.newMaintainableObject.dataObject.name","Travel Account 14");
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditXssBookmark() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditXssNav() throws Exception {
         testTravelAccountMaintenanceEditXss();
         passed();
@@ -246,7 +246,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoTravelAccountMaintenanceEditFiscalOfficerNav() throws Exception {
         testEditFiscalOfficer();
         passed();

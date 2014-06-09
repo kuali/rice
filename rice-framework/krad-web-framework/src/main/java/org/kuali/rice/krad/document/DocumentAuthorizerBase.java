@@ -62,7 +62,7 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
     }
 
     public boolean canAnnotate(Document document, Person user) {
-        return canEdit(document, user);
+        return canAddNoteAttachment(document, null, user);
     }
 
     public boolean canReload(Document document, Person user) {

@@ -51,7 +51,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
 
     public boolean canAnnotate(Document document) {
-        return canEdit(document);
+        return true;
     }
 
     public boolean canReload(Document document) {

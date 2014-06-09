@@ -105,6 +105,7 @@
       </list>
     </property>
     <property name="collectionObjectClass" value="org.kuali.rice.krad.bo.Note"/>
+    <property name="readOnly" value="@{!#actionFlags[#Constants.KUALI_ACTION_CAN_ANNOTATE]}"/>
     <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">

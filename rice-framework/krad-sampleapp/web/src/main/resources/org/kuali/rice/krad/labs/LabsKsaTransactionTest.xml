@@ -58,7 +58,7 @@
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="renderAddLine" value="false"/>
     <property name="layoutManager.applyDefaultCellWidths" value="false"/>
-    <!--<property name="layoutManager.ajaxDetailsRetrieval" value="true"/>-->
+    <property name="layoutManager.ajaxDetailsRetrieval" value="true"/>
 
     <property name="layoutManager.richTable.templateOptions">
       <map merge="true">
@@ -88,7 +88,6 @@
       <bean parent="Uif-VerticalBoxGroup">
         <property name="items">
           <list>
-            <bean parent="Uif-InputField" p:propertyName="chargeAmount" p:label="Charges"/>
             <ref bean="rollupTransactionList1"/>
           </list>
         </property>

@@ -99,20 +99,20 @@ public class PageGroupBase extends GroupBase implements PageGroup {
         UifFormBase formBase = (UifFormBase) model;
 
         // If AutoFocus then set the focus_id to FIRST field, unless focus_id is also specified
-        if (isAutoFocus() && formBase.getFocusId() != null) {
+        if (isAutoFocus() && StringUtils.isNotBlank(formBase.getFocusId())) {
             this.addDataAttribute(UifConstants.ActionDataAttributes.FOCUS_ID, formBase.getFocusId());
-        } else if(isAutoFocus () ) {
+        } else if (isAutoFocus()) {
             this.addDataAttribute(UifConstants.ActionDataAttributes.FOCUS_ID, UifConstants.Order.FIRST.name());
         }
 
         // Add jumpToId as a data attribute
-        if (formBase.getJumpToId() != null) {
-            this.addDataAttribute(UifConstants.ActionDataAttributes.JUMP_TO_ID,formBase.getJumpToId());
+        if (StringUtils.isNotBlank(formBase.getJumpToId())) {
+            this.addDataAttribute(UifConstants.ActionDataAttributes.JUMP_TO_ID, formBase.getJumpToId());
         }
 
         // Add jumpToName as a data attribute
-        if (formBase.getJumpToName() != null) {
-            this.addDataAttribute(UifConstants.ActionDataAttributes.JUMP_TO_NAME,formBase.getJumpToName());
+        if (StringUtils.isNotBlank(formBase.getJumpToName())) {
+            this.addDataAttribute(UifConstants.ActionDataAttributes.JUMP_TO_NAME, formBase.getJumpToName());
         }
 
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.PAGE);

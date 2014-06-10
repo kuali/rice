@@ -29,11 +29,13 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-FocusNJumpTo-Example1"/>
+        <ref bean="Demo-FocusNJumpTo-Example2"/>
+        <ref bean="Demo-FocusNJumpTo-Example3"/>
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-FocusNJumpTo-Example1" parent="Uif-VerticalBoxSection" p:headerText="Focus and JumpTo">
+  <bean id="Demo-FocusNJumpTo-Example1" parent="Uif-VerticalBoxSection" p:headerText="FocusId and FocusOnIdAfterSubmit">
     <property name="items">
       <!-- ex:Demo-FocusNJumpTo-Example1 start-->
       <list>
@@ -104,5 +106,99 @@
       <!-- ex:Demo-FocusNJumpTo-Example1 end-->
     </property>
   </bean>
+
+  <bean id="Demo-FocusNJumpTo-Example2"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-FocusNJumpTo-Example2 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection">
+          <property name="headerText" value="Focus is set to LINE_FIRST in case of a collection" />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+          <property name="layoutManager.richTable.render" value="true" />
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-FocusNJumpTo-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+
+  <bean id="Demo-FocusNJumpTo-Example3" parent="Uif-VerticalBoxSection" p:headerText="Focus and JumpTo">
+    <property name="items">
+      <!-- ex:Demo-FocusNJumpTo-Example3 start-->
+      <list>
+        <bean parent="Uif-HorizontalFieldGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-PrimaryActionButton" p:methodToCall="refreshProgGroup" p:actionLabel="Jump to Field 20"
+                    p:refreshId="fieldGroup7-8" p:jumpToIdAfterSubmit="input20_control">
+                <property name="toolTip">
+                  <bean parent="Uif-Tooltip"
+                        p:tooltipContent="Jump to field 20"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+
+        <bean id="input10" parent="Uif-InputField" p:label="Field 10"
+              p:propertyName="inputField10"/>
+        <bean id="input11" parent="Uif-InputField" p:label="Field 11"
+              p:propertyName="inputField11"/>
+        <bean id="input12" parent="Uif-InputField" p:label="Field 12"
+              p:propertyName="inputField12"/>
+        <bean id="input13" parent="Uif-InputField" p:label="Field 13"
+              p:propertyName="inputField13"/>
+        <bean id="input14" parent="Uif-InputField" p:label="Field 14"
+              p:propertyName="inputField14"/>
+        <bean id="input15" parent="Uif-InputField" p:label="Field 15"
+              p:propertyName="inputField15"/>
+        <bean id="input16" parent="Uif-InputField" p:label="Field 16"
+              p:propertyName="inputField16"/>
+        <bean id="input17" parent="Uif-InputField" p:label="Field 17"
+              p:propertyName="inputField17"/>
+        <bean id="input18" parent="Uif-InputField" p:label="Field 18"
+              p:propertyName="inputField18"/>
+        <bean id="input19" parent="Uif-InputField" p:label="Field 19"
+              p:propertyName="inputField19"/>
+        <bean id="input20" parent="Uif-InputField" p:label="Field 20"
+              p:propertyName="inputField20"/>
+        <bean id="input21" parent="Uif-InputField" p:label="Field 21"
+              p:propertyName="inputField21"/>
+
+
+        <bean parent="Uif-HorizontalFieldGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Jump to Top"
+                    p:jumpToIdAfterSubmit="TOP">
+                <property name="toolTip">
+                  <bean parent="Uif-Tooltip" p:tooltipContent="Jump to Top"/>
+                </property>
+              </bean>
+
+              <bean parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Jump to Bottom"
+                    p:jumpToIdAfterSubmit="BOTTOM">
+                <property name="toolTip">
+                  <bean parent="Uif-Tooltip" p:tooltipContent="Jump to Bottom"/>
+                </property>
+              </bean>
+
+            </list>
+          </property>
+        </bean>
+      </list>
+      <!-- ex:Demo-FocusNJumpTo-Example1 end-->
+    </property>
+  </bean>
+
 
 </beans>

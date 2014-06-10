@@ -865,8 +865,8 @@ function setupPage(validate) {
         focusId = "FIRST";
     }
 
-    //Perform focus and jumpTo based on the data attributes
-    performFocusAndJumpTo(true, true, focusId , page.data(kradVariables.JUMP_TO_ID), page.data(kradVariables.JUMP_TO_NAME) );
+    // Perform focus and jumpTo based on the data attributes
+    performFocusAndJumpTo(true, focusId, page.data(kradVariables.JUMP_TO_ID), page.data(kradVariables.JUMP_TO_NAME));
 
     time(false, "page-setup");
 }

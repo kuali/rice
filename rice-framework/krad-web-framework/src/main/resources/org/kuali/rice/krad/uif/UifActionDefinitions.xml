@@ -22,11 +22,11 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="Uif-SaveAction" parent="Uif-PrimaryActionButton" p:methodToCall="save" p:actionLabel="Save"
-        p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
+        p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST"
         p:loadingMessageText="Saving..." p:clearDirtyOnAction="true" p:id="usave"/>
 
   <bean id="Uif-SaveAction-Secondary" parent="Uif-SecondaryActionButton" p:methodToCall="save" p:actionLabel="Save"
-        p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST" p:jumpToIdAfterSubmit="TOP"
+        p:performClientSideValidation="true" p:focusOnIdAfterSubmit="FIRST"
         p:loadingMessageText="Saving..." p:clearDirtyOnAction="true" p:id="usave"/>
 
   <bean id="Uif-BackAction" parent="Uif-PrimaryActionButton" p:methodToCall="back"

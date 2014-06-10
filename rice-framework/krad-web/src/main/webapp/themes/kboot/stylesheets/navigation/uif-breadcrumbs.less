@@ -90,3 +90,31 @@
     }
   }
 }
+
+
+
+.uif-structure-breadcrumb {
+    margin: 0 0 16px -5px;
+    padding: 0;
+    list-style: none;
+    font-weight: bold;
+
+    li {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: inline;
+
+        a {
+            padding: 0 6px;
+        }
+    }
+
+    li:after {
+        content: ">";
+    }
+
+    li:last-child:after {
+        display: none;
+  }
+}

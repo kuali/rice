@@ -1,5 +1,18 @@
 // css grid layout uses the Bootstrap v3.0 css grid
 
+
+/*
+ * Adding this .container override to fix the little sliver of gray on the left side
+ * of the page. This might cause issues elsewhere, but for now it's a temporary fix.
+*/
+
+.container {
+    padding-left: 15px;
+    padding-right: 0;
+}
+
+/* *** */
+
 .container-fluid {
   padding-left: 15px;
   padding-right: 15px;
@@ -8,7 +21,7 @@
 }
 
 .uif-cssGridGroup .row {
-  margin-bottom: 15px;
+  //margin-bottom: 15px;
 }
 
 .uif-cssGridGroup .row .uif-inputField input[type="text"], .uif-cssGridGroup .row .uif-inputField .uif-textAreaControl {
@@ -34,6 +47,11 @@
 .uif-cssGridGroup > [class*="col-"] {
     padding-bottom: 5px;
 }
+
+.uif-cssGridGroup > [class*="col-"] .uif-cssGridGroup > [class*="col-"]{
+  padding-bottom: 0px;
+}
+
 
 .uif-cssGridLabelCol {
   padding-top: .5em;

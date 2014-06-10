@@ -20,6 +20,7 @@ img {
 }
 a {
   cursor: pointer;
+  color: @link-color;
 }
 ol, ul {
   list-style: none;
@@ -37,7 +38,7 @@ input, textarea, .uneditable-input {
 
 }
 input[type="radio"], input[type="checkbox"] {
-  margin: 0px;
+  //margin: 0px;
   cursor: pointer;
 }
 input[type="radio"]+label, input[type="checkbox"]+label {
@@ -65,9 +66,9 @@ input::-ms-clear {
 body {
   margin: 0px;
 }
-input[type="text"], .uif-textAreaControl {
+input[type="text"], input[type="password"], .uif-textAreaControl {
   .form-control;
-  .input-sm;
+  //.input-sm;
   display: inline;
   width: inherit;
 }
@@ -436,6 +437,14 @@ div.hasCountdown {
   top: 10%;
 }
 
+.ui-datepicker {
+    z-index: 9999 !important;
+}
+
+//:focus {
+//    -webkit-transition: all 0.15s ease-in-out;
+//    transition: all 0.15s ease-in-out;
+//}
 
 
 

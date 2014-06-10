@@ -382,7 +382,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // get the explanation for disapproval from the disapprove dialog and check it for sensitive data
-        String explanationData = form.getDialogExplanations().get(EXPLANATION_DIALOG);
+        String explanationData = generateDisapprovalNote(form);
         ModelAndView sensitiveDataDialogModelAndView = checkSensitiveDataAndWarningDialog(explanationData, form);
 
         // if a sensitive data warning dialog is returned then display it
@@ -478,7 +478,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_APPROVED;
                     break;
                 case DISAPPROVE:
-                    String disapprovalNoteText = "";
+                    String disapprovalNoteText = generateDisapprovalNote(form);
                     document = getDocumentService().disapproveDocument(document, disapprovalNoteText);
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED;
                     break;
@@ -918,8 +918,12 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         return CoreApiServiceLocator.getKualiConfigurationService();
     }
 
-    protected String generateDisapprovalNote(DocumentFormBase form, boolean checkSensitiveData) {
-        return "";
+    protected String generateDisapprovalNote(DocumentFormBase form) {
+        String explanationData = form.getDialogExplanations().get(EXPLANATION_DIALOG);
+        if(explanationData == null) {
+            return "";
+        }
+        return explanationData;
     }
 
 }

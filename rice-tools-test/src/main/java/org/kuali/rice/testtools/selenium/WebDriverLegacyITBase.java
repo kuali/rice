@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.testtools.selenium;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -29,15 +28,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
@@ -460,7 +456,9 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
         actionRequestButtonMap.put("K","methodToCall.acknowledge");
         actionRequestButtonMap.put("D","methodToCall.disapprove");
     }
-    
+
+    private WebDriverScreenshotHelper webDriverScreenshotHelper = new WebDriverScreenshotHelper();
+
     /**
      * If WebDriverUtils.chromeDriverCreateCheck() returns a ChromeDriverService, start it.
      * {@link WebDriverUtils#chromeDriverCreateCheck()}
@@ -605,7 +603,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 logout();
             } else {
                 System.out.println("Last AFT URL: " + driver.getCurrentUrl());
-                if ("true".equals(System.getProperty("remote.driver.failure.screenshot", "true")) || screenshotSteps()) {
+                if (webDriverScreenshotHelper.screenshotOnFailure() || webDriverScreenshotHelper.screenshotSteps()) {
                     screenshot();
                 }
             }
@@ -624,6 +622,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
                 System.out.println(t.getMessage() + " occurred during tearDown, ignoring to avoid killing test run.");
             }
         }
+    }
+
+    protected void screenshot() throws IOException {
+        webDriverScreenshotHelper.screenshot(driver, this.getClass().getSimpleName(), testName.getMethodName());
     }
 
     private void closeAndQuitWebDriver() {
@@ -1700,7 +1702,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected boolean isElementPresentByDataAttributeValue(String dataAttributeName, String dataAttributeValue) {
-        return isElementPresent(By.cssSelector("[data-" + dataAttributeName +"='"+ dataAttributeValue +"']"));
+        return isElementPresent(By.cssSelector("[data-" + dataAttributeName + "='" + dataAttributeValue + "']"));
     }
 
     protected boolean isNotVisible(By by) {
@@ -1713,6 +1715,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void jGrowl(String message) {
         WebDriverUtils.jGrowl(driver, jGrowlHeader, false, message);
+        if (webDriverScreenshotHelper.screenshotSteps()) {
+            try {
+                screenshot();
+            } catch (IOException ioe) {
+                System.err.println("Exception taking screenshot " + ioe.getMessage());
+            }
+        }
     }
 
     /**
@@ -1721,6 +1730,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
      */
     protected void jGrowlSticky(String message) {
         WebDriverUtils.jGrowl(driver, jGrowlHeader, true, message);
+        if (webDriverScreenshotHelper.screenshotSteps()) {
+            try {
+                screenshot();
+            } catch (IOException ioe) {
+                System.err.println("Exception taking screenshot " + ioe.getMessage());
+            }
+        }
     }
 
     protected String multiValueResultCount() throws InterruptedException {
@@ -1736,19 +1752,6 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void open(String url) {
         driver.get(url);
-    }
-
-    public void screenshot() throws IOException {
-        if (driver instanceof TakesScreenshot) {
-            File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(scrFile, new File(System.getProperty("remote.driver.screenshot.dir", "." + File.separator),
-                    System.getProperty("remote.driver.screenshot.filename", this.getClass().toString().replace("class ", "")
-                            + "." + testMethodName + "-" + getDateTimeStampFormatted() + ".png")));
-        }
-    }
-
-    public boolean screenshotSteps() {
-        return "true".equals(System.getProperty("remote.driver.step.screenshot", "true"));
     }
 
     protected void selectFrameIframePortlet() {
@@ -1926,9 +1929,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected String getDateTimeStampFormatted() {
-        Date now = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        return sdf.format(now);
+        return WebDriverUtils.getDateTimeStampFormatted();
     }
 
     protected String getDateToday() {

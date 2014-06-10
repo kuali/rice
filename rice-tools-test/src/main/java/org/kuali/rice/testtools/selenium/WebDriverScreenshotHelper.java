@@ -72,7 +72,7 @@ public class WebDriverScreenshotHelper {
             File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             String screenshotFileName = System.getProperty(REMOTE_DRIVER_SCREENSHOT_FILENAME, testName
                     + "." + testMethodName) + "-" + WebDriverUtils.getDateTimeStampFormatted() + ".png";
-            FileUtils.copyFile(scrFile, new File(System.getProperty(REMOTE_DRIVER_SCREENSHOT_DIR,
+            FileUtils.copyFile(scrFile, new File(System.getProperty(REMOTE_DRIVER_SCREENSHOT_DIR + File.separator,
                     "." + File.separator), screenshotFileName));
             String archiveUrl = System.getProperty(REMOTE_DRIVER_SCREENSHOT_ARCHIVE_URL, "");
             WebDriverUtils.jGrowl(driver, "Screenshot", false, archiveUrl + screenshotFileName);

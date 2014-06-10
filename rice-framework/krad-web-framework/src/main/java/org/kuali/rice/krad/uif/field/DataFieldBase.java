@@ -34,10 +34,12 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.inquiry.Inquirable;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -57,6 +59,7 @@ import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
+import org.kuali.rice.krad.web.form.InquiryForm;
 
 /**
  * Field that renders data from the application, such as the value of a data object property
@@ -144,7 +147,7 @@ public class DataFieldBase extends FieldBase implements DataField {
             bindingInfo.setDefaults(ViewLifecycle.getView(), getPropertyName());
         }
     }
-
+    
     /**
      * The following updates are done here:
      *
@@ -156,14 +159,8 @@ public class DataFieldBase extends FieldBase implements DataField {
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
-        if (this.enableAutoInquiry && (this.inquiry == null) && isReadOnly() && bindingInfo != null) {
-            String bindingPath = bindingInfo.getBindingPath();
-            Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
-
-            if (propertyValue != null && !(propertyValue instanceof String) &&
-                    KRADServiceLocator.getDataObjectService().supports(propertyValue.getClass())) {
-                this.inquiry = ComponentFactory.getInquiry();
-            }
+        if (enableAutoInquiry && this.inquiry == null && isReadOnly() && hasAutoInquiryRelationship()) {
+            this.inquiry = ComponentFactory.getInquiry();
         }
 
         if (isAddHiddenWhenReadOnly()) {
@@ -1308,4 +1305,63 @@ public class DataFieldBase extends FieldBase implements DataField {
 
         super.completeValidation(tracer.getCopy());
     }
+
+    /**
+     * Determines wheter or not to create an automatic inqury widget for this field within the current lifecycle.
+     * 
+     * @return True if an automatic inquiry widget should be created for this field on the current lifecycle.
+     */
+    protected boolean hasAutoInquiryRelationship() {
+        if (getBindingInfo() == null) {
+            return false;
+        }
+
+        View view = ViewLifecycle.getView();
+        Object model = ViewLifecycle.getModel();
+
+        // Do checks for inquiry when read only
+        if (isReadOnly()) {
+
+            String bindingPath = getBindingInfo().getBindingPath();
+            if (StringUtils.isBlank(bindingPath) || bindingPath.equals("null")) {
+                return false;
+            }
+
+            // check if field value is null, if so no inquiry
+            try {
+                Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+
+                if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
+                    return false;
+                }
+            } catch (Exception e) {
+                // if we can't get the value just swallow the exception and don't set an inquiry
+                return false;
+            }
+
+            // skips creating inquiry link if same as parent
+            if (view.getViewTypeName() == UifConstants.ViewType.INQUIRY) {
+                InquiryForm inquiryForm = (InquiryForm) model;
+                String propertyName = getPropertyName();
+
+                // value of field
+                Object fieldValue = ObjectPropertyUtils.getPropertyValue(ViewModelUtils.getParentObjectForMetadata(
+                        view, model, this), propertyName);
+
+                // value of field in request parameter
+                Object parameterValue = inquiryForm.getInitialRequestParameters().get(propertyName);
+
+                // if data classes and field values are equal
+                if (inquiryForm.getDataObjectClassName().equals(getDictionaryObjectEntry())
+                        && parameterValue != null && fieldValue.equals(parameterValue)) {
+                    return false;
+                }
+            }
+        }
+
+        // get parent object for inquiry metadata
+        Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, this);
+        return KRADServiceLocatorWeb.getViewDictionaryService().getInquirable(parentObject.getClass(), null) != null;
+    }
+
 }

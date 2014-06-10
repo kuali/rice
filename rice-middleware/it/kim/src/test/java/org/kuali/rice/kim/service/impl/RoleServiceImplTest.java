@@ -491,9 +491,9 @@ public class RoleServiceImplTest extends KIMTestCase {
         int originalNumberOfPrincipals = roleService.getRoleMemberPrincipalIds(rCampus.getNamespaceCode(),
                 rCampus.getName(), Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL")).size();
 
-        RoleMember rm1 = roleService.assignPrincipalToRole("user3", rCampus.getNamespaceCode(), rCampus.getName(),
+        roleService.assignPrincipalToRole("user3", rCampus.getNamespaceCode(), rCampus.getName(),
                 conditions);
-        RoleMember rm2 = roleService.assignPrincipalToRole("user4", rCampus.getNamespaceCode(), rCampus.getName(),
+        roleService.assignPrincipalToRole("user4", rCampus.getNamespaceCode(), rCampus.getName(),
                 conditions);
 
         assertTrue("principal should be assigned to role", roleService.principalHasRole("user3",
@@ -523,6 +523,102 @@ public class RoleServiceImplTest extends KIMTestCase {
                 originalNumberOfPrincipals);
     }
 
+    @Test
+    public void testAddQualifiedPrincipalToRoleDoesNotReusedWrongRoleMember() {
+        Role rCampus = roleService.getRole("r-campus");
+        // Test with qualifying conditions
+        Map<String, String> campusBLqualifier = Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL");
+        Map<String, String> campusKOqualifier = Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "KO");
+
+        List<RoleMembership> roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), campusBLqualifier);
+        // clean the role out
+        for ( RoleMembership rm : roleMembers ) {
+            roleService.removePrincipalFromRole(rm.getMemberId(), rCampus.getNamespaceCode(), rCampus.getName(), campusBLqualifier);
+        }
+        roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), campusBLqualifier);
+
+        // make sure they're gone
+        assertEquals("Pre-check failed - should not be any members with" + campusBLqualifier + ".  Members: " + roleMembers, 0, roleMembers.size());
+        
+        roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), campusKOqualifier);
+        // clean the role out
+        for ( RoleMembership rm : roleMembers ) {
+            roleService.removePrincipalFromRole(rm.getMemberId(), rCampus.getNamespaceCode(), rCampus.getName(), campusKOqualifier);
+        }
+        roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), campusKOqualifier);
+        
+        // make sure they're gone
+        assertEquals("Pre-check failed - should not be any members with" + campusKOqualifier + ".  Members: " + roleMembers, 0, roleMembers.size());
+        
+        RoleMember rm1 = roleService.assignPrincipalToRole("user3", rCampus.getNamespaceCode(), rCampus.getName(),
+                campusBLqualifier);
+        assertTrue("user3 should be assigned to role", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), campusBLqualifier));
+        assertNotNull( "Role member ID should have been assigned", rm1.getId() );
+
+        // attempt to add the user again, but with campus code KO
+        RoleMember rm2 = roleService.assignPrincipalToRole("user3", rCampus.getNamespaceCode(), rCampus.getName(),
+                campusKOqualifier);
+        assertNotNull( "role member missing campus code qualifier", rm2.getAttributes().get(KimConstants.AttributeConstants.CAMPUS_CODE) );
+        assertEquals( "campus code on role member incorrect", "KO", rm2.getAttributes().get(KimConstants.AttributeConstants.CAMPUS_CODE) );
+        assertTrue("user3 should be assigned to role for campus code KO", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), campusKOqualifier));
+        assertNotNull( "Role member ID should have been assigned", rm1.getId() );
+        assertFalse( "Role member ID SHOULD NOT be the same as previous assignment since qualifiers are different", 
+                rm1.getId().equals(rm2.getId()) );
+
+        roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), campusBLqualifier);
+        assertEquals("Should only be one principal in role with " + campusBLqualifier + ".  Members: " + roleMembers, 1, roleMembers.size());
+        roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), campusKOqualifier);
+        assertEquals("Should only be one principal in role with " + campusKOqualifier + ".  Members: " + roleMembers, 1, roleMembers.size());
+
+        roleService.removePrincipalFromRole("user3", rCampus.getNamespaceCode(), rCampus.getName(), campusBLqualifier);
+
+        assertFalse("principal should have been removed from role", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), campusBLqualifier));
+    }
+
+    @Test
+    public void testAddQualifiedPrincipalToRoleTwice() {
+        Role rCampus = roleService.getRole("r-campus");
+        // Test with qualifying conditions
+        Map<String, String> qualifier = Collections.singletonMap(KimConstants.AttributeConstants.CAMPUS_CODE, "BL");
+
+        List<RoleMembership> roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), qualifier);
+        // clean the role out
+        for ( RoleMembership rm : roleMembers ) {
+            roleService.removePrincipalFromRole(rm.getMemberId(), rCampus.getNamespaceCode(), rCampus.getName(), qualifier);
+        }
+        roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), qualifier);
+
+        // make sure they're gone
+        assertEquals("Pre-check failed - should not be any members with campus code BL.  Members: " + roleMembers, 0, roleMembers.size());
+        
+        RoleMember rm1 = roleService.assignPrincipalToRole("user3", rCampus.getNamespaceCode(), rCampus.getName(),
+                qualifier);
+        assertTrue("user3 should be assigned to role", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), qualifier));
+        assertNotNull( "Role member ID should have been assigned", rm1.getId() );
+        // attempt to add the user again
+        RoleMember rm2 = roleService.assignPrincipalToRole("user3", rCampus.getNamespaceCode(), rCampus.getName(),
+                qualifier);
+        assertTrue("user3 should be still assigned to role", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), qualifier));
+        assertNotNull( "Role member ID should have been assigned", rm1.getId() );
+        assertEquals( "Role member ID be the same as previous assignment since user and qualifiers are the same", 
+                rm1.getId(),
+                rm2.getId() );
+
+        roleMembers = roleService.getRoleMembers(Collections.singletonList(rCampus.getId()), qualifier);
+
+        assertEquals("Should only be one principal in role with campus code BL.  Members: " + roleMembers, 1, roleMembers.size());
+
+        roleService.removePrincipalFromRole("user3", rCampus.getNamespaceCode(), rCampus.getName(), qualifier);
+
+        assertFalse("principal should have been removed from role", roleService.principalHasRole("user3",
+                Collections.singletonList(rCampus.getId()), qualifier));
+    }
+    
 	/**
 	 * Tests to ensure that a circular role membership cannot be created via the RoleService.
 	 *

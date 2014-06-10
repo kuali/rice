@@ -19,9 +19,12 @@
     Renders a step progress bar
  -->
 <#macro uif_stepProgressBar element>
+    <#include 'progressBar.ftl' parse=true/>
+
     <#if element.verticalHeight?has_content>
         <#local vHeight="style='height: ${element.verticalHeight}px;'"/>
     </#if>
+
     <@krad.div component=element>
         <#-- when not vertical put the step label text first, otherwise after -->
         <#if !element.vertical>

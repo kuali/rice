@@ -25,6 +25,7 @@
             <#if element.percentComplete?has_content>
                 <span class="sr-only">${element.percentComplete!}%</span>
             </#if>
+
             <#list element.segmentSizes as size>
                     <div style="${size!};" class="${element.segmentClasses[size_index]!}"></div>
             </#list>
@@ -33,6 +34,7 @@
         <#if element.percentComplete?has_content>
             <span class="sr-only">${element.percentComplete!}%</span>
         </#if>
+
         <#list element.segmentSizes as size>
                 <div style="${size!};" class="${element.segmentClasses[size_index]!}"></div>
         </#list>

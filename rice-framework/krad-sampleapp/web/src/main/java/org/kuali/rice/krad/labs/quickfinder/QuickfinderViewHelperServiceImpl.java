@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by nigupta on 4/22/2014.
+ * Quickfinder's view service implementation class that handles callbacks.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class QuickfinderViewHelperServiceImpl extends LookupableImpl {
 
@@ -37,10 +39,13 @@ public class QuickfinderViewHelperServiceImpl extends LookupableImpl {
      */
     public void doCallback( UifFormBase form, String quickfinderId, Map<String, String> callbackContext ) {
         QuickfinderForm qForm = ( QuickfinderForm ) form;
+
         List<PersonAccount> collection = qForm.getPeopleAccounts();
+
         if( callbackContext != null ) {
             String lineIndexAsString = callbackContext
                     .get( UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT_PROPERTY_LINE_INDEX );
+
             if( lineIndexAsString != null ) {
                 int lineIndex = Integer.parseInt( lineIndexAsString );
                 if( lineIndex >= 0 ) {

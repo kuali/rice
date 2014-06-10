@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by nigupta on 4/21/2014.
+ * Form to contain quickfinder's travel account fields.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class QuickfinderForm extends UifFormBase {
 

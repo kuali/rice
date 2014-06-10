@@ -468,19 +468,19 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      * which view is returned from and possibly which collection line the quickfinder was on.
      */
     protected void addCallbackParametersIfPresent() {
-        if( StringUtils.isNotBlank( callbackMethodToCall ) ) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
-                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD_TO_CALL, callbackMethodToCall );
+        if (StringUtils.isNotBlank(callbackMethodToCall)) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD_TO_CALL, callbackMethodToCall);
         }
 
-        if( callbackMethod != null ) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
-                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD, callbackMethod );
+        if (callbackMethod != null) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_METHOD, callbackMethod);
         }
 
-        if( callbackContext != null && !callbackContext.isEmpty() ) {
-            ViewLifecycle.getViewPostMetadata().addComponentPostData( this,
-                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT, callbackContext );
+        if (callbackContext != null && !callbackContext.isEmpty()) {
+            ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
+                    UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT, callbackContext);
         }
     }
 

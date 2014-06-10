@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 @Controller
 @RequestMapping( "/quickfinder" )
 public class QuickfinderController extends UifControllerBase {

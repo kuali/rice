@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Class to associate a person with a travel account
  *
- * Created by nigupta on 4/23/2014.
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class PersonAccount implements Serializable {
 

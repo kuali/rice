@@ -617,30 +617,26 @@ public interface CollectionGroup extends Group, DataBinding {
     void setRenderSaveLineActions(boolean renderSaveLineActions);
 
     /**
-     * Indicates that a add action should be rendered and that the add group be displayed in a lightbox
+     * Indicates that a add action should be rendered and that the add group be displayed in a model dialog.
      *
-     * @return boolean
+     * @return boolean true if add should be through model dialog, false if not
      */
     boolean isAddWithDialog();
 
     /**
-     * Setter for the flag to indicate that add groups should be displayed in a light box
-     *
-     * @param addViaLightBox
+     * @see CollectionGroup#isAddWithDialog()
      */
-    void setAddWithDialog(boolean addViaLightBox);
+    void setAddWithDialog(boolean addWithDialog);
 
     /**
-     * The {@link Action} that will be displayed that will open the add line group in a lightbox
+     * The {@link Action} that will be displayed that will open the add line group in a dialog.
      *
      * @return Action
      */
     Action getAddWithDialogAction();
 
     /**
-     * Setter for the add line via lightbox {@link Action}
-     *
-     * @param addViaLightBoxAction
+     * @see CollectionGroup#getAddWithDialogAction()
      */
     void setAddWithDialogAction(Action addViaLightBoxAction);
 

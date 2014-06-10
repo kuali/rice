@@ -1228,7 +1228,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      * {@inheritDoc}
      */
     @Override
-    @BeanTagAttribute(name = "addLineDialog", type = BeanTagAttribute.AttributeType.SINGLEBEAN)
+    @BeanTagAttribute
     public DialogGroup getAddLineDialog() {
         return addLineDialog;
     }

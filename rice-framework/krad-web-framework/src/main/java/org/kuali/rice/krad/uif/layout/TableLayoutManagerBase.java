@@ -660,21 +660,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
                 getAddLineGroup().getFooter().setItems(new ArrayList<Component>(actions));
             }
 
-            if (collectionGroup.isAddWithDialog()) {
-                String addLineGroupId = getAddLineGroup().getId();
-                if (StringUtils.isNotBlank(collectionGroup.getContainerIdSuffix())) {
-                    addLineGroupId = addLineGroupId + collectionGroup.getContainerIdSuffix();
-                }
-
-                String actionScript = "showLightboxComponent('" + addLineGroupId + "');";
-                if (StringUtils.isNotBlank(collectionGroup.getAddWithDialogAction().getActionScript())) {
-                    actionScript = collectionGroup.getAddWithDialogAction().getActionScript() + actionScript;
-                }
-                collectionGroup.getAddWithDialogAction().setActionScript(actionScript);
-
-                getAddLineGroup().setStyle("display: none");
-            }
-
             // Note that a RowCssClass was not added to the LayoutManager for the collection for the separateAddLine
             return;
         }

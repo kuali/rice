@@ -908,7 +908,6 @@ public class KradLabsForm extends UifFormBase {
         this.files2 = files2;
     }
 
-    @Override
     public List<FileMetaBlob> getFiles(String propertyPath) {
         System.out.println("KradLabsForm, get files => " + propertyPath);
         List<FileMetaBlob> returnObjects = new ArrayList<FileMetaBlob>();

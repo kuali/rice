@@ -49,15 +49,15 @@ public class DemoValidationAlphaConstraintsAft extends WebDriverLegacyITBase {
 
     protected void testValidationAlphaConstraints() throws Exception {
         //Scenario-1
-        assertFocusTypeBlurError("inputField1", "12");
+        assertFocusTypeTabError("inputField1", "12");
     }
     
     protected void testValidationAlphaConstraintsFlags() throws Exception {
         waitAndClickByLinkText("Flags");
         
         //Scenario-2
-        assertFocusTypeBlurError("inputField2", "1 2");
-        assertFocusTypeBlurError("inputField3", "1,2");
+        assertFocusTypeTabError("inputField2", "1 2");
+        assertFocusTypeTabError("inputField3", "1,2");
     }
     
     protected void testValidationAlphaConstraintsPreconfiguredBeans() throws Exception {

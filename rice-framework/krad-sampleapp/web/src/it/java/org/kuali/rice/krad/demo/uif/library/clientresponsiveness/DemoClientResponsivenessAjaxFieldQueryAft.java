@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.Keys;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -44,27 +45,34 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     protected void testClientResponsivenessAjaxFieldQuery() throws Exception {
     	waitAndClickByLinkText("Ajax Field Query");
     	waitForElementPresentByXpath("//input[@name='inputField3' and @value='a1']");
-        fireEvent("inputField3", "focus");
-        fireEvent("inputField3", "blur");
+        clickAndTabByName("inputField3");
         assertTextPresent(new String[] {"Travel Account 1", "fred"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethod() throws Exception {
         waitAndClickByLinkText("Ajax Field Query Custom Method");
     	waitForElementPresentByXpath("//input[@name='inputField6' and @value='a2']");
-        fireEvent("inputField6", "focus");
-        fireEvent("inputField6", "blur");
+        clickAndTabByName("inputField6");
         assertTextPresent(new String[] {"Travel Account 2", "fran"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethodAndService() throws Exception {
         waitAndClickByLinkText("Ajax Field Query Custom Method and Service");
     	waitForElementPresentByXpath("//input[@name='inputField9' and @value='a3']");
-        fireEvent("inputField9", "focus");
-        fireEvent("inputField9", "blur");
-        assertTextPresent(new String[] {"Travel Account 3", "frank"});
+        clickAndTabByName("inputField9");
+        assertTextPresent(new String[]{"Travel Account 3", "frank"});
     }
-    
+
+    /**
+     * focus, blur seem real flaky on xvfb, maybe click and tab will be better
+     * @param name
+     * @throws InterruptedException
+     */
+    private void clickAndTabByName(String name) throws InterruptedException {
+        waitAndClickByName(name);
+        driver.switchTo().activeElement().sendKeys(Keys.TAB); // update to call typeTab() in 2.5+
+    }
+
     @Test
     public void testClientResponsivenessAjaxFieldQueryBookmark() throws Exception {
         testClientResponsivenessAjaxFieldQuery();

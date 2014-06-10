@@ -26,6 +26,7 @@ import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.kuali.rice.testtools.common.PropertiesUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.NoSuchWindowException;
 import org.openqa.selenium.WebDriver;
@@ -943,6 +944,15 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
             assertFocusTypeBlurValid(field, validInput);
             clearTextByName(field);
         }
+    }
+
+    protected void assertFocusTypeTabError(String field, String textToType) throws InterruptedException {
+        fireEvent(field, "focus");
+        waitAndTypeByName(field, textToType);
+        driver.switchTo().activeElement().sendKeys(Keys.TAB);
+        Thread.sleep(500);
+        assertAttributeClassRegexMatches(field, REGEX_ERROR);
+        clearTextByName(field);
     }
 
     protected void assertJgrowlText(String jGrowlText) throws InterruptedException {
@@ -3854,7 +3864,7 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void waitAndClickLabeledLink(String label, String linkText) throws InterruptedException {
         jGrowl("Click link " + linkText + " labeled with " + label);
-        waitAndClick(By.xpath("//th/label[contains(text(), '" + label + "')]/../following-sibling::*/a[contains(text(), '" + linkText + "')]"));
+        waitAndClick(By.xpath("//th/label[contains(text(), '" + label + "')]/../following-sibling::*/div/a[contains(text(), '" + linkText + "')]"));
     }
 
     protected void waitAndClickLinkContainingText(String linkText) throws InterruptedException {

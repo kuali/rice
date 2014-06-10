@@ -44,8 +44,8 @@ public class LabsMaintenanceCopyLinkOnSearchResultAft extends LabsMaintenanceBas
         waitForElementPresentByXpath("//div[@data-label='Company Name']");
         String companyNameValue=getTextByXpath("//div[@data-label='Company Name']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.travelCompanyName' and @value='"+companyNameValue+"']");
-        String oldCompanyId=getTextByXpath("//section[2]/div/table/tbody/tr[2]/td/div/a");
-        String newCompanyId=getTextByXpath("//section[2]/div/table/tbody/tr[2]/td[2]/div/a");
+        String oldCompanyId=getTextByXpath("//section[2]/div/table/tbody/tr[2]/td/div");
+        String newCompanyId=getTextByXpath("//section[2]/div/table/tbody/tr[2]/td[2]/div");
         if(oldCompanyId.equals(newCompanyId)){
         	jiraAwareFail("Company Id's are copied same.");
         }

@@ -41,7 +41,8 @@ public class LabsKsaTransactionAft extends WebDriverLegacyITBase {
     protected void testKsaTransaction() throws InterruptedException {
     	waitAndTypeByName("testField","a");
     	assertTextPresent("Charges");
-    	waitAndClickButtonByText("Delete");
+        jGrowl("Click Delete");
+        waitAndClickById("rollupList1_del_line0");
     	assertTextPresent("Deleting Line");
     	waitAndClickByXpath("//img[@class='actionImage leftActionImage uif-image']");
         waitAndClickById("rollupList1_detLink_line1");

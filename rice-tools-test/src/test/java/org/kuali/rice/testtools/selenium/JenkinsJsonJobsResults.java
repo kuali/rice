@@ -22,6 +22,8 @@ import org.junit.Test;
 import java.net.MalformedURLException;
 
 /**
+ * Any passed in job numbers are ignored, only the number that is the current lastCompletedBuild is saved.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JenkinsJsonJobsResults extends JenkinsJsonJobResultsBase {
@@ -37,25 +39,18 @@ public class JenkinsJsonJobsResults extends JenkinsJsonJobResultsBase {
     }
 
     @Test
-    public void testGetResults() {
+    public void testFetchLastCompletedBuildNumberReport() {
         String jobNumber = null;
-        String url = null;
-        String job = null;
 
-        for (int i = 0, s = jobs.length; i < s; i++) {
+        for (int i = 0, s = jobs.size(); i < s; i++) {
             try {
-                job = jobs[i];
-                url = jenkinsBase + "/job/" + job + "/api/json";
 
-                jobNumber = retrieveJson(url);
-                jobNumber = jobNumber.substring(jobNumber.indexOf("\"lastCompletedBuild\":{\"number\":") + 31, jobNumber.length());
-                jobNumber = jobNumber.substring(0, jobNumber.indexOf(","));
+                jobNumber = fetchLastCompletedBuildNumber(jobs.get(i));
 
-                fetchAndWriteJobResults(job, jobNumber);
+                fetchAndWriteTestReport(jobs.get(i), jobNumber);
 
             } catch (Exception e) {
                 passed = false;
-                System.out.println("job: " + job + " url: " + url + " " + e.getMessage());
                 e.printStackTrace();
             }
         }

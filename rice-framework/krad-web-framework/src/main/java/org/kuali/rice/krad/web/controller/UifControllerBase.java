@@ -493,23 +493,26 @@ public abstract class UifControllerBase {
     /**
      *  Hook controller method to send a response back by using response.flushBuffer() using request/collection/fileLine
      *  information provided
+     *
+     *  <p>
+        A sample implementation may look like:
+        <code> <pre>
+        if (fileLine instanceof FileMetaBlob) {
+             InputStream is = ((FileMetaBlob) fileLine).getBlob().getBinaryStream();
+             response.setContentType("application/force-download");
+             response.setHeader("Content-Disposition", "attachment; filename=" + fileLine.getName());
+
+             // copy it to response's OutputStream
+             FileCopyUtils.copy(is, response.getOutputStream());
+
+             response.flushBuffer();
+         }
+        </pre></code>
+     *  </p>
      */
     public void sendFileFromLineResponse(UifFormBase uifForm, HttpServletRequest request, HttpServletResponse response,
             List<FileMeta> collection, FileMeta fileLine) throws Exception{
-        // hook point for getting the file from the collection/request/fileLine and outputting it to the response
-        // a sample implementation may look like:
-        /*
-                if (fileLine instanceof FileMetaBlob) {
-                    InputStream is = ((FileMetaBlob) fileLine).getBlob().getBinaryStream();
-                    response.setContentType("application/force-download");
-                    response.setHeader("Content-Disposition", "attachment; filename=" + fileLine.getName());
-
-                    // copy it to response's OutputStream
-                    FileCopyUtils.copy(is, response.getOutputStream());
-
-                    response.flushBuffer();
-                }
-         */
+        // empty method for overrides
     }
 
     /**

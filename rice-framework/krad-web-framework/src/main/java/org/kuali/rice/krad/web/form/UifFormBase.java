@@ -1344,14 +1344,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<FileMetaBlob> getFiles(String propertyPath) {
-        return new Vector<FileMetaBlob>();
-    }
-
-    /**
      * A generic map for query parameters
      *
      * @return Map<String, String>

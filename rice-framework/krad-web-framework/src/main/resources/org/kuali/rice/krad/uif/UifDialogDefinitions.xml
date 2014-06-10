@@ -154,23 +154,6 @@
       <property name="footer.cssClasses" value="uif-footer"/>
   </bean>
 
-  <bean id="Uif-WizardGroup" parent="Uif-WizardGroup-parentBean"/>
-  <bean id="Uif-WizardGroup-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.WizardGroup"
-        parent="Uif-DialogGroup">
-    <property name="cancelAction">
-      <bean parent="Uif-SecondaryActionButton" p:dialogDismissOption="IMMEDIATE" p:actionLabel="Cancel"/>
-    </property>
-    <property name="backAction">
-      <bean parent="Uif-SecondaryActionButton" p:actionLabel="Go back"/>
-    </property>
-    <property name="continueAction">
-      <bean parent="Uif-PrimaryActionButton" p:actionLabel="Continue..." p:performClientSideValidation="true"/>
-    </property>
-    <property name="finishAction">
-      <bean parent="Uif-PrimaryActionButton" p:dialogDismissOption="REQUEST" p:actionLabel="Finish"/>
-    </property>
-  </bean>
-
   <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup-YesNo">
     <property name="headerText" value="Warning: Sensitive Data"/>
     <property name="items">

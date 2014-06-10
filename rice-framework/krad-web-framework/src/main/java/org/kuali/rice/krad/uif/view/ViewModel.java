@@ -568,11 +568,4 @@ public interface ViewModel extends Serializable {
      */
     public void setExtensionData(Map<String, Object> extensionData);
 
-    /**
-     * Getter method for uploaded files
-     *
-     * @param propertyPath of particular set of files to get
-     * @return List<FileBase>
-     */
-    public List<FileMetaBlob> getFiles(String propertyPath);
 }

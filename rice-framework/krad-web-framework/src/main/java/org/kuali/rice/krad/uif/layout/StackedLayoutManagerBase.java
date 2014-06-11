@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import freemarker.template.utility.StringUtil;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -206,7 +207,9 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
         if (lineBuilderContext.isAddLine()) {
             if (lineGroup.getHeader() != null) {
                 Message headerMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel());
-                lineGroup.getHeader().setRichHeaderMessage(headerMessage);
+                if(StringUtils.isNotBlank(lineGroup.getHeaderText())) {
+                    headerMessage.setMessageText(lineGroup.getHeaderText());
+                }
             }
         } else {
             // get the collection for this group from the model

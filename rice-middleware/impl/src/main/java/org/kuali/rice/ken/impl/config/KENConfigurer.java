@@ -27,6 +27,8 @@ import java.util.List;
 
 public class KENConfigurer extends ModuleConfigurer {
     public static final String KEN_DATASOURCE_OBJ = "ken.datasource";
+    public static final String KCB_DATASOURCE_OBJ = "kcb.datasource";
+
     private DataSource dataSource;
 
     public KENConfigurer() {
@@ -54,6 +56,7 @@ public class KENConfigurer extends ModuleConfigurer {
     private void configureDataSource() {
         if (getDataSource() != null) {
             ConfigContext.getCurrentContextConfig().putObject(KEN_DATASOURCE_OBJ, getDataSource());
+            ConfigContext.getCurrentContextConfig().putObject(KCB_DATASOURCE_OBJ, getDataSource());
         }
     }
 

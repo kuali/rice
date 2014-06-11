@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class LabsLookupsAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page6&lightbox=true#UifCompView-Page6";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page6&lightbox=true";
 
     private static final String IFRAME_XPATH="//iframe[@class='fancybox-iframe']";
     
@@ -56,18 +56,18 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
 //        assertTextPresent(new String[] {"Travel Account Number:", "a2", "Travel Account Name:", "Travel Account 2", "Code And Description:", "EAT - Expense"});
 //        waitAndClickButtonByText("Close");
 
-        assertEmptyInputByName("field72");
+        clearTextByName("field72");
     	waitAndTypeByName("field72","a2");
         fireEvent("field72", "blur");
         waitAndClickByName("field76"); // force blur on field72
     	waitForTextPresent("Travel Account 2");
 
-        assertEmptyInputByName("field76");
+        clearTextByName("field76");
     	waitAndTypeByName("field76","a1");
         fireEvent("field76", "blur");
         waitForTextPresent("Travel Account 1");
 
-        assertEmptyInputByName("field79");
+        clearTextByName("field79");
         waitAndTypeByName("field79", "a3");
         fireEvent("field79", "blur");
         waitAndClickByName("field60"); // force blur on field79
@@ -82,7 +82,7 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
         waitAndClickButtonByText("Search");
         waitAndClickReturnValue();
 
-        assertEmptyInputByName("field70");
+        clearTextByName("field70");
         waitAndTypeByName("field70", "a1");
         waitAndClickByXpath("//input[@title='Direct Inquiry']");
         gotoLightBox();

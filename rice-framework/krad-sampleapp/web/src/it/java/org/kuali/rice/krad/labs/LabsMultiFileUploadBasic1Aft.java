@@ -58,7 +58,7 @@ public class LabsMultiFileUploadBasic1Aft extends WebDriverLegacyITBase {
     	waitAndClickByLinkText("MultiFile Upload Basic 1");
     }
 
-    protected void testDMultiFileUploadBasic1() throws Exception {
+    protected void testMultiFileUploadBasic1() throws Exception {
     	fileUploadSetUp();
     	fileIngester();
     }
@@ -177,14 +177,14 @@ public class LabsMultiFileUploadBasic1Aft extends WebDriverLegacyITBase {
     }
 
     @Test
-    public void testDMultiFileUploadBasic1Bookmark() throws Exception {
-    	testDMultiFileUploadBasic1();
+    public void testMultiFileUploadBasic1Bookmark() throws Exception {
+    	testMultiFileUploadBasic1();
         passed();
     }
 
     @Test
-    public void testDMultiFileUploadBasic1Nav() throws Exception {
-    	testDMultiFileUploadBasic1();
+    public void testMultiFileUploadBasic1Nav() throws Exception {
+    	testMultiFileUploadBasic1();
         passed();
     }
 }

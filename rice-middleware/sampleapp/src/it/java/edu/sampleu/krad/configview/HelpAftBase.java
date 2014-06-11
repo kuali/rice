@@ -17,6 +17,7 @@ package edu.sampleu.krad.configview;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -83,88 +84,83 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
     protected void testTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label left')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label right')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label top')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for check box help')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for check box help')]");
         }
 
         // test tooltip help of section header
         fireMouseOverEventByXpath("//section[@id='ConfigurationTestView-Help-Section1']/header/h3[@class='uif-headerText']");
-        Thread.sleep(500);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+        waitIsVisible(By.xpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
 
         // verify that no external help exist
         assertFalse(isElementPresent("#ConfigurationTestView-Help-Section1 input.uif-helpImage"));
 
         // test tooltip help of field with label to the left
         fireMouseOverEventByXpath("//label[@id='field-label-left_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+        waitIsVisible(By.xpath("//td[contains(text(),'Sample text for field help - label left')]"));
 
         // test tooltip help of field with label to the right
         fireMouseOverEventByXpath("//label[@id='field-label-right_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
+        waitIsVisible(By.xpath("//td[contains(text(),'Sample text for field help - label right')]"));
 
         // test tooltip help of field with label to the top
         fireMouseOverEventByXpath("//label[@id='field-label-top_label']");
-        Thread.sleep(3000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+        waitIsVisible(By.xpath("//td[contains(text(),'Sample text for field help - label top')]"));
 
         // verify that standalone help with tooltip is not rendered
         assertFalse(isElementPresentByXpath("//*[@id='standalone-help-not-rendered']"));
 
         // test tooltip help when it overrides a tooltip
         fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
-        Thread.sleep(1000);
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+        waitIsVisible(By.xpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]");
         }
 
         // test tooltip help in conjunction with a focus event tooltip
         fireMouseOverEventByXpath("//input[@id='on-focus-tooltip_control']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+        waitIsVisible(By.xpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
         fireMouseOverEventByXpath("//label[@id='on-focus-tooltip_label']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+        waitIsVisible(By.xpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
 
         // test tooltip help against a check box - help contains html
         fireMouseOverEventByXpath("//label[@id='checkbox_label']");
-        assertTrue(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+        waitIsVisible(By.xpath("//td[contains(text(),'Sample text for check box help')]"));
     }
 
     /**

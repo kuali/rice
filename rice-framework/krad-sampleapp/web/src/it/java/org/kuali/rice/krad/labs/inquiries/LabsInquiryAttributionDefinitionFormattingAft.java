@@ -50,7 +50,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                                           {"Travel Company Name:", "Discount Travel"},
                                           {"Expense Type:", "ME"},
                                           {"Expense Description:", "Family Related"}, 
-//                                          {"Expense Date:", getDateTomorrow()},
+                                          {"Expense Date:", "/"},
                                           {"Expense Amount:", "1,278.97"},
                                           {"Reimbursable:", "true"},
                                           {"Taxable:", "true"}};
@@ -86,7 +86,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                 {"Traveler Type Code:", "123"},
                 {"Customer Number:", "CUST"},
                 {"Drivers License:", "*****45678"},
-                {"Drivers License Exp Date:", "11/08/2018"},
+                {"Drivers License Exp Date:", "/"},
                 {"Active:", "true"},
                 {"Non Resident Alien:", "false"},
                 {"Liability Insurance:", "false"},};

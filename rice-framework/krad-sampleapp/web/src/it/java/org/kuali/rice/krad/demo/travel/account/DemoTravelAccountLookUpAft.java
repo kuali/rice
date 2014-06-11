@@ -191,6 +191,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     public void testTravelAccountLookUpNav() throws Exception {
         testTravelAccountLookUp();
         testXss();
+        testTravelAccountLookUpDocumentLocking();
         passed();
     }
 }

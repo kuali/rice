@@ -96,7 +96,7 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label top')]")) {
-            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]");
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]", "passes locally");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]")) {

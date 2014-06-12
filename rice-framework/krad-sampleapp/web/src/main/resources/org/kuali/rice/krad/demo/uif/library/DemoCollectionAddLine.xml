@@ -100,6 +100,61 @@
           </property>
         </bean>
 
+        <bean parent="Uif-Disclosure-StackedCollectionSection">
+          <property name="headerText" value="Add With Dialog Top"/>
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_2"/>
+          <!--  addWithDialog flag -->
+          <property name="addWithDialog" value="true"/>
+          <property name="addWithDialogAction">
+            <bean parent="Uif-AddWithDialogAction" p:actionLabel="Add compliance entry" p:iconClass="icon-plus"/>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+            </list>
+          </property>
+          <property name="addLineActions">
+            <list>
+              <bean parent="Uif-AddLineAction" p:actionLabel="Add Entry"/>
+              <bean parent="Uif-CancelAction"/>
+            </list>
+          </property>
+          <property name="addLineLabel.messageText" value="Add New Protocol"/>
+          <property name="lineActions">
+            <list/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-Disclosure-TableCollectionSection">
+          <property name="headerText" value="Add With Dialog Top"/>
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_2"/>
+          <!--  addWithDialog flag -->
+          <property name="addWithDialog" value="true"/>
+          <property name="addWithDialogAction">
+            <bean parent="Uif-AddWithDialogAction" p:actionLabel="Add compliance entry" p:iconClass="icon-plus"/>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+            </list>
+          </property>
+          <property name="addLineActions">
+            <list>
+              <bean parent="Uif-AddLineAction" p:actionLabel="Add Entry"/>
+              <bean parent="Uif-CancelAction"/>
+            </list>
+          </property>
+          <property name="addLineLabel.messageText" value="Add New Protocol"/>
+          <property name="lineActions">
+            <list/>
+          </property>
+        </bean>
         <!-- ex:Demo-CollectionAddLine-Example2 end-->
       </list>
     </property>

@@ -63,7 +63,7 @@ function Countdown() {
 			// Integer milliseconds since unix epoch
 			timestamp || now());
 		if (drawStart - animationStartTime >= 1000) {
-			plugin._updateTargets();
+					self._updateElems();
 			animationStartTime = drawStart;
 		}
 		requestAnimationFrame(timerCallBack);

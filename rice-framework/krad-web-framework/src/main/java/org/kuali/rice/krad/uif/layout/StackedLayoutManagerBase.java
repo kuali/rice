@@ -205,11 +205,9 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
 
         // build header for the group
         if (lineBuilderContext.isAddLine()) {
-            if (lineGroup.getHeader() != null) {
+            if (lineGroup.getHeader() != null && StringUtils.isNotBlank(lineGroup.getHeaderText())) {
                 Message headerMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel());
-                if(StringUtils.isNotBlank(lineGroup.getHeaderText())) {
-                    headerMessage.setMessageText(lineGroup.getHeaderText());
-                }
+                headerMessage.setMessageText(lineGroup.getHeaderText());
             }
         } else {
             // get the collection for this group from the model
@@ -236,9 +234,16 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
         determineLineActionPlacement(lineGroup, collectionGroup, lineBuilderContext, groupFields);
 
         lineGroup.setItems(groupFields);
-        
+
+        // add items to add line group
+        if (lineBuilderContext.isAddLine()) {
+            if (getAddLineGroup() != null) {
+                getAddLineGroup().setItems(lineGroup.getItems());
+            }
+        }
+
         // Must evaluate the client-side state on the lineGroup's disclosure for PlaceholderDisclosureGroup processing
-        if (lineBuilderContext.getModel() instanceof ViewModel){
+        if (lineBuilderContext.getModel() instanceof ViewModel) {
             KRADUtils.syncClientSideStateForComponent(lineGroup.getDisclosure(),
                     ((ViewModel) lineBuilderContext.getModel()).getClientStateForSyncing());
         }

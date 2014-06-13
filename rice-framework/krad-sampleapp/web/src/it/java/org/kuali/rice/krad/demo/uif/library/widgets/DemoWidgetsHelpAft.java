@@ -41,28 +41,37 @@ public class DemoWidgetsHelpAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsTooltipHelp() throws Exception {
-        fireMouseOverEvent(By.id("Demo-Help-Field1_label"));
-        WebElement helpExample1 = driver.findElement(By.xpath("//div[@data-for=\"Demo-Help-Field1_label\"]"))
-                .findElement(By.className("jquerybubblepopup-innerHtml"));
-        if (!helpExample1.isDisplayed()) {
-            fail("Example 1 help not displayed.");
-        }
-        if (!helpExample1.getText().equals("Sample text for field help - label left")) {
-            fail("Incorrect inner html text. Actual text: " + helpExample1.getText());
-        }
+    	fireMouseOverEventByXpath("//label[@id='Demo-Help-Field1_label']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
+    	fireMouseOverEventByXpath("//label[@id='Demo-Help-Field2_label']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
+    	fireMouseOverEventByXpath("//label[@id='Demo-Help-Field3_label']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
+    	fireMouseOverEventByXpath("//label[@id='Demo-Help-Override-Tooltip_label']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
+    	fireMouseOverEventByXpath("//label[@id='Demo-Help-Override-On-Focus-Tooltip_label']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
+    	fireMouseOverEventByXpath("//label[@id='Demo-Help-Checkbox_label']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
     }
 
     protected void testMissingTooltipHelp() throws Exception {
        selectByName("exampleShown","Missing Tooltip Help");
        fireEvent("dataField1", "focus");
-        waitForToolTipPresent();
+       waitForElementNotPresent(By.xpath("//div[@class='popover top in']"));
     }
     
     protected void testExternalHelp() throws Exception {
     	selectByName("exampleShown","External Help");
-    	waitForElementPresentByXpath("//input[@type='image' and @title='Help for Field Label']");
-    	waitForElementPresentByXpath("//input[@type='image' and @title='Help']");
-    	waitForElementPresentByXpath("//input[@type='image' and @title='Help for Display only fields']");
+    	waitAndClickByXpath("//div[@id='Demo-Help-Section3_disclosureContent']/div/div/div/button[@title='Help for Field Label']");
+    	switchToWindow("Kuali Foundation");
+    	switchToWindow("Kuali ::");
+    	waitAndClickByXpath("//div[@id='Demo-Help-Section3_disclosureContent']/div[2]/div/div/button[@title='Help for Field Label']");
+    	switchToWindow("Kuali Foundation");
+    	switchToWindow("Kuali ::");
+    	waitAndClickByXpath("//div[@id='Demo-Help-Section3_disclosureContent']/div[3]/div/div/button[@title='Help for Field Label']");
+    	switchToWindow("Kuali Foundation");
+    	switchToWindow("Kuali ::");
     }
     
     private void testAllHelp() throws Exception {

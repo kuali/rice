@@ -61,32 +61,31 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     
     protected void testOtherFields() throws InterruptedException {
     	//Field Group
-    	assertElementPresentByXpath("//div[@id='UifCompView-FieldGroup1' and @class='uif-verticalFieldGroup uif-boxLayoutVerticalItem clearfix']");
-    	waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem clearfix']/span/label[contains(text(),'Field 1:')]");
-    	assertElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem clearfix']/input");
-    	waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem clearfix']/span/label[contains(text(),'Field 2:')]");
-    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup2']/fieldset/div[@class='uif-horizontalBoxGroup']");
-    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup3']/fieldset/div/div/div/input");
-    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup3']/fieldset/div/div/button");
+    	waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem pull-left clearfix']/label[contains(text(),'Field 1:')]");
+    	assertElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem pull-left clearfix']/input");
+    	waitForElementPresentByXpath("//div[@class='uif-inputField uif-boxLayoutVerticalItem pull-left clearfix']/label[contains(text(),'Field 2:')]");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup2']/fieldset/div[@class='uif-horizontalBoxGroup clearfix']");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup3']/fieldset/div/div/input");
+    	waitForElementPresentByXpath("//div[@id='UifCompView-FieldGroup3']/fieldset/div/button");
     	
     	//Message View
-    	waitForElementPresentByXpath("//span[@id='UifCompView-MessageField1_span']");
-    	waitForElementPresentByXpath("//span[@id='UifCompView-MessageFieldWithExpression_span']");
+    	waitForElementPresentByXpath("//p[@id='UifCompView-MessageField1']");
+    	waitForElementPresentByXpath("//p[@id='UifCompView-MessageFieldWithExpression']");
     	
     	//Syntax Highliter
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter1']/div[@class='uif-syntaxHighlighter']");
     	waitForElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter1_syntaxHighlightCopy']");
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter2']/div[@class='uif-syntaxHighlighter']");
     	waitForElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter2_syntaxHighlightCopy']");
-    	acceptAlert();
+    	acceptAlertIfPresent();
     	fireMouseOverEventByXpath("//div[@id='UifCompView-SyntaxHighlighter3']/div[@class='uif-syntaxHighlighter']");
     	if(isElementPresentByXpath("//a[@id='UifCompView-SyntaxHighlighter3_syntaxHighlightCopy']")) {
     		fail("Copy is allowed.");
     	}
 
     	//Security Fields
-    	waitForElementPresentByXpath("//span[contains(text(),'*********')]");
-    	waitForElementPresentByXpath("//span[contains(text(),'*****tInfo111')]");
+    	waitForTextPresent("*********");
+    	waitForElementPresentByXpath("*****tInfo111");
     	
         //testAttributeSecurity(); // currently failing commented out till fixed and the attribute security test methods removed
 
@@ -121,11 +120,11 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     	waitForElementPresentByXpath("//a[@href='http://www.kuali.org' and @target='_self']");
     	waitForElementPresentByXpath("//a[@href='http://www.kuali.org' and @target='_blank']");
     	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField4']");
-    	acceptAlert();
+    	acceptAlertIfPresent();
     	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField5']");
-    	acceptAlert();
+    	acceptAlertIfPresent();
     	waitAndClickByXpath("//div[@id='UifCompView-LinkField3']/a[@id='UifCompView-LinkField6']");
-    	acceptAlert();
+    	acceptAlertIfPresent();
     	
     	//Miscellaneous Fields and Groups
     	waitForElementPresentByXpath("//ul[@id='UifCompView-Accordion1_accordList']/li/a");

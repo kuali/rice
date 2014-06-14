@@ -39,6 +39,7 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
@@ -413,7 +414,8 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         }
         
     }
-    
+
+    @Ignore
     @Test
     public void testCustomEditor() throws Throwable {
         TestForm form = new TestForm();

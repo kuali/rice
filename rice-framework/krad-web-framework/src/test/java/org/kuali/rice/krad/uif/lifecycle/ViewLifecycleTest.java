@@ -26,6 +26,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -192,7 +193,8 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
     public void testColumnCalculations() throws Throwable {
         testFormView("Demo-TableLayoutTotalingView");
     }
-    
+
+    @Ignore
     @Test
     public void testPerformanceMediumAll() throws Throwable {
         UifFormBase form = testFormView("Lab-PerformanceMedium");

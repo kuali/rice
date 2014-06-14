@@ -32,13 +32,18 @@
 	<property name="krad.rice.repo" value="${settings.localRepository}/org/kuali/rice/" />
 
 	<!-- Define unfiltered test resources -->
-	<target name="krad-unpack-helper" if="krad.unpack.exists.${krad.unpack.artifact}">
-		<unzip src="${krad.unpack.path}" dest="${krad.unpack.out}">
-			<patternset>
-				<exclude name="**/*.class"/>
-			</patternset>
-		</unzip>
-	</target>
+  <target name="krad-unpack-helper" if="krad.unpack.exists.${krad.unpack.artifact}">
+    <unzip src="${krad.unpack.path}" dest="${krad.unpack.out}">
+      <patternset>
+        <exclude name="**/*.class"/>
+      </patternset>
+    </unzip>
+  </target>
+
+  <target name="krad-unpack-helper-all" if="krad.unpack.exists.${krad.unpack.artifact}">
+    <unzip src="${krad.unpack.path}" dest="${krad.unpack.out}"/>
+  </target>
+
 	<macrodef name="krad-unpack-rice-artifact">
 		<attribute name="artifact" />
 		<attribute name="type" default="jar" />
@@ -46,7 +51,7 @@
 		<sequential>
 			<available property="krad.unpack.exists.@{artifact}"
 					file="${krad.rice.repo}/rice-@{artifact}/${project.version}/rice-@{artifact}-${project.version}.@{type}" />
-			<antcall target="krad-unpack-helper">
+      <antcall target="krad-unpack-helper">
 				<param name="krad.unpack.artifact" value="@{artifact}" />
 				<param name="krad.unpack.out" value="@{out}" />
 				<param name="krad.unpack.path" value="${krad.rice.repo}/rice-@{artifact}/${project.version}/rice-@{artifact}-${project.version}.@{type}" />
@@ -54,32 +59,71 @@
 		</sequential>
 	</macrodef>
 
-	<target name="krad-unpack-unfiltered-testresources">
-		<krad-unpack-rice-artifact artifact="krad-web" type="war" out="${project.build.testOutputDirectory}/krad-web" />
-		<krad-unpack-rice-artifact artifact="kns" />
-		<krad-unpack-rice-artifact artifact="impl" />
-		<krad-unpack-rice-artifact artifact="kim-impl" />
-		<krad-unpack-rice-artifact artifact="krad-sampleapp-impl" />
-		<krad-unpack-rice-artifact artifact="krad-sampleapp-web" />
-	</target>
-						
-	<!-- Define filtered test resources -->
-	<property name="krad-sampleapp-web.path"
-			value="${krad.rice.repo}/rice-krad-sampleapp-web/${project.version}/rice-krad-sampleapp-web-${project.version}.war" />
-	<available property="krad-sampleapp-web.exists" file="${krad-sampleapp-web.path}" />
-	<target name="krad-unpack-sampleapp-web" if="krad-sampleapp-web.exists">
-		<unzip src="${krad-sampleapp-web.path}" dest="${project.build.testOutputDirectory}/krad-web">
-			<patternset>
-				<include name="css/**" />
-				<include name="images/**" />
-				<include name="scripts/**" />
-				<include name="templates/**" />
-				<include name="WEB-INF/ftl/**" />
-			</patternset>
-		</unzip>
-	</target>
+  <macrodef name="krad-unpack-rice-artifact-all">
+    <attribute name="artifact" />
+    <attribute name="type" default="jar" />
+    <attribute name="out" default="${project.build.testOutputDirectory}" />
+    <sequential>
+      <available property="krad.unpack.exists.@{artifact}"
+                 file="${krad.rice.repo}/rice-@{artifact}/${project.version}/rice-@{artifact}-${project.version}.@{type}" />
+      <antcall target="krad-unpack-helper-all">
+        <param name="krad.unpack.artifact" value="@{artifact}" />
+        <param name="krad.unpack.out" value="@{out}" />
+        <param name="krad.unpack.path" value="${krad.rice.repo}/rice-@{artifact}/${project.version}/rice-@{artifact}-${project.version}.@{type}" />
+      </antcall>
+    </sequential>
+  </macrodef>
+
+  <target name="krad-unpack-unfiltered-testresources">
+    <krad-unpack-rice-artifact artifact="krad-web" type="war" out="${project.build.testOutputDirectory}/krad-web" />
+    <krad-unpack-rice-artifact artifact="impl" />
+  </target>
+
+  <target name="krad-unpack-all-testresources">
+    <krad-unpack-rice-artifact-all artifact="kim-impl" />
+    <krad-unpack-rice-artifact-all artifact="krad-sampleapp-impl" />
+    <krad-unpack-rice-artifact-all artifact="krad-sampleapp-web" />
+  </target>
+
+  <!-- Define filtered test resources -->
+  <property name="krad-sampleapp-web.path"
+            value="${krad.rice.repo}/rice-krad-sampleapp-web/${project.version}/rice-krad-sampleapp-web-${project.version}.war" />
+  <available property="krad-sampleapp-web.exists" file="${krad-sampleapp-web.path}" />
+  <target name="krad-unpack-sampleapp-web" if="krad-sampleapp-web.exists">
+    <unzip src="${krad-sampleapp-web.path}" dest="${project.build.testOutputDirectory}/krad-web">
+      <patternset>
+        <include name="css/**" />
+        <include name="images/**" />
+        <include name="scripts/**" />
+        <include name="templates/**" />
+        <include name="WEB-INF/ftl/**" />
+      </patternset>
+    </unzip>
+  </target>
+
+  <property name="kns-jar.path"
+            value="${krad.rice.repo}/rice-kns/${project.version}/rice-kns-${project.version}.jar" />
+  <available property="kns-jar.exists" file="${kns-jar.path}" />
+  <target name="krad-unpack-kns" if="kns-jar.exists">
+    <unzip src="${kns-jar.path}" dest="${project.build.testOutputDirectory}">
+      <patternset>
+        <include name="css/**" />
+        <include name="images/**" />
+        <include name="scripts/**" />
+        <include name="templates/**" />
+        <include name="WEB-INF/ftl/**" />
+        <include name="**/BusinessObjectEntry.class"/>
+        <include name="**/ControlDefinitionBase.class"/>
+        <include name="**/*Controller.class"/>
+        <include name="**/*Authorizer.class"/>
+        <include name="**/*Definition*.class"/>
+        <include name="**/*Pattern.class"/>
+      </patternset>
+    </unzip>
+  </target>
 
 	<!-- External target, to be called from Maven antrun:run -->
-	<target name="krad-unpack-testresources" depends="krad-unpack-unfiltered-testresources,krad-unpack-sampleapp-web" />
+	<target name="krad-unpack-testresources"
+          depends="krad-unpack-unfiltered-testresources,krad-unpack-all-testresources,krad-unpack-kns,krad-unpack-sampleapp-web" />
 
 </project>

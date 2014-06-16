@@ -21,7 +21,7 @@
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * ========================================================================*/
 
- /**
+/**
  * Constructs a new request object with data from the given action object.
  *
  * @param action (optional) reference to the action that triggers the request. If given request
@@ -60,9 +60,9 @@ function KradRequest(action) {
         this.confirmDialogId = action.data("confirmdialogid");
     }
 
-     if (action.data("confirm_prompttext") !== undefined) {
-         this.confirmPromptText = action.data("confirm_prompttext");
-     }
+    if (action.data("confirm_prompttext") !== undefined) {
+        this.confirmPromptText = action.data("confirm_prompttext");
+    }
 
     if (action.data("dismissdialogoption") !== undefined) {
         this.dismissDialogOption = action.data("dismissdialogoption");
@@ -336,9 +336,24 @@ KradRequest.prototype = {
             jQuery.extend(data, {clientViewState: jsonViewState});
         }
 
-        this._dismissDialogIfNecessary(kradVariables.DIALOG_DISMISS_OPTIONS.REQUEST);
+        // check if we still have a dialog to dismiss
+        if (this.dismissDialogId) {
+            var request = this;
 
-        this._submitAjax(data);
+            // to make sure we do an ajax submit when the hide event is triggered, not before
+            jQuery("#" + this.dismissDialogId).one(kradVariables.EVENTS.HIDDEN_MODAL, function (event) {
+                request._submitAjax(data);
+            });
+
+            this._dismissDialogIfNecessary(kradVariables.DIALOG_DISMISS_OPTIONS.REQUEST);
+        }else
+            {
+            this._submitAjax(data);
+        }
+
+
+
+
     },
 
     // handles the request as standard form submit

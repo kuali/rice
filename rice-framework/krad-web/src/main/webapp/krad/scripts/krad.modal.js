@@ -154,7 +154,7 @@ function confirmDialog(confirmText, headerText, options, protoDialogId) {
         return;
     }
 
-    var $dialog = $protoDialog.clone();
+    var $dialog = $protoDialog.clone(true, true);
 
     // adjust the id so it doesn't conflict with the proto dialog
     var dialogId = protoDialogId + 'tmp';
@@ -181,7 +181,7 @@ function confirmDialog(confirmText, headerText, options, protoDialogId) {
     jQuery('body').append($dialog);
 
     // handler to clear out the dialog after it is closed
-    $dialog.bind(kradVariables.EVENTS.HIDE_MODAL, function (event) {
+    $dialog.bind(kradVariables.EVENTS.HIDDEN_MODAL, function (event) {
         $dialog.remove();
     });
 

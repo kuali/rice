@@ -184,6 +184,18 @@ public class ApplyModelComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initializeSkipLifecyclePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
+        super.initializeSkipLifecyclePendingTasks(tasks);
+
+        if ((getParent() != null) && StringUtils.isNotBlank(getParent().getContainerIdSuffix())) {
+            tasks.add(LifecycleTaskFactory.getTask(SuffixIdFromContainerTask.class, this));
+        }
+    }
+
+    /**
      * Applies the model data to a component of the View instance
      *
      * <p>

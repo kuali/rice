@@ -27,7 +27,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.framework.util.ReflectionUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -427,16 +426,16 @@ public class ComponentUtils {
     /**
      * add a suffix to the id
      *
-     * @param component the component instance whose id will be changed
+     * @param element the component instance whose id will be changed
      * @param idSuffix the suffix to be appended
      */
-    public static void updateIdWithSuffix(Component component, String idSuffix) {
-        if (component != null && !StringUtils.isEmpty(idSuffix)) {
-            component.setId(component.getId() + idSuffix);
+    public static void updateIdWithSuffix(LifecycleElement element, String idSuffix) {
+        if (element != null && !StringUtils.isEmpty(idSuffix)) {
+            element.setId(element.getId() + idSuffix);
         }
 
-        if (component instanceof Container) {
-            LayoutManager manager = ((Container) component).getLayoutManager();
+        if (element instanceof Container) {
+            LayoutManager manager = ((Container) element).getLayoutManager();
             if (manager != null) {
                 manager.setId(manager.getId() + idSuffix);
             }

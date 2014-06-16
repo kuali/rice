@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
  * Any passed in job numbers are ignored, as all available job numbers will be saved.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @Deprecated see JenkinsJsonJobResultsBase jobs builds properties and "all"
  */
 public class JenkinsJsonAllJobsResults extends JenkinsJsonJobResultsBase {
 

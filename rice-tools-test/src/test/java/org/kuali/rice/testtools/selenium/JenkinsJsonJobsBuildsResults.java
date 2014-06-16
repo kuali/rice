@@ -25,7 +25,7 @@ import java.util.Set;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org) *
  */
-public class JenkinsJsonJobsBuildsResults extends JenkinsJsonJobResultsBase{
+public class JenkinsJsonJobsBuildsResults extends JenkinsJsonJobResultsBase {
 
     @Before
     public void setUp() throws MalformedURLException, InterruptedException {

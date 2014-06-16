@@ -168,8 +168,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyStacked"/>
                           <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Separate" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableSepAddLine"/>
-                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Via Lightbox" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox"/>
+                          <bean parent="Uif-Link" p:linkText="Enter Key Support - Tables Add Line Via Dialog" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-EnterKeyTableViaDialog"/>
                         </list>
                       </property>
                     </bean>

@@ -24,9 +24,9 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class LabsEnterKeySupportTablesAddLineViaLightboxAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox
+     * /kr-krad/labs?viewId=Lab-LayoutTest-EnterKeyTableViaDialog
      */
-    public static final String BOOKMARK_URL = "/kr-krad/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox";
+    public static final String BOOKMARK_URL = "/kr-krad/labs?viewId=Lab-LayoutTest-EnterKeyTableViaDialog";
     
     @Override
     protected String getBookmarkUrl() {
@@ -35,10 +35,10 @@ public class LabsEnterKeySupportTablesAddLineViaLightboxAft extends WebDriverLeg
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickByLinkText("Enter Key Support - Tables Add Line Via Lightbox");
+    	waitAndClickByLinkText("Enter Key Support - Tables Add Line Via Dialog");
     }
 
-    protected void testDemoEnterKeySupportTablesAddLineViaLightbox() throws InterruptedException {
+    protected void testDemoEnterKeySupportTablesAddLineViaDialog() throws InterruptedException {
     	waitAndClickButtonByExactText("Add Line");
     	waitAndTypeByXpath("//div[@class='modal-body']/div[@class='col-md-9']/div/input","1");
     	pressEnterByXpath("//div[@class='modal-body']/div[@class='col-md-9']/div/input");
@@ -46,14 +46,14 @@ public class LabsEnterKeySupportTablesAddLineViaLightboxAft extends WebDriverLeg
     }
 
     @Test
-    public void testDemoEnterKeySupportTablesAddLineViaLightboxBookmark() throws Exception {
-    	testDemoEnterKeySupportTablesAddLineViaLightbox();
+    public void testDemoEnterKeySupportTablesAddLineViaDialogBookmark() throws Exception {
+    	testDemoEnterKeySupportTablesAddLineViaDialog();
         passed();
     }
 
     @Test
-    public void testDemoEnterKeySupportTablesAddLineViaLightboxNav() throws Exception {
-    	testDemoEnterKeySupportTablesAddLineViaLightbox();
+    public void testDemoEnterKeySupportTablesAddLineViaDialogNav() throws Exception {
+    	testDemoEnterKeySupportTablesAddLineViaDialog();
         passed();
     }
 }

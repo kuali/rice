@@ -21,12 +21,12 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabsEntryKeySupportTablesAddLineViaLightboxAft extends WebDriverLegacyITBase {
+public class LabsEntryKeySupportTablesAddLineViaDialogAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox
+     * /kr-krad/labs?viewId=Lab-LayoutTest-EnterKeyTableViaDialog
      */
-    public static final String BOOKMARK_URL = "/kr-krad/labs?viewId=Lab-LayoutTest-EnterKeyTableViaLightBox";
+    public static final String BOOKMARK_URL = "/kr-krad/labs?viewId=Lab-LayoutTest-EnterKeyTableViaDialog";
     
     @Override
     protected String getBookmarkUrl() {
@@ -35,10 +35,10 @@ public class LabsEntryKeySupportTablesAddLineViaLightboxAft extends WebDriverLeg
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickByLinkText("Enter Key Support - Tables Add Line Via Lightbox");
+    	waitAndClickByLinkText("Enter Key Support - Tables Add Line Via Dialog");
     }
 
-    protected void testDemoEntryKeySupportTablesAddLineViaLightbox() throws InterruptedException {
+    protected void testDemoEntryKeySupportTablesAddLineViaDialog() throws InterruptedException {
     	waitAndClickButtonByExactText("Add Line");
     	waitAndTypeByXpath("//div[@class='modal-body']/div[@class='col-md-9']/div/input","1");
     	waitAndClickButtonByText("Add");
@@ -46,14 +46,14 @@ public class LabsEntryKeySupportTablesAddLineViaLightboxAft extends WebDriverLeg
     }
 
     @Test
-    public void testDemoEntryKeySupportTablesAddLineViaLightboxBookmark() throws Exception {
-    	testDemoEntryKeySupportTablesAddLineViaLightbox();
+    public void testDemoEntryKeySupportTablesAddLineViaDialogBookmark() throws Exception {
+    	testDemoEntryKeySupportTablesAddLineViaDialog();
         passed();
     }
 
     @Test
-    public void testDemoEntryKeySupportTablesAddLineViaLightboxNav() throws Exception {
-    	testDemoEntryKeySupportTablesAddLineViaLightbox();
+    public void testDemoEntryKeySupportTablesAddLineViaDialogNav() throws Exception {
+    	testDemoEntryKeySupportTablesAddLineViaDialog();
         passed();
     }
 }

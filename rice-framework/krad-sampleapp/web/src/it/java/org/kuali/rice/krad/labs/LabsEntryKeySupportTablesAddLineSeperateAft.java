@@ -19,6 +19,8 @@ import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
+ * Like LabsEnterKey test for this screen, but testing that the UI adds as well.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LabsEntryKeySupportTablesAddLineSeperateAft extends WebDriverLegacyITBase {

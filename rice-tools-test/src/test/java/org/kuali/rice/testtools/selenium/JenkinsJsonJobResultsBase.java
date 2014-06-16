@@ -116,9 +116,11 @@ public class JenkinsJsonJobResultsBase {
 
     protected String calcOutputFile(String job, String jobNumber) {
         String outputFile  = job + "-" + jobNumber + ".json";
+
         if (outputDirectory != null) {
             outputFile = outputDirectory + File.separatorChar + outputFile;
         }
+
         return outputFile;
     }
 
@@ -143,18 +145,22 @@ public class JenkinsJsonJobResultsBase {
     private void exitOnLoginProblems() {
         boolean exit = false;
         String pageSource = driver.getPageSource();
+
         if (pageSource.contains("Username is a required field.")) {
             System.out.println("CAS Username is a required did you set -D" + CAS_USERNAME + "=");
             exit = true;
         }
+
         if (pageSource.contains("Password is a required field.")) {
             System.out.println("CAS Password is a required did you set -D" + CAS_PASSWORD + "=");
             exit = true;
         }
+
         if (pageSource.contains("The credentials you provided cannot be determined to be authentic.")) {
             System.out.println("CAS Login Error");
             exit = true;
         }
+
         if (exit) {
             System.exit(1);
         }

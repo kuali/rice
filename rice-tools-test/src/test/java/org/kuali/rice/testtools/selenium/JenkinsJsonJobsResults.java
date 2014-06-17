@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
+import java.util.Set;
 
 /**
  * Any passed in job numbers are ignored, only the number that is the current lastCompletedBuild is saved.
@@ -41,16 +42,15 @@ public class JenkinsJsonJobsResults extends JenkinsJsonJobResultsBase {
 
     @Test
     public void testFetchLastCompletedBuildNumberReport() {
-        String jobNumber = null;
-
-        for (int i = 0, s = jobs.size(); i < s; i++) {
-            try {
-
-                fetchAndWriteTestReport(jobs.get(i), jobNumber);
-
-            } catch (Exception e) {
-                passed = false;
-                e.printStackTrace();
+        Set<String> jobs = jobsBuildsMap.keySet();
+        for (String job : jobs) {
+            for (String build : jobsBuildsMap.get(job)) {
+                try {
+                    fetchAndWriteTestReport(job, build);
+                } catch (Exception e) {
+                    passed = false;
+                    e.printStackTrace();
+                }
             }
         }
     }

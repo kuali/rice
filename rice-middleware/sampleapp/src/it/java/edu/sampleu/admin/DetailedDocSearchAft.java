@@ -18,6 +18,7 @@ package edu.sampleu.admin;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
 /**
@@ -34,6 +35,8 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     public static String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Document%20Search&channelUrl=" + WebDriverUtils
             .getBaseUrlString() + "/kew/DocumentSearch.do?docFormKey=88888888&returnLocation=" + AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
 
+    private String groupId = null;
+    
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -55,8 +58,13 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     }
     
     private void advancedDocSearchAll() throws Exception{
-        selectFrameIframePortlet();
+    	createGroupDocument();
+    	selectTopFrame();
+    	waitAndClickByXpath("//a[@title='Document Search']");
+    	acceptAlertIfPresent();
+    	selectFrameIframePortlet();
         waitAndClickByName("toggleAdvancedSearch");
+        acceptAlertIfPresent();
         searchByDocumentType();
         searchByInitiator();
         searchByApprover();
@@ -74,6 +82,21 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
         searchByDateLastFinalizedFrom();
         searchByDateLastFinalizedTo();
         searchByTitle();
+    }
+    
+    private void createGroupDocument() throws Exception{
+    	waitAndClickAdministration();
+    	selectFrameIframePortlet();
+    	waitAndClickByLinkText("Group");
+    	selectFrameIframePortlet();
+    	waitAndClickByXpath("//a[@title='Create a new record']");
+    	selectFrameIframePortlet();
+    	String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+    	waitAndTypeByName("document.documentHeader.documentDescription","Group");
+    	selectByName("document.groupNamespace","KR-BUS - Service Bus");
+    	waitAndTypeByName("document.groupName","Group 1"+randomCode);
+    	groupId=waitForElementPresentByXpath("//div[@id='tab-Overview-div']/div[@class='tab-container']/table/tbody/tr/td").getText();
+    	waitAndClickByXpath("//input[@name='methodToCall.route']");
     }
 
     private void searchByDocumentType() throws Exception {
@@ -98,9 +121,9 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
         selectFrameIframePortlet();
         waitAndTypeByName("approverPrincipalName","admin");
         waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
-        waitForTextPresent("items retrieved");
-        waitForElementPresentByXpath("//a[contains(text(),'admin, admin')]");
-        waitAndClickByName("methodToCall.clearValues");
+//        waitForTextPresent("items retrieved");
+//        waitForElementPresentByXpath("//a[contains(text(),'admin, admin')]");
+//        waitAndClickByName("methodToCall.clearValues");
     }
 
     private void searchByViewer() throws Exception {
@@ -115,7 +138,7 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     private void searchByGroupViewer() throws Exception {
         waitAndClickByXpath("//input[@type='image' and @alt='Search Group Viewer Id']");
         selectFrameIframePortlet();
-        waitAndTypeByName("id","2009");
+        waitAndTypeByName("id",groupId);
         waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
         waitAndClickLinkContainingText("return value");
         selectFrameIframePortlet();

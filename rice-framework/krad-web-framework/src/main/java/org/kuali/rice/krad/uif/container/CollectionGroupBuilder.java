@@ -337,10 +337,6 @@ public class CollectionGroupBuilder implements Serializable {
                 action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
             }
 
-            if (StringUtils.isBlank(action.getJumpToIdAfterSubmit())) {
-                action.setJumpToIdAfterSubmit(collectionGroup.getId());
-            }
-
             if (StringUtils.isBlank(action.getRefreshId()) && StringUtils.isBlank(action.getRefreshPropertyName())) {
                 action.setRefreshId(collectionGroup.getId());
             }

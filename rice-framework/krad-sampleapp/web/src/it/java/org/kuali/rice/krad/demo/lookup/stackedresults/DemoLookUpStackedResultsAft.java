@@ -56,7 +56,7 @@ public class DemoLookUpStackedResultsAft extends WebDriverLegacyITBase {
     @Override
     protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
-        waitAndClickByLinkText("Lookup Stacked Results");
+        waitAndClickByLinkText("Lookup with Stacked Results");
     }
 
     protected void testLookUpStackedResults() throws InterruptedException {
@@ -73,9 +73,14 @@ public class DemoLookUpStackedResultsAft extends WebDriverLegacyITBase {
             "Date Created: Must be a date in the following format(s): MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, yyyy-MM-dd"});
     }
 
-    // No Nav test, there is no link to this page
     @Test
     public void testLookUpMultiValueBookmark() throws Exception {
+        testLookUpStackedResults();
+        passed();
+    }
+
+    @Test
+    public void testLookUpMultiValueNav() throws Exception {
         testLookUpStackedResults();
         passed();
     }

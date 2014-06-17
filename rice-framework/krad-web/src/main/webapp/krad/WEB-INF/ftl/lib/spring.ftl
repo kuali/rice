@@ -230,13 +230,11 @@
 <#--
  * formSingleSelect
  *
- * Show a selectbox (dropdown) input element allowing a single value to be chosen
- * from a list of options.
+ * Show a selectbox (dropdown) input element allowing a single value to be chosen from a list of options.
  *
  * @param path the name of the field to bind to
  * @param options a list of key value pairs of all the available options
- * @param attributes any additional attributes for the element (such as class
- *    or CSS styles or size
+ * @param attributes any additional attributes for the element (such as class or CSS styles or size
 -->
 <#macro formSingleSelect path options id="" attributes="">
     <@bind path/>
@@ -264,13 +262,11 @@
 <#--
  * formMultiSelect
  *
- * Show a listbox of options allowing the user to make 0 or more choices from
- * the list of options.
+ * Show a listbox of options allowing the user to make 0 or more choices from the list of options.
  *
  * @param path the name of the field to bind to
  * @param options a list of key value pairs of all the available options
- * @param attributes any additional attributes for the element (such as class
- *    or CSS styles or size
+ * @param attributes any additional attributes for the element (such as class or CSS styles or size
 -->
 <#macro formMultiSelect path options id="" attributes="">
     <@bind path/>
@@ -432,7 +428,7 @@
  * @param value the current value in a list iteration
 -->
 <#macro checkSelected value>
-    <#if stringStatusValue?is_number && stringStatusValue == value?number>selected="selected"</#if>
+    <#if stringStatusValue?is_number && stringStatusValue?string == value>selected="selected"</#if>
     <#if stringStatusValue?is_string && stringStatusValue == value>selected="selected"</#if>
 </#macro>
 

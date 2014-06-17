@@ -41,29 +41,42 @@ import java.util.concurrent.TimeUnit;
 public class JenkinsJsonJobResultsBase {
 
     /**
+     * -Dbrowser.download.dir= default is Downloads in user.home.
+     */
+    public static final String BROWSER_DOWNLOAD_DIR = "browser.download.dir";
+
+    /**
+     * -Dbrowser.helperApps.neverAsk.saveToDisk= comma delimited list of MIME/Types to saveToDisk default is "application/zip".
+     */
+    public static final String BROWSER_HELPER_APPS_NEVER_ASK_SAVE_TO_DISK = "browser.helperApps.neverAsk.saveToDisk";
+
+    /**
      * REQUIRED -Dcas.username= CAS username.
      */
-    private static final String CAS_USERNAME = "cas.username";
+    public static final String CAS_USERNAME = "cas.username";
 
     /**
      * REQUIRED -Dcas.password= CAS password.
      */
-    private static final String CAS_PASSWORD = "cas.password";
+    public static final String CAS_PASSWORD = "cas.password";
 
     /**
      * -Djenkins.base.url= default is http://ci.rice.kuali.org.
      */
-    private static final String JENKINS_BASE_URL = "jenkins.base.url";
+    public static final String JENKINS_BASE_URL = "jenkins.base.url";
 
     /**
-     * -Djenkins.jobs= comma delimited list of jobs default is rice-2.4-smoke-test.
+     * -Djenkins.jobs= comma delimited with optional colon delimited list of jobs:jobNumbers default is rice-2.4-smoke-test.
+     *
+     * If no jobNumbers are included the last completed build number for the given job will be used.  If "all" is given for
+     * the jobNumbers all available job builds will be used.
      */
-    private static final String JENKINS_JOBS = "jenkins.jobs";
+    public static final String JENKINS_JOBS = "jenkins.jobs";
 
     /**
      * -Djson.output.dir= default is directory java is run from, directory must exist.
      */
-    private static final String JSON_OUTPUT_DIR = "json.output.dir";
+    public static final String JSON_OUTPUT_DIR = "json.output.dir";
 
     WebDriver driver;
     boolean passed = false;
@@ -73,25 +86,23 @@ public class JenkinsJsonJobResultsBase {
     Map<String, List<String>> jobsBuildsMap = new HashMap<String, List<String>>();
     List<String> jobs = new LinkedList<String>();
 
+    String downloadDir;
+
     public void setUp() throws MalformedURLException, InterruptedException {
         jenkinsBase = System.getProperty(JENKINS_BASE_URL, "http://ci.rice.kuali.org");
         outputDirectory = System.getProperty(JSON_OUTPUT_DIR);
-        jobsBuildsStrings = System.getProperty(JENKINS_JOBS, "rice-2.4-smoke-test").split("[,\\s]");
-        String job;
-        for (String jobsBuildsString : jobsBuildsStrings) {
-            if (jobsBuildsString.contains(":")) {
-                List<String> jobBuilds = Arrays.asList(jobsBuildsString.split(":"));
-                job = jobBuilds.get(0); // first item is the job name
-                jobs.add(job);
-                jobsBuildsMap.put(job, jobBuilds.subList(1,jobBuilds.size()));
-            } else {
-                jobs.add(jobsBuildsString);
-            }
-        }
 
-        DesiredCapabilities capabilities = new DesiredCapabilities();
         FirefoxProfile profile = new FirefoxProfile();
         profile.setEnableNativeEvents(false);
+
+        downloadDir = System.getProperty(BROWSER_DOWNLOAD_DIR, System.getProperty("user.home") + File.separator + "Downloads");
+        // download files automatically (don't prompt)
+        profile.setPreference("browser.download.folderList", 2);
+        profile.setPreference("browser.download.manager.showWhenStarting", false);
+        profile.setPreference("browser.download.dir", downloadDir);
+        profile.setPreference(BROWSER_HELPER_APPS_NEVER_ASK_SAVE_TO_DISK, System.getProperty(BROWSER_HELPER_APPS_NEVER_ASK_SAVE_TO_DISK, "application/zip"));
+
+        DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(FirefoxDriver.PROFILE, profile);
 
         driver = new FirefoxDriver(capabilities);
@@ -111,14 +122,37 @@ public class JenkinsJsonJobResultsBase {
         // Jenkins login page (don't login, we have authenticated through CAS already
         WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.xpath("//span[contains(text(), 'Page generated')]"), this.getClass().toString());
 
+        // setup jobs builds
+        jobsBuildsStrings = System.getProperty(JENKINS_JOBS, "rice-2.4-smoke-test").split("[,\\s]");
+        String job;
+        for (String jobsBuildsString : jobsBuildsStrings) {
+            if (jobsBuildsString.contains(":")) {
+                List<String> jobBuilds = Arrays.asList(jobsBuildsString.split(":"));
+                job = jobBuilds.get(0); // first item is the job name
+                jobs.add(job);
+                if (jobBuilds.size() == 2 && "all".equals(jobBuilds.get(1))) { // job:all
+                    jobsBuildsMap.put(job, fetchAllJobNumbers(job));
+                } else { // regular usage
+                    jobsBuildsMap.put(job, jobBuilds.subList(1,jobBuilds.size())); // first item is the job name
+                }
+            } else { // no jobNumbers specified, use last complete build number
+                List<String> jobBuilds = new LinkedList<String>();
+                jobBuilds.add(fetchLastCompletedBuildNumber(jobsBuildsString) + "");
+                jobs.add(jobsBuildsString);
+                jobsBuildsMap.put(jobsBuildsString, jobBuilds);
+            }
+        }
+
         passed = true;
     }
 
     protected String calcOutputFile(String job, String jobNumber) {
         String outputFile  = job + "-" + jobNumber + ".json";
+
         if (outputDirectory != null) {
             outputFile = outputDirectory + File.separatorChar + outputFile;
         }
+
         return outputFile;
     }
 
@@ -143,21 +177,66 @@ public class JenkinsJsonJobResultsBase {
     private void exitOnLoginProblems() {
         boolean exit = false;
         String pageSource = driver.getPageSource();
+
         if (pageSource.contains("Username is a required field.")) {
             System.out.println("CAS Username is a required did you set -D" + CAS_USERNAME + "=");
             exit = true;
         }
+
         if (pageSource.contains("Password is a required field.")) {
             System.out.println("CAS Password is a required did you set -D" + CAS_PASSWORD + "=");
             exit = true;
         }
+
         if (pageSource.contains("The credentials you provided cannot be determined to be authentic.")) {
             System.out.println("CAS Login Error");
             exit = true;
         }
+
         if (exit) {
             System.exit(1);
         }
+    }
+
+    protected List<String> fetchAllJobNumbers(String job) {
+        List<String> allJobNumbers = new LinkedList<String>();
+        String url = null;
+        String jobJson;
+
+        url = jenkinsBase + "/job/" + job + "/api/json";
+
+        try {
+            jobJson = retrieveJson(url);
+
+            String jsonJobNumber;
+
+            while (jobJson.contains(("{\"number\":"))) {
+                jsonJobNumber = jobJson.substring(jobJson.indexOf("{\"number\":") + 10, jobJson.length());
+                jsonJobNumber = jsonJobNumber.substring(0, jsonJobNumber.indexOf(","));
+
+                allJobNumbers.add(jsonJobNumber);
+
+                jobJson = jobJson.substring(jobJson.indexOf("{\"number\":") + 9, jobJson.length()); // strip off while condition
+            }
+        } catch (Exception e) {
+            System.err.println("Exception fetching job " + job + " with url " + url + e.getMessage());
+        }
+
+        return allJobNumbers;
+    }
+
+    protected void fetchArchive(String job, String jobNumber) throws InterruptedException, IOException {
+        String archiveUrl = jenkinsBase;
+
+        // Views will need to be updated/improved to work with ci.kuali.org
+        if (job.contains("rice-2.4")) {
+            archiveUrl += "/view/rice-2.4";
+        }
+
+        archiveUrl += "/job/" + job + "/" + jobNumber+ "/artifact/*zip*/archive.zip";
+        driver.get(archiveUrl);
+        Thread.sleep(10000); //zip needs time to download
+        FileUtils.moveFile(new File(downloadDir + File.separator + "archive.zip"), new File(downloadDir + File.separator + job + "-" + jobNumber + ".zip"));
     }
 
     protected void fetchAndWriteTestReport(String job, String jobNumber) throws InterruptedException, IOException {

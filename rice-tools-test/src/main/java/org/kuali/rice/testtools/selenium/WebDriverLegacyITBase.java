@@ -4513,9 +4513,13 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
     }
 
     protected void waitNotVisible(By by) throws InterruptedException {
+        waitNotVisible(by, this.getClass().getSimpleName());
+    }
+
+    protected void waitNotVisible(By by, String message) throws InterruptedException {
         for (int second = 0;; second++) {
             if (second >= waitSeconds) {
-                jiraAwareFail(TIMEOUT_MESSAGE);
+                jiraAwareFail(TIMEOUT_MESSAGE + " " + message);
             }
             if (!isVisible(by)) {
                 break;
@@ -4526,6 +4530,10 @@ public abstract class WebDriverLegacyITBase extends JiraAwareAftBase {
 
     protected void waitNotVisibleByXpath(String locator) throws InterruptedException {
         waitNotVisible(By.xpath(locator));
+    }
+
+    protected void waitNotVisibleByXpath(String locator, String message) throws InterruptedException {
+        waitNotVisible(By.xpath(locator), message);
     }
 
     /**

@@ -90,6 +90,16 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void initializeSkipLifecyclePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
+        super.initializeSkipLifecyclePendingTasks(tasks);
+
+        tasks.offer(LifecycleTaskFactory.getTask(AssignIdsTask.class, this));
+    }
+
+    /**
      * Queues initialization phase tasks.
      * {@inheritDoc}
      */

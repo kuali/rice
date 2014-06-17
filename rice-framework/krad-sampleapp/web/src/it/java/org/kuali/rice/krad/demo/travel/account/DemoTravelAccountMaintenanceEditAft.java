@@ -130,9 +130,25 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickConfirmationOk();
         waitAndClickButtonByText("reload");
         waitForTextPresent("Document was successfully reloaded.");
-        waitAndClickButtonByText("blanket approve");
         assertTextPresent("FINAL");
     }
+
+    protected void testTravelAccountMaintenanceEditBlanketApprove() throws Exception {
+        waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
+        clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent", "42");
+        waitAndClickButtonByText("blanket approve");
+
+        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickByLinkText("Travel Account Maintenance (Edit)");
+        if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {
+            jiraAwareFail("BlanketApprove was not successful. subsidizedPercent should be 42");
+        }
+        waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
+        clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
+        waitAndClickButtonByText("blanket approve");
+    }
+
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
         waitAndTypeByName(DESCRIPTION_FIELD,"\"/><script>alert('!')</script>");
@@ -225,6 +241,18 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     @Test
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
         testTravelAccountMaintenanceEdit();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceEditBlanketApproveBookmark() throws Exception {
+        testTravelAccountMaintenanceEditBlanketApprove();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceEditBlanketApproveNav() throws Exception {
+        testTravelAccountMaintenanceEditBlanketApprove();
         passed();
     }
 

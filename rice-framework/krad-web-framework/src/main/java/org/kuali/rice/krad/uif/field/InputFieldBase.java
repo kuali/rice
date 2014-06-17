@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.type.TypeUtils;
+import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -38,11 +39,9 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.control.Control;
@@ -66,6 +65,7 @@ import org.kuali.rice.krad.uif.util.ConstraintStateUtils;
 import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -1301,8 +1301,23 @@ public class InputFieldBase extends DataFieldBase implements InputField {
      * @return True if an automatic quickfinder widget should be created for this field on the current lifecycle.
      */
     protected boolean hasAutoQuickfinderRelationship() {
-        // TODO: Review quickfinder logic, implement any differences from inquiry
-        return hasAutoInquiryRelationship();
+        String propertyName = getBindingInfo().getBindingName();
+
+        // get object instance and class for parent
+        View view = ViewLifecycle.getView();
+        Object model = ViewLifecycle.getModel();
+        Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, this);
+        Class<?> parentObjectClass = null;
+        if (parentObject != null) {
+            parentObjectClass = parentObject.getClass();
+        }
+
+        // get relationship from metadata service
+        @SuppressWarnings("deprecation")
+        DataObjectRelationship relationship = KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(parentObject,
+                parentObjectClass, propertyName, "", true, true, false);
+        
+        return relationship != null;
     }
 
 }

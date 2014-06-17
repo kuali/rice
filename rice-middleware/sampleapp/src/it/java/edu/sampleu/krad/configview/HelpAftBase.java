@@ -17,6 +17,7 @@ package edu.sampleu.krad.configview;
 
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -82,43 +83,43 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
     protected void testTooltipHelp() throws Exception {
         // verify that no tooltips are displayed initially
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for section help - tooltip help')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label left')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - label left')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label right')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - label right')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - label top')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - label top')]", "passes locally");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for standalone help widget tooltip which will never be rendered')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also a tooltip on the label but it is overridden by the help tooltip')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for field help - there is also an on-focus tooltip')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for on-focus event tooltip')]");
         }
 
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for check box help')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for check box help')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for check box help')]");
         }
 
         // test tooltip help of section header
@@ -147,7 +148,7 @@ public abstract class HelpAftBase extends WebDriverLegacyITBase {
         fireMouseOverEventByXpath("//label[@id='override-tooltip_label']");
         waitForElementPresentByXpath("//div[@class='popover top in']");
         if (isElementPresentByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]")) {
-            assertFalse(isVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]"));
+            waitNotVisibleByXpath("//td[contains(text(),'Sample text for label tooltip - this will not be rendered as it is overridden by the help tooltip')]");
         }
 
         // test tooltip help in conjunction with a focus event tooltip

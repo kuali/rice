@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
+import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -162,23 +163,19 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 element.setViewPath(getViewPath());
                 element.getPhasePathMapping().put(getViewPhase(), getViewPath());
 
-                // if skipping lifecycle we need to make sure the element has an id
+                Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
                 if (skipLifecycle) {
-                    if (StringUtils.isBlank(element.getId())) {
-                        String elementId = AssignIdsTask.generateId(element, ViewLifecycle.getView());
-                        element.setId(elementId);
-                    }
+                    initializeSkipLifecyclePendingTasks(pendingTasks);
                 } else {
-                    Queue<ViewLifecycleTask<?>> pendingTasks = new LinkedList<ViewLifecycleTask<?>>();
                     initializePendingTasks(pendingTasks);
+                }
 
-                    while (!pendingTasks.isEmpty()) {
-                        ViewLifecycleTask<?> task = pendingTasks.poll();
+                while (!pendingTasks.isEmpty()) {
+                    ViewLifecycleTask<?> task = pendingTasks.poll();
 
-                        currentTask = task;
-                        task.run();
-                        currentTask = null;
-                    }
+                    currentTask = task;
+                    task.run();
+                    currentTask = null;
                 }
 
                 element.setViewStatus(getEndViewStatus());
@@ -304,6 +301,15 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                 ViewLifecycle.getProcessor().offerPendingPhase(successor);
             }
         }
+    }
+
+    /**
+     * Initializes queue of pending tasks phases that need to be executed when skipping the full lifecycle.
+     *
+     * @param tasks The queue of tasks to perform
+     */
+    protected void initializeSkipLifecyclePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
+
     }
 
     /**

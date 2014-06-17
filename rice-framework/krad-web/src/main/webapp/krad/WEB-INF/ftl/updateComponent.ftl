@@ -16,33 +16,8 @@
 
 -->
 <html>
-    <#-- set the focusId data attribute if set on the form -->
-    <#if KualiForm.focusId?has_content>
-        <#assign focusIdDataAttribute="data-focusId='${KualiForm.focusId}'"/>
-    <#else>
-        <#if KualiForm.view.currentPage.autoFocus>
-            <#assign focusIdDataAttribute="data-focusId='FIRST'"/>
-        <#else>
-            <#assign focusIdDataAttribute=""/>
-        </#if>
-    </#if>
-
-    <#-- set the jumpToId data attribute if set on the form -->
-    <#if KualiForm.jumpToId?has_content>
-        <#assign jumpToIdDataAttribute="data-jumpToId='${KualiForm.jumpToId}'"/>
-    <#else>
-        <#assign jumpToIdDataAttribute=""/>
-    </#if>
-
-    <#-- set the jumpToName data attribute if set on the form -->
-    <#if KualiForm.jumpToName?has_content>
-        <#assign jumpToNameDataAttribute="data-jumpToName='${KualiForm.jumpToName}'"/>
-    <#else>
-        <#assign jumpToNameDataAttribute=""/>
-    </#if>
-
     <#-- now render the updated component (or page) wrapped in an update div  add the data attributes to the div-->
-    <div id="${KualiForm.updateComponent.id}_update" ${focusIdDataAttribute} ${jumpToIdDataAttribute} ${jumpToNameDataAttribute}>
+    <div id="${KualiForm.updateComponent.id}_update">
         <@krad.template componentUpdate=true component=KualiForm.updateComponent/>
 
         <#-- show added growls -->

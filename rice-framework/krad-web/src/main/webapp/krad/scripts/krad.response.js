@@ -89,7 +89,7 @@ KradResponse.prototype = {
         $pageInLayout.trigger(kradVariables.EVENTS.PAGE_UPDATE_COMPLETE);
 
         // Perform focus and jumpTo based on the data attributes
-        performFocusAndJumpTo(true, pageUpdate.data(kradVariables.FOCUS_ID), pageUpdate.data(kradVariables.JUMP_TO_ID), pageUpdate.data(kradVariables.JUMP_TO_NAME) );
+        performFocusAndJumpTo(true, page.data(kradVariables.FOCUS_ID), page.data(kradVariables.JUMP_TO_ID), page.data(kradVariables.JUMP_TO_NAME) );
     },
 
 
@@ -212,7 +212,7 @@ KradResponse.prototype = {
             $componentInDom.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
 
             // Perform focus and jumpTo based on the data attributes
-            performFocusAndJumpTo(true, component.data(kradVariables.FOCUS_ID), component.data(kradVariables.JUMP_TO_ID), component.data(kradVariables.JUMP_TO_NAME) );
+            performFocusAndJumpTo(true, $componentInDom.data(kradVariables.FOCUS_ID), $componentInDom.data(kradVariables.JUMP_TO_ID), $componentInDom.data(kradVariables.JUMP_TO_NAME) );
         }
     },
 

@@ -69,6 +69,11 @@
             <stringProp name="Argument.value">${__P(threads,1)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="THREADLOOPS" elementType="Argument">
+            <stringProp name="Argument.name">THREADLOOPS</stringProp>
+            <stringProp name="Argument.value">${__P(threadloops,1)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
           <elementProp name="RAMPSECONDS" elementType="Argument">
             <stringProp name="Argument.name">RAMPSECONDS</stringProp>
             <stringProp name="Argument.value">${__P(rampseconds,1)}</stringProp>
@@ -121,7 +126,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">1</stringProp>
+          <stringProp name="LoopController.loops">${THREADLOOPS}</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${THREADS}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">${RAMPSECONDS}</stringProp>

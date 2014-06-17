@@ -349,7 +349,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.sun:tools:1.7">
         <CLASSES>
-          <root url="jar:///usr/lib/jvm/java-7-oracle/lib/tools.jar!/" />
+          <root url="jar://$JAVA_HOME$/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

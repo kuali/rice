@@ -56,11 +56,11 @@ public class LabsLookupMaskedFieldAft extends LabsLookupBase {
     protected void testLabsLookupMaskedField()throws Exception {
         waitAndTypeByName("lookupCriteria[number]","a1*");
         waitAndSelectByName("uLookupResults_layout_length", "25");
-        assertTextPresent(new String[] {"*********", "a14"});
+        assertTextPresent(new String[] {"a14", "*********"});
         waitAndClickButtonByText("Clear Values");
         waitAndTypeByName("lookupCriteria[name]","Travel Account 1");
         waitAndClickButtonByText("Search");
-        assertTextPresent(new String[] {"*********", "a1"});
+        assertTextPresent(new String[] {"a1", "*********"});
     }
 
     protected void testLabsLookupMaskedFieldWildcard()throws Exception {

@@ -26,9 +26,16 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Base class for Selenium Jenkins Json saving
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JenkinsJsonJobResultsBase {
@@ -62,12 +69,25 @@ public class JenkinsJsonJobResultsBase {
     boolean passed = false;
     String jenkinsBase;
     String outputDirectory;
-    String[] jobs;
+    String[] jobsBuildsStrings;
+    Map<String, List<String>> jobsBuildsMap = new HashMap<String, List<String>>();
+    List<String> jobs = new LinkedList<String>();
 
     public void setUp() throws MalformedURLException, InterruptedException {
         jenkinsBase = System.getProperty(JENKINS_BASE_URL, "http://ci.rice.kuali.org");
         outputDirectory = System.getProperty(JSON_OUTPUT_DIR);
-        jobs = System.getProperty(JENKINS_JOBS, "rice-2.4-smoke-test").split("[,\\s]");
+        jobsBuildsStrings = System.getProperty(JENKINS_JOBS, "rice-2.4-smoke-test").split("[,\\s]");
+        String job;
+        for (String jobsBuildsString : jobsBuildsStrings) {
+            if (jobsBuildsString.contains(":")) {
+                List<String> jobBuilds = Arrays.asList(jobsBuildsString.split(":"));
+                job = jobBuilds.get(0); // first item is the job name
+                jobs.add(job);
+                jobsBuildsMap.put(job, jobBuilds.subList(1,jobBuilds.size()));
+            } else {
+                jobs.add(jobsBuildsString);
+            }
+        }
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         FirefoxProfile profile = new FirefoxProfile();
@@ -140,7 +160,7 @@ public class JenkinsJsonJobResultsBase {
         }
     }
 
-    protected void fetchAndWriteJobResults(String job, String jobNumber) throws InterruptedException, IOException {
+    protected void fetchAndWriteTestReport(String job, String jobNumber) throws InterruptedException, IOException {
         String url;
         String json;
         String outputFile;
@@ -151,6 +171,26 @@ public class JenkinsJsonJobResultsBase {
 
         json = json.replaceAll("}],", "}],\n");
         FileUtils.writeStringToFile(new File(outputFile), json);
+    }
+
+    protected void fetchAndWriteTestReport(String job, String[] jobNumbers) throws InterruptedException, IOException {
+        for (String jobNumber : jobNumbers) {
+            fetchAndWriteTestReport(job, jobNumber);
+        }
+    }
+
+    protected String fetchLastCompletedBuildNumber(String job) throws InterruptedException {
+        String url = jenkinsBase + "/job/" + job + "/api/json";
+        String jobNumber = null;
+        try {
+            jobNumber = retrieveJson(url);
+            jobNumber = jobNumber.substring(jobNumber.indexOf("\"lastCompletedBuild\":{\"number\":") + 31, jobNumber.length());
+            jobNumber = jobNumber.substring(0, jobNumber.indexOf(","));
+        } catch (InterruptedException e) {
+            System.err.println("Exception fetching job " + job + " with url " + url + e.getMessage());
+            throw e;
+        }
+        return jobNumber;
     }
 
     protected String retrieveJson(String url) throws InterruptedException {
@@ -165,7 +205,7 @@ public class JenkinsJsonJobResultsBase {
         String json = driver.getPageSource();
 
         try {
-            // index out of bounds can be cause by testRport json not existing (canceled, or a job with no tests), which results in the regular html view of the job number
+            // index out of bounds can be cause by testReport json not existing (canceled, or a job with no tests), which results in the regular html view of the job number
             json = json.substring(json.indexOf("<pre>") + 5, json.indexOf("</pre></body></html>"));
         } catch (IndexOutOfBoundsException iooobe) {
             System.out.println("No JSON results for " + url + " this can be caused by jobs with no test results, from either the test being stopped, aborted or non-test jobs.");

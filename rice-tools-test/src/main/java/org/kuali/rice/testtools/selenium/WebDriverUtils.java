@@ -41,6 +41,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -563,6 +566,17 @@ public class WebDriverUtils {
         }
         baseUrl = AutomatedFunctionalTestUtils.prettyHttp(baseUrl);
         return baseUrl;
+    }
+
+    /**
+     * yyyy-MM-dd-HH-mm-ss
+     *
+     * @return Date formatted as yyyy-MM-dd-HH-mm-ss
+     */
+    public static String getDateTimeStampFormatted() {
+        Date now = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        return sdf.format(now);
     }
 
     /**

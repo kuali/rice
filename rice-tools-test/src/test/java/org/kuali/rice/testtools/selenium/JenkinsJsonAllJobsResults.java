@@ -22,6 +22,8 @@ import org.junit.Test;
 import java.net.MalformedURLException;
 
 /**
+ * Any passed in job numbers are ignored, as all available job numbers will be saved.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JenkinsJsonAllJobsResults extends JenkinsJsonJobResultsBase {
@@ -37,13 +39,13 @@ public class JenkinsJsonAllJobsResults extends JenkinsJsonJobResultsBase {
     }
 
     @Test
-    public void testGetAllJobResults() throws Exception {
-        for (int i = 0, s = jobs.length; i < s; i++) {
-            getResults(jobs[i]);
+    public void testFetchAllJobReports() throws Exception {
+        for (int i = 0, s = jobs.size(); i < s; i++) {
+            fetchAllJobReports(jobs.get(i));
         }
     }
 
-    private void getResults(String job) throws Exception {
+    private void fetchAllJobReports(String job) throws Exception {
         String url = null;
         String jobJson;
 
@@ -59,7 +61,7 @@ public class JenkinsJsonAllJobsResults extends JenkinsJsonJobResultsBase {
             jobJson = jobJson.substring(jobJson.indexOf("{\"number\":") + 9, jobJson.length()); // strip off while condition
 
             try {
-                fetchAndWriteJobResults(job, jsonJobNumber);
+                fetchAndWriteTestReport(job, jsonJobNumber);
             } catch (Exception e) {
                 passed = false;
                 System.out.println("job: " + job + " url: " + url + " " + e.getMessage());

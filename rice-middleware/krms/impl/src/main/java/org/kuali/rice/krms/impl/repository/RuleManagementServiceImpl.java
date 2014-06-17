@@ -496,8 +496,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     ////
     @Override
     public AgendaItemDefinition createAgendaItem(AgendaItemDefinition agendaItemDefinition) throws RiceIllegalArgumentException {
-        agendaItemDefinition = createUpdateAgendaItemIfNeeded(agendaItemDefinition);
-        return agendaBoService.createAgendaItem(agendaItemDefinition);
+        return createUpdateAgendaItemIfNeeded(agendaItemDefinition);
     }
 
     private AgendaItemDefinition createUpdateAgendaItemIfNeeded(AgendaItemDefinition agendaItemDefinition) {
@@ -510,7 +509,18 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
         agendaItemDefinition = createWhenTrueAgendaItemIfNeeded(agendaItemDefinition);
         agendaItemDefinition = createWhenFalseAgendaItemIfNeeded(agendaItemDefinition);
         agendaItemDefinition = createAlwaysAgendaItemIfNeeded(agendaItemDefinition);
-        return createSubAgendaIfNeeded(agendaItemDefinition);
+        agendaItemDefinition = createSubAgendaIfNeeded(agendaItemDefinition);
+
+        boolean update = false;
+
+        // Create or update
+        if (agendaItemDefinition.getId() != null && agendaBoService.getAgendaItemById(agendaItemDefinition.getId()) != null) {
+            agendaBoService.updateAgendaItem(agendaItemDefinition);
+        } else {
+            agendaItemDefinition = agendaBoService.createAgendaItem(agendaItemDefinition);
+        }
+
+        return agendaItemDefinition;
     }
 
     private void crossCheckRuleId(AgendaItemDefinition agendItemDefinition)
@@ -570,20 +580,17 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             return agendaItemDefinition;
         }
 
-        // update
+        // create or update
+        RuleDefinition rule = null;
         if (agendaItemDefinition.getRule().getId() != null) {
             this.updateRule(agendaItemDefinition.getRule());
-            RuleDefinition rule = this.getRule(agendaItemDefinition.getRule ().getId());
-            AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
-            agendaItemBuilder.setRule(RuleDefinition.Builder.create(rule));
-            agendaItemBuilder.setRuleId(rule.getId());
-            
-            return agendaItemBuilder.build();
+            rule = this.getRule(agendaItemDefinition.getRule().getId());
+        } else {
+            rule = this.createRule(agendaItemDefinition.getRule());
         }
 
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
-        RuleDefinition ruleDefinition = this.createRule(agendaItemDefinition.getRule());
-        RuleDefinition.Builder ruleBuilder = RuleDefinition.Builder.create(ruleDefinition);
+        RuleDefinition.Builder ruleBuilder = RuleDefinition.Builder.create(rule);
         agendaItemBuilder.setRule(ruleBuilder);
         agendaItemBuilder.setRuleId(ruleBuilder.getId());
 
@@ -596,20 +603,13 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             return agendaItemDefinition;
         }
 
-        // ojb will take care of it if it has already been created
-        if (agendaItemDefinition.getWhenTrue().getId() != null) {
-            return agendaItemDefinition;
-        }
-
         // ojb does not take care of terms and termparameters, recursively loop thru agendaitems to update terms
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
         AgendaItemDefinition subAgendaItem = this.createUpdateAgendaItemIfNeeded(agendaItemDefinition.getWhenTrue());
         agendaItemBuilder.setWhenTrue(AgendaItemDefinition.Builder.create(subAgendaItem));
-        agendaItemBuilder.setWhenTrueId(subAgendaItem.getId());
 
         return agendaItemBuilder.build();
     }
-
 
     private AgendaItemDefinition createWhenFalseAgendaItemIfNeeded(AgendaItemDefinition agendaItemDefinition) {
         // nothing to create
@@ -617,34 +617,23 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             return agendaItemDefinition;
         }
 
-        // ojb will take care of it if it has already been created
-        if (agendaItemDefinition.getWhenFalse().getId() != null) {
-            return agendaItemDefinition;
-        }
-
         // ojb does not take care of terms and termparameters, recursively loop thru agendaitems to update terms
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
         AgendaItemDefinition subAgendaItem = this.createUpdateAgendaItemIfNeeded(agendaItemDefinition.getWhenFalse());
         agendaItemBuilder.setWhenFalse(AgendaItemDefinition.Builder.create(subAgendaItem));
-        agendaItemBuilder.setWhenFalseId(subAgendaItem.getId());
         return agendaItemBuilder.build();
     }
-    
 
     private AgendaItemDefinition createAlwaysAgendaItemIfNeeded(AgendaItemDefinition agendaItemDefinition) {
         // nothing to create
         if (agendaItemDefinition.getAlways()== null) {
             return agendaItemDefinition;
-        } 
-        // ojb will take care of it if it has already been created
-        if (agendaItemDefinition.getAlways().getId() != null) {
-            return agendaItemDefinition;
         }
-        
+
+        // ojb does not take care of terms and termparameters, recursively loop thru agendaitems to update terms
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
-        AgendaItemDefinition subAgendaItem = this.createAgendaItem(agendaItemDefinition.getAlways());
+        AgendaItemDefinition subAgendaItem = this.createUpdateAgendaItemIfNeeded(agendaItemDefinition.getAlways());
         agendaItemBuilder.setAlways(AgendaItemDefinition.Builder.create(subAgendaItem));
-        agendaItemBuilder.setAlwaysId(subAgendaItem.getId());
 
         return agendaItemBuilder.build();
     }
@@ -655,11 +644,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
             return agendaItemDefinition;
         }
 
-        // ojb will take care of it if it has already been created
-        if (agendaItemDefinition.getSubAgenda().getId() != null) {
-            return agendaItemDefinition;
-        }
-
+        // ojb does not take care of terms and termparameters, recursively loop thru agendaitems to update terms
         AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create(agendaItemDefinition);
         AgendaDefinition subAgenda = this.createAgenda(agendaItemDefinition.getSubAgenda());
         agendaItemBuilder.setSubAgenda(AgendaDefinition.Builder.create(subAgenda));
@@ -726,8 +711,7 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
 
     @Override
     public void updateAgendaItem(AgendaItemDefinition agendaItemDefinition) throws RiceIllegalArgumentException {
-        agendaItemDefinition = createUpdateAgendaItemIfNeeded(agendaItemDefinition);
-        agendaBoService.updateAgendaItem(agendaItemDefinition);
+        createUpdateAgendaItemIfNeeded(agendaItemDefinition);
     }
 
     private void crossCheckPropId(RuleDefinition ruleDefinition)

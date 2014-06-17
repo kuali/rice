@@ -241,26 +241,12 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             }
         }
 
-        BindingInfo bindingInfo = getBindingInfo();
-        String bindingPath = bindingInfo == null ? null : bindingInfo.getBindingPath();
-        if (bindingPath != null) {
-            if (this.enableAutoDirectInquiry && getInquiry() == null && Boolean.TRUE.equals(getReadOnly())) {
-                Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+        if (enableAutoDirectInquiry && this.getInquiry() == null && hasAutoInquiryRelationship()) {
+            setInquiry(ComponentFactory.getInquiry());
+        }
 
-                if (propertyValue != null && !(propertyValue instanceof String) &&
-                        KRADServiceLocator.getDataObjectService().supports(propertyValue.getClass())) {
-                    setInquiry(ComponentFactory.getInquiry());
-                }
-            }
-            
-            if (this.enableAutoQuickfinder && getQuickfinder() == null) {
-                Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
-
-                if (propertyValue != null && !(propertyValue instanceof String) &&
-                        KRADServiceLocator.getDataObjectService().supports(propertyValue.getClass())) {
-                    setQuickfinder(ComponentFactory.getQuickFinder());
-                }
-            }
+        if (enableAutoQuickfinder && this.getQuickfinder() == null && hasAutoQuickfinderRelationship()) {
+            setQuickfinder(ComponentFactory.getQuickFinder());
             ContextUtils.pushAllToContextDeep(quickfinder, this.getContext());
         }
 
@@ -1306,6 +1292,17 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
 
         super.completeValidation(tracer.getCopy());
+    }
+
+
+    /**
+     * Determines wheter or not to create an automatic quickfinder widget for this field within the current lifecycle.
+     * 
+     * @return True if an automatic quickfinder widget should be created for this field on the current lifecycle.
+     */
+    protected boolean hasAutoQuickfinderRelationship() {
+        // TODO: Review quickfinder logic, implement any differences from inquiry
+        return hasAutoInquiryRelationship();
     }
 
 }

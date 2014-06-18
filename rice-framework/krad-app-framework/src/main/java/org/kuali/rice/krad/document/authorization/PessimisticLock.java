@@ -28,7 +28,8 @@ import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 /**
@@ -42,7 +43,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
  */
 @Entity
 @Table(name="KRNS_PESSIMISTIC_LOCK_T")
-public class PessimisticLock extends DataObjectBase {
+public class PessimisticLock extends PersistableBusinessObjectBaseAdapter implements BusinessObject {
     
     private static final long serialVersionUID = -5210762282545093555L;
     

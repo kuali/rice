@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.demo.lookup.multivalue;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -24,7 +24,7 @@ import org.openqa.selenium.By;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpMultiValueAft extends WebDriverLegacyITBase {
+public class DemoLookUpMultiValueAft extends ViewDemoAftBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewMultipleValuesSelectLimit&hideReturnLink=true

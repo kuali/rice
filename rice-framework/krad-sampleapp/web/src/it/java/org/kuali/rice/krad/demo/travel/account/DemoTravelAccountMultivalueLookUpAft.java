@@ -16,13 +16,14 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.junit.Test;
+import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountMultivalueLookUpAft extends WebDriverLegacyITBase {
+public class DemoTravelAccountMultivalueLookUpAft extends ViewDemoAftBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true&multipleValuesSelect=true&lookupCollectionName=travelAccounts&suppressActions=true&conversionFields=number:foo,name:foo

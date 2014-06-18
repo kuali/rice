@@ -16,15 +16,14 @@
 package org.kuali.rice.krad.demo.lookup.stackedresults;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.openqa.selenium.By;
+import org.kuali.rice.krad.demo.ViewDemoAftBase;
 
 /**
  * This class performs simple tests on the stacked results lookup
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpStackedResultsAft extends WebDriverLegacyITBase {
+public class DemoLookUpStackedResultsAft extends ViewDemoAftBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewMultipleValuesSelectLimit&hideReturnLink=true

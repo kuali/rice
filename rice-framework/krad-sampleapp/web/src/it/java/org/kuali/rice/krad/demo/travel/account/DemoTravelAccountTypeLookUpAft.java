@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
+import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountTypeLookUpAft extends WebDriverLegacyITBase {
+public class DemoTravelAccountTypeLookUpAft extends ViewDemoAftBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.account.TravelAccountType&hideReturnLink=true

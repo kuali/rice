@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.demo.lookup;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.openqa.selenium.By;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpAft extends WebDriverLegacyITBase {
+public class DemoLookUpAft extends ViewDemoAftBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleView&hideReturnLink=true

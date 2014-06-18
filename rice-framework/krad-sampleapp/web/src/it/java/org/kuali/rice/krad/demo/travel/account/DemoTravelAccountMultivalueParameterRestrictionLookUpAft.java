@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.junit.Test;
+import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -25,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoTravelAccountMultivalueParameterRestrictionLookUpAft extends WebDriverLegacyITBase {
+public class DemoTravelAccountMultivalueParameterRestrictionLookUpAft extends ViewDemoAftBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true&multipleValuesSelect=true&lookupCollectionName=travelAccounts&suppressActions=true&conversionFields=number:foo,name:foo

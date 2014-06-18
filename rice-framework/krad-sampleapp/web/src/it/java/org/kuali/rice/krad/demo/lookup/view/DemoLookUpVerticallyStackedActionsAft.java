@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.demo.lookup.view;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.openqa.selenium.By;
+import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.junit.Test;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpVerticallyStackedActionsAft extends WebDriverLegacyITBase {
+public class DemoLookUpVerticallyStackedActionsAft extends ViewDemoAftBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewVerticalActions

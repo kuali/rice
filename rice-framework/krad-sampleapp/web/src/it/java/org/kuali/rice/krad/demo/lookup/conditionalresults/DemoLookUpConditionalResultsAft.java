@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.lookup.conditionalresults;
 
 import org.junit.Assert;
+import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoLookUpConditionalResultsAft extends WebDriverLegacyITBase {
+public class DemoLookUpConditionalResultsAft extends ViewDemoAftBase {
 
     /**
      * /kr-krad/lookup?methodToCall=start&viewId=LookupSampleViewConditionalResults&hideReturnLink=true

@@ -26,12 +26,24 @@ import org.openqa.selenium.WebElement;
 
 public abstract class ViewDemoAftBase extends WebDriverLegacyITBase{
 
+    /**
+     * http://site.kuali.org/rice/2-5
+     *
+     * In theory it would be possible to get the rice version from the AbstractBaseConfig, but then we have a requirement
+     * of having the app configured for AFTs to run and AFTs frequently are run against a remote app.  Also the rice config
+     * can be overridden in the app.xml, which some of us in QA do frequently which would result in test failures.
+     *
+     * The DB rice.version (which is where the help urls are stored) seems to be independent from the app.xml, using that value might be better than hardcoding
+     */
+    public static final String HELP_URL_RICE_VERSION = "site.kuali.org/rice/2.5.";
+
     protected void assertHelp() throws InterruptedException {
         WebElement help = waitForElementPresent(By.xpath("//button[@class='uif-iconOnly uif-helpAction icon-question']"));
         jGrowl("Click Help.");
         help.click();
         switchToWindow("Online Help");
         waitForTextPresent("Help");
+        assertTrue(driver.getCurrentUrl().contains(HELP_URL_RICE_VERSION));
         switchToWindow("Kuali");
     }
 

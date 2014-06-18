@@ -537,6 +537,8 @@
       <enumeration value="allow_su_final_approval"/>
       <enumeration value="SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION"/>
       <enumeration value="suppress_immediate_emails_on_su_action"/>
+      <enumeration value="DOC_SEARCH_TARGET"/>
+      <enumeration value="doc_search_target"/>
     </restriction>
   </simpleType>
 

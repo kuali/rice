@@ -102,16 +102,16 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
         waitAndClickSearchByText();
-        waitAndClickLinkContainingText("return value");
+        waitAndClickReturnValue();
         waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
         waitAndClickSearchByText();
-        waitAndClickLinkContainingText("return value");
+        waitAndClickReturnValue();
         waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button[@class='btn btn-default uif-action icon-search']");
         gotoLightBox();
         waitAndClickSearchByText();
-        waitAndClickLinkContainingText("return value");
+        waitAndClickReturnValue();
 
         // Add a new sub account
         String subAccount = "Z1" + RandomStringUtils.randomAlphabetic(2);
@@ -137,8 +137,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent", "42");
-        waitAndClickButtonByText("blanket approve");
-
+        waitAndClickConfirmationOk();
         waitAndClickById("Demo-DemoLink", "");
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {
@@ -146,7 +145,8 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         }
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
-        waitAndClickButtonByText("blanket approve");
+        waitAndClickBlanketApprove();
+        waitAndClickConfirmationOk();
     }
 
 

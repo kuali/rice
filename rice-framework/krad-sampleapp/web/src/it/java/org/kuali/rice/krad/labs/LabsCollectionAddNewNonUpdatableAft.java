@@ -41,7 +41,7 @@ public class LabsCollectionAddNewNonUpdatableAft extends WebDriverLegacyITBase {
 
     protected void testDemoCollectionAddNewNonUpdatable() throws InterruptedException {
     	waitAndTypeByXpath("//table/tbody/tr/td[2]/div/input","asd");
-    	waitAndTypeByXpath("//table/tbody/tr/td[3]/div/input","asd");
+    	waitAndTypeByXpath("//table/tbody/tr/td[3]/div/div/input","asd");
     	waitAndTypeByXpath("//table/tbody/tr/td[4]/div/div/input","CAT");
     	waitAndClickByXpath("//button[@id='Lab-NonUpdateableRefreshes-Table_add']");
     	waitForElementNotPresent(By.xpath("//button[contains(text(),'Update')]"));

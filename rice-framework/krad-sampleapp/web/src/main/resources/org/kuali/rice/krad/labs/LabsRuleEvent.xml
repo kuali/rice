@@ -26,7 +26,10 @@
     <property name="businessRulesClass" value="org.kuali.rice.krad.labs.ruleevent.BusinessRuleImpl" />
     <property name="documentTypeName" value="TravelAccountMaintenanceDocument" />
     <property name="defaultExistenceChecks">
-      <bean parent="ReferenceDefinition" p:attributeName="accountType" p:attributeToHighlightOnFail="accountTypeCode"/>
+      <list>
+        <bean parent="ReferenceDefinition" p:attributeName="accountType" p:attributeToHighlightOnFail="accountTypeCode"/>
+        <bean parent="ReferenceDefinition" p:attributeName="fiscalOfficer" p:attributeToHighlightOnFail="foId"/>
+      </list>
     </property>
   </bean>
 

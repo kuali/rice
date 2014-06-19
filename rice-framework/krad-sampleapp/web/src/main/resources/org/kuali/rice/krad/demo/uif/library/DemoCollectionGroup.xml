@@ -142,6 +142,15 @@
                   <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
                 </property>
               </bean>
+
+              <bean parent="Uif-InputField" p:propertyName="feeAmount" p:label="Column 6" p:readOnly="@{!#isAddLine}">
+                <property name="control">
+                  <bean parent="Uif-TextControl" p:size="10"/>
+                </property>
+                <property name="validCharactersConstraint">
+                  <bean parent="AnyCharacterPatternConstraint" p:allowWhitespace="true"/>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

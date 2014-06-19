@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.form;
 
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
@@ -43,6 +44,8 @@ public class UITestObject implements Serializable {
     private String field6;
     private String field7;
     private String field8;
+
+    private KualiDecimal feeAmount;
 
     private static int count = 0;
     private Integer int1;
@@ -75,6 +78,8 @@ public class UITestObject implements Serializable {
         remoteFieldValuesMap.put("remoteField4", "Fruit");
 
         int1 = ++count;
+
+        feeAmount = new KualiDecimal(int1);
 
         // populate date1 and date1Str
         try {
@@ -179,8 +184,9 @@ public class UITestObject implements Serializable {
      * @return the field3 as a 'dollar' value for testing
      */
     public String getDollar3() {
-        if (this.field3 != null && this.field3.length() > 0)
+        if (this.field3 != null && this.field3.length() > 0) {
             return "$" + this.field3 + ".00";
+        }
         return this.field3;
     }
 
@@ -235,6 +241,14 @@ public class UITestObject implements Serializable {
 
     public void setField8(String field8) {
         this.field8 = field8;
+    }
+
+    public KualiDecimal getFeeAmount() {
+        return feeAmount;
+    }
+
+    public void setFeeAmount(KualiDecimal feeAmount) {
+        this.feeAmount = feeAmount;
     }
 
     public MultipartFile getFileUpload() {

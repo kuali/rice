@@ -146,19 +146,34 @@ public class RoleDaoJdbc implements RoleDao {
                                 sql1.append(" WHERE ");
                             }
 
-                            sql1.append(" EXISTS (SELECT B1.ROLE_MBR_ID FROM KRIM_ROLE_MBR_ATTR_DATA_T B1 WHERE (");
+                            sql1.append(" EXISTS (SELECT B1.ROLE_MBR_ID FROM KRIM_ROLE_MBR_ATTR_DATA_T B1 WHERE ");
+                            int conditionCount = 0;
                             for (Map.Entry<String, String> qualifier : qual.entrySet()) {
                                 if (StringUtils.isNotEmpty(qualifier.getValue())) {
+                                    // advance the number of times we have found a non-null qualifier
+                                    conditionCount++;
+
+                                    // add '(' if encountering a non-null qualifier for the first time
+                                    if (conditionCount == 1) {
+                                        sql1.append("(");
+                                    }
+
+                                    // add the qualifier template with the parameters
                                     String value = (qualifier.getValue()).replace('*', '%');
-                                    sql1.append(" (B1.ATTR_VAL LIKE ? AND B1.KIM_ATTR_DEFN_ID = ? ) ");
+                                    sql1.append(" (B1.ATTR_VAL LIKE ? AND B1.KIM_ATTR_DEFN_ID = ?) ");
                                     params1.add(value);
                                     params1.add(qualifier.getKey());
                                 }
+
                                 sql1.append("OR");
                             }
+                            // remove the last OR
                             sql1.delete(sql1.length() - 2, sql1.length());
-                            sql1.append(") AND B1.ROLE_MBR_ID = A0.ROLE_MBR_ID )");
-
+                            // add ') AND' if we encountered a non-null qualifier sub-query above
+                            if (conditionCount != 0) {
+                                sql1.append(") AND");
+                            }
+                            sql1.append(" B1.ROLE_MBR_ID = A0.ROLE_MBR_ID)");
                         }
 
                         StringBuilder sql = new StringBuilder(sql1.toString());

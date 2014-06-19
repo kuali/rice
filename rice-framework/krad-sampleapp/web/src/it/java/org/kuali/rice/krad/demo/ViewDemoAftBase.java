@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -38,13 +39,30 @@ public abstract class ViewDemoAftBase extends WebDriverLegacyITBase{
     public static final String HELP_URL_RICE_VERSION = "site.kuali.org/rice/2.5.";
 
     protected void assertHelp() throws InterruptedException {
+        String kualiWindowHandle = driver.getWindowHandle();
+
         WebElement help = waitForElementPresent(By.xpath("//button[@class='uif-iconOnly uif-helpAction icon-question']"));
         jGrowl("Click Help.");
         help.click();
-        switchToWindow("Online Help");
-        waitForTextPresent("Help");
+
+        int timeout = 0;
+        while (driver.getWindowHandles().size() != 2 && timeout <= WebDriverUtils.configuredImplicityWait()) {
+            Thread.sleep(1000);
+            timeout++;
+        }
+
+        for (String handle : driver.getWindowHandles()) {
+            if (!kualiWindowHandle.equals(handle)) {
+                driver.switchTo().window(handle);
+            }
+        }
+
+        assertTrue(driver.getTitle().contains("Online Help"));
+        assertTrue(driver.getTitle().contains("Kuali Rice 2.5."));
         assertTrue(driver.getCurrentUrl().contains(HELP_URL_RICE_VERSION));
-        switchToWindow("Kuali");
+
+        driver.close();
+        driver.switchTo().window(kualiWindowHandle);
     }
 
     private void testHelp() throws InterruptedException {

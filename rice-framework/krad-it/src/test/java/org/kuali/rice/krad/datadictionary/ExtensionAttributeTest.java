@@ -131,12 +131,12 @@ public class ExtensionAttributeTest extends KRADTestCase {
 		.getFieldConversions());
 	}
 
+    @Test
     /**
      * tests validation on the extension attribute
      *
      * <p>The values given for attributes that are foreign keys should represent existing objects when auto-update is set to false</p>
      */
-    @Test
     public void testExistenceChecks() throws Exception {
 		Account account = new Account();
 		((AccountExtension)account.getExtension()).setAccountTypeCode( "XYZ" ); // invalid account type

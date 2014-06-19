@@ -572,14 +572,14 @@ public final class KRADUtils {
 
         // iterate through properties and add a map entry for each
         for (String propertyName : propertyNames) {
-            Object propertyValue = ObjectPropertyUtils.getPropertyValue(dataObject, propertyName);
+            String propertyValue = ObjectPropertyUtils.getPropertyValueAsText(dataObject, propertyName);
             if (propertyValue == null) {
                 propertyValue = StringUtils.EMPTY;
             }
 
             // secure values are not returned
             if (!isSecure(propertyName, securePropertyNames, dataObject, propertyValue)) {
-                propertyKeyValues.put(propertyName, propertyValue.toString());
+                propertyKeyValues.put(propertyName, propertyValue);
             }
 
         }

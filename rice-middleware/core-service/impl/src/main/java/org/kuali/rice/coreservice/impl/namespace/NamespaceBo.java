@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.coreservice.impl.namespace;
 
-import groovy.transform.EqualsAndHashCode;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.coreservice.framework.namespace.NamespaceEbo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
@@ -29,7 +30,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="KRCR_NMSPC_T")
-@EqualsAndHashCode
 public class NamespaceBo extends PersistableBusinessObjectBase implements NamespaceEbo {
 
     private static final long serialVersionUID = 1L;
@@ -117,4 +117,22 @@ public class NamespaceBo extends PersistableBusinessObjectBase implements Namesp
 
         return bo;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        return EqualsBuilder.reflectionEquals(o, this);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
 }

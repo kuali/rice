@@ -16,7 +16,7 @@
 package org.kuali.rice.krms.impl.repository
 
 import groovy.mock.interceptor.MockFor
-import org.apache.cxf.common.util.CollectionUtils
+import org.apache.commons.collections.CollectionUtils;
 import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass

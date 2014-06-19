@@ -84,9 +84,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
                 "Attachment_Note");
         waitAndClick(By.cssSelector("button[title='Add a Note']"));
 
-        Thread.sleep(2000);
-
-        assertTextPresent("Attachment_Note");
+        waitForTextPresent("Attachment_Note");
         assertTextNotPresent("Note Text is a required field");
     }
 

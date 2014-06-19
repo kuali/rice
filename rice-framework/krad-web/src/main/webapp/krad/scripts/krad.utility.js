@@ -2071,6 +2071,11 @@ function openDataTablePage(tableId, pageNumber) {
     if (oTable == null) {
         oTable = getDataTableHandle(jQuery('#' + tableId).find('.dataTable').attr('id'));
     }
+
+    if (oTable == null){
+        return;
+    }
+
     if (pageNumber == "first" || pageNumber == "last") {
         oTable.fnPageChange(pageNumber);
     } else {

@@ -87,7 +87,7 @@
           </elementProp>
           <elementProp name="PAGEUNDERTESTTIMEOUTMS" elementType="Argument">
             <stringProp name="Argument.name">PAGEUNDERTESTTIMEOUTMS</stringProp>
-            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,580)}</stringProp>
+            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,1032)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="TESTPATH" elementType="Argument">

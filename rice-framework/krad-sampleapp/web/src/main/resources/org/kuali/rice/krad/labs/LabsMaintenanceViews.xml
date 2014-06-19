@@ -100,4 +100,32 @@
     <property name="viewName" value="LabsMaintenance-DifferentOpenCloseTabStates"/>
   </bean>
 
+  <bean id="LabsMaintenance-ExistenceCheck" parent="TravelAccount-ExistenceCheckMaintenanceView">
+    <property name="viewName" value="LabsMaintenance-ExistenceCheck"/>
+  </bean>
+
+  <bean id="TravelAccount-ExistenceCheckMaintenanceView" parent="TravelAccount-MaintenanceView">
+    <property name="viewName" value="LabsMaintenance-ExistenceCheckView"/>
+    <property name="items">
+      <list merge="false">
+        <bean parent="Uif-MaintenanceGridSection">
+          <property name="headerText" value="Account Information"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="number"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="accountTypeCode" p:required="true">
+                <property name="control">
+                  <bean parent="Uif-TextControl" p:size="10"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:propertyName="foId" p:defaultValue="fred"/>
+              <bean parent="Uif-InputField" p:propertyName="createDate" p:readOnly="true" p:defaultValue="#{T(org.joda.time.DateTime).now().toDate()}"/>
+              <bean parent="Uif-InputField" p:propertyName="subsidizedPercent" p:defaultValue="25"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

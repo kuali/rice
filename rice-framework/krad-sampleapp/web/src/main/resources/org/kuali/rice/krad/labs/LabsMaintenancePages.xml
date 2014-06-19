@@ -342,11 +342,12 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR6C1" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of Existence Check"
+              p:instructionalText="Demo of Existence Check">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Account Maintenance Existence Check - The account type code must exist."
+                p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&amp;viewId=LabsMaintenance-ExistenceCheck"/>
             </list>
           </property>
         </bean>

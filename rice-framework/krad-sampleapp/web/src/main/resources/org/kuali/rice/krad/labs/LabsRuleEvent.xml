@@ -25,6 +25,9 @@
     <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount" />
     <property name="businessRulesClass" value="org.kuali.rice.krad.labs.ruleevent.BusinessRuleImpl" />
     <property name="documentTypeName" value="TravelAccountMaintenanceDocument" />
+    <property name="defaultExistenceChecks">
+      <bean parent="ReferenceDefinition" p:attributeName="accountType" p:attributeToHighlightOnFail="accountTypeCode"/>
+    </property>
   </bean>
 
   <bean id="Lab-RuleEvent" parent="Uif-MaintenanceView">

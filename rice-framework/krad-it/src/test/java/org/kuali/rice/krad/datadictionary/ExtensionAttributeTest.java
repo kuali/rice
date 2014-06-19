@@ -134,12 +134,10 @@ public class ExtensionAttributeTest extends KRADTestCase {
     /**
      * tests validation on the extension attribute
      *
-     * // TODO: test is currently failing because default existence checks are not implemented in KRAD
-     * // see https://jira.kuali.org/browse/KULRICE-7666
-     *
      * <p>The values given for attributes that are foreign keys should represent existing objects when auto-update is set to false</p>
      */
-	public void testExistenceChecks() throws Exception {
+    @Test
+    public void testExistenceChecks() throws Exception {
 		Account account = new Account();
 		((AccountExtension)account.getExtension()).setAccountTypeCode( "XYZ" ); // invalid account type
 		account.setName("Test Name");

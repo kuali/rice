@@ -64,8 +64,11 @@ public class DemoClientResponsivenessEventsAft extends WebDriverLegacyITBase {
     protected void testClientResponsivenessEventsMouseEvent() throws Exception {
     	waitAndClickByLinkText("Mouse Events");
     	fireMouseOverEventByXpath("//div[@data-label='Checkbox' and @data-parent='Demo-Events-Example3']");
+    	waitForElementPresentByXpath("//div[@style='border: 10px solid rgb(153, 153, 153); width: 50%; overflow; hidden; font-size: 3em; margin-left: 0px;']");
     	waitAndClickByXpath("//input[@name='inputField8' and @value='red']");
     	fireMouseOverEventByName("inputField8");
+    	waitForElementPresentByXpath("//div[@style='width: auto; background-color: rgb(255, 0, 0);']");
+    	waitAndClickByXpath("//div[@class='kr-photo uif-boxLayoutVerticalItem pull-left clearfix']");
     }
     
     protected void testClientResponsivenessEventsMouseEventOnButtons() throws Exception {
@@ -76,7 +79,7 @@ public class DemoClientResponsivenessEventsAft extends WebDriverLegacyITBase {
     protected void testClientResponsivenessEventsGroupAndSectionEvents() throws Exception {
     	waitAndClickByLinkText("Group and Section Events");
     	fireMouseOverEventByXpath("//div[@data-parent='Demo-Events-Example5']");
-    	waitForElementPresentByXpath("//div[@data-parent='Demo-Events-Example5' and @style='background-color: rgb(255, 255, 255); height: 200px; width: 300px;']");
+    	waitForElementPresentByXpath("//div[@data-parent='Demo-Events-Example5' and @style='height: 200px; width: 300px; background-color: rgb(255, 255, 255);']");
     }
     
     protected void testClientResponsivenessEventsOnKeyPressUpDown() throws Exception {

@@ -1361,7 +1361,8 @@ public class DataFieldBase extends FieldBase implements DataField {
 
         // get parent object for inquiry metadata
         Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, this);
-        return KRADServiceLocatorWeb.getViewDictionaryService().isInquirable(parentObject.getClass());
+        return parentObject == null ? false : KRADServiceLocatorWeb.getViewDictionaryService().isInquirable(
+                parentObject.getClass());
     }
 
 }

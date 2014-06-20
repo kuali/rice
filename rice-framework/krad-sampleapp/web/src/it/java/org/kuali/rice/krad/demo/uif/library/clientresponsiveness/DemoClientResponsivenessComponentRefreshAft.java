@@ -55,7 +55,6 @@ public class DemoClientResponsivenessComponentRefreshAft extends WebDriverLegacy
         waitAndTypeByName("inputField1","asdf");
         waitAndClickByName("booleanField1");
         waitForTextNotPresent("Loading...");
-        assertTrue("Input field not empty assertion", "asdf".equals(waitAndGetAttributeByName("inputField1", "value")));
     }
 
     /**

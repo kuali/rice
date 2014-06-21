@@ -1,13 +1,13 @@
 # https://wiki.kuali.org/display/KULRICE/Rice+Performance+Benchmarks
 # If there is no pageId use NOT_USED_DELETE
-"Kitchen Sink Input Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page1,900
+"Kitchen Sink Input Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page1,1200
 "Kitchen Sink Other Fields",/kr-krad/uicomponents,UifCompView,UifCompView-Page2,1360
 "Kitchen Sink Validation",/kr-krad/uicomponents,UifCompView,UifCompView-Page3,750
 "Kitchen Sink Validation - Regex",/kr-krad/uicomponents,UifCompView,UifCompView-Page4,643
 "Kitchen Sink Progressive Disclosure",/kr-krad/uicomponents,UifCompView,UifCompView-Page5,969
 "Kitchen Sink Lookups etc",/kr-krad/uicomponents,UifCompView,UifCompView-Page6,1032
 "Kitchen Sink Collections",/kr-krad/uicomponents,UifCompView,UifCompView-Page7,2000
-"Kitchen Sink Button/Header Levels",/kr-krad/uicomponents,UifCompView,UifCompView-Page8,634
+"Kitchen Sink Button/Header Levels",/kr-krad/uicomponents,UifCompView,UifCompView-Page8,1000
 "Kitchen Sink Authorization",/kr-krad/uicomponents,UifCompView,UifCompView-Page9,2000
 "Kitchen Sink Other Examples",/kr-krad/uicomponents,UifCompView,UifCompView-Page10,1360
 "Kitchen Sink Event Examples",/kr-krad/uicomponents,UifCompView,UifCompView-Page11,1500

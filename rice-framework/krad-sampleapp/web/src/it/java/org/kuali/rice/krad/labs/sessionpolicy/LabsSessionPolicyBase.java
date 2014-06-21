@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.labs.sessionpolicy;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class LabsSessionPolicyBase extends WebDriverLegacyITBase {
+public abstract class LabsSessionPolicyBase extends WebDriverAftBase {
 
     protected void navigateToSessionPolicy(String sessionPolicyText) throws InterruptedException {
         waitAndClickByLinkText(sessionPolicyText);

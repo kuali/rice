@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.labs.maintenance;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class LabsMaintenanceBase extends WebDriverLegacyITBase {
+public abstract class LabsMaintenanceBase extends WebDriverAftBase {
 
     protected void navigateToMaintenance(String screenLinkText) throws InterruptedException {
         waitAndClickByLinkText("Maintenance");

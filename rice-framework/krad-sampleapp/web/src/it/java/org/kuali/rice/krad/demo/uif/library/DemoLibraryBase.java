@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.library;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverAftBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
@@ -24,7 +24,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class DemoLibraryBase extends WebDriverLegacyITBase {
+public abstract class DemoLibraryBase extends WebDriverAftBase {
 
     /**
      * Automatically selects the library link and then navigate to the appropriate demo in the category

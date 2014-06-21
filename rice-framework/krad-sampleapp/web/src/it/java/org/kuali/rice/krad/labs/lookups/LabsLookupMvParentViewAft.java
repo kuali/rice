@@ -52,7 +52,7 @@ public class LabsLookupMvParentViewAft extends LabsLookupBase {
     protected void testLabsLookupMvParentView()throws Exception {
         waitAndTypeByName("lookupCriteria[name]","*");
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","eri*");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearch3();
         assertResultCount("4");
     }
 }

@@ -33,10 +33,8 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Base class for Selenium Webdriver integration tests
- *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @deprecated
+ * @deprecated see WebDriverAftBase
  */
 public abstract class WebDriverITBase {
 
@@ -65,6 +63,29 @@ public abstract class WebDriverITBase {
     }
 
 
+    /**
+     * <p>
+     * Logs in using the KRAD Login Page, if the JVM arg remote.autologin is set, auto login as admin will not be done.
+     * </p>
+     *
+     * @param driver to login with
+     * @param userName to login with
+     * @param failable to fail on if there is a login problem
+     * @throws InterruptedException
+     */
+    public void login(WebDriver driver, String userName, JiraAwareFailable failable) throws InterruptedException {
+        if ("true".equalsIgnoreCase(System.getProperty(WebDriverUtils.REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
+            driver.findElement(By.name("login_user")).clear();
+            driver.findElement(By.name("login_user")).sendKeys(userName);
+            driver.findElement(By.id("Rice-LoginButton")).click();
+            Thread.sleep(1000);
+            String contents = driver.getPageSource();
+            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Login",
+                    "Login failure", failable);
+        }
+    }
+
     public void fail(String message) { // should this method be abstract or overridden, no jira aware fail?
         SeleneseTestBase.fail(message);
     }
@@ -77,7 +98,7 @@ public abstract class WebDriverITBase {
     @Before
     public void setUp() throws Exception {
         driver = WebDriverUtils.setUp(getUserName(), WebDriverUtils.getBaseUrlString() + "/" + getTestUrl());
-        WebDriverLegacyITBase.loginKradOrKns(driver, getUserName(), new JiraAwareFailable() {
+        login(driver, getUserName(), new JiraAwareFailable() {
             @Override
             public void fail(String message) {
                 SeleneseTestBase.fail(message);

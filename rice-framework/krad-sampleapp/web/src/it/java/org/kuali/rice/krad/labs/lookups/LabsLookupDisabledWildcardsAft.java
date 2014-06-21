@@ -50,14 +50,12 @@ public class LabsLookupDisabledWildcardsAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupCriteriaFooter()throws Exception {
-        waitAndTypeByName("lookupCriteria[number]","a*");
-        waitAndClickButtonByText("Search");
-        Thread.sleep(2000);
-        assertTextPresent("No values match this search.");
-        clearTextByName("lookupCriteria[number]");
-        waitAndTypeByName("lookupCriteria[number]","a1");
-        waitAndClickButtonByText("Search");
-        Thread.sleep(3000);
-        assertTextPresent("a1");
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a*");
+        waitAndClickSearch3();
+        waitForTextPresent("No values match this search.");
+        clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME,"a1");
+        waitAndClickSearch3();
+        waitForTextPresent("a1");
     }
 }

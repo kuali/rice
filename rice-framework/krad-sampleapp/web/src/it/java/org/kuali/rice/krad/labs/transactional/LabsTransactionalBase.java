@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.krad.labs.transactional;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LabsTransactionalBase extends WebDriverLegacyITBase {
+public abstract class LabsTransactionalBase extends WebDriverAftBase {
 
     protected void navigateToTransactional(String screenLinkText) throws InterruptedException {
         waitAndClickByLinkText("Transactional");

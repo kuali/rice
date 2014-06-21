@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.krad.labs.kitchensink;
 
-import org.kuali.rice.testtools.common.JiraAwareFailable;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.junit.Test;
 import org.openqa.selenium.By;
 
 /**
@@ -24,7 +23,7 @@ import org.openqa.selenium.By;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class UifTooltipAftBase extends LabsKitchenSinkBase {
+public abstract class LabsUifTooltipAft extends LabsKitchenSinkBase {
 
     /**
      * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page10
@@ -39,7 +38,8 @@ public abstract class UifTooltipAftBase extends LabsKitchenSinkBase {
         return BOOKMARK_URL;
     }
 
-    protected void navigation() throws Exception {
+    @Override
+    protected void navigate() throws Exception {
         navigateToKitchenSink("Other Examples");
     }
 
@@ -76,13 +76,14 @@ public abstract class UifTooltipAftBase extends LabsKitchenSinkBase {
         Thread.sleep(10000);
     }
 
-    protected void testUifTooltipNav(JiraAwareFailable failable) throws Exception {
-        navigation();
+    @Test
+    public void testUifTooltipNav() throws Exception {
         testUifTooltipByName(NAME_FIELD_1, NAME_FIELD_2);
         passed();
     }
 
-    protected void testUifTooltipBookmark(JiraAwareFailable failable) throws Exception {
+    @Test
+    public void testUifTooltipBookmark() throws Exception {
         testUifTooltipByName(NAME_FIELD_1, NAME_FIELD_2);
         passed();
     }

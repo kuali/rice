@@ -16,14 +16,15 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsInputFieldsAft extends LabsKitchenSinkBase {
 
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page1#UifCompView-Page1
+     */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page1#UifCompView-Page1";
    
     @Override

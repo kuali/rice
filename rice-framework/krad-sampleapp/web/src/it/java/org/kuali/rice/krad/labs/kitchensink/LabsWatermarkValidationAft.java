@@ -23,16 +23,17 @@ import org.junit.Test;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+public class LabsWatermarkValidationAft extends LabsKitchenSinkBase {
 
-public class WatermarkValidationAft extends LabsKitchenSinkBase {
-
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page1
+     */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&pageId=UifCompView-Page1";
 
     @Override
     public String getBookmarkUrl() {
         return BOOKMARK_URL;
     }
-
 
 	/**
 	 * if watermarking is ok, the cancel link will bring up a confirmation if something was typed into a textbox i.e
@@ -49,6 +50,12 @@ public class WatermarkValidationAft extends LabsKitchenSinkBase {
     @Override
     protected void navigate() throws Exception {
         navigateToKitchenSink("Input Fields");
+    }
+
+    @Test
+    public void testWatermarkingBookmark() throws Exception {
+        testWatermarking();
+        passed();
     }
 
     @Test

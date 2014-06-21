@@ -20,10 +20,13 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsEventExampleAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=307ef15f-6e22-469b-bb4e-dc0d13056b5d&cacheKey=fkxfb8lxq8rozbctlgbz0k0zoa&pageId=UifCompView-Page11#UifCompView-Page11";
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page11#UifCompView-Page11
+     */
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page11#UifCompView-Page11";
+
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;

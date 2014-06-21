@@ -20,9 +20,11 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
 
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page2#UifCompView-Page2
+     */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page2#UifCompView-Page2";
     
     @Override

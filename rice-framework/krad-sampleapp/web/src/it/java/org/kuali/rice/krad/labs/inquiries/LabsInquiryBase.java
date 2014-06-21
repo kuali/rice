@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.labs.inquiries;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class LabsInquiryBase extends WebDriverLegacyITBase {
+public abstract class LabsInquiryBase extends WebDriverAftBase {
 
 	final String CLOSE="Close";
 	

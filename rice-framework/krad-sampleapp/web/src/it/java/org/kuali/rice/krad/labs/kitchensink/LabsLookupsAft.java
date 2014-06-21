@@ -20,9 +20,11 @@ import org.junit.Test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsLookupsAft extends LabsKitchenSinkBase {
 
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page6&lightbox=true
+     */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page6&lightbox=true";
 
     private static final String IFRAME_XPATH="//iframe[@class='fancybox-iframe']";

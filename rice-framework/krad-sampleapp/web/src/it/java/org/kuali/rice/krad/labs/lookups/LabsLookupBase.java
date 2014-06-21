@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.labs.lookups;
 
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverAftBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
-public abstract class LabsLookupBase extends WebDriverLegacyITBase {
+public abstract class LabsLookupBase extends WebDriverAftBase {
 
     protected void navigateToLookup(String screenLinkText) throws InterruptedException {
         waitAndClickByLinkText("Lookups");

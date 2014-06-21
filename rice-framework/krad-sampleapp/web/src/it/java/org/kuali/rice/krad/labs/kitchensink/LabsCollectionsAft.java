@@ -22,11 +22,16 @@ import static org.junit.Assert.assertNotSame;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsCollectionsAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=ab7fa92d-a2a0-4b94-b349-c00eb81de311&cacheKey=endwmf7mxaohx3lxynk6sm&pageId=UifCompView-Page7#UifCompView-Page7";
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page7#UifCompView-Page7
+     */
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page7#UifCompView-Page7";
 
+    /**
+     * list4[0].subList[0].field1
+     */
     public static final String FIELD_ELEMENT_NAME = "list4[0].subList[0].field1";
 
     @Override
@@ -55,8 +60,7 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
         passed();
     }
     
-    protected void testCollections() throws InterruptedException 
-    {
+    protected void testCollections() throws InterruptedException {
     	//Collection Group 1 - CollectionGroupTableLayout
     	waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[@class='uif-collectionAddItem odd']",
                 "https://jira.kuali.org/browse/RICEQA-274 AFT Failure update LabsCollectionsAft");
@@ -90,8 +94,7 @@ public class LabsCollectionsAft extends LabsKitchenSinkBase {
                         + " looking for "
                         + SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH);
             try {
-                if (isElementPresentByXpath("//span[@class='uif-headerText-span' and contains(text(),'SubCollection - (3 lines)')]"))
-                {
+                if (isElementPresentByXpath("//span[@class='uif-headerText-span' and contains(text(),'SubCollection - (3 lines)')]")) {
                     break;
                 }
             } catch (Exception e) {}

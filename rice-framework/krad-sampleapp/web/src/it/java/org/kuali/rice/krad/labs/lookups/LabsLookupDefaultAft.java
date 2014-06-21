@@ -54,15 +54,15 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
     protected void testLabsLookupDefault()throws Exception {
         waitAndTypeByName("lookupCriteria[number]","a1*");
         waitAndTypeByName("lookupCriteria[name]","Travel *");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearch3();
         assertTextPresent(new String[] {"Travel Account 14", "a14"});
         waitAndClickButtonByText("Clear Values");
-        waitAndClickButtonByText("Search");
+        waitAndClickSearch3();
         assertTextPresent(new String[] {"Travel Account 1", "a1"});
     }
 
     protected void testLabsLookupDefaultEmpty()throws Exception {
-        waitAndClickButtonByText("Search");
+        waitAndClickSearch3();
         waitForTextPresent("items retrieved, displaying all items.");
     }
 }

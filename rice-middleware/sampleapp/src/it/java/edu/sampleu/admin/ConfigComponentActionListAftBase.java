@@ -17,8 +17,6 @@ package edu.sampleu.admin;
 
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  *  @author Kuali Rice Team (rice.collab@kuali.org)
@@ -266,6 +264,7 @@ public abstract class ConfigComponentActionListAftBase extends ConfigComponentAf
         addAdHocRecipientsPerson(new String[]{"fred", "A"});
         waitAndClickByName("methodToCall.cancel");
         assertDocSearchNoResults(docId);
+        passed();
     }
 
     public void testComponentSave_WithPendingPersonApprove() throws Exception {

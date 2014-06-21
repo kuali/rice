@@ -24,8 +24,6 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -97,6 +95,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         assertEquals("", driver.findElement(By.xpath("//input[@name='rangeLowerBoundKeyPrefix_dateCreated']")).getAttribute("value"));
         assertEquals("", driver.findElement(By.xpath("//input[@name='dateCreated']")).getAttribute("value"));
         waitAndClickByXpath("//a[@title='cancel']");
+        passed();
     }
 
     @Test
@@ -110,6 +109,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "1/1/1900"); // remove default today's date
         waitAndClickMethodToCallSearchButton();
         waitForTextPresent("Export options:");
+        passed();
     }
 
     @Test

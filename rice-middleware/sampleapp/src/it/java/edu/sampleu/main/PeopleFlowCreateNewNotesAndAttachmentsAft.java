@@ -69,6 +69,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
         waitForTextPresent("Attachment_Note");
         assertTextPresent("attachment.txt");
         assertTextNotPresent("Note Text is a required field.");
+        passed();
     }
 
     /**
@@ -86,6 +87,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
 
         waitForTextPresent("Attachment_Note");
         assertTextNotPresent("Note Text is a required field");
+        passed();
     }
 
     /**
@@ -102,6 +104,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
 
         waitForTextPresent("Note Text is a required field");
         assertTextNotPresent("attachment.txt");
+        passed();
     }
 
     private void navigateToPeopleFlowNotesAndAttachments() throws Exception {

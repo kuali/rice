@@ -29,16 +29,6 @@ public class LabsLookUpConditionalCriteriaAft extends LabsLookupBase {
     public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LabsLookup-ConditionalCriteriaView&hideReturnLink=true";
 
     /**
-     *  lookupCriteria[number]
-     */
-    private static final String LOOKUP_CRITERIA_NUMBER_NAME="lookupCriteria[number]";
-    
-    /**
-     *  Search
-     */
-    private static final String SEARCH="Search";
-    
-    /**
      *  lookupCriteria[rangeLowerBoundKeyPrefix_createDate]
      */
     private static final String LOOKUP_CRITERIA_DATE_NAME="lookupCriteria[rangeLowerBoundKeyPrefix_createDate]";
@@ -47,21 +37,6 @@ public class LabsLookUpConditionalCriteriaAft extends LabsLookupBase {
      *  Not read only. Date input field present.
      */
     private static final String FAILURE_MESSAGE="Not read only. Date input field present.";
-    
-    /**
-     *  Date Created:
-     */
-    private static final String DATE_CREATED_LABEL="Date Created:";
-    
-    /**
-     *  Date Created is a required field.
-     */
-    private static final String DATE_REQUIRED_MESSAGE="Date Created is a required field.";
-    
-    /**
-     *  LookUp Criteria Name 
-     */
-    private static final String LOOKUP_CRITERIA_NAME_NAME="lookupCriteria[name]";
     
     @Override
     protected String getBookmarkUrl() {

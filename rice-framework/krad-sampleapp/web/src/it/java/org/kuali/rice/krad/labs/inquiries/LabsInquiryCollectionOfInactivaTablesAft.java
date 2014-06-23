@@ -45,13 +45,13 @@ public class LabsInquiryCollectionOfInactivaTablesAft extends LabsInquiryBase {
                 {"Company Name:", "AAA Travel"},
                 {"Active:", "false"}};
         assertLabeledTextNotPresent(lightBoxLabeledText);
-        waitAndClickButtonByText("show inactive");
+        waitAndClickButtonByText(SHOW_INACTIVE);
         assertTextPresent(new String [] {"10001","AAA Travel","false"});
         String[][] dataTableBefore = {{"1", "10000", "Value Rentals","true"}};
         String[][] dataTableAfter = {{"1", "10000", "Value Rentals","true"},
         		{"2", "10001", "AAA Travel","false"}};
         assertDataTableContains(dataTableBefore);
-        waitAndClickButtonByText("show inactive"); // now the second show inactive button as the first is hide inactive at this point
+        waitAndClickButtonByText(SHOW_INACTIVE); // now the second show inactive button as the first is hide inactive at this point
 //        waitAndClickByXpath("//div[@data-parent='TravelCompanyCategory-InquiryView-CompanyTable']/button");
         assertDataTableContains(dataTableAfter);
     }

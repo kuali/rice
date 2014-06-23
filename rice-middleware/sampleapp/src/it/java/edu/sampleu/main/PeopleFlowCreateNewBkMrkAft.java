@@ -35,6 +35,7 @@ public class PeopleFlowCreateNewBkMrkAft extends PeopleFlowCreateNewAftBase {
     @Test
     public void testPeopleFlowCreateNewBookmark() throws Exception {
         testPeopleFlowCreateNew();
+        passed();
     }
     
     @Test

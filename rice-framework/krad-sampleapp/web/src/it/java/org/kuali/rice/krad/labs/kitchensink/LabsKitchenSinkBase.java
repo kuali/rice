@@ -20,7 +20,6 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public abstract class LabsKitchenSinkBase extends WebDriverLegacyITBase {
 
     protected void navigateToKitchenSink(String screenLinkText) throws InterruptedException {

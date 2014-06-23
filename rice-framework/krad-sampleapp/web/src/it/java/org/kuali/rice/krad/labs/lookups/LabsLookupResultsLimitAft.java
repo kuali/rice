@@ -50,14 +50,14 @@ public class LabsLookupResultsLimitAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupResultsLimit()throws Exception {
-        waitAndClickSearchByText();
+        waitAndClickSearch3();
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[2]");
         if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[3]")) {
             jiraAwareFail("More than 2 results available for " + this.getClass().toString());
         }
 
         waitAndClickButtonByText("Clear Values");
-        waitAndClickSearchByText();
+        waitAndClickSearch3();
         assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[2]");
         if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout dataTable']/tbody/tr[3]")) {
             jiraAwareFail("More than 2 results available for " + this.getClass().toString());

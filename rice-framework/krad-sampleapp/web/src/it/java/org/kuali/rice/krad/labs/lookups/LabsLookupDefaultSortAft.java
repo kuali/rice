@@ -50,7 +50,7 @@ public class LabsLookupDefaultSortAft extends LabsLookupBase {
     }
     
     protected void testLabsLookupDefaultSort()throws Exception {
-        waitAndClickSearchByText();
+        waitAndClickSearch3();
 
         // sort is setup for Z-A, z accounts are created by other tests
         waitForElementPresentByXpath("//a[contains(text(), 'z1')]");

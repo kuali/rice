@@ -54,14 +54,13 @@ public class LabsLookupWithUserControlAft extends LabsLookupBase {
         //force js function to set hidden principalId to the same value as myPrincipalName
         //if this is not done and the search gets called before principalId is set you will get an exception
         waitAndTypeByName("lookupCriteria[entityId]","");
-        waitAndClickSearchByText();
+        waitAndClickSearch3();
         waitForElementPresentByClassName("dataTables_info");
         assertTextPresent("1100");
         assertTextPresent("admin");
         waitAndClickButtonByText("Clear Values");
         Thread.sleep(2000);
-        waitAndClickSearchByText();
-        Thread.sleep(3000);
-        assertTextPresent("Showing 1 to 10 of");
+        waitAndClickSearch3();
+        waitForTextPresent("Showing 1 to 10 of");
     }
 }

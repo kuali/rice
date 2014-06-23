@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.general;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -45,7 +46,7 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
         selectByName("exampleShown", "Unified Header");
         waitAndClickByLinkText("Unified example");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
+        waitForElementPresent(By.xpath("//h1/span[@class='uif-headerText-span']"));
         assertElementPresentByXpath("//h1/span[2]/p[@class='uif-viewHeader-supportTitle']");
         driver.close();
         switchToWindow("Kuali");
@@ -55,7 +56,7 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
         selectByName("exampleShown", "Non-Unified Header");
         waitAndClickByLinkText("Non-Unified example");
         switchToWindow("Kuali :: View Header");
-        assertElementPresentByXpath("//h1/span[@class='uif-headerText-span']");
+        waitForElementPresent(By.xpath("//h1/span[@class='uif-headerText-span']"));
         assertElementPresentByXpath("//h2/span[@class='uif-headerText-span']");
         driver.close();
         switchToWindow("Kuali");

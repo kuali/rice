@@ -53,10 +53,12 @@ public class PersonPendingApprovalsAft extends PendingBase {
     @Test
     public void testPersonPendingApprovalsBookmark() throws Exception {
         testPersonPendingApprovals();
+        passed();
     }
 
     @Test
     public void testPersonPendingApprovalsNav() throws Exception {
         testPersonPendingApprovals();
+        passed();
     }
 }

@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.demo.uif.library;
 
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 

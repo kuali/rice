@@ -16,29 +16,22 @@
 package org.kuali.rice.krad.labs.clientside.stateview;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverAftBase;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabsClientSideStateViewAft extends WebDriverLegacyITBase {
+public class LabsClientSideStateViewAft extends WebDriverAftBase {
 
     /**
-     * /kr-krad/labs?viewId=Lab-ClientSideState&formKey=ff000d97-13e9-4130-81a3-bc0217e8e0eb&
-     * cacheKey=otutyty24mo0f76n59ebqxvtpg&pageId=Lab-ClientSideState-Page1
+     * /kr-krad/labs?viewId=Lab-ClientSideState&pageId=Lab-ClientSideState-Page1
      */
-    public static final String BOOKMARK_URL = "/kr-krad/labs?viewId=Lab-ClientSideState&formKey=ff000d97-13e9-4130-81a3-bc0217e8e0eb&cacheKey=otutyty24mo0f76n59ebqxvtpg&pageId=Lab-ClientSideState-Page1";
+    public static final String BOOKMARK_URL = "/kr-krad/labs?viewId=Lab-ClientSideState&pageId=Lab-ClientSideState-Page1";
 
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.testtools.selenium.AutomatedFunctionalTestBase#navigate()
-     */
     @Override
     protected void navigate() throws Exception {
-        // TODO deep - THIS METHOD NEEDS JAVADOCS
-        //Navigation is not defined for this functionality so we only do have URL in this Smoke Test.
+        waitAndClickLinkContainingText("Client Side State Test View");
     }
 
     @Override
@@ -49,21 +42,29 @@ public class LabsClientSideStateViewAft extends WebDriverLegacyITBase {
     @Test
     public void testClientSideStateViewBookmark() throws Exception {
         testClientSideStateView();
+        passed();
+    }
+
+    @Test
+    public void testClientSideStateViewNav() throws Exception {
+        testClientSideStateView();
+        passed();
     }
 
     public void testClientSideStateView() throws Exception {
-        waitAndClickButtonByText("show inactive"); // first
-        waitAndClickButtonByText("show inactive"); // second, first has changed
+        waitAndClickButtonByText(SHOW_INACTIVE); // first
+        Thread.sleep(500);
+        waitAndClickButtonByText(SHOW_INACTIVE); // second, first has changed
 //        waitAndClickByXpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]"); // first show inactive
 //        waitAndClickByXpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]"); // the second show inactive is now the only one
         waitAndClickButtonByText("Refresh - Ajax");
         Thread.sleep(2000);
-        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]")); // first inactive, still Hide inactive
+        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'" + SHOW_INACTIVE + "')]")); // first inactive, still Hide inactive
         waitForElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'Hide inactive')]")); // first inactive is Hide inactive
         waitAndClickButtonByText("Refresh - Non-Ajax");
         Thread.sleep(2000);
-        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]")); // first show inactive, still Hide inactive
+        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'" + SHOW_INACTIVE + "')]")); // first show inactive, still Hide inactive
         waitForElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'Hide inactive')]")); // first inactive is Hide inactive
-        assertFalse(isElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"][2]/header/div/button[contains(.,'show inactive')]"))); // second show inactive, still Hide inactive
+        assertFalse(isElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"][2]/header/div/button[contains(.,'" + SHOW_INACTIVE + "')]"))); // second show inactive, still Hide inactive
     }
 }

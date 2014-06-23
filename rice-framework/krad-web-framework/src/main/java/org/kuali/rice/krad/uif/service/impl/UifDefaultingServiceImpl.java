@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.service.impl;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
@@ -140,6 +141,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 DataObjectRelationship relationship = metadata.getRelationship(relationshipName);
                 if ( relationship != null && CollectionUtils.isNotEmpty(relationship.getAttributeRelationships())) {
                     ((UserControl)c).setPrincipalIdPropertyName(relationship.getAttributeRelationships().get(0).getParentAttributeName());
+                    ((UserControl)c).setPersonNamePropertyName(relationshipName + "." + KimConstants.AttributeConstants.NAME);
                     ((UserControl)c).setPersonObjectPropertyName(relationshipName);
                 }
             } else {

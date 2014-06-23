@@ -1314,9 +1314,12 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         // get relationship from metadata service
         @SuppressWarnings("deprecation")
-        DataObjectRelationship relationship = KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(parentObject,
-                parentObjectClass, propertyName, "", true, true, false);
-        
+        DataObjectRelationship relationship = null;
+        if (parentObject != null) {
+            relationship = KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(parentObject,
+                    parentObjectClass, propertyName, "", true, true, false);
+        }
+
         return relationship != null;
     }
 

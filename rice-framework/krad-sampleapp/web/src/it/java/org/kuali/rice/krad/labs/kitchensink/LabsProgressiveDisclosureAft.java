@@ -23,7 +23,10 @@ import org.junit.Test;
 
 public class LabsProgressiveDisclosureAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=a3c6547f-b597-4cc0-af97-f24a936f64e8&cacheKey=l4wt7eyqfhe0c8hoxcvzrtz9f6&pageId=UifCompView-Page5#UifCompView-Page5";
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page5#UifCompView-Page5
+     */
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page5#UifCompView-Page5";
 
     @Override
     protected String getBookmarkUrl() {

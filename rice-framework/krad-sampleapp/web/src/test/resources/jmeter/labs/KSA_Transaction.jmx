@@ -87,7 +87,7 @@
           </elementProp>
           <elementProp name="PAGEUNDERTESTTIMEOUTMS" elementType="Argument">
             <stringProp name="Argument.name">PAGEUNDERTESTTIMEOUTMS</stringProp>
-            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,1186)}</stringProp>
+            <stringProp name="Argument.value">${__P(pageundertesttimeoutms,1640)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="TESTPATH" elementType="Argument">
@@ -162,12 +162,6 @@
 	vars.put(&quot;URL&quot;, &quot;${SERVER}${PATH}&quot;);	
 } else {
 	vars.put(&quot;URL&quot;, &quot;${SERVER}:${PORT}${PATH}&quot;);	
-}
-
-if (&quot;NOT_USED_DELETE&quot;.equals(vars.get(&quot;PAGEID&quot;))) {
-	vars.put(&quot;REFERER_ULR&quot;, &quot;http://${URL}${TESTPATH}?viewId=${VIEWID}&quot;);
-} else {
-	vars.put(&quot;REFERER_ULR&quot;, &quot;http://${URL}${TESTPATH}?viewId=${VIEWID}&amp;amp;pageId=${PAGEID}&quot;);
 }
 </stringProp>
           </BeanShellListener>
@@ -1961,20 +1955,13 @@ if (&quot;NOT_USED_DELETE&quot;.equals(vars.get(&quot;PAGEID&quot;))) {
               <stringProp name="LoopController.loops">${LOOPS}</stringProp>
             </LoopController>
             <hashTree>
-              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${TESTPATH}?viewId=${VIEWID}&amp;pageId=${PAGEID}" enabled="true">
+              <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="${TESTPATH}?viewId=${VIEWID}" enabled="true">
                 <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
                   <collectionProp name="Arguments.arguments">
                     <elementProp name="viewId" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
                       <stringProp name="Argument.name">viewId</stringProp>
                       <stringProp name="Argument.value">${VIEWID}</stringProp>
-                      <stringProp name="Argument.metadata">=</stringProp>
-                      <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                    </elementProp>
-                    <elementProp name="pageId" elementType="HTTPArgument">
-                      <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">pageId</stringProp>
-                      <stringProp name="Argument.value">${PAGEID}</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>

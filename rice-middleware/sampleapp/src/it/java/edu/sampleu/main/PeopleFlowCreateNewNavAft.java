@@ -30,6 +30,7 @@ public class PeopleFlowCreateNewNavAft extends PeopleFlowCreateNewAftBase {
     @Test
     public void testPeopleFlowCreateNewNav() throws Exception {
         testPeopleFlowCreateNew();
+        passed();
     }
     
     @Test

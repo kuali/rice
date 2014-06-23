@@ -22,10 +22,12 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class LabsValidationRegexAft extends LabsKitchenSinkBase {
 
-    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&formKey=4e87b0ca-c718-49c2-ac6d-f86e8dbabf6c&cacheKey=ca03hvydzk027i3l2hw0ldkuik&pageId=UifCompView-Page4#UifCompView-Page4";
+    /**
+     * /kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page4#UifCompView-Page4
+     */
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page4#UifCompView-Page4";
 
     @Override
     protected String getBookmarkUrl() {

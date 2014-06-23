@@ -87,7 +87,7 @@ public class LabsLookupValidateSearchParamsAft extends LabsLookupBase {
     }
     
     private void assertWarningPresent(Boolean isWildCardWarningPresent , Boolean isNegativeWarningPresent) throws Exception {
-        waitAndClickSearchByText();
+    	waitAndClickSearch3();
     	if(isWildCardWarningPresent){
     		waitForTextPresent(WILDCARD_WARNING_MSG);
     	}

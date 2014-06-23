@@ -16,14 +16,13 @@
 package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Test;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
 /**
  * Tests the Component section in Rice.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ServerSideTestViewAft extends LabsKitchenSinkBase {
+public class LabsServerSideTestViewAft extends LabsKitchenSinkBase {
 
     /**
      * "/kr-krad/uicomponents?viewId=UifCompView&methodToCall=start&readOnlyFields=field91";
@@ -38,7 +37,8 @@ public class ServerSideTestViewAft extends LabsKitchenSinkBase {
         return BOOKMARK_URL;
     }
 
-    protected void navigation() throws InterruptedException {
+    @Override
+    protected void navigate() throws InterruptedException {
         navigateToKitchenSink("Validation");
         //        waitAndClickKRAD();
         //        waitAndClickByLinkText("ServerSide Constraint Validation Demo");
@@ -118,7 +118,6 @@ public class ServerSideTestViewAft extends LabsKitchenSinkBase {
 
     @Test
     public void testServerSideTestViewNav() throws Exception {
-        navigation();
         testServerSideTestView();
         passed();
     }

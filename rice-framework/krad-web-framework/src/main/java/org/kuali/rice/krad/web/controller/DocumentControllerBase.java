@@ -922,6 +922,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         if(explanationData == null) {
             return "";
         }
+
         return explanationData;
     }
 

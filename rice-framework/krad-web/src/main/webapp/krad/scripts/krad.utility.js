@@ -493,25 +493,23 @@ function setMethodToCall(methodToCall) {
 }
 
 /**
- * Writes a property name/value pair as a hidden input field on the form. Called
- * to dynamically set request parameters based on a chosen action. Assumes
- * existence of a div named 'formComplete' where the hidden inputs will be
- * inserted
+ * Writes a property name/value pair as a hidden input field on the form.
  *
- * @param propertyName -
- *          name for the input field to write
- * @param propertyValue -
- *          value for the input field to write
+ * <p>Called to dynamically set request parameters based on a chosen action. Assumes
+ * existence of a div named 'formComplete' where the hidden inputs will be
+ * inserted</p>
+ *
+ * @param propertyName name for the input field to write
+ * @param propertyValue value for the input field to write
  */
 function writeHiddenToForm(propertyName, propertyValue) {
-    //removing because of performFinalize bug
     jQuery('input[name="' + escapeName(propertyName) + '"]').remove();
 
     if (propertyValue && typeof propertyValue === 'string') {
         propertyValue = propertyValue.replace(/"/g, "\\\"");
     }
 
-    jQuery("<input type='hidden' name='" + escapeName(propertyName) + "'" + ' value="' + propertyValue + '"/>').appendTo(jQuery("#formComplete"));
+    jQuery("<input type='hidden' name='" + propertyName + "'" + ' value="' + propertyValue + '"/>').appendTo(jQuery("#formComplete"));
 }
 
 /**

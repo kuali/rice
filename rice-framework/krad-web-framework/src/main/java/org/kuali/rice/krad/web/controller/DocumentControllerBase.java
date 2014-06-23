@@ -854,6 +854,20 @@ public abstract class DocumentControllerBase extends UifControllerBase {
                 action, document.getDocumentNumber());
     }
 
+    /**
+     * Convenience method for building authorization exceptions.
+     *
+     * @param form document form instance containing the explanation dialog
+     */
+    protected String generateDisapprovalNote(DocumentFormBase form) {
+        String explanationData = form.getDialogExplanations().get(EXPLANATION_DIALOG);
+        if(explanationData == null) {
+            return "";
+        }
+
+        return explanationData;
+    }
+
     public LegacyDataAdapter getLegacyDataAdapter() {
         if (this.legacyDataAdapter == null) {
             this.legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
@@ -915,15 +929,6 @@ public abstract class DocumentControllerBase extends UifControllerBase {
 
     public ConfigurationService getConfigurationService() {
         return CoreApiServiceLocator.getKualiConfigurationService();
-    }
-
-    protected String generateDisapprovalNote(DocumentFormBase form) {
-        String explanationData = form.getDialogExplanations().get(EXPLANATION_DIALOG);
-        if(explanationData == null) {
-            return "";
-        }
-
-        return explanationData;
     }
 
 }

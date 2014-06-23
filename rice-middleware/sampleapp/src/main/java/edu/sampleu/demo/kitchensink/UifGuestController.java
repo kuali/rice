@@ -38,7 +38,7 @@ public class UifGuestController extends UifControllerBase {
      * {@inheritDoc}
      */
     @Override
-    protected UifComponentsTestForm createInitialForm(HttpServletRequest request) {
+    protected UifComponentsTestForm createInitialForm() {
         return new UifComponentsTestForm();
     }
 
@@ -47,12 +47,11 @@ public class UifGuestController extends UifControllerBase {
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
         if (!form.getViewId().equals("UifGuestUserView")) {
             throw new RuntimeException("Guest user not allowed to acces this view : " + form.getViewId());
         }
 
-        return super.start(form,request,response);
+        return super.start(form);
     }
 }

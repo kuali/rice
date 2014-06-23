@@ -42,14 +42,13 @@ public class UILayoutTestController extends UifControllerBase {
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected UifComponentsTestForm createInitialForm(HttpServletRequest request) {
+    protected UifComponentsTestForm createInitialForm() {
         return new UifComponentsTestForm();
     }
 
 	@Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-			HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView start(UifFormBase form) {
 	    UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
 
         //Create a collection to be displayed in collection group table layout
@@ -58,21 +57,21 @@ public class UILayoutTestController extends UifControllerBase {
                     "D" + i));
         }
 
-		return super.start(uiTestForm, request, response);
+		return super.start(uiTestForm);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
 	public ModelAndView save(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, "page2");
+		return getModelAndView(uiTestForm, "page2");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
 	public ModelAndView close(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, "page1");
+		return getModelAndView(uiTestForm, "page1");
 	}
 
 }

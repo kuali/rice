@@ -40,19 +40,15 @@ public class InitiatedDocumentInfoController extends UifControllerBase {
     private static final Logger LOG = org.apache.log4j.Logger.getLogger(InitiatedDocumentInfoController.class);
 
     @Override
-    public InitiatedDocumentInfoForm createInitialForm(HttpServletRequest request) {
-
-        InitiatedDocumentInfoForm initiatedDocumentInfoForm = new InitiatedDocumentInfoForm();
-
-        return initiatedDocumentInfoForm;
+    public InitiatedDocumentInfoForm createInitialForm() {
+        return new InitiatedDocumentInfoForm();
     }
 
     @Override
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm")UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
 
         InitiatedDocumentInfoForm initiatedDocumentInfoForm = (InitiatedDocumentInfoForm) form;
-        return super.start(form, request, response);
+        return super.start(form);
     }
 }

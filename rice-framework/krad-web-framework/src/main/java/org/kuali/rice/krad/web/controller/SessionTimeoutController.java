@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Controller class for the session timeout view
+ * Controller class for the session timeout view.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 public class SessionTimeoutController extends UifControllerBase {
 
     @Override
-    protected SessionTimeoutForm createInitialForm(HttpServletRequest request) {
+    protected SessionTimeoutForm createInitialForm() {
         return new SessionTimeoutForm();
     }
 }

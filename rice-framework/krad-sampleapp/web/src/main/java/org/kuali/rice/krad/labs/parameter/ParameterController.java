@@ -26,8 +26,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Controller for the Parameter utility.
  *
@@ -38,7 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ParameterController extends UifControllerBase {
 
     @Override
-    protected ParameterForm createInitialForm(HttpServletRequest request) {
+    protected ParameterForm createInitialForm() {
         return new ParameterForm();
     }
 
@@ -62,6 +60,6 @@ public class ParameterController extends UifControllerBase {
             CoreServiceApiServiceLocator.getParameterRepositoryService().updateParameter(builder.build());
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 }

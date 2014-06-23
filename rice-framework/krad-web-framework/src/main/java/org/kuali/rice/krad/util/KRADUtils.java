@@ -949,7 +949,6 @@ public final class KRADUtils {
      * Logs the error messages if any in the message map
      */
     public static void logErrors() {
-
         if (!GlobalVariables.getMessageMap().hasErrors()) {
             return;
         }

@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ServerPagingTestController extends UifControllerBase {
 
     @Override
-    protected ServerPagingTestForm createInitialForm(HttpServletRequest request) {
+    protected ServerPagingTestForm createInitialForm() {
         ServerPagingTestForm form = new ServerPagingTestForm();
         form.setViewId("Demo-CollectionServerPaging-View");
 
@@ -50,9 +50,8 @@ public class ServerPagingTestController extends UifControllerBase {
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) {
-        return super.start(form, request, response);
+    public ModelAndView start(UifFormBase form) {
+        return super.start(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=changeTheme")
@@ -60,7 +59,7 @@ public class ServerPagingTestController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         changeTheme(form);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=validateView")
@@ -68,7 +67,7 @@ public class ServerPagingTestController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         KRADServiceLocatorWeb.getViewValidationService().validateView(uiTestForm);
 
-        return getUIFModelAndView(uiTestForm);
+        return getModelAndView(uiTestForm);
     }
 
     private void changeTheme(UifFormBase form) {

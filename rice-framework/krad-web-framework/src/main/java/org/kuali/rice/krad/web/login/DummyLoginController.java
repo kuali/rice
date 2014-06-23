@@ -46,21 +46,8 @@ import java.util.Properties;
 public class DummyLoginController extends UifControllerBase {
 
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
+    protected UifFormBase createInitialForm() {
         return new DummyLoginForm();
-    }
-
-    @Override
-    @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) {
-        // check view authorization
-        if (form.getView() != null) {
-            String methodToCall = request.getParameter(KRADConstants.DISPATCH_REQUEST_PARAMETER);
-            checkViewAuthorization(form, methodToCall);
-        }
-
-        return getUIFModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=submit")
@@ -101,10 +88,14 @@ public class DummyLoginController extends UifControllerBase {
 
     private String decode(String encodedUrl) {
         try {
-            return URLDecoder.decode(encodedUrl, "UTF-8");
+            if (StringUtils.isNotBlank(encodedUrl)) {
+                return URLDecoder.decode(encodedUrl, "UTF-8");
+            }
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("Unable to decode value: " + encodedUrl, e);
         }
+
+        return null;
     }
 
 }

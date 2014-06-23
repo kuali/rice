@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 public class QuickfinderController extends UifControllerBase {
 
     @Override
-    public QuickfinderForm createInitialForm( HttpServletRequest request ) {
+    public QuickfinderForm createInitialForm() {
         return new QuickfinderForm();
     }
 }

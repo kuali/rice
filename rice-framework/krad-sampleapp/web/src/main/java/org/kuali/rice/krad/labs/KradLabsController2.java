@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 public class KradLabsController2 extends UifControllerBase {
 
     @Override
-    protected KradLabsForm createInitialForm(HttpServletRequest request) {
+    protected KradLabsForm createInitialForm() {
         return new KradLabsForm();
     }
 }

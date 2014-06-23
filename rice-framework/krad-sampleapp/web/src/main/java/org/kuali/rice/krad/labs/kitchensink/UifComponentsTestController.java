@@ -35,11 +35,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Properties;
-import java.util.Set;
-
 /**
  * Controller for the Test UI Page
  *
@@ -50,17 +45,16 @@ import java.util.Set;
 public class UifComponentsTestController extends UifControllerBase {
 
     /**
-     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     * {@inheritDoc}
      */
     @Override
-    protected UifComponentsTestForm createInitialForm(HttpServletRequest request) {
+    protected UifComponentsTestForm createInitialForm() {
         return new UifComponentsTestForm();
     }
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
         UifComponentsTestForm uiTestForm = (UifComponentsTestForm) form;
         form.setState("state1");
         //for generated view:
@@ -85,21 +79,21 @@ public class UifComponentsTestController extends UifControllerBase {
 
         GlobalVariables.getMessageMap().addGrowlMessage("Welcome!", "kitchenSink.welcome");
 
-        return super.start(uiTestForm, request, response);
+        return super.start(uiTestForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
     public ModelAndView save(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         KRADServiceLocatorWeb.getViewValidationService().validateView(uiTestForm);
-        return getUIFModelAndView(uiTestForm);
+        return getModelAndView(uiTestForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
     public ModelAndView close(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
 
-        return getUIFModelAndView(uiTestForm, "UifCompView-Page1");
+        return getModelAndView(uiTestForm, "UifCompView-Page1");
     }
 
     /**
@@ -121,14 +115,14 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putInfo("gField3", "serverTestInfo");
         }
 
-        return getUIFModelAndView(form, pageId);
+        return getModelAndView(form, pageId);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshProgGroup")
     public ModelAndView refreshProgGroup(@ModelAttribute("KualiForm") UifComponentsTestForm uiTestForm,
             BindingResult result, HttpServletRequest request, HttpServletResponse response) {
 
-        return getUIFModelAndView(uiTestForm);
+        return getModelAndView(uiTestForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshWithServerMessages")
@@ -138,7 +132,7 @@ public class UifComponentsTestController extends UifControllerBase {
         GlobalVariables.getMessageMap().putWarning("field45", "serverTestWarning");
         GlobalVariables.getMessageMap().putInfo("field45", "serverTestInfo");
 
-        return getUIFModelAndView(uiTestForm);
+        return getModelAndView(uiTestForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=genCollectionServerMessages")
@@ -155,7 +149,7 @@ public class UifComponentsTestController extends UifControllerBase {
         GlobalVariables.getMessageMap().putError("list5[0].subList[0].field1", "serverTestError");
         GlobalVariables.getMessageMap().putWarning("list5[0].subList[0].field1", "serverTestWarning");
         GlobalVariables.getMessageMap().putInfo("list5[0].subList[0].field1", "serverTestInfo");
-        return refresh(uiTestForm, result, request, response);
+        return refresh(uiTestForm);
     }
 
     /**
@@ -188,7 +182,7 @@ public class UifComponentsTestController extends UifControllerBase {
             }
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -214,7 +208,7 @@ public class UifComponentsTestController extends UifControllerBase {
             }
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -240,7 +234,7 @@ public class UifComponentsTestController extends UifControllerBase {
             }
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -254,7 +248,7 @@ public class UifComponentsTestController extends UifControllerBase {
         this.addWarnings(form, result, request, response);
         this.addInfo(form, result, request, response);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -267,7 +261,7 @@ public class UifComponentsTestController extends UifControllerBase {
         this.addErrors(form, result, request, response);
         this.addWarnings(form, result, request, response);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -280,7 +274,7 @@ public class UifComponentsTestController extends UifControllerBase {
         this.addErrors(form, result, request, response);
         this.addInfo(form, result, request, response);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -296,7 +290,7 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-Section1", "errorSectionTest");
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -309,7 +303,7 @@ public class UifComponentsTestController extends UifControllerBase {
         this.addWarnings(form, result, request, response);
         this.addInfo(form, result, request, response);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=gotoState2")
@@ -321,7 +315,7 @@ public class UifComponentsTestController extends UifControllerBase {
             form.setState("state2");
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=gotoState3")
@@ -333,7 +327,7 @@ public class UifComponentsTestController extends UifControllerBase {
             form.setState("state3");
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=gotoState4")
@@ -345,7 +339,7 @@ public class UifComponentsTestController extends UifControllerBase {
             form.setState("state4");
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -366,7 +360,7 @@ public class UifComponentsTestController extends UifControllerBase {
             throw new RuntimeException("Generate fake incident report");
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -388,8 +382,7 @@ public class UifComponentsTestController extends UifControllerBase {
     }
 
     @Override
-    public ModelAndView addLine(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView addLine(UifFormBase uifForm) {
         GlobalVariables.getMessageMap().addGrowlMessage("Greetings!", "kitchenSink.welcome");
         if (uifForm.getPageId().equals("Demo-ValidationLayout-CollectionsErrorPage")) {
             GlobalVariables.getMessageMap().putError("Demo-ValidationLayout-CollectionErrorSection",
@@ -397,12 +390,11 @@ public class UifComponentsTestController extends UifControllerBase {
             GlobalVariables.getMessageMap().putErrorForSectionId("Demo-ValidationLayout-CollectionErrorSection",
                     "errorSectionTest");
         }
-        return super.addLine(uifForm, result, request, response);
+        return super.addLine(uifForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=customLineAction")
-    public ModelAndView customLineAction(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView customLineAction(UifFormBase uifForm, HttpServletRequest request) {
 
         String actionParm1 = uifForm.getActionParamaterValue("field1");
         String actionParm2 = uifForm.getActionParamaterValue("field2");
@@ -410,7 +402,7 @@ public class UifComponentsTestController extends UifControllerBase {
         GlobalVariables.getMessageMap().addGrowlMessage("Action Parameters", "actionParms.message", actionParm1,
                 actionParm2);
 
-        return super.deleteLine(uifForm, result, request, response);
+        return super.deleteLine(uifForm);
 
     }
 
@@ -432,7 +424,7 @@ public class UifComponentsTestController extends UifControllerBase {
 
         GlobalVariables.getMessageMap().addGrowlMessage("Action Parameters", "customLineAction.message", actionParm1);
 
-        return getUIFModelAndView(uifForm);
+        return getModelAndView(uifForm);
     }
 
     /**
@@ -449,6 +441,6 @@ public class UifComponentsTestController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         //set View to readOnly
         uifForm.getView().setReadOnly(true);
-        return getUIFModelAndView(uifForm);
+        return getModelAndView(uifForm);
     }
 }

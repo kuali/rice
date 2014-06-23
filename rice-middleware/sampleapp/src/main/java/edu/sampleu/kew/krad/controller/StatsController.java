@@ -44,14 +44,13 @@ public class StatsController extends UifControllerBase {
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected StatsForm createInitialForm(HttpServletRequest request) {
+    protected StatsForm createInitialForm() {
         return new StatsForm();
     }
 
 	@Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-			HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView start(UifFormBase form) {
 
 		StatsForm statForm = (StatsForm) form;
 
@@ -70,7 +69,7 @@ public class StatsController extends UifControllerBase {
 			throw new RuntimeException(e);
 		}
         
-		return super.start(statForm, request, response);
+		return super.start(statForm);
 	}
 	
 	 public StatsService getStatsService() {

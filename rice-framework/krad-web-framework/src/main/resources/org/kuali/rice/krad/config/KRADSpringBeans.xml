@@ -94,8 +94,9 @@
     <property name="listItem" value="classpath:org/kuali/rice/krad/dwr-core.xml"/>
   </bean>
 
-  <bean id="dataDictionaryService" parent="dataDictionaryService-parent"/>
-  <bean id="dataDictionaryService-parent" abstract="true" class="org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl" scope="singleton">
+  <bean id="dataDictionaryService" parent="dataDictionaryService-parentBean"/>
+  <bean id="dataDictionaryService-parentBean" abstract="true"
+        class="org.kuali.rice.krad.service.impl.DataDictionaryServiceImpl" scope="singleton">
     <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>
     <property name="propertyEditorMap">
@@ -170,12 +171,8 @@
 
   <bean id="dataObjectSerializerService"
         class="org.kuali.rice.krad.service.impl.DataObjectSerializerServiceImpl">
-    <property name="legacyDataAdapter">
-      <ref bean="legacyDataAdapter"/>
-    </property>
-    <property name="xmlObjectSerializerService">
-      <ref bean="xmlObjectSerializerService"/>
-    </property>
+    <property name="legacyDataAdapter" ref="legacyDataAdapter"/>
+    <property name="xmlObjectSerializerService" ref="xmlObjectSerializerService"/>
   </bean>
 
   <bean id="documentHeaderService" class="org.kuali.rice.krad.service.impl.DocumentHeaderServiceImpl">
@@ -195,27 +192,17 @@
   </bean>
 
   <bean id="kualiRuleService" class="org.kuali.rice.krad.service.impl.KualiRuleServiceImpl">
-    <property name="documentDictionaryService">
-      <ref bean="documentDictionaryService"/>
-    </property>
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
+    <property name="documentDictionaryService" ref="documentDictionaryService"/>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
 
   <bean id="documentDictionaryService" class="org.kuali.rice.krad.service.impl.DocumentDictionaryServiceImpl">
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
 
   <bean id="lookupService" class="org.kuali.rice.krad.service.impl.LookupServiceImpl">
-    <property name="legacyDataAdapter">
-      <ref bean="legacyDataAdapter"/>
-    </property>
-    <property name="kualiConfigurationService">
-      <ref bean="kualiConfigurationService"/>
-    </property>
+    <property name="legacyDataAdapter" ref="legacyDataAdapter"/>
+    <property name="kualiConfigurationService" ref="kualiConfigurationService"/>
   </bean>
 
   <bean id="workflowDocumentService" class="org.kuali.rice.krad.workflow.service.impl.WorkflowDocumentServiceImpl"
@@ -257,27 +244,17 @@
   <bean id="mandatoryElementConstraintProcessor"
         class="org.kuali.rice.krad.datadictionary.validation.processor.MandatoryElementConstraintProcessor"
         abstract="true">
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
-    <property name="dateTimeService">
-      <ref bean="dateTimeService"/>
-    </property>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="dateTimeService" ref="dateTimeService"/>
   </bean>
 
   <bean id="viewValidationService" class="org.kuali.rice.krad.service.impl.ViewValidationServiceImpl">
-    <property name="dictionaryValidationService">
-      <ref bean="dictionaryValidationService"/>
-    </property>
+    <property name="dictionaryValidationService" ref="dictionaryValidationService"/>
   </bean>
 
   <bean id="dictionaryValidationService" class="org.kuali.rice.krad.service.impl.DictionaryValidationServiceImpl">
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
-    <property name="documentDictionaryService">
-      <ref bean="documentDictionaryService"/>
-    </property>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="documentDictionaryService" ref="documentDictionaryService"/>
     <!-- Collection constraint processors are classes that determine if a feature of a collection of objects satisfies some constraint -->
     <property name="collectionConstraintProcessors">
       <list>
@@ -365,9 +342,7 @@
   </bean>
 
   <bean id="postProcessorService" class="org.kuali.rice.krad.service.impl.PostProcessorServiceImpl">
-    <property name="documentService">
-      <ref bean="documentService"/>
-    </property>
+    <property name="documentService" ref="documentService"/>
   </bean>
 
   <bean id="pessimisticLockService" class="org.kuali.rice.krad.service.impl.PessimisticLockServiceImpl"
@@ -392,26 +367,18 @@
   <bean id="inactivationBlockingDetectionService"
         class="org.kuali.rice.krad.service.impl.InactivationBlockingDetectionServiceImpl"
         p:legacyDataAdapter-ref="legacyDataAdapter">
-    <property name="dataObjectService">
-      <ref bean="dataObjectService"/>
-    </property>
+    <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 
   <bean id="inactivationBlockingDisplayService"
         class="org.kuali.rice.krad.service.impl.InactivationBlockingDisplayServiceImpl"
         p:legacyDataAdapter-ref="legacyDataAdapter">
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
 
   <bean id="documentSerializerService" class="org.kuali.rice.krad.service.impl.DocumentSerializerServiceImpl">
-    <property name="legacyDataAdapter">
-      <ref bean="legacyDataAdapter"/>
-    </property>
-    <property name="xmlObjectSerializerService">
-      <ref bean="xmlObjectSerializerService"/>
-    </property>
+    <property name="legacyDataAdapter" ref="legacyDataAdapter"/>
+    <property name="xmlObjectSerializerService" ref="xmlObjectSerializerService"/>
   </bean>
 
   <bean id="kradApplicationModule" class="org.kuali.rice.krad.service.impl.KRADModuleService">
@@ -514,15 +481,9 @@
         class="org.kuali.rice.krad.service.impl.DataObjectAuthorizationServiceImpl"/>
 
   <bean id="inactivateableFromToService" class="org.kuali.rice.krad.service.impl.InactivateableFromToServiceImpl">
-    <property name="dateTimeService">
-      <ref bean="dateTimeService"/>
-    </property>
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
-    <property name="lookupService">
-      <ref bean="lookupService"/>
-    </property>
+    <property name="dateTimeService" ref="dateTimeService"/>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="lookupService" ref="lookupService"/>
   </bean>
 
   <bean id="KRADConstants" class="org.kuali.rice.core.api.util.collect.ConstantsMap">
@@ -575,27 +536,17 @@
   <bean id="lookupViewTypeService" class="org.kuali.rice.krad.uif.service.impl.LookupViewTypeServiceImpl"/>
 
   <bean id="maintenanceViewTypeService" class="org.kuali.rice.krad.uif.service.impl.MaintenanceViewTypeServiceImpl">
-    <property name="documentService">
-      <ref bean="documentService"/>
-    </property>
-    <property name="documentDictionaryService">
-      <ref bean="documentDictionaryService"/>
-    </property>
+    <property name="documentService" ref="documentService"/>
+    <property name="documentDictionaryService" ref="documentDictionaryService"/>
   </bean>
 
   <bean id="transactionalViewTypeService" class="org.kuali.rice.krad.uif.service.impl.TransactionalViewTypeServiceImpl">
-    <property name="documentService">
-      <ref bean="documentService"/>
-    </property>
-    <property name="documentDictionaryService">
-      <ref bean="documentDictionaryService"/>
-    </property>
+    <property name="documentService" ref="documentService"/>
+    <property name="documentDictionaryService" ref="documentDictionaryService"/>
   </bean>
 
   <bean id="viewDictionaryService" class="org.kuali.rice.krad.uif.service.impl.ViewDictionaryServiceImpl">
-    <property name="dataDictionaryService">
-      <ref bean="dataDictionaryService"/>
-    </property>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
 
   <bean id="uifDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl">
@@ -604,12 +555,72 @@
   </bean>
 
   <bean id="attributeQueryService" class="org.kuali.rice.krad.uif.service.impl.AttributeQueryServiceImpl">
-    <property name="lookupService">
-      <ref bean="lookupService"/>
-    </property>
+    <property name="lookupService" ref="lookupService"/>
   </bean>
 
-  <bean id="dataDictionaryRemoteFieldService" class="org.kuali.rice.krad.service.impl.DataDictionaryRemoteFieldServiceImpl" lazy-init="true"/>
+  <bean id="dataDictionaryRemoteFieldService"
+        class="org.kuali.rice.krad.service.impl.DataDictionaryRemoteFieldServiceImpl" lazy-init="true"/>
+
+  <bean id="controllerService" class="org.kuali.rice.krad.web.service.impl.ControllerServiceImpl">
+    <property name="modelAndViewService" ref="modelAndViewService"/>
+    <property name="navigationControllerService" ref="navigationControllerService"/>
+  </bean>
+
+  <bean id="navigationControllerService" class="org.kuali.rice.krad.web.service.impl.NavigationControllerServiceImpl">
+    <property name="modelAndViewService" ref="modelAndViewService"/>
+  </bean>
+
+  <bean id="collectionControllerService" class="org.kuali.rice.krad.web.service.impl.CollectionControllerServiceImpl">
+    <property name="modelAndViewService" ref="modelAndViewService"/>
+  </bean>
+
+  <bean id="refreshControllerService" class="org.kuali.rice.krad.web.service.impl.RefreshControllerServiceImpl">
+    <property name="modelAndViewService" ref="modelAndViewService"/>
+  </bean>
+
+  <bean id="queryControllerService" class="org.kuali.rice.krad.web.service.impl.QueryControllerServiceImpl">
+    <property name="modelAndViewService" ref="modelAndViewService"/>
+    <property name="attributeQueryService" ref="attributeQueryService"/>
+  </bean>
+
+  <bean id="modelAndViewService" class="org.kuali.rice.krad.web.service.impl.ModelAndViewServiceImpl">
+    <property name="viewService" ref="viewService"/>
+    <property name="viewValidationService" ref="viewValidationService"/>
+  </bean>
+
+  <bean id="lookupControllerService" class="org.kuali.rice.krad.lookup.LookupControllerServiceImpl"
+        parent="controllerService"/>
+
+  <bean id="lookupCollectionControllerService" class="org.kuali.rice.krad.lookup.LookupCollectionControllerServiceImpl">
+    <property name="modelAndViewService" ref="modelAndViewService"/>
+  </bean>
+
+  <bean id="inquiryControllerService" class="org.kuali.rice.krad.inquiry.InquiryControllerServiceImpl"
+        parent="controllerService"/>
+
+  <bean id="rice.krad.import.parameterService" class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
+            p:serviceName="parameterService"
+            p:objectType="org.kuali.rice.coreservice.framework.parameter.ParameterService"/>
+
+  <bean id="documentControllerService" class="org.kuali.rice.krad.document.DocumentControllerServiceImpl"
+        parent="controllerService">
+    <property name="legacyDataAdapter" ref="legacyDataAdapter"/>
+    <property name="dataDictionaryService" ref="dataDictionaryService"/>
+    <property name="documentService" ref="documentService"/>
+    <property name="documentDictionaryService" ref="documentDictionaryService"/>
+    <property name="attachmentService" ref="attachmentService"/>
+    <property name="noteService" ref="noteService"/>
+    <property name="navigationControllerService" ref="navigationControllerService"/>
+    <property name="configurationService" ref="kualiConfigurationService"/>
+    <property name="collectionControllerService" ref="collectionControllerService"/>
+    <property name="parameterService" ref="rice.krad.import.parameterService"/>
+  </bean>
+
+  <bean id="maintenanceDocumentControllerService"
+        class="org.kuali.rice.krad.maintenance.MaintenanceDocumentControllerServiceImpl"
+        parent="documentControllerService">
+    <property name="maintenanceDocumentService" ref="maintenanceDocumentService"/>
+  </bean>
 
   <bean id="dataDictionaryComponentPublisherService" class="org.kuali.rice.krad.service.impl.DataDictionaryComponentPublisherServiceImpl">
     <property name="dataDictionaryService" ref="dataDictionaryService"/>

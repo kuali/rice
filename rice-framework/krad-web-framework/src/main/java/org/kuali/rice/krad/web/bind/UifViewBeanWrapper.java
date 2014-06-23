@@ -96,18 +96,6 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         if (propertyEditor != null) {
             registerCustomEditor(null, propertyName, propertyEditor);
         }
-        
-        // TODO: Confirm that this else was not have been reachable, and remove
-//        } else if (requiresEncryption) {
-//            if (LOG.isDebugEnabled()) {
-//                LOG.debug("No custom formatter for property path '"
-//                        + propertyName
-//                        + "' but property does require encryption");
-//            }
-//
-//            this.registerCustomEditor(null, propertyName, new UifEncryptionPropertyEditorWrapper(
-//                    findEditorForPropertyName(propertyName)));
-//        }
 
         processedProperties.add(propertyName);
     }

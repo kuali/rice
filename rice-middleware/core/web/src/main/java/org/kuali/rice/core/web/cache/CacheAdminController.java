@@ -56,17 +56,16 @@ public class CacheAdminController extends UifControllerBase {
     }
 
     /**
-     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     * {@inheritDoc}
      */
     @Override
-    protected CacheAdminForm createInitialForm(HttpServletRequest request) {
+    protected CacheAdminForm createInitialForm() {
         return new CacheAdminForm();
     }
 
     @Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-			HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView start(UifFormBase form) {
 
         final Tree<String, String> cacheTree = new Tree<String,String>();
 
@@ -95,12 +94,11 @@ public class CacheAdminController extends UifControllerBase {
         cacheTree.setRootElement(root);
         ((CacheAdminForm) form).setCacheTree(cacheTree);
 
-        return super.start(form, request, response);
+        return super.start(form);
     }
 
 	@RequestMapping(params = "methodToCall=flush", method = RequestMethod.POST)
-	public ModelAndView flush(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-			HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView flush(UifFormBase form) {
         Person user = GlobalVariables.getUserSession().getPerson();
         boolean isAuthorized = KimApiServiceLocator.getPermissionService().isAuthorized(
 						user.getPrincipalId(),
@@ -135,7 +133,7 @@ public class CacheAdminController extends UifControllerBase {
         }else{
            GlobalVariables.getMessageMap().putError("flush","error.authorization.general",user.getPrincipalName(),"flush","cachemanager");
         }
-        return super.start(form, request, response);
+        return super.start(form);
     }
 
     private static void flushSpecificCache(CacheManager cm, String cache) {

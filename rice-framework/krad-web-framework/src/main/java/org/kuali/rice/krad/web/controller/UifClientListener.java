@@ -41,8 +41,11 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "/listener")
 public class UifClientListener extends UifControllerBase {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
+    protected UifFormBase createInitialForm() {
         return new UifFormBase();
     }
 
@@ -112,7 +115,7 @@ public class UifClientListener extends UifControllerBase {
 
         request.getSession().invalidate();
 
-        return getUIFModelAndViewWithInit(form, UifConstants.LOGGED_OUT_VIEW_ID);
+        return getModelAndViewWithInit(form, UifConstants.LOGGED_OUT_VIEW_ID);
     }
 
 }

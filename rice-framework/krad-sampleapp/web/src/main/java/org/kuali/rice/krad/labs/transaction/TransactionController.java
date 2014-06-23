@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 public class TransactionController extends UifControllerBase {
 
     @Override
-    protected TransactionForm createInitialForm(HttpServletRequest request) {
+    protected TransactionForm createInitialForm() {
         return new TransactionForm();
     }
 

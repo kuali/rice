@@ -21,14 +21,13 @@ import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
- * Basic form for Dummy Login
+ * Basic form for Dummy Login.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DummyLoginForm extends UifFormBase {
     private static final long serialVersionUID =  -7525378097732816418L;
 
-    //InputFields
     protected String login_user;
     protected String login_pw;
 
@@ -38,10 +37,9 @@ public class DummyLoginForm extends UifFormBase {
 
     public DummyLoginForm() {
         super();
+
         login_message = "";
     }
-
-    // Below are basic getters and setters for this data object
 
     public String getLogin_user() {
         return login_user;

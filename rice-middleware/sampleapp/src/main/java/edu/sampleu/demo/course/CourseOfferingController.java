@@ -42,7 +42,7 @@ public class CourseOfferingController extends UifControllerBase {
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected CourseOfferingForm createInitialForm(HttpServletRequest request) {
+    protected CourseOfferingForm createInitialForm() {
         return new CourseOfferingForm();
     }
 
@@ -51,8 +51,7 @@ public class CourseOfferingController extends UifControllerBase {
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
 
         Course course = new Course();
         course.setSubjectId("CTWR");
@@ -100,6 +99,6 @@ public class CourseOfferingController extends UifControllerBase {
 
         ((CourseOfferingForm) form).setCourseSection(section);
 
-        return super.start(form, request, response);
+        return super.start(form);
     }
 }

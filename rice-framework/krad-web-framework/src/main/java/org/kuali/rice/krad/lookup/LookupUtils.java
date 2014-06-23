@@ -650,7 +650,6 @@ public class LookupUtils {
      * @param form lookup form instance containing the selected results and lookup configuration
      */
     public static void refreshLookupResultSelections(LookupForm form) {
-
         int displayStart = 0;
         int displayLength = 0;
 
@@ -673,7 +672,6 @@ public class LookupUtils {
         Set<String> selectedLookupResultsCache = form.getSelectedLookupResultsCache();
 
         selectedLines = (selectedLines == null) ? new HashSet<String>() : selectedLines;
-
 
         for(int i = displayStart; i < displayStart + displayLength; i++ ) {
             if(i >= form.getLookupResults().size()) break;

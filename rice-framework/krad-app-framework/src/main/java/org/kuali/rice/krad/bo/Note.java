@@ -370,6 +370,7 @@ public class Note extends PersistableBusinessObjectBaseAdapter {
     public void setAdHocRouteRecipient(AdHocRouteRecipient adHocRouteRecipient) {
         this.adHocRouteRecipient = adHocRouteRecipient;
     }
+
     /**
      * @return the attachmentLink
      */

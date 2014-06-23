@@ -31,7 +31,6 @@ import javax.json.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -50,17 +49,16 @@ public class KitchenSinkPerformanceController extends UifControllerBase {
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected KitchenSinkPerformanceForm createInitialForm(HttpServletRequest request) {
+    protected KitchenSinkPerformanceForm createInitialForm() {
         return new KitchenSinkPerformanceForm();
     }
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
         KitchenSinkPerformanceForm perfForm = (KitchenSinkPerformanceForm) form;
 
-        return getUIFModelAndView(perfForm);
+        return getModelAndView(perfForm);
     }
 
     /**
@@ -659,7 +657,7 @@ public class KitchenSinkPerformanceController extends UifControllerBase {
         populateCourseSearchResults(jsonArray, collectionList);
         form.setPerfCollection(collectionList); // add collection to form.
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     public void populateCourseSearchResults(JsonArray jsonArray, List<CourseSearchResult> collectionList)throws JsonException {

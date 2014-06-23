@@ -32,6 +32,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -55,6 +56,9 @@ import java.util.List;
 public class UifExportController extends UifControllerBase {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifExportController.class);
 
+    @Autowired
+    protected HttpServletRequest request;
+
     /**
      * Retrieves the session form for the form key request parameter so we can initialize a form instance of the
      * same type the view was rendered with.
@@ -62,7 +66,7 @@ public class UifExportController extends UifControllerBase {
      * {@inheritDoc}
      */
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
+    protected UifFormBase createInitialForm() {
         String formKey = request.getParameter(UifParameters.FORM_KEY);
         if (StringUtils.isBlank(formKey)) {
             throw new RuntimeException("Unable to create export form due to misssing form key parameter");

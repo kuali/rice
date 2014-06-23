@@ -114,9 +114,11 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public Document saveDocument( Document document, DocumentEvent event ) throws WorkflowException {
         checkForNulls(document);
+
         if( event == null ) {
             throw new IllegalArgumentException( "invalid (null) DocumentEvent instance" );
         }
+
         // if event is not an instance of a SaveDocumentEvent or a SaveOnlyDocumentEvent
         if ( !SaveEvent.class.isAssignableFrom( event.getClass() ) ) {
             throw new ConfigurationException( "The KualiDocumentEvent class '" + event.getClass().getName() +

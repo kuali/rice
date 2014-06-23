@@ -50,7 +50,7 @@ public class DemoDialogController extends KradSampleAppController {
             GlobalVariables.getMessageMap().putInfoForSectionId("demoDialogEx8", "demo.dialogs.saveConfirmation");
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=disapprove")
@@ -75,6 +75,6 @@ public class DemoDialogController extends KradSampleAppController {
         GlobalVariables.getMessageMap().putInfoForSectionId("demoDialogEx9", "demo.dialogs.disapprove",
                 disapproveExplanation, surveyResponse);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 }

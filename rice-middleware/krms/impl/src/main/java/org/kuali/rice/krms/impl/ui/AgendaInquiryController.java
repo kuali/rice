@@ -18,7 +18,7 @@ package org.kuali.rice.krms.impl.ui;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.web.controller.InquiryController;
+import org.kuali.rice.krad.inquiry.InquiryController;
 import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.impl.repository.ActionBo;
@@ -29,13 +29,8 @@ import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.RepositoryBoIncrementer;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping(value = org.kuali.rice.krms.impl.util.KrmsImplConstants.WebPaths.AGENDA_INQUIRY_PATH)
@@ -48,8 +43,7 @@ public class AgendaInquiryController  extends InquiryController {
      * This method updates the existing rule in the agenda.
      */
     @RequestMapping(params = "methodToCall=" + "viewRule")
-    public ModelAndView viewRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView viewRule(UifFormBase form) throws Exception {
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
         agendaEditor.setAddRuleInProgress(false);
@@ -63,7 +57,7 @@ public class AgendaInquiryController  extends InquiryController {
         setAgendaItemLine(form, node);
 
         form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-ViewRule-Page");
-        return super.navigate(form, result, request, response);
+        return super.navigate(form);
     }
 
     /**

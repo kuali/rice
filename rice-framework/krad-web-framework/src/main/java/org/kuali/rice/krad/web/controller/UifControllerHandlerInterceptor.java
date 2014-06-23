@@ -27,6 +27,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
+import org.kuali.rice.krad.web.service.ModelAndViewService;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -46,6 +47,8 @@ import javax.servlet.http.HttpServletResponse;
 public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     private static final Logger LOG = Logger.getLogger(UifControllerHandlerInterceptor.class);
 
+    private ModelAndViewService modelAndViewService;
+
     /**
      * Before the controller executes the user session is set on GlobalVariables
      * and messages are cleared, in addition setup for the history manager and a check on missing session
@@ -62,6 +65,8 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
 
         GlobalVariables.setUserSession(session);
         GlobalVariables.clear();
+
+        createUifFormManagerIfNecessary(request);
 
         // add the HistoryManager for storing HistoryFlows to the session
         if (request.getSession().getAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER) == null) {
@@ -152,6 +157,23 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     }
 
     /**
+     * Checks if a form manager is present in the session, and if not creates a form manager and adds to the
+     * session and global variables.
+     *
+     * @param request http request being handled
+     */
+    protected void createUifFormManagerIfNecessary(HttpServletRequest request) {
+        UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+        if (uifFormManager == null) {
+            uifFormManager = new UifFormManager();
+            request.getSession().setAttribute(UifParameters.FORM_MANAGER, uifFormManager);
+        }
+
+        // add form manager to GlobalVariables for easy reference by other controller methods
+        GlobalVariables.setUifFormManager(uifFormManager);
+    }
+
+    /**
      * After the controller logic is executed, the form is placed into session and the corresponding view
      * is prepared for rendering.
      *
@@ -204,4 +226,11 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
         ProcessLogger.trace("after-completion-end");
     }
 
+    protected ModelAndViewService getModelAndViewService() {
+        return modelAndViewService;
+    }
+
+    public void setModelAndViewService(ModelAndViewService modelAndViewService) {
+        this.modelAndViewService = modelAndViewService;
+    }
 }

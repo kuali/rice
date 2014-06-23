@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 public class DataAttributesTestUifController extends UifControllerBase {
 
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
+    protected UifFormBase createInitialForm() {
         return new UifComponentsTestForm();
     }
 }

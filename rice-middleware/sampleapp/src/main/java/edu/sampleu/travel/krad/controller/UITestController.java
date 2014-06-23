@@ -49,14 +49,13 @@ public class UITestController extends UifControllerBase {
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected UITestForm createInitialForm(HttpServletRequest request) {
+    protected UITestForm createInitialForm() {
         return new UITestForm();
     }
 
 	@Override
 	@RequestMapping(params = "methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-			HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView start(UifFormBase form) {
 	    UITestForm uiTestForm = (UITestForm) form;
 		
 		// populate model for testing
@@ -118,7 +117,7 @@ public class UITestController extends UifControllerBase {
         uiTestForm.setHidden1("Hidden1");
         uiTestForm.setHidden2("Hidden2");
 
-		return super.start(uiTestForm, request, response);
+		return super.start(uiTestForm);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
@@ -138,17 +137,17 @@ public class UITestController extends UifControllerBase {
 			GlobalVariables.getMessageMap().putError("vField5", "serverTestError");
 			GlobalVariables.getMessageMap().putError("vField6", "serverTestError");
 			//GlobalVariables.getMessageMap().clearErrorMessages();
-			return getUIFModelAndView(uiTestForm, uiTestForm.getPageId());
+			return getModelAndView(uiTestForm, uiTestForm.getPageId());
 		}
 		
-		return getUIFModelAndView(uiTestForm, "page1");
+		return getModelAndView(uiTestForm, "page1");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=close")
 	public ModelAndView close(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		return getUIFModelAndView(uiTestForm, "page1");
+		return getModelAndView(uiTestForm, "page1");
 	}
 
     /**
@@ -168,7 +167,7 @@ public class UITestController extends UifControllerBase {
         bogus.charAt(3);
 
         // should never get here
-        return getUIFModelAndView(uiTestForm, "page1");
+        return getModelAndView(uiTestForm, "page1");
     }
 
 }

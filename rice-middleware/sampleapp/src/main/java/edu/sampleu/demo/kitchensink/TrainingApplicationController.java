@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 public class TrainingApplicationController extends UifControllerBase {
 
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
+    protected UifFormBase createInitialForm() {
         return new TrainingApplicationForm();
     }
 
@@ -52,6 +52,6 @@ public class TrainingApplicationController extends UifControllerBase {
         //Put a message in the MessageMap to display on the page
         GlobalVariables.getMessageMap().putInfo("Training-CollegeApplicationPage", "message.route.successful");
 
-        return getUIFModelAndView(uifForm);
+        return getModelAndView(uifForm);
     }
 }

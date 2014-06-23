@@ -29,7 +29,9 @@
                         http://www.springframework.org/schema/mvc
                         http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
                         http://www.springframework.org/schema/tx
-                        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+                        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
   <tx:advice id="txAdvice" transaction-manager="transactionManager">
     <tx:attributes>
@@ -77,7 +79,7 @@
     <property name="suffix" value=".ftl"/>
   </bean>
 
-  <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+  <bean id="handlerMapping" class="org.kuali.rice.krad.web.controller.UifRequestMappingHandlerMapping">
     <property name="interceptors">
       <list>
         <ref bean="uifControllerHandlerInterceptor"/>
@@ -92,10 +94,6 @@
   <bean id="moduleLockingHandlerInterceptor" class="org.kuali.rice.krad.web.controller.ModuleLockingHandlerInterceptor">
     <property name="moduleLockedMapping" value="module-locked"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>
-  </bean>
-
-  <bean id="kualiModuleService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
-    <property name="serviceName" value="kualiModuleService"/>
   </bean>
 
   <bean id="exceptionResolver" class="org.kuali.rice.krad.web.controller.UifHandlerExceptionResolver"/>
@@ -130,6 +128,54 @@
         <value>org/kuali/rice/krad/KRADApplicationResources</value>
       </list>
     </property>
+  </bean>
+
+  <bean id="kualiModuleService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="kualiModuleService"/>
+  </bean>
+
+  <bean id="controllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="controllerService"/>
+  </bean>
+
+  <bean id="navigationControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="navigationControllerService"/>
+  </bean>
+
+  <bean id="collectionControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="collectionControllerService"/>
+  </bean>
+
+  <bean id="refreshControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="refreshControllerService"/>
+  </bean>
+
+  <bean id="queryControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="queryControllerService"/>
+  </bean>
+
+  <bean id="modelAndViewService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="modelAndViewService"/>
+  </bean>
+
+  <bean id="lookupControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="lookupControllerService"/>
+  </bean>
+
+  <bean id="lookupCollectionControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="lookupCollectionControllerService"/>
+  </bean>
+
+  <bean id="inquiryControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="inquiryControllerService"/>
+  </bean>
+
+  <bean id="documentControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="documentControllerService"/>
+  </bean>
+
+  <bean id="maintenanceDocumentControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="maintenanceDocumentControllerService"/>
   </bean>
 
 </beans>

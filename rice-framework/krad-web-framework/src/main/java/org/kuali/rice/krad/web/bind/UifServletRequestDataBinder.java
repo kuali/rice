@@ -159,6 +159,8 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     public void bind(ServletRequest request) {
         UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();
 
+        request.setAttribute(UifConstants.REQUEST_FORM, form);
+
         form.preBind((HttpServletRequest) request);
 
         _bind(request);

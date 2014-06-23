@@ -23,6 +23,8 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
+import org.kuali.rice.krad.datadictionary.DocumentEntry;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -53,12 +55,13 @@ import java.util.Set;
  */
 public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements DocumentAuthorizer {
     private static final long serialVersionUID = 3800780934223224565L;
-
     protected static Log LOG = LogFactory.getLog(DocumentViewAuthorizerBase.class);
 
     public static final String PRE_ROUTING_ROUTE_NAME = "PreRoute";
 
     private DocumentAuthorizer documentAuthorizer;
+
+    private DocumentDictionaryService documentDictionaryService;
 
     /**
      * {@inheritDoc}
@@ -68,11 +71,8 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
         Document document = ((DocumentFormBase) model).getDocument();
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '"
-                    + document.getDocumentNumber()
-                    + "'. user '"
-                    + user.getPrincipalName()
-                    + "'");
+            LOG.debug("calling DocumentAuthorizerBase.getDocumentActionFlags for document '" + document
+                    .getDocumentNumber() + "'. user '" + user.getPrincipalName() + "'");
         }
 
         if (actions.contains(KRADConstants.KUALI_ACTION_CAN_EDIT) && !canEdit(document, user)) {
@@ -154,14 +154,29 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
         return actions;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final boolean canInitiate(String documentTypeName, Person user) {
+        initializeDocumentAuthorizerIfNecessary(documentTypeName);
+
         return getDocumentAuthorizer().canInitiate(documentTypeName, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final boolean canOpen(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canOpen(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canOpenView(View view, ViewModel model, Person user) {
         DocumentFormBase documentForm = (DocumentFormBase) model;
@@ -169,10 +184,19 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
         return super.canOpenView(view, model, user) && canOpen(documentForm.getDocument(), user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canEdit(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canEdit(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean canEditView(View view, ViewModel model, Person user) {
         DocumentFormBase documentForm = (DocumentFormBase) model;
@@ -181,9 +205,9 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
     }
 
     /**
-     * @see org.kuali.rice.krad.uif.view.ViewAuthorizer#canUnmaskField(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.view.ViewModel,
-     * org.kuali.rice.krad.uif.field.DataField, java.lang.String, org.kuali.rice.kim.api.identity.Person)
+     * {@inheritDoc}
      */
+    @Override
     public boolean canUnmaskField(View view, ViewModel model, DataField field, String propertyName, Person user) {
         if (field.getDataFieldSecurity() == null) {
             return true;
@@ -212,108 +236,248 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
      * @return true if user is the initiator, false otherwise
      */
     protected boolean isInitiator(ViewModel model, Person user) {
-            WorkflowDocument workflowDocument = UserSessionUtils.getWorkflowDocument(GlobalVariables.getUserSession(),
-                    ((DocumentFormBase) model).getDocument().getDocumentNumber());
-            return StringUtils.equals(user.getPrincipalId(), workflowDocument.getInitiatorPrincipalId());
+        WorkflowDocument workflowDocument = UserSessionUtils.getWorkflowDocument(GlobalVariables.getUserSession(),
+                ((DocumentFormBase) model).getDocument().getDocumentNumber());
+        return StringUtils.equals(user.getPrincipalId(), workflowDocument.getInitiatorPrincipalId());
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canAnnotate(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canAnnotate(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canReload(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canReload(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canClose(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canClose(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canSave(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canSave(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canRoute(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canRoute(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canCancel(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canCancel(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canRecall(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canRecall(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canCopy(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canCopy(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canPerformRouteReport(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canPerformRouteReport(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canBlanketApprove(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canBlanketApprove(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canApprove(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canApprove(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canDisapprove(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canDisapprove(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canSendNoteFyi(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canSendNoteFyi(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canFyi(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canFyi(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canAcknowledge(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canAcknowledge(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final boolean canReceiveAdHoc(Document document, Person user, String actionRequestCode) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canReceiveAdHoc(document, user, actionRequestCode);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final boolean canAddNoteAttachment(Document document, String attachmentTypeCode, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canAddNoteAttachment(document, attachmentTypeCode, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode,
             String authorUniversalIdentifier, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canDeleteNoteAttachment(document, attachmentTypeCode, authorUniversalIdentifier,
                 user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final boolean canViewNoteAttachment(Document document, String attachmentTypeCode,
             String authorUniversalIdentifier, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canViewNoteAttachment(document, attachmentTypeCode, authorUniversalIdentifier,
                 user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final boolean canSendAdHocRequests(Document document, String actionRequestCd, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canSendAdHocRequests(document, actionRequestCd, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canEditDocumentOverview(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canEditDocumentOverview(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canSendAnyTypeAdHocRequests(document, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean canTakeRequestedAction(Document document, String actionRequestCode, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
         return getDocumentAuthorizer().canTakeRequestedAction(document, actionRequestCode, user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addPermissionDetails(Object dataObject, Map<String, String> attributes) {
         super.addPermissionDetails(dataObject, attributes);
@@ -323,6 +487,9 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void addRoleQualification(Object dataObject, Map<String, String> attributes) {
         super.addRoleQualification(dataObject, attributes);
@@ -353,6 +520,44 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
         return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
     }
 
+    /**
+     * If the document authorizer is null, gets the authorizer from the document dictionary service for the given
+     * document's class.
+     *
+     * @param document document instance to get authorizer for
+     */
+    public void initializeDocumentAuthorizerIfNecessary(Document document) {
+        if (documentAuthorizer == null) {
+            DocumentEntry documentEntry = getDocumentDictionaryService().getDocumentEntryByClass(document.getClass());
+
+            if (documentEntry == null) {
+                throw new RuntimeException(
+                        "Unable to find document entry for document class: " + document.getClass().getName());
+            }
+
+            setDocumentAuthorizerClass(documentEntry.getDocumentAuthorizerClass());
+        }
+    }
+
+    /**
+     * If the document authorizer is null, gets the authorizer from the document dictionary service for the given
+     * document type name.
+     *
+     * @param documentTypeName document type to get authorizer for
+     */
+    public void initializeDocumentAuthorizerIfNecessary(String documentTypeName) {
+        if (documentAuthorizer == null) {
+            DocumentEntry documentEntry = getDocumentDictionaryService().getDocumentEntry(documentTypeName);
+
+            if (documentEntry == null) {
+                throw new RuntimeException(
+                        "Unable to find document entry for document class: " + documentTypeName);
+            }
+
+            setDocumentAuthorizerClass(documentEntry.getDocumentAuthorizerClass());
+        }
+    }
+
     public DocumentAuthorizer getDocumentAuthorizer() {
         return documentAuthorizer;
     }
@@ -363,5 +568,17 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
 
     public void setDocumentAuthorizerClass(Class<? extends DocumentAuthorizer> documentAuthorizerClass) {
         this.documentAuthorizer = KRADUtils.createNewObjectFromClass(documentAuthorizerClass);
+    }
+
+    public DocumentDictionaryService getDocumentDictionaryService() {
+        if (documentDictionaryService == null) {
+            documentDictionaryService = KRADServiceLocatorWeb.getDocumentDictionaryService();
+        }
+
+        return documentDictionaryService;
+    }
+
+    public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
+        this.documentDictionaryService = documentDictionaryService;
     }
 }

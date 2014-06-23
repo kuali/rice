@@ -45,10 +45,10 @@ import java.util.Properties;
 public class IncidentReportController extends UifControllerBase {
 
     /**
-     * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
+     * {@inheritDoc}
      */
     @Override
-    protected IncidentReportForm createInitialForm(HttpServletRequest request) {
+    protected IncidentReportForm createInitialForm() {
         return new IncidentReportForm();
     }
 
@@ -56,15 +56,14 @@ public class IncidentReportController extends UifControllerBase {
      * Emails the report and closes the incident report screen
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=submitReport")
-    public ModelAndView submitReport(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView submitReport(UifFormBase uifForm, HttpServletRequest request) throws Exception {
         // get the exception incident service and use it to mail the report
         KualiExceptionIncidentService reporterService = KRADServiceLocatorWeb.getKualiExceptionIncidentService();
         reporterService.emailReport(((IncidentReportForm) uifForm).createEmailSubject(),
                 ((IncidentReportForm) uifForm).createEmailMessage());
 
         // return the close redirect
-        return back(uifForm, result, request, response);
+        return back(uifForm);
     }
 
     /**

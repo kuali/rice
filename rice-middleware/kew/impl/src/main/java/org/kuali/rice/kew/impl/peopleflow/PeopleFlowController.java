@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.impl.peopleflow;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -51,7 +51,7 @@ public class PeopleFlowController extends MaintenanceDocumentController {
             peopleFlow.rebuildTypeAttributes();
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
 }

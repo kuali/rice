@@ -51,17 +51,9 @@
                 <property name="items">
                   <list>
                     <bean parent="Uif-DataField" p:labelRendered="false" p:propertyName="fileName"/>
-                    <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadBOAttachment"
-                          p:ajaxSubmit="false"
-                          p:actionLabel="download attachment" p:title="download attachment"
-                          p:disableBlocking="true"
-                          p:onClickScript="writeHiddenToForm(&quot;ajaxReturnType&quot;, &quot;update-none&quot;);">
-                      <property name="actionParameters">
-                        <map>
-                          <entry key="selectedLineIndex" value="@{#index}"/>
-                        </map>
-                      </property>
-                    </bean>
+                    <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadDataObjectAttachment"
+                          p:ajaxSubmit="false" p:actionLabel="download attachment" p:title="download attachment"
+                          p:disableBlocking="true"/>
                   </list>
                 </property>
                 <property name="propertyReplacers">

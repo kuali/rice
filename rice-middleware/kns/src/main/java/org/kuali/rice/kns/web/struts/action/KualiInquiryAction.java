@@ -26,7 +26,6 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.inquiry.Inquirable;
-import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.InquiryForm;
 import org.kuali.rice.kns.web.ui.Field;
@@ -60,7 +59,7 @@ import java.util.Map;
 /**
  * This class handles actions for inquiries of business objects.
  *
- * @deprecated Use {@link org.kuali.rice.krad.web.controller.InquiryController}.
+ * @deprecated Use {@link org.kuali.rice.krad.inquiry.InquiryController}.
  */
 @Deprecated
 public class KualiInquiryAction extends KualiAction {

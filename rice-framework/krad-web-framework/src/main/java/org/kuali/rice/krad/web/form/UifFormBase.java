@@ -17,6 +17,7 @@ package org.kuali.rice.krad.web.form;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -199,6 +200,8 @@ public class UifFormBase implements ViewModel {
     protected Map<String, String> queryParameters;
     protected boolean applyDefaultValues;
 
+    protected HttpServletRequest request;
+
     public UifFormBase() {
         renderedInLightBox = false;
         renderedInIframe = false;
@@ -224,7 +227,22 @@ public class UifFormBase implements ViewModel {
      */
     @Override
     public void preBind(HttpServletRequest request) {
-        // do nothing - here for framework
+        String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
+        if (StringUtils.isNotBlank(formKeyParam)) {
+            UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+
+            // retrieves the session form and updates the request from with the session transient attributes
+            uifFormManager.updateFormWithSession(this, formKeyParam);
+        }
+
+        String requestedFormKey = request.getParameter(UifParameters.REQUESTED_FORM_KEY);
+        if (StringUtils.isNotBlank(requestedFormKey)) {
+            setRequestedFormKey(requestedFormKey);
+        } else {
+            setRequestedFormKey(formKeyParam);
+        }
+
+        this.request = request;
     }
 
     /**
@@ -241,13 +259,12 @@ public class UifFormBase implements ViewModel {
         // default form post URL to request URL
         formPostUrl = request.getRequestURL().toString();
 
+        controllerMapping = request.getPathInfo();
+
         if (request.getSession() != null) {
             sessionId = request.getSession().getId();
             sessionTimeoutInterval = request.getSession().getMaxInactiveInterval();
         }
-
-        //set controller mapping property
-        controllerMapping = request.getPathInfo();
 
         // get any sent client view state and parse into map
         if (request.getParameterMap().containsKey(UifParameters.CLIENT_VIEW_STATE)) {
@@ -268,6 +285,31 @@ public class UifFormBase implements ViewModel {
             }
         }
 
+        String requestUrl = KRADUtils.stripXSSPatterns(KRADUtils.getFullURL(request));
+        setRequestUrl(requestUrl);
+
+        String referer = request.getHeader(UifConstants.REFERER);
+        if (StringUtils.isBlank(referer) && StringUtils.isBlank(getReturnLocation())) {
+            setReturnLocation(UifConstants.NO_RETURN);
+        } else if (StringUtils.isBlank(getReturnLocation())) {
+            setReturnLocation(referer);
+        }
+
+        if (getInitialRequestParameters() == null) {
+            Map<String, String[]> requestParams = new HashMap<String, String[]>();
+            Enumeration<String> names = request.getParameterNames();
+
+            while (names != null && names.hasMoreElements()) {
+                String name = KRADUtils.stripXSSPatterns(names.nextElement());
+                String[] values = KRADUtils.stripXSSPatterns(request.getParameterValues(name));
+
+                requestParams.put(name, values);
+            }
+
+            requestParams.remove(UifConstants.UrlParams.LOGIN_USER);
+            setInitialRequestParameters(requestParams);
+        }
+
         // populate read only fields list
         if (request.getParameter(UifParameters.READ_ONLY_FIELDS) != null) {
             String readOnlyFields = request.getParameter(UifParameters.READ_ONLY_FIELDS);
@@ -285,6 +327,14 @@ public class UifFormBase implements ViewModel {
             this.dialogResponses.put(this.returnDialogId, response);
         } else {
             this.dialogResponses = new HashMap<String, DialogResponse>();
+        }
+
+        Object historyManager = request.getSession().getAttribute(UifConstants.HistoryFlow.HISTORY_MANAGER);
+        if (historyManager != null && historyManager instanceof HistoryManager) {
+            setHistoryManager((HistoryManager) historyManager);
+
+            String flowKey = request.getParameter(UifConstants.HistoryFlow.FLOW);
+            setFlowKey(flowKey);
         }
 
         // clean parameters from XSS attacks that will be written out as hiddens
@@ -1359,6 +1409,22 @@ public class UifFormBase implements ViewModel {
      */
     public void setQueryParameters(Map<String, String> queryParameters) {
         this.queryParameters = queryParameters;
+    }
+
+    /**
+     * Http servlet request instance for the current request being processed.
+     *
+     * @return HttpServletRequest instance
+     */
+    public HttpServletRequest getRequest() {
+        return request;
+    }
+
+    /**
+     * @see UifFormBase#getRequest()
+     */
+    public void setRequest(HttpServletRequest request) {
+        this.request = request;
     }
 
     /**

@@ -48,30 +48,22 @@ import java.util.Set;
 public class KradSampleAppController extends UifControllerBase {
 
     @Override
-    protected KradSampleAppForm createInitialForm(HttpServletRequest request) {
+    protected KradSampleAppForm createInitialForm() {
         return new KradSampleAppForm();
-    }
-
-    @Override
-    @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
-            HttpServletResponse response) {
-        //TODO tbd
-        return super.start(form, request, response);
     }
 
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=changeTheme")
     public ModelAndView changeTheme(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         changeTheme(form);
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=validateView")
     public ModelAndView validateView(@ModelAttribute("KualiForm") UifFormBase uiTestForm, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         KRADServiceLocatorWeb.getViewValidationService().validateView(uiTestForm);
-        return getUIFModelAndView(uiTestForm);
+        return getModelAndView(uiTestForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addGrowl")
@@ -82,7 +74,7 @@ public class KradSampleAppController extends UifControllerBase {
             extraInfo = "none";
         }
         GlobalVariables.getMessageMap().addGrowlMessage("Growl Message", "demo.fakeGrowl", extraInfo);
-        return getUIFModelAndView(uiTestForm);
+        return getModelAndView(uiTestForm);
     }
 
     private void changeTheme(UifFormBase form) {
@@ -110,7 +102,7 @@ public class KradSampleAppController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         //set View to readOnly
         uifForm.getView().setReadOnly(true);
-        return getUIFModelAndView(uifForm);
+        return getModelAndView(uifForm);
     }
 
     /**
@@ -130,7 +122,7 @@ public class KradSampleAppController extends UifControllerBase {
             }
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -145,7 +137,7 @@ public class KradSampleAppController extends UifControllerBase {
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=refreshProgGroup")
     public ModelAndView refreshProgGroup(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -164,7 +156,7 @@ public class KradSampleAppController extends UifControllerBase {
         GlobalVariables.getMessageMap().putWarning("inputField4", "serverTestWarning");
         GlobalVariables.getMessageMap().putInfo("inputField4", "serverTestInfo");
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=customRefresh")
@@ -172,7 +164,7 @@ public class KradSampleAppController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) {
         GlobalVariables.getMessageMap().addGrowlMessage("Test", "serverTestInfo");
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @Override

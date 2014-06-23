@@ -3253,18 +3253,9 @@ public void setAttachmentFile(MultipartFile attachmentFile) {
   &lt;property name="items">
     &lt;list>
       &lt;bean parent="Uif-DataField" p:fieldLabel.render="false" p:propertyName="fileName" />
-      &lt;bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadBOAttachment"
-               p:actionLabel="download attachment" p:title="download attachment"
-               p:ajaxSubmit="false" p:disableBlocking="true"
-               p:onClickScript="writeHiddenToForm(&quot;ajaxReturnType&quot;, &quot;update-none&quot;);">
-        &lt;property name="actionParameters">
-          &lt;map>
-            &lt;entry key="selectedLineIndex" value="@{#index}"/>
-          &lt;/map>
-        &lt;/property>
-      &lt;/bean>
-    &lt;/list>
-  &lt;/property>
+      &lt;bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadDataObjectAttachment"
+               p:ajaxSubmit="false" p:actionLabel="download attachment" p:title="download attachment"
+               p:disableBlocking="true"/>
   &lt;property name="propertyReplacers">
     &lt;list>
       &lt;bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items" p:condition="@{#dp.fileName eq null}">

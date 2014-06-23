@@ -29,7 +29,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean id="dataDictionaryService" parent="dataDictionaryService-parent">
+  <bean id="dataDictionaryService" parent="dataDictionaryService-knsParentBean">
     <constructor-arg>
       <bean class="org.kuali.rice.krad.devtools.datadictionary.ReloadingDataDictionary" />
     </constructor-arg>

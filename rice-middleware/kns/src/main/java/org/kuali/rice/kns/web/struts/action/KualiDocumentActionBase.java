@@ -92,7 +92,6 @@ import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
-import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
@@ -128,7 +127,7 @@ import org.springmodules.orm.ojb.OjbOperationException;
  * This class handles all of the document handling related actions in terms of passing them from here at a central point to the
  * distributed transactions that actually implement document handling.
  *
- * @deprecated Use {@link org.kuali.rice.krad.web.controller.DocumentControllerBase}.
+ * @deprecated Use {@link org.kuali.rice.krad.document.DocumentControllerBase}.
  */
 @Deprecated
 public class KualiDocumentActionBase extends KualiAction {

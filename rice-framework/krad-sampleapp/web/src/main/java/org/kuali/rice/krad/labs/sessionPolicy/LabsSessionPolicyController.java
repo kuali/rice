@@ -43,7 +43,7 @@ public class LabsSessionPolicyController extends KradLabsController {
 
         request.getSession().invalidate();
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=sessionTimeout")
@@ -52,7 +52,7 @@ public class LabsSessionPolicyController extends KradLabsController {
 
         GlobalVariables.getMessageMap().addGrowlMessage("Result", "labs.methodInvoked", "sessionTimeout");
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=setSessionTimeout")
@@ -63,6 +63,6 @@ public class LabsSessionPolicyController extends KradLabsController {
         request.getSession().setMaxInactiveInterval(120000);
         ((KradLabsForm) form).setSessionTimeoutInterval(120000);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 }

@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ConfigurationTestViewUifController extends UifControllerBase {
 
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
+    protected UifFormBase createInitialForm() {
         return new UifComponentsTestForm();
     }
 
@@ -47,11 +47,10 @@ public class ConfigurationTestViewUifController extends UifControllerBase {
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
         String randomYear = RandomStringUtils.randomNumeric(2);
         GlobalVariables.getMessageMap().putInfo("growl.testing.apostrophe", "sampleapp.growl.testmsg", "'" + randomYear);
 
-        return super.start(form, request, response);
+        return super.start(form);
     }
 }

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.document.Copyable;
+import org.kuali.rice.krad.document.DocumentControllerBase;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
 import org.springframework.validation.BindingResult;
@@ -59,7 +60,7 @@ public abstract class TransactionalDocumentControllerBase extends DocumentContro
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         ((Copyable) form.getDocument()).toCopy();
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
 }

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.labs.exclusion;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -34,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LabsExclusionController extends UifControllerBase {
 
 	@Override
-	protected UifFormBase createInitialForm(HttpServletRequest request) {
+	protected UifFormBase createInitialForm() {
 		return new LabsExclusionForm();
 	}
 

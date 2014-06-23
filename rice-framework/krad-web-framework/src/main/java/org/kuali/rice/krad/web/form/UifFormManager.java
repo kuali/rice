@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.Vector;
 
 /**
- * Manages Uif form objects for a session
+ * Manages Uif form objects for a session.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -64,7 +64,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Add a form to the session
+     * Add a form to the session.
      *
      * @param form to be added to the session
      */
@@ -107,7 +107,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Retrieve a form from the session
+     * Retrieve a form from the session.
      *
      * @param formKey of the form to retrieve from the session
      * @return UifFormBase
@@ -121,7 +121,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Removes the stored form data and the forms from the breadcrumb history from the session
+     * Removes the stored form data and the forms from the breadcrumb history from the session.
      *
      * @param form to be removed
      */
@@ -134,7 +134,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Removes the stored form data and the forms from the breadcrumb history from the session
+     * Removes the stored form data and the forms from the breadcrumb history from the session.
      *
      * @param formKey of the form to be removed
      */
@@ -145,7 +145,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Removes the stored form data from the session
+     * Removes the stored form data from the session.
      *
      * @param formKey of the form to be removed
      */
@@ -160,7 +160,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Indicates whether the form manager has a session form with the given key
+     * Indicates whether the form manager has a session form with the given key.
      *
      * @param formKey key of the form in session to check for
      * @return true if the manager contains the session form, false if not
@@ -171,7 +171,7 @@ public class UifFormManager implements Serializable {
 
     /**
      * Retrieves the session form based on the formkey and updates the non session transient
-     * variables on the request form from the session form
+     * variables on the request form from the session form.
      *
      * @param requestForm
      * @param formKey
@@ -208,7 +208,7 @@ public class UifFormManager implements Serializable {
     /**
      * Removes the values that are marked @SessionTransient from the form.
      *
-     * @param form - the form from which the session transient values have been purged
+     * @param form the form from which the session transient values have been purged
      */
     public void purgeForm(UifFormBase form) {
         List<Field> fields = new ArrayList<Field>();
@@ -243,13 +243,11 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Internal vector maintained to keep track of accessed form and the order in which they were accessed
+     * Internal vector maintained to keep track of accessed form and the order in which they were accessed.
      *
-     * <p>
-     * Used for the form clearing process. When forms are added to the manager their key is added to the top of
+     * <p>Used for the form clearing process. When forms are added to the manager their key is added to the top of
      * the vector. When a form needs to be cleared, the form identified by the key at the botton of this vector
-     * is removed
-     * </p>
+     * is removed</p>
      *
      * @return Vector instance holding form key strings
      */
@@ -258,7 +256,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Maximum number of forms that can be stored at one time by the manager
+     * Maximum number of forms that can be stored at one time by the manager.
      *
      * @return int max number of forms
      */
@@ -267,9 +265,7 @@ public class UifFormManager implements Serializable {
     }
 
     /**
-     * Setter for the maximum number of forms
-     *
-     * @param maxNumberOfSessionForms
+     * @see UifFormManager#getMaxNumberOfSessionForms()
      */
     public void setMaxNumberOfSessionForms(int maxNumberOfSessionForms) {
         this.maxNumberOfSessionForms = maxNumberOfSessionForms;

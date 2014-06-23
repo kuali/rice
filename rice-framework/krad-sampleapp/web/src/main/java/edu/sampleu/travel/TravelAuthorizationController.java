@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 public class TravelAuthorizationController extends TransactionalDocumentControllerBase {
 
     @Override
-    protected TravelAuthorizationForm createInitialForm(HttpServletRequest request) {
+    protected TravelAuthorizationForm createInitialForm() {
         return new TravelAuthorizationForm();
     }
 
@@ -43,8 +43,7 @@ public class TravelAuthorizationController extends TransactionalDocumentControll
      * Showcase the dialog feature by confirming with the user that he really wants to route the document.
      */
     @Override
-    public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView route(DocumentFormBase form) {
         String dialog = "TravelAuthorization-RouteConfirmationDialog";
         DialogResponse routeConfirmDialog = form.getDialogResponse(dialog);
         if (routeConfirmDialog == null) {
@@ -53,9 +52,9 @@ public class TravelAuthorizationController extends TransactionalDocumentControll
 
         boolean dialogAnswer = routeConfirmDialog.getResponseAsBoolean();
         if (dialogAnswer) {
-            return super.route(form, result, request, response);
+            return super.route(form);
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 }

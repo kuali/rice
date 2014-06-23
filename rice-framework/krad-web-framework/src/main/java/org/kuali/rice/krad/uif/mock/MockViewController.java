@@ -19,8 +19,6 @@ import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Controller class for handling requests for {@link org.kuali.rice.krad.uif.mock.MockView} instances.
  *
@@ -34,7 +32,7 @@ public class MockViewController extends UifControllerBase {
      * {@inheritDoc}
      */
     @Override
-    protected DynaForm createInitialForm(HttpServletRequest request) {
+    protected DynaForm createInitialForm() {
         return new DynaForm();
     }
 }

@@ -43,16 +43,16 @@ public class KradLabsController extends UifControllerBase {
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
 
         if (form.getViewId().equals("Labs-BootstrapMultiSelect")) {
             GlobalVariables.getMessageMap().putWarning("multiSelectField2", "validation.equals");
         }
-            return super.start(form, request, response);
+            return super.start(form);
      }
 
     @Override
-    protected KradLabsForm createInitialForm(HttpServletRequest request) {
+    protected KradLabsForm createInitialForm() {
         return new KradLabsForm();
     }
 
@@ -62,7 +62,7 @@ public class KradLabsController extends UifControllerBase {
 
         form.setRequestJsonTemplate("/templates/jsonSample.ftl");
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @Override

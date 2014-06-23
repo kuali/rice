@@ -16,10 +16,7 @@
 package org.kuali.rice.krad.bo;
 
 /**
- * This is a description of what this class does - chitra07 don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface PersistableAttachment {
 

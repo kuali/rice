@@ -48,24 +48,21 @@ public class CourseSearchController extends UifControllerBase {
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected CourseSearchForm createInitialForm(HttpServletRequest request) {
+    protected CourseSearchForm createInitialForm() {
         return new CourseSearchForm();
     }
 
     /**
      *
      * @param form
-     * @param request
-     * @param response
      * @return
      */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
         CourseSearchForm perfForm = (CourseSearchForm) form;
 
-        return getUIFModelAndView(perfForm);
+        return getModelAndView(perfForm);
     }
 
     /**
@@ -664,7 +661,7 @@ public class CourseSearchController extends UifControllerBase {
         populateCourseSearchResults(jsonArray, collectionList);
         form.setPerfCollection(collectionList); // add collection to form.
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**

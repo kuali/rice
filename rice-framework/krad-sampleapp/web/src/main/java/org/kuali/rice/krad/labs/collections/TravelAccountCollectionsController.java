@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 public class TravelAccountCollectionsController extends UifControllerBase {
 
     @Override
-    public TravelAccountCollectionsForm createInitialForm( HttpServletRequest request ) {
+    public TravelAccountCollectionsForm createInitialForm() {
         return new TravelAccountCollectionsForm();
     }
 }

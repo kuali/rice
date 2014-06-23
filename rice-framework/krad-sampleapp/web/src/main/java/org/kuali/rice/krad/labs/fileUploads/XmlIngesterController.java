@@ -61,18 +61,16 @@ public class XmlIngesterController extends UifControllerBase {
      * @see org.kuali.rice.krad.web.controller.UifControllerBase#createInitialForm(javax.servlet.http.HttpServletRequest)
      */
     @Override
-    protected XmlIngesterForm createInitialForm(HttpServletRequest request) {
+    protected XmlIngesterForm createInitialForm() {
         return new XmlIngesterForm();
     }
 
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form, 
-            HttpServletRequest request, HttpServletResponse response) {
-
+    public ModelAndView start(UifFormBase form) {
         XmlIngesterForm ingesterForm = (XmlIngesterForm)form;
 
-        return super.start(ingesterForm, request, response);
+        return super.start(ingesterForm);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=upload")
@@ -101,7 +99,7 @@ public class XmlIngesterController extends UifControllerBase {
                 }
             }
         }
-        return getUIFModelAndView(ingesterForm);
+        return getModelAndView(ingesterForm);
     }
 
     /**

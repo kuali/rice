@@ -84,7 +84,7 @@ public class ActionListController extends UifControllerBase{
             { ActionType.APPROVE, ActionType.DISAPPROVE, ActionType.CANCEL, ActionType.ACKNOWLEDGE, ActionType.FYI };
 
     @Override
-    protected ActionListForm createInitialForm(HttpServletRequest request) {
+    protected ActionListForm createInitialForm() {
         return new ActionListForm();
     }
 
@@ -104,12 +104,11 @@ public class ActionListController extends UifControllerBase{
     */
     @Override
     @RequestMapping(params = "methodToCall=refresh")
-    public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView refresh(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm)form;
         actionListForm.setRequeryActionList(true);
 
-        return start(form,request,response);
+        return start(form);
     }
 
     /**
@@ -272,20 +271,21 @@ public class ActionListController extends UifControllerBase{
     * @param form - ActionListForm form
     * @param request - http request
     * @param response - http response
-    * @return ModelAndView - uses standard KRAD getUIFModelAndView()
+    * @return ModelAndView - uses standard KRAD getModelAndView()
     */
     @Override
     @RequestMapping(params = "methodToCall=start")
-    public ModelAndView start(@ModelAttribute("KualiForm") UifFormBase form,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView start(UifFormBase form) {
         ActionListForm actionListForm = (ActionListForm)form;
+        HttpServletRequest request = actionListForm.getRequest();
+
         request.setAttribute("preferences", actionListForm.getPreferences());
 
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("Starting ActionList fetch");
         ActionListService actionListSrv = KEWServiceLocator.getActionListService();
 
-        // reset the default action on the form
+        // reset the default action on tdhe form
         actionListForm.setDefaultActionToTake("NONE");
         boolean freshActionList = true;
 
@@ -393,7 +393,7 @@ public class ActionListController extends UifControllerBase{
            returnPage = "ActionListPage2";
         }
 
-        return getUIFModelAndView(actionListForm,returnPage);
+        return getModelAndView(actionListForm, returnPage);
     }
 
     private static final String OUT_BOX_MODE = "_OUT_BOX_MODE";
@@ -681,15 +681,14 @@ public class ActionListController extends UifControllerBase{
      * @return start - forwards to the start method
      */
     @RequestMapping(params = "methodToCall=takeMassActions")
-    protected ModelAndView takeMassActions(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
+    protected ModelAndView takeMassActions(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm) form;
 
         Object obj = ObjectPropertyUtils.getPropertyValue(form, "extensionData['actionInputField_actionSelect_line2']");
 
         List<? extends ActionItemBase> actionList = actionListForm.getActionList();
         if (actionList == null) {
-            return getUIFModelAndView(form);
+            return getModelAndView(form);
         }
 
         ActionMessages messages = new ActionMessages();
@@ -719,7 +718,7 @@ public class ActionListController extends UifControllerBase{
                 cleanForm = new org.kuali.rice.kew.actionlist.web.ActionListForm();
         actionListForm.setRequeryActionList(true);
 
-        return start(actionListForm,request,response);
+        return start(actionListForm);
     }
 
     /**
@@ -757,8 +756,7 @@ public class ActionListController extends UifControllerBase{
      * @return start() - forwards to start method to refresh action list
      */
     @RequestMapping(params = "methodToCall=helpDeskActionListLogin")
-    public ModelAndView helpDeskActionListLogin(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView helpDeskActionListLogin(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm) form;
 
         String name = actionListForm.getHelpDeskActionListUserName();
@@ -788,7 +786,7 @@ public class ActionListController extends UifControllerBase{
         actionListForm.setDelegator(null);
         actionListForm.setRequeryActionList(true);
 
-        return start(actionListForm,request,response);
+        return start(actionListForm);
     }
 
     /**
@@ -805,8 +803,7 @@ public class ActionListController extends UifControllerBase{
     * @return start() - forwards to start to refresh action list
     */
     @RequestMapping(params = "methodToCall=clearFilter")
-    public ModelAndView clearFilter(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView clearFilter(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm) form;
 
         LOG.debug("clearFilter ActionListController");
@@ -818,7 +815,7 @@ public class ActionListController extends UifControllerBase{
         actionListForm.setFilter(filter);
         LOG.debug("end clearFilter ActionListController");
 
-        return start(actionListForm,request,response);
+        return start(actionListForm);
     }
 
     /**
@@ -829,16 +826,12 @@ public class ActionListController extends UifControllerBase{
     * forwards to the correct page after the start method runs.
     * </p>
     *
-    * @param form - ActionListForm form
-    * @param result - Spring form binding result
-    * @param request - http request
-    * @param response - http response
+    * @param form ActionListForm form
     * @return clearFilter() - forwards to clearFilter method
     */
     @RequestMapping(params = "methodToCall=clear")
-    public ModelAndView clear(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
-        return clearFilter(form,result,request,response);
+    public ModelAndView clear(UifFormBase form){
+        return clearFilter(form);
     }
 
     /**
@@ -855,8 +848,7 @@ public class ActionListController extends UifControllerBase{
     * @return start() forwards to start method to refresh action list
     */
     @RequestMapping(params = "methodToCall=setFilter")
-    public ModelAndView setFilter(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView setFilter(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm) form;
 
         //validate the filter through the actionitem/actionlist service (I'm thinking actionlistservice)
@@ -873,10 +865,10 @@ public class ActionListController extends UifControllerBase{
         actionListForm.setFilter(alFilter);
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
             actionListForm.setRequeryActionList(true);
-            return start(actionListForm,request,response);
+            return start(actionListForm);
         }
 
-        return start(actionListForm,request,response);
+        return start(actionListForm);
     }
 
     /**
@@ -887,14 +879,10 @@ public class ActionListController extends UifControllerBase{
     * </p>
     *
     * @param form - ActionListForm form
-    * @param result - Spring form binding result
-    * @param request - http request
-    * @param response - http response
     * @return start() - forwards to start method to refresh the action list
     */
     @RequestMapping(params = "methodToCall=clearHelpDeskActionListUser")
-    public ModelAndView clearHelpDeskActionListUser(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView clearHelpDeskActionListUser(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm) form;
 
         LOG.debug("clearHelpDeskActionListUser ActionListAction");
@@ -904,7 +892,7 @@ public class ActionListController extends UifControllerBase{
 
         actionListForm.setRequeryActionList(true);
 
-        return start(actionListForm,request,response);
+        return start(actionListForm);
     }
 
     /**
@@ -915,14 +903,10 @@ public class ActionListController extends UifControllerBase{
     * </p>
     *
     * @param form - ActionListForm form
-    * @param result - Spring form binding result
-    * @param request - http request
-    * @param response - http response
     * @return start() forwards to start to refresh the outbox.
     */
     @RequestMapping(params = "methodToCall=removeOutboxItems")
-    public ModelAndView removeOutboxItems(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView removeOutboxItems(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm)form;
         Map selectedCollectionLines = actionListForm.getSelectedCollectionLines();
         Object selectedItems = selectedCollectionLines.get("ActionList");
@@ -937,7 +921,7 @@ public class ActionListController extends UifControllerBase{
         actionListForm.setViewOutbox("true");
         actionListForm.setRequeryActionList(true);
 
-        return start(actionListForm,request,response);
+        return start(actionListForm);
     }
 
     /**
@@ -951,7 +935,7 @@ public class ActionListController extends UifControllerBase{
     * @param result - Spring form binding result
     * @param request - http request
     * @param response - http response
-    * @return ModelAndView - forwards to the standard KRAD getUIFModelAndView method
+    * @return ModelAndView - forwards to the standard KRAD getModelAndView method
     */
     @RequestMapping(params = "methodToCall=viewFilter")
     public ModelAndView viewFilter(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
@@ -959,7 +943,7 @@ public class ActionListController extends UifControllerBase{
         ActionListForm actionListForm = (ActionListForm)form;
         actionListForm.setOldFilter(new ActionListFilter(actionListForm.getFilter()));
 
-        return getUIFModelAndView(actionListForm,"ActionListPage2");
+        return getModelAndView(actionListForm, "ActionListPage2");
     }
 
     /**
@@ -970,18 +954,14 @@ public class ActionListController extends UifControllerBase{
     * </p>
     *
     * @param form - ActionListForm form
-    * @param result - Spring form binding result
-    * @param request - http request
-    * @param response - http response
     * @return start() forwards to start method to refresh teh action list
     */
     @RequestMapping(params = "methodToCall=cancelFilter")
-    public ModelAndView cancelFilter(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView cancelFilter(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm)form;
         actionListForm.setFilter(new ActionListFilter(actionListForm.getOldFilter()));
 
-        return start(actionListForm,request,response);
+        return start(actionListForm);
     }
 
     /**
@@ -996,12 +976,12 @@ public class ActionListController extends UifControllerBase{
     * @param result - Spring form binding result
     * @param request - http request
     * @param response - http response
-    * @return ModelAndView - forwards to KRAD standard getUIFModelAndView method
+    * @return ModelAndView - forwards to KRAD standard getModelAndView method
     */
     @RequestMapping(params = "methodToCall=viewPreferences")
     public ModelAndView viewPreferences(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response){
-        return getUIFModelAndView(form,"ActionListPage3");
+        return getModelAndView(form, "ActionListPage3");
     }
 
     /**

@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.core.api.CoreConstants;
 
 /**
- * Defines Global Constants for the KRAD Module
+ * Defines Global Constants for the KRAD Module.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -713,5 +713,11 @@ public final class KRADConstants {
         public static final String KRAD_COPY_DELAY = "rice.krad.copyable.delay";
         public static final String KRAD_INCLUDE_LESS = "rice.krad.include.less";
         public static final String SCHEMA_PACKAGES = "rice.krad.schema.packages";
+    }
+
+    public static final class ControllerMappings {
+        public static final String INQUIRY = "/inquiry";
+        public static final String LOOKUP = "/lookup";
+        public static final String MAINTENANCE = "/maintenance";
     }
 }

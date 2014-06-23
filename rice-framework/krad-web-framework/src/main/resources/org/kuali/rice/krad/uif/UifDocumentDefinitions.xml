@@ -64,7 +64,8 @@
     </property>
   </bean>
 
-  <bean id="Uif-DocumentInfoGroup" parent="Uif-GridGroup" p:readOnly="true">
+  <bean id="Uif-DocumentInfoGroup" parent="Uif-DocumentInfoGroup-parentBean"/>
+  <bean id="Uif-DocumentInfoGroup-parentBean" abstract="true" parent="Uif-GridGroup" p:readOnly="true">
     <property name="items">
       <list>
         <bean parent="Uif-DocumentNumber"/>

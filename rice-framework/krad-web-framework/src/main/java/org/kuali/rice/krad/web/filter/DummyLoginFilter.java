@@ -53,7 +53,7 @@ public class DummyLoginFilter implements Filter {
         showPassword = Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("showPassword")).booleanValue();
 
         if (loginPath == null) {
-            loginPath = "/kr-login/login?methodToCall=start&viewId=DummyLoginView&dataObjectClassName=org.kuali.rice.krad.web.login.DummyLoginForm";
+            loginPath = "/kr-login/login?viewId=DummyLoginView";
         }
     }
 

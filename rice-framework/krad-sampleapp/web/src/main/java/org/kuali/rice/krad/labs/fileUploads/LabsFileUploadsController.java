@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LabsFileUploadsController extends KradLabsController {
 
     @Override
-    protected LabsFileUploadsForm createInitialForm(HttpServletRequest request) {
+    protected LabsFileUploadsForm createInitialForm() {
         return new LabsFileUploadsForm();
     }
 
@@ -52,7 +52,7 @@ public class LabsFileUploadsController extends KradLabsController {
             GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS, "labs.fileUpload", "one");
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=uploadTwo")
@@ -64,6 +64,6 @@ public class LabsFileUploadsController extends KradLabsController {
             GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS, "labs.fileUpload", "two");
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 }

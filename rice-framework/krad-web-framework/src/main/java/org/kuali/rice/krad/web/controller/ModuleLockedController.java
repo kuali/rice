@@ -39,7 +39,7 @@ public class ModuleLockedController extends UifControllerBase {
     public static final String MODULE_PARAMETER = "moduleNamespace";
     
     @Override
-    protected UifFormBase createInitialForm(HttpServletRequest request) {
+    protected UifFormBase createInitialForm() {
         return new UifFormBase();
     }
 

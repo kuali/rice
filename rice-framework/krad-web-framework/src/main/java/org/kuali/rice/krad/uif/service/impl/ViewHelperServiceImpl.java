@@ -248,19 +248,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @SuppressWarnings("unchecked")
     @Override
     public void processCollectionAddLine(ViewModel model, String collectionId, String collectionPath) {
-        if (!(model instanceof ViewModel)) {
-            return;
-        }
-
-        ViewModel viewModel = (ViewModel) model;
-
-        if (collectionId == null) {
-            logAndThrowRuntime(
-                    "Unable to get collection group component for Id: " + collectionPath + " path: " + collectionPath);
-        }
-
         // now get the new line we need to add
-        BindingInfo addLineBindingInfo = (BindingInfo) viewModel.getViewPostMetadata().getComponentPostData(
+        BindingInfo addLineBindingInfo = (BindingInfo) model.getViewPostMetadata().getComponentPostData(
                 collectionId, UifConstants.PostMetadata.ADD_LINE_BINDING_INFO);
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLineBindingInfo.getBindingPath());
         if (addLine == null) {
@@ -270,10 +259,9 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         // Adding an empty list because this item does not need to be further processed, but needs to init
         // a new add line
         List<Object> lineDataObjects = new ArrayList<Object>();
-        viewModel.getViewPostMetadata().getAddedCollectionObjects().put(collectionId, lineDataObjects);
+        model.getViewPostMetadata().getAddedCollectionObjects().put(collectionId, lineDataObjects);
 
-        processAndAddLineObject(viewModel, addLine, collectionId, collectionPath);
-
+        processAndAddLineObject(model, addLine, collectionId, collectionPath);
     }
 
     /**

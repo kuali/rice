@@ -28,8 +28,7 @@ import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.controller.MaintenanceDocumentController;
-import org.kuali.rice.krad.web.controller.MethodAccessible;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -93,20 +92,19 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     /**
      * Override route to set the setSelectedAgendaItemId to empty and disable all the buttons
      *
-     * @see org.kuali.rice.krad.web.controller.MaintenanceDocumentController#route
+     * @see org.kuali.rice.krad.maintenance.MaintenanceDocumentController#route
      *     (DocumentFormBase, BindingResult, HttpServletRequest, HttpServletResponse)
      */
     @Override
     @RequestMapping(params = "methodToCall=route")
-    public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView route(DocumentFormBase form) {
 
         ModelAndView modelAndView;
         MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
         AgendaEditor agendaEditor = ((AgendaEditor) maintenanceForm.getDocument().getNewMaintainableObject().getDataObject());
         agendaEditor.setSelectedAgendaItemId("");
         agendaEditor.setDisableButtons(true);
-        modelAndView = super.route(form, result, request, response);
+        modelAndView = super.route(form);
 
         return modelAndView;
     }
@@ -114,13 +112,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     /**
      * This overridden method does extra work on refresh to update the namespace when the context has been changed.
      *
-     * @see org.kuali.rice.krad.web.controller.UifControllerBase#refresh(org.kuali.rice.krad.web.form.UifFormBase, org.springframework.validation.BindingResult, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     * {@inheritDoc}
      */
     @RequestMapping(params = "methodToCall=" + "refresh")
     @Override
-    public ModelAndView refresh(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ModelAndView modelAndView = super.refresh(form, result, request, response);
+    public ModelAndView refresh(UifFormBase form) {
+        ModelAndView modelAndView = super.refresh(form);
 
         // handle return from context lookup
         MaintenanceDocumentForm maintenanceForm = (MaintenanceDocumentForm) form;
@@ -148,20 +145,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     @Override
-    public ModelAndView maintenanceEdit(@ModelAttribute("KualiForm") MaintenanceDocumentForm form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView setupMaintenanceEdit(MaintenanceDocumentForm form) {
 
         // Reset the page Id so that bread crumbs can come back to the default page on EditAgenda
         form.setPageId(null);
-        return super.maintenanceEdit(form,result,request,response);
+        return super.setupMaintenanceEdit(form);
     }
 
     /**
      * This method updates the existing rule in the agenda.
      */
     @RequestMapping(params = "methodToCall=" + "goToAddRule")
-    public ModelAndView goToAddRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView goToAddRule(UifFormBase form) throws Exception {
         AgendaEditor agendaEditorForBusRuleChecks = getAgendaEditor(form);
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
         if (rule.validContext(agendaEditorForBusRuleChecks) && rule.validAgendaName(agendaEditorForBusRuleChecks)) {
@@ -170,10 +165,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             agendaEditor.setAddRuleInProgress(true);
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
 
-            return super.navigate(form, result, request, response);
+            return super.navigate(form);
         }
 
-        return super.navigate(form, result, request, response);
+        return super.navigate(form);
     }
 
     /**
@@ -255,8 +250,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * This method updates the existing rule in the agenda.
      */
     @RequestMapping(params = "methodToCall=" + "goToEditRule")
-    public ModelAndView goToEditRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView goToEditRule(UifFormBase form) throws Exception {
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
@@ -274,10 +268,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
 
-            return super.navigate(form, result, request, response);
+            return super.navigate(form);
         }
 
-        return super.navigate(form, result, request, response);
+        return super.navigate(form);
     }
 
     /**
@@ -335,8 +329,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      *  This method adds the newly create rule to the agenda.
      */
     @RequestMapping(params = "methodToCall=" + "addRule")
-    public ModelAndView addRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView addRule(UifFormBase form) throws Exception {
 
         AgendaEditor agendaEditor = getAgendaEditor(form);
         AgendaBo agenda = agendaEditor.getAgenda();
@@ -345,7 +338,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (!validateProposition(newAgendaItem.getRule().getProposition(), newAgendaItem.getRule().getNamespace())) {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
             // NOTICE short circuit method on invalid proposition
-            return super.navigate(form, result, request, response);
+            return super.navigate(form);
         }
 
         newAgendaItem.getRule().setAttributes(agendaEditor.getCustomRuleAttributesMap());
@@ -395,7 +388,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-AddRule-Page");
         }
 
-        return super.navigate(form, result, request, response);
+        return super.navigate(form);
     }
 
     /**
@@ -669,8 +662,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * This method updates the existing rule in the agenda.
      */
     @RequestMapping(params = "methodToCall=" + "editRule")
-    public ModelAndView editRule(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView editRule(UifFormBase form) throws Exception {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         // this is the root of the tree:
         AgendaItemBo firstItem = getFirstAgendaItem(agendaEditor.getAgenda());
@@ -680,7 +672,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (!validateProposition(agendaItemLine.getRule().getProposition(), agendaItemLine.getRule().getNamespace())) {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
             // NOTICE short circuit method on invalid proposition
-            return super.navigate(form, result, request, response);
+            return super.navigate(form);
         }
 
         agendaItemLine.getRule().setAttributes(agendaEditor.getCustomRuleAttributesMap());
@@ -695,7 +687,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         } else {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
         }
-        return super.navigate(form, result, request, response);
+        return super.navigate(form);
     }
 
     /**
@@ -741,7 +733,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "ajaxMoveUp")
@@ -751,7 +743,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         moveSelectedSubtreeUp(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -862,7 +854,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         moveSelectedSubtreeDown(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -962,7 +954,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         moveSelectedSubtreeLeft(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -1004,7 +996,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         moveSelectedSubtreeRight(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -1295,7 +1287,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         deleteSelectedSubtree(form);
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     private void deleteSelectedSubtree(UifFormBase form) {
@@ -1386,7 +1378,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         ruleEditorMessage.append("Marked ").append(selectedAgendaItem.getRule().getName()).append(" for cutting.");
         agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "ajaxPaste")
@@ -1444,7 +1436,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
 
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -1656,14 +1648,14 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         final String copyRuleNameErrorPropertyName = "AgendaEditorView-AddRule-Page"; //"copyRuleName",
         if (StringUtils.isBlank(name)) {
             GlobalVariables.getMessageMap().putError(copyRuleNameErrorPropertyName, "error.rule.missingCopyRuleName");
-            return super.refresh(form, result, request, response);
+            return super.refresh(form);
         }
 
         RuleDefinition oldRuleDefinition = getRuleBoService().getRuleByNameAndNamespace(name, namespace);
 
         if (oldRuleDefinition == null) {
             GlobalVariables.getMessageMap().putError(copyRuleNameErrorPropertyName, "error.rule.invalidCopyRuleName", namespace + ":" + name);
-            return super.refresh(form, result, request, response);
+            return super.refresh(form);
         }
 
         RuleBo oldRule = RuleBo.from(oldRuleDefinition);
@@ -1673,7 +1665,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (!newRule.getActions().isEmpty()) {
             agendaEditor.setAgendaItemLineRuleAction( newRule.getActions().get(0));
         }
-        return super.refresh(form, result, request, response);
+        return super.refresh(form);
     }
 
 
@@ -1717,7 +1709,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             rule.refreshPropositionTree(null);
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -1844,7 +1836,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 rule.refreshPropositionTree(true);
             }
         }
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -1954,7 +1946,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             throws Exception {
         moveSelectedProposition(form, true);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "movePropositionDown")
@@ -1963,7 +1955,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             throws Exception {
         moveSelectedProposition(form, false);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     private void moveSelectedProposition(UifFormBase form, boolean up) {
@@ -2053,7 +2045,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 // and move the node to the second child.
             }
         }
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "movePropositionRight")
@@ -2092,7 +2084,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 }
             }
         }
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -2146,7 +2138,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(true);
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "cutProposition")
@@ -2158,7 +2150,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         String selectedPropId = agendaEditor.getSelectedPropositionId();
         agendaEditor.setCutPropositionId(selectedPropId);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "pasteProposition")
@@ -2226,7 +2218,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
         agendaEditor.setCutPropositionId(null);
         // call the super method to avoid the agenda tree being reloaded from the db
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "deleteProposition")
@@ -2263,7 +2255,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(false);
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(params = "methodToCall=" + "updateCompoundOperator")
@@ -2275,7 +2267,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         RuleBo rule = agendaEditor.getAgendaItemLine().getRule();
         rule.refreshPropositionTree(false);
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
 }

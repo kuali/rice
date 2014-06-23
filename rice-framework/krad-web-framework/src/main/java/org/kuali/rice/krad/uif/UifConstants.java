@@ -181,6 +181,7 @@ public class UifConstants {
         public static final String INQUIRY_XML = "inquiryXmlRetrieval";
         public static final String TABLE_CSV = "tableCsvRetrieval";
         public static final String TABLE_XLS = "tableXlsRetrieval";
+        public static final String DISPLAY_SUPER_USER_DOCUMENT = "displaySuperUserDocument";
     }
 
     public static class ActionEvents {
@@ -421,6 +422,10 @@ public class UifConstants {
         public static final String LOOKUP = "LOOKUP";
         public static final String MULTI_VALUE_LOOKUP = "MULTI_VALUE_LOOKUP";
         public static final String QUESTION = "QUESTION";
+    }
+
+    public static class RefreshStatus {
+        public static final String ERROR = "ERROR";
     }
 
     public static final class HistoryFlow {

@@ -47,7 +47,7 @@ public class EncryptionController extends UifControllerBase {
      * Polulate the encryptionServiceName on the form.
      */
     @Override
-    protected EncryptionForm createInitialForm(HttpServletRequest request) {
+    protected EncryptionForm createInitialForm() {
         EncryptionForm encryptionForm = new EncryptionForm();
         encryptionForm.setEncryptionServiceName(getEncryptionService().getClass().getSimpleName());
         return encryptionForm;
@@ -75,7 +75,7 @@ public class EncryptionController extends UifControllerBase {
             GlobalVariables.getMessageMap().putError(INPUT_FIELD, ENCRYPTION_ERROR, gse.toString());
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**
@@ -100,7 +100,7 @@ public class EncryptionController extends UifControllerBase {
             GlobalVariables.getMessageMap().putError(INPUT_FIELD, ENCRYPTION_ERROR, gse.toString());
         }
 
-        return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     /**

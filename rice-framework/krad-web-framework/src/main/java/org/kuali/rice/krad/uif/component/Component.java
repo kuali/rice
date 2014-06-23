@@ -19,6 +19,7 @@ import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.layout.CssGridSizes;
 import org.kuali.rice.krad.uif.lifecycle.RunComponentModifiersTask;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -1255,4 +1256,43 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      */
     String getStyleClassesAsString();
 
+    /**
+     * Names a model property path, which if set and resolves to true, indicates that this component
+     * should be excluded from the lifecycle at the initialize phase.
+     * 
+     * <p>
+     * If prefixed with the '#' character, this path will be relative to the view's "pre-model"
+     * context rather than the model.
+     * </p>
+     * 
+     * <p>
+     * This property is superseded by {@link #getExcludeUnless()}; when both resolve to true, the
+     * component will be included. When neither property is set, the component is unconditionally
+     * included.
+     * </p>
+     * 
+     * @return model property path
+     * @see ViewLifecycleUtils#isExcluded(Component)
+     */
+    String getExcludeIf();
+
+    /**
+     * Names a model property path, which if set and resolves to null or false, indicates that this
+     * component should be excluded from the lifecycle at the initialize phase.
+     * 
+     * <p>
+     * If prefixed with the '#' character, this path will be relative to the view's "pre-model"
+     * context rather than the model.
+     * </p>
+     * 
+     * <p>
+     * This property supersedes {@link #getExcludeIf()}; when both resolve to true, the component
+     * will be included.  When neither property is set, the component is unconditionally included.
+     * </p>
+     * 
+     * @return model property path
+     * @see ViewLifecycleUtils#isExcluded(Component)
+     */
+    String getExcludeUnless();
+    
 }

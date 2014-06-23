@@ -30,6 +30,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
@@ -37,6 +38,7 @@ import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
+import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Utilities for working with {@link LifecycleElement} instances.
@@ -47,6 +49,9 @@ public final class ViewLifecycleUtils {
 
     private static final Logger LOG = Logger.getLogger(ViewLifecycleUtils.class);
 
+    private static final String COMPONENT_CONTEXT_PREFIX = '#' + UifConstants.ContextVariableNames.COMPONENT + '.';
+    private static final String PARENT_CONTEXT_PREFIX = '#' + UifConstants.ContextVariableNames.PARENT + '.';
+    
     /**
      * Gets property names of all bean properties on the lifecycle element restricted for the
      * indicated view phase.
@@ -514,4 +519,67 @@ public final class ViewLifecycleUtils {
         }
     }
 
+    /**
+     * Determines if a component should be excluded from the current lifecycle.
+     * 
+     * @param component The component.
+     */
+    public static boolean isExcluded(Component component) {
+        String excludeUnless = component.getExcludeUnless();        
+        if (StringUtils.isNotBlank(excludeUnless) &&
+                !resolvePropertyPath(excludeUnless, component)) {
+            return true;
+        }
+        
+        return resolvePropertyPath(component.getExcludeIf(), component);
+    }
+
+    /**
+     * Helper method for use with {@link #isExcluded(Component)}.
+     * 
+     * <p>
+     * Resolves a property path based on either the model, or on the pre-model context when the path
+     * expression starts with '#'. Note that this method is intended for resolution at the
+     * initialize phase, so the full context is not available. However, in addition to the values
+     * evident in {@link View#getPreModelContext()}, #component and #parent will resolve to the
+     * component, and its lifecycle parent, respectively.
+     * </p>
+     * 
+     * @param path property path
+     * @param component component to evaluate the expression relative to
+     * @return true if the path resolves to the boolean value true, otherwise false
+     */
+    private static boolean resolvePropertyPath(String path, Component component) {
+        if (StringUtils.isBlank(path)) {
+            return false;
+        }
+
+        Object root;
+        if (path.startsWith(COMPONENT_CONTEXT_PREFIX)) {
+            root = component;
+            path = path.substring(COMPONENT_CONTEXT_PREFIX.length());
+
+        } else if (path.startsWith(PARENT_CONTEXT_PREFIX)) {
+            root = ViewLifecycle.getPhase().getParent();
+            path = path.substring(PARENT_CONTEXT_PREFIX.length());
+
+        } else if (path.charAt(0) == '#') {
+            Map<String, Object> context = ViewLifecycle.getView().getPreModelContext();
+
+            int iod = path.indexOf('.');
+            if (iod == -1) {
+                return Boolean.TRUE.equals(context.get(path.substring(1)));
+            }
+
+            String contextVariable = path.substring(1, iod);
+            root = context.get(contextVariable);
+            path = path.substring(iod + 1);
+
+        } else {
+            root = ViewLifecycle.getModel();
+        }
+
+        return Boolean.TRUE.equals(ObjectPropertyUtils.getPropertyValue(root, path));
+    }
+    
 }

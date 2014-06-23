@@ -18,6 +18,7 @@ package org.kuali.rice.krad.uif.container;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -144,7 +145,28 @@ public class GroupBase extends ContainerBase implements Group {
 
         super.performInitialization(model);
 
-        for (Component component : getItems()) {
+        Iterator<? extends Component> itemIterator = getItems().iterator();
+        while (itemIterator.hasNext()) {
+            Component component = itemIterator.next();
+            
+            if (component == null) {
+                continue;
+            }
+
+            String excludeUnless = component.getExcludeUnless();
+            if (StringUtils.isNotBlank(excludeUnless) &&
+                    !Boolean.TRUE.equals(ObjectPropertyUtils.getPropertyValue(model, excludeUnless))) {
+                itemIterator.remove();
+                continue;
+            }
+            
+            String excludeIf = component.getExcludeIf();
+            if (StringUtils.isNotBlank(excludeIf) &&
+                    Boolean.TRUE.equals(ObjectPropertyUtils.getPropertyValue(model, excludeIf))) {
+                itemIterator.remove();
+                continue;
+            }
+            
             // append group's field bind by name prefix (if set) to each
             // attribute field's binding prefix
             if (component instanceof DataBinding) {

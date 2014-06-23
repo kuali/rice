@@ -185,6 +185,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private String preRenderContent;
     private String postRenderContent;
+    
+    private String excludeIf;
+    private String excludeUnless;
 
     public ComponentBase() {
         super();
@@ -2511,6 +2514,36 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     public void setPostRenderContent(String postRenderContent) {
         checkMutable(true);
         this.postRenderContent = postRenderContent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getExcludeIf() {
+        return this.excludeIf;
+    }
+
+    /**
+     * @see #getExcludeIf()
+     */
+    public void setExcludeIf(String excludeIf) {
+        this.excludeIf = excludeIf;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getExcludeUnless() {
+        return this.excludeUnless;
+    }
+
+    /**
+     * @see #getExcludeIf()
+     */
+    public void setExcludeUnless(String excludeUnless) {
+        this.excludeUnless = excludeUnless;
     }
 
     /**

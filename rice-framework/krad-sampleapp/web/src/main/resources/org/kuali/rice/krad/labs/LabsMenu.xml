@@ -217,6 +217,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-PerformanceMedium"/>
                           <bean parent="Uif-Link" p:linkText="KSA Transaction" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/transaction?viewId=TransactionView"/>
+                          <bean parent="Uif-Link" p:linkText="UIF Lifecycle Exclusion POC" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/exclusion?viewId=Lab-Exclusion"/>
                           <bean parent="Uif-Link" p:linkText="Course Search Light Table" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-LightTable"/>
                           <bean parent="Uif-Link" p:linkText="Course Search Basic Table" p:target="_self"

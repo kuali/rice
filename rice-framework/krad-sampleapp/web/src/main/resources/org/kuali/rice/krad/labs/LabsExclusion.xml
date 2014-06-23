@@ -1,0 +1,107 @@
+<!-- Copyright 2005-2014 The Kuali Foundation Licensed under the Educational 
+	Community License, Version 2.0 (the "License"); you may not use this file 
+	except in compliance with the License. You may obtain a copy of the License 
+	at http://www.opensource.org/licenses/ecl2.php Unless required by applicable 
+	law or agreed to in writing, software distributed under the License is distributed 
+	on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+	express or implied. See the License for the specific language governing permissions 
+	and limitations under the License. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+	<bean id="Lab-Exclusion" parent="Uif-FormView">
+		<property name="headerText" value="UIF Component Exclusion" />
+		<property name="formClass"
+			value="org.kuali.rice.krad.labs.exclusion.LabsExclusionForm" />
+		<property name="items">
+			<list>
+				<ref bean="Lab-Exclusion-Page" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="Lab-Exclusion-Page" parent="Uif-Page"
+		p:headerText="UIF Lifecycle Exclusion Test">
+		<property name="items">
+			<list>
+
+				<bean parent="Uif-VerticalBoxSection" p:headerText="About UIF component exclusion">
+					<property name="items">
+						<list>
+							<bean parent="Uif-Message">
+								<property name="messageText">
+									<value>UIF lifecycle exclusion differs from controlling
+										rendering via the render property in that components excluded
+										using the excludeIf and excludeUnless properties are omitted
+										from groups during the initialize phase. When the need for a
+										UIF component can be determined at the initialize phase, for
+										example based on a form property, this can be a powerful
+										optimization tool since excluded components will not be
+										processed at the apply model phase, which is where collection
+										overhead is the most pronounced.</value>
+								</property>
+							</bean>
+							<bean parent="Uif-Message">
+								<property name="messageText">
+									<value>To set the [em]showFooColumn[/em] property, or the
+									[em]hideBarSection[/em] form properties, which are tied to
+									components using the [em]excludeUnless[/em] and [em]excludeIf[/em]
+									UIF component properties, respectively, set the controls below and
+									click update.</value>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<bean parent="Uif-HorizontalBoxSection" p:headerText="Controls">
+					<property name="items">
+						<list>
+							<bean parent="Uif-InputField" p:propertyName="showFooColumn"
+								p:label="Include FOO column">
+								<property name="control">
+									<bean parent="Uif-CheckboxControl" />
+								</property>
+							</bean>
+							<bean parent="Uif-InputField" p:propertyName="hideBarSection"
+								p:label="Exclude BAR section">
+								<property name="control">
+									<bean parent="Uif-CheckboxControl" />
+								</property>
+							</bean>
+							<bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh"
+								p:actionLabel="Update" />
+						</list>
+					</property>
+				</bean>
+
+				<bean parent="Uif-VerticalBoxSection" p:excludeIf="hideBarSection"
+					p:headerText="The BAR Section">
+					<property name="items">
+						<list>
+							<bean parent="Uif-Message" p:messageText="This is the BAR section!" />
+						</list>
+					</property>
+				</bean>
+
+				<bean parent="Uif-TableCollectionSection" p:headerText="Some Words...">
+					<property name="collectionObjectClass"
+						value="org.kuali.rice.krad.labs.exclusion.ExclusionDO" />
+					<property name="propertyName" value="sampleData" />
+					<property name="items">
+						<list>
+							<bean parent="Uif-DataField" p:propertyName="foo" p:label="FOO"
+								p:excludeUnless="showFooColumn" />
+							<bean parent="Uif-DataField" p:propertyName="bar" p:label="BAR" />
+							<bean parent="Uif-DataField" p:propertyName="baz" p:label="BAZ" />
+						</list>
+					</property>
+				</bean>
+
+			</list>
+		</property>
+	</bean>
+
+</beans>

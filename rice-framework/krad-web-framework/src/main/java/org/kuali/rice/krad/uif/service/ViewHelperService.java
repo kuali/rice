@@ -384,6 +384,4 @@ public interface ViewHelperService {
      */
     ExpressionEvaluatorFactory getExpressionEvaluatorFactory();
 
-    void setViewReadOnly(View view);
-
 }

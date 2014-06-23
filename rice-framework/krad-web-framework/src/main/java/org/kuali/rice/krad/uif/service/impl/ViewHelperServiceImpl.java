@@ -1128,20 +1128,4 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         throw new RuntimeException(message);
     }
 
-    /**
-     * recurses through component tree, setting all components to read only
-     * @param components
-     */
-    private void setComponentsReadOnly(List<? extends Component> components) {
-        for (Component component: components) {
-            component.setReadOnly(true);
-            if (component instanceof ContainerBase) {
-                setComponentsReadOnly(((ContainerBase) component).getItems());
-            }
-        }
-    }
-
-    public void setViewReadOnly(View view) {
-        setComponentsReadOnly(view.getItems());
-    }
 }

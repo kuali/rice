@@ -193,8 +193,6 @@ public class View extends ContainerBase {
     private boolean disableNativeAutocomplete;
     private boolean disableBrowserCache;
 
-    private boolean superUserView;
-
     private String preLoadScript;
 
     @DelayedCopy
@@ -218,7 +216,6 @@ public class View extends ContainerBase {
         supportsRequestOverrideOfReadOnlyFields = true;
         disableBrowserCache = true;
         persistFormToSession = true;
-        superUserView=false;
         sessionPolicy = new ViewSessionPolicy();
 
         this.viewIndex = new ViewIndex();
@@ -1590,22 +1587,6 @@ public class View extends ContainerBase {
         checkMutable(true);
         this.mergeWithPageItems = mergeWithPageItems;
     }
-
-    /**
-     * Indicates whether the view is a super user view, used for
-     * KEW functionality
-     *
-     * @return true if the view is a super user viwe
-     */
-    public boolean isSuperUserView() {
-        return superUserView;
-    }
-
-    public void setSuperUserView(boolean superUserView) {
-        checkMutable(true);
-        this.superUserView = superUserView;
-    }
-
 
     /**
      * For single paged views ({@link #isSinglePageView()}, gives the page

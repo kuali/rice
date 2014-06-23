@@ -44,8 +44,10 @@ public class DocumentView extends FormView {
 	private boolean allowsNoteAttachments = true;
 	private boolean allowsNoteFYI = false;
 	private boolean displayTopicFieldInNotes = false;
+    private boolean superUserView = false;
 
-	private Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
+
+    private Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
 
 	public DocumentView() {
 		super();
@@ -208,4 +210,24 @@ public class DocumentView extends FormView {
 	public void setAttachmentTypesValuesFinderClass(Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass) {
 		this.attachmentTypesValuesFinderClass = attachmentTypesValuesFinderClass;
 	}
+
+    /**
+     * Indicates whether the view is a super user view, used for
+     * KEW functionality
+     *
+     * @return true if the view is a super user viwe
+     */
+    public boolean isSuperUserView() {
+        return superUserView;
+    }
+
+    /**
+     * @see DocumentView#isSuperUserView()
+     */
+    public void setSuperUserView(boolean superUserView) {
+        checkMutable(true);
+        this.superUserView = superUserView;
+    }
+
+
 }

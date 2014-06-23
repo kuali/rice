@@ -140,8 +140,7 @@ public abstract class DocumentControllerBase extends UifControllerBase {
         }
 
         if (KewApiConstants.SUPERUSER_COMMAND .equalsIgnoreCase(command)) {
-            form.getView().setSuperUserView(true);
-            form.getView().getViewHelperService().setViewReadOnly(form.getView());
+            //need to use presentation controller to restrict actions available on the view
         }
 
         return getUIFModelAndView(form);

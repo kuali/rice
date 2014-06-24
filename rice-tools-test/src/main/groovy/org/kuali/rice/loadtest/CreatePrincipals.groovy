@@ -126,7 +126,7 @@ def createPrincipalAndEntity(int counter){
     outfile<< insert_entity_name + newline + ";" + newline
 
     OBJ_ID = getUuid();
-    String insert_principal = "INSERT INTO krim_prncpl_t SET PRNCPL_ID='$PRINCIPAL_ID', OBJ_ID='$OBJ_ID', VER_NBR=000000001, PRNCPL_NM='$USER_NAME', ENTITY_ID='10001', ACTV_IND='Y'"
+    String insert_principal = "INSERT INTO krim_prncpl_t SET PRNCPL_ID='$PRINCIPAL_ID', OBJ_ID='$OBJ_ID', VER_NBR=000000001, PRNCPL_NM='$USER_NAME', ENTITY_ID='$ENTITY_ID', ACTV_IND='Y'"
     outfile << insert_principal + newline + ";" + newline + newline
 }
 

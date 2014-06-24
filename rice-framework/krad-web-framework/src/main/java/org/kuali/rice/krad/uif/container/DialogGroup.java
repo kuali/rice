@@ -66,7 +66,7 @@ public class DialogGroup extends GroupBase {
 
     private List<KeyValue> availableResponses;
 
-    private boolean modalLarge;
+    private String dialogCssClass;
 
     private String onDialogResponseScript;
     private String onShowDialogScript;
@@ -77,6 +77,7 @@ public class DialogGroup extends GroupBase {
      */
     public DialogGroup() {
         super();
+        dialogCssClass = "modal-sm";
     }
 
     /**
@@ -274,19 +275,17 @@ public class DialogGroup extends GroupBase {
     }
 
     /**
-     * Indicates whether the dialog should be rendered as a large modal (default is small).
+     * Gets CSS class to use when rendering dialog (default is modal-sm).
      *
-     * @return boolean true if large modal should be rendered, false if not (small)
+     * @return String of CSS class
      */
-    public boolean isModalLarge() {
-        return modalLarge;
+    @BeanTagAttribute
+    public String getDialogCssClass() {
+        return dialogCssClass;
     }
 
-    /**
-     * @see DialogGroup#isModalLarge()
-     */
-    public void setModalLarge(boolean modalLarge) {
-        this.modalLarge = modalLarge;
+    public void setDialogCssClass(String dialogCssClass) {
+        this.dialogCssClass = dialogCssClass;
     }
 
     /**

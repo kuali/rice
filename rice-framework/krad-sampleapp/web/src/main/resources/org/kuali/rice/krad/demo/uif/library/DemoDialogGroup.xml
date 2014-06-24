@@ -165,15 +165,14 @@
   <bean id="Demo-DialogGroup-Example6" parent="Uif-VerticalBoxSection" p:headerText="Show Dialog Ex. 2"
         p:instructionalText="Dialogs can include any content, including progressive disclosure and actions within
           the dialog. Just build out the items list like any standard group. Note this demo also sets the property
-          [b]modalLarge[/b] to true. This applies the bootstrap modal-lg class to the dialog as opposed to the
-          default modal-sm.">
+          [b]dialogCssClass[/b] to the bootstrap modal-lg class for the dialog as opposed to the default modal-sm.">
     <property name="items">
       <list>
         <!-- ex:Demo-DialogGroup-Example6 start-->
         <bean parent="Uif-ActionLink" p:actionLabel="Show Dialog"
               p:actionScript="showDialog('Demo-DialogGroup-ShowDialog2');"/>
         <bean id="Demo-DialogGroup-ShowDialog2" parent="Uif-DialogGroup-OkCancel"
-              p:headerText="Dialog with Progressive Disclosure" p:modalLarge="true">
+              p:headerText="Dialog with Progressive Disclosure" p:dialogCssClass="modal-lg">
           <property name="help">
             <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
           </property>

@@ -22,12 +22,7 @@
 
     <@krad.wrap component=group renderAs="${group.wrapperTag}">
         <div class="modal-dialog">
-            <#local size="modal-sm"/>
-            <#if group.modalLarge>
-                <#local size="modal-lg"/>
-            </#if>
-
-            <div class="modal-content ${size}">
+            <div class="modal-content ${group.dialogCssClass}">
 
                 <@krad.template component=group.header/>
 

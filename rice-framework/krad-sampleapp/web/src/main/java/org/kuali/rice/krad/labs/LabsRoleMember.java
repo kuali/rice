@@ -19,12 +19,14 @@ import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.provider.annotation.Relationship;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -44,6 +46,8 @@ public class LabsRoleMember extends DataObjectBase {
     @Column(name = "ROLE_ID")
     private String roleId;
 
+    @Relationship(foreignKeyFields="roleId")
+    @Transient
     private RoleBo role;
 
     private String roleNamespaceCode;

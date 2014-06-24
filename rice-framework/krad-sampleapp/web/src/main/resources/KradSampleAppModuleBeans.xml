@@ -205,5 +205,18 @@
 
   <bean id="componentViewHelperService" class="org.kuali.rice.krad.demo.uif.components.ComponentViewHelperServiceImpl"/>
 
+  <bean id="rice.sap.import.modelAndViewService"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="modelAndViewService"/>
+
+  <bean id="rice.sap.import.collectionControllerService"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="collectionControllerService"/>
+
+  <bean id="demoFileControllerService" class="org.kuali.rice.krad.demo.uif.controller.DemoFileControllerServiceImpl">
+    <property name="modelAndViewService" ref="rice.sap.import.modelAndViewService"/>
+    <property name="collectionControllerService" ref="rice.sap.import.collectionControllerService"/>
+  </bean>
+
 </beans>
 

@@ -583,6 +583,11 @@
     <property name="attributeQueryService" ref="attributeQueryService"/>
   </bean>
 
+  <bean id="fileControllerService" class="org.kuali.rice.krad.web.service.impl.FileControllerServiceImpl">
+    <property name="modelAndViewService" ref="modelAndViewService"/>
+    <property name="collectionControllerService" ref="collectionControllerService"/>
+  </bean>
+
   <bean id="modelAndViewService" class="org.kuali.rice.krad.web.service.impl.ModelAndViewServiceImpl">
     <property name="viewService" ref="viewService"/>
     <property name="viewValidationService" ref="viewValidationService"/>

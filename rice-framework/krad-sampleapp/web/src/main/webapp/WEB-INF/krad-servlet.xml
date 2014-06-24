@@ -36,4 +36,8 @@
   <context:component-scan base-package="org.kuali.rice.krad"/>
   <context:component-scan base-package="edu.sampleu.travel"/>
 
+  <bean id="demoFileControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="demoFileControllerService"/>
+  </bean>
+
 </beans>

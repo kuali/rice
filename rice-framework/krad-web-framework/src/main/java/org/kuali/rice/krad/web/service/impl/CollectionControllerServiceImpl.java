@@ -144,18 +144,10 @@ public class CollectionControllerServiceImpl implements CollectionControllerServ
         return getModelAndViewService().getModelAndView(form);
     }
 
-    /**
-     * Instance of model and view service to use within the collection service.
-     *
-     * @return ModelAndViewService instance
-     */
     protected ModelAndViewService getModelAndViewService() {
         return modelAndViewService;
     }
 
-    /**
-     * @see CollectionControllerServiceImpl#getModelAndViewService()
-     */
     public void setModelAndViewService(ModelAndViewService modelAndViewService) {
         this.modelAndViewService = modelAndViewService;
     }

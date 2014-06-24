@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krad.labs;
 
-import org.kuali.rice.krad.file.FileMeta;
-import org.kuali.rice.krad.file.FileMetaBlob;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.service.FileControllerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.List;
 
 /**
  * Basic controller for the lab views
@@ -65,19 +63,11 @@ public class KradLabsController extends UifControllerBase {
         return getModelAndView(form);
     }
 
+    @Autowired
+    @Qualifier("demoFileControllerService")
     @Override
-    public void sendFileFromLineResponse(UifFormBase uifForm, HttpServletRequest request, HttpServletResponse response,
-            List<FileMeta> collection, FileMeta fileLine) throws Exception{
-        if (fileLine instanceof FileMetaBlob) {
-            InputStream is = ((FileMetaBlob) fileLine).getBlob().getBinaryStream();
-            response.setContentType(fileLine.getContentType());
-            response.setHeader("Content-Disposition", "attachment; filename=" + fileLine.getName());
-
-            // copy it to response's OutputStream
-            FileCopyUtils.copy(is, response.getOutputStream());
-
-            response.flushBuffer();
-        }
+    public void setFileControllerService(FileControllerService fileControllerService) {
+        super.setFileControllerService(fileControllerService);
     }
 
 }

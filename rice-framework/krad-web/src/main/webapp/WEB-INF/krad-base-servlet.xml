@@ -154,6 +154,10 @@
     <property name="serviceName" value="queryControllerService"/>
   </bean>
 
+  <bean id="fileControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="fileControllerService"/>
+  </bean>
+
   <bean id="modelAndViewService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="modelAndViewService"/>
   </bean>

@@ -78,14 +78,6 @@ public class MaintenanceDocumentController extends DocumentControllerBase {
     }
 
     /**
-     * @see MaintenanceDocumentControllerService#setupMaintenanceDocument(org.kuali.rice.krad.web.form.MaintenanceDocumentForm,
-     * java.lang.String)
-     */
-    protected void setupMaintenanceDocument(MaintenanceDocumentForm form, String maintenanceAction) {
-        getControllerService().setupMaintenanceDocument(form, maintenanceAction);
-    }
-
-    /**
      * @see MaintenanceDocumentControllerService#downloadDataObjectAttachment(org.kuali.rice.krad.web.form.MaintenanceDocumentForm,
      * javax.servlet.http.HttpServletResponse)
      */

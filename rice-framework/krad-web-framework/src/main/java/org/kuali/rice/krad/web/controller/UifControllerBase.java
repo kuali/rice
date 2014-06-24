@@ -15,41 +15,26 @@
  */
 package org.kuali.rice.krad.web.controller;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.krad.file.FileMeta;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.field.AttributeQueryResult;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.form.DialogResponse;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.service.CollectionControllerService;
 import org.kuali.rice.krad.web.service.ControllerService;
+import org.kuali.rice.krad.web.service.FileControllerService;
 import org.kuali.rice.krad.web.service.ModelAndViewService;
 import org.kuali.rice.krad.web.service.NavigationControllerService;
 import org.kuali.rice.krad.web.service.QueryControllerService;
 import org.kuali.rice.krad.web.service.RefreshControllerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.UUID;
 
 /**
  * Base controller class for views within the KRAD User Interface Framework.
@@ -63,7 +48,6 @@ import java.util.UUID;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class UifControllerBase {
-    protected static final String DELETE_FILE_UPLOAD_LINE_DIALOG = "DialogGroup-DeleteFileUploadLine";
 
     @Autowired
     private ControllerService controllerService;
@@ -79,6 +63,9 @@ public abstract class UifControllerBase {
 
     @Autowired
     private QueryControllerService queryControllerService;
+
+    @Autowired
+    private FileControllerService fileControllerService;
 
     @Autowired
     private ModelAndViewService modelAndViewService;
@@ -157,124 +144,28 @@ public abstract class UifControllerBase {
     }
 
     /**
-     * Called by the multiFile upload element to add a file object to the collection it controls.
+     * @see org.kuali.rice.krad.web.service.FileControllerService#addFileUploadLine(org.kuali.rice.krad.web.form.UifFormBase)
      */
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addFileUploadLine")
-    public ModelAndView addFileUploadLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
-            MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
-        uifForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATECOMPONENT.getKey());
-        uifForm.setAjaxRequest(true);
-
-        final String collectionId = request.getParameter(UifParameters.UPDATE_COMPONENT_ID);
-        final String bindingPath = request.getParameter(UifConstants.PostMetadata.BINDING_PATH);
-
-        Class<?> collectionObjectClass = (Class<?>) uifForm.getViewPostMetadata().getComponentPostData(collectionId,
-                UifConstants.PostMetadata.COLL_OBJECT_CLASS);
-
-        Iterator<String> fileNamesItr = request.getFileNames();
-
-        while (fileNamesItr.hasNext()) {
-            String propertyPath = fileNamesItr.next();
-            MultipartFile uploadedFile = request.getFile(propertyPath);
-            final FileMeta fileObject = (FileMeta) KRADUtils.createNewObjectFromClass(collectionObjectClass);
-            fileObject.init(uploadedFile);
-
-            String id = UUID.randomUUID().toString() + "_" + uploadedFile.getName();
-
-            fileObject.setId(id);
-            fileObject.setDateUploaded(new Date());
-            fileObject.setUrl(
-                    "?methodToCall=getFileFromLine&formKey=" + uifForm.getFormKey() + "&fileName=" + fileObject
-                            .getName() + "&propertyPath=" + propertyPath);
-
-            ViewLifecycle.encapsulateLifecycle(uifForm.getView(), uifForm, uifForm.getViewPostMetadata(), null, request,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            ViewLifecycle.getHelper().processAndAddLineObject(uifForm, fileObject, collectionId,
-                                    bindingPath);
-                        }
-                    });
-        }
-
-        return refresh(uifForm);
+    public ModelAndView addFileUploadLine(UifFormBase form) {
+        return getFileControllerService().addFileUploadLine(form);
     }
 
     /**
-     * Called by the multiFile upload widget to delete a file; Inform the model of file to delete.
+     * @see org.kuali.rice.krad.web.service.FileControllerService#deleteFileUploadLine(org.kuali.rice.krad.web.form.UifFormBase)
      */
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteFileUploadLine")
-    public ModelAndView deleteFileUploadLine(@ModelAttribute("KualiForm") final UifFormBase uifForm,
-            BindingResult result, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        DialogResponse deleteFileUploadLineDialogResponse = uifForm.getDialogResponse(DELETE_FILE_UPLOAD_LINE_DIALOG);
-
-        if (deleteFileUploadLineDialogResponse == null) {
-            // no confirmation dialog found, so create one on the form and return it
-            return showDialog(DELETE_FILE_UPLOAD_LINE_DIALOG, true, uifForm);
-        }
-
-        // Empty hook method for deleting a line in a collection representing a set of files
-        return deleteLine(uifForm);
+    public ModelAndView deleteFileUploadLine(UifFormBase form) {
+        return getFileControllerService().deleteFileUploadLine(form);
     }
 
     /**
-     * Called by the multiFile upload widget to get the file contents for a file upload line.
+     * @see org.kuali.rice.krad.web.service.FileControllerService#getFileFromLine(org.kuali.rice.krad.web.form.UifFormBase,
+     * javax.servlet.http.HttpServletResponse)
      */
-    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=getFileFromLine")
-    public void getFileFromLine(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
-        final String selectedCollectionPath = request.getParameter("propertyPath");
-
-        if (StringUtils.isBlank(selectedCollectionPath)) {
-            throw new RuntimeException("Selected collection was not set for delete line action, cannot delete line");
-        }
-
-        String selectedLine = request.getParameter(UifParameters.SELECTED_LINE_INDEX);
-        final int selectedLineIndex;
-        if (StringUtils.isNotBlank(selectedLine)) {
-            selectedLineIndex = Integer.parseInt(selectedLine);
-        } else {
-            selectedLineIndex = -1;
-        }
-
-        if (selectedLineIndex == -1) {
-            throw new RuntimeException("Selected line index was not set for delete line action, cannot delete line");
-        }
-
-        Collection<FileMeta> collection = ObjectPropertyUtils.getPropertyValue(uifForm, selectedCollectionPath);
-
-        if (collection instanceof List) {
-            FileMeta fileLine = ((List<FileMeta>) collection).get(selectedLineIndex);
-            sendFileFromLineResponse(uifForm, request, response, (List<FileMeta>) collection, fileLine);
-        }
-    }
-
-    /**
-     * Hook controller method to send a response back by using response.flushBuffer() using request/collection/fileLine
-     * information provided
-     *
-     *  <p>
-        A sample implementation may look like:
-        <code> <pre>
-        if (fileLine instanceof FileMetaBlob) {
-             InputStream is = ((FileMetaBlob) fileLine).getBlob().getBinaryStream();
-             response.setContentType("application/force-download");
-             response.setHeader("Content-Disposition", "attachment; filename=" + fileLine.getName());
-
-             // copy it to response's OutputStream
-             FileCopyUtils.copy(is, response.getOutputStream());
-
-             response.flushBuffer();
-         }
-        </pre></code>
-     *  </p>
-     */
-    public void sendFileFromLineResponse(UifFormBase uifForm, HttpServletRequest request, HttpServletResponse response,
-            List<FileMeta> collection, FileMeta fileLine) throws Exception {
-        // empty method for overrides
+    public void getFileFromLine(UifFormBase form, HttpServletResponse response) {
+        getFileControllerService().getFileFromLine(form, response);
     }
 
     /**
@@ -484,6 +375,14 @@ public abstract class UifControllerBase {
 
     public void setQueryControllerService(QueryControllerService queryControllerService) {
         this.queryControllerService = queryControllerService;
+    }
+
+    protected FileControllerService getFileControllerService() {
+        return fileControllerService;
+    }
+
+    public void setFileControllerService(FileControllerService fileControllerService) {
+        this.fileControllerService = fileControllerService;
     }
 
     protected ModelAndViewService getModelAndViewService() {

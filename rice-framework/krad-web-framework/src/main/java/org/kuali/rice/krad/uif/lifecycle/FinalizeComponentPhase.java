@@ -24,14 +24,13 @@ import java.util.Set;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.lifecycle.finalize.AddRefreshComponentDataAttributesTask;
+import org.kuali.rice.krad.uif.lifecycle.finalize.AddFocusAndJumpDataAttributesTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.FinalizeViewTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
 import org.kuali.rice.krad.uif.lifecycle.finalize.RegisterPropertyEditorTask;
-import org.kuali.rice.krad.uif.lifecycle.model.RefreshStateModifyTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 
@@ -151,7 +150,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
         tasks.add(LifecycleTaskFactory.getTask(HelperCustomFinalizeTask.class, this));
         tasks.add(LifecycleTaskFactory.getTask(RegisterPropertyEditorTask.class, this));
         if (ViewLifecycle.isRefreshComponent(getViewPhase(), getViewPath())) {
-            tasks.add(LifecycleTaskFactory.getTask(AddRefreshComponentDataAttributesTask.class, this));
+            tasks.add(LifecycleTaskFactory.getTask(AddFocusAndJumpDataAttributesTask.class, this));
         }
     }
 

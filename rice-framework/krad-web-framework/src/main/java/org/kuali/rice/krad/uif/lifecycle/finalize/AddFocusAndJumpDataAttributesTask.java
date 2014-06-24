@@ -29,13 +29,14 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AddRefreshComponentDataAttributesTask extends ViewLifecycleTaskBase<Component> {
+public class AddFocusAndJumpDataAttributesTask extends ViewLifecycleTaskBase<Component> {
+
     /**
      * Constructor.
      *
      * @param phase The finalize phase for the component.
      */
-    public AddRefreshComponentDataAttributesTask(ViewLifecyclePhase phase) {
+    public AddFocusAndJumpDataAttributesTask(ViewLifecyclePhase phase) {
         super(phase, Component.class);
     }
 
@@ -67,8 +68,6 @@ public class AddRefreshComponentDataAttributesTask extends ViewLifecycleTaskBase
         if (StringUtils.isNotBlank(formBase.getJumpToName())) {
             component.addDataAttribute(UifConstants.ActionDataAttributes.JUMP_TO_NAME, formBase.getJumpToName());
         }
-
     }
-
 
 }

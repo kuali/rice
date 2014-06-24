@@ -33,11 +33,13 @@ public class NavigationBar extends ContentElementBase {
 
     private String brandText;
     private Image brandImage;
+    private String brandUrl;
 
     private Group navigationBarGroup;
 
     public NavigationBar() {
         super();
+        this.brandUrl = "#";
     }
 
     /**
@@ -78,6 +80,23 @@ public class NavigationBar extends ContentElementBase {
      */
     public void setBrandImage(Image brandImage) {
         this.brandImage = brandImage;
+    }
+
+    /**
+     * String of URL set in rendering the navigation component.
+     *
+     * @return String of the URL
+     */
+    @BeanTagAttribute
+    public String getBrandUrl() {
+        return brandUrl;
+    }
+
+    /**
+     * @see NavigationBar#getBrandUrl()
+     */
+    public void setBrandUrl(String brandUrl) {
+        this.brandUrl = brandUrl;
     }
 
     /**

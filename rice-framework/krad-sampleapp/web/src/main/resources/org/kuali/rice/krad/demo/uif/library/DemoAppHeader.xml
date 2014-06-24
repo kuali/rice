@@ -97,6 +97,7 @@
     <property name="applicationNavigation.brandImage">
       <bean parent="Uif-Image" p:source="@{#ConfigProperties['application.url']}/images/logo.png"/>
     </property>
+    <property name="applicationNavigation.brandUrl" value="http://www.kuali.org/"/>
 
     <property name="applicationNavigation.items">
       <list>

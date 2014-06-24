@@ -17,7 +17,6 @@
 -->
 <#--
     Bootstrap Navigation Bar
-
  -->
 
 <#macro uif_navigationBar element>
@@ -32,7 +31,7 @@
                     <span class="icon-reorder"></span>
                 </button>
 
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="${element.brandUrl}">
                     <div class="logoBrand">
                         <h1>
                             <#if element.brandImage?? && element.brandImage.render>

@@ -26,6 +26,8 @@ def opt
 def config
 
 def user
+Integer userCount
+Integer userStartSuffix
 def actionCode
 Integer docCount
 def startIndex
@@ -47,6 +49,8 @@ def parseCommandLine(args){
     cli.n( longOpt: 'numberOfDocs', required: false, 'number of documents to be created', args:1)
     cli.s( longOpt: 'startIndex', required: false, 'starting index number', args:1)
     cli.u( longOpt: 'user', required: false, 'ad hoc recipient principal id', args:1)
+    cli.un( longOpt: '# of users', required: false, 'number of users', args:1)
+    cli.x( longOpt: 'user start suffix', required: false, 'starting user number suffix', args:1)
     cli.a( longOpt: 'actionCode', required: false, 'requested action code', args:1)
     cli.p( longOpt: 'prefix', required: false, 'prefix', args:1)
     cli.o( longOpt: 'outputfile', required: false, argName:"output file", args:1, 'SQL script output filename' )
@@ -66,12 +70,14 @@ def parseCommandLine(args){
     }
 
     docCount = opt.n.toInteger() ?: 1
+    userCount = opt.un.toInteger() ?: 1
+    userStartSuffix = opt.x ?: 0
     startIndex = opt.s ?: 1
     docPrefix = opt.p ?: "LT"
     user = opt.u ?: "fran"
     actionCode = opt.a ?: "A"
     schemaName = opt.db ?: "riceenv17"
-    println "ARGS: " + opt.n + "," + opt.s + "," + opt.p + "," + opt.o
+    println "ARGS: " + opt.n + "," + opt.s + "," + opt.p + "," + opt.o + "," + opt.u + "," + opt.x + "," + opt.un
 
     outfile = new File(opt.o)
     if ( outfile.exists() ) {
@@ -83,8 +89,9 @@ def parseCommandLine(args){
     def newline = System.getProperty("line.separator")
     outfile << "-----------------" + newline
     outfile << "-- generated from CreatePendingAdhocRequestsComponent.groovy" + newline
-    outfile << "-- USERNAME: " + user + newline
-    outfile << "-- DOCS CREATED: " + opt.n + newline
+    int endSuffix = Integer.parseInt(userStartSuffix) + userCount - 1
+    outfile << "-- USERNAME: " + user + "${userStartSuffix}" + '-'+ "${endSuffix}"+ newline
+    outfile << "-- DOCS create for EACH USER: " + opt.n + newline
     outfile << "-- SUMMARY: creates " + opt.n + "Component Documents. Each with a pending action request for user " + user + newline
     outfile << "-----------------" + newline
     outfile << newline
@@ -99,28 +106,34 @@ def getUuid() {
  *
  * <p>Currently creates a new component document with pending approve action
  * request
- * @param counter - suffix used to create unique identifiers
+ * @param counter - suffix (per doc) used to create unique identifiers
+ * @param jcounter - suffix (per user) used to create unique identifiers
+ *
  * @return
  */
-def createSubmitComponentWithPendingApproval(int counter){
+def createSubmitComponentWithPendingApproval(int counter, int jcounter){
+    int suffix = Integer.parseInt(userStartSuffix) + jcounter
+    userid = user + "$suffix"
+    println "user: " + userid
+
     Integer userIndex = startIndex.toInteger() + counter
     def newline = System.getProperty("line.separator")
     outfile << "-- Adding Component Doc " + docPrefix + userIndex + newline + newline
 
-    def DOC_HDR_ID_1 = "DH_" + docPrefix + userIndex
-    def RTE_NODE_ID_1 = "RN1_" + docPrefix + userIndex
-    def RTE_NODE_ID_2 = "RN2_" + docPrefix + userIndex
-    def MAINT_LOCK_1 = "ML_" + docPrefix + userIndex
-    def ACTN_RQST_1 = "AR_" + docPrefix + userIndex
-    def ACTN_ITM_1 = "AI_" + docPrefix + userIndex
-    def ACTN_TKN_1 = "AT_" + docPrefix + userIndex
-    def DESCRIPTION = "Blah "+ docPrefix + userIndex
+    def DOC_HDR_ID_1 = "DH_" + docPrefix + userIndex + "x" + suffix
+    def RTE_NODE_ID_1 = "RN1_" + docPrefix + userIndex + "x" + suffix
+    def RTE_NODE_ID_2 = "RN2_" + docPrefix + userIndex + "x" + suffix
+    def MAINT_LOCK_1 = "ML_" + docPrefix + userIndex + "x" + suffix
+    def ACTN_RQST_1 = "AR_" + docPrefix + userIndex + "x" + suffix
+    def ACTN_ITM_1 = "AI_" + docPrefix + userIndex + "x" + suffix
+    def ACTN_TKN_1 = "AT_" + docPrefix + userIndex + "x" + suffix
+    def DESCRIPTION = "Blah "+ docPrefix + userIndex + "x" + suffix
     def OBJ_ID_1 = getUuid();
     def OBJ_ID_2 = getUuid();
     def OBJ_ID_3 = getUuid();
     def OBJ_ID_4 = getUuid();
 
-    CODE = docPrefix + userIndex
+    CODE = docPrefix + userIndex + "x" + suffix
 
 
 /*
@@ -184,7 +197,7 @@ def createSubmitComponentWithPendingApproval(int counter){
     sql = "UPDATE `$schemaName`.`krew_doc_hdr_cntnt_t`  SET DOC_HDR_ID='$DOC_HDR_ID_1', DOC_CNTNT_TXT='wNv24Qx7w+COB64lDK02+pbzf2kF6b8Vof4euR54BksXQw4bDff0lXLm1sK7Jt0PgDnl79DppmPl0u1+qwmly6hXdjgxsjBzLInioiEmoqX3Tp4bPi0EdJy5jZV/wxh5k+bzsbkCHNqlNH5BZoPYNtsbZuynuPgvLCcH5WcYZyBQmP4pk5mZ+fcdF2nLvi34XmUaJQHImtc=' WHERE DOC_HDR_ID='$DOC_HDR_ID_1'"
     outfile << sql + newline + ";" + newline
 
-    sql = "INSERT INTO `$schemaName`.`krew_actn_rqst_t` SET ACTN_RQST_ID='$ACTN_RQST_1', ACTN_RQST_CD='$actionCode', DOC_HDR_ID='$DOC_HDR_ID_1', STAT_CD='I', RSP_ID='-1', PRNCPL_ID='$user', RECIP_TYP_CD='U', PRIO_NBR=000000000, RTE_LVL_NBR=000000000, RTE_NODE_INSTN_ID='$RTE_NODE_ID_1', DOC_VER_NBR=000000001, CRTE_DT='2014-04-17 14:03:08', RSP_DESC_TXT='', FRC_ACTN=000000001, ACTN_RQST_ANNOTN_TXT='Ad Hoc Routed by admin', APPR_PLCY='F', CUR_IND=000000001, VER_NBR=000000000"
+    sql = "INSERT INTO `$schemaName`.`krew_actn_rqst_t` SET ACTN_RQST_ID='$ACTN_RQST_1', ACTN_RQST_CD='$actionCode', DOC_HDR_ID='$DOC_HDR_ID_1', STAT_CD='I', RSP_ID='-1', PRNCPL_ID='$userid', RECIP_TYP_CD='U', PRIO_NBR=000000000, RTE_LVL_NBR=000000000, RTE_NODE_INSTN_ID='$RTE_NODE_ID_1', DOC_VER_NBR=000000001, CRTE_DT='2014-04-17 14:03:08', RSP_DESC_TXT='', FRC_ACTN=000000001, ACTN_RQST_ANNOTN_TXT='Ad Hoc Routed by admin', APPR_PLCY='F', CUR_IND=000000001, VER_NBR=000000000"
     outfile << sql + newline + ";" + newline
 
     sql = "INSERT INTO `$schemaName`.`krew_actn_tkn_t` SET ACTN_TKN_ID='$ACTN_TKN_1', DOC_HDR_ID='$DOC_HDR_ID_1', PRNCPL_ID='admin', ACTN_CD='C', ACTN_DT='2014-04-17 14:03:09', DOC_VER_NBR=000000001, ANNOTN='', CUR_IND=000000001, VER_NBR=000000001"
@@ -194,7 +207,7 @@ def createSubmitComponentWithPendingApproval(int counter){
     outfile << sql + newline + ";" + newline
 
     clear_content = doc_content_1.toString()
-    println "=========== CLEAR: "+ clear_content
+//    println "=========== CLEAR: "+ clear_content
     crypt_content = encryptService.encrypt(clear_content)
     sql = "UPDATE `$schemaName`.`krns_maint_doc_t`  SET VER_NBR=000000002, DOC_CNTNT='$crypt_content' WHERE DOC_HDR_ID='$DOC_HDR_ID_1'"
     outfile << sql + newline + ";" + newline
@@ -206,13 +219,13 @@ def createSubmitComponentWithPendingApproval(int counter){
     sql = "INSERT INTO `$schemaName`.`krew_actn_itm_s` SET id=$ACTN_ITM_1"
     outfile << sql + newline + ";" + newline
 */
-    sql = "INSERT INTO `$schemaName`.`krew_actn_itm_t` SET ACTN_ITM_ID='$ACTN_ITM_1', PRNCPL_ID='$user', ASND_DT='2014-04-17 14:03:14', RQST_CD='A', ACTN_RQST_ID='$ACTN_RQST_1', DOC_HDR_ID='$DOC_HDR_ID_1', DOC_HDR_TTL='New ComponentBo - $DESCRIPTION ', DOC_TYP_LBL='Component Maintenance Document', DOC_HDLR_URL='http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler', DOC_TYP_NM='ComponentMaintenanceDocument', RSP_ID='-1', VER_NBR=000000000"
+    sql = "INSERT INTO `$schemaName`.`krew_actn_itm_t` SET ACTN_ITM_ID='$ACTN_ITM_1', PRNCPL_ID='$userid', ASND_DT='2014-04-17 14:03:14', RQST_CD='A', ACTN_RQST_ID='$ACTN_RQST_1', DOC_HDR_ID='$DOC_HDR_ID_1', DOC_HDR_TTL='New ComponentBo - $DESCRIPTION ', DOC_TYP_LBL='Component Maintenance Document', DOC_HDLR_URL='http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler', DOC_TYP_NM='ComponentMaintenanceDocument', RSP_ID='-1', VER_NBR=000000000"
     outfile << sql + newline + ";" + newline
 
     sql = "UPDATE `$schemaName`.`krew_rte_node_instn_t`  SET RTE_NODE_INSTN_ID='$RTE_NODE_ID_1', DOC_HDR_ID='$DOC_HDR_ID_1', RTE_NODE_ID='2917', BRCH_ID='$RTE_NODE_ID_2', ACTV_IND=000000001, CMPLT_IND=000000000, INIT_IND=000000000, VER_NBR=000000002 WHERE RTE_NODE_INSTN_ID='$RTE_NODE_ID_1'"
     outfile << sql + newline + ";" + newline
 
-    sql = "UPDATE `$schemaName`.`krew_actn_rqst_t`  SET ACTN_RQST_ID='$ACTN_RQST_1', ACTN_RQST_CD='A', DOC_HDR_ID='$DOC_HDR_ID_1', STAT_CD='A', RSP_ID='-1', PRNCPL_ID='$user', RECIP_TYP_CD='U', PRIO_NBR=000000000, RTE_LVL_NBR=000000000, RTE_NODE_INSTN_ID='$RTE_NODE_ID_1', DOC_VER_NBR=000000001, CRTE_DT='2014-04-17 14:03:08', RSP_DESC_TXT='', FRC_ACTN=000000001, ACTN_RQST_ANNOTN_TXT='Ad Hoc Routed by admin', APPR_PLCY='F', CUR_IND=000000001, VER_NBR=000000000 WHERE ACTN_RQST_ID='$ACTN_RQST_1'"
+    sql = "UPDATE `$schemaName`.`krew_actn_rqst_t`  SET ACTN_RQST_ID='$ACTN_RQST_1', ACTN_RQST_CD='A', DOC_HDR_ID='$DOC_HDR_ID_1', STAT_CD='A', RSP_ID='-1', PRNCPL_ID='$userid', RECIP_TYP_CD='U', PRIO_NBR=000000000, RTE_LVL_NBR=000000000, RTE_NODE_INSTN_ID='$RTE_NODE_ID_1', DOC_VER_NBR=000000001, CRTE_DT='2014-04-17 14:03:08', RSP_DESC_TXT='', FRC_ACTN=000000001, ACTN_RQST_ANNOTN_TXT='Ad Hoc Routed by admin', APPR_PLCY='F', CUR_IND=000000001, VER_NBR=000000000 WHERE ACTN_RQST_ID='$ACTN_RQST_1'"
     outfile << sql + newline + ";" + newline + newline + newline
 }
 
@@ -264,8 +277,10 @@ def runScript(args) {
 
     parseCommandLine(args)
     init()
-    for (int i= 0; i< docCount; i++){
-        createSubmitComponentWithPendingApproval(i)
+    for (int j=0; j< userCount; j++){
+        for (int i= 0; i< docCount; i++){
+            createSubmitComponentWithPendingApproval(i,j)
+        }
     }
     println "**************************************************"
     println "*                  Done                          *"

@@ -324,6 +324,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             boolean isValid = performDeleteLineValidation(model, collectionId, collectionPath, deleteLine);
             if (isValid) {
                 ((List<Object>) collection).remove(lineIndex);
+
+                String collectionLabel = (String) model.getViewPostMetadata().getComponentPostData(collectionId,
+                        UifConstants.PostMetadata.COLL_LABEL);
+                GlobalVariables.getMessageMap().putInfoForSectionId(collectionId,
+                        RiceKeyConstants.MESSAGE_COLLECTION_LINE_DELETED, collectionLabel);
+
                 processAfterDeleteLine(model, collectionId, collectionPath, lineIndex);
             }
         } else {

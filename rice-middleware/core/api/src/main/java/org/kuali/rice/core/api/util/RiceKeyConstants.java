@@ -182,6 +182,7 @@ public final class RiceKeyConstants {
 
     public static final String MESSAGE_DELETE = "message.delete";
     public static final String MESSAGE_DELETED = "mesage.deleted";
+    public static final String MESSAGE_COLLECTION_LINE_DELETED = "message.collection.line.deleted";
     public static final String MESSAGE_DELETE_ACTION_NOT_SUPPORTED = "delete.action.not.supported";
 
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";

@@ -84,4 +84,18 @@
       </property>
     </bean>
 
+  <bean id="ActionListView" parent="Uif-IframeView" p:location.baseUrl="@{#ConfigProperties['application.url']}"
+        p:location.controllerMapping="/kew/ActionList.do">
+    <property name="applicationHeader">
+      <bean parent="Uif-ApplicationHeaderBase"/>
+    </property>
+  </bean>
+
+  <bean id="DocSearchView" parent="Uif-IframeView" p:location.baseUrl="@{#ConfigProperties['application.url']}"
+        p:location.controllerMapping="/kew/DocumentSearch.do">
+    <property name="applicationHeader">
+      <bean parent="Uif-ApplicationHeaderBase"/>
+    </property>
+  </bean>
+
 </beans>

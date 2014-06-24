@@ -112,45 +112,6 @@
         <bean parent="Uif-DropdownToggleMenu" p:toggleText="System Admin" p:toggleCaretClass=""/>
       </list>
     </property>
-
-    <property name="applicationToolbar.items">
-      <list>
-        <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right">
-          <property name="items">
-            <list>
-              <bean parent="Uif-MenuAction"
-                    p:actionUrl.viewId="Lab-ActionListView" p:wrapperCssClasses="pull-right"
-                    p:actionUrl.controllerMapping="/labs"
-                    p:actionLabel="Action List"/>
-
-              <bean parent="Uif-MenuAction"
-                    p:actionUrl.viewId="Lab-DocSearchView" p:wrapperCssClasses="pull-right"
-                    p:actionUrl.controllerMapping="/labs"
-                    p:actionLabel="Doc Search"/>
-
-              <bean parent="Uif-DropdownToggleMenu" p:toggleText="Backdoor Login">
-                <property name="wrapperCssClasses">
-                  <list merge="true">
-                    <value>pull-right</value>
-                  </list>
-                </property>
-                <property name="menuItems">
-                  <list>
-                    <bean parent="Uif-MenuAction"
-                          p:actionUrl.viewId="Lab-PreferencesView" p:actionUrl.controllerMapping="/labs"
-                          p:actionLabel="Preferences"/>
-
-                    <bean parent="Uif-MenuAction"
-                          p:actionUrl.viewId="Lab-LogoutView" p:actionUrl.controllerMapping="/labs"
-                          p:actionLabel="Logout"/>
-                  </list>
-                </property>
-              </bean>
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
   </bean>
   <!-- ex:Demo-AppHeader-Example1 end-->
 

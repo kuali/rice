@@ -308,6 +308,7 @@ public class UifConstants {
         public static final String VIEW_HELPER = "ViewHelper";
         public static final String PARENT_LINE = "parentLine";
         public static final String WIZARD = "wizard";
+        public static final String USER_SESSION = "userSession";
     }
 
     public static class TableToolsKeys {

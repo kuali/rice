@@ -34,7 +34,7 @@
 
   <bean id="Uif-HeaderBase" abstract="true" parent="Uif-HeaderBase-parentBean"/>
   <bean id="Uif-HeaderBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.Header"
-        scope="prototype" parent="Uif-ComponentBase">
+        scope="prototype" parent="Uif-ContentElementBase">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/header.ftl"/>
     <property name="templateName" value="uif_header"/>
     <property name="cssClasses">

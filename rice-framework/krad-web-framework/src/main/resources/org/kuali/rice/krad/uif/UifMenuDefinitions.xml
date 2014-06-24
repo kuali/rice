@@ -17,9 +17,9 @@
 
 -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:schema="http://www.kuali.org/krad/schema"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.kuali.org/krad/schema http://www.kuali.org/krad/schema.xsd">
 
   <bean id="Uif-DropdownToggleMenu" parent="Uif-DropdownToggleMenu-parentBean"/>
   <bean id="Uif-DropdownToggleMenu-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.ToggleMenu"
@@ -80,10 +80,77 @@
     <property name="wrapperCssClasses" value="dropdown-header"/>
   </bean>
 
+  <bean id="Uif-BackdoorInputGroup" parent="Uif-Page">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/backdoorLoginGroup.ftl"/>
+    <property name="templateName" value="uif_backdoorLoginGroup"/>
+    <property name="cssClasses">
+      <list>
+        <value>uif-backdoor-login</value>
+        <value>navbar-form</value>
+        <value>navbar-right</value>
+      </list>
+    </property>
+    <property name="formPostUrl" value="@{#ConfigProperties['krad.url']}/login?viewId=@{#view.id}"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="backdoorId"
+              p:render="@{!#userSession.isBackdoorInUse()}" >
+          <property name="postInputAddons">
+            <list>
+              <bean parent="Uif-SecondaryActionButton-Small" p:actionLabel="Login"
+                    p:performDirtyValidation="false" p:ajaxSubmit="false">
+                <property name="actionScript" value="jQuery('#backdoorForm').submit();"/>
+              </bean>
+            </list>
+          </property>
+          <property name="control">
+            <bean parent="Uif-SmallTextControl" p:watermarkText="Backdoor User"/>
+          </property>
+          <property name="postInputCssClasses">
+            <list merge="true">
+              <value>pull-left</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="layoutManager">
+      <bean parent="Uif-SimpleLayout"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-BackdoorLoginGroup" parent="Uif-SimpleGroup">
+    <property name="items">
+      <list>
+        <bean name="backdoorGroup" parent="Uif-BackdoorInputGroup" p:wrapperCssClasses="pull-right"
+              p:render="@{#userSession != null and !#userSession.isProductionEnvironment()}"/>
+
+        <bean parent="Uif-MenuAction" p:wrapperCssClasses="pull-right"
+              p:actionLabel="Backdoor Logout: @{#userSession == null ? '' : #userSession.getPerson().getPrincipalId()}"
+              p:actionUrl.controllerMapping="/login" p:actionUrl.methodToCall="backdoorLogout"
+              p:render="@{#userSession != null ? #userSession.isBackdoorInUse() : false}"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-LoginGroup" parent="Uif-SimpleGroup" p:wrapperCssClasses="pull-right">
+    <property name="items">
+      <list>
+        <bean parent="Uif-MenuAction" p:wrapperCssClasses="pull-right" p:actionLabel="Login"
+              p:render="@{#userSession == null}"/>
+
+        <bean parent="Uif-MenuAction" p:wrapperCssClasses="pull-right"
+              p:actionUrl.viewId="DummyLoginView" p:actionUrl.controllerMapping="/login" p:actionUrl.methodToCall="logout"
+              p:actionLabel="Logout: @{#userSession == null ? '' : #userSession.getLoggedInUserPrincipalId()}"
+              p:render="@{#userSession != null}"/>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-ApplicationHeaderBase" parent="Uif-ApplicationHeaderBase-parentBean"/>
   <bean id="Uif-ApplicationHeaderBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.element.ApplicationHeader"
-        parent="Uif-ContentElementBase" scope="prototype" p:render="@{!renderedInLightBox}">
+        parent="Uif-HeaderBase" scope="prototype" p:render="@{!renderedInLightBox}">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/appHeader.ftl"/>
     <property name="templateName" value="uif_appHeader"/>
     <property name="cssClasses">
@@ -97,24 +164,52 @@
     </property>
 
     <property name="applicationToolbar">
-      <bean parent="Uif-CssGridGroup">
-        <property name="template" value="/krad/WEB-INF/ftl/components/group/groupContentWrap.ftl"/>
-        <property name="templateName" value="uif_groupContentWrap"/>
-        <property name="cssClasses">
-          <list merge="true">
-            <value>toolbar</value>
-          </list>
-        </property>
-        <property name="validationMessages">
-          <null/>
-        </property>
-        <property name="disclosure">
-          <null/>
-        </property>
-        <property name="help">
-          <null/>
-        </property>
-      </bean>
+      <bean parent="Uif-ApplicationToolbar"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-ApplicationToolbar" parent="Uif-CssGridGroup">
+    <property name="template" value="/krad/WEB-INF/ftl/components/group/groupContentWrap.ftl"/>
+    <property name="templateName" value="uif_groupContentWrap"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>toolbar</value>
+      </list>
+    </property>
+    <property name="validationMessages">
+      <null/>
+    </property>
+    <property name="disclosure">
+      <null/>
+    </property>
+    <property name="help">
+      <null/>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-ListGroup" p:layoutManager.additionalCssClasses="nav,pull-right">
+          <property name="items">
+            <list merge="true">
+
+              <bean parent="Uif-LoginGroup"/>
+
+              <bean parent="Uif-BackdoorLoginGroup" p:wrapperCssClasses="pull-right,uif-backdoor-login"/>
+
+              <bean parent="Uif-MenuAction"
+                    p:actionUrl.viewId="ActionListView" p:wrapperCssClasses="pull-right"
+                    p:actionLabel="Action List"
+                    p:render="@{#userSession != null}"/>
+
+              <bean parent="Uif-MenuAction"
+                    p:actionUrl.viewId="DocSearchView" p:wrapperCssClasses="pull-right"
+                    p:actionUrl.controllerMapping="/labs"
+                    p:actionLabel="Doc Search"
+                    p:render="@{#userSession != null}"/>
+
+            </list>
+          </property>
+        </bean>
+      </list>
     </property>
   </bean>
 

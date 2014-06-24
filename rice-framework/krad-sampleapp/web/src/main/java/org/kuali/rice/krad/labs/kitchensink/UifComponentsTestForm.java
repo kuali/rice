@@ -23,8 +23,6 @@ import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.role.RoleBo;
-import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.labs.LabsRoleMember;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -243,6 +241,8 @@ public class UifComponentsTestForm extends UifFormBase {
     private String sourceCodeField;
 
     private LabsRoleMember labsRoleMember;
+
+    protected String backdoorId;
 
     public UifComponentsTestForm() {
         super();
@@ -2531,5 +2531,11 @@ public class UifComponentsTestForm extends UifFormBase {
 
     public void setLabsRoleMember(LabsRoleMember labsRoleMember) {
         this.labsRoleMember = labsRoleMember;
+    }
+
+    public String getBackdoorId() { return backdoorId; }
+
+    public void setBackdoorId(String id) {
+        backdoorId = id;
     }
 }

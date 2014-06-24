@@ -67,6 +67,7 @@ import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -2078,6 +2079,7 @@ public class View extends ContainerBase {
             context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
             context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
             context.put(UifConstants.ContextVariableNames.UIF_CONSTANTS, UifConstants.class);
+            context.put(UifConstants.ContextVariableNames.USER_SESSION, GlobalVariables.getUserSession());
 
             preModelContext = Collections.unmodifiableMap(context);
         }

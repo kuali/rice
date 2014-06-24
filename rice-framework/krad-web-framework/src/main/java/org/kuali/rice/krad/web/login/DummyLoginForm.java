@@ -31,6 +31,8 @@ public class DummyLoginForm extends UifFormBase {
     protected String login_user;
     protected String login_pw;
 
+    protected String backdoorId;
+
     @RequestAccessible
     @RequestParameter
     protected String login_message;
@@ -63,5 +65,11 @@ public class DummyLoginForm extends UifFormBase {
 
     public void setLogin_message(String login_message) {
         this.login_message = login_message;
+    }
+
+    public String getBackdoorId() { return backdoorId; }
+
+    public void setBackdoorId(String id) {
+        backdoorId = id;
     }
 }

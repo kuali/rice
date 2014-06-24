@@ -121,6 +121,19 @@ public class UserSession implements Serializable {
     }
 
     /**
+     * Returns who is logged in. If the backdoor is in use, this will return the network id of the person that is
+     * standing in as the backdoor user.
+     *
+     * @return String
+     */
+    public String getLoggedInUserPrincipalId() {
+        if (person != null) {
+            return person.getPrincipalId();
+        }
+        return "";
+    }
+
+    /**
      * Returns a Person object for the current user.
      * @return the KualiUser which is the current user in the system, backdoor if backdoor is set
      */
@@ -152,7 +165,12 @@ public class UserSession implements Serializable {
         }
     }
 
-    private boolean isProductionEnvironment() {
+    /**
+     * Helper method to check if we are in a production environment.
+     *
+     * @return boolean indicating if we are in a production environment
+     */
+    public boolean isProductionEnvironment() {
         return ConfigContext.getCurrentContextConfig().isProductionEnvironment();
     }
 

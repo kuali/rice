@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -72,6 +72,28 @@ public class DummyLoginController extends UifControllerBase {
         return performRedirect(uifForm, returnUrl, props);
     }
 
+    /**
+     * Method to logout the backdoor user and return to the view.
+     *
+     * @return the view to return to
+     */
+    @RequestMapping(params = "methodToCall=backdoorLogout")
+    public ModelAndView backdoorLogout(@ModelAttribute("KualiForm") DummyLoginForm uifForm, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        String returnUrl = decode(uifForm.getReturnLocation());
+
+        if (StringUtils.isBlank(returnUrl)) {
+            returnUrl = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY);
+        }
+
+        UserSession userSession = KRADUtils.getUserSessionFromRequest(request);
+        if (userSession.isBackdoorInUse()) {
+            userSession.clearBackdoorUser();
+        }
+
+        return performRedirect(uifForm, returnUrl, new Properties());
+    }
+
     @RequestMapping(params = "methodToCall=logout")
     public ModelAndView logout(@ModelAttribute("KualiForm") UifFormBase form, HttpServletRequest request,
             HttpServletResponse response) {
@@ -79,10 +101,9 @@ public class DummyLoginController extends UifControllerBase {
 
         if (userSession.isBackdoorInUse()) {
             userSession.clearBackdoorUser();
-        } else {
-            request.getSession().invalidate();
         }
 
+        request.getSession().invalidate();
         return returnToHub(form);
     }
 

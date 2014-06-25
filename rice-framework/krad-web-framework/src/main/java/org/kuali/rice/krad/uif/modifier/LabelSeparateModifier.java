@@ -70,27 +70,28 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 
 				// pull out label field
 				Label label = field.getFieldLabel();
-				if (label != null && label.isRender()) {
-                    label.getLibraryCssClasses().clear();
-				    label.addStyleClass("displayWith-" + field.getId());
-                    if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
-                       label.setRender(false);
-                    }
-                    else if(!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())){
-                       label.setRender(true);
-                       String prefixStyle = "";
-                       if(StringUtils.isNotBlank(label.getStyle())){
-                           prefixStyle = label.getStyle();
-                       }
-                       label.setStyle(prefixStyle + ";" + "display: none;");
-                    }
+                if (label != null && label.isRender())
+                    synchronized (label) {
+                        label.getLibraryCssClasses().clear();
+                        label.addStyleClass("displayWith-" + field.getId());
+                        if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
+                            label.setRender(false);
+                        }
+                        else if (!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())) {
+                            label.setRender(true);
+                            String prefixStyle = "";
+                            if (StringUtils.isNotBlank(label.getStyle())) {
+                                prefixStyle = label.getStyle();
+                            }
+                            label.setStyle(prefixStyle + ";" + "display: none;");
+                        }
 
-					groupFields.add(label);
-					
-					// set boolean to indicate label field should not be
-					// rendered with the attribute
-					field.setLabelRendered(true);
-				}
+                        groupFields.add(label);
+
+                        // set boolean to indicate label field should not be
+                        // rendered with the attribute
+                        field.setLabelRendered(true);
+                    }
 			}
 
 			groupFields.add(item);

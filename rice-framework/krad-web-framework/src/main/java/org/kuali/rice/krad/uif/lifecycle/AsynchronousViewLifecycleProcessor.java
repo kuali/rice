@@ -513,7 +513,9 @@ public final class AsynchronousViewLifecycleProcessor extends ViewLifecycleProce
                     ViewLifecycle.setProcessor(aphase.processor);
                     GlobalVariables.injectGlobalVariables(aphase.globalVariables);
 
-                    phase.run();
+                    synchronized (element) {
+                        phase.run();
+                    }
 
                 } catch (Throwable t) {
                     processor.error = t;

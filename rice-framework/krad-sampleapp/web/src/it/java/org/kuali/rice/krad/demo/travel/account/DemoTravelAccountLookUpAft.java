@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
+import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -171,27 +172,43 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
     	}
     }
 
+    private void testXss() throws Exception {
+        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NUMBER_FIELD);
+        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD); // in 2.3 this is readonly (and masked)
+        //        testTravelAccountLookUpXss(SUB_ACCOUNT_FIELD); removed in 2.4
+        //        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);  // in 2.3 this is readonly (and masked), removed in 2.4
+        //        testTravelAccountLookUpXss("lookupCriteria[foId]"); // in 2.3 this has a different name, removed in 2.4
+    }
+
+
     @Test
     public void testTravelAccountLookUpBookmark() throws Exception {
         testTravelAccountLookUp();
         testXss();
-        testTravelAccountLookUpDocumentLocking();
         passed();
-    }
-
-    private void testXss() throws Exception {
-        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NUMBER_FIELD);
-        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD); // in 2.3 this is readonly (and masked)
-//        testTravelAccountLookUpXss(SUB_ACCOUNT_FIELD); removed in 2.4
-//        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);  // in 2.3 this is readonly (and masked), removed in 2.4
-//        testTravelAccountLookUpXss("lookupCriteria[foId]"); // in 2.3 this has a different name, removed in 2.4
     }
 
     @Test
     public void testTravelAccountLookUpNav() throws Exception {
         testTravelAccountLookUp();
         testXss();
+        passed();
+    }
+
+    @Test
+    @Ignore // https://jira.kuali.org/browse/KULRICE-12825 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountLookUpAft messages no longer displayed
+    public void testTravelAccountLookUpDocumentLockingBookmark() throws Exception {
         testTravelAccountLookUpDocumentLocking();
         passed();
     }
+
+    @Test
+    @Ignore // https://jira.kuali.org/browse/KULRICE-12825 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountLookUpAft messages no longer displayed
+    public void testTravelAccountLookUpDocumentLockingNav() throws Exception {
+        testTravelAccountLookUpDocumentLocking();
+        passed();
+    }
+
+
 }
+

@@ -272,7 +272,11 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
         // wait for any flash not present errors to fade out
         while (findElement(By.className("jGrowl-message")).getText().contains("Unable to load SWF file")) {
-            driver.findElement(By.className("jGrowl-close")).click(); // no wait, click quick
+            try {
+                driver.findElement(By.className("jGrowl-close")).click(); // no wait, click quick
+            } catch (Throwable t) {
+                // don't fail because the swf jgrowl has gone away
+            }
         }
 
         // get growl texts

@@ -33,7 +33,6 @@ public abstract class BreadcrumbAftBase extends WebDriverLegacyITBase {
 
     /**
      * (//a[@class='uif-breadcrumbSiblingLink'])[2]
-     * Not final as it needs to be overwritten for the Demo Breadcrumbs smoke test
      */
     public static final String SECOND_DOWN_TRIANGLE_XPATH = "(//a[@class='uif-breadcrumbSiblingLink'])[2]";
 

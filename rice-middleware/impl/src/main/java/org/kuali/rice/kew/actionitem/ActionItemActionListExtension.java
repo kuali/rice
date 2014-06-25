@@ -44,7 +44,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@MappedSuperclass
+
 public class ActionItemActionListExtension extends ActionItem implements RowStyleable {
 
     private static final long serialVersionUID = -8801104028828059623L;

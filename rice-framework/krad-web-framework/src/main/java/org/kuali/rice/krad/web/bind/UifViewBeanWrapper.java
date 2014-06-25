@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.omg.CORBA.Request;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -393,6 +394,11 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             }
 
             propertyPath = parentPropertyPath;
+        }
+
+        // if its a GET request and there was no annotation found, then we still want to disallow
+        if(request.getMethod().equalsIgnoreCase(RequestMethod.GET.name())) {
+            return Boolean.FALSE;
         }
 
         return null;

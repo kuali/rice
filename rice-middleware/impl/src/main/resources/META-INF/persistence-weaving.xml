@@ -91,8 +91,10 @@
     <class>org.kuali.rice.kew.rule.RuleDelegationBo</class>
     <class>org.kuali.rice.kew.actionitem.ActionItem</class>
     <class>org.kuali.rice.kew.actionitem.OutboxItem</class>
+    <class>org.kuali.rice.kew.actionrequest.ActionRequestValue</class>
     <class>org.kuali.rice.kew.actiontaken.ActionTakenValue</class>
     <!-- KIM -->
+    <class>org.kuali.rice.kim.bo.ui.KimDocumentBoActiveToFromBase</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentBoBase</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase</class>
     <class>org.kuali.rice.kim.bo.ui.KimDocumentBoActivatableEditableBase</class>

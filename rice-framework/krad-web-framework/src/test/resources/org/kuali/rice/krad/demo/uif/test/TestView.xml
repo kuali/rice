@@ -102,4 +102,30 @@
     </property>
   </bean>
 
+  <bean id="TestViewWithPropertyEditor" parent="Uif-FormView">
+    <property name="items">
+      <list>
+        <bean id="TestPage" parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Foo"
+                          p:propertyName="bean.next.rwProp">
+                      <property name="propertyEditor">
+                        <bean scope="prototype"
+                              class="org.kuali.rice.krad.uif.util.ObjectPropertyUtilsTest$FooEditor" />
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

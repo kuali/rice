@@ -39,7 +39,6 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
@@ -415,12 +414,11 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         
     }
 
-    @Ignore
     @Test
     public void testCustomEditor() throws Throwable {
         TestForm form = new TestForm();
         MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setParameter(UifParameters.VIEW_ID, "TestView");
+        request.setParameter(UifParameters.VIEW_ID, "TestViewWithPropertyEditor");
         request.setParameter("bean.next.rwProp", "not foobar");
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         UifServletRequestDataBinder binder = new UifServletRequestDataBinder(form);

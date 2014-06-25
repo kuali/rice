@@ -30,9 +30,7 @@ import javax.persistence.Transient;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-//@Entity
-//@Table(name="KREW_DOC_HDR_T")
-@MappedSuperclass
+
 public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHeaderValue {
 
     private static final long serialVersionUID = 8458532812557846684L;

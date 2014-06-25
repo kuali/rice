@@ -1018,6 +1018,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickDocSearchTitle();
         waitForPageToLoad();
         selectFrameIframePortlet();
+        waitAndTypeByName("documentId", docId);
         waitAndClickSearch();
         assertEquals(docId, waitForElementPresent(By.xpath(DOC_ID_XPATH_2)).getText());
     }

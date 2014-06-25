@@ -72,6 +72,8 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.6.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet.jsp:jsp-api:2.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:3.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: xalan:xalan:2.7.1" level="project" />
+    <orderEntry type="library" name="Maven: xalan:serializer:2.7.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.codehaus.btm:btm:2.1.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: mysql:mysql-connector-java:5.1.24" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: xerces:xercesImpl:2.9.1" level="project" />

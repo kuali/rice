@@ -112,6 +112,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/mock?viewId=LabsSchema"/>
                           <bean parent="Uif-Link" p:linkText="Sub-collection Add Line" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-AddLineTest"/>
+                          <bean parent="Uif-Link" p:linkText="ActionList" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/kew/actionList?methodToCall=start&amp;viewId=UifActionListView"/>
                         </list>
                       </property>
                     </bean>

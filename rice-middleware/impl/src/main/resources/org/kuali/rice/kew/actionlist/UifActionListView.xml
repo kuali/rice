@@ -296,7 +296,7 @@
               <bean parent="Uif-Message" p:messageText="No Outbox items found" p:render="@{#dp.viewOutbox=='true' and #dp.outBoxEmpty}" p:style="margin-top:20px;"></bean>
               <bean parent="Uif-Message" p:messageText="No Action List items found" p:render="@{#dp.viewOutbox!='true' and #dp.actionList.size()==0}" p:style="margin-top:20px;"></bean>
               <bean id="Collections-ActionColumnPlacement-TableLayout" parent="Uif-Disclosure-TableCollectionSection"
-                    p:propertyName="ActionList"
+                    p:propertyName="actionList"
                     p:collectionObjectClass="org.kuali.rice.kew.actionitem.ActionItemActionListExtension"
                     p:readOnly="true" p:includeLineSelectionField="@{#dp.helpDeskActionListPerson==null}">
                 <property name="layoutManager">

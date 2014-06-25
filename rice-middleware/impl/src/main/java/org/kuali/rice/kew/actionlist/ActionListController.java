@@ -43,6 +43,7 @@ import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionlist.web.ActionListUtil;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.action.ActionInvocation;
 import org.kuali.rice.kew.api.action.ActionItemCustomization;
 import org.kuali.rice.kew.api.action.ActionSet;
@@ -279,6 +280,12 @@ public class ActionListController extends UifControllerBase{
         ActionListForm actionListForm = (ActionListForm)form;
         HttpServletRequest request = actionListForm.getRequest();
 
+        //Get preferences if they don't exist
+        if( actionListForm.getPreferences() == null){
+            actionListForm.setPreferences(KewApiServiceLocator.getPreferencesService().getPreferences(
+                    getUserSession().getPrincipalId()));
+
+        };
         request.setAttribute("preferences", actionListForm.getPreferences());
 
         PerformanceLogger plog = new PerformanceLogger();

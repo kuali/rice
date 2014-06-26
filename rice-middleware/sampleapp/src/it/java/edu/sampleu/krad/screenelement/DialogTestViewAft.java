@@ -70,7 +70,7 @@ public class DialogTestViewAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText("Displays Response in LightBox");
         validateDialogWithDisplayResponseInLightBox();
         waitAndClickButtonByText("Tell Me A Story");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+        waitAndCloseDialog();
         waitAndClickButtonByText("Close");
         waitAndClickLinkContainingText("Cancel");
     }
@@ -78,62 +78,67 @@ public class DialogTestViewAft extends WebDriverLegacyITBase {
     private void validateSelectAuthorDialog() throws Exception {
         waitForElementPresentByXpath("//div[@class='fancybox-skin']/div/div/form/section/header/h3");
         waitForElementPresentByXpath("//div[@class='fancybox-skin']/div/div/form/section/div/p");
+        waitAndCloseDialog();
+    }
+
+    private void waitAndCloseDialog() throws InterruptedException {
+        jGrowl("Click Dialog Close");
         waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
     }
-    
+
     private void validateDialogWithHTML() throws Exception {
         waitForElementPresentByXpath("//form[@id='kualiLightboxForm']/b");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithPredefinedOkCancel() throws Exception {
         waitForTextPresent("Please Confirm to Continue");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithRadioButton() throws Exception {
         waitForElementPresentByXpath("//div[@id='sampleRadioButtonDialog']/div/fieldset/span/input[@type='radio']");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithProgressiveRendering() throws Exception {
         waitForTextPresent("This is always displayed:");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithHiddenImage() throws Exception {
         waitForElementPresentByXpath("//img[@src='/krad/images/computer_programming.jpg']");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithFormUrl() throws Exception {
         waitForElementPresentByXpath("//iframe[@class='fancybox-iframe']");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithClientAjax() throws Exception {
         waitForTextPresent("Please select from the values below");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithRegularGroup() throws Exception {
         waitForTextPresent("This group does not inherit from Uif-DialogGroup:");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']"); 
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithExpression() throws Exception {
         waitForTextPresent("Mark as Ready for Scheduling");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']"); 
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithExtended() throws Exception {
         waitForElementPresentByXpath("//input[@name='field5']");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']"); 
+        waitAndCloseDialog();
     }
     
     private void validateDialogWithDisplayResponseInLightBox() throws Exception {
         waitForTextPresent("This group does not inherit from Uif-DialogGroup:");
-        waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']"); 
+        waitAndCloseDialog();
     }
     
     @Test

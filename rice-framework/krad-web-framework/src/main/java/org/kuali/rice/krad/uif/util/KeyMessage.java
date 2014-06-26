@@ -35,9 +35,21 @@ public class KeyMessage extends AbstractKeyValue {
      * @param message message with messageText set to value
      */
     public KeyMessage(String key, String value, Message message) {
-        this.key = key;
-        this.value = value;
+        super(key, value);
         this.message = message;
+    }
+
+    /**
+     * Constructor for KeyMessage
+     *
+     * @param key key
+     * @param value value
+     * @param message message with messageText set to value
+     * @param disabled boolean whether to enable the key/value or not
+     */
+    public KeyMessage(String key, String value, Message message, boolean disabled) {
+        this(key, value, message);
+        this.disabled = disabled;
     }
 
     /**

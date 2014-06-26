@@ -27,6 +27,7 @@ public abstract class AbstractKeyValue implements KeyValue {
 	
 	protected String key;
 	protected String value;
+    protected boolean disabled;
 	
 	public AbstractKeyValue() {
 		super();
@@ -35,16 +36,15 @@ public abstract class AbstractKeyValue implements KeyValue {
 	public AbstractKeyValue(String key, String value) {
 		this.key = key;
 		this.value = value;
+        this.disabled = false;
 	}
 
 	public AbstractKeyValue(KeyValue keyValue) {
-		this.key = keyValue.getKey();
-		this.value = keyValue.getValue();
+		this(keyValue.getKey(), keyValue.getValue());
 	}
 	
 	public AbstractKeyValue(Map.Entry<String, String> entry) {
-		this.key = entry.getKey();
-		this.value = entry.getValue();
+		this(entry.getKey(), entry.getValue());
 	}
 	
 	@Override
@@ -56,4 +56,8 @@ public abstract class AbstractKeyValue implements KeyValue {
 	public String getValue() {
 		return this.value;
 	}
+
+    public boolean isDisabled() { return this.disabled; }
+
+    public void setDisabled(boolean disabled) { this.disabled = disabled; }
 }

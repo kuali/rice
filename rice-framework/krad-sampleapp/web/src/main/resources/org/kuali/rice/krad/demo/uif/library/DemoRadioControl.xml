@@ -35,6 +35,7 @@
         <ref bean="Demo-RadioControl-Example5"/>
         <ref bean="Demo-RadioControl-Example6"/>
         <ref bean="Demo-RadioControl-Example7"/>
+        <ref bean="Demo-RadioControl-Example8"/>
       </list>
     </property>
   </bean>
@@ -204,6 +205,29 @@
           </property>
         </bean>
         <!-- ex:Demo-RadioControl-Example7 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- RadioExampleControl with disabled option-->
+  <bean id="Demo-RadioControl-Example8" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-RadioControl-Example8 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField2" p:label="RadioGroupControl"
+              p:width="auto">
+          <property name="control">
+            <bean parent="Uif-VerticalRadioControl">
+              <property name="options">
+                <list>
+                  <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Radio 1" p:disabled="false"/>
+                  <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Radio 2" p:disabled="true"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
+        <!-- ex:Demo-RadioControl-Example8 end-->
       </list>
     </property>
   </bean>

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.kuali.rice.core.api.util.AbstractKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -64,7 +65,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
-
+getStyleClassesAsString();
         if (options != null && richOptions == null) {
             richOptions = new ArrayList<KeyMessage>();
             internalMessageComponents = new ArrayList<Message>();
@@ -93,7 +94,14 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
                 message.setMessageText(value);
                 message.setInlineComponents(inlineComponents);
                 message.setRenderWrapperTag(false);
-                richOptions.add(new KeyMessage(key, value, message));
+
+                // if the option is a sub-class of AbstractKeyValue class, then we also include the disabled attribute
+                if(AbstractKeyValue.class.isAssignableFrom(option.getClass()) && ((AbstractKeyValue)option).isDisabled()) {
+                    richOptions.add(new KeyMessage(key, value, message, ((AbstractKeyValue)option).isDisabled()));
+                } else {
+                    richOptions.add(new KeyMessage(key, value, message));
+                }
+
                 internalMessageComponents.add(message);
             }
         }

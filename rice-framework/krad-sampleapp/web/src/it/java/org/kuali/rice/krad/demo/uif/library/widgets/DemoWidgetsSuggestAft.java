@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.library.widgets;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
 import org.openqa.selenium.By;
@@ -152,6 +153,7 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
     }
 
     @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testWidgetsTooltipServiceSortingBookmark() throws Exception {
         testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "Tr", "Travel Account 1");
         passed();
@@ -182,6 +184,7 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
     }
 
     @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testWidgetsTooltipServiceSortingNav() throws Exception {
         testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "Tr", "Travel Account 1");
         passed();

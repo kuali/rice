@@ -75,6 +75,7 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     }
 
     @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testClientResponsivenessAjaxFieldQueryBookmark() throws Exception {
         testClientResponsivenessAjaxFieldQuery();
         testClientResponsivenessAjaxFieldQueryCustomMethod();
@@ -82,6 +83,7 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     }
 
     @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testClientResponsivenessAjaxFieldQueryNav() throws Exception {
         testClientResponsivenessAjaxFieldQuery();
         testClientResponsivenessAjaxFieldQueryCustomMethod();

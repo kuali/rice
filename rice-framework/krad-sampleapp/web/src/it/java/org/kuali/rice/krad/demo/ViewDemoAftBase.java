@@ -22,9 +22,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 /**
+ * Extending this class to inherit testing Help links.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public abstract class ViewDemoAftBase extends WebDriverLegacyITBase{
 
     /**

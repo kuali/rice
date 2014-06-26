@@ -64,7 +64,7 @@ public class DemoLookUpMultiValueAft extends ViewDemoAftBase {
     @Override
     protected void navigate() throws Exception {
         waitAndClickById("Demo-DemoLink", "");
-        waitAndClickByLinkText("Lookup Multi Value");
+        waitAndClickByLinkText("Account Multi-Value Lookup");
     }
 
     protected void testLookUpMultiValue() throws InterruptedException {

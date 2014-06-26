@@ -92,8 +92,8 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
     	waitAndClickByXpath("//a[@title='Create a new record']");
     	selectFrameIframePortlet();
     	String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        waitAndSelectByName("document.groupNamespace","KR-BUS - Service Bus");
     	waitAndTypeByName("document.documentHeader.documentDescription","Group");
-    	selectByName("document.groupNamespace","KR-BUS - Service Bus");
     	waitAndTypeByName("document.groupName","Group 1"+randomCode);
     	groupId=waitForElementPresentByXpath("//div[@id='tab-Overview-div']/div[@class='tab-container']/table/tbody/tr/td").getText();
     	waitAndClickByXpath("//input[@name='methodToCall.route']");
@@ -128,6 +128,7 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
 
     private void searchByViewer() throws Exception {
         waitAndTypeByName("viewerPrincipalName","admin");
+        clearTextByName("approverPrincipalName");
         waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated","03/24/2000");
         waitAndClickByXpath("//td/input[@type='image' and @name='methodToCall.search']");
         waitForTextPresent("items retrieved");

@@ -40,6 +40,8 @@
         <ref bean="Demo-DialogGroup-Example10"/>
         <ref bean="Demo-DialogGroup-Example11"/>
         <ref bean="Demo-DialogGroup-Example12"/>
+        <ref bean="Demo-DialogGroup-Example13"/>
+        <ref bean="Demo-DialogGroup-Example14"/>
       </list>
     </property>
   </bean>
@@ -437,12 +439,70 @@
           </property>
           <property name="lineActions">
             <list>
-                <bean parent="Uif-DeleteLineAction"
-                      p:confirmationPromptText="Are you sure you wish to delete line: @{#line.field1}?"/>
+              <bean parent="Uif-DeleteLineAction"
+                    p:confirmationPromptText="Are you sure you wish to delete line: @{#line.field1}?"/>
             </list>
           </property>
         </bean>
         <!-- ex:Demo-DialogGroup-Example12 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DialogGroup-Example13" parent="Uif-VerticalBoxSection" p:headerText="Small Dialog"
+        p:instructionalText="Example of using property [b]dialogCssClass[/b] to set the bootstrap CSS class of modal-sm (default).">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DialogGroup-Example13 start-->
+        <bean parent="Uif-ActionLink" p:actionLabel="Show Dialog"
+              p:actionScript="showDialog('Demo-DialogGroup-ShowSmallDialog');"/>
+        <bean id="Demo-DialogGroup-ShowSmallDialog" parent="Uif-DialogGroup-OkCancel"
+              p:headerText="Small Dialog" p:dialogCssClass="modal-sm">
+          <property name="help">
+            <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-Message"
+                    p:messageText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor
+                           facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Phasellus
+                           dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius
+                           ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae
+                           orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum
+                           sed nunc."/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DialogGroup-Example13 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-DialogGroup-Example14" parent="Uif-VerticalBoxSection" p:headerText="Large Dialog"
+        p:instructionalText="Example of using property [b]dialogCssClass[/b] to set the bootstrap CSS class of modal-lg.">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-DialogGroup-Example14 start-->
+        <bean parent="Uif-ActionLink" p:actionLabel="Show Dialog"
+              p:actionScript="showDialog('Demo-DialogGroup-ShowLargeDialog');"/>
+        <bean id="Demo-DialogGroup-ShowLargeDialog" parent="Uif-DialogGroup-OkCancel"
+              p:headerText="Large Dialog" p:dialogCssClass="modal-lg">
+          <property name="help">
+            <bean parent="Uif-Help" p:externalHelpUrl="http://www.kuali.org/"/>
+          </property>
+          <property name="items">
+            <list>
+              <bean parent="Uif-Message"
+                    p:messageText="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor
+                           facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Phasellus
+                           dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius
+                           ac. Maecenas nisl nunc, molestie vitae eleifend vel, iaculis sed magna. Aenean tempus lacus vitae
+                           orci posuere porttitor eget non felis. Donec lectus elit, aliquam nec eleifend sit amet, vestibulum
+                           sed nunc."/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-DialogGroup-Example14 end-->
       </list>
     </property>
   </bean>

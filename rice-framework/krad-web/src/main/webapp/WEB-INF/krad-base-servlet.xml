@@ -182,4 +182,8 @@
     <property name="serviceName" value="maintenanceDocumentControllerService"/>
   </bean>
 
+  <bean id="transactionalDocumentControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="transactionalDocumentControllerService"/>
+  </bean>
+
 </beans>

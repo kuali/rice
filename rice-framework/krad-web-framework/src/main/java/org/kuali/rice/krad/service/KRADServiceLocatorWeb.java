@@ -24,7 +24,9 @@ import org.kuali.rice.krad.uif.service.UifDefaultingService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
+import org.kuali.rice.krad.web.service.ModelAndViewService;
 import org.kuali.rice.krad.workflow.service.WorkflowDocumentService;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Service locator for the KRAD Web module
@@ -74,6 +76,7 @@ public class KRADServiceLocatorWeb {
     public static final String LEGACY_DATA_ADAPTER = "legacyDataAdapter";
     public static final String UIF_DEFAULTING_SERVICE = "uifDefaultingService";
     public static final String EXPRESSION_EVALUATOR_FACTORY = "expressionEvaluatorFactory";
+    public static final String MODEL_AND_VIEW_SERVICE = "modelAndViewService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -161,6 +164,10 @@ public class KRADServiceLocatorWeb {
 
     public static AttributeQueryService getAttributeQueryService() {
         return (AttributeQueryService) getService(ATTRIBUTE_QUERY_SERVICE);
+    }
+
+    public static ModelAndViewService getModelAndViewService() {
+        return (ModelAndViewService) getService(MODEL_AND_VIEW_SERVICE);
     }
 
     public static DataDictionaryRemoteFieldService getDataDictionaryRemoteFieldService() {

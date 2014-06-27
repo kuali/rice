@@ -716,6 +716,7 @@ public final class KRADConstants {
     }
 
     public static final class ControllerMappings {
+        public static final String INIT_DOC_INFO = "initdocinfo";
         public static final String INQUIRY = "/inquiry";
         public static final String LOOKUP = "/lookup";
         public static final String MAINTENANCE = "/maintenance";

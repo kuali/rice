@@ -28,6 +28,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.IncidentReportForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.service.ModelAndViewService;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -125,9 +126,9 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         // Set the ajax return type
         incidentReportForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATEVIEW.getKey());
 
-        ModelAndView modelAndView = UifControllerHelper.getUIFModelAndView(incidentReportForm, "");
+        ModelAndView modelAndView = getModelAndViewService().getModelAndView(incidentReportForm, "");
         try {
-            UifControllerHelper.prepareView(request, modelAndView);
+            getModelAndViewService().prepareView(request, modelAndView);
         } catch (Exception e) {
             LOG.error("An error stopped the incident form from loading", e);
         }
@@ -137,6 +138,10 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
 
     protected ViewService getViewService() {
         return KRADServiceLocatorWeb.getViewService();
+    }
+
+    protected ModelAndViewService getModelAndViewService() {
+        return KRADServiceLocatorWeb.getModelAndViewService();
     }
 
 }

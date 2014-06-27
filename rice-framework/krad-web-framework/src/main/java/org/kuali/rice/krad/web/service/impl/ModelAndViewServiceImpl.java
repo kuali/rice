@@ -16,21 +16,28 @@
 package org.kuali.rice.krad.web.service.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.service.ViewValidationService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.util.UifRenderHelperMethods;
 import org.kuali.rice.krad.uif.view.MessageView;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.service.ModelAndViewService;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Properties;
 
@@ -40,6 +47,7 @@ import java.util.Properties;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ModelAndViewServiceImpl implements ModelAndViewService {
+    private static final Logger LOG = Logger.getLogger(ModelAndViewServiceImpl.class);
 
     private ViewService viewService;
     private ViewValidationService viewValidationService;
@@ -72,7 +80,7 @@ public class ModelAndViewServiceImpl implements ModelAndViewService {
 
         // run the lifecycle to build the dialog first
         ModelAndView modelAndView = getModelAndView(form);
-        UifControllerHelper.prepareView(form.getRequest(), modelAndView);
+        prepareView(form.getRequest(), modelAndView);
 
         Component updateComponent;
         if (form.isAjaxRequest()) {
@@ -233,6 +241,78 @@ public class ModelAndViewServiceImpl implements ModelAndViewService {
         form.setViewId(viewId);
 
         return getModelAndView(form, pageId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepareView(HttpServletRequest request, ModelAndView modelAndView) {
+        if (modelAndView == null) {
+            return;
+        }
+
+        Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
+        if (!(model instanceof UifFormBase)) {
+            return;
+        }
+
+        UifFormBase form = (UifFormBase) model;
+
+        if (!form.isRequestRedirected()) {
+            invokeViewLifecycle(request, form);
+        }
+
+        // expose additional objects to the templates
+        modelAndView.addObject(UifParameters.REQUEST, request);
+        modelAndView.addObject(KRADConstants.USER_SESSION_KEY, request.getSession().getAttribute(
+                KRADConstants.USER_SESSION_KEY));
+
+        Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
+        modelAndView.addObject(UifParameters.CONFIG_PROPERTIES, properties);
+
+        modelAndView.addObject(UifParameters.RENDER_HELPER_METHODS, new UifRenderHelperMethods());
+    }
+
+    /**
+     * Prepares the {@link org.kuali.rice.krad.uif.view.View} instance contained on the form for rendering.
+     *
+     * @param request servlet request
+     * @param form form instance containing the data and view instance
+     */
+    protected void invokeViewLifecycle(HttpServletRequest request, UifFormBase form) {
+        // for component refreshes only lifecycle for component is performed
+        if (form.isUpdateComponentRequest() || form.isUpdateDialogRequest() || (form.isJsonRequest() && StringUtils
+                .isNotBlank(form.getUpdateComponentId()))) {
+            String refreshComponentId = form.getUpdateComponentId();
+
+            Component updateComponent = ViewLifecycle.performComponentLifecycle(form.getView(), form, request,
+                    form.getViewPostMetadata(), refreshComponentId);
+            form.setUpdateComponent(updateComponent);
+        } else {
+            // full view build
+            View view = form.getView();
+            if (view == null) {
+                LOG.warn("View in form was null: " + form);
+
+                return;
+            }
+
+            Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());
+            parameterMap.putAll(form.getViewRequestParameters());
+
+            // build view which will prepare for rendering
+            ViewPostMetadata postMetadata = ViewLifecycle.buildView(view, form, request, parameterMap);
+            form.setViewPostMetadata(postMetadata);
+
+            if (form.isUpdatePageRequest()) {
+                Component updateComponent = form.getView().getCurrentPage();
+                form.setUpdateComponent(updateComponent);
+            }
+
+            // update the page on the form to reflect the current page of the view
+            form.setPageId(view.getCurrentPageId());
+        }
     }
 
     protected ViewService getViewService() {

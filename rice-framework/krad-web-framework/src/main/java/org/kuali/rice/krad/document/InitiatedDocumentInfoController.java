@@ -13,42 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.web.controller;
+package org.kuali.rice.krad.document;
 
-import org.apache.log4j.Logger;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.InitiatedDocumentInfoForm;
-import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
- * Controller for <code>MaintenanceDocumentView</code> screens which operate on
- * <code>MaintenanceDocument</code> instances
+ * Controller for the intiated document view.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-@RequestMapping(value="/initdocinfo")
-
+@RequestMapping(value = KRADConstants.ControllerMappings.INIT_DOC_INFO)
 public class InitiatedDocumentInfoController extends UifControllerBase {
-    private static final Logger LOG = org.apache.log4j.Logger.getLogger(InitiatedDocumentInfoController.class);
 
     @Override
     public InitiatedDocumentInfoForm createInitialForm() {
         return new InitiatedDocumentInfoForm();
     }
 
-    @Override
-    @RequestMapping(method = RequestMethod.GET, params = "methodToCall=start")
-    public ModelAndView start(UifFormBase form) {
-
-        InitiatedDocumentInfoForm initiatedDocumentInfoForm = (InitiatedDocumentInfoForm) form;
-        return super.start(form);
-    }
 }

@@ -18,6 +18,7 @@ package org.kuali.rice.krad.web.service;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Properties;
 
@@ -148,4 +149,13 @@ public interface ModelAndViewService {
      * @return ModelAndView instance for rendering the view
      */
     ModelAndView getModelAndViewWithInit(UifFormBase form, String viewId, String pageId);
+
+    /**
+     * After the controller logic is executed, the form is placed into session and the corresponding view
+     * is prepared for rendering.
+     *
+     * @param request servlet request
+     * @param modelAndView model and view
+     */
+    void prepareView(HttpServletRequest request, ModelAndView modelAndView);
 }

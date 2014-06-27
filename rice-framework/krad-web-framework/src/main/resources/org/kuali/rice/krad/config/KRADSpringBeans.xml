@@ -627,6 +627,10 @@
     <property name="maintenanceDocumentService" ref="maintenanceDocumentService"/>
   </bean>
 
+  <bean id="transactionalDocumentControllerService"
+        class="org.kuali.rice.krad.document.TransactionalDocumentControllerServiceImpl"
+        parent="documentControllerService"/>
+
   <bean id="dataDictionaryComponentPublisherService" class="org.kuali.rice.krad.service.impl.DataDictionaryComponentPublisherServiceImpl">
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
     <property name="kualiModuleService" ref="kualiModuleService"/>

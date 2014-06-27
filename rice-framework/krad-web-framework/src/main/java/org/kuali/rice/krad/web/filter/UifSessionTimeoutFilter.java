@@ -18,12 +18,13 @@ package org.kuali.rice.krad.web.filter;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
+import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.view.ViewSessionPolicy;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -38,6 +39,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 /**
  * Handles session timeouts for KRAD views based on the configured view session policy
@@ -100,7 +102,7 @@ public class UifSessionTimeoutFilter implements Filter {
             }
         }
 
-        String viewId = UifControllerHelper.getViewIdFromRequest(httpServletRequest);
+        String viewId = getViewIdFromRequest(httpServletRequest);
         if (StringUtils.isBlank(viewId)) {
             //  can't retrieve a session policy if view id was not passed
             filerChain.doFilter(request, response);
@@ -139,6 +141,48 @@ public class UifSessionTimeoutFilter implements Filter {
 
             sendRedirect(httpServletRequest, (HttpServletResponse) response, redirectUrl);
         }
+    }
+
+    /**
+     * Attempts to resolve a view id from the given request
+     *
+     * <p>
+     * First an attempt will be made to find the view id as a request parameter. If no such request parameter
+     * is found, the request will be looked at for view type information and a call will be made to the
+     * view service to find the view id by type
+     * </p>
+     *
+     * <p>
+     * If a view id is found it is stuck in the request as an attribute (under the key
+     * {@link org.kuali.rice.krad.uif.UifParameters#VIEW_ID}) for subsequent retrieval
+     * </p>
+     *
+     * @param request instance to resolve view id for
+     * @return view id if one is found, null if not found
+     */
+    protected String getViewIdFromRequest(HttpServletRequest request) {
+        String viewId = request.getParameter(UifParameters.VIEW_ID);
+
+        if (StringUtils.isBlank(viewId)) {
+            String viewTypeName = request.getParameter(UifParameters.VIEW_TYPE_NAME);
+
+            UifConstants.ViewType viewType = null;
+            if (StringUtils.isNotBlank(viewTypeName)) {
+                viewType = UifConstants.ViewType.valueOf(viewTypeName);
+            }
+
+            if (viewType != null) {
+                @SuppressWarnings("unchecked") Map<String, String> parameterMap =
+                        KRADUtils.translateRequestParameterMap(request.getParameterMap());
+                viewId = getViewService().getViewIdForViewType(viewType, parameterMap);
+            }
+        }
+
+        if (StringUtils.isNotBlank(viewId)) {
+            request.setAttribute(UifParameters.VIEW_ID, viewId);
+        }
+
+        return viewId;
     }
 
     /**
@@ -202,6 +246,10 @@ public class UifSessionTimeoutFilter implements Filter {
         } else {
             httpServletResponse.sendRedirect(redirectUrl);
         }
+    }
+
+    protected static ViewService getViewService() {
+        return KRADServiceLocatorWeb.getViewService();
     }
 
     /**

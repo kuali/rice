@@ -17,7 +17,7 @@ package org.kuali.rice.krad.document;
 
 
 /**
- * Interface for all documents that have transactional behavior
+ * Interface for all documents that have transactional behavior.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

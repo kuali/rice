@@ -27,7 +27,6 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 import org.kuali.rice.krad.document.Copyable;
 import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -40,7 +39,7 @@ import java.util.Set;
 /**
  * This class handles UI actions for all shared methods of transactional documents.
  *
- * @deprecated Use {@link org.kuali.rice.krad.web.controller.TransactionalDocumentControllerBase}.
+ * @deprecated Use {@link org.kuali.rice.krad.document.TransactionalDocumentControllerBase}.
  */
 @Deprecated
 public class KualiTransactionalDocumentActionBase extends KualiDocumentActionBase {

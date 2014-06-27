@@ -28,6 +28,7 @@ import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.web.service.ModelAndViewService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -47,6 +48,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     private static final Logger LOG = Logger.getLogger(UifControllerHandlerInterceptor.class);
 
+    @Autowired
     private ModelAndViewService modelAndViewService;
 
     /**
@@ -183,7 +185,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
             ModelAndView modelAndView) throws Exception {
         if (request.getAttribute(UifParameters.Attributes.VIEW_LIFECYCLE_COMPLETE) == null) {
-            UifControllerHelper.prepareView(request, modelAndView);
+            getModelAndViewService().prepareView(request, modelAndView);
         }
 
         if ((modelAndView != null) && (modelAndView.getModelMap() != null)) {

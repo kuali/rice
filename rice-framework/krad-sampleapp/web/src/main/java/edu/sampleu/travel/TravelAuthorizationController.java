@@ -15,17 +15,12 @@
  */
 package edu.sampleu.travel;
 
-import org.kuali.rice.krad.web.controller.TransactionalDocumentControllerBase;
+import org.kuali.rice.krad.document.TransactionalDocumentControllerBase;
 import org.kuali.rice.krad.web.form.DialogResponse;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -244,6 +244,7 @@ public class UifConstants {
         public static final String SUGGEST = "suggest";
         public static final String QUICKFINDER_FOCUS_ID = "quickfinderFocusId";
         public static final String QUICKFINDER_JUMP_TO_ID = "quickfinderJumpToId";
+        public static final String FILTERABLE_LOOKUP_CRITERIA = "filterableLookupCriteria";
     }
 
     public static class ContextVariableNames {

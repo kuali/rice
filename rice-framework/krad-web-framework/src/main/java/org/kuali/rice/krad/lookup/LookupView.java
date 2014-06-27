@@ -38,6 +38,8 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControl;
+import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControlPostData;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Message;
@@ -46,6 +48,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -224,11 +227,25 @@ public class LookupView extends FormView {
         super.performFinalize(model, parent);
 
         LookupForm lookupForm = (LookupForm) model;
+        String viewId = lookupForm.getViewId();
+
+        Map<String, FilterableLookupCriteriaControlPostData> filterableLookupCriteria = new HashMap<String, FilterableLookupCriteriaControlPostData>();
 
         List<InputField> fields = ViewLifecycleUtils.getElementsOfTypeDeep(criteriaGroup, InputField.class);
+
         for (InputField field : fields) {
             field.setForceSessionPersistence(true);
+
+            String propertyName = field.getPropertyName();
+
+            if (field.getControl() instanceof FilterableLookupCriteriaControl) {
+                FilterableLookupCriteriaControl control = (FilterableLookupCriteriaControl) field.getControl();
+                filterableLookupCriteria.put(propertyName, control.getPostData(propertyName));
+            }
         }
+
+        ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
+        viewPostMetadata.addComponentPostData(viewId, UifConstants.PostMetadata.FILTERABLE_LOOKUP_CRITERIA, filterableLookupCriteria);
 
         if (lookupForm.isReturnByScript()) {
             getAdditionalHiddenValues().put(UifParameters.RETURN_BY_SCRIPT, "true");

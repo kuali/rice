@@ -32,10 +32,13 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControl;
+import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControlPostData;
 import org.kuali.rice.krad.uif.control.HiddenControl;
 import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
 import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -178,11 +181,32 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // allow lookup inputs to filter the criteria
         for (String fieldName : searchCriteria.keySet()) {
             InputField inputField = criteriaFields.get(fieldName);
+
             if ((inputField == null) || !(inputField instanceof LookupInputField)) {
                 continue;
             }
 
-            filteredSearchCriteria = ((LookupInputField) inputField).filterSearchCriteria(filteredSearchCriteria);
+            LookupInputField lookupInputField = (LookupInputField) inputField;
+            String propertyName = lookupInputField.getPropertyName();
+
+            // get the post data for the filterable controls
+            ViewPostMetadata viewPostMetadata = lookupForm.getViewPostMetadata();
+            Object componentPostData = viewPostMetadata.getComponentPostData(lookupForm.getViewId(), UifConstants.PostMetadata.FILTERABLE_LOOKUP_CRITERIA);
+            Map<String, FilterableLookupCriteriaControlPostData> filterableLookupCriteria = (Map<String, FilterableLookupCriteriaControlPostData>) componentPostData;
+
+            // first filter the results using the filter on the control
+            if (filterableLookupCriteria != null && filterableLookupCriteria.containsKey(propertyName)) {
+                FilterableLookupCriteriaControlPostData postData = filterableLookupCriteria.get(propertyName);
+                Class<? extends FilterableLookupCriteriaControl> controlClass = postData.getControlClass();
+                FilterableLookupCriteriaControl control = KRADUtils.createNewObjectFromClass(controlClass);
+
+                filteredSearchCriteria = control.filterSearchCriteria(propertyName, filteredSearchCriteria, postData);
+            }
+
+            // second filter the results using the filter in the input field
+            filteredSearchCriteria = lookupInputField.filterSearchCriteria(filteredSearchCriteria);
+
+            // early return if we have no results
             if (filteredSearchCriteria == null) {
                 return null;
             }

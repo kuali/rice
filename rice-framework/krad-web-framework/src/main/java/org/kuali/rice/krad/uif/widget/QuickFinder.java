@@ -22,10 +22,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
+import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.BindingInfo;
@@ -396,6 +398,19 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         }
 
         quickfinderAction.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
+
+        Class dataObjectClass = getDataObjectClass(dataObjectClassName);
+        ModuleService responsibleModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(dataObjectClass);
+        if (responsibleModuleService != null && responsibleModuleService.isExternalizable(dataObjectClass)) {
+            if (ExternalizableBusinessObject.class.isAssignableFrom(dataObjectClass)) {
+                Class implementationClass = responsibleModuleService.getExternalizableBusinessObjectImplementation(dataObjectClass.asSubclass(
+                        ExternalizableBusinessObject.class));
+                if (implementationClass != null) {
+                    dataObjectClassName = implementationClass.getName();
+                }
+            }
+        }
+
         quickfinderAction.addActionParameter(UifParameters.DATA_OBJECT_CLASS_NAME, dataObjectClassName);
 
         if (!fieldConversions.isEmpty()) {
@@ -430,6 +445,18 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             actionParameters.putAll(additionalLookupParameters);
             quickfinderAction.setActionParameters(actionParameters);
         }
+    }
+
+    private Class<?> getDataObjectClass(String className) {
+        Class<?> dataObjectClass;
+
+        try {
+            dataObjectClass = Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to get class for name: " + className, e);
+        }
+
+        return dataObjectClass;
     }
 
     /**

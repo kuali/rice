@@ -147,7 +147,7 @@
 
 
         <bean parent="Uif-InputField"
-              p:instructionalText="When Field 1 has a value AND when Field 2 does not have the value A, Field 3 is required" p:label="Field 3" p:propertyName="inputField7">
+              p:instructionalText="When Field 1 has a value AND when Field 2 is not equal to the value A, Field 3 is required" p:label="Field 3" p:propertyName="inputField7">
           <property name="caseConstraint">
             <bean parent="CaseConstraint">
               <property name="propertyName" value="inputField5"/>

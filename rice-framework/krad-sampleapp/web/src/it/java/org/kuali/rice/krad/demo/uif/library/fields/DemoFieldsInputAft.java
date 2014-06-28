@@ -305,13 +305,13 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
         testInputFieldConstraintText();
 //        testInputFieldLabelTop(); // removed from example
 //        testInputFieldLabelRight(); // removed from example
-        testInputFieldQuickfinder();
         testInputFieldWidgetInputOnlyWithQuickFinder();
         testInputFieldUppercase();
         testInputFieldDisableNativeAutocomplete();
         testInputFieldInputAddons();
         testInputFieldRequired();
         testInputFieldInquiry();
+        testInputFieldQuickfinder();
     }
 
     @Test

@@ -36,6 +36,7 @@ public abstract class DemoLibraryBase extends WebDriverLegacyITBase {
      */
     public void navigateToLibraryDemo(String libraryMenuCategoryName, String demoItemName) throws Exception {
         selectTopFrame();
+        jGrowl("Click Library Link.");
         waitAndClickById("Demo-LibraryLink", "");
         waitAndClickByLinkText(libraryMenuCategoryName);
         waitAndClickByLinkText(demoItemName);

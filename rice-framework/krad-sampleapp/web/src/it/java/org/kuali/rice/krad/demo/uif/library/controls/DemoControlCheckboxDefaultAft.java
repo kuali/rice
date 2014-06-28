@@ -78,7 +78,7 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         assertLabelFor("ST-DemoCheckboxControlExample2-Input1_control_0", "Option 1");
         assertLabelFor("ST-DemoCheckboxControlExample2-Input1_control_1", "Option 2");
         assertLabelFor("ST-DemoCheckboxControlExample2-Input1_control_2", "Option 3");
-        assertLabelFor("ST-DemoCheckboxControlExample2-Input1_control_3", "Option 4");
+        assertLabelFor("ST-DemoCheckboxControlExample2-Input1_control_3", "Disabled Option 4");
         assertLabelFor("ST-DemoCheckboxControlExample2-Input1_control_4", "Option 5");
 
         // check that checkbox controls are enabled and visible but not selected

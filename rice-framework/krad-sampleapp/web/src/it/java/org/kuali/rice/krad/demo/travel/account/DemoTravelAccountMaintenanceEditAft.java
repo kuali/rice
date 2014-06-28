@@ -137,8 +137,8 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent", "42");
-        waitAndClickConfirmationOk();
         waitAndClickById("Demo-DemoLink", "");
+        acceptAlert();
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {
             jiraAwareFail("BlanketApprove was not successful. subsidizedPercent should be 42");
@@ -177,14 +177,17 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     }
     
     protected void testEditFiscalOfficer() throws Exception {
-        if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']")) {
-            jiraAwareFail("Fiscal Officer at start of test is not fran");
+        String currentFiscalOfficer = findElement(By.name("document.newMaintainableObject.dataObject.foId")).getAttribute("value");
+        String newFiscalOfficer = "fran";
+        if ("fran".equals(currentFiscalOfficer)) {
+            newFiscalOfficer = "eric";
         }
+
         checkForRequiredFields();
-        changeFiscalOfficer("eric");
+        changeFiscalOfficer(newFiscalOfficer);
         
         // change eric back to fran
-        changeFiscalOfficer("fran");
+        changeFiscalOfficer(currentFiscalOfficer);
     }
     
     protected void testSubAccountOperations() throws Exception {
@@ -202,6 +205,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickBlanketApprove();
         jGrowl("Click OK");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
+        acceptAlert();
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {
             jiraAwareFail("Fiscal Officer Not Changed to " + newUser);
         }

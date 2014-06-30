@@ -40,6 +40,7 @@ public abstract class ViewDemoAftBase extends WebDriverLegacyITBase{
     public static final String HELP_URL_RICE_VERSION = "site.kuali.org/rice/2.5.";
 
     protected void assertHelp() throws InterruptedException {
+        checkForIncidentReport();
         String kualiWindowHandle = driver.getWindowHandle();
 
         WebElement help = waitForElementPresent(By.xpath("//button[@class='uif-iconOnly uif-helpAction icon-question']"));

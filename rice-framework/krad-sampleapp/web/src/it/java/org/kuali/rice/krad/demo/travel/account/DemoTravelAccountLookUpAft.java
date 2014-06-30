@@ -108,7 +108,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         selectTopFrame();
 
         //Search by Travel Account Date Created
-        waitAndTypeByName("lookupCriteria[createDate]","04/01/2014");
+        waitAndTypeByName("lookupCriteria[createDate]", "06/01/2014");
         waitAndClickButtonByText(SEARCH);
         waitForElementPresentByXpath("//a[contains(text(),'a16')]");
         waitForTextPresent("fran");
@@ -229,14 +229,12 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12825 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountLookUpAft messages no longer displayed
     public void testTravelAccountLookUpDocumentLockingBookmark() throws Exception {
         testTravelAccountLookUpDocumentLocking();
         passed();
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12825 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountLookUpAft messages no longer displayed
     public void testTravelAccountLookUpDocumentLockingNav() throws Exception {
         testTravelAccountLookUpDocumentLocking();
         passed();

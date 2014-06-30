@@ -558,11 +558,9 @@ public final class ViewLifecycleUtils {
         if (path.startsWith(COMPONENT_CONTEXT_PREFIX)) {
             root = component;
             path = path.substring(COMPONENT_CONTEXT_PREFIX.length());
-
         } else if (path.startsWith(PARENT_CONTEXT_PREFIX)) {
             root = ViewLifecycle.getPhase().getParent();
             path = path.substring(PARENT_CONTEXT_PREFIX.length());
-
         } else if (path.charAt(0) == '#') {
             Map<String, Object> context = ViewLifecycle.getView().getPreModelContext();
 
@@ -574,7 +572,6 @@ public final class ViewLifecycleUtils {
             String contextVariable = path.substring(1, iod);
             root = context.get(contextVariable);
             path = path.substring(iod + 1);
-
         } else {
             root = ViewLifecycle.getModel();
         }

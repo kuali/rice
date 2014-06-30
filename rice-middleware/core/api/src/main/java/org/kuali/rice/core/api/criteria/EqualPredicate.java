@@ -51,7 +51,8 @@ public final class EqualPredicate extends AbstractPredicate implements SingleVal
 	private final String propertyPath;
 
     @XmlElements(value = {
-    		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
+            @XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
+            @XmlElement(name = CriteriaPropertyPathValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaPropertyPathValue.class, required = true),
     		@XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true),
     		@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
             @XmlElement(name = CriteriaKualiDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaKualiDecimalValue.class, required = true),

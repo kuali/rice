@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
 import java.util.Collection;
 
 /**
@@ -52,6 +53,7 @@ public final class NotEqualPredicate extends AbstractPredicate implements Single
 
 	@XmlElements(value = {
     		@XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class, required = true),
+            @XmlElement(name = CriteriaPropertyPathValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaPropertyPathValue.class, required = true),
     		@XmlElement(name = CriteriaDateTimeValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDateTimeValue.class, required = true),
     		@XmlElement(name = CriteriaDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaDecimalValue.class, required = true),
             @XmlElement(name = CriteriaKualiDecimalValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaKualiDecimalValue.class, required = true),
@@ -61,7 +63,6 @@ public final class NotEqualPredicate extends AbstractPredicate implements Single
     })
 	private final CriteriaValue<?> value;
 
-    @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 

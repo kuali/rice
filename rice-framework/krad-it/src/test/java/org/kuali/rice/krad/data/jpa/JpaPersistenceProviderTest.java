@@ -1,28 +1,11 @@
 package org.kuali.rice.krad.data.jpa;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.kuali.rice.core.api.criteria.Predicate;
-import org.kuali.rice.core.api.criteria.PredicateFactory;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.criteria.QueryResults;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.data.CompoundKey;
-import org.kuali.rice.krad.data.DataObjectWrapper;
-import org.kuali.rice.krad.data.KradDataServiceLocator;
-import org.kuali.rice.krad.data.PersistenceOption;
-import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
-import org.kuali.rice.krad.data.provider.PersistenceProvider;
-import org.kuali.rice.krad.test.KRADTestCase;
-import org.kuali.rice.krad.test.document.bo.AccountType;
-import org.kuali.rice.krad.test.document.bo.SimpleAccount;
-import org.kuali.rice.krad.test.document.bo.SimpleAccountExtension;
-import org.kuali.rice.test.BaselineTestCase;
-import org.kuali.rice.test.TestHarnessServiceLocator;
-import org.springframework.transaction.UnexpectedRollbackException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import javax.sql.DataSource;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +13,31 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static org.junit.Assert.*;
+import javax.sql.DataSource;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.PredicateFactory;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.kuali.rice.krad.data.provider.PersistenceProvider;
+import org.kuali.rice.krad.test.KRADTestCase;
+import org.kuali.rice.krad.test.document.bo.Account;
+import org.kuali.rice.krad.test.document.bo.AccountExtension;
+import org.kuali.rice.krad.test.document.bo.AccountType;
+import org.kuali.rice.krad.test.document.bo.SimpleAccount;
+import org.kuali.rice.krad.test.document.bo.SimpleAccountExtension;
+import org.kuali.rice.test.BaselineTestCase;
+import org.kuali.rice.test.TestHarnessServiceLocator;
+import org.springframework.transaction.UnexpectedRollbackException;
 
 /**
  * Tests JPAPersistenceProvider
@@ -139,6 +146,43 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         Object found = provider.find((Class<Object>)a.getClass(), id);
         assertTestObjectIdentityEquals(a, found);
         assertTestObjectIdentityEquals(saved, found);
+    }
+
+    @Test
+    public void testExistsSubQueryCriteria() {
+
+        Logger.getLogger(getClass()).info( "Adding Account" );
+        Account acct = new Account();
+        acct.setNumber("a1");
+        acct.setName("a1 name");
+        provider.save(acct, PersistenceOption.FLUSH);
+
+        Logger.getLogger(getClass()).info( "Testing Account Saved" );
+        acct = provider.find(Account.class, "a1");
+        assertNotNull( "a1 SimpleAccount missing", acct );
+        /*
+         * Testing query of form:
+         *
+         * SELECT * FROM SimpleAccount WHERE EXISTS ( SELECT 'x' FROM SimpleAccountExtension WHERE SimpleAccountExtension.number = SimpleAccount.number )
+         */
+        Predicate subquery = PredicateFactory.existsSubquery(AccountExtension.class.getName(), PredicateFactory.equalsProperty("number", null, "parent.number"));
+        QueryByCriteria q = QueryByCriteria.Builder.fromPredicates(subquery);
+        Logger.getLogger(getClass()).info( "Performing Lookup with Exists Query: " + q );
+        QueryResults<Account> results = provider.findMatching(Account.class, q);
+
+        assertNotNull( "Results should not have been null", results );
+        assertEquals( "Should have been no results in the default data", 0, results.getResults().size() );
+
+        Logger.getLogger(getClass()).info( "Building extension object for retest" );
+        AccountExtension ext = new AccountExtension();
+        ext.setAccount(acct);
+        ext.setAccountTypeCode("EAX");
+        provider.save(ext, PersistenceOption.FLUSH);
+
+        Logger.getLogger(getClass()).info( "Running query again to test results" );
+        results = provider.findMatching(Account.class, q);
+        assertNotNull( "Results should not have been null", results );
+        assertEquals( "We added an extension record, so there should have been one result", 1, results.getResults().size() );
     }
 
     // EclipseLink consumes the underlying exception itself and explicitly rolls back the transaction
@@ -254,7 +298,7 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
     @Test
     public void testHandles() {
         Object a = createTopLevelObject();
-        assertTrue(provider.handles((Class<Object>)a.getClass()));
+        assertTrue(provider.handles(a.getClass()));
         Class guaranteedNotToBeMappedClass = this.getClass();
         //  assertFalse(provider.handles(guaranteedNotToBeMappedClass));
     }

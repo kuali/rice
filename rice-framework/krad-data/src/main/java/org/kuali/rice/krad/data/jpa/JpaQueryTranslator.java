@@ -15,18 +15,21 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.util.ClassUtils;
+import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.Collection;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.criteria.Predicate;
+import org.springframework.util.ClassUtils;
 
 /**
  * Translates queries to JPA specific classes.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@SuppressWarnings("rawtypes")
 class JpaQueryTranslator extends QueryTranslatorBase<Criteria, Query> {
 
     /**
@@ -46,11 +49,16 @@ class JpaQueryTranslator extends QueryTranslatorBase<Criteria, Query> {
     /**
      * {@inheritDoc}
      */
-    @Override
+	@Override
     public Query createQuery(Class queryClazz, Criteria criteria) {
         return new QueryByCriteria(entityManager, criteria).toQuery();
     }
 
+    @Override
+    protected Criteria createCriteriaForSubQuery(Class queryClazz, Criteria parentContext) {
+		throw new UnsupportedOperationException();
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -214,4 +222,12 @@ class JpaQueryTranslator extends QueryTranslatorBase<Criteria, Query> {
         }
         return pp;
     }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void addExistsSubquery(Criteria criteria, String subQueryType, Predicate subQueryPredicate) {
+		throw new UnsupportedOperationException();
+	}
 }

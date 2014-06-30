@@ -99,6 +99,33 @@ public final class PredicateFactory {
 		return new EqualPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
 
+    /**
+     * Creates an predicate representing an equals comparison between the property on the
+     * object from the current query and another property.
+     *
+     * If the targetDataType is null, then the property will be resolved against the same object
+     * as the propertyPath argument.
+     *
+     * For the purposes of inner queries, the targetPropertyPath may start with the string "parent." to refer to
+     * the containing query's main object.  If "parent." is used in a non-inner query, query translation is likely
+     * to fail.
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param targetDataType If non-null, the data type against which the targetPropertyPath should be
+     * resolved.  See above for special case values.
+     * @param targetPropertyPath the value to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the targetPropertyPath is null
+     * @since Rice 2.4.2
+     */
+    public static Predicate equalsProperty(String propertyPath, String targetDataType, String targetPropertyPath) {
+        return new EqualPredicate(propertyPath, new CriteriaPropertyPathValue( new PropertyPath(targetDataType,targetPropertyPath) ));
+    }
+
 	/**
 	 * Creates a predicate representing not equals comparison.  Defines that the property
      * represented by the given path should <strong>not</strong> be
@@ -125,6 +152,33 @@ public final class PredicateFactory {
 	public static Predicate notEqual(String propertyPath, Object value) {
 		return new NotEqualPredicate(propertyPath, CriteriaSupportUtils.determineCriteriaValue(value));
 	}
+
+    /**
+     * Creates an predicate representing a not equals comparison between the property on the
+     * object from the current query and another property.
+     *
+     * If the targetDataType is null, then the property will be resolved against the same object
+     * as the propertyPath argument.
+     *
+     * For the purposes of inner queries, the targetDataType may be the string "parent" to refer to
+     * the containing query.  If "parent" is used in a non-inner query, query translation is likely
+     * to fail.
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param targetDataType If non-null, the data type against which the targetPropertyPath should be
+     * resolved.  See above for special case values.
+     * @param targetPropertyPath the value to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the targetPropertyPath is null
+     * @since Rice 2.4.2
+     */
+    public static Predicate notEqualsProperty(String propertyPath, String targetDataType, String targetPropertyPath) {
+        return new NotEqualPredicate(propertyPath, new CriteriaPropertyPathValue( new PropertyPath(targetDataType,targetPropertyPath) ));
+    }
 
     /**
 	 * Creates an equals ignore case predicate.  Defines that the property
@@ -709,6 +763,23 @@ public final class PredicateFactory {
 		return new OrPredicate(predicateSet);
 	}
 
+
+	/**
+	 * This method will generate an "<tt>EXISTS ( SELECT 1 FROM subQueryType WHERE <predicate> )</tt>" style query.
+	 *
+	 * @param subQueryType The data type of the inner subquery
+	 * @param subQueryPredicate Additional predicates to apply to the inner query - may be null.
+	 * @return the Predicate
+     * @throws IllegalArgumentException if subQueryBaseClass, subQueryProperty, or outerQueryProperty are blank or null.
+     * @since Rice 2.4.2
+	 */
+	public static Predicate existsSubquery( String subQueryType, Predicate subQueryPredicate ) {
+	    if ( StringUtils.isBlank( subQueryType ) ) {
+            throw new IllegalArgumentException("subQueryBaseClass is blank or null");
+	    }
+
+	    return new ExistsSubQueryPredicate(subQueryType, subQueryPredicate);
+	}
 
 
     /**

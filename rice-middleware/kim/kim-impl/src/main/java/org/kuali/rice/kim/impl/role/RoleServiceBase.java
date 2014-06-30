@@ -32,7 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -41,6 +40,9 @@ import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
+import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
@@ -52,14 +54,12 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeInfoService;
-import org.kuali.rice.coreservice.api.namespace.Namespace;
-import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
-import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
@@ -255,7 +255,7 @@ abstract class RoleServiceBase {
         List<Predicate> criteria = new ArrayList<Predicate>();
 
         if (CollectionUtils.isNotEmpty(roleIds)) {
-            criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds) );
+            criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds) );
         }
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()));
 
@@ -314,44 +314,45 @@ abstract class RoleServiceBase {
     }
 
     /**
-     * Attempts to add predicates to the query to filter based on a subquery against the attribute
-     * data table.
+     * Attempts to add predicates to the query to filter based on subqueries against the
+     * role member attribute data table.
      *
-     * FIXME: This has not been re-implemented in JPA.  We need subquery support in the Predicate APIs.
-     * ALERT!: This can only be re-implemented if we use it against role qualifiers which the role
-     * type service say can be matched exactly.  Otherwise we could filter out matches where the
-     * qualifier contains wildcards or is part of a hierarchy.
+     * This is used for <b>exact matches only!</b>  An "EXISTS" subquery will be created for
+     * each non-blank attribute value passed to this method and they will be anded together
+     * and returned to the calling code.
      *
-     *  This should not be too difficult.  See the first answer here:
-     *  http://stackoverflow.com/questions/4483576/jpa-2-0-criteria-api-subqueries-in-expressions
-     *
-     *  PredicateFactory.subquery( String parentAttributeName, Class subQueryDataObject, Predicate... predicates )
-     *  (or something like that - could also pass in a build QueryByCriteria object)
-     *
-     *  Other consideration used in the code below which the above does not address...
-     *      What about referencing the outer query?  What's the syntax for that.  OJB had a special constant.
-     *
-     * @param qualification
+     * @param qualification An "and" predicate containing the exists predicates if at least one
+     *                      qualification has a non-blank value.  <b>null</b> if all values
+     *                      are blank or the passed in qualification is <b>null</b> or empty.
      */
     protected Predicate getRoleQualificationPredicate(Map<String, String> qualification) {
-        return null;
-        //        if (qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
-        //            for (Map.Entry<String, String> qualifier : qualification.entrySet()) {
-        //                if (StringUtils.isNotBlank(qualifier.getValue())) {
-        //                    String value = (qualifier.getValue()).replace('*', '%');
-        //                    PredicateFactory.and(
-        //                            PredicateFactory.like("attributeValue", value),
-        //                            PredicateFactory.equal("kimAttributeId", qualifier.getKey()),
-        //                            PredicateFactory.equal("attributeValue", value),
-        //
-        //                    subCrit.addLike("attributeValue", value);
-        //                    subCrit.addEqualTo("kimAttributeId", qualifier.getKey());
-        //                    subCrit.addEqualToField("assignedToId", Criteria.PARENT_QUERY_PREFIX + "id");
-        //                    ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(RoleMemberAttributeDataBo.class, subCrit);
-        //                    c.addExists(subQuery);
-        //                }
-        //            }
-        //        }
+        if (qualification == null || CollectionUtils.isEmpty(qualification.keySet())) {
+            return null;
+        }
+
+        List<Predicate> attributePredicates = new ArrayList<Predicate>( qualification.size() );
+
+        for (Map.Entry<String, String> qualifier : qualification.entrySet()) {
+            if (StringUtils.isNotBlank(qualifier.getValue())) {
+                Predicate subQueryCriteria = PredicateFactory.and(
+                        PredicateFactory.equal("attributeValue", qualifier.getValue()),
+                        PredicateFactory.equal("kimAttributeId", qualifier.getKey()),
+                        PredicateFactory.equalsProperty("assignedToId", null, "parent.id" ));
+                Predicate existsSubquery = PredicateFactory.existsSubquery(RoleMemberAttributeDataBo.class.getName(), subQueryCriteria);
+
+                attributePredicates.add(existsSubquery);
+            }
+        }
+
+        if ( attributePredicates.isEmpty() ) {
+            return null;
+        }
+
+        if ( attributePredicates.size() == 1 ) {
+            return attributePredicates.get(0);
+        } else {
+            return PredicateFactory.and( attributePredicates.toArray( new Predicate[attributePredicates.size()] ) );
+        }
     }
 
     protected List<RoleMemberBo> getRoleMembershipsForMemberId(String memberType, String memberId, Map<String, String> qualification) {
@@ -813,7 +814,7 @@ abstract class RoleServiceBase {
     // TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
     /*
      * search by attribute name, if none return null, if there is only one, return. If there are multiple, then
-     * search by kimType: if found return else 
+     * search by kimType: if found return else
      *     search by appId of kimType : if found return else
      *          search by rice app id : if found return else
      *              search by kuali app id : if found return else

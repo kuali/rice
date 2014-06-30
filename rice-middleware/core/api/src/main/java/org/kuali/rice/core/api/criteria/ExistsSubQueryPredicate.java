@@ -15,37 +15,47 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import java.util.Collection;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 /**
- * An abstract implementation of a {@link CompositePredicate}.  This class defines all of the JAXB
- * annotations such that sub-classes should not have to.
+ * An immutable predicate which represents an "WHERE EXISTS" statement.
  * 
- * <p>If a class subclasses this class then it *MUST* be sure to add itself to the JAXB
- * annotations for {@link #predicates}
- * 
+ * This implementation assumes that there is a single field which can be related 
+ * between the inner and outer queries.  An equality between those fields is
+ * automatically added to the predicates of the inner query.  
+ *
+ * @see PredicateFactory for a convenient way to construct this class.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @since Rice 2.4.2
+ *
  */
+@XmlRootElement(name = ExistsSubQueryPredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(name = AbstractCompositePredicate.Constants.TYPE_NAME)
-abstract class AbstractCompositePredicate extends AbstractPredicate implements CompositePredicate {
+@XmlType(name = ExistsSubQueryPredicate.Constants.TYPE_NAME, propOrder = {
+    ExistsSubQueryPredicate.Elements.SUB_QUERY_PREDICATE,
+    CoreConstants.CommonElements.FUTURE_ELEMENTS
+})
+public final class ExistsSubQueryPredicate extends AbstractPredicate implements SubQueryPredicate {
 
-    private static final long serialVersionUID = 6164560054223588779L;
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+	private static final long serialVersionUID = 2397296074921454859L;
 
-    /**
-     * Defines the JAXB annotations for the List of predicates.  All supported predicates *MUST* be
-     * included in this List in order for them to be supported in the XML schema.
-     * 
-     * If a new type of predicate is created it *MUST* be added to this list.
-     */
+    @XmlAttribute(name = Elements.SUB_QUERY_TYPE, required = true)
+	protected String subQueryType;
+    
     @XmlElements(value = {
             @XmlElement(name = AndPredicate.Constants.ROOT_ELEMENT_NAME, type = AndPredicate.class, required = false),
             @XmlElement(name = EqualPredicate.Constants.ROOT_ELEMENT_NAME, type = EqualPredicate.class, required = false),
@@ -67,65 +77,59 @@ abstract class AbstractCompositePredicate extends AbstractPredicate implements C
             @XmlElement(name = NotNullPredicate.Constants.ROOT_ELEMENT_NAME, type = NotNullPredicate.class, required = false),
             @XmlElement(name = NullPredicate.Constants.ROOT_ELEMENT_NAME, type = NullPredicate.class, required = false),
             @XmlElement(name = OrPredicate.Constants.ROOT_ELEMENT_NAME, type = OrPredicate.class, required = false)
-    })
-    private final Set<Predicate> predicates;
+        })
+	protected Predicate subQueryPredicate;
+
+    @XmlAnyElement
+    private final Collection<Element> _futureElements = null;
 
 	/**
-	 * This default constructor exists only to be invoked by sub-classes
-	 * in their default constructors which is used by JAXB. 
-	 */
-    AbstractCompositePredicate() {
-        this.predicates = null;
+     * Should only be invoked by JAXB.
+     */
+    @SuppressWarnings("unused")
+    private ExistsSubQueryPredicate() {
     }
 
-    /**
-     * When invoked by a subclass, this constructor will set the predicates
-     * to the given set. If the set is null then it will be translated
-     * internally to an empty set.
-     * 
-     * @param predicates the list of predicates to set
-     */
-    AbstractCompositePredicate(final Set<Predicate> predicates) {
-        if (predicates == null) {
-            this.predicates = Collections.emptySet();
-        } else {
-            final Set<Predicate> temp = new HashSet<Predicate>();
-            for (Predicate predicate: predicates) {
-                if (predicate != null) {
-                    temp.add(predicate);
-                }
-            }
-            this.predicates = Collections.unmodifiableSet(temp);
+    public ExistsSubQueryPredicate(String subQueryType, Predicate subQueryPredicate) {
+        super();
+        if ( StringUtils.isBlank(subQueryType) ) {
+            throw new IllegalArgumentException("subQueryType is required");
         }
+        this.subQueryType = subQueryType;
+        this.subQueryPredicate = subQueryPredicate;
     }
 
     @Override
-    public Set<Predicate> getPredicates() {
-        return Collections.unmodifiableSet(predicates);
+    public String getSubQueryType() {
+        return this.subQueryType;
     }
 
+    @Override
+    public Predicate getSubQueryPredicate() {
+        return this.subQueryPredicate;
+    }
+    
+    @Override
+    public String toString() {
+        return new StringBuilder(CriteriaSupportUtils.findDynName(this.getClass().getSimpleName()))
+                .append("(").append(getSubQueryType())
+                .append(" WHERE ").append(getSubQueryPredicate())
+                .append(")").toString();
+    }
     /**
      * Defines some internal constants used on this class.
      */
     static class Constants {
-        final static String TYPE_NAME = "CompositePredicateType";
+        final static String ROOT_ELEMENT_NAME = "existsSubQuery";
+        final static String TYPE_NAME = "ExistsSubQueryType";
     }
 
-    @Override
-    public final String toString() {
-        StringBuilder b = new StringBuilder(CriteriaSupportUtils.findDynName(this.getClass().getSimpleName()));
-        b.append("(");
-        if (!predicates.isEmpty()) {
-            for (Predicate p : predicates) {
-                b.append(LINE_SEPARATOR);
-                //b.append("\t");
-                b.append(p);
-                b.append(", ");
-            }
-            b.deleteCharAt(b.lastIndexOf(", "));
-            b.append(LINE_SEPARATOR);
-        }
-        b.append(')');
-        return  b.toString();
-    }
+    /**
+     * A private class which exposes constants which define the XML element
+     * names to use when this object is marshaled to XML.
+     */
+    static class Elements {
+        final static String SUB_QUERY_TYPE = "subQueryType";
+        final static String SUB_QUERY_PREDICATE = "subQueryPredicate";
+    }    
 }

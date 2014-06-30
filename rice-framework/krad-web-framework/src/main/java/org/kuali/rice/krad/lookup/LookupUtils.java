@@ -104,8 +104,7 @@ public class LookupUtils {
         }
         // get parameter value from form object
         else {
-            parameterValue = ObjectPropertyUtils.getPropertyValue(form, parameterName);
-            // TODO: should go through property editor for display
+            parameterValue = ObjectPropertyUtils.getPropertyValueAsText(form, parameterName);
         }
 
         if (parameterValue != null && lookupObjectClass != null

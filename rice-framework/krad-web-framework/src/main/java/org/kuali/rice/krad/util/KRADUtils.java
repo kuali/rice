@@ -1223,7 +1223,7 @@ public final class KRADUtils {
         Object viewLabelPropertyValue = null;
         if (StringUtils.isNotBlank(viewLabelPropertyPath) && ObjectPropertyUtils.isReadableProperty(form,
                 viewLabelPropertyPath)) {
-            viewLabelPropertyValue = ObjectPropertyUtils.getPropertyValue(form, viewLabelPropertyPath);
+            viewLabelPropertyValue = ObjectPropertyUtils.getPropertyValueAsText(form, viewLabelPropertyPath);
         }
 
         if (viewLabelPropertyValue != null && StringUtils.isNotBlank(viewLabelPropertyValue.toString()) && StringUtils
@@ -1291,7 +1291,7 @@ public final class KRADUtils {
 
             // check if readable
             if (ObjectPropertyUtils.isReadableProperty(model, propertyPath)) {
-                valueObject = ObjectPropertyUtils.getPropertyValue(model, propertyPath);
+                valueObject = ObjectPropertyUtils.getPropertyValueAsText(model, propertyPath);
             }
 
             // use object's string value

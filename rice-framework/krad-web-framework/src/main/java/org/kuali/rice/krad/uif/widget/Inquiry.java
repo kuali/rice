@@ -295,7 +295,7 @@ public class Inquiry extends WidgetBase {
                         parameterValue = formatter.format(parameterValue);
                     }
                 } else {
-                    parameterValue = parameterValue.toString();
+                    parameterValue = ObjectPropertyUtils.getPropertyValueAsText(dataObject, parameterName);
                 }
 
                 // Encrypt value if it is a field that has restriction that prevents a value from being shown to

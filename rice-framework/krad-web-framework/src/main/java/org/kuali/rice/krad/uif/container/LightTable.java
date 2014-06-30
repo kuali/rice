@@ -507,16 +507,15 @@ public class LightTable extends GroupBase implements DataBinding {
             return row;
         }
 
-        Object currentValue = ObjectPropertyUtils.getPropertyValue(obj, ((DataField) item).getPropertyName());
+        String currentValue = ObjectPropertyUtils.getPropertyValueAsText(obj, ((DataField) item).getPropertyName());
 
         if (currentValue == null) {
             currentValue = "";
         }
 
         //for readOnly DataFields replace the value marked with the value on the current object
-        // TODO: this needs to go through registered property editors
-        row = row.replaceAll(VALUE_TOKEN + originalId + VALUE_TOKEN, currentValue.toString());
-        currentColumnValue = currentValue.toString();
+        row = row.replaceAll(VALUE_TOKEN + originalId + VALUE_TOKEN, currentValue);
+        currentColumnValue = currentValue;
 
         Inquiry dataFieldInquiry = ((DataField) item).getInquiry();
         if (dataFieldInquiry != null && dataFieldInquiry.getInquiryParameters() != null
@@ -529,11 +528,11 @@ public class LightTable extends GroupBase implements DataBinding {
             for (String key : dataFieldInquiry.getInquiryParameters().keySet()) {
                 String name = dataFieldInquiry.getInquiryParameters().get(key);
 
-                //omit the binding prefix fromt he key to get the path relative to the current object
+                //omit the binding prefix from the key to get the path relative to the current object
                 key = key.replace(((DataField) item).getBindingInfo().getBindByNamePrefix() + ".", "");
 
                 if (ObjectPropertyUtils.isReadableProperty(obj, key)) {
-                    String value = ObjectPropertyUtils.getPropertyValue(obj, key);
+                    String value = ObjectPropertyUtils.getPropertyValueAsText(obj, key);
                     row = row.replaceFirst("(" + inquiryLinkId + "(.|\\s)*?" + name + ")=.*?([&|\"])",
                             "$1=" + value + "$3");
                 }
@@ -574,7 +573,7 @@ public class LightTable extends GroupBase implements DataBinding {
         } else if (value.getClass().isAssignableFrom(boolean.class)) {
             stringValue = "" + value;
         } else if (!(value instanceof Collection)) {
-            stringValue = value.toString();
+            stringValue = ObjectPropertyUtils.getPropertyValueAsText(obj, ((InputField) item).getPropertyName());
         }
 
         String controlId = originalId + "_line" + index + UifConstants.IdSuffixes.CONTROL;

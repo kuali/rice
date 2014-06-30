@@ -102,7 +102,6 @@ public class ScriptUtils {
                     jsValue = "\"";
                 }
 
-                // TODO: should this go through property editors?
                 jsValue += value.toString();
 
                 if (quoteValue) {
@@ -116,7 +115,7 @@ public class ScriptUtils {
                 for (String propertyName : propertyDescriptors.keySet()) {
                     if (ObjectPropertyUtils.isReadableProperty(value, propertyName)
                             && !"class".equals(propertyName)) {
-                        Object propertyValue = ObjectPropertyUtils.getPropertyValue(value, propertyName);
+                        Object propertyValue = ObjectPropertyUtils.getPropertyValueAsText(value, propertyName);
                         jsValue += propertyName + ":";
                         jsValue += translateValue(propertyValue);
                         jsValue += ",";

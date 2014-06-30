@@ -131,29 +131,29 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
             }
 
             // value prop
-            Object suggestFieldValue = null;
+            String suggestFieldValue = null;
             if (StringUtils.isNotBlank(suggestPostData.getValuePropertyName())) {
-                suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result,
+                suggestFieldValue = ObjectPropertyUtils.getPropertyValueAsText(result,
                         suggestPostData.getValuePropertyName());
             } else if (ObjectPropertyUtils.isReadableProperty(result, UifParameters.VALUE)) {
-                suggestFieldValue = ObjectPropertyUtils.getPropertyValue(result, UifParameters.VALUE);
+                suggestFieldValue = ObjectPropertyUtils.getPropertyValueAsText(result, UifParameters.VALUE);
             }
 
             if (suggestFieldValue != null) {
-                propMap.put(UifParameters.VALUE, suggestFieldValue.toString());
+                propMap.put(UifParameters.VALUE, suggestFieldValue);
             }
 
             // label prop
-            Object suggestFieldLabel = null;
+            String suggestFieldLabel = null;
             if (StringUtils.isNotBlank(suggestPostData.getLabelPropertyName())) {
-                suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result,
+                suggestFieldLabel = ObjectPropertyUtils.getPropertyValueAsText(result,
                         suggestPostData.getLabelPropertyName());
             } else if (ObjectPropertyUtils.isReadableProperty(result, UifParameters.LABEL)) {
-                suggestFieldLabel = ObjectPropertyUtils.getPropertyValue(result, UifParameters.LABEL);
+                suggestFieldLabel = ObjectPropertyUtils.getPropertyValueAsText(result, UifParameters.LABEL);
             }
 
             if (suggestFieldLabel != null) {
-                propMap.put(UifParameters.LABEL, suggestFieldLabel.toString());
+                propMap.put(UifParameters.LABEL, suggestFieldLabel);
             }
 
             // location suggest specific properties
@@ -187,14 +187,14 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         if (suggestPostData.getAdditionalPropertiesToReturn() != null) {
             //add properties for each valid property name
             for (String propName : suggestPostData.getAdditionalPropertiesToReturn()) {
-                Object propValue = null;
+                String propValue = null;
 
                 if (StringUtils.isNotBlank(propName) && ObjectPropertyUtils.isReadableProperty(result, propName)) {
-                    propValue = ObjectPropertyUtils.getPropertyValue(result, propName);
+                    propValue = ObjectPropertyUtils.getPropertyValueAsText(result, propName);
                 }
 
                 if (propValue != null) {
-                    propMap.put(propName, propValue.toString());
+                    propMap.put(propName, propValue);
                 }
             }
         }
@@ -203,35 +203,36 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
     /**
      * Handle the LocationSuggest specific properties and add them to the map.
      *
-     * @param suggestPostData oost data for the suggest widget
+     * @param suggestPostData post data for the suggest widget
      * @param result the result to pull properties from
      * @param propMap the propMap to add properties to
      */
     private void handleLocationSuggestProperties(LocationSuggest.LocationSuggestPostData suggestPostData, Object result,
             Map<String, String> propMap) {
         // href property
-        Object suggestHrefValue = null;
+        String suggestHrefValue = null;
         if (StringUtils.isNotBlank(suggestPostData.getHrefPropertyName()) && ObjectPropertyUtils.isReadableProperty(
                 result, suggestPostData.getHrefPropertyName())) {
-            suggestHrefValue = ObjectPropertyUtils.getPropertyValue(result, suggestPostData.getHrefPropertyName());
+            suggestHrefValue = ObjectPropertyUtils.getPropertyValueAsText(result,
+                    suggestPostData.getHrefPropertyName());
         }
 
         // add if found
         if (suggestHrefValue != null) {
-            propMap.put(suggestPostData.getHrefPropertyName(), suggestHrefValue.toString());
+            propMap.put(suggestPostData.getHrefPropertyName(), suggestHrefValue);
         }
 
         // url addition/appendage property
-        Object addUrlValue = null;
+        String addUrlValue = null;
         if (StringUtils.isNotBlank(suggestPostData.getAdditionalUrlPathPropertyName()) &&
                 ObjectPropertyUtils.isReadableProperty(result, suggestPostData.getAdditionalUrlPathPropertyName())) {
-            addUrlValue = ObjectPropertyUtils.getPropertyValue(result,
+            addUrlValue = ObjectPropertyUtils.getPropertyValueAsText(result,
                     suggestPostData.getAdditionalUrlPathPropertyName());
         }
 
         // add if found
         if (addUrlValue != null) {
-            propMap.put(suggestPostData.getAdditionalUrlPathPropertyName(), addUrlValue.toString());
+            propMap.put(suggestPostData.getAdditionalUrlPathPropertyName(), addUrlValue);
         }
 
         if (suggestPostData.getRequestParameterPropertyNames() == null) {
@@ -241,14 +242,14 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
         // add properties for each valid requestParameter property name
         for (String key : suggestPostData.getRequestParameterPropertyNames().keySet()) {
             String prop = suggestPostData.getRequestParameterPropertyNames().get(key);
-            Object propValue = null;
+            String propValue = null;
 
             if (StringUtils.isNotBlank(prop) && ObjectPropertyUtils.isReadableProperty(result, prop)) {
-                propValue = ObjectPropertyUtils.getPropertyValue(result, prop);
+                propValue = ObjectPropertyUtils.getPropertyValueAsText(result, prop);
             }
 
             if (propValue != null) {
-                propMap.put(prop, propValue.toString());
+                propMap.put(prop, propValue);
             }
         }
     }
@@ -316,10 +317,8 @@ public class AttributeQueryServiceImpl implements AttributeQueryService {
                 String returnField = fieldQuery.getReturnFieldMapping().get(fromField);
 
                 String fieldValueStr = "";
-                Object fieldValue = ObjectPropertyUtils.getPropertyValue(resultObject, fromField);
-                if (fieldValue != null) {
-                    fieldValueStr = fieldValue.toString();
-                }
+                fieldValueStr = ObjectPropertyUtils.getPropertyValueAsText(resultObject, fromField);
+
                 resultFieldData.put(returnField, fieldValueStr);
             }
             queryResult.setResultFieldData(resultFieldData);

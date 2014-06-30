@@ -1504,8 +1504,11 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void waitForElementNotPresent(By by) throws InterruptedException {
+        waitForElementNotPresent(by, WebDriverUtils.configuredImplicityWait());
+    }
+
+    protected void waitForElementNotPresent(By by, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        int secondsToWait = WebDriverUtils.configuredImplicityWait();
         while (isElementPresent(by) && secondsToWait > 0) {
             secondsToWait -= 1;
             Thread.sleep(1000);

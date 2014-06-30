@@ -158,6 +158,7 @@ public class PeopleFlowCreateNewNotesAndAttachmentsAft extends PeopleFlowCreateN
         waitAndAddAttachment("attachment.txt", "Testing123");
         waitAndClick(By.cssSelector("button[title='Add a Note']"));
 
+        Thread.sleep(2000);
         waitForTextPresent("Note Text is a required field");
         assertTextNotPresent("attachment.txt");
         passed();

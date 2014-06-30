@@ -275,7 +275,8 @@ public class UifConstants {
         public static final String QUICKFINDER_CALLBACK_METHOD_TO_CALL = "quickfinderCallbackMethodToCall";
         public static final String QUICKFINDER_CALLBACK_METHOD = "quickfinderCallbackMethod";
         public static final String QUICKFINDER_CALLBACK_CONTEXT = "quickfinderCallbackContext";
-        public static final String QUICKFINDER_CALLBACK_CONTEXT_PROPERTY_LINE_INDEX = "lineIndex";
+	public static final String QUICKFINDER_CALLBACK_CONTEXT_PROPERTY_LINE_INDEX = "lineIndex";
+        public static final String FILTERABLE_LOOKUP_CRITERIA = "filterableLookupCriteria";
     }
 
     public static class LookupCriteriaPostMetadata {

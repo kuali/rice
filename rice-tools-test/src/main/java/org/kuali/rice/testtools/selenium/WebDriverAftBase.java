@@ -272,7 +272,11 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
         // wait for any flash not present errors to fade out
         while (findElement(By.className("jGrowl-message")).getText().contains("Unable to load SWF file")) {
-            driver.findElement(By.className("jGrowl-close")).click(); // no wait, click quick
+            try {
+                driver.findElement(By.className("jGrowl-close")).click(); // no wait, click quick
+            } catch (Throwable t) {
+                // don't fail because the swf jgrowl has gone away
+            }
         }
 
         // get growl texts
@@ -989,7 +993,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         for (WebElement option : options) {
             if (option.getText().equals(selectText)) {
                 option.click();
-                //                break; // seems to be causing a hang?
+                break; // continuing the loop after clicking on an option often causes cache problems other times it seems breaking here causes hangs?!
             }
         }
     }
@@ -1501,9 +1505,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForElementNotPresent(By by) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        int secondsToWait = WebDriverUtils.configuredImplicityWait();
         while (isElementPresent(by) && secondsToWait > 0) {
-            secondsToWait -= 1000;
+            secondsToWait -= 1;
             Thread.sleep(1000);
         }
         if (isElementPresent(by)) {
@@ -1515,9 +1519,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected boolean waitForIsTextPresent(String text) throws InterruptedException {
         boolean present = false;
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        int secondsToWait = WebDriverUtils.configuredImplicityWait();
         while (!isTextPresent(text) && secondsToWait > 0) {
-            secondsToWait -= 1000;
+            secondsToWait -= 1;
             Thread.sleep(1000);
         }
         if (isTextPresent(text)) {
@@ -1528,22 +1532,13 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void waitForTextPresent(String text) throws InterruptedException {
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
-        while (!isTextPresent(text) && secondsToWait > 0) {
-            secondsToWait -= 1000;
-            Thread.sleep(1000);
-        }
-        if (!isTextPresent(text)) {
-            jiraAwareFail(text + " is not present for " + this.getClass().toString());
-        }
-        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+        waitForTextPresent(text, WebDriverUtils.configuredImplicityWait());
     }
 
     protected void waitForTextPresent(String text, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         while (!isTextPresent(text) && secondsToWait > 0) {
-            secondsToWait -= 1000;
+            secondsToWait -= 1;
             Thread.sleep(1000);
         }
         if (!isTextPresent(text)) {
@@ -1554,9 +1549,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForTextNotPresent(String text) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        int secondsToWait = WebDriverUtils.configuredImplicityWait() * 1000;
+        int secondsToWait = WebDriverUtils.configuredImplicityWait();
         while (isTextPresent(text) && secondsToWait > 0) {
-            secondsToWait -= 1000;
+            secondsToWait -= 1;
             Thread.sleep(1000);
         }
         if (isTextPresent(text)) {

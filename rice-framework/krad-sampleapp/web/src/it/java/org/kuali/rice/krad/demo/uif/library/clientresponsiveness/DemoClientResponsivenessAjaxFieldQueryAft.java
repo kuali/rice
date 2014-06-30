@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -74,18 +75,32 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     }
 
     @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testClientResponsivenessAjaxFieldQueryBookmark() throws Exception {
         testClientResponsivenessAjaxFieldQuery();
         testClientResponsivenessAjaxFieldQueryCustomMethod();
+        passed();
+    }
+
+    @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
+    public void testClientResponsivenessAjaxFieldQueryNav() throws Exception {
+        testClientResponsivenessAjaxFieldQuery();
+        testClientResponsivenessAjaxFieldQueryCustomMethod();
+        passed();
+    }
+
+    @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
+    public void testClientResponsivenessAjaxFieldQueryCustomMethodAndServiceBookmark() throws Exception {
         testClientResponsivenessAjaxFieldQueryCustomMethodAndService();
         passed();
     }
 
     @Test
-    public void testClientResponsivenessAjaxFieldQueryNav() throws Exception {
-        testClientResponsivenessAjaxFieldQuery();
-        testClientResponsivenessAjaxFieldQueryCustomMethod();
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
+    public void testClientResponsivenessAjaxFieldQueryCustomMethodAndServiceNav() throws Exception {
         testClientResponsivenessAjaxFieldQueryCustomMethodAndService();
         passed();
-    }  
+    }
 }

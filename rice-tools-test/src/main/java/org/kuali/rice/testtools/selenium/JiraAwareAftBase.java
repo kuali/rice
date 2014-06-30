@@ -124,7 +124,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected void assertElementPresentByName(String name, String message) {
         try {
             findElement(By.name(name));
-        } catch (Exception e) {
+        } catch (Throwable t) {
             jiraAwareFail(name + " not present " + message);
         }
     }
@@ -140,24 +140,24 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected void assertElementPresent(By by, String message) {
         try {
             findElement(by);
-        } catch (Exception e) {
-            jiraAwareFail(by, message, e);
+        } catch (Throwable t) {
+            jiraAwareFail(by, message, t);
         }
     }
 
     protected void assertElementPresentByXpath(String locator, String message) {
         try {
             findElement(By.xpath(locator));
-        } catch (Exception e) {
-            jiraAwareFail(By.xpath(locator), message, e);
+        } catch (Throwable t) {
+            jiraAwareFail(By.xpath(locator), message, t);
         }
     }
 
     protected void assertElementPresentByLinkText(String linkText) {
         try {
             findElement(By.linkText(linkText));
-        } catch (Exception e) {
-            jiraAwareFail(By.cssSelector(linkText), this.getClass().toString(), e);
+        } catch (Throwable t) {
+            jiraAwareFail(By.cssSelector(linkText), this.getClass().toString(), t);
         }
 
     }
@@ -165,8 +165,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected void assertElementPresent(String locator) {
         try {
             findElement(By.cssSelector(locator));
-        } catch (Exception e) {
-            jiraAwareFail(By.cssSelector(locator), this.getClass().toString(), e);
+        } catch (Throwable t) {
+            jiraAwareFail(By.cssSelector(locator), this.getClass().toString(), t);
         }
     }
 
@@ -438,8 +438,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
             WebElement found = elementToFindOn.findElement(by);
             WebDriverUtils.highlightElement(getDriver(), found);
             return found;
-        } catch (Exception e) {
-            jiraAwareFail(by.toString(), e.getMessage() + " " + this.getClass().toString(), e);
+        } catch (Throwable t) {
+            jiraAwareFail(by.toString(), t.getMessage() + " " + this.getClass().toString(), t);
         }
         return null; // required by compiler, never reached
     }
@@ -557,9 +557,9 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected WebElement jiraAwareType(By by, String text, String failureMessage) {
         try {
             return type(by, text);
-        } catch (Exception e) {
+        } catch (Throwable t) {
             JiraAwareFailureUtils.failOnMatchedJira(by.toString(), failureMessage, this);
-            jiraAwareFail(e.getMessage()
+            jiraAwareFail(t.getMessage()
                     + " "
                     + by.toString()
                     + "  unable to type text '"
@@ -604,8 +604,8 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 //            }
 //            WebDriverUtils.jGrowl(getDriver(), "Click " + jgrowl, false, "Click " + jgrowl);
             element.click();
-        } catch (Exception e) {
-            failable.jiraAwareFail(by.toString(), message, e);
+        } catch (Throwable t) {
+            failable.jiraAwareFail(by.toString(), message, t);
         }
     }
 
@@ -762,9 +762,9 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             jiraAwareWaitFor(by, message);
             return type(by, text);
-        } catch (Exception e) {
+        } catch (Throwable t) {
             JiraAwareFailureUtils.failOnMatchedJira(by.toString(), message, this);
-            jiraAwareFail(e.getMessage()
+            jiraAwareFail(t.getMessage()
                     + " "
                     + by.toString()
                     + "  unable to type text '"

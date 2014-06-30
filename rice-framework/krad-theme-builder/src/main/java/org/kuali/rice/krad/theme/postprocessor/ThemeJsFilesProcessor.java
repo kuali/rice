@@ -239,7 +239,7 @@ public class ThemeJsFilesProcessor extends ThemeFilesProcessor {
      *
      * <p>
      * Minification is performed using the Google Closure compiler, using
-     * com.google.javascript.jscomp.CompilationLevel#SIMPLE_OPTIMIZATIONS and EcmaScript5 language level
+     * com.google.javascript.jscomp.CompilationLevel#WHITESPACE_ONLY and EcmaScript5 language level
      * </p>
      *
      * @see ThemeFilesProcessor#minify(java.io.File, java.io.File)
@@ -262,7 +262,7 @@ public class ThemeJsFilesProcessor extends ThemeFilesProcessor {
             reader = new InputStreamReader(in);
 
             CompilerOptions options = new CompilerOptions();
-            CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+            CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
             options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
             options.setExtraAnnotationNames(ignoredAnnotations());
 

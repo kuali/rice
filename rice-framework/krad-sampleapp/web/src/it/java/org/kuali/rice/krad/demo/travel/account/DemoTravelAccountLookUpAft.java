@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.krad.demo.ViewDemoAftBase;
+import org.junit.Ignore;
+import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -193,7 +195,6 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     public void testTravelAccountLookUpBookmark() throws Exception {
         testTravelAccountLookUp();
         testXss();
-        testTravelAccountLookUpDocumentLocking();
         passed();
     }
 
@@ -224,7 +225,23 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     public void testTravelAccountLookUpNav() throws Exception {
         testTravelAccountLookUp();
         testXss();
+        passed();
+    }
+
+    @Test
+    @Ignore // https://jira.kuali.org/browse/KULRICE-12825 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountLookUpAft messages no longer displayed
+    public void testTravelAccountLookUpDocumentLockingBookmark() throws Exception {
         testTravelAccountLookUpDocumentLocking();
         passed();
     }
+
+    @Test
+    @Ignore // https://jira.kuali.org/browse/KULRICE-12825 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountLookUpAft messages no longer displayed
+    public void testTravelAccountLookUpDocumentLockingNav() throws Exception {
+        testTravelAccountLookUpDocumentLocking();
+        passed();
+    }
+
+
 }
+

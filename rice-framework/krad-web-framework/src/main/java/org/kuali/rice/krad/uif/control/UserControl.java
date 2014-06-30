@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -130,8 +131,10 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
+    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria, FilterableLookupCriteriaControlPostData postData) {
         Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
+
+        UserControlPostData userControlPostData = (UserControlPostData) postData;
 
         // check valid principalName
         // ToDo: move the principalId check and setting to the validation stage.  At that point the personName should
@@ -142,13 +145,13 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
             if (principal == null) {
                 return null;
             } else {
-                filteredSearchCriteria.put(principalIdPropertyName, principal.getPrincipalId());
+                filteredSearchCriteria.put(userControlPostData.getPrincipalIdPropertyName(), principal.getPrincipalId());
             }
         }
 
         // filter
         filteredSearchCriteria.remove(propertyName);
-        filteredSearchCriteria.remove(personNamePropertyName);
+        filteredSearchCriteria.remove(userControlPostData.getPersonNamePropertyName());
 
         return filteredSearchCriteria;
     }
@@ -248,4 +251,78 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
     public void setPersonObjectPropertyName(String personObjectPropertyName) {
         this.personObjectPropertyName = personObjectPropertyName;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserControlPostData getPostData(String propertyName) {
+        return new UserControlPostData(propertyName, this);
+    }
+
+    /**
+     * Holds post data for the {@link UserControl}.
+     */
+    public static class UserControlPostData implements FilterableLookupCriteriaControlPostData, Serializable {
+
+        private static final long serialVersionUID = 3895010942559014164L;
+
+        private String propertyName;
+
+        private String principalIdPropertyName;
+        private String personNamePropertyName;
+        private String personObjectPropertyName;
+
+        /**
+         * Constructs the post data from the property name and the {@link UserControl}.
+         *
+         * @param propertyName the name of the property to filter
+         * @param userControl the control to pull data from
+         */
+        public UserControlPostData(String propertyName, UserControl userControl) {
+            this.propertyName = propertyName;
+            this.principalIdPropertyName = userControl.getPrincipalIdPropertyName();
+            this.personNamePropertyName = userControl.getPersonNamePropertyName();
+            this.personObjectPropertyName = userControl.getPersonObjectPropertyName();
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Class<? extends FilterableLookupCriteriaControl> getControlClass() {
+            return UserControl.class;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getPropertyName() {
+            return propertyName;
+        }
+
+        /**
+         * @see UserControl#getPrincipalIdPropertyName()
+         */
+        public String getPrincipalIdPropertyName() {
+            return principalIdPropertyName;
+        }
+
+        /**
+         * @see UserControl#getPersonNamePropertyName()
+         */
+        public String getPersonNamePropertyName() {
+            return personNamePropertyName;
+        }
+
+        /**
+         * @see UserControl#getPersonObjectPropertyName()
+         */
+        public String getPersonObjectPropertyName() {
+            return personObjectPropertyName;
+        }
+
+    }
+
 }

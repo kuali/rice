@@ -41,12 +41,16 @@ public class LoginInvalidUserAft extends WebDriverLegacyITBase {
         super.testSetUp();
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testAdStarUserNameBookmark() throws InterruptedException {
-        System.setProperty(WebDriverUtils.REMOTE_AUTOLOGIN_PROPERTY, "true");
-        login(driver, "ad*", this);
-        waitForElementVisibleById("Rice-LoginButton", "ad* should not be a valid login");
-        passed();
+        try {
+            System.setProperty(WebDriverUtils.REMOTE_AUTOLOGIN_PROPERTY, "true");
+            login(driver, "ad*", this);
+            fail("Expected Invalid Login exception with user " + AutomatedFunctionalTestUtils.DTS_TWO);
+        } catch (AssertionError e) {
+            waitForElementVisibleById("Rice-LoginButton", "ad* should not be a valid login");
+            passed();
+        }
     }
 
     /**

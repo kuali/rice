@@ -25,11 +25,23 @@ import java.util.Map;
 public interface FilterableLookupCriteriaControl {
 
     /**
+     * Returns the post data for the filterable lookup criteria control using the property name as a key.
+     *
+     * @param propertyName the property name for the control
+     *
+     * @return the post data for the filterable lookup criteria control
+     */
+    FilterableLookupCriteriaControlPostData getPostData(String propertyName);
+
+    /**
      * Invoked to perform filtering of the search criteria.
      *
      * @param propertyName the propertyName of the current component
      * @param searchCriteria the search criteria to be filtered
+     * @param postData the post data to consider during the search
+     *
      * @return filtered search criteria
      */
-    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria);
+    Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria, FilterableLookupCriteriaControlPostData postData);
+
 }

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,6 +102,36 @@ public class GroupControl extends TextControlBase implements FilterableLookupCri
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria, FilterableLookupCriteriaControlPostData postData) {
+        Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
+
+        GroupControlPostData groupControlPostData = (GroupControlPostData) postData;
+
+        // check valid groupId
+        // ToDo: move the groupId check and setting to the validation stage.  At that point
+        //       an error should be displayed to the user that the group name and namespace is invalid.
+        String groupName = searchCriteria.get(propertyName);
+        String groupNamespaceCd = searchCriteria.get(groupControlPostData.getNamespaceCodePropertyName());
+        if (StringUtils.isNotBlank(groupName) && StringUtils.isNotBlank(groupNamespaceCd)) {
+            Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(groupNamespaceCd,groupName);
+            if( group == null) {
+                return null;
+            } else {
+                filteredSearchCriteria.put(groupControlPostData.getGroupIdPropertyName(), group.getId());
+            }
+        }
+
+        // filter
+        filteredSearchCriteria.remove(propertyName);
+        filteredSearchCriteria.remove(groupControlPostData.getNamespaceCodePropertyName());
+
+        return filteredSearchCriteria;
+    }
+
+    /**
      * The name of the property on the parent object that holds the group namespace
      *
      * @return namespaceCodePropertyName
@@ -142,27 +173,64 @@ public class GroupControl extends TextControlBase implements FilterableLookupCri
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria) {
-        Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
+    public GroupControlPostData getPostData(String propertyName) {
+        return new GroupControlPostData(propertyName, this);
+    }
 
-        // check valid groupId
-        // ToDo: move the groupId check and setting to the validation stage.  At that point
-        //       an error should be displayed to the user that the group name and namespace is invalid.
-        String groupName = searchCriteria.get(propertyName);
-        String groupNamespaceCd = searchCriteria.get(namespaceCodePropertyName);
-        if (StringUtils.isNotBlank(groupName) && StringUtils.isNotBlank(groupNamespaceCd)) {
-            Group group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(groupNamespaceCd,groupName);
-            if( group == null) {
-                return null;
-            } else {
-                filteredSearchCriteria.put(groupIdPropertyName, group.getId());
-            }
+    /**
+     * Holds post data for the {@link GroupControl}.
+     */
+    public static class GroupControlPostData implements FilterableLookupCriteriaControlPostData, Serializable {
+
+        private static final long serialVersionUID = -1859777965985379673L;
+
+        private String propertyName;
+
+        private String namespaceCodePropertyName;
+        private String groupIdPropertyName;
+
+        /**
+         * Constructs the post data from the property name and the {@link GroupControl}.
+         *
+         * @param propertyName the name of the property to filter
+         * @param groupControl the control to pull data from
+         */
+        public GroupControlPostData(String propertyName, GroupControl groupControl) {
+            this.propertyName = propertyName;
+            this.namespaceCodePropertyName = groupControl.getNamespaceCodePropertyName();
+            this.groupIdPropertyName = groupControl.getGroupIdPropertyName();
         }
 
-        // filter
-        filteredSearchCriteria.remove(propertyName);
-        filteredSearchCriteria.remove(namespaceCodePropertyName);
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Class<? extends FilterableLookupCriteriaControl> getControlClass() {
+            return GroupControl.class;
+        }
 
-        return filteredSearchCriteria;
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getPropertyName() {
+            return propertyName;
+        }
+
+        /**
+         * @see GroupControl#getNamespaceCodePropertyName()
+         */
+        public String getNamespaceCodePropertyName() {
+            return namespaceCodePropertyName;
+        }
+
+        /**
+         * @see GroupControl#getGroupIdPropertyName()
+         */
+        public String getGroupIdPropertyName() {
+            return groupIdPropertyName;
+        }
+
     }
+
 }

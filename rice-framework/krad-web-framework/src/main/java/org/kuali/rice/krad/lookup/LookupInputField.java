@@ -237,12 +237,7 @@ public class LookupInputField extends InputFieldBase {
      * @return map of filtered search criteria
      */
     public Map<String, String> filterSearchCriteria(Map<String, String> searchCriteria) {
-        if (getControl() instanceof FilterableLookupCriteriaControl) {
-            return ((FilterableLookupCriteriaControl) getControl()).filterSearchCriteria(getPropertyName(),
-                    searchCriteria);
-        } else {
-            return searchCriteria;
-        }
+        return searchCriteria;
     }
 
     /**

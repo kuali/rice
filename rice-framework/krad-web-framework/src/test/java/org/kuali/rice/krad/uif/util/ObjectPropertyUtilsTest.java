@@ -60,6 +60,7 @@ import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.controller.UifControllerHelper;
 import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.kuali.rice.krad.web.bind.UifConfigurableWebBindingInitializer;
 import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
@@ -423,6 +424,7 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         UifServletRequestDataBinder binder = new UifServletRequestDataBinder(form);
         new UifConfigurableWebBindingInitializer().initBinder(binder, new ServletWebRequest(request));
         binder.bind(request);
+        UifControllerHelper.invokeViewLifecycle(request, form);
         assertEquals("foobar", ObjectPropertyUtils.getPropertyValueAsText(form, "bean.next.rwProp"));
     }
 

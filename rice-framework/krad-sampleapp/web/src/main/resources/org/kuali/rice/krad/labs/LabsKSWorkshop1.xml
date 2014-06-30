@@ -258,8 +258,8 @@
     </property>
     <property name="footer.items">
       <list>
-        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Confirm Registration" p:methodToCall="registerConfirm"
-              p:performClientSideValidation="true" p:successCallback="startPolling(1000);"/>
+        <bean parent="Uif-DialogConfirmButton" p:actionLabel="Confirm Registration" p:methodToCall="registerConfirm"
+              p:performClientSideValidation="true" />
         <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
       </list>
     </property>

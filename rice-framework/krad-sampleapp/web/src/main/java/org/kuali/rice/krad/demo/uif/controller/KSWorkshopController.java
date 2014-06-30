@@ -69,29 +69,27 @@ public class KSWorkshopController extends UifControllerBase {
     public ModelAndView register(@ModelAttribute("KualiForm") KSWorkshopForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         DialogResponse dialogResponse = form.getDialogResponse("KS-AdminRegistration-RegisterDialogResponse");
-        //if (dialogResponse == null) {
-        for (KSWorkshopCourse course : form.getPendingCourses()) {
-            course.setCourseName("Some course name here");
-            course.setCredits(3);
-            course.setRegDate(new Date());
-            course.setRegOptions("reg");
-            List<KSWorkshopActivity> activities = new ArrayList<KSWorkshopActivity>();
-            activities.add(new KSWorkshopActivity("Lec", "MWF 01:00pm - 02:30pm", "Steve Capriani", "PTX 2391"));
-            activities.add(new KSWorkshopActivity("Lab", "MWF 02:30pm - 03:30pm", "Steve Capriani", "PTX 2391"));
-            course.setActivities(activities);
+        if (dialogResponse == null) {
+            for (KSWorkshopCourse course : form.getPendingCourses()) {
+                course.setCourseName("Some course name here");
+                course.setCredits(3);
+                course.setRegDate(new Date());
+                course.setRegOptions("reg");
+                List<KSWorkshopActivity> activities = new ArrayList<KSWorkshopActivity>();
+                activities.add(new KSWorkshopActivity("Lec", "MWF 01:00pm - 02:30pm", "Steve Capriani", "PTX 2391"));
+                activities.add(new KSWorkshopActivity("Lab", "MWF 02:30pm - 03:30pm", "Steve Capriani", "PTX 2391"));
+                course.setActivities(activities);
+            }
+
+            return showDialog("KS-AdminRegistration-RegisterDialogResponse", true, form);
         }
 
-        return showDialog("KS-AdminRegistration-RegisterDialogResponse", true, form);
-        //}
-/*        else if (dialogResponse != null) {
-            // continue with registration
+        // continue with registration
+        form.getRegisteredCourses().addAll(form.getPendingCourses());
+        form.setPendingCourses(new ArrayList<KSWorkshopCourse>());
+        form.getPendingCourses().add(new KSWorkshopCourse());
 
-            form.getRegisteredCourses().addAll(form.getPendingCourses());
-            form.setPendingCourses(new ArrayList<KSWorkshopCourse>());
-            form.getPendingCourses().add(new KSWorkshopCourse());
-        }*/
-
-        //return getUIFModelAndView(form);
+        return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=registerConfirm")

@@ -179,9 +179,11 @@ public class UifFormBase implements ViewModel {
     @SessionTransient
     protected String returnDialogId;
 
+    @RequestAccessible
     @SessionTransient
     protected String returnDialogResponse;
 
+    @RequestAccessible
     protected Map<String, String> dialogExplanations;
     protected Map<String, DialogResponse> dialogResponses;
 

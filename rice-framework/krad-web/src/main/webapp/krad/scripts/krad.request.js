@@ -346,14 +346,9 @@ KradRequest.prototype = {
             });
 
             this._dismissDialogIfNecessary(kradVariables.DIALOG_DISMISS_OPTIONS.REQUEST);
-        }else
-            {
+        } else {
             this._submitAjax(data);
         }
-
-
-
-
     },
 
     // handles the request as standard form submit

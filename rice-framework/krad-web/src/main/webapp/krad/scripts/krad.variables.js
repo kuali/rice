@@ -223,11 +223,11 @@ JavascriptKradVariables.prototype = {
     DETAILS_DEFAULT_OPEN: "details_default_open",
     EVENT_NAMESPACE: "uif",
     EVENTS: {
-        ADJUST_PAGE_MARGIN : "adjustpagemargin"  + JavascriptKradVariables.EVENT_NAMESPACE,
-        ADJUST_STICKY : "adjuststicky"  + JavascriptKradVariables.EVENT_NAMESPACE,
-        DIALOG_RESPONSE : "dialogresponse." + JavascriptKradVariables.EVENT_NAMESPACE,
-        UPDATE_CONTENT : "updatecontent." + JavascriptKradVariables.EVENT_NAMESPACE,
-        PAGE_UPDATE_COMPLETE : "pageUpdateComplete" + JavascriptKradVariables.EVENT_NAMESPACE,
+        ADJUST_PAGE_MARGIN : "adjustpagemargin.uif",
+        ADJUST_STICKY : "adjuststicky.uif",
+        DIALOG_RESPONSE : "dialogresponse.uif",
+        UPDATE_CONTENT : "updatecontent.uif",
+        PAGE_UPDATE_COMPLETE : "pageUpdateComplete.uif",
         SHOW_MODAL : "show.bs.modal",
         HIDE_MODAL : "hide.bs.modal",
         HIDDEN_MODAL : "hidden.bs.modal"

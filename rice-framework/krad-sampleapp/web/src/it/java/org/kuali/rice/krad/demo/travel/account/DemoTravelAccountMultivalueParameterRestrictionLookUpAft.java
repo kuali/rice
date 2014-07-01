@@ -45,6 +45,7 @@ public class DemoTravelAccountMultivalueParameterRestrictionLookUpAft extends We
 
     private void testParameterRestrictionSearchSelect() throws Exception {
         waitAndClickSearch3();
+        waitForElementPresent(DATA_TABLE_TR_CSS);
         assertEquals("Wrong number of search results", 10, getCssCount(DATA_TABLE_TR_CSS));
 
         setParameter(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE,
@@ -52,6 +53,7 @@ public class DemoTravelAccountMultivalueParameterRestrictionLookUpAft extends We
 
         navigate();
         waitAndClickSearch3();
+        waitForElementPresent(DATA_TABLE_TR_CSS);
         assertEquals("Wrong number of search results", 1, getCssCount(DATA_TABLE_TR_CSS));
 
         setParameter(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE,
@@ -59,6 +61,7 @@ public class DemoTravelAccountMultivalueParameterRestrictionLookUpAft extends We
 
         navigate();
         waitAndClickSearch3();
+        waitForElementPresent(DATA_TABLE_TR_CSS);
         assertEquals("Wrong number of search results", 10, getCssCount(DATA_TABLE_TR_CSS));
     }
 

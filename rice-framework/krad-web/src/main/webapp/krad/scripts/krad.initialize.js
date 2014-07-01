@@ -159,6 +159,9 @@ jQuery(document).ready(function () {
         });
     });
 
+    // setup the handler for inline field editing
+    initInlineEditFields();
+
     // setup the handler for enter key event actions
     initEnterKeyHandler();
 
@@ -173,6 +176,122 @@ jQuery(document).ready(function () {
 
     time(false, "viewSetup-phase-2");
 });
+
+function initInlineEditFields(){
+    jQuery(document).on("click", kradVariables.INLINE_EDIT.VIEW_CLASS, function (event) {
+        var $view = jQuery(this);
+        showInlineEdit($view);
+    });
+
+    jQuery(document).on("keyup", kradVariables.INLINE_EDIT.VIEW_CLASS, function (event) {
+        // grab the keycode based on browser
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+        // Only continue for enter
+        if (keycode !== 13) {
+            return;
+        }
+
+        var $view = jQuery(this);
+        showInlineEdit($view);
+    });
+
+}
+
+function showInlineEdit($view) {
+    var viewId = $view.attr("id");
+    var editId = viewId.replace(kradVariables.INLINE_EDIT.VIEW_SUFFIX, kradVariables.INLINE_EDIT.EDIT_SUFFIX);
+    var $edit = jQuery("#" + editId);
+    var $control = $edit.find("[data-role='Control']");
+    var keycodes = { 16: false, 13: false, 27: false };
+
+    if($edit.length){
+        $edit.data("origVal", $control.val());
+    }
+
+    if ($edit.is(":visible")) {
+        $edit.focus();
+        return;
+    }
+
+    $view.hide();
+
+    if ($view.data("ajax_edit") === true && $edit.length === 0) {
+        var fieldId = viewId.replace(kradVariables.INLINE_EDIT.INLINE_EDIT_VIEW, "");
+        retrieveComponent(fieldId, "refresh", function (){
+            var $newView = jQuery("#" + viewId);
+            showInlineEdit($newView);
+        });
+        // Return because we are waiting for ajax component retrieval
+        return;
+    }
+
+    $edit.show();
+
+    $control.removeAttr("readonly");
+    $control.focus();
+
+    $control.on("keydown.inlineEdit", function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+
+        if (event.keyCode in keycodes) {
+            keycodes[event.keyCode] = true;
+
+            // check for shift-enter
+            if (keycodes[16] && keycodes[13] && $control.is("textarea")) {
+                //alert("shift + enter");
+                keycodes[16] = false;
+                keycodes[13] = false;
+                event.stopPropagation();
+                return;
+            }
+
+            // check for escape key
+            if (keycodes[27] ) {
+                $edit.hide();
+                $control.val($edit.data("origVal"));
+                $view.show();
+                $view.focus();
+                return;
+            }
+        }
+
+        // check for enter key
+        if (keycode !== 13) {
+           return;
+        }
+
+        var valid = true;
+
+        if (validateClient) {
+            var fieldId = getAttributeId(jQuery(this).attr('id'));
+            var data = getValidationData(jQuery("#" + fieldId));
+            data.useTooltip = false;
+
+            valid = validateFieldValue(this);
+        }
+
+        if (valid) {
+            retrieveComponent(fieldId, "saveField", function (){
+                var $newView = jQuery("#" + viewId);
+                $newView.focus();
+            });
+
+            $control.unbind("keydown.inlineEdit");
+        }
+
+        return false;
+    }).on("keyup.inlineEdit", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (event.keyCode in keycodes) {
+            keycodes[event.keyCode] = false;
+        }
+
+        $control.unbind("keyup.inlineEdit");
+    });
+}
 
 /**
  * Sets up and initializes the handlers for enter key actions.
@@ -224,11 +343,14 @@ function initEnterKeyHandler(){
     });
 
     // a hack to capture the native browser enter key behavior..  keydown and keyup
-    jQuery(document).on("keydown", "[data-enter_key]", function(event){
+    jQuery(document).on("keydown", "[data-enter_key], [data-inline_edit] [data-role='Control']", function(event){
+        // grab the keycode based on browser
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode === 13) {
+
+        // check for enter key
+        if (keycode === 13) {
             event.preventDefault();
-            return;
+            return false;
         }
     });
 }
@@ -436,7 +558,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var id = getAttributeId(jQuery(this).attr('id'));
-                if(!id){ return; }
+                if(!id || isRelatedTarget(this.parentElement) === true){ return; }
                 var data = getValidationData(jQuery("#" + id));
                 var hadError = false;
                 if (data && data.focusedErrors) {
@@ -608,7 +730,70 @@ function initFieldHandlers() {
         }, 300);
     });
 
+    // capture tabbing through widget elements to make sure we only validate the control field when we leave the entire
+    // widget
+    var buttonHovered = false;
+
+    // capture mousing over button of the widget if there is one
+    jQuery(document).on("mouseover", "div[data-role='InputField'] div.input-group div.input-group-btn a", function(){
+        buttonHovered = true;
+
+    // capture mousing out of button in the widget
+    }).on("mouseout", "div[data-role='InputField'] div.input-group div.input-group-btn a", function(){
+        buttonHovered = false;
+
+    // capture leaving the control field
+    }).on("focusout", "div[data-role='InputField'] div.input-group", function () {
+        currentControl = this;
+
+        // determine whether we are still in the widget. If we are out of the widget, then validate
+        if(isRelatedTarget(this) !== true && buttonHovered === false){
+            validateFieldValue(jQuery(this).children("[data-role='Control']"));
+        }
+    });
+
+    // capture datepicker widget button
+    jQuery(document).on("mouseover", ".ui-datepicker", function(){
+        buttonHovered = true;
+    }).on("mouseout", ".ui-datepicker", function(){
+        buttonHovered = false;
+    });
+
     time(false, "field-handlers");
+}
+
+/**
+ * Test if an input field is part of a widget by examining event.currentTarget and event.target
+ *
+ */
+function isRelatedTarget(element){
+    if(event === undefined) return true;
+
+    try {
+
+        // test for lightbox widget by matching a fancy-box event property
+        for (var key in event.currentTarget){
+            if( key.match(/fancy/g) && key !== undefined) {
+                console.log(key);
+                return true;
+            }
+        }
+
+        // here we check to see if the element we are focusing out of is nested in a input-group div or within
+        // input-group-btn div. If so then they are related to the widget
+        if(("relatedTarget" in event && event.relatedTarget !== null
+                && element === event.relatedTarget.parentElement.parentElement)
+                || ("relatedTarget" in event && event.relatedTarget !== null
+                        && element === event.relatedTarget.parentElement)
+                ) {
+            return true;
+        }
+
+        return false;
+
+    }catch(e){
+        return false;
+    }
 }
 
 /**

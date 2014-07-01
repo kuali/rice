@@ -98,8 +98,6 @@ JavascriptKradVariables.prototype = {
     HAS_MODIFIED_ERROR_CLASS: "uif-hasError-modified",
     HAS_WARNING_CLASS: "uif-hasWarning",
     HEADER_TEXT_CLASS: "uif-headerText",
-    IMAGE_LOCATION: "kradImageLocation",
-
     // constants for element ids
     IDS: {
         DIALOGS: "Uif-Dialogs",
@@ -112,6 +110,14 @@ JavascriptKradVariables.prototype = {
         DISCLOSURE_CONTENT: "_disclosureContent",
         DISCLOSURE_TOGGLE: "_toggle",
         ADD_LINE_INPUT_FIELD: "_add_control"
+    },
+    IMAGE_LOCATION: "kradImageLocation",
+    INLINE_EDIT: {
+        EDIT_SUFFIX: "_edit",
+        INLINE_EDIT: "_inlineEdit",
+        INLINE_EDIT_VIEW: "_inlineEdit_view",
+        VIEW_SUFFIX: "_view",
+        VIEW_CLASS: ".uif-inlineEdit-view"
     },
     JUMP_TO_ID: "jumptoid",
     JUMP_TO_NAME: "jumptoname",

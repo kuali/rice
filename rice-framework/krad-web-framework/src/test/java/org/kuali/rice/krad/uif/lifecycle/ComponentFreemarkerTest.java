@@ -35,6 +35,7 @@ import org.junit.AfterClass;
 import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
@@ -134,7 +135,8 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
 
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
-                RenderComponentPhase renderPhase = LifecyclePhaseFactory.render(msg, null, "", null);
+                RenderComponentPhase renderPhase = (RenderComponentPhase) KRADServiceLocatorWeb
+                        .getViewLifecyclePhaseBuilder().buildPhase(UifConstants.ViewPhases.RENDER, msg, null, "");
 
                 try {
                     ViewLifecycle.getProcessor().performPhase(renderPhase);

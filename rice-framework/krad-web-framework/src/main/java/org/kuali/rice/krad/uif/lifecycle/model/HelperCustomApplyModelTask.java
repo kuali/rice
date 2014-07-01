@@ -16,9 +16,8 @@
 package org.kuali.rice.krad.uif.lifecycle.model;
 
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
  * Perform custom apply model behavior for the component defined by the helper.
@@ -28,12 +27,10 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 public class HelperCustomApplyModelTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The apply model phase for the component.
+     * Default constructor.
      */
-    public HelperCustomApplyModelTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public HelperCustomApplyModelTask() {
+        super(Component.class);
     }
 
     /**

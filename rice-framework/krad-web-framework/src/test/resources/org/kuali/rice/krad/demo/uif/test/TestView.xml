@@ -51,7 +51,7 @@
 
   <bean id="Foo" parent="DataObjectEntry">
     <property name="name" value="foo" />
-    <property name="dataObjectClass" value="org.kuali.rice.krad.uif.field.InitializeDataFieldFromDictionaryTest$Foo" />
+    <property name="dataObjectClass" value="org.kuali.rice.krad.uif.lifecycle.initialize.InitializeDataFieldFromDictionaryTest$Foo" />
     <property name="complexAttributes">
       <list>
         <ref bean="Foo.descr" />
@@ -64,7 +64,7 @@
     <property name="dataObjectEntry">
       <bean parent="DataObjectEntry">
         <property name="name" value="descr" />
-        <property name="dataObjectClass" value="org.kuali.rice.krad.uif.field.InitializeDataFieldFromDictionaryTest$Bar" />
+        <property name="dataObjectClass" value="org.kuali.rice.krad.uif.lifecycle.initialize.InitializeDataFieldFromDictionaryTest$Bar" />
         <property name="attributes">
           <list>
             <ref bean="Foo.descr.text" />
@@ -85,7 +85,7 @@
 
   <bean id="Bar" parent="DataObjectEntry">
     <property name="name" value="foo" />
-    <property name="dataObjectClass" value="org.kuali.rice.krad.uif.field.InitializeDataFieldFromDictionaryTest$Bar" />
+    <property name="dataObjectClass" value="org.kuali.rice.krad.uif.lifecycle.initialize.InitializeDataFieldFromDictionaryTest$Bar" />
     <property name="attributes">
       <list>
         <ref bean="Bar.text" />

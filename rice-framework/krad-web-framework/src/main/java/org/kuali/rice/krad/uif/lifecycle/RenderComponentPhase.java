@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.freemarker.RenderComponentTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
@@ -41,7 +39,7 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
      * {@inheritDoc}
      */
     @Override
-    protected void recycle() {
+    public void recycle() {
         super.recycle();
         renderParent = null;
         pendingChildren = null;
@@ -50,18 +48,11 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
     /**
      * Create a new lifecycle phase processing task for finalizing a component.
      *
-     * @param element the component instance that should be updated
-     * @param model top level object containing the data
-     * @param path Path to the component relative to its parent component
-     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
-     * @param renderParent The parent component
-     * @param pendingChildren The number of child rendering phases to expect to be queued for
+     * @param renderParent rendering phase to queue as a successor when all children have processed
+     * @param pendingChildren set of paths to child rendering phases to expect to be queued for
      * processing before this phase
      */
-    protected void prepare(LifecycleElement element, Object model, String path, List<String> refreshPaths,
-            Component parentComponent, RenderComponentPhase renderParent, Set<String> pendingChildren) {
-        super.prepare(element, model, path, refreshPaths, parentComponent, null);
-
+    void prepareRenderPhase(RenderComponentPhase renderParent, Set<String> pendingChildren) {
         this.renderParent = renderParent;
         this.pendingChildren = pendingChildren;
     }
@@ -113,25 +104,6 @@ public class RenderComponentPhase extends ViewLifecyclePhaseBase {
             ViewLifecycle.reportIllegalState("Render phase is not complete, children are still pending "
                     + pendingChildren + "\n" + this);
         }
-    }
-
-    /**
-     * Perform rendering on the given component.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
-        if (!(getElement() instanceof Component)) {
-            return;
-        }
-
-        Component component = (Component) getElement();
-        if (!component.isRender() || component.getTemplate() == null) {
-            return;
-        }
-
-        tasks.add(LifecycleTaskFactory.getTask(RenderComponentTask.class, this));
     }
 
     /**

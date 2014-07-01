@@ -17,9 +17,12 @@ package org.kuali.rice.krad.uif.lifecycle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -73,6 +76,8 @@ public class ViewLifecycle implements Serializable {
 
     final HttpServletRequest request;
     private ViewPostMetadata viewPostMetadata;
+    
+    private Set<String> visitedIds;
 
     /**
      * Private constructor, for spawning a lifecycle context.
@@ -551,6 +556,25 @@ public class ViewLifecycle implements Serializable {
 
         return active.model;
     }
+    
+    /**
+     * Gets the set of visited IDs for use during the apply model phase.
+     * 
+     * @return The set of visited IDs for use during the apply model phase.
+     */
+    public static Set<String> getVisitedIds() {
+        ViewLifecycle active = getActiveLifecycle();
+
+        if (active.visitedIds == null) {
+            synchronized (active) {
+                if (active.visitedIds == null) {
+                    active.visitedIds = Collections.synchronizedSet(new HashSet<String>());
+                }
+            }
+        }
+
+        return active.visitedIds;
+    }
 
     /**
      * Returns the view post metadata instance associated with the view and lifecycle.
@@ -566,7 +590,7 @@ public class ViewLifecycle implements Serializable {
 
         return active.viewPostMetadata;
     }
-
+    
     /**
      * When the lifecycle is processing a component refresh, returns a
      * {@link org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata} instance for the component being

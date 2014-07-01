@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
+import java.util.List;
+
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
-
-import java.util.List;
 
 /**
  * Populate property values on the all property replacers and component modifiers from the
@@ -33,13 +32,12 @@ import java.util.List;
 public class PopulateReplacersAndModifiersFromExpressionGraphTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     *
-     * @param phase The initialize phase for the component.
+     * Default constructor.
      */
-    public PopulateReplacersAndModifiersFromExpressionGraphTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public PopulateReplacersAndModifiersFromExpressionGraphTask() {
+        super(Component.class);
     }
+
 
     /**
      * {@inheritDoc}

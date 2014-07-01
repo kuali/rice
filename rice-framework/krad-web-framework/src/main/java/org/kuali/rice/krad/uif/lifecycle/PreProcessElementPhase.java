@@ -15,15 +15,10 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.Queue;
-
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PopulatePathTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PrepareForCacheTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.SortContainerTask;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
@@ -69,21 +64,12 @@ public class PreProcessElementPhase extends ViewLifecyclePhaseBase {
      * {@inheritDoc}
      */
     @Override
-    protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
-        tasks.offer(LifecycleTaskFactory.getTask(AssignIdsTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(PopulatePathTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(SortContainerTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(PrepareForCacheTask.class, this));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     protected ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
             Component nestedParent) {
         if (nestedElement != null && !UifConstants.ViewStatus.CACHED.equals(nestedElement.getViewStatus())) {
-            return LifecyclePhaseFactory.preProcess(nestedElement, nestedPath, nestedParent);
+            ViewLifecyclePhase preProcessPhase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder()
+                    .buildPhase(UifConstants.ViewPhases.PRE_PROCESS, nestedElement, nestedParent, nestedPath);
+            return preProcessPhase;
         }
 
         return null;

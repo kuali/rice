@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -24,16 +26,19 @@ import org.kuali.rice.krad.uif.view.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewLifecyclePreProcessBuild implements Runnable {
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void run() {
-        View view = ViewLifecycle.getView();
+        ViewLifecyclePhase phase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder()
+                .buildPhase(UifConstants.ViewPhases.PRE_PROCESS);
 
+        View view = ViewLifecycle.getView();
         ProcessLogger.trace("pre-view-lifecycle:" + view.getId());
-        ViewLifecycle.getProcessor().performPhase(LifecyclePhaseFactory.preProcess(view, ""));
+
+        ViewLifecycle.getProcessor().performPhase(phase);
     }
-    
+
 }

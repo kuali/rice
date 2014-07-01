@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
@@ -27,12 +26,10 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 public class SortContainerTask extends ViewLifecycleTaskBase<Container> {
 
     /**
-     * Creates an instance based on element state.
-     * 
-     * @param elementState lifecycle element state information
+     * Default constructor.
      */
-    protected SortContainerTask(LifecycleElementState elementState) {
-        super(elementState, Container.class);
+    public SortContainerTask() {
+        super(Container.class);
     }
 
     /**

@@ -24,9 +24,8 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -42,12 +41,10 @@ import org.kuali.rice.krad.util.GlobalVariables;
 public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The apply model phase for the component.
+     * Default constructor.
      */
-    public ApplyAuthAndPresentationLogicTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public ApplyAuthAndPresentationLogicTask() {
+        super(Component.class);
     }
 
     /**
@@ -68,7 +65,7 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Com
      */
     @Override
     protected void performLifecycleTask() {
-        ViewModel model = (ViewModel) ((ViewLifecyclePhase) getElementState()).getModel();
+        ViewModel model = (ViewModel) ViewLifecycle.getModel();
         Component component = (Component) getElementState().getElement();
         View view = ViewLifecycle.getView();
         ViewPresentationController presentationController = view.getPresentationController();

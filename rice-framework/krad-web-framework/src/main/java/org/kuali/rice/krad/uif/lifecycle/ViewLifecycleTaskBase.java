@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
  * @param <T> Top level element type for this task
  */
 public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
+    
     private final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTaskBase.class);
 
     /**
@@ -44,8 +45,7 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
      * @param elementState The phase this task is a part of.
      * @param elementType Top level element type.
      */
-    protected ViewLifecycleTaskBase(LifecycleElementState elementState, Class<T> elementType) {
-        this.elementState = elementState;
+    protected ViewLifecycleTaskBase(Class<T> elementType) {
         this.elementType = elementType;
     }
 
@@ -53,13 +53,6 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
      * Performs phase-specific lifecycle processing tasks.
      */
     protected abstract void performLifecycleTask();
-
-    /**
-     * Resets this task to facilitate recycling.
-     */
-    void recycle() {
-        this.elementState = null;
-    }
 
     /**
      * {@inheritDoc}
@@ -75,7 +68,7 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
      * @param elementState The phase to set.
      * @see #getElementState()
      */
-    void setElementState(LifecycleElementState elementState) {
+    public void setElementState(LifecycleElementState elementState) {
         this.elementState = elementState;
     }
 
@@ -128,9 +121,6 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
                             + elementState.getElement().getId());
                 }
             }
-
-            // Only recycle successfully processed tasks
-            LifecycleTaskFactory.recycle(this);
             
         } catch (Throwable t) {
             LOG.warn("Error in lifecycle phase " + this, t);

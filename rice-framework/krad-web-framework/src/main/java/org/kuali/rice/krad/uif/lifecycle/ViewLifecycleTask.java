@@ -41,5 +41,10 @@ public interface ViewLifecycleTask<T> extends Runnable {
      * @return lifecycle phase
      */
     LifecycleElementState getElementState();
+
+    /**
+     * @see #getElementState()
+     */
+    void setElementState(LifecycleElementState lifecycleElementState);
     
 }

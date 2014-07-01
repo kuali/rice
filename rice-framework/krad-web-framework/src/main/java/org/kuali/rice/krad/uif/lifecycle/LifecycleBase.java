@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import java.io.Serializable;
+import java.text.MessageFormat;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -28,10 +30,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.GrowlMessage;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
-
-import java.io.Serializable;
-import java.text.MessageFormat;
-import java.util.Set;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

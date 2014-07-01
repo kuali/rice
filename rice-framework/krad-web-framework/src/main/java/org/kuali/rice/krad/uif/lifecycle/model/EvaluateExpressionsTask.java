@@ -25,10 +25,9 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ApplyModelComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
@@ -42,12 +41,10 @@ import org.kuali.rice.krad.uif.view.View;
 public class EvaluateExpressionsTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The apply model phase for the component.
+     * Default constructor.
      */
-    public EvaluateExpressionsTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public EvaluateExpressionsTask() {
+        super(Component.class);
     }
 
     /**

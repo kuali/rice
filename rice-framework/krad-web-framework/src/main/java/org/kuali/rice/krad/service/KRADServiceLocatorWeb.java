@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.lookup.Lookupable;
 import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBuilder;
 import org.kuali.rice.krad.uif.service.AttributeQueryService;
 import org.kuali.rice.krad.uif.service.UifDefaultingService;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
@@ -76,6 +77,7 @@ public class KRADServiceLocatorWeb {
     public static final String LEGACY_DATA_ADAPTER = "legacyDataAdapter";
     public static final String UIF_DEFAULTING_SERVICE = "uifDefaultingService";
     public static final String EXPRESSION_EVALUATOR_FACTORY = "expressionEvaluatorFactory";
+    public static final String VIEW_LIFECYCLE_PHASE_BUILDER = "viewLifecyclePhaseBuilder";
     public static final String MODEL_AND_VIEW_SERVICE = "modelAndViewService";
 
     public static <T extends Object> T getService(String serviceName) {
@@ -204,6 +206,15 @@ public class KRADServiceLocatorWeb {
     }
 
     /**
+     * Returns a {@link ViewLifecyclePhaseBuilder} for defining lifecycle phases.
+     * 
+     * @return ViewLifecyclePhaseBuilder
+     */
+    public static ViewLifecyclePhaseBuilder getViewLifecyclePhaseBuilder() {
+        return getService(VIEW_LIFECYCLE_PHASE_BUILDER);
+    }
+    
+    /**
      * Returns the legacy data adapter for handling legacy KNS and KRAD data and metadata.
      *
      * @return the legacy data adapter
@@ -213,4 +224,5 @@ public class KRADServiceLocatorWeb {
     public static LegacyDataAdapter getLegacyDataAdapter() {
         return getService(LEGACY_DATA_ADAPTER);
     }
+
 }

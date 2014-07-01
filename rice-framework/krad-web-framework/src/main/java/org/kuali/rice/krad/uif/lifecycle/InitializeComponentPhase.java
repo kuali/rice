@@ -15,21 +15,8 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.Queue;
-
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
-import org.kuali.rice.krad.uif.container.InitializeContainerFromHelperTask;
-import org.kuali.rice.krad.uif.container.ProcessRemoteFieldsHolderTask;
-import org.kuali.rice.krad.uif.field.InitializeDataFieldFromDictionaryTask;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.lifecycle.initialize.AssignIdsTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.ComponentDefaultInitializeTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.HelperCustomInitializeTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateComponentFromExpressionGraphTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PopulatePathTask;
-import org.kuali.rice.krad.uif.lifecycle.initialize.PopulateReplacersAndModifiersFromExpressionGraphTask;
-import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Lifecycle phase processing task for initializing a component.
@@ -87,44 +74,6 @@ public class InitializeComponentPhase extends ViewLifecyclePhaseBase {
     @Override
     public LifecycleEvent getEventToNotify() {
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void initializeSkipLifecyclePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
-        super.initializeSkipLifecyclePendingTasks(tasks);
-
-        tasks.offer(LifecycleTaskFactory.getTask(AssignIdsTask.class, this));
-    }
-
-    /**
-     * Queues initialization phase tasks.
-     * {@inheritDoc}
-     */
-    @Override
-    protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
-        tasks.offer(LifecycleTaskFactory.getTask(AssignIdsTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(PopulatePathTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(PopulateComponentFromExpressionGraphTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(ComponentDefaultInitializeTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(PopulateReplacersAndModifiersFromExpressionGraphTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(InitializeContainerFromHelperTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(ProcessRemoteFieldsHolderTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(InitializeDataFieldFromDictionaryTask.class, this));
-        getElement().initializePendingTasks(this, tasks);
-        tasks.offer(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(HelperCustomInitializeTask.class, this));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
-            Component parent) {
-        return LifecyclePhaseFactory.initialize(nestedElement, getModel(), nestedPath, getRefreshPaths(), parent, null);
     }
 
 }

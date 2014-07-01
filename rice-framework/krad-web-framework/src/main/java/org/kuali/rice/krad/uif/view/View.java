@@ -458,14 +458,6 @@ public class View extends ContainerBase {
      * {@inheritDoc}
      */
     @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
-        super.initializePendingTasks(phase, pendingTasks);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void notifyCompleted(ViewLifecyclePhase phase) {
         super.notifyCompleted(phase);
 
@@ -482,7 +474,7 @@ public class View extends ContainerBase {
         }
 
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.FINALIZE)) {
-            ViewLifecycle.getHelper().performCustomViewFinalize(phase.getModel());
+            ViewLifecycle.getHelper().performCustomViewFinalize(ViewLifecycle.getModel());
         }
     }
 

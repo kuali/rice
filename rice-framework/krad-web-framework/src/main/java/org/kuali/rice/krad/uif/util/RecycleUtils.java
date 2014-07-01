@@ -21,11 +21,14 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
  * Simple utility class for implementing an object recycling factory pattern.
@@ -43,8 +46,8 @@ public final class RecycleUtils {
     /**
      * Thread local reference to recycled objects.
      */
-    private final static Map<Class<?>, Reference<Queue<Object>>> RECYCLE =
-            Collections.synchronizedMap(new WeakHashMap<Class<?>, Reference<Queue<Object>>>());
+    private final static Map<Class<?>, Reference<Map<String, Queue<Object>>>> RECYCLE =
+            Collections.synchronizedMap(new WeakHashMap<Class<?>, Reference<Map<String, Queue<Object>>>>());
 
     /**
      * Field cache to reduce reflection overhead during clean operations.
@@ -62,7 +65,21 @@ public final class RecycleUtils {
      *         available. If no instance is available, then null is returned.
      */
     public static <T> T getRecycledInstance(Class<T> c) {
-        return c.cast(getRecycleQueue(c).poll());
+        return getRecycledInstance(null, c);
+    }
+    
+    /**
+     * Get an instance of the given class that has previously been recycled on the same thread, if
+     * an instance of available.
+     * 
+     * @param <T> recycled instance type
+     * @param name The bean name.
+     * @param c The class.
+     * @return An instance of the given class previously recycled on the same thread, if one is
+     *         available. If no instance is available, then null is returned.
+     */
+    public static <T> T getRecycledInstance(String name, Class<T> c) {
+        return c.cast(getRecycleQueue(name, c).poll());
     }
 
     /**
@@ -91,6 +108,36 @@ public final class RecycleUtils {
     }
 
     /**
+     * Get an instance of the given class that has previously been recycled on the same thread, or a
+     * new instance using a default constructor if a recycled instance is not available.
+     * 
+     * @param <T> recycled instance type
+     * @param name The bean name, must be defined as a prototype in the data dictionary if non-null.
+     * @param c The class.
+     * @return An instance of the given class previously recycled on the same thread, if one is
+     *         available. If no instance is available, then null is returned.
+     */
+    public static <T> T getInstance(String name, Class<T> c) {
+        T rv = getRecycledInstance(name, c);
+        
+        if (rv == null) {
+            try {
+                if (name == null) {
+                    rv = c.newInstance();
+                } else {
+                    rv = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getPrototype(name, c);
+                }
+            } catch (InstantiationException e) {
+                throw new IllegalStateException("Unabled to instantiate " + c);
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException("Unabled to instantiate " + c);
+            }
+        }
+
+        return rv;
+    }
+
+    /**
      * Recycle a instance, for later retrieval in the same thread.
      * 
      * <p>
@@ -104,8 +151,26 @@ public final class RecycleUtils {
      * @param instance The instance to recycle.
      */
     public static void recycle(Object instance) {
+        recycle(null, instance);
+    }
+    
+    /**
+     * Recycle a instance, for later retrieval in the same thread.
+     * 
+     * <p>
+     * Note that this method does not clean the instance, it only queues it for later retrieval by
+     * {@link #getRecycledInstance(Class)}. The state of the instance should be cleared before
+     * passing to this method. For a flexible means to clean instances using reflection
+     * {@link #clean(Object, Class)} may be considered, however note that a manually implemented
+     * clean operation will generally perform faster.
+     * </p>
+     * 
+     * @param name The bean name.
+     * @param instance The instance to recycle.
+     */
+    public static void recycle(String name, Object instance) {
         if (instance != null) {
-            getRecycleQueue(instance.getClass()).offer(instance);
+            getRecycleQueue(name, instance.getClass()).offer(instance);
         }
     }
 
@@ -193,17 +258,31 @@ public final class RecycleUtils {
      * 
      * @param c The class to get a recycle queue for.
      */
-    private static Queue<Object> getRecycleQueue(Class<?> c) {
-        synchronized (RECYCLE) {
-            Reference<Queue<Object>> recycleQueueRef = RECYCLE.get(c);
-            Queue<Object> recycleQueue = recycleQueueRef == null ? null : recycleQueueRef.get();
-            if (recycleQueue == null) {
-                recycleQueue = new ConcurrentLinkedQueue<Object>();
-                RECYCLE.put(c, new WeakReference<Queue<Object>>(recycleQueue));
-            }
+    private static Queue<Object> getRecycleQueue(String name, Class<?> c) {
+        Reference<Map<String, Queue<Object>>> recycleMapRef = RECYCLE.get(c);
+        Map<String, Queue<Object>> recycleMap = null;
 
-            return recycleQueue;
+        if (recycleMapRef != null) {
+            recycleMap = recycleMapRef.get();
         }
+
+        if (recycleMap == null) {
+            recycleMap = new HashMap<String, Queue<Object>>();
+            recycleMapRef = new WeakReference<Map<String, Queue<Object>>>(recycleMap);
+            synchronized (RECYCLE) {
+                RECYCLE.put(c, recycleMapRef);
+            }
+        }
+
+        Queue<Object> recycleQueue = recycleMap.get(name);
+        if (recycleQueue == null) {
+            recycleQueue = new ConcurrentLinkedQueue<Object>();
+            synchronized (recycleMap) {
+                recycleMap.put(name, recycleQueue);
+            }
+        }
+
+        return recycleQueue;
     }
 
     /**

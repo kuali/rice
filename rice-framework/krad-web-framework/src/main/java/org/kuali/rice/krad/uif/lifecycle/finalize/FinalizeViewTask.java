@@ -19,10 +19,9 @@ import java.util.Map;
 
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.FinalizeComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -36,12 +35,10 @@ import org.kuali.rice.krad.util.KRADConstants;
 public class FinalizeViewTask extends ViewLifecycleTaskBase<View> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The finalize phase for the component.
+     * Default constructor.
      */
-    public FinalizeViewTask(ViewLifecyclePhase phase) {
-        super(phase, View.class);
+    public FinalizeViewTask() {
+        super(View.class);
     }
 
     /**

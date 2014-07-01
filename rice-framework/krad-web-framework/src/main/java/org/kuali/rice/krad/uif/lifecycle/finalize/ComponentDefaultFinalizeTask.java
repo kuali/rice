@@ -17,9 +17,8 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.FinalizeComponentPhase;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
-import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * Perform default finalize behavior defined for the component.
@@ -29,12 +28,10 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 public class ComponentDefaultFinalizeTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The finalize phase for the component.
+     * Default constructor.
      */
-    public ComponentDefaultFinalizeTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public ComponentDefaultFinalizeTask() {
+        super(Component.class);
     }
 
     /**
@@ -52,7 +49,7 @@ public class ComponentDefaultFinalizeTask extends ViewLifecycleTaskBase<Componen
     @Override
     protected void performLifecycleTask() {
         FinalizeComponentPhase phase = getElementState();
-        phase.getElement().performFinalize(phase.getModel(), phase.getParent());
+        phase.getElement().performFinalize(ViewLifecycle.getModel(), phase.getParent());
     }
 
 }

@@ -125,22 +125,6 @@ public interface LifecycleElement extends Serializable, Copyable {
     void checkMutable(boolean legalDuringInitialization);
 
     /**
-     * Initialize the lifecycle task queue for custom tasks specific to this component on the given
-     * lifecycle phase.
-     * 
-     * <p>
-     * Any tasks added to the queue by this method will be performed after the default lifecycle
-     * phase processing method {@link #performInitialization(Object)},
-     * {@link #performApplyModel(Object, LifecycleElement)}, or
-     * {@link #performFinalize(Object, LifecycleElement)} has been called.
-     * </p>
-     * 
-     * @param phase The lifecycle phase to queue pending tasks for.
-     * @param pendingTasks The pending task queue.
-     */
-    void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks);
-    
-    /**
      * Get the view lifecycle processing status for this component.
      * 
      * @return The view lifecycle processing status for this component.

@@ -18,10 +18,9 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -36,8 +35,8 @@ public class AddFocusAndJumpDataAttributesTask extends ViewLifecycleTaskBase<Com
      *
      * @param phase The finalize phase for the component.
      */
-    public AddFocusAndJumpDataAttributesTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public AddFocusAndJumpDataAttributesTask() {
+        super(Component.class);
     }
 
     /**
@@ -45,9 +44,14 @@ public class AddFocusAndJumpDataAttributesTask extends ViewLifecycleTaskBase<Com
      */
     @Override
     protected void performLifecycleTask() {
-        Component component = (Component) getElementState().getElement();
-        View view = ViewLifecycle.getView();
+        LifecycleElementState elementState = getElementState();
+        String phase = elementState.getViewPhase();
+        String viewPath = elementState.getViewPath();
+        if (!ViewLifecycle.isRefreshComponent(phase, viewPath)) {
+            return;
+        }
 
+        Component component = (Component) getElementState().getElement();
         Object model = ViewLifecycle.getModel();
 
         UifFormBase formBase = (UifFormBase) model;

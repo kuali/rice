@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -31,12 +30,10 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 public class SetReadOnlyOnDataBindingTask extends ViewLifecycleTaskBase<DataBinding> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The finalize phase for the component.
+     * Default constructor.
      */
-    public SetReadOnlyOnDataBindingTask(ViewLifecyclePhase phase) {
-        super(phase, DataBinding.class);
+    public SetReadOnlyOnDataBindingTask() {
+        super(DataBinding.class);
     }
 
     /**

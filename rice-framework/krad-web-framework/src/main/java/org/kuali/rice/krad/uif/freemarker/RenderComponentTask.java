@@ -41,8 +41,8 @@ public class RenderComponentTask extends ViewLifecycleTaskBase<Component> {
      * 
      * @param phase The render phase for the component.
      */
-    public RenderComponentTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public RenderComponentTask() {
+        super(Component.class);
     }
 
     /**
@@ -51,6 +51,10 @@ public class RenderComponentTask extends ViewLifecycleTaskBase<Component> {
     @Override
     protected void performLifecycleTask() {
         Component component = (Component) getElementState().getElement();
+        if (!component.isRender() || component.getTemplate() == null) {
+            return;
+        }
+        
         LifecycleRenderingContext renderingContext = ViewLifecycle.getRenderingContext();
         renderingContext.clearRenderingBuffer();
 

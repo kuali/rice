@@ -34,8 +34,8 @@ public class SuffixIdFromContainerTask extends ViewLifecycleTaskBase<Component> 
      *
      * @param phase The apply model phase for the component.
      */
-    public SuffixIdFromContainerTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public SuffixIdFromContainerTask() {
+        super(Component.class);
     }
 
     /**
@@ -48,9 +48,18 @@ public class SuffixIdFromContainerTask extends ViewLifecycleTaskBase<Component> 
     protected void performLifecycleTask() {
         Component component = (Component) getElementState().getElement();
         ViewLifecyclePhase phase = (ViewLifecyclePhase) getElementState();
+        
+        Component parent = phase.getParent();
+        if (parent == null) {
+            return;
+        }
+
 
         String containerIdSuffix = phase.getParent().getContainerIdSuffix();
-
+        if (StringUtils.isBlank(parent.getContainerIdSuffix())) {
+            return;
+        }
+                
         ComponentUtils.updateIdWithSuffix(component, containerIdSuffix);
 
         // container suffixes should concatenate if multiple are found within a node

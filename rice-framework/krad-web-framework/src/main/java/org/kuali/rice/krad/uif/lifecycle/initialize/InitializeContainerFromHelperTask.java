@@ -15,32 +15,35 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
+import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
- * Perform default initialization defined for the component.
+ * Invoke custom initialization on the container from the view helper.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ComponentDefaultInitializeTask extends ViewLifecycleTaskBase<Component> {
+public class InitializeContainerFromHelperTask extends ViewLifecycleTaskBase<Container> {
 
     /**
-     * Create a task to assign component IDs during the initialize phase.
+     * Default constructor.
      */
-    public ComponentDefaultInitializeTask() {
-        super(Component.class);
+    public InitializeContainerFromHelperTask() {
+        super(Container.class);
     }
 
     /**
+     * Invoke custom initialization based on the view helper.
+     * 
      * {@inheritDoc}
      */
-    @SuppressWarnings("deprecation")
     @Override
     protected void performLifecycleTask() {
-        // invoke component to initialize itself after properties have been set
-        getElementState().getElement().performInitialization(ViewLifecycle.getModel());
+        // invoke hook point for adding components through code
+        ViewLifecycle.getHelper().addCustomContainerComponents((ViewModel)ViewLifecycle.getModel(),
+                (Container) getElementState().getElement());
     }
 
 }

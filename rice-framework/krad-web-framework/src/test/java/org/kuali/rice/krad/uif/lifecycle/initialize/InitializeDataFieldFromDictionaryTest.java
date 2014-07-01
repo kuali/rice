@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.lifecycle.initialize;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
-import java.util.Collections;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -28,17 +27,19 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.InitializeComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.LifecyclePhaseFactory;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleTaskFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLoggingUnitTest;
 import org.kuali.rice.krad.uif.util.UifUnitTestUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * Unit tests for {@link InitializeDataFieldFromDictionaryTask}.
@@ -123,21 +124,23 @@ public class InitializeDataFieldFromDictionaryTest extends ProcessLoggingUnitTes
         @Override
         public void run() {
             View view = ViewLifecycle.getView();
-            Object model = ViewLifecycle.getModel();
+            
+            String parentPath = "currentPage.items[0]";
+            Component parent = ObjectPropertyUtils.getPropertyValue(view, parentPath);
+            
+            String foopath = "items[0]";
+            DataField foofield = ObjectPropertyUtils.getPropertyValue(parent, foopath);
+            ViewLifecyclePhase foophase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
+                    UifConstants.ViewPhases.INITIALIZE, foofield, parent, foopath);
+            InitializeDataFieldFromDictionaryTask footask = new InitializeDataFieldFromDictionaryTask();
+            footask.setElementState(foophase);
 
-            String foopath = "currentPage.items[0].items[0]";
-            DataField foofield = ObjectPropertyUtils.getPropertyValue(view, foopath);
-            InitializeComponentPhase foophase = LifecyclePhaseFactory.initialize(foofield, model,
-                    foopath, Collections.<String> emptyList());
-            InitializeDataFieldFromDictionaryTask footask = LifecycleTaskFactory.getTask(
-                    InitializeDataFieldFromDictionaryTask.class, foophase);
-
-            String barpath = "currentPage.items[0].items[1]";
-            DataField barfield = ObjectPropertyUtils.getPropertyValue(view, barpath);
-            InitializeComponentPhase barphase = LifecyclePhaseFactory.initialize(barfield, model,
-                    barpath, Collections.<String> emptyList());
-            InitializeDataFieldFromDictionaryTask bartask = LifecycleTaskFactory.getTask(
-                    InitializeDataFieldFromDictionaryTask.class, barphase);
+            String barpath = "items[1]";
+            DataField barfield = ObjectPropertyUtils.getPropertyValue(parent, barpath);
+            ViewLifecyclePhase barphase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
+                    UifConstants.ViewPhases.INITIALIZE, barfield, parent, barpath);
+            InitializeDataFieldFromDictionaryTask bartask = new InitializeDataFieldFromDictionaryTask();
+            bartask.setElementState(barphase);
 
             AttributeDefinition fooattribute = footask.findNestedDictionaryAttribute(foofield.getPropertyName());
             assertTrue(fooattribute.isRequired());

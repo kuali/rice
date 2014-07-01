@@ -15,23 +15,13 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
-import org.kuali.rice.krad.uif.lifecycle.finalize.AddFocusAndJumpDataAttributesTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.AddViewTemplatesTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.ComponentDefaultFinalizeTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.FinalizeViewTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.HelperCustomFinalizeTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.InvokeFinalizerTask;
-import org.kuali.rice.krad.uif.lifecycle.finalize.RegisterPropertyEditorTask;
-import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 
 /**
@@ -63,23 +53,9 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
      * {@inheritDoc}
      */
     @Override
-    protected void recycle() {
+    public void recycle() {
         super.recycle();
         renderPhase = null;
-    }
-
-    /**
-     * Creates a new lifecycle phase processing task for finalizing a component.
-     *
-     * @param element The component instance the model should be applied to
-     * @param model Top level object containing the data
-     * @param path The path to the element relative to its parent
-     * @param refreshPaths list of paths to run lifecycle on when executing a refresh lifecycle
-     * @param parent The parent component
-     */
-    protected void prepare(LifecycleElement element, Object model, String path, List<String> refreshPaths,
-            Component parent) {
-        super.prepare(element, model, path, refreshPaths, parent, null);
     }
 
     /**
@@ -135,26 +111,6 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     }
 
     /**
-     * Update state of the component and perform final preparation for rendering.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    protected void initializePendingTasks(Queue<ViewLifecycleTask<?>> tasks) {
-        tasks.add(LifecycleTaskFactory.getTask(InvokeFinalizerTask.class, this));
-        tasks.add(LifecycleTaskFactory.getTask(ComponentDefaultFinalizeTask.class, this));
-        tasks.add(LifecycleTaskFactory.getTask(AddViewTemplatesTask.class, this));
-        tasks.offer(LifecycleTaskFactory.getTask(FinalizeViewTask.class, this));
-        getElement().initializePendingTasks(this, tasks);
-        tasks.offer(LifecycleTaskFactory.getTask(RunComponentModifiersTask.class, this));
-        tasks.add(LifecycleTaskFactory.getTask(HelperCustomFinalizeTask.class, this));
-        tasks.add(LifecycleTaskFactory.getTask(RegisterPropertyEditorTask.class, this));
-        if (ViewLifecycle.isRefreshComponent(getViewPhase(), getViewPath())) {
-            tasks.add(LifecycleTaskFactory.getTask(AddFocusAndJumpDataAttributesTask.class, this));
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -193,36 +149,21 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
                 }
             }
 
-            renderPhase = LifecyclePhaseFactory.render(this, getRefreshPaths(), parentRenderPhase, pendingChildren);
+            if (getParent() == null) {
+                renderPhase = (RenderComponentPhase) KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
+                        UifConstants.ViewPhases.RENDER);
+            } else {
+                renderPhase = (RenderComponentPhase) KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
+                        UifConstants.ViewPhases.RENDER, getElement(), getParent(), getParentPath());
+            }
+            renderPhase.prepareRenderPhase(parentRenderPhase, pendingChildren);
+            
             trace("create-render " + getElement().getId() + " " + pendingChildren);
         }
 
         if (successors.isEmpty() && renderPhase != null) {
             successors.add(renderPhase);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
-            Component parent) {
-        FinalizeComponentPhase finalizeComponentPhase = LifecyclePhaseFactory.finalize(nestedElement, getModel(),
-                nestedPath, getRefreshPaths(), parent);
-        if (nestedElement.isModelApplied()) {
-            return finalizeComponentPhase;
-        }
-
-        ApplyModelComponentPhase applyModelPhase = LifecyclePhaseFactory.applyModel(nestedElement, getModel(),
-                nestedPath, getRefreshPaths(), parent, finalizeComponentPhase, new HashSet<String>());
-
-        if (nestedElement.isInitialized()) {
-            return applyModelPhase;
-        }
-
-        return LifecyclePhaseFactory.initialize(nestedElement, getModel(), nestedPath, getRefreshPaths(), parent,
-                applyModelPhase);
     }
 
 }

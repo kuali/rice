@@ -17,11 +17,10 @@ package org.kuali.rice.krad.uif.lifecycle.model;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.view.ViewModel;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -29,12 +28,10 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 public class RefreshStateModifyTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     *
-     * @param phase The apply model phase for the component.
+     * Default constructor.
      */
-    public RefreshStateModifyTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public RefreshStateModifyTask() {
+        super(Component.class);
     }
 
     /**
@@ -42,6 +39,11 @@ public class RefreshStateModifyTask extends ViewLifecycleTaskBase<Component> {
      */
     @Override
     protected void performLifecycleTask() {
+        LifecycleElementState phase = getElementState();
+        if (!ViewLifecycle.isRefreshComponent(phase.getViewPhase(), phase.getViewPath())) {
+            return;
+        }
+
         Component component = (Component) getElementState().getElement();
 
         // force the component to render on a refresh

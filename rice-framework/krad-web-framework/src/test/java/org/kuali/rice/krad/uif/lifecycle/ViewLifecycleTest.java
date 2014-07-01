@@ -177,7 +177,9 @@ public class ViewLifecycleTest extends ProcessLoggingUnitTest {
                 ViewLifecycle.getHelper().performCustomViewInitialization(tform);
 
                 ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
-                processor.performPhase(LifecyclePhaseFactory.initialize(view, tform, "", null));
+                ViewLifecyclePhase phase = LifecyclePhaseFactory.buildPhase(UifConstants.ViewPhases.INITIALIZE);
+                phase.prepareView();
+                processor.performPhase(phase);
 
                 ProcessLogger.trace("end-init");
             }

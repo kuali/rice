@@ -30,11 +30,9 @@ public class PopulatePathTask extends ViewLifecycleTaskBase<LifecycleElement> {
 
     /**
      * Creates an instance based on element state.
-     * 
-     * @param elementState lifecycle element state information
      */
-    protected PopulatePathTask(LifecycleElementState elementState) {
-        super(elementState, LifecycleElement.class);
+    protected PopulatePathTask() {
+        super(LifecycleElement.class);
     }
 
     /**

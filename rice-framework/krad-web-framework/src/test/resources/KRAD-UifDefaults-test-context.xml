@@ -51,6 +51,8 @@
 	
 	<bean id="dataObjectAuthorizationService" class="org.kuali.rice.krad.uif.util.MockDataObjectAuthorizationService" />
 
+  	<bean id="viewLifecyclePhaseBuilder" class="org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBuilderBase" />
+  
 	<util:list id="uifDictionaryBeans">
 		<value>classpath:/org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>
 		<value>classpath:/org/kuali/rice/krad/datadictionary/AdHocRoutePerson.xml</value>

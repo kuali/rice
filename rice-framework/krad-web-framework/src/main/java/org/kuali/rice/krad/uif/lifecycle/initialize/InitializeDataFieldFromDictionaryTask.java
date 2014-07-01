@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.field;
+package org.kuali.rice.krad.uif.lifecycle.initialize;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,8 +23,9 @@ import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.component.BindingInfo;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -43,8 +44,8 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
      * 
      * @param phase The initialize phase for the data field.
      */
-    public InitializeDataFieldFromDictionaryTask(ViewLifecyclePhase phase) {
-        super(phase, DataField.class);
+    public InitializeDataFieldFromDictionaryTask() {
+        super(DataField.class);
     }
 
     /**

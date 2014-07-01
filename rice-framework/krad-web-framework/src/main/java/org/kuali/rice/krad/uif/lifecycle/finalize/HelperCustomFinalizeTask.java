@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 
 import org.kuali.rice.krad.uif.lifecycle.FinalizeComponentPhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
@@ -33,8 +32,8 @@ public class HelperCustomFinalizeTask extends ViewLifecycleTaskBase<LifecycleEle
      * 
      * @param phase The finalize phase for the component.
      */
-    public HelperCustomFinalizeTask(ViewLifecyclePhase phase) {
-        super(phase, LifecycleElement.class);
+    public HelperCustomFinalizeTask() {
+        super(LifecycleElement.class);
     }
 
     /**

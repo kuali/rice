@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 
 /**
@@ -28,12 +27,10 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 public class PopulateComponentFromExpressionGraphTask extends ViewLifecycleTaskBase<UifDictionaryBean> {
 
     /**
-     * Constructor.
-     *
-     * @param phase The initialize phase for the component.
+     * Default constructor.
      */
-    public PopulateComponentFromExpressionGraphTask(ViewLifecyclePhase phase) {
-        super(phase, UifDictionaryBean.class);
+    public PopulateComponentFromExpressionGraphTask() {
+        super(UifDictionaryBean.class);
     }
 
     /**

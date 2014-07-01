@@ -18,7 +18,6 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.view.View;
 
@@ -30,12 +29,10 @@ import org.kuali.rice.krad.uif.view.View;
 public class AddViewTemplatesTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The finalize phase for the component.
+     * Default constructor.
      */
-    public AddViewTemplatesTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public AddViewTemplatesTask() {
+        super(Component.class);
     }
 
     /**

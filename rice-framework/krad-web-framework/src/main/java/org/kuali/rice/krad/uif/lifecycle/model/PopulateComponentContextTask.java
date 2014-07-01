@@ -30,12 +30,10 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 public class PopulateComponentContextTask extends ViewLifecycleTaskBase<LifecycleElement> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The apply model phase for the component.
+     * Default constructor.
      */
-    public PopulateComponentContextTask(ViewLifecyclePhase phase) {
-        super(phase, LifecycleElement.class);
+    public PopulateComponentContextTask() {
+        super(LifecycleElement.class);
     }
 
     /**

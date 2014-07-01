@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.lifecycle.initialize;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.lifecycle.LifecycleElementState;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -33,11 +32,9 @@ public class AssignIdsTask extends ViewLifecycleTaskBase<LifecycleElement> {
 
     /**
      * Create a task to assign component IDs during the initialize phase.
-     * 
-     * @param elementState The initialize phase for the component.
      */
-    public AssignIdsTask(LifecycleElementState elementState) {
-        super(elementState, LifecycleElement.class);
+    public AssignIdsTask() {
+        super(LifecycleElement.class);
     }
 
     /**

@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.lifecycle.finalize;
 
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -32,12 +31,10 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 public class RegisterPropertyEditorTask extends ViewLifecycleTaskBase<DataField> {
 
     /**
-     * Constructor.
-     *
-     * @param phase phase the task is running in
+     * Default constructor.
      */
-    public RegisterPropertyEditorTask(ViewLifecyclePhase phase) {
-        super(phase, DataField.class);
+    public RegisterPropertyEditorTask() {
+        super(DataField.class);
     }
 
     /**

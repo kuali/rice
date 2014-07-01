@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -208,13 +207,6 @@ public abstract class LayoutManagerBase extends UifDictionaryBeanBase implements
     @Override
     public boolean skipLifecycle() {
         return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initializePendingTasks(ViewLifecyclePhase phase, Queue<ViewLifecycleTask<?>> pendingTasks) {
     }
 
     /**

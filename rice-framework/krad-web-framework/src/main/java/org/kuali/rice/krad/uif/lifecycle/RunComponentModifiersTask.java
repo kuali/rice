@@ -32,12 +32,10 @@ import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 public class RunComponentModifiersTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The lifecycle phase to run component modifiers for.
+     * Default constructor.
      */
-    public RunComponentModifiersTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public RunComponentModifiersTask() {
+        super(Component.class);
     }
 
      /**

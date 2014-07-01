@@ -38,8 +38,8 @@ public class AfterEvaluateExpressionTask extends ViewLifecycleTaskBase<Component
      * 
      * @param phase The apply model phase for the component.
      */
-    public AfterEvaluateExpressionTask(LifecycleElementState phase) {
-        super(phase, Component.class);
+    public AfterEvaluateExpressionTask() {
+        super(Component.class);
     }
 
     /**

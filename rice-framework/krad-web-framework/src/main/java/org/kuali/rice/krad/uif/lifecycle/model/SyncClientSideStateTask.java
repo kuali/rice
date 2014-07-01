@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -38,12 +37,10 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 public class SyncClientSideStateTask extends ViewLifecycleTaskBase<Component> {
 
     /**
-     * Constructor.
-     * 
-     * @param phase The apply model phase for the component.
+     * Default constructor.
      */
-    public SyncClientSideStateTask(ViewLifecyclePhase phase) {
-        super(phase, Component.class);
+    public SyncClientSideStateTask() {
+        super(Component.class);
     }
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.web.service;
 
+import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,6 +33,14 @@ public interface ControllerService {
      * @return ModelAndView instance for rendering the view
      */
     ModelAndView start(UifFormBase form);
+
+    /**
+     * Invokes the configured {@link org.kuali.rice.krad.uif.view.ViewAuthorizer} to verify the user has access to
+     * open the view.
+     *
+     * @throws org.kuali.rice.krad.exception.AuthorizationException thrown if user does not have access to the view
+     */
+    void checkViewAuthorization(UifFormBase form) throws AuthorizationException;
 
     /**
      * Invoked when a session timeout occurs.

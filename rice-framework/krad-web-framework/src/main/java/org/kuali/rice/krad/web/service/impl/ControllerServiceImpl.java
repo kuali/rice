@@ -48,12 +48,10 @@ public class ControllerServiceImpl implements ControllerService {
     }
 
     /**
-     * Invokes the configured {@link org.kuali.rice.krad.uif.view.ViewAuthorizer} to verify the user has access to
-     * open the view.
-     *
-     * @throws org.kuali.rice.krad.exception.AuthorizationException thrown if user does not have access to the view
+     * {@inheritDoc}
      */
-    protected void checkViewAuthorization(UifFormBase form) throws AuthorizationException {
+    @Override
+    public void checkViewAuthorization(UifFormBase form) throws AuthorizationException {
         // if user session or view not established we cannnot authorize the view request
         View view = form.getView();
         if ((GlobalVariables.getUserSession() == null) || view == null) {

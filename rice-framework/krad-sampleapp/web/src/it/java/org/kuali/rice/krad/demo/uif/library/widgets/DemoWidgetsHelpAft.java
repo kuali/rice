@@ -53,6 +53,8 @@ public class DemoWidgetsHelpAft extends DemoLibraryBase {
     	waitForElementPresentByXpath("//div[@class='popover top in']");
     	fireMouseOverEventByXpath("//label[@id='Demo-Help-Checkbox_label']");
     	waitForElementPresentByXpath("//div[@class='popover top in']");
+    	fireMouseOverEventByXpath("//a[@data-linkfor='Demo-Help-DisplayOnlyFields_disclosureContent']");
+    	waitForElementPresentByXpath("//div[@class='popover top in']");
     }
 
     protected void testMissingTooltipHelp() throws Exception {

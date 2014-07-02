@@ -13,28 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.uif.form;
+package org.kuali.rice.krad.demo.registration.form;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Brian on 6/18/14.
+ * Class for KS Admin Registration Lab prototype
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KSRegistrationIssue {
-    private String message;
-    private KSWorkshopCourse course;
+public class KSAdminRegistrationIssue {
+    private List<String> messages = new ArrayList<String>();
+    private KSAdminRegistrationCourse course;
 
-    public String getMessage() {
-        return message;
+    public List<String> getMessages() {
+        return messages;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
     }
 
-    public KSWorkshopCourse getCourse() {
+    public KSAdminRegistrationCourse getCourse() {
         return course;
     }
 
-    public void setCourse(KSWorkshopCourse course) {
+    public void setCourse(KSAdminRegistrationCourse course) {
         this.course = course;
     }
 }

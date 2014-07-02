@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.uif.form;
+package org.kuali.rice.krad.demo.registration.form;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,37 +21,44 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Brian on 6/18/14.
+ * Class for KS Admin Registration Lab prototype
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KSWorkshopCourse implements Serializable{
+public class KSAdminRegistrationCourse implements Serializable{
 
     private static final long serialVersionUID = 5236548204817229477L;
-    private String course;
+    private String code;
     private String section;
     private String courseName;
     private Integer credits;
     private String regOptions;
     private Date regDate;
-    private List<KSWorkshopActivity> activities;
+    private Date dropDate;
+    private Date effectiveDate;
 
-    public KSWorkshopCourse(){}
+    private List<KSAdminRegistrationActivity> activities;
+    private boolean subterm;
 
-    public KSWorkshopCourse(String course, String section, String courseName, Integer credits, String regOptions,
+    public KSAdminRegistrationCourse(){}
+
+    public KSAdminRegistrationCourse(String code, String section, String courseName, Integer credits, String regOptions,
             Date regDate) {
-        this.course = course;
+        this.code = code;
         this.section = section;
         this.courseName = courseName;
         this.credits = credits;
         this.regOptions = regOptions;
         this.regDate = regDate;
+        this.effectiveDate = regDate;
     }
 
-    public String getCourse() {
-        return course;
+    public String getCode() {
+        return code;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getSection() {
@@ -94,17 +101,17 @@ public class KSWorkshopCourse implements Serializable{
         this.regDate = regDate;
     }
 
-    public List<KSWorkshopActivity> getActivities() {
+    public List<KSAdminRegistrationActivity> getActivities() {
         return activities;
     }
 
-    public void setActivities(List<KSWorkshopActivity> activities) {
+    public void setActivities(List<KSAdminRegistrationActivity> activities) {
         this.activities = activities;
     }
 
     public List<String> getActivityTypes(){
         ArrayList<String> list = new ArrayList<String>();
-        for (KSWorkshopActivity activity: activities) {
+        for (KSAdminRegistrationActivity activity: activities) {
             list.add(activity.getType());
         }
 
@@ -113,7 +120,7 @@ public class KSWorkshopCourse implements Serializable{
 
     public List<String> getActivityDateTimes(){
         ArrayList<String> list = new ArrayList<String>();
-        for (KSWorkshopActivity activity: activities) {
+        for (KSAdminRegistrationActivity activity: activities) {
             list.add(activity.getDateTime());
         }
 
@@ -122,7 +129,7 @@ public class KSWorkshopCourse implements Serializable{
 
     public List<String> getActivityInstructors(){
         ArrayList<String> list = new ArrayList<String>();
-        for (KSWorkshopActivity activity: activities) {
+        for (KSAdminRegistrationActivity activity: activities) {
             list.add(activity.getInstructor());
         }
 
@@ -131,10 +138,43 @@ public class KSWorkshopCourse implements Serializable{
 
     public List<String> getActivityRooms(){
         ArrayList<String> list = new ArrayList<String>();
-        for (KSWorkshopActivity activity: activities) {
+        for (KSAdminRegistrationActivity activity: activities) {
             list.add(activity.getRoom());
         }
 
         return list;
+    }
+
+    public List<String> getActivityTypeDateTimes() {
+        ArrayList<String> list = new ArrayList<String>();
+        for (KSAdminRegistrationActivity activity: activities) {
+            list.add(activity.getType() + " " + activity.getDateTime());
+        }
+
+        return list;
+    }
+
+    public Date getDropDate() {
+        return dropDate;
+    }
+
+    public void setDropDate(Date dropDate) {
+        this.dropDate = dropDate;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    public boolean isSubterm() {
+        return subterm;
+    }
+
+    public void setSubterm(boolean subterm) {
+        this.subterm = subterm;
     }
 }

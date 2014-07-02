@@ -21,6 +21,13 @@ function startPolling(time) {
     }
 }
 
+function stopPolling(){
+    if (timer) {
+        clearInterval(timer);
+        timer = null;
+    }
+}
+
 function queryForRefresh() {
     var url = jQuery("#" + kradVariables.KUALI_FORM).attr("action");
     var queryData = {};
@@ -43,10 +50,11 @@ function queryForRefresh() {
             var updateIds = data.updateIds;
             var stop = data.stop;
 
-            jQuery(updateIds).each(function(id){
+            jQuery(updateIds).each(function(index, id){
                 retrieveComponent(id);
             });
 
+            // if no more updates expected, stop polling
             if (stop) {
                 clearInterval(timer);
                 timer = null;

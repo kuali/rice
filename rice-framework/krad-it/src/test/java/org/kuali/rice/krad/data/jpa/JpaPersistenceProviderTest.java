@@ -3,6 +3,8 @@ package org.kuali.rice.krad.data.jpa;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.OrderByField;
+import org.kuali.rice.core.api.criteria.OrderDirection;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -244,9 +246,15 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
             provider.save(a);
         }
 
+
         QueryByCriteria.Builder query = fixture.getValue();
         query.setStartAtIndex(2);
         query.setMaxResults(5);
+        // specify the order
+        OrderByField.Builder orderBy = OrderByField.Builder.create();
+        orderBy.setFieldName("number");
+        orderBy.setOrderDirection(OrderDirection.ASCENDING);
+        query.setOrderByFields(orderBy.build());
         QueryResults<Object> results = provider.findMatching((Class<Object>) objects.get(0).getClass(), query.build());
 
         assertEquals(5, results.getResults().size());

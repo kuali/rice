@@ -348,7 +348,7 @@ function initEnterKeyHandler(){
         var keycode = (event.keyCode ? event.keyCode : event.which);
 
         // check for enter key
-        if (keycode === 13) {
+        if (keycode === 13 && jQuery(event.target).is("[data-role='Control']")) {
             event.preventDefault();
             return false;
         }
@@ -558,7 +558,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var id = getAttributeId(jQuery(this).attr('id'));
-                if(!id || isRelatedTarget(this.parentElement) === true){ return; }
+                if(!id){ return; }
                 var data = getValidationData(jQuery("#" + id));
                 var hadError = false;
                 if (data && data.focusedErrors) {

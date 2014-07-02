@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.5.0-M4-SNAPSHOT</version>
+  <version>2.5.0-M4</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -87,9 +87,9 @@
     <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
-    <maven.failsafe.includes.file></maven.failsafe.includes.file>
+    <maven.failsafe.includes.file />
     <maven.failsafe.excludes>NOT_NULL</maven.failsafe.excludes>
-    <maven.failsafe.excludes.file></maven.failsafe.excludes.file>
+    <maven.failsafe.excludes.file />
 
     <readme.date.format>MMMM d, yyyy</readme.date.format>
 
@@ -194,9 +194,9 @@
     <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
     <selenium-java.version>2.41.0</selenium-java.version>
     <stests.excludes>NOT_NULL</stests.excludes>
-    <stests.excludes.file></stests.excludes.file>
+    <stests.excludes.file />
     <stests.includes>**/*SeTest.java</stests.includes>
-    <stests.includes.file></stests.includes.file>
+    <stests.includes.file />
     <stests.skip>true</stests.skip>
     <stests.failsafe.timeout>0</stests.failsafe.timeout>
     <xalan.version>2.7.1</xalan.version>
@@ -2487,9 +2487,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</connection>
-    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/trunk</url>
+    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/tags/rice-2.5.0-M4</connection>
+    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/tags/rice-2.5.0-M4</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/tags/rice-2.5.0-M4</url>
   </scm>
 
 </project>

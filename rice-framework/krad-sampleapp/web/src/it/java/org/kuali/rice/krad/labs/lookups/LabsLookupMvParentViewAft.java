@@ -54,5 +54,20 @@ public class LabsLookupMvParentViewAft extends LabsLookupBase {
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","eri*");
         waitAndClickSearch3();
         assertResultCount("4");
+
+        waitAndClickButtonByText("Clear Values");
+        waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","xxx*");
+        waitAndClickSearch3();
+        waitForTextPresent("No values match this search.");
+
+        waitAndClickButtonByText("Clear Values");
+        waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","xxx");
+        waitAndClickSearch3();
+        waitForTextPresent("No values match this search.");
+
+        waitAndClickButtonByText("Clear Values");
+        waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","eric*");
+        waitAndClickSearch3();
+        assertResultCount("3");
     }
 }

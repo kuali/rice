@@ -97,6 +97,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // return empty search results (none found) when the search doesn't have any adjustedSearchCriteria although
         // a filtered search criteria is specified
         if (adjustedSearchCriteria == null) {
+            MessageMap messageMap = GlobalVariables.getMessageMap();
+            messageMap.putInfoForSectionId(UifConstants.MessageKeys.LOOKUP_RESULT_MESSAGES,
+                    RiceKeyConstants.INFO_LOOKUP_RESULTS_NONE_FOUND);
             return new ArrayList<Object>();
         }
 
@@ -191,24 +194,29 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             // get the post data for the filterable controls
             ViewPostMetadata viewPostMetadata = lookupForm.getViewPostMetadata();
-            Object componentPostData = viewPostMetadata.getComponentPostData(lookupForm.getViewId(), UifConstants.PostMetadata.FILTERABLE_LOOKUP_CRITERIA);
-            Map<String, FilterableLookupCriteriaControlPostData> filterableLookupCriteria = (Map<String, FilterableLookupCriteriaControlPostData>) componentPostData;
+            if (viewPostMetadata != null) {
+                Object componentPostData = viewPostMetadata.getComponentPostData(lookupForm.getViewId(),
+                        UifConstants.PostMetadata.FILTERABLE_LOOKUP_CRITERIA);
+                Map<String, FilterableLookupCriteriaControlPostData> filterableLookupCriteria =
+                        (Map<String, FilterableLookupCriteriaControlPostData>) componentPostData;
 
-            // first filter the results using the filter on the control
-            if (filterableLookupCriteria != null && filterableLookupCriteria.containsKey(propertyName)) {
-                FilterableLookupCriteriaControlPostData postData = filterableLookupCriteria.get(propertyName);
-                Class<? extends FilterableLookupCriteriaControl> controlClass = postData.getControlClass();
-                FilterableLookupCriteriaControl control = KRADUtils.createNewObjectFromClass(controlClass);
+                // first filter the results using the filter on the control
+                if (filterableLookupCriteria != null && filterableLookupCriteria.containsKey(propertyName)) {
+                    FilterableLookupCriteriaControlPostData postData = filterableLookupCriteria.get(propertyName);
+                    Class<? extends FilterableLookupCriteriaControl> controlClass = postData.getControlClass();
+                    FilterableLookupCriteriaControl control = KRADUtils.createNewObjectFromClass(controlClass);
 
-                filteredSearchCriteria = control.filterSearchCriteria(propertyName, filteredSearchCriteria, postData);
-            }
+                    filteredSearchCriteria = control.filterSearchCriteria(propertyName, filteredSearchCriteria,
+                            postData);
+                }
 
-            // second filter the results using the filter in the input field
-            filteredSearchCriteria = lookupInputField.filterSearchCriteria(filteredSearchCriteria);
+                // second filter the results using the filter in the input field
+                filteredSearchCriteria = lookupInputField.filterSearchCriteria(filteredSearchCriteria);
 
-            // early return if we have no results
-            if (filteredSearchCriteria == null) {
-                return null;
+                // early return if we have no results
+                if (filteredSearchCriteria == null) {
+                    return null;
+                }
             }
         }
 
@@ -250,20 +258,22 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     protected List<String> identifyWildcardDisabledFields(LookupForm lookupForm, Map<String, String> searchCriteria) {
         List<String> wildcardAsLiteralPropertyNames = new ArrayList<String>();
 
-        Map<String, InputField> criteriaFields = new HashMap<String, InputField>();
-        if (lookupForm.getView() != null) {
-            criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(), lookupForm);
-        }
-
-        for (String fieldName : searchCriteria.keySet()) {
-            InputField inputField = criteriaFields.get(fieldName);
-            if ((inputField == null) || !(inputField instanceof LookupInputField)) {
-                continue;
+        if (searchCriteria != null) {
+            Map<String, InputField> criteriaFields = new HashMap<String, InputField>();
+            if (lookupForm.getView() != null) {
+                criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(), lookupForm);
             }
 
-            if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) && (((LookupInputField) inputField)
-                    .isDisableWildcardsAndOperators())) {
-                wildcardAsLiteralPropertyNames.add(fieldName);
+            for (String fieldName : searchCriteria.keySet()) {
+                InputField inputField = criteriaFields.get(fieldName);
+                if ((inputField == null) || !(inputField instanceof LookupInputField)) {
+                    continue;
+                }
+
+                if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) && (((LookupInputField) inputField)
+                        .isDisableWildcardsAndOperators())) {
+                    wildcardAsLiteralPropertyNames.add(fieldName);
+                }
             }
         }
 
@@ -281,6 +291,10 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      */
     protected boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria) {
         boolean valid = true;
+
+        if (searchCriteria == null) {
+            return valid;
+        }
 
         Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(),
                 form);
@@ -313,9 +327,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 return valid;
             }
 
-            //            if (inputField == null) {
-            //                throw new RuntimeException("Invalid search value sent for property name: " + searchPropertyName);
-            //            }
+            //   if (inputField == null) {
+            //       throw new RuntimeException("Invalid search value sent for property name: " + searchPropertyName);
+            //   }
 
             if (StringUtils.isBlank(searchPropertyValue) && inputField.getRequired()) {
                 GlobalVariables.getMessageMap().putError(inputField.getPropertyName(), RiceKeyConstants.ERROR_REQUIRED,

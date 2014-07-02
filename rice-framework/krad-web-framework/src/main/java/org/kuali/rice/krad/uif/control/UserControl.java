@@ -16,7 +16,9 @@
 package org.kuali.rice.krad.uif.control;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -131,7 +133,8 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
      * {@inheritDoc}
      */
     @Override
-    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria, FilterableLookupCriteriaControlPostData postData) {
+    public Map<String, String> filterSearchCriteria(String propertyName, Map<String, String> searchCriteria,
+            FilterableLookupCriteriaControlPostData postData) {
         Map<String, String> filteredSearchCriteria = new HashMap<String, String>(searchCriteria);
 
         UserControlPostData userControlPostData = (UserControlPostData) postData;
@@ -141,17 +144,29 @@ public class UserControl extends TextControlBase implements FilterableLookupCrit
         // be set as well or an error be displayed to the user that the principalName is invalid.
         String principalName = searchCriteria.get(propertyName);
         if (StringUtils.isNotBlank(principalName)) {
-            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
-            if (principal == null) {
-                return null;
+            if (!StringUtils.contains(principalName, "*")) {
+                Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
+                        principalName);
+                if (principal == null) {
+                    return null;
+                } else {
+                    filteredSearchCriteria.put(userControlPostData.getPrincipalIdPropertyName(),
+                            principal.getPrincipalId());
+                }
             } else {
-                filteredSearchCriteria.put(userControlPostData.getPrincipalIdPropertyName(), principal.getPrincipalId());
+                List<Person> people = KimApiServiceLocator.getPersonService().findPeople(Collections.singletonMap(
+                        KimConstants.AttributeConstants.PRINCIPAL_NAME, principalName));
+                if (people != null && people.size() == 0) {
+                    return null;
+                }
             }
         }
 
-        // filter
-        filteredSearchCriteria.remove(propertyName);
-        filteredSearchCriteria.remove(userControlPostData.getPersonNamePropertyName());
+        if (!StringUtils.contains(principalName, "*")) {
+            // filter
+            filteredSearchCriteria.remove(propertyName);
+            filteredSearchCriteria.remove(userControlPostData.getPersonNamePropertyName());
+        }
 
         return filteredSearchCriteria;
     }

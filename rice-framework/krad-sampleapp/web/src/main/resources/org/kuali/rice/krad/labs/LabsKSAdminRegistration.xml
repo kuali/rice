@@ -19,7 +19,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
-  <bean id="KS-AdminRegistration" parent="Uif-FormView">
+  <bean id="KS-AdminRegistration-NoCss" parent="Uif-FormView">
     <property name="singlePageView" value="true"/>
     <property name="header.render" value="false"/>
     <property name="page">
@@ -40,15 +40,19 @@
         <value>scripts/KSAdminRegistration.js</value>
       </list>
     </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationForm"/>
+  </bean>
+
+  <!-- Css Version -->
+  <bean id="KS-AdminRegistration" parent="KS-AdminRegistration-NoCss">
     <property name="additionalCssFiles">
       <list merge="true">
         <value>css/KSAdminRegistration.css</value>
       </list>
     </property>
-    <property name="formClass" value="org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationForm"/>
   </bean>
 
-  <!--  Student Info Area-->
+  <!-- Student Info Area-->
   <bean id="KS-AdminRegistration-StudentInfo" parent="Uif-CssGridSection-1FieldLabelColumn">
     <property name="header.render" value="false"/>
     <property name="items">

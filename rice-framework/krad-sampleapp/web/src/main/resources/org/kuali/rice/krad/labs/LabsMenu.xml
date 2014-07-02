@@ -114,6 +114,10 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-AddLineTest"/>
                           <bean parent="Uif-Link" p:linkText="ActionList" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kew/actionList?methodToCall=start&amp;viewId=UifActionListView"/>
+                          <bean parent="Uif-Link" p:linkText="KS Admin Registration" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/ksworkshop?viewId=KS-AdminRegistration"/>
+                          <bean parent="Uif-Link" p:linkText="KS Admin Registration - No Css" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/ksworkshop?viewId=KS-AdminRegistration-NoCss"/>
                         </list>
                       </property>
                     </bean>

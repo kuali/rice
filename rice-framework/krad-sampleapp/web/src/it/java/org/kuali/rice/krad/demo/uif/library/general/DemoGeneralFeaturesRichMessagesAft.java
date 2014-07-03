@@ -98,14 +98,17 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][4]/a"));
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
+    }
 
+    protected void testGeneralFeaturesRichMessagesActionCustom() throws InterruptedException {
         waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][5]/a"));
-        WebDriverUtils.waitToAcceptAlert(getDriver(), WebDriverUtils.configuredImplicityWait() * 2, this.getClass().toString());
+        WebDriverUtils.waitToAcceptAlert(getDriver(), WebDriverUtils.configuredImplicityWait() * 2,
+                this.getClass().toString());
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
     }
-    
+
     protected void testGeneralFeaturesRichMessagesCombine() throws Exception {
         waitAndClickByLinkText("Combine");
         waitForElementPresentByName("//div[@data-parent='Demo-RichMessages-Example6']/button");
@@ -221,6 +224,18 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     @Ignore // convenience method for page redesign
     public void testGeneralFeaturesRichMessagesActionNav() throws Exception {
         testGeneralFeaturesRichMessagesAction();
+    }
+
+    @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
+    public void testGeneralFeaturesRichMessagesActionCustomBookmark() throws Exception {
+        testGeneralFeaturesRichMessagesActionCustom();
+    }
+
+    @Test
+    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
+    public void testGeneralFeaturesRichMessagesActionCustomNav() throws Exception {
+        testGeneralFeaturesRichMessagesActionCustom();
     }
 
     private void testRichMessages() throws Exception {

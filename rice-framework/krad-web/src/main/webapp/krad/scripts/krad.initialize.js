@@ -743,11 +743,11 @@ function initFieldHandlers() {
         buttonHovered = false;
 
     // capture leaving the control field
-    }).on("focusout", "div[data-role='InputField'] div.input-group", function () {
+    }).on("focusout", "div[data-role='InputField'] div.input-group", function (event) {
         currentControl = this;
 
         // determine whether we are still in the widget. If we are out of the widget, then validate
-        if(isRelatedTarget(this) !== true && buttonHovered === false){
+        if(isRelatedTarget(this, event) !== true && buttonHovered === false){
             validateFieldValue(jQuery(this).children("[data-role='Control']"));
         }
     });
@@ -766,8 +766,8 @@ function initFieldHandlers() {
  * Test if an input field is part of a widget by examining event.currentTarget and event.target
  *
  */
-function isRelatedTarget(element){
-    if(event === undefined) return true;
+function isRelatedTarget(element, event){
+    if(!event) return true;
 
     try {
 

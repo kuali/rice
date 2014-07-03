@@ -168,6 +168,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * <p>Processing entails primarily of the removal of filtered and unused/blank search criteria.  Encrypted field
      * values are decrypted, and date range fields are combined into a single criteria entry.</p>
      *
+     *  <p>In special cases additional non-valid criteria may be included. E.g. with the KIM User Control as a criteria
+     *  the principal name may be passed so that it is displayed on the control.  The filtering removes these values
+     *  based on the viewPostMetadata.  When calling the search directly (methodToCall=search) the viewPostMetadata is
+     *  not set before filtering therefore non-valid criteria are not supported in these cases.</p>
+     *
      * @param lookupForm lookup form instance containing the lookup data
      * @param searchCriteria map of criteria to process
      * @return map of processed criteria

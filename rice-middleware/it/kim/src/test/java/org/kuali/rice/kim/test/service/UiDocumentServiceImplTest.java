@@ -90,7 +90,7 @@ import org.kuali.rice.test.BaselineTestCase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
 public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	private UiDocumentService uiDocumentService;

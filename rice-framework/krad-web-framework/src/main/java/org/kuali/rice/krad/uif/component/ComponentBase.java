@@ -205,7 +205,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         resetDataOnRefresh = false;
         disableSessionPersistence = false;
         forceSessionPersistence = false;
-        readOnly = Boolean.FALSE;
 
         phasePathMapping = new HashMap<String, String>();
         context = Collections.emptyMap();

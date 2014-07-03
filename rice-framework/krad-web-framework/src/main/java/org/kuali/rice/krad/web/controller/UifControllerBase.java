@@ -565,6 +565,8 @@ public abstract class UifControllerBase {
         lookupParameters.put(UifParameters.RETURN_LOCATION, form.getFormPostUrl());
         lookupParameters.put(UifParameters.RETURN_FORM_KEY, form.getFormKey());
 
+        lookupParameters.put(UifParameters.PERFORM_DIRTY_CHECK, "false");
+
         // special check for external object classes
         if (lookupObjectClass != null) {
             ModuleService responsibleModuleService =
@@ -870,6 +872,7 @@ public abstract class UifControllerBase {
         props.put(UifParameters.VIEW_ID, form.getViewId());
         props.put(UifParameters.FORM_KEY, form.getFormKey());
         props.put(UifParameters.AJAX_REQUEST, "false");
+        props.put(UifParameters.PERFORM_DIRTY_CHECK, "false");
 
         return performRedirect(form, form.getFormPostUrl(), props);
     }

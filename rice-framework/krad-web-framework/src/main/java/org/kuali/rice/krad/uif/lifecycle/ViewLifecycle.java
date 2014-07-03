@@ -480,7 +480,9 @@ public class ViewLifecycle implements Serializable {
         if (ViewLifecycle.isStrict()) {
             throw illegalState;
         } else {
-            LOG.warn(illegalState.getMessage(), illegalState);
+            if(LOG.isTraceEnabled()) {
+                LOG.trace(illegalState.getMessage(), illegalState);
+            }
         }
     }
 
@@ -648,7 +650,9 @@ public class ViewLifecycle implements Serializable {
         try {
             return processor == null ? null : processor.getActivePhase();
         } catch (IllegalStateException e) {
-            LOG.debug("No lifecycle phase is active on the current processor", e);
+            if(LOG.isDebugEnabled()) {
+                LOG.debug("No lifecycle phase is active on the current processor", e);
+            }
             return null;
         }
     }

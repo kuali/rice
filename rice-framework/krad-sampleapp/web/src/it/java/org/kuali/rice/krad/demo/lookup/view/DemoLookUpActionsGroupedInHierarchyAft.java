@@ -75,7 +75,8 @@ public class DemoLookUpActionsGroupedInHierarchyAft extends ViewDemoAftBase {
     	//Search By Name
     	waitAndTypeByName(TRAVEL_ACCOUNT_NAME,"A1396389962525av");
     	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
-    	waitForTextPresent("A1396389962525av");
+        waitForLoadingProgress();
+        waitForTextPresent("A1396389962525av");
     	assertActionsGroupedInHierarchy();
     	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
     	

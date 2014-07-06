@@ -177,10 +177,12 @@ final class CriteriaSupportUtils {
 			return new CriteriaDecimalValue((Float)object);
 		} else if (object instanceof Double) {
 			return new CriteriaDecimalValue((Double)object);
-		}  else if (object instanceof KualiPercent) {
+		} else if (object instanceof KualiPercent) {
             return new CriteriaKualiPercentValue((KualiPercent)object);
-        }else if (object instanceof KualiDecimal) {
+        } else if (object instanceof KualiDecimal) {
             return new CriteriaKualiDecimalValue((KualiDecimal)object);
+        } else if (object instanceof PropertyPath) {
+            return new CriteriaPropertyPathValue((PropertyPath)object);
         }
 		throw new IllegalArgumentException("Failed to translate the given object to a CriteriaValue: " + object);
 	}

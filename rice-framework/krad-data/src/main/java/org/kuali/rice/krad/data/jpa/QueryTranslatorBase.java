@@ -15,12 +15,18 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.AndPredicate;
 import org.kuali.rice.core.api.criteria.CompositePredicate;
 import org.kuali.rice.core.api.criteria.CriteriaValue;
 import org.kuali.rice.core.api.criteria.EqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.EqualPredicate;
+import org.kuali.rice.core.api.criteria.ExistsSubQueryPredicate;
 import org.kuali.rice.core.api.criteria.GreaterThanOrEqualPredicate;
 import org.kuali.rice.core.api.criteria.GreaterThanPredicate;
 import org.kuali.rice.core.api.criteria.InIgnoreCasePredicate;
@@ -41,17 +47,15 @@ import org.kuali.rice.core.api.criteria.OrPredicate;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PropertyPathPredicate;
 import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
-
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import org.kuali.rice.core.api.criteria.SubQueryPredicate;
+import org.kuali.rice.krad.data.jpa.NativeJpaQueryTranslator.TranslationContext;
 
 /**
  * Base {@link QueryTranslator} implementation.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@SuppressWarnings("rawtypes")
 abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 
     /**
@@ -60,7 +64,19 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
      * @param entityClass the type to create the criteria from.
      * @return a criteria created from the given type.
      */
-    protected abstract C createCriteria(Class entityClass);
+	protected abstract C createCriteria(Class entityClass);
+
+	/**
+	 * Creates a new criteria parsing context from the given type for an inner subquery. The parent context is stored to
+	 * allow references between the inner and outer queries.
+	 * 
+	 * @param queryClazz
+	 *            the type of the query.
+	 * @param parentContext
+	 *            The {@link TranslationContext} of the outer query into which the subquery will be added as a
+	 *            {@link Predicate}.
+	 */
+	protected abstract C createCriteriaForSubQuery(Class queryClazz, C parentContext);
 
     /**
      * Creates a critera from the given parent critiera.
@@ -200,6 +216,18 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
      */
     protected abstract void addOr(C criteria, C inner);
 
+	/**
+	 * Adds an EXISTS clause to the criteria.
+	 * 
+	 * @param criteria
+	 *            the criteria to add to.
+	 * @param subQueryType
+	 *            The data object type of the inner subquery
+	 * @param subQueryPredicate
+	 *            Additional predicates to apply to the inner query - may be null.
+	 */
+	protected abstract void addExistsSubquery(C criteria, String subQueryType, Predicate subQueryPredicate);
+
     /**
      * Adds a "=" clause to the property, ignoring case.
      *
@@ -239,11 +267,14 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
      * <p>This is a fatal error since this implementation should support all known predicates.</p>
      */
     protected static class UnsupportedPredicateException extends RuntimeException {
+		private static final long serialVersionUID = 1L;
 
-        /**
-         * Creates an exception for if the {@link Predicate} is not recognized.
-         * @param predicate the {@link Predicate} in error.
-         */
+		/**
+		 * Creates an exception for if the {@link Predicate} is not recognized.
+		 * 
+		 * @param predicate
+		 *            the {@link Predicate} in error.
+		 */
         protected UnsupportedPredicateException(Predicate predicate) {
             super("Unsupported predicate [" + String.valueOf(predicate) + "]");
         }
@@ -285,6 +316,8 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
             }
         } else if (p instanceof CompositePredicate) {
             addCompositePredicate((CompositePredicate) p, parent);
+		} else if (p instanceof SubQueryPredicate) {
+			addSubQueryPredicate((SubQueryPredicate) p, parent);
         } else {
             throw new UnsupportedPredicateException(p);
         }
@@ -297,7 +330,7 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
      * @param parent the parent criteria to add to.
      */
     protected void addSingleValuePredicate(SingleValuedPredicate p, C parent) {
-        final Object value = getVal(p.getValue());
+		final Object value = getVal(p.getValue());
         final String pp = p.getPropertyPath();
         if (p instanceof EqualPredicate) {
             addEqualTo(parent, pp, value);
@@ -373,12 +406,26 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
     }
 
     /**
-     * Converts any {@link DateTime} values to {@link Timestamp}s.
-     *
-     * @param toConv the {@link CriteriaValue} to convert.
-     * @param <U> the type of the {@link CriteriaValue}.
-     * @return the {@link CriteriaValue} converted.
-     */
+	 * Adds a predicate representing a sub-query to the criteria.
+	 * 
+	 * @param p the subquery predicate to add.
+	 * @param parent the parent criteria to add to.
+	 */
+	protected void addSubQueryPredicate(SubQueryPredicate p, C parent) {
+		if (p instanceof ExistsSubQueryPredicate) {
+			addExistsSubquery(parent, p.getSubQueryType(), p.getSubQueryPredicate());
+		} else {
+			throw new UnsupportedPredicateException(p);
+		}
+	}
+
+	/**
+	 * Converts any {@link DateTime} values to {@link Timestamp}s.
+	 * 
+	 * @param toConv the {@link CriteriaValue} to convert.
+	 * @param <U> the type of the {@link CriteriaValue}.
+	 * @return the {@link CriteriaValue} converted.
+	 */
     protected static <U extends CriteriaValue<?>> Object getVal(U toConv) {
         Object o = toConv.getValue();
         if (o instanceof DateTime) {

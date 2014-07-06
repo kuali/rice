@@ -57,6 +57,7 @@ public class QueryByCriteriaJaxbTest {
     static {
         predicateSamplesMap.put(EqualPredicate.class, PredicateFactory.equal("foo", "val"));
         predicateSamplesMap.put(EqualIgnoreCasePredicate.class, PredicateFactory.equalIgnoreCase("foo", "val"));
+        predicateSamplesMap.put(ExistsSubQueryPredicate.class, PredicateFactory.existsSubquery("SubQueryDataObjectClass", PredicateFactory.equalsProperty("subQueryProp", "ParentQueryDataObjectClass", "parentProp")));
         predicateSamplesMap.put(GreaterThanPredicate.class, PredicateFactory.greaterThan("foo", 10));
         predicateSamplesMap.put(GreaterThanOrEqualPredicate.class, PredicateFactory.greaterThanOrEqual("foo", 10));
         predicateSamplesMap.put(InPredicate.class, PredicateFactory.in("foo", "val"));
@@ -78,30 +79,39 @@ public class QueryByCriteriaJaxbTest {
     public void testAllPredicates() throws Exception {
 
         ArrayList<Class<?>> discoveredPredicateClasses = discoverSimplePredicateClasses();
-
+        
         // test each predicate on their own
         for (Class<?> discoveredPredicateClass : discoveredPredicateClasses) {
             // create a query containing a sample of this predicate type
             Predicate sample = predicateSamplesMap.get(discoveredPredicateClass);
-            QueryByCriteria queryByCriteria = wrapInQueryByCriteria(sample);
+            LOG.debug("Predicate:");
+            LOG.debug( sample.toString() );
 
+            QueryByCriteria queryByCriteria = wrapInQueryByCriteria(sample);
+            LOG.debug("QueryByCriteria:");
+            LOG.debug( queryByCriteria.toString() );
+            
             String xml = marshallToString(queryByCriteria);
             String lowerCaseXml = xml.toLowerCase();
-
+            LOG.debug("XML:");
+            LOG.debug( xml );
             // get the class name without the word Predicate which is our convention for naming the xml elements.
             // in other words, the element for an InIgnoreCasePredicate looks like <inIgnoreCase ...>
             String className = discoveredPredicateClass.getSimpleName();
             String shortenedClassName = className.substring(0, className.length() - "predicate".length());
 
             // make sure the xml contains an element for the predicate with the correct name
-            Assert.assertTrue("XML doesn't appear to contain " + shortenedClassName,
+            Assert.assertTrue("XML doesn't appear to contain " + shortenedClassName + "\n\n : " + xml,
                     lowerCaseXml.contains("<"+shortenedClassName.toLowerCase()+" "));
 
             // make sure that JAXB isn't producing xsi:type attributes for this type, that means we're doing it wrong
             Assert.assertFalse("XML is using xsi:type for " + shortenedClassName, lowerCaseXml.contains(
                     "xsi:type=\"" + shortenedClassName.toLowerCase() + "type\""));
 
-            Assert.assertEquals("unmarshalled XML produces a non-equivalent object", unMarshall(xml), queryByCriteria);
+            Assert.assertNotNull( "Unmarshalled object was null", unMarshall(xml));
+            LOG.debug("Unmarshalled QueryByCriteria:");
+            LOG.debug( unMarshall(xml).toString() );
+            Assert.assertEquals("unmarshalled XML produces a non-equivalent object", queryByCriteria, unMarshall(xml));
         }
 
 
@@ -115,7 +125,7 @@ public class QueryByCriteriaJaxbTest {
 
         String lowerCaseXml = xml.toLowerCase(); // lower case makes searching simpler
 
-        Assert.assertEquals("unmarshalled XML produces a non-equivalent object", unMarshall(xml), queryByCriteria);
+        Assert.assertEquals("unmarshalled XML produces a non-equivalent object", queryByCriteria, unMarshall(xml));
 
         for (Class<?> discoveredPredicateClass : discoveredPredicateClasses) {
             String className = discoveredPredicateClass.getSimpleName();

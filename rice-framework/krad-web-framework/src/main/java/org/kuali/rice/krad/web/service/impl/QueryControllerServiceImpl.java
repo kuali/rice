@@ -150,7 +150,7 @@ public class QueryControllerServiceImpl implements QueryControllerService {
         buildLookupCriteriaParameters(form, request, lookupDataObjectClass, urlParameters);
 
         urlParameters.setProperty(UifParameters.RETURN_LOCATION, form.getFormPostUrl());
-        urlParameters.setProperty(UifParameters.RETURN_FORM_KEY, form.getFormKey());
+        urlParameters.setProperty(UifParameters.RETURN_FORM_KEY, form.getFormKey());       
     }
 
     /**

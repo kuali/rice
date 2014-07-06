@@ -105,6 +105,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // return empty search results (none found) when the search doesn't have any adjustedSearchCriteria although
         // a filtered search criteria is specified
         if (adjustedSearchCriteria == null) {
+            MessageMap messageMap = GlobalVariables.getMessageMap();
+            messageMap.putInfoForSectionId(UifConstants.MessageKeys.LOOKUP_RESULT_MESSAGES,
+                    RiceKeyConstants.INFO_LOOKUP_RESULTS_NONE_FOUND);
             return new ArrayList<Object>();
         }
 
@@ -173,6 +176,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
      * <p>Processing entails primarily of the removal of filtered and unused/blank search criteria.  Encrypted field
      * values are decrypted, and date range fields are combined into a single criteria entry.</p>
      *
+     *  <p>In special cases additional non-valid criteria may be included. E.g. with the KIM User Control as a criteria
+     *  the principal name may be passed so that it is displayed on the control.  The filtering removes these values
+     *  based on the viewPostMetadata.  When calling the search directly (methodToCall=search) the viewPostMetadata is
+     *  not set before filtering therefore non-valid criteria are not supported in these cases.</p>
+     *
      * @param lookupForm lookup form instance containing the lookup data
      * @param searchCriteria map of criteria to process
      * @return map of processed criteria
@@ -199,24 +207,29 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
             // get the post data for the filterable controls
             ViewPostMetadata viewPostMetadata = lookupForm.getViewPostMetadata();
-            Object componentPostData = viewPostMetadata.getComponentPostData(lookupForm.getViewId(), UifConstants.PostMetadata.FILTERABLE_LOOKUP_CRITERIA);
-            Map<String, FilterableLookupCriteriaControlPostData> filterableLookupCriteria = (Map<String, FilterableLookupCriteriaControlPostData>) componentPostData;
+            if (viewPostMetadata != null) {
+                Object componentPostData = viewPostMetadata.getComponentPostData(lookupForm.getViewId(),
+                        UifConstants.PostMetadata.FILTERABLE_LOOKUP_CRITERIA);
+                Map<String, FilterableLookupCriteriaControlPostData> filterableLookupCriteria =
+                        (Map<String, FilterableLookupCriteriaControlPostData>) componentPostData;
 
-            // first filter the results using the filter on the control
-            if (filterableLookupCriteria != null && filterableLookupCriteria.containsKey(propertyName)) {
-                FilterableLookupCriteriaControlPostData postData = filterableLookupCriteria.get(propertyName);
-                Class<? extends FilterableLookupCriteriaControl> controlClass = postData.getControlClass();
-                FilterableLookupCriteriaControl control = KRADUtils.createNewObjectFromClass(controlClass);
+                // first filter the results using the filter on the control
+                if (filterableLookupCriteria != null && filterableLookupCriteria.containsKey(propertyName)) {
+                    FilterableLookupCriteriaControlPostData postData = filterableLookupCriteria.get(propertyName);
+                    Class<? extends FilterableLookupCriteriaControl> controlClass = postData.getControlClass();
+                    FilterableLookupCriteriaControl control = KRADUtils.createNewObjectFromClass(controlClass);
 
-                filteredSearchCriteria = control.filterSearchCriteria(propertyName, filteredSearchCriteria, postData);
-            }
+                    filteredSearchCriteria = control.filterSearchCriteria(propertyName, filteredSearchCriteria,
+                            postData);
+                }
 
-            // second filter the results using the filter in the input field
-            filteredSearchCriteria = lookupInputField.filterSearchCriteria(filteredSearchCriteria);
+                // second filter the results using the filter in the input field
+                filteredSearchCriteria = lookupInputField.filterSearchCriteria(filteredSearchCriteria);
 
-            // early return if we have no results
-            if (filteredSearchCriteria == null) {
-                return null;
+                // early return if we have no results
+                if (filteredSearchCriteria == null) {
+                    return null;
+                }
             }
         }
 
@@ -258,20 +271,22 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     protected List<String> identifyWildcardDisabledFields(LookupForm lookupForm, Map<String, String> searchCriteria) {
         List<String> wildcardAsLiteralPropertyNames = new ArrayList<String>();
 
-        Map<String, InputField> criteriaFields = new HashMap<String, InputField>();
-        if (lookupForm.getView() != null) {
-            criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(), lookupForm);
-        }
-
-        for (String fieldName : searchCriteria.keySet()) {
-            InputField inputField = criteriaFields.get(fieldName);
-            if ((inputField == null) || !(inputField instanceof LookupInputField)) {
-                continue;
+        if (searchCriteria != null) {
+            Map<String, InputField> criteriaFields = new HashMap<String, InputField>();
+            if (lookupForm.getView() != null) {
+                criteriaFields = getCriteriaFieldsForValidation((LookupView) lookupForm.getView(), lookupForm);
             }
 
-            if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) && (((LookupInputField) inputField)
-                    .isDisableWildcardsAndOperators())) {
-                wildcardAsLiteralPropertyNames.add(fieldName);
+            for (String fieldName : searchCriteria.keySet()) {
+                InputField inputField = criteriaFields.get(fieldName);
+                if ((inputField == null) || !(inputField instanceof LookupInputField)) {
+                    continue;
+                }
+
+                if ((LookupInputField.class.isAssignableFrom(inputField.getClass())) && (((LookupInputField) inputField)
+                        .isDisableWildcardsAndOperators())) {
+                    wildcardAsLiteralPropertyNames.add(fieldName);
+                }
             }
         }
 
@@ -296,13 +311,16 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     protected boolean validateSearchParameters(LookupForm form, Map<String, String> searchCriteria) {
         boolean valid = true;
 
-        // The form view can't be relied upon since the complete lifecycle hasn't ran against it.  Instead
-        // the viewPostMetadata is being used for the validation.
-        // If the view was not previously posted then it's impossible to validate the search parameters because
-        // of the missing viewPostMetadata.  When this happens we assume the search parameters are correct.
-        // (Calling the search controller method directly without displaying the lookup first can cause
-        // this situation.)
-        if (form.getViewPostMetadata() == null) {
+        if (searchCriteria == null) {
+            return valid;
+        }
+
+        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(),
+                form);
+
+        // TODO: this should be an error condition but we have an issue when the search is performed from
+        // the initial request and there is not a posted view
+        if ((criteriaFields == null) || criteriaFields.isEmpty()) {
             return valid;
         }
 

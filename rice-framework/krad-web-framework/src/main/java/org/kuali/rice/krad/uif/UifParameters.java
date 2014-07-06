@@ -72,6 +72,7 @@ public class UifParameters {
 	public static final String RENDER_MAINTENANCE_LINKS = "renderMaintenanceLinks";
 	public static final String RENDER_RESULT_ACTIONS = "renderResultActions";
 	public static final String PAGE_ID = "pageId";
+    public static final String PERFORM_DIRTY_CHECK = "performDirtyCheck";
 	public static final String NAVIGATE_TO_PAGE_ID = "navigateToPageId";
     public static final String VALUE = "value";
     public static final String VIEW = "view";

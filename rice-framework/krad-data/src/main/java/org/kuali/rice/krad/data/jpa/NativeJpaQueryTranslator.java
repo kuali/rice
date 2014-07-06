@@ -28,8 +28,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.criteria.PropertyPath;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
 /**
@@ -84,6 +87,11 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
          */
         List<Predicate> predicates = new ArrayList<Predicate>();
 
+		/**
+		 * If the current context is a sub-query of another context, the parent context will be stored here.
+		 */
+		TranslationContext parentTranslationContext;
+
         /**
          * Creates a new criteria parsing context.
          *
@@ -99,6 +107,20 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
         }
 
         /**
+         * 
+         * Creates a new criteria parsing context for an inner subquery.  The parent context is stored
+         * to allow references between the inner and outer queries.
+         * 
+         * @param entityManager the entity manager to use for interacting with the database.
+         * @param queryClass the type of the query.
+         * @param parentContext The {@link TranslationContext} of the outer query into which the subquery will be added as a {@link Predicate}.
+         */
+        TranslationContext( EntityManager entityManager, Class queryClass, TranslationContext parentContext ) {
+        	this(entityManager, queryClass);
+        	this.parentTranslationContext = parentContext;
+        }
+        
+        /**
          * Creates a new criteria parsing context that is a container for the inner predicates.
          *
          * @param parent the parent criteria parsing context.
@@ -107,6 +129,7 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
             builder = parent.builder;
             query = parent.query;
             root = parent.root;
+			parentTranslationContext = parent.parentTranslationContext;
         }
 
         /**
@@ -126,6 +149,16 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
         void and(TranslationContext predicate) {
             addPredicate(predicate.getCriteriaPredicate());
         }
+
+		/**
+		 * Adds a JPA Subquery to the predicates.
+		 * 
+		 * @param predicate
+		 *            the predicate to AND.
+		 */
+		void addExistsSubquery(Subquery<?> subquery) {
+			predicates.add(builder.exists(subquery));
+		}
 
         /**
          * Adds an OR clause.
@@ -168,22 +201,33 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
          * @param attr the attribute path.
          * @return the path for the given attribute.
          */
-        Path attr(String attr) {
+		@SuppressWarnings("rawtypes")
+		Path attr(String attr) {
             if (StringUtils.isBlank(attr)) {
                 throw new IllegalArgumentException("Encountered an empty attribute path");
             }
 
-            Path path = root;
-            // split the attribute based on a period for nested property paths, for example if you want to pass an attribute
-            // like "property1.property2" then JPA will not interpret that properly, you have to split in manually
+			// Tokenize the property string
             String[] attrArray = attr.split("\\.");
-            for (String attrElement : attrArray) {
-                if (StringUtils.isBlank(attrElement)) {
-                    throw new IllegalArgumentException("Encountered an empty path element in property path: " + attr);
-                }
-                path = path.get(attrElement);
+			// first, check if this is a reference to a field on the parent (outer) query.
+			// If so, and we have a parent (outer) query, then strip off the parent keyword
+			// and resolve the property in that context.
+			if (attrArray.length > 0 && StringUtils.equals(attrArray[0], "parent") && parentTranslationContext != null) {
+				return parentTranslationContext.attr(StringUtils.substringAfter(attr, "."));
+			} else {
+				Path path = root;
+				// split the attribute based on a period for nested property paths, for example if you want to pass an
+				// attribute
+				// like "property1.property2" then JPA will not interpret that properly, you have to split in manually
+				for (String attrElement : attrArray) {
+					if (StringUtils.isBlank(attrElement)) {
+						throw new IllegalArgumentException("Encountered an empty path element in property path: "
+								+ attr);
+					}
+					path = path.get(attrElement);
+				}
+				return path;
             }
-            return path;
         }
     }
 
@@ -234,6 +278,14 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
      * {@inheritDoc}
      */
     @Override
+	protected TranslationContext createCriteriaForSubQuery(Class queryClazz, TranslationContext parentContext) {
+		return new TranslationContext(entityManager, queryClazz, parentContext);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
     protected TranslationContext createInnerCriteria(TranslationContext parent) {
         // just a container for the inner predicates
         // copy everything else
@@ -280,12 +332,47 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
         criteria.addPredicate(criteria.builder.isNull(criteria.attr(propertyPath)));
     }
 
+	/**
+	 * Translates the Rice Criteria API {@link PropertyPath} object into a native JPA path which can be used in JPA
+	 * predicates.
+	 * 
+	 * @param criteria
+	 *            The base criteria context for translation of the property if no specific data type is given.
+	 * @param value
+	 *            The {@link PropertyPath} object passed in from the Rice Criteria API.
+	 * @return A JPA {@link Path} object which can be used in JPA {@link Predicate} statements.
+	 */
+	@SuppressWarnings("rawtypes")
+	protected Path translatePropertyPathIntoJpaPath(TranslationContext criteria, PropertyPath value) {
+		TranslationContext tempCriteria = criteria;
+		if (value.getDataType() != null) {
+			try {
+				tempCriteria = createCriteria(Class.forName(value.getDataType()));
+			} catch (ClassNotFoundException e) {
+				// unable to find the type - ignore and attempt to resolve path without special context
+				Logger.getLogger(this.getClass()).error(
+						"Unable to find data type " + value.getDataType()
+								+ ".  Falling back to the base root for the query: " + criteria.root.getJavaType());
+			}
+		}
+		return tempCriteria.attr(value.getPropertyPath());
+	}
+
     /**
      * {@inheritDoc}
      */
     @Override
     protected void addEqualTo(TranslationContext criteria, String propertyPath, Object value) {
-        criteria.addPredicate(criteria.builder.equal(criteria.attr(propertyPath), value));
+		// If this is a property path criteria, we need to translate it first
+		if (value instanceof PropertyPath) {
+			// We *must* make the call separate here. If we don't, it binds to the (Expression,Object) version of the
+			// JPA method
+			// which converts our property path into a string literal.
+			Path path = translatePropertyPathIntoJpaPath(criteria, (PropertyPath) value);
+			criteria.addPredicate(criteria.builder.equal(criteria.attr(propertyPath), path));
+		} else {
+			criteria.addPredicate(criteria.builder.equal(criteria.attr(propertyPath), value));
+		}
     }
 
     /**
@@ -346,6 +433,29 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
                 fixSearchPattern(value.toUpperCase())));
     }
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void addExistsSubquery(TranslationContext criteria, String subQueryType,
+			org.kuali.rice.core.api.criteria.Predicate subQueryPredicate) {
+		try {
+			Class<?> subQueryBaseClass = Class.forName(subQueryType);
+			Subquery<?> subquery = criteria.query.subquery(subQueryBaseClass);
+			TranslationContext subQueryJpaPredicate = createCriteriaForSubQuery(subQueryBaseClass, criteria);
+
+			// If a subQueryPredicate is passed, this is a Rice Predicate object and must be translated
+			// into JPA - so we add it to the list this way.
+			if (subQueryPredicate != null) {
+				addPredicate(subQueryPredicate, subQueryJpaPredicate);
+			}
+
+			subquery.where(subQueryJpaPredicate.predicates.toArray(new Predicate[0]));
+			criteria.addExistsSubquery(subquery);
+		} catch (ClassNotFoundException e) {
+			throw new IllegalArgumentException(subQueryType + " can not be resolved to a class for JPA");
+		}
+	}
 
 	/**
 	 * Fixes the search pattern by converting all non-escaped lookup wildcards ("*" and "?") into their respective JPQL
@@ -384,7 +494,16 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
      */
     @Override
     protected void addNotEqualTo(TranslationContext criteria, String propertyPath, Object value) {
-        criteria.addPredicate(criteria.builder.notEqual(criteria.attr(propertyPath), value));
+		// If this is a property path criteria, we need to translate it first
+		if (value instanceof PropertyPath) {
+			// We *must* make the call separate here. If we don't, it binds to the (Expression,Object) version of the
+			// JPA method
+			// which converts our property path into a string literal.
+			Path path = translatePropertyPathIntoJpaPath(criteria, (PropertyPath) value);
+			criteria.addPredicate(criteria.builder.notEqual(criteria.attr(propertyPath), path));
+		} else {
+			criteria.addPredicate(criteria.builder.notEqual(criteria.attr(propertyPath), value));
+		}
     }
 
     /**
@@ -427,6 +546,8 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
     protected void addOr(TranslationContext criteria, TranslationContext inner) {
         criteria.or(inner);
     }
+
+	// protected void addSubquery( TranslationContext criteria )
 
     /**
      * {@inheritDoc}

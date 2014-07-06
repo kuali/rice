@@ -222,7 +222,7 @@ KradResponse.prototype = {
         var redirectUrl = jQuery(content).text().trim();
 
         // don't check dirty state on a simple refresh (old url starts with the new one's url text)
-        if (window.location.href.indexOf(redirectUrl) === 0) {
+        if (redirectUrl.indexOf("performDirtyCheck=false") > -1) {
             dirtyFormState.skipDirtyChecks = true;
         }
 

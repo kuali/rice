@@ -42,34 +42,34 @@ public class DemoCollectionFeaturesServerPagingAft extends WebDriverLegacyITBase
     }
 
     protected void testCollectionFeaturesServerPagingRichTableCollection() throws Exception {
-      if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[12]")) {
-        fail("More than 10 Elements Present.");
-      }
-      selectByXpath("//div[@class='dataTables_length']/label/select", "25");
-      assertElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[12]");
-      if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[27]")) {
-        fail("More than 25 Elements Present.");
-      }
-      waitAndClickByLinkText("2");
-      assertTextPresent("50");
+        if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[12]")) {
+            fail("More than 10 Elements Present.");
+        }
+        selectByXpath("//div[@class='dataTables_length']/label/select", "25");
+        waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[12]");
+        if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine dataTable']/tbody/tr[27]")) {
+            fail("More than 25 Elements Present.");
+        }
+        waitAndClickByLinkText("2");
+        assertTextPresent("50");
     }
     
     protected void testCollectionFeaturesServerPagingStackedCollection() throws Exception {
         selectByName("exampleShown","Stacked Collection with server-side paging");
         if(isElementPresentByXpath("//div[@class='uif-stackedCollectionLayout']/div[7]")) {
-          fail("More than 6 Stack present.");
+            fail("More than 6 Stack present.");
         }
         if(isElementPresentByXpath("//input[@name='collection2[9].field1']")) {
-          fail("Element for second page is present.");
+            fail("Element for second page is present.");
         }
         waitAndClickByLinkText("»");
-        assertElementPresentByXpath("//input[@name='collection2[9].field1']");
+        waitForElementPresentByXpath("//input[@name='collection2[9].field1']");
      }
     
     protected void testCollectionFeaturesServerPagingBasicTableCollection() throws Exception {
         selectByName("exampleShown","Table Collection with server-side Paging (Basic)");
         if(isElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-tableCollectionLayout uif-hasAddLine']/tbody/tr[12]")) {
-          fail("More than 10 Rows present.");
+           fail("More than 10 Rows present.");
         }
         waitAndClickByLinkText("Last");
         assertTextPresent("999");

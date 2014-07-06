@@ -1504,8 +1504,11 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void waitForElementNotPresent(By by) throws InterruptedException {
+        waitForElementNotPresent(by, WebDriverUtils.configuredImplicityWait());
+    }
+
+    protected void waitForElementNotPresent(By by, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        int secondsToWait = WebDriverUtils.configuredImplicityWait();
         while (isElementPresent(by) && secondsToWait > 0) {
             secondsToWait -= 1;
             Thread.sleep(1000);
@@ -1529,6 +1532,20 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         }
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
         return present;
+    }
+
+    protected void waitForLoadingProgress() throws InterruptedException {
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+        for (int second = 0;; second++) {
+            Thread.sleep(1000);
+            if (second >= waitSeconds) {
+                jiraAwareFail(TIMEOUT_MESSAGE + " still Loading after " + waitSeconds);
+            }
+            if (!isVisible(By.xpath("//img[@alt='Loading...']"))) {
+                break;
+            }
+        }
+        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
 
     protected void waitForTextPresent(String text) throws InterruptedException {

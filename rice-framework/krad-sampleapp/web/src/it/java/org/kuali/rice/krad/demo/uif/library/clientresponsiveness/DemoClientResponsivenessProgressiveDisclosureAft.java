@@ -50,7 +50,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         waitAndClickByLinkText("Default");
         assertIsNotVisibleByXpath("//input[@name='inputField1']", "Is Visible");
         waitAndClickByName("booleanField1");
-        assertIsVisibleByXpath("//input[@name='inputField1']","Not Visible");
+        waitIsVisibleByXpath("//input[@name='inputField1']","Not Visible");
         waitAndClickByName("booleanField1");
         assertIsNotVisibleByXpath("//input[@name='inputField1']", "Is Visible");
         jiraAwareTypeByName("inputField2", "show");
@@ -64,16 +64,14 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
         checkForIncidentReport("DemoClientResponsivenessProgressiveDisclosureAft Ajax Retrieval");
         assertIsNotVisibleByXpath("//input[@name='inputField18']", "element");
         waitAndClickByName("booleanField2");
-        Thread.sleep(2000);
-        assertIsVisibleByXpath("//input[@name='inputField18']", "element");
+        waitIsVisibleByXpath("//input[@name='inputField18']", "element");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureRefreshWhenShown() throws Exception {
         waitAndClickByLinkText("Refresh when Shown");
         assertIsNotVisibleByXpath("//input[@name='inputField5']", "element");
         waitAndClickByName("booleanField3");
-        Thread.sleep(2000);
-        assertIsVisibleByXpath("//input[@name='inputField5']", "element");
+        waitIsVisibleByXpath("//input[@name='inputField5']", "element");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureShowFieldThroughMatching() throws Exception {

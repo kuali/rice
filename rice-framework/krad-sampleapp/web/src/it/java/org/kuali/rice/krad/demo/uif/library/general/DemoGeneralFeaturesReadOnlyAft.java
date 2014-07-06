@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.uif.library.general;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 
 /**
@@ -58,7 +59,7 @@ public class DemoGeneralFeaturesReadOnlyAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//input[@name='checkboxesField1']");
         waitForElementPresentByXpath("//input[@name='checkboxesField2']");
         waitAndClickButtonByText("Make ReadOnly");
-        waitForElementNotPresent(By.xpath("//input[@name='inputField1']"));
+        waitForElementNotPresent(By.xpath("//input[@name='inputField1']"), WebDriverUtils.configuredImplicityWait() * 2);
         waitForElementNotPresent(By.xpath("//textarea[@name='inputField2']"));
         waitForElementNotPresent(By.xpath("//select[@name='inputField3']"));
         waitForElementNotPresent(By.xpath("//select[@name='inputField4']"));

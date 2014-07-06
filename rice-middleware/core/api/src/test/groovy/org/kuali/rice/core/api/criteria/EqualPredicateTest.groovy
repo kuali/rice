@@ -38,7 +38,7 @@ public class EqualPredicateTest {
 	private static final String DATE_TIME_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><dateTimeValue>2011-01-15T05:30:15.500Z</dateTimeValue></equal>";
     private static final String KUALI_DECIMAL_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiDecimalValue>0.00</kualiDecimalValue></equal>";
     private static final String KUALI_PERCENT_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><kualiPercentValue>0.00</kualiPercentValue></equal>";
-	
+    private static final String PROPERTY_PATH_XML = "<equal propertyPath=\"property.path\" xmlns=\"http://rice.kuali.org/core/v2_0\"><propertyPathValue><propertyPath dataType=\"ParentObject\" propertyPath=\"parentProp\" /></propertyPathValue></equal>";
 
 	/**
 	 * Test method for {@link EqualPredicate#EqualPredicate(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
@@ -78,7 +78,13 @@ public class EqualPredicateTest {
 		equalExpression = new EqualPredicate("property.path", new CriteriaDateTimeValue(dateTime));
 		assertEquals("property.path", equalExpression.getPropertyPath());
 		assertEquals(dateTime, equalExpression.getValue().getValue());
-		
+
+        // Test that it can take a CriteriaPropertyPathValue
+        PropertyPath propertyPath = new PropertyPath("ParentObject","parentProp");
+        equalExpression = new EqualPredicate("property.path", new CriteriaPropertyPathValue(propertyPath));
+        assertEquals("property.path", equalExpression.getPropertyPath());
+        assertEquals(propertyPath, equalExpression.getValue().getValue());
+
 		// test failure cases, should throw IllegalArgumentException when null is passed
 		try {
 			new EqualPredicate(null, null);
@@ -107,7 +113,7 @@ public class EqualPredicateTest {
 		
 		equalExpression = new EqualPredicate("property.path", new CriteriaIntegerValue(BigInteger.ZERO));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, INTEGER_XML, EqualPredicate.class);
-		
+        
 		// set the date and time to January 15, 2100 at 5:30:15.500 am in the GMT timezone
 		Calendar dateTime = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 		dateTime.set(Calendar.HOUR_OF_DAY, 5);
@@ -120,6 +126,9 @@ public class EqualPredicateTest {
 		
 		equalExpression = new EqualPredicate("property.path", new CriteriaDateTimeValue(dateTime));
 		JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, DATE_TIME_XML, EqualPredicate.class);
+
+        equalExpression = new EqualPredicate("property.path", new CriteriaPropertyPathValue(new PropertyPath("ParentObject","parentProp")));
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(equalExpression, PROPERTY_PATH_XML, EqualPredicate.class);        
 	}
 
 }

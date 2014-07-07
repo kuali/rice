@@ -51,14 +51,14 @@ public class JenkinsJsonJobResultsBase {
     public static final String BROWSER_HELPER_APPS_NEVER_ASK_SAVE_TO_DISK = "browser.helperApps.neverAsk.saveToDisk";
 
     /**
-     * REQUIRED -Dcas.username= CAS username.
+     * -Dcas.username= CAS username.
      */
-    public static final String CAS_USERNAME = "cas.username";
+    private static final String CAS_USERNAME = "cas.username";
 
     /**
-     * REQUIRED -Dcas.password= CAS password.
+     * -Dcas.password= CAS password.
      */
-    public static final String CAS_PASSWORD = "cas.password";
+    private static final String CAS_PASSWORD = "cas.password";
 
     /**
      * -Djenkins.base.url= default is http://ci.rice.kuali.org.
@@ -89,7 +89,7 @@ public class JenkinsJsonJobResultsBase {
     String downloadDir;
 
     public void setUp() throws MalformedURLException, InterruptedException {
-        jenkinsBase = System.getProperty(JENKINS_BASE_URL, "http://ci.rice.kuali.org");
+        jenkinsBase = System.getProperty(JENKINS_BASE_URL, "http://ci.kuali.org");
         outputDirectory = System.getProperty(JSON_OUTPUT_DIR);
 
         FirefoxProfile profile = new FirefoxProfile();
@@ -110,14 +110,14 @@ public class JenkinsJsonJobResultsBase {
         driver.get(jenkinsBase + "/login?form");
 
         // CAS
-        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("username"),
-                this.getClass().toString());
-        driver.findElement(By.id("username")).sendKeys(System.getProperty(CAS_USERNAME));
-        driver.findElement(By.id("password")).sendKeys(System.getProperty(CAS_PASSWORD));
-        driver.findElement(By.name("submit")).click();
-        Thread.sleep(1000);
-
-        exitOnLoginProblems();
+//        WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.id("username"),
+//                this.getClass().toString());
+//        driver.findElement(By.id("username")).sendKeys(System.getProperty(CAS_USERNAME));
+//        driver.findElement(By.id("password")).sendKeys(System.getProperty(CAS_PASSWORD));
+//        driver.findElement(By.name("submit")).click();
+//        Thread.sleep(1000);
+//
+//        exitOnLoginProblems();
 
         // Jenkins login page (don't login, we have authenticated through CAS already
         WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.xpath("//span[contains(text(), 'Page generated')]"), this.getClass().toString());
@@ -248,7 +248,8 @@ public class JenkinsJsonJobResultsBase {
 
         outputFile = calcOutputFile(job, jobNumber);
 
-        json = json.replaceAll("}],", "}],\n");
+        json = json.replaceAll("}],", "}],\n\n");
+
         FileUtils.writeStringToFile(new File(outputFile), json);
     }
 

@@ -384,6 +384,10 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
         var submitData = jQuery("#" + componentId).data(kradVariables.SUBMIT_DATA);
         jQuery.extend(data, submitData);
 
+        if (!lookupReturnByScript) {
+            dirtyFormState.skipDirtyChecks = true;
+        }
+
         // Check if this is not called within a lightbox
         var renderedInLightBox = isCalledWithinLightbox();
         if (!renderedInLightBox) {

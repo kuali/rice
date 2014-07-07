@@ -139,6 +139,12 @@ jQuery(document).ready(function () {
     // setup dirty field processing
     dirtyFormState.dirtyHandlerSetup();
 
+    // handler is for catching a fancybox close and re-enabling dirty checks because main use of fancybox is for
+    // lookup dialogs which turn them off temporarily
+    jQuery(document).on("afterClose.fancybox", function() {
+        dirtyFormState.skipDirtyChecks = false;
+    });
+
     // disclosure handler setup
     setupDisclosureHandler();
 

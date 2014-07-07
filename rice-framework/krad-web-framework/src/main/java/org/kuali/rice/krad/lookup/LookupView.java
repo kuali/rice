@@ -166,14 +166,17 @@ public class LookupView extends FormView {
     public void performApplyModel(Object model, LifecycleElement parent) {
         LookupForm lookupForm = (LookupForm) model;
 
+        // don't render criteria group footer/actions
         if (!renderCriteriaActions) {
             criteriaGroup.getFooter().setRender(false);
         }
 
+        // don't render criteria if not supposed to or (hide on search results and displaying the results)
         if (!renderLookupCriteria || (hideCriteriaOnSearch && lookupForm.isDisplayResults())) {
             criteriaGroup.setRender(false);
         }
 
+        // if hide on search results and not displaying search results don't render results
         if (hideCriteriaOnSearch && !lookupForm.isDisplayResults()) {
             resultsGroup.setRender(false);
         }

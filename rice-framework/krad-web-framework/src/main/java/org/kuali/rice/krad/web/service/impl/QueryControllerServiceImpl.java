@@ -72,6 +72,9 @@ public class QueryControllerServiceImpl implements QueryControllerService {
             throw new RuntimeException("Lookup data object class not found for lookup call");
         }
 
+        // Force skip of dirty check
+        urlParameters.put(UifParameters.PERFORM_DIRTY_CHECK, "false");
+
         // first give module service the opportunity to build the lookup URL
         String baseLookupUrl = getLookupUrlFromModuleService(lookupDataObjectClass, urlParameters);
         if (StringUtils.isNotBlank(baseLookupUrl)) {

@@ -33,12 +33,9 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
-import org.kuali.rice.krad.inquiry.Inquirable;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.BindingInfo;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentSecurity;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
@@ -159,7 +156,7 @@ public class DataFieldBase extends FieldBase implements DataField {
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
 
-        if (enableAutoInquiry && this.inquiry == null && getReadOnly() && hasAutoInquiryRelationship()) {
+        if (enableAutoInquiry && this.inquiry == null && Boolean.TRUE.equals(getReadOnly()) && hasAutoInquiryRelationship()) {
             this.inquiry = ComponentFactory.getInquiry();
         }
 
@@ -1119,7 +1116,7 @@ public class DataFieldBase extends FieldBase implements DataField {
         Object model = ViewLifecycle.getModel();
 
         // Do checks for inquiry when read only
-        if (getReadOnly()) {
+        if (Boolean.TRUE.equals(getReadOnly())) {
 
             String bindingPath = getBindingInfo().getBindingPath();
             if (StringUtils.isBlank(bindingPath) || bindingPath.equals("null")) {

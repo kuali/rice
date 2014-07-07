@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +151,7 @@ public abstract class CssGridLayoutManagerBase extends LayoutManagerBase {
      *
      * @return the items of this cssGrid
      */
+    @ViewLifecycleRestriction
     public List<Component> getCellItems() {
         return cellItems;
     }

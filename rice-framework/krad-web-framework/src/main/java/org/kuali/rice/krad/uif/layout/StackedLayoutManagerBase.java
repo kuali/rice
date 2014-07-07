@@ -358,6 +358,23 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
     }
 
     /**
+     * Returns the parent {@link org.kuali.rice.krad.uif.layout.collections.CollectionLayoutManagerBase}'s add line group
+     *
+     * <p>
+     * This method is overridden to restrict the lifecycle of the add line group as a resolution to avoid duplicate
+     * components from being added to the view, for example, quickfinders.
+     * </p>
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    @ViewLifecycleRestriction(UifConstants.ViewPhases.INITIALIZE)
+    public Group getAddLineGroup() {
+        return super.getAddLineGroup();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

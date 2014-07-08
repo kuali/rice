@@ -87,28 +87,31 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
     }
     @Test public void testNestedDuplicateNodeNameInRoutePath() throws Exception {
+        int waitMilliSeconds = 3000;
         loadXmlFile("DocTypeConfig_nestedNodes.xml");
         // Path 1
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestDoubleNodeDocumentType");
         document.setTitle("");
         document.route("");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
+        assertTrue("rkirkend should have an approve request; the first request", document.isApprovalRequested());
         document.approve("");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
         document.approve("");
+        Thread.sleep(waitMilliSeconds);
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
-        assertTrue("user3 should have an approve request", document.isApprovalRequested());
+        assertTrue("user3 should have an approve request; the first request", document.isApprovalRequested());
         document.approve("");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
         assertTrue("user4 should have an approve request", document.isApprovalRequested());
         document.approve("");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("rkirkend should have an approve request", document.isApprovalRequested());
+        assertTrue("rkirkend should have an approve request; the second request", document.isApprovalRequested());
         document.approve("");
+        Thread.sleep(waitMilliSeconds);
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
-        assertTrue("user3 should have an approve request", document.isApprovalRequested());
+        assertTrue("user3 should have an approve request; the second request", document.isApprovalRequested());
         document.approve("");
     }
     /**

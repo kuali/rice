@@ -752,8 +752,10 @@ function initFieldHandlers() {
     }).on("focusout", "div[data-role='InputField'] div.input-group", function (event) {
         currentControl = this;
 
-        // determine whether we are still in the widget. If we are out of the widget, then validate
-        if(isRelatedTarget(this, event) !== true && buttonHovered === false){
+        // determine whether we are still in the widget. If we are out of the widget and the field
+        // is not a radio button, then validate
+        var radioButtons = jQuery(this).find('input:radio');
+        if(isRelatedTarget(this, event) !== true && buttonHovered === false && radioButtons.length == 0){
             validateFieldValue(jQuery(this).children("[data-role='Control']"));
         }
     });

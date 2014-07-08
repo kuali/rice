@@ -307,7 +307,15 @@
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_DISAPPROVE]}">
           <property name="confirmationDialog">
             <bean id="DisapproveExplanationDialog" parent="Uif-DialogGroup-OkCancelExpl"
-                  p:promptText="Please provide an explanation for this action:"/>
+                  p:promptText="Please provide an explanation for this action:">
+              <property name="explanation">
+                <bean parent="Uif-DialogExplanation">
+                  <property name="control">
+                    <bean parent="Uif-TextAreaControl" p:maxLength="@{#view.explanationDataMaxLength}"/>
+                  </property>
+                </bean>
+              </property>
+            </bean>
           </property>
         </bean>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="approve" p:actionLabel="Approve"

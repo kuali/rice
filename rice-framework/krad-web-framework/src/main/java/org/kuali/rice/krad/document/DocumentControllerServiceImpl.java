@@ -314,9 +314,10 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
     }
 
     /**
-     * Convenience method for building authorization exceptions.
+     * Convenience method for generating disapproval note with text from the explanation dialog.
      *
      * @param form document form instance containing the explanation dialog
+     * @return
      */
     protected String generateDisapprovalNote(DocumentFormBase form) {
         String explanationData = form.getDialogExplanations().get(EXPLANATION_DIALOG);
@@ -324,7 +325,11 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
             return "";
         }
 
-        return explanationData;
+        // build out full message to return
+        String introNoteMessage = getConfigurationService().getPropertyValueAsString(
+                RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO) + KRADConstants.BLANK_SPACE;
+
+        return introNoteMessage + explanationData;
     }
 
     /**
@@ -648,7 +653,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_APPROVED;
                     break;
                 case DISAPPROVE:
-                    String disapprovalNoteText = "";
+                    String disapprovalNoteText = generateDisapprovalNote(form);
                     document = getDocumentService().disapproveDocument(document, disapprovalNoteText);
                     successMessageKey = RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED;
                     break;

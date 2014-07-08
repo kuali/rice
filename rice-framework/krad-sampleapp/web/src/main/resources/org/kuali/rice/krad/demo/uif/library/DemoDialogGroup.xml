@@ -71,7 +71,20 @@
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Confirm Action" p:methodToCall="refresh">
           <property name="confirmationDialog">
             <bean id="Demo-DialogEx2" parent="Uif-DialogGroup-OkCancelExpl"
-                  p:promptText="Please provide an explanation for this action:"/>
+                  p:promptText="Please provide an explanation for this action:">
+              <property name="explanation">
+                <bean parent="Uif-DialogExplanation">
+                  <property name="control">
+                    <bean parent="Uif-TextAreaControl" p:maxLength="20"/>
+                  </property>
+                </bean>
+              </property>
+              <property name="footer.items">
+                <list merge="true">
+                  <bean parent="Uif-Message" p:messageText="Explanation Data Max Length = 20"/>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
         <bean parent="Uif-Message" p:render="@{!#empty(dialogExplanations['Demo-DialogEx2'])}"

@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -24,6 +27,7 @@ import org.kuali.rice.krad.document.DocumentViewPresentationControllerBase;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * View type for KRAD documents.
@@ -114,6 +118,24 @@ public class DocumentView extends FormView {
         }
 
         return documentEntry;
+    }
+
+    /**
+     * Returns the maximum allowed length for explanation notes within the document
+     *
+     * <p>
+     *     The max length for the explanation data is calculated as the difference between the max length of
+     *     the entire note and the length of the introduction message plus a whitespace.
+     * </p>
+     *
+     * @return int
+     */
+    @BeanTagAttribute(name = "explanationDataMaxLength")
+    public int getExplanationDataMaxLength() {
+        return KRADServiceLocatorWeb.getDataDictionaryService().getAttributeMaxLength(Note.class,
+                KRADConstants.NOTE_TEXT_PROPERTY_NAME) -
+                (CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                        RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO) + KRADConstants.BLANK_SPACE).length();
     }
 
     /**

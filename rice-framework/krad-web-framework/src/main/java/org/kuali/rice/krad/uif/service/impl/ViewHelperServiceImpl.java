@@ -799,6 +799,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 object, bindingPath)) {
             return;
         }
+
+        // check if we have a current value
+        if (ObjectPropertyUtils.getPropertyValue(object, bindingPath) != null) {
+            return;
+        }
+
         Object defaultValue = getDefaultValueForField(object, dataField);
 
         if (defaultValue != null) {

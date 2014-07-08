@@ -106,6 +106,17 @@
                 <artifactId>rice-krms-impl</artifactId>
                 <version>${project.version}</version>
               </dependency>
+              <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+                <exclusions>
+                  <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                  </exclusion>
+                </exclusions>
+              </dependency>
             </dependencies>
           </plugin>
         </plugins>
@@ -177,6 +188,17 @@
             <groupId>org.kuali.common</groupId>
             <artifactId>kuali-deploy</artifactId>
             <version>${kuali-deploy.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+            <exclusions>
+              <exclusion>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+              </exclusion>
+            </exclusions>
           </dependency>
         </dependencies>
       </plugin>

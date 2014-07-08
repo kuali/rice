@@ -396,11 +396,6 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             propertyPath = parentPropertyPath;
         }
 
-        // if its a GET request and there was no annotation found, then we still want to disallow
-        if(request.getMethod().equalsIgnoreCase(RequestMethod.GET.name())) {
-            return Boolean.FALSE;
-        }
-
         return null;
     }
 

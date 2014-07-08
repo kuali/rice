@@ -172,7 +172,7 @@
         A tomcat plugin could also be configured and used if desired.
       -->
       <plugin>
-        <groupId>org.mortbay.jetty</groupId>
+        <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>\${plugin.jetty.version}</version>
         <configuration>
@@ -253,7 +253,7 @@
           A tomcat plugin could also be configured and used if desired.
           -->
           <plugin>
-            <groupId>org.mortbay.jetty</groupId>
+            <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
             <version>\${plugin.jetty.version}</version>
             <configuration>
@@ -533,7 +533,7 @@
 
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
       <version>\${servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>

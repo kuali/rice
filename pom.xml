@@ -130,11 +130,13 @@
       One of the specific offenders here is WorkflowDocumentService and it's use of DocumentStatus enum.
       Switching to the 2.1-based verson of jaxb-impl version 2.1.13 causes the problem to go away.
     -->
+    <!-- Not used in RICE
     <cxf-java2ws-plugin.jaxb-impl.version>2.1.13</cxf-java2ws-plugin.jaxb-impl.version>
+    -->
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
-    <ehcache.version>2.5.0</ehcache.version>
+    <ehcache.version>2.6.9</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <freemarker.version>2.3.20-patch2</freemarker.version>
     <plexus-utils.version>3.0.10</plexus-utils.version>
@@ -143,8 +145,8 @@
     <closure.version>v20130603</closure.version>
     <wro4j.version>1.7.0</wro4j.version>
     <glassfish-javax-json.version>1.0.1</glassfish-javax-json.version>
-    <groovy.version>1.8.5</groovy.version>
-    <guava.version>11.0</guava.version>
+    <groovy.version>1.8.6</groovy.version>
+    <guava.version>13.0</guava.version>
     <httpclient.version>4.3.3</httpclient.version>
     <eclipselink.version>2.5.1</eclipselink.version>
     <jpa.version>2.1.0</jpa.version>
@@ -153,12 +155,12 @@
     <javax.inject.version>1</javax.inject.version>
     <jaxen.version>1.1.3</jaxen.version>
     <jdom.version>1.1</jdom.version>
-    <jetty.version>8.1.7.v20120910</jetty.version>
+    <jetty.version>9.2.1.v20140609</jetty.version>
     <plugin.jmeter.version>1.8.1</plugin.jmeter.version>
     <plugin.saucelabs.connect.version>1.0.19</plugin.saucelabs.connect.version>
     <plugin.build-helper.version>1.8</plugin.build-helper.version>
     <plugin.gmaven.version>1.5</plugin.gmaven.version>
-    <joda-time.version>2.0</joda-time.version>
+    <joda-time.version>2.3</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10-kuali-1</jotm.version>
     <json-api.version>1.0</json-api.version>
@@ -177,7 +179,7 @@
     <kuali-mvn.version>1.0.2</kuali-mvn.version>
     <log4j.version>1.2.16</log4j.version>
     <mail.version>1.4.4</mail.version>
-    <mockito.version>1.9.0</mockito.version>
+    <mockito.version>1.9.5</mockito.version>
     <persistence.version>1.0.1.Final</persistence.version>
     <!-- Quartz 1.8.5 appears to cause strange errors in spring on startup,
       Quartz 2.0.x is an impacting api and database-level change -->
@@ -201,12 +203,12 @@
     <stests.failsafe.timeout>0</stests.failsafe.timeout>
     <xalan.version>2.7.1</xalan.version>
     <serializer.version>2.7.1</serializer.version>
-    <servlet-api.version>2.5</servlet-api.version>
-    <slf4j.version>1.6.4</slf4j.version>
+    <servlet-api.version>3.1.0</servlet-api.version>
+    <slf4j.version>1.7.7</slf4j.version>
     <soa.model.core.version>1.2.2</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-    <spring.version>3.2.3.RELEASE</spring.version>
-    <spring.security.version>3.1.0.RELEASE</spring.security.version>
+    <spring.version>4.0.5.RELEASE</spring.version>
+    <spring.security.version>3.2.4.RELEASE</spring.security.version>
     <struts.version>1.3.10</struts.version>
     <subethasmtp.version>3.1.6</subethasmtp.version>
     <velocity.version>1.6.4</velocity.version>
@@ -1022,7 +1024,7 @@
         </plugin>
 
         <plugin>
-          <groupId>org.mortbay.jetty</groupId>
+          <groupId>org.eclipse.jetty.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <version>${jetty.version}</version>
           <configuration>
@@ -1745,6 +1747,16 @@
         <groupId>org.glassfish.web</groupId>
         <artifactId>jstl-impl</artifactId>
         <version>${jstl.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jsp-api</artifactId>
+            <groupId>javax.servlet.jsp</groupId>
+          </exclusion>
+        </exclusions>
         <!-- should be provided scope on newer containers like tomcat 7 -->
         <scope>compile</scope>
       </dependency>
@@ -1757,7 +1769,7 @@
 
       <dependency>
         <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
+        <artifactId>javax.servlet-api</artifactId>
         <version>${servlet-api.version}</version>
         <scope>provided</scope>
       </dependency>
@@ -2170,6 +2182,22 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-io</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-http</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-websocket</artifactId>
+          </exclusion>
         </exclusions>
         <scope>test</scope>
       </dependency>
@@ -2270,6 +2298,12 @@
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-core</artifactId>
         <version>${spring.security.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -2321,6 +2355,10 @@
           <exclusion>
             <groupId>org.ow2.spec.ee</groupId>
             <artifactId>ow2-jta-1.1-spec</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

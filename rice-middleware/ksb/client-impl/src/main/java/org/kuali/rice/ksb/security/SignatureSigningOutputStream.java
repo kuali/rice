@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 /**
  * An OutputStream which decorates another OutputStream with a wrapper that digitally
@@ -93,4 +94,14 @@ public class SignatureSigningOutputStream extends ServletOutputStream {
 		}
 	}
 
+    @Override
+    public boolean isReady() {
+        throw new RuntimeException("Not yet implemented");
+        //return false;
+    }
+
+    @Override
+    public void setWriteListener(WriteListener writeListener) {
+        throw new RuntimeException("Not yet implemented");
+    }
 }

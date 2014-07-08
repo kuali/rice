@@ -26,7 +26,7 @@
   <artifactId>rice-kim-ldap</artifactId>
 
   <properties>
-    <spring.ldap.version>1.3.1.RELEASE</spring.ldap.version>
+    <spring.ldap.version>2.0.2.RELEASE</spring.ldap.version>
   </properties>
 
   <dependencies>

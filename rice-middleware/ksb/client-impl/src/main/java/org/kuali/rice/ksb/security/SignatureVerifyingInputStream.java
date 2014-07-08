@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.Signature;
 
+import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 
 /**
@@ -65,4 +66,20 @@ public class SignatureVerifyingInputStream extends ServletInputStream {
 		}
 	}
 
+    @Override
+    public boolean isFinished() {
+        throw new RuntimeException("Not yet implemented");
+        //return false;
+    }
+
+    @Override
+    public boolean isReady() {
+        throw new RuntimeException("Not yet implemented");
+        //return false;
+    }
+
+   @Override
+    public void setReadListener(ReadListener readListener) {
+        throw new RuntimeException("Not yet implemented");
+    }
 }

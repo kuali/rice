@@ -153,7 +153,7 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		throw new RiceRuntimeException("handler of type " + handler.getClass().getName() + " is not known and can't be used by " + KSBDispatcherServlet.class.getName());
 	}
 
-    @Override
+    //@Override
 	protected HandlerExecutionChain getHandler(HttpServletRequest request, boolean cache) throws Exception {
 		return this.httpInvokerHandler.getHandler(request);
 	}

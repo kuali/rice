@@ -180,6 +180,12 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         }
 
         @Override
+        public <T> T get(Object o, Class<T> tClass) {
+            // not yet implemented
+            return null;
+        }
+
+        @Override
         public void put(Object key, Object value) {
             final String sKey = coerceStr(key);
             cache.put(sKey, value);
@@ -373,6 +379,12 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         @Override public Object getNativeCache()  { return inner; }
 
         @Override public ValueWrapper get(Object key)  { return null; }
+
+        @Override
+        public <T> T get(Object o, Class<T> tClass) {
+            // not yet implemented
+            return null;
+        }
 
         @Override public void put(Object key, Object value) { }
 

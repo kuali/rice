@@ -123,7 +123,7 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 	@SuppressWarnings("unchecked")
 	@Override
     public Class<T> getWrappedClass() {
-        return wrapper.getWrappedClass();
+        return (Class<T>) wrapper.getWrappedClass();
     }
 
     /**

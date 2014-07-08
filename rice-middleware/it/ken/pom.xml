@@ -109,7 +109,8 @@
 	    </dependency>
 	    <dependency>
 	      <groupId>javax.servlet</groupId>
-	      <artifactId>servlet-api</artifactId>
+	      <artifactId>javax.servlet-api</artifactId>
+        <version>${servlet-api.version}</version>
 	      <scope>test</scope>
 	    </dependency>
 	   	<dependency>
@@ -146,6 +147,12 @@
       <dependency>
           <groupId>org.apache.cxf</groupId>
           <artifactId>cxf-rt-transports-http-jetty</artifactId>
+          <exclusions>
+            <exclusion>
+              <groupId>org.eclipse.jetty</groupId>
+              <artifactId>jetty-security</artifactId>
+            </exclusion>
+          </exclusions>
           <scope>test</scope>
       </dependency>
 

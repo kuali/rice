@@ -170,7 +170,8 @@
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
     </dependency>
     <!-- ASM as an explicit dependency, see KULRICE-6353 -->
     <dependency>

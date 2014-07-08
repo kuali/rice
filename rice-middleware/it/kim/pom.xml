@@ -30,7 +30,7 @@
   	<maven.skip.packaging>false</maven.skip.packaging>
     <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
     <maven.failsafe.forkedProcessTimeoutInSeconds>300</maven.failsafe.forkedProcessTimeoutInSeconds>
-    <spring.ldap.version>1.3.1.RELEASE</spring.ldap.version>
+    <spring.ldap.version>2.0.2.RELEASE</spring.ldap.version>
   </properties>
 
   <dependencies>
@@ -111,12 +111,14 @@
       </exclusions>
       <scope>test</scope>
     </dependency>
+    <!--
      <dependency>
       <groupId>org.springframework.ldap</groupId>
       <artifactId>spring-ldap</artifactId>
       <version>${spring.ldap.version}</version>
       <classifier>all</classifier>
     </dependency>
+    -->
     <dependency>
       <groupId>org.springframework.ldap</groupId>
       <artifactId>spring-ldap-ldif-core</artifactId>
@@ -221,6 +223,12 @@
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http-jetty</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-security</artifactId>
+        </exclusion>
+      </exclusions>
       <scope>test</scope>
     </dependency>
 

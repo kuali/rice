@@ -52,10 +52,14 @@ public class TestClient2 extends BaseTestServer {
 		LOG.debug("#");
 		LOG.debug("#####################################");
 
-		WebAppContext context = new WebAppContext(location, CONTEXT);
-        context.setThrowUnavailableOnStartupException(true);
+        WebAppContext context = new WebAppContext();
+        context.setDescriptor(location + "/WEB-INF/web.xml");
+        context.setResourceBase(location);
+        context.setContextPath(CONTEXT);
         context.setClassLoader(new KsbTestClientClassLoader());
+        context.setParentLoaderPriority(true);
         server.setHandler(context);
+
 		return server;
 	}
 	

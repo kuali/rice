@@ -20,6 +20,8 @@ import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.DirContextOperations;
 
+import javax.naming.NamingException;
+
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -36,7 +38,14 @@ public class EntityNamePrincipalNameMapper extends BaseMapper<EntityNamePrincipa
     
     EntityNamePrincipalName.Builder mapBuilderFromContext(DirContextOperations context) {
         final EntityNamePrincipalName.Builder person = EntityNamePrincipalName.Builder.create();
-        person.setDefaultName((EntityName.Builder) getDefaultNameMapper().mapFromContext(context));
+
+        try {
+            person.setDefaultName((EntityName.Builder) getDefaultNameMapper().mapFromContext(context));
+        } catch (NamingException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+
         person.setPrincipalName(context.getStringAttribute(getConstants().getKimLdapNameProperty()));
         return person;
     }

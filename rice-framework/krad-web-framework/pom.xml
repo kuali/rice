@@ -125,7 +125,8 @@
 
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -199,6 +200,12 @@
       <groupId>org.glassfish</groupId>
       <artifactId>javax.json</artifactId>
       <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>1.3.9</version>
     </dependency>
 
     <!-- test dependencies -->

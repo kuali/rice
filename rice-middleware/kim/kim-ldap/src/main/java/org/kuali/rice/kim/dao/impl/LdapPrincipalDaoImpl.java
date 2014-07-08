@@ -435,13 +435,15 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
             super(mapper);
         }
         
-        public void handleNameClassPair(NameClassPair nameClassPair) {
-            try {
-                super.handleNameClassPair(nameClassPair);
-            }
-            catch (InvalidLdapEntityException ieee) {
-                warn("LDAP Search Results yielded an invalid result from ", nameClassPair);
-            }
+   /*   cannot override, super class is final
+    public void handleNameClassPair(NameClassPair nameClassPair) {
+        try {
+            super.handleNameClassPair(nameClassPair);
         }
+        catch (InvalidLdapEntityException ieee) {
+            warn("LDAP Search Results yielded an invalid result from ", nameClassPair);
+        }
+    }
+    */
     }
 }

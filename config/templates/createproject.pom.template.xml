@@ -27,7 +27,7 @@
   <properties>
     <appserver.port>8080</appserver.port>
     <web.launch.context.path>/${PROJECT_NAME}</web.launch.context.path>
-    <servlet-api.version>2.5</servlet-api.version>
+    <servlet-api.version>3.0.1</servlet-api.version>
     <jsp-api.version>2.1</jsp-api.version>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
@@ -79,7 +79,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 			<version>${servlet-api.version}</version>
 			<scope>provided</scope>
 		</dependency>

@@ -200,6 +200,13 @@
       <groupId>mysql</groupId>
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
+    </dependency>
+
   </dependencies>
 
 </project>

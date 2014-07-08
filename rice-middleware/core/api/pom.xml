@@ -67,6 +67,11 @@
       <artifactId>spring-context</artifactId>
     </dependency>
     <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.jdom</groupId>
       <artifactId>jdom</artifactId>
     </dependency>

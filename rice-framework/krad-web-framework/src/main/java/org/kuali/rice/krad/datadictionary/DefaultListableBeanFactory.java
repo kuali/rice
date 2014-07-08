@@ -477,6 +477,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return result;
 	}
 
+    @Override
+    public String[] getBeanNamesForAnnotation(Class<? extends Annotation> aClass) {
+        throw new RuntimeException("Not yet implemented");
+	}
+
 	public Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotationType) {
 		Set<String> beanNames = new LinkedHashSet<String>(getBeanDefinitionCount());
 		beanNames.addAll(Arrays.asList(getBeanDefinitionNames()));

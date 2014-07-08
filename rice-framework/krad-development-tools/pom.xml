@@ -75,7 +75,8 @@
     read source from krad web framework which includes classes from the servlet api -->
     <dependency>
       <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
       <scope>compile</scope>
     </dependency>
 

@@ -591,8 +591,11 @@ public class ComponentUtils {
                 (component.getRefreshWhenChangedPropertyNames() != null && !component
                         .getRefreshWhenChangedPropertyNames().isEmpty());
 
+        boolean isInlineEditField = component instanceof InputField &&
+                (((InputField)component).isInlineEdit() || ((InputField)component).isAjaxInlineEdit());
+
         return hasRefreshCondition || component.isRefreshedByAction() || component.isDisclosedByAction() ||
-                component.isRetrieveViaAjax();
+                component.isRetrieveViaAjax() || isInlineEditField;
     }
 
     /**

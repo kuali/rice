@@ -32,6 +32,7 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.control.Control;
+import org.kuali.rice.krad.uif.element.FieldValidationMessages;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.element.ValidationMessages;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
@@ -71,6 +72,14 @@ public interface InputField extends SimpleConstrainable, CaseConstrainable,
      */
     void setControl(Control control);
 
+    public boolean isInlineEdit();
+
+    public void setInlineEdit(boolean inlineEdit);
+
+    public boolean isAjaxInlineEdit();
+
+    public void setAjaxInlineEdit(boolean ajaxInlineEdit);
+
     /**
      * Field that contains the messages (errors) for the input field. The
      * {@code ValidationMessages} holds configuration on associated messages along
@@ -78,14 +87,14 @@ public interface InputField extends SimpleConstrainable, CaseConstrainable,
      *
      * @return ValidationMessages instance
      */
-    ValidationMessages getValidationMessages();
+    FieldValidationMessages getValidationMessages();
 
     /**
      * Setter for the input field's errors field
      *
      * @param validationMessages
      */
-    void setValidationMessages(ValidationMessages validationMessages);
+    void setValidationMessages(FieldValidationMessages validationMessages);
 
     /**
      * Instance of {@code KeyValuesFinder} that should be invoked to

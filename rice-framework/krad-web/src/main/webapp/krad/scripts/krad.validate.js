@@ -267,11 +267,22 @@ function writeMessagesAtField(id) {
                 + generateListItems(data.warnings, kradVariables.WARNING_MESSAGE_ITEM_CLASS, 0, false, warningImage)
                 + generateListItems(data.info, kradVariables.INFO_MESSAGE_ITEM_CLASS, 0, false, infoImage) + "</ul></div>");
 
+        var editLink = "";
+        if (field.data("inline_edit")) {
+            editLink = " <a onclick=\"var $view=jQuery('#" + id + "_inlineEdit_view'); showInlineEdit($view);"
+                    + "return false;\">Edit</a>";
+        }
+
+        var serverMessagesStyle = "";
+        if (jQuery(clientMessages).find("ul").children().length) {
+            serverMessagesStyle = "style='margin-top: 5px;'";
+        }
+
         //generate server side based messages
-        var serverMessages = jQuery("<div class='" + kradVariables.SERVER_MESSAGE_ITEMS_CLASS + "'><ul>"
-                + generateListItems(data.serverErrors, kradVariables.ERROR_MESSAGE_ITEM_CLASS, 0, false, errorImage)
-                + generateListItems(data.serverWarnings, kradVariables.WARNING_MESSAGE_ITEM_CLASS, 0, false, warningImage)
-                + generateListItems(data.serverInfo, kradVariables.INFO_MESSAGE_ITEM_CLASS, 0, false, infoImage) + "</ul></div>");
+        var serverMessages = jQuery("<div " +  serverMessagesStyle + " class='" + kradVariables.SERVER_MESSAGE_ITEMS_CLASS + "'><ul>"
+                + generateListItems(data.serverErrors, kradVariables.ERROR_MESSAGE_ITEM_CLASS, 0, false, errorImage, editLink)
+                + generateListItems(data.serverWarnings, kradVariables.WARNING_MESSAGE_ITEM_CLASS, 0, false, warningImage, editLink)
+                + generateListItems(data.serverInfo, kradVariables.INFO_MESSAGE_ITEM_CLASS, 0, false, infoImage, editLink) + "</ul></div>");
 
         var hasServerMessages = false;
         //only append if messages exist
@@ -313,6 +324,10 @@ function writeMessagesAtField(id) {
                 jQuery(messagesDiv).find(".uif-clientMessageItems").addClass(kradVariables.CLIENT_ERROR_DIV_CLASS);
             }
 
+            if (data.serverErrors.length) {
+                jQuery(messagesDiv).find(".uif-serverMessageItems").addClass(kradVariables.CLIENT_ERROR_DIV_CLASS);
+            }
+
             if (data.fieldModified && data.errors.length == 0) {
                 //This is to represent the field has been changed after a server error, but may or
                 //may not be fixed - greyed out image/border
@@ -341,6 +356,11 @@ function writeMessagesAtField(id) {
             if (data.warnings.length) {
                 jQuery(messagesDiv).find(".uif-clientMessageItems").addClass(kradVariables.CLIENT_WARNING_DIV_CLASS);
             }
+
+            if (data.serverWarnings.length) {
+                jQuery(messagesDiv).find(".uif-serverMessageItems").addClass(kradVariables.CLIENT_WARNING_DIV_CLASS);
+            }
+
             field.addClass(kradVariables.HAS_WARNING_CLASS);
             if (showImage) {
                 jQuery(messagesDiv).before(warningImage);
@@ -359,6 +379,11 @@ function writeMessagesAtField(id) {
             if (data.info.length) {
                 jQuery(messagesDiv).find(".uif-clientMessageItems").addClass(kradVariables.CLIENT_INFO_DIV_CLASS);
             }
+
+            if (data.serverInfo.length) {
+                jQuery(messagesDiv).find(".uif-serverMessageItems").addClass(kradVariables.CLIENT_INFO_DIV_CLASS);
+            }
+
             field.addClass(kradVariables.HAS_INFO_CLASS);
             if (showImage) {
                 jQuery(messagesDiv).before(infoImage);
@@ -1079,20 +1104,25 @@ function writeMessageItemToList(item, newList) {
  * @param focusable - whether or not this li element should be focusable by the user
  * @param image - the image to use at the beginning of each li element
  */
-function generateListItems(messageArray, itemClass, startIndex, focusable, image) {
+function generateListItems(messageArray, itemClass, startIndex, focusable, image, editLink) {
     var elements = "";
     if (!image) {
         image = "";
     }
+
+    if (!editLink) {
+        editLink = "";
+    }
+
     if (messageArray && messageArray.length) {
         for (var i = startIndex; i < messageArray.length; i++) {
             if (focusable) {
                 elements = elements + "<li tabindex='0' class='" + itemClass + "'>" + image + " "
-                        + convertToHtml(messageArray[i]) + "</li>";
+                        + convertToHtml(messageArray[i]) + editLink + "</li>";
             }
             else {
                 elements = elements + "<li class='" + itemClass + "'>" + image + " "
-                        + convertToHtml(messageArray[i]) + "</li>";
+                        + convertToHtml(messageArray[i]) + editLink + "</li>";
             }
         }
     }
@@ -1345,7 +1375,7 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
                         + name + linkText + collapsedElements + "</li>");
             }
 
-            //modified appendange
+            //modified appendage
             if (messageData.fieldModified && hasServerMessages) {
                 jQuery(link).find("a").prepend("<span class='modified'>(Modified) </span>");
                 if (!(messageData.errors.length)) {
@@ -1360,8 +1390,13 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
             linkObject.find("a").click(function (event) {
                 event.preventDefault();
                 var control = jQuery("#" + fieldId + "_control");
-                if (control.length) {
+                var field = jQuery("#" + fieldId);
 
+                // Inline edit view check
+                if(field.is("[data-inline_edit]") && field.find(".uif-inlineEdit-view:visible").length){
+                    field.find(".uif-inlineEdit-view").focus();
+                }
+                else if (control.length) {
                     jQuery(control).focus();
                 }
                 else {

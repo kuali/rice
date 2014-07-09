@@ -214,6 +214,7 @@ public final class KRADConstants {
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
     public static final String DICTIONARY_BO_NAME = "dictionaryBusinessObjectName";
     public static final String DISPATCH_REQUEST_PARAMETER = "methodToCall";
+    public static final String INLINE_EDIT = "inline_edit";
 
     /**
      * Constant defined to match with method call in module-locked.jsp which is

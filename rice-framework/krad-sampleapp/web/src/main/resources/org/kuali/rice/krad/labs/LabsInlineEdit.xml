@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-InlineEdit" parent="Uif-FormView">
+    <property name="headerText" value="Inline Edit"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions: To save the
+            field, press the enter key. To abandon changes to the field, press the esc key."
+                  p:constraintText="Constraint text" p:required="true"
+                  p:propertyName="dataField3" p:readOnly="true" p:inlineEdit="true"/>
+            <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions: To save the
+            field, press the enter key. To abandon changes to the field, press the esc key."
+                  p:constraintText="Constraint text" p:required="true"
+                  p:propertyName="dataField1" p:readOnly="true" p:ajaxInlineEdit="true"/>
+            <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions: To enter a new
+            line, press shift+enter keys. To save the field, press the enter key. To abandon changes to the field,
+            press the esc key."
+                  p:constraintText="Constraint text" p:required="true"
+                  p:propertyName="dataField4" p:readOnly="true" p:inlineEdit="true">
+              <property name="control">
+                <bean parent="Uif-TextAreaControl"/>
+              </property>
+            </bean>
+            <bean parent="Uif-InputField" p:propertyName="inputField1" p:width="auto" p:label="Inline Edit Field"
+                  p:instructionalText="Instructions: To save the field, press the enter key. To abandon changes to the
+                  field, press the esc key."
+                  p:constraintText="Constraint text" p:required="true" p:readOnly="true" p:inlineEdit="true">
+              <property name="control">
+                <bean parent="Uif-DropdownControl"/>
+              </property>
+              <property name="optionsFinder">
+                <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+              </property>
+            </bean>
+
+            <bean parent="Uif-SecondaryActionButton-Small" >
+              <property name="actionLabel" value="Popover Form Action"/>
+              <property name="actionScript"
+                        value="openPopoverContent(e,'Demo-InLineEdit-PopoverContent-Group');"/>
+            </bean>
+            <bean id="Demo-InLineEdit-PopoverContent-Group" parent="Uif-HorizontalBoxSection">
+              <property name="hidden" value="true"/>
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:instructionalText="Instructions: To save the field, press the enter
+                  key. To abandon changes to the field, press the esc key." p:inlineEdit="true" p:required="true"
+                        p:readOnly="true" >
+                    <property name="propertyName" value="dataField1"/>
+                    <property name="label" value="Field 1"/>
+                    <property name="helpSummary" value="Standard KRAD 'helpSummary' property"/>
+                  </bean>
+                  <bean parent="Uif-InputField" p:instructionalText="Instructions: To save the field, press the enter
+                  key. To abandon changes to the field, press the esc key." p:inlineEdit="true" p:required="true"
+                        p:readOnly="true">
+                    <property name="propertyName" value="dataField2"/>
+                    <property name="label" value="Field 2"/>
+                  </bean>
+                  <bean parent="Uif-InputField">
+                    <property name="propertyName" value="dataField3"/>
+                    <property name="label" value="Field 3"/>
+                    <property name="required" value="true"/>
+                  </bean>
+                  <bean parent="Uif-SecondaryActionButton-Small">
+                    <property name="style" value="margin-top:1.5em;"/>
+                    <property name="actionLabel" value="Button"/>
+                    <property name="actionScript" value="alert('You clicked a button!');"/>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-VerticalBoxSection">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Default Closed Section">
+                    <!-- disclosure will be closed -->
+                    <property name="disclosure.defaultOpen" value="false"/>
+                    <property name="items">
+                      <list>
+                        <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions: To save the
+            field, press the enter key. To abandon changes to the field, press the esc key."
+                              p:constraintText="Constraint text" p:required="true"
+                              p:propertyName="dataField3" p:readOnly="true" p:inlineEdit="true"/>
+                        <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField6"/>
+                      </list>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+</beans>

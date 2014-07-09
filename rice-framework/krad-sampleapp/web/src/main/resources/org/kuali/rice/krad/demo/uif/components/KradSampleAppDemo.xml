@@ -530,6 +530,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GrowlsView"/>
         <bean parent="Uif-Link" p:linkText="Help"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-HelpView"/>
+        <bean parent="Uif-Link" p:linkText="Inline Editing"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InLineEdit"/>
         <bean parent="Uif-Link" p:linkText="Inquiry"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InquiryView"/>
         <bean parent="Uif-Link" p:linkText="Lightbox"

@@ -564,7 +564,7 @@ function initFieldHandlers() {
                     + "div[data-role='InputField'] textarea",
             function (event) {
                 var id = getAttributeId(jQuery(this).attr('id'));
-                if(!id){ return; }
+                if(!id || isRelatedTarget(this.parentElement, event) === true){ return; }
                 var data = getValidationData(jQuery("#" + id));
                 var hadError = false;
                 if (data && data.focusedErrors) {
@@ -739,6 +739,7 @@ function initFieldHandlers() {
     // capture tabbing through widget elements to make sure we only validate the control field when we leave the entire
     // widget
     var buttonHovered = false;
+    var $currentControl;
 
     // capture mousing over button of the widget if there is one
     jQuery(document).on("mouseover", "div[data-role='InputField'] div.input-group div.input-group-btn a", function(){
@@ -750,13 +751,12 @@ function initFieldHandlers() {
 
     // capture leaving the control field
     }).on("focusout", "div[data-role='InputField'] div.input-group", function (event) {
-        currentControl = this;
-
+        $currentControl = jQuery(this).children("[data-role='Control']");
         // determine whether we are still in the widget. If we are out of the widget and the field
         // is not a radio button, then validate
         var radioButtons = jQuery(this).find('input:radio');
         if(isRelatedTarget(this, event) !== true && buttonHovered === false && radioButtons.length == 0){
-            validateFieldValue(jQuery(this).children("[data-role='Control']"));
+            validateFieldValue($currentControl);
         }
     });
 
@@ -765,6 +765,12 @@ function initFieldHandlers() {
         buttonHovered = true;
     }).on("mouseout", ".ui-datepicker", function(){
         buttonHovered = false;
+    });
+
+    // capture leaving a text expand window and force focus back on the control
+    jQuery(document).on("focusout", ".fancybox-skin", function(){
+        buttonHovered = false;
+        $currentControl.focus();
     });
 
     time(false, "field-handlers");
@@ -796,7 +802,6 @@ function isRelatedTarget(element, event){
                 ) {
             return true;
         }
-
         return false;
 
     }catch(e){

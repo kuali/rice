@@ -1846,7 +1846,7 @@ Holds configuration for executing a dynamic query on an InputField to
   </xsd:element>
   <xsd:element name="pager" type="pager-type">
     <xsd:annotation>
-      <xsd:documentation source="org.kuali.rice.krad.uif.widget.Pager" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.widget.Pager
+      <xsd:documentation source="org.kuali.rice.krad.uif.element.Pager" xml:lang="en"><![CDATA[Backing Class: org.kuali.rice.krad.uif.element.Pager
 
 The Pager widget is used to display a list of links horizontally in a page selection user interface.  The user can
  select a page to jump to, go to prev/next page, or go to the first or last page.  This widget needs to know

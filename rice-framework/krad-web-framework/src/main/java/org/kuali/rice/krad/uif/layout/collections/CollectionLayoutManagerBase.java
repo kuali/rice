@@ -25,7 +25,7 @@ import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.layout.LayoutManagerBase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
-import org.kuali.rice.krad.uif.widget.Pager;
+import org.kuali.rice.krad.uif.element.Pager;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.Map;

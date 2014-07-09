@@ -502,6 +502,33 @@
     </property>
   </bean>
 
+  <bean id="Uif-NumberedPager" parent="Uif-NumberedPager-parentBean"/>
+  <bean id="Uif-NumberedPager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.NumberedPager"
+        scope="prototype">
+    <property name="libraryCssClasses" value="pagination"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/numberedPager.ftl"/>
+    <property name="templateName" value="uif_numberedPager"/>
+    <property name="currentPage" value="1"/>
+    <property name="maxNumberedLinksShown" value="5"/>
+    <property name="firstText" value="First"/>
+    <property name="prevText" value="&#171;"/>
+    <property name="nextText" value="&#187;"/>
+    <property name="lastText" value="Last"/>
+    <property name="renderPrevNext" value="true"/>
+    <property name="renderFirstLast" value="true"/>
+  </bean>
+
+  <bean id="Uif-NextPager" parent="Uif-NextPager-parentBean"/>
+  <bean id="Uif-NextPager-parentBean" abstract="true" class="org.kuali.rice.krad.uif.element.NextPager"
+        scope="prototype">
+    <property name="libraryCssClasses" value="pager"/>
+    <property name="template" value="/krad/WEB-INF/ftl/components/element/nextPager.ftl"/>
+    <property name="templateName" value="uif_nextPager"/>
+    <property name="currentPage" value="1"/>
+    <property name="prevText" value="&#8592; Previous"/>
+    <property name="nextText" value="Next &#8594;"/>
+  </bean>
+
   <bean id="DialogGroup-DeleteFileUploadLine" parent="Uif-DialogGroup-YesNo">
     <property name="promptText" value="Are you sure you wish to delete the file?"/>
   </bean>

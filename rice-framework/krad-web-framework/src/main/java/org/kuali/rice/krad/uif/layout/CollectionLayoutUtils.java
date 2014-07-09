@@ -27,7 +27,7 @@ import org.kuali.rice.krad.uif.control.ValueConfiguredControl;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
-import org.kuali.rice.krad.uif.widget.Pager;
+import org.kuali.rice.krad.uif.element.Pager;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.List;

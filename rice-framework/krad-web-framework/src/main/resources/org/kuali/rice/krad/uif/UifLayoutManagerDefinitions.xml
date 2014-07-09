@@ -197,7 +197,7 @@
       <bean parent="Uif-SelectCollectionItemField"/>
     </property>
     <property name="pagerWidget">
-      <bean parent="Uif-Pager"/>
+      <bean parent="Uif-NumberedPager"/>
     </property>
     <property name="richTable">
       <bean parent="Uif-PagedRichTable"/>
@@ -251,7 +251,7 @@
       <bean parent="Uif-SelectCollectionItemField"/>
     </property>
     <property name="pagerWidget">
-      <bean parent="Uif-Pager"/>
+      <bean parent="Uif-NumberedPager"/>
     </property>
   </bean>
 

@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2006-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,37 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.uif.widget;
+
+package org.kuali.rice.krad.uif.element;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
- * The Pager widget is used to display a list of links horizontally in a page selection user interface.  The user can
- * select a page to jump to, go to prev/next page, or go to the first or last page.  This widget needs to know
- * the numberOfPages total, and the currentPage the user is on currently, so this widget must be fed this information
- * from the code.
+ * The NumberedPager widget is used to display a list of links horizontally in a page selection user interface.
+ * The user can select a page to jump to, go to prev/next page, or go to the first or last page.  This widget needs to
+ * know the numberOfPages total, and the currentPage the user is on currently, so this widget must be fed this
+ * information from the code.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @see org.kuali.rice.krad.uif.layout.StackedLayoutManager
  */
-@BeanTag(name = "pager", parent = "Uif-Pager")
-public class Pager extends WidgetBase {
-    private String linkScript;
+@BeanTag(name = "numberedPager", parent = "Uif-NumberedPager")
+public class NumberedPager extends Pager {
+    private static final long serialVersionUID = -6495003633052595157L;
+
     private int maxNumberedLinksShown;
-    private int numberOfPages;
-    private int currentPage;
     private boolean renderPrevNext;
     private boolean renderFirstLast;
 
     protected int pagesStart;
     protected int pagesEnd;
 
-    public Pager() {
-        super();
-    }
+    private String firstText;
+    private String lastText;
 
     /**
      * performFinalize calculates the pagesStart and pagesEnd properties (using numberOfPages, currentPage, and
@@ -56,20 +54,15 @@ public class Pager extends WidgetBase {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        // if no pages or 1 page, do not render
-        if (numberOfPages == 0 || numberOfPages == 1) {
-            this.setRender(false);
-        }
-
-        if (maxNumberedLinksShown >= numberOfPages) {
+        if (maxNumberedLinksShown >= this.getNumberOfPages()) {
             // Show all pages if possible to do so
             pagesStart = 1;
-            pagesEnd = numberOfPages;
+            pagesEnd = this.getNumberOfPages();
         } else {
             // Determine how many pages max shown before an after the current page
             int beforeAfterShown = (int) Math.floor((double) maxNumberedLinksShown / 2.0);
-            pagesStart = currentPage - beforeAfterShown;
-            pagesEnd = currentPage + beforeAfterShown;
+            pagesStart = this.getCurrentPage() - beforeAfterShown;
+            pagesEnd = this.getCurrentPage() + beforeAfterShown;
 
             // If maxNumberedLinksShown is even and cannot have an equal amount of pages showing before
             // and after the current page, so trim one off the end
@@ -78,41 +71,19 @@ public class Pager extends WidgetBase {
             }
 
             // The pagesEnd is within range of numberOfPages total, therefore show the last pages
-            if (pagesEnd > numberOfPages) {
-                pagesEnd = numberOfPages;
-                pagesStart = numberOfPages - maxNumberedLinksShown + 1;
+            if (pagesEnd > this.getNumberOfPages()) {
+                pagesEnd = this.getNumberOfPages();
+                pagesStart = this.getNumberOfPages() - maxNumberedLinksShown + 1;
             }
 
             // The pageStart is within range, therefore show the first pages
             if (pagesStart < 1) {
                 pagesStart = 1;
-                if (maxNumberedLinksShown < numberOfPages) {
+                if (maxNumberedLinksShown < this.getNumberOfPages()) {
                     pagesEnd = maxNumberedLinksShown;
                 }
             }
         }
-
-        this.linkScript = "e.preventDefault();" + this.linkScript;
-    }
-
-    /**
-     * The script to execute when a link is clicked (should probably use the "this" var in most cases, to determine
-     * page number selected - see retrieveStackedPage(linkElement, collectionId) js function)
-     *
-     * @return the script to execute when a link is clicked
-     */
-    @BeanTagAttribute
-    public String getLinkScript() {
-        return linkScript;
-    }
-
-    /**
-     * Set the link js script
-     *
-     * @param linkScript the link js script
-     */
-    public void setLinkScript(String linkScript) {
-        this.linkScript = linkScript;
     }
 
     /**
@@ -134,43 +105,6 @@ public class Pager extends WidgetBase {
      */
     public void setMaxNumberedLinksShown(int maxNumberedLinksShown) {
         this.maxNumberedLinksShown = maxNumberedLinksShown;
-    }
-
-    /**
-     * Number of pages TOTAL that make up the component being paged (this must be set by the framework based on some
-     * list size)
-     *
-     * @return the number of pages used in this pager
-     */
-    public int getNumberOfPages() {
-        return numberOfPages;
-    }
-
-    /**
-     * Set the TOTAL number of pages
-     *
-     * @param numberOfPages
-     */
-    public void setNumberOfPages(int numberOfPages) {
-        this.numberOfPages = numberOfPages;
-    }
-
-    /**
-     * The current page being shown by this pager widget (this must be set when the page is changed)
-     *
-     * @return the current page being shown
-     */
-    public int getCurrentPage() {
-        return currentPage;
-    }
-
-    /**
-     * Set the current page
-     *
-     * @param currentPage
-     */
-    public void setCurrentPage(int currentPage) {
-        this.currentPage = currentPage;
     }
 
     /**
@@ -228,4 +162,39 @@ public class Pager extends WidgetBase {
     public int getPagesEnd() {
         return pagesEnd;
     }
+
+    /**
+     * The text to use on the first link.
+     *
+     * @return the first link text
+     */
+    @BeanTagAttribute
+    public String getFirstText() {
+        return firstText;
+    }
+
+    /**
+     * @see NumberedPager#getFirstText()
+     */
+    public void setFirstText(String firstText) {
+        this.firstText = firstText;
+    }
+
+    /**
+     * The text to use for the last link.
+     *
+     * @return the last link text
+     */
+    @BeanTagAttribute
+    public String getLastText() {
+        return lastText;
+    }
+
+    /**
+     * @see NumberedPager#getLastText()
+     */
+    public void setLastText(String lastText) {
+        this.lastText = lastText;
+    }
+
 }

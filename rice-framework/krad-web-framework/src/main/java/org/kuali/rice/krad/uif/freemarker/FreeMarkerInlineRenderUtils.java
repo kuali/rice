@@ -30,7 +30,7 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
 import org.kuali.rice.krad.uif.widget.Disclosure;
-import org.kuali.rice.krad.uif.widget.Pager;
+import org.kuali.rice.krad.uif.element.Pager;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.springframework.util.StringUtils;
 
@@ -605,7 +605,6 @@ public class FreeMarkerInlineRenderUtils {
         Map<String, TemplateModel> pagerTmplParms = null;
         if (pager != null && container.isUseServerPaging()) {
             pagerTmplParms = new HashMap<String, TemplateModel>();
-            pagerTmplParms.put("parent", env.getObjectWrapper().wrap(container));
             renderTemplate(env, pager, null, false, false, pagerTmplParms);
         }
 
@@ -644,7 +643,6 @@ public class FreeMarkerInlineRenderUtils {
 
         if (pager != null && container.isUseServerPaging()) {
             pagerTmplParms = new HashMap<String, TemplateModel>();
-            pagerTmplParms.put("parent", env.getObjectWrapper().wrap(container));
             renderTemplate(env, pager, null, false, false, pagerTmplParms);
         }
     }

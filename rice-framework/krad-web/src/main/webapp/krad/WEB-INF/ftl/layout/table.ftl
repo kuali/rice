@@ -121,7 +121,7 @@
 
         <#if (!manager.richTable?has_content || !manager.richTable.render) && manager.pagerWidget?has_content
             && container.useServerPaging>
-            <@krad.template component=manager.pagerWidget parent=container/>
+            <@krad.template component=manager.pagerWidget/>
         </#if>
 
         <#-- invoke table tools widget -->

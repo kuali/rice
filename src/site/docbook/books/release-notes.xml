@@ -122,6 +122,10 @@
             </para></listitem>
             <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12803'>KULRICE-12803</link>] -         Lifecycle skipping interfering with ajaxDetailsRetrieval
             </para></listitem>
+
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12826'>KULRICE-12826</link>] -         submitting role doc after saving results in java.lang.IllegalArgumentException: Invalid service name passed, value was null
+            </para></listitem>
+            
             <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12844'>KULRICE-12844</link>] -         AFT Failure LabsSchemaAft incident report null pointer exception in DataFieldBase.hasAutoInquiryRelationship
             </para></listitem>
             <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12848'>KULRICE-12848</link>] -         IT Failure RoleServiceImplTest testAddQualifiedPrincipalToRoleDoesNotReusedWrongRoleMember campus code on role member incorrect expected:&lt;[KO]&gt; but was:&lt;[BL]&gt;

@@ -87,7 +87,7 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     	waitAndTypeByName("lookupCriteria[rangeLowerBoundKeyPrefix_createDate]","06/01/2000");
     	waitAndTypeByName("lookupCriteria[createDate]","06/01/2050");
     	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
-    	waitForTextPresent("Travel Account 2");
+    	waitForTextPresent("Travel Account");
     }
     
     protected void testBasicLookUpSearchEditSave() throws InterruptedException {
@@ -97,6 +97,7 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     	
     	//Edit & Save
     	waitAndTypeByName("document.documentHeader.documentDescription","Edited Description");
+    	getTextByXpath("//div[@data-label='Travel Account Name']");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.name"," Edited");
     	waitAndClickButtonByExactText("Save");
     	waitForTextPresent("Document was successfully saved.");

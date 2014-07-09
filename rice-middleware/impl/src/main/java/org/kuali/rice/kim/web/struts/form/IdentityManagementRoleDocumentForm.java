@@ -31,6 +31,7 @@ import org.kuali.rice.kim.impl.group.GroupBo;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kns.util.TableRenderUtil;
+import org.kuali.rice.krad.document.Document;
 
 import java.util.List;
 
@@ -101,8 +102,19 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	public String getDefaultDocumentTypeName(){
 		return "IdentityManagementRoleDocument";
 	}
-	
-	public IdentityManagementRoleDocument getRoleDocument() {
+
+    @Override
+    public void setDocument(Document document) {
+        if (document != null) {
+            // Restore transient KimType on the document as it gets nuked during save, submit (etc?)
+            IdentityManagementRoleDocument roleDocument = (IdentityManagementRoleDocument) document;
+            roleDocument.setKimType(getKimType());
+        }
+
+        super.setDocument(document);
+    }
+
+    public IdentityManagementRoleDocument getRoleDocument() {
         return (IdentityManagementRoleDocument) this.getDocument();
     }
 

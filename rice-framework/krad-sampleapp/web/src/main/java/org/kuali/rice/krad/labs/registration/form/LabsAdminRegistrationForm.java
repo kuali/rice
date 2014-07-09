@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KSAdminRegistrationForm extends UifFormBase implements Serializable {
+public class LabsAdminRegistrationForm extends UifFormBase implements Serializable {
     private String studentId;
     private String studentName;
     private String program;
@@ -39,64 +39,64 @@ public class KSAdminRegistrationForm extends UifFormBase implements Serializable
     private String termName = "Fall 2012";
     private String termId = "11111";
 
-    private KSAdminRegistrationCourse pendingDropCourse;
+    private LabsAdminRegistrationCourse pendingDropCourse;
 
     private int editRegisteredIndex;
     private int editWaitlistedIndex;
 
-    private KSAdminRegistrationCourse tempRegCourseEdit;
-    private KSAdminRegistrationCourse tempWaitlistCourseEdit;
+    private LabsAdminRegistrationCourse tempRegCourseEdit;
+    private LabsAdminRegistrationCourse tempWaitlistCourseEdit;
 
-    private List<KSAdminRegistrationCourse> registeredCourses = new ArrayList<KSAdminRegistrationCourse>();
-    private List<KSAdminRegistrationCourse> waitlistedCourses = new ArrayList<KSAdminRegistrationCourse>();
-    private List<KSAdminRegistrationCourse> pendingCourses = new ArrayList<KSAdminRegistrationCourse>();
-    private List<KSAdminRegistrationIssue> registrationIssues = new ArrayList<KSAdminRegistrationIssue>();
+    private List<LabsAdminRegistrationCourse> registeredCourses = new ArrayList<LabsAdminRegistrationCourse>();
+    private List<LabsAdminRegistrationCourse> waitlistedCourses = new ArrayList<LabsAdminRegistrationCourse>();
+    private List<LabsAdminRegistrationCourse> pendingCourses = new ArrayList<LabsAdminRegistrationCourse>();
+    private List<LabsAdminRegistrationIssue> registrationIssues = new ArrayList<LabsAdminRegistrationIssue>();
 
-    private List<KSAdminRegistrationCourse> coursesInProcess = new ArrayList<KSAdminRegistrationCourse>();
+    private List<LabsAdminRegistrationCourse> coursesInProcess = new ArrayList<LabsAdminRegistrationCourse>();
 
-    public KSAdminRegistrationForm(){
+    public LabsAdminRegistrationForm(){
         editRegisteredIndex = -1;
         editWaitlistedIndex = -1;
 
         Date regDate = new Date();
 
-        KSAdminRegistrationCourse course1 =
-                new KSAdminRegistrationCourse("CHEM 237", "1001", "The Chemistry of Stuff", 3, "reg", regDate);
-        List<KSAdminRegistrationActivity> activities1 = new ArrayList<KSAdminRegistrationActivity>();
-        activities1.add(new KSAdminRegistrationActivity("Lec", "MWF 01:00pm - 02:30pm", "Steve Capriani", "PTX 2391"));
-        activities1.add(new KSAdminRegistrationActivity("Lab", "MWF 02:30pm - 03:30pm", "Steve Capriani", "PTX 2391"));
+        LabsAdminRegistrationCourse course1 =
+                new LabsAdminRegistrationCourse("CHEM 237", "1001", "The Chemistry of Stuff", 3, "reg", regDate);
+        List<LabsAdminRegistrationActivity> activities1 = new ArrayList<LabsAdminRegistrationActivity>();
+        activities1.add(new LabsAdminRegistrationActivity("Lec", "MWF 01:00pm - 02:30pm", "Steve Capriani", "PTX 2391"));
+        activities1.add(new LabsAdminRegistrationActivity("Lab", "MWF 02:30pm - 03:30pm", "Steve Capriani", "PTX 2391"));
         course1.setActivities(activities1);
         course1.setSubterm(true);
 
         registeredCourses.add(course1);
 
-        KSAdminRegistrationCourse course2 =
-                new KSAdminRegistrationCourse("ENGL 233", "1001", "The World of Shakespeare", 3, "audit", regDate);
+        LabsAdminRegistrationCourse course2 =
+                new LabsAdminRegistrationCourse("ENGL 233", "1001", "The World of Shakespeare", 3, "audit", regDate);
         course2.setEffectiveDate(new Date(regDate.getTime() - 86400000));
-        List<KSAdminRegistrationActivity> activities2 = new ArrayList<KSAdminRegistrationActivity>();
-        activities2.add(new KSAdminRegistrationActivity("Lec", "MWF 01:00pm - 02:30pm", "Someone", "PTX 1111"));
+        List<LabsAdminRegistrationActivity> activities2 = new ArrayList<LabsAdminRegistrationActivity>();
+        activities2.add(new LabsAdminRegistrationActivity("Lec", "MWF 01:00pm - 02:30pm", "Someone", "PTX 1111"));
         course2.setActivities(activities2);
 
         registeredCourses.add(course2);
 
-        KSAdminRegistrationCourse course3 =
-                new KSAdminRegistrationCourse("ENGL 640", "1001", "Light and Motion", 3, "pf", regDate);
-        List<KSAdminRegistrationActivity> activities3 = new ArrayList<KSAdminRegistrationActivity>();
-        activities3.add(new KSAdminRegistrationActivity("Lec", "MWF 01:00pm - 02:30pm", "Someone", "PTX 1200"));
+        LabsAdminRegistrationCourse course3 =
+                new LabsAdminRegistrationCourse("ENGL 640", "1001", "Light and Motion", 3, "pf", regDate);
+        List<LabsAdminRegistrationActivity> activities3 = new ArrayList<LabsAdminRegistrationActivity>();
+        activities3.add(new LabsAdminRegistrationActivity("Lec", "MWF 01:00pm - 02:30pm", "Someone", "PTX 1200"));
         course3.setActivities(activities3);
 
         registeredCourses.add(course3);
 
-        KSAdminRegistrationCourse course4 =
-                new KSAdminRegistrationCourse("CHEM 237", "1001", "The Chemistry of Stuff", 3, "reg", new Date());
-        List<KSAdminRegistrationActivity> activities4 = new ArrayList<KSAdminRegistrationActivity>();
-        activities4.add(new KSAdminRegistrationActivity("Lec", "MWF 04:00pm - 05:30pm", "Steve Capriani", "PTX 2391"));
-        activities4.add(new KSAdminRegistrationActivity("Lab", "MWF 05:30pm - 06:30pm", "Steve Capriani", "PTX 2391"));
+        LabsAdminRegistrationCourse course4 =
+                new LabsAdminRegistrationCourse("CHEM 237", "1001", "The Chemistry of Stuff", 3, "reg", new Date());
+        List<LabsAdminRegistrationActivity> activities4 = new ArrayList<LabsAdminRegistrationActivity>();
+        activities4.add(new LabsAdminRegistrationActivity("Lec", "MWF 04:00pm - 05:30pm", "Steve Capriani", "PTX 2391"));
+        activities4.add(new LabsAdminRegistrationActivity("Lab", "MWF 05:30pm - 06:30pm", "Steve Capriani", "PTX 2391"));
         course4.setActivities(activities4);
 
         waitlistedCourses.add(course4);
 
-        pendingCourses.add(new KSAdminRegistrationCourse());
+        pendingCourses.add(new LabsAdminRegistrationCourse());
     }
 
     public String getStudentId() {
@@ -171,25 +171,25 @@ public class KSAdminRegistrationForm extends UifFormBase implements Serializable
         this.termId = termId;
     }
 
-    public List<KSAdminRegistrationCourse> getRegisteredCourses() {
+    public List<LabsAdminRegistrationCourse> getRegisteredCourses() {
         return registeredCourses;
     }
 
-    public void setRegisteredCourses(List<KSAdminRegistrationCourse> registeredCourses) {
+    public void setRegisteredCourses(List<LabsAdminRegistrationCourse> registeredCourses) {
         this.registeredCourses = registeredCourses;
     }
 
-    public List<KSAdminRegistrationCourse> getWaitlistedCourses() {
+    public List<LabsAdminRegistrationCourse> getWaitlistedCourses() {
         return waitlistedCourses;
     }
 
-    public void setWaitlistedCourses(List<KSAdminRegistrationCourse> waitlistedCourses) {
+    public void setWaitlistedCourses(List<LabsAdminRegistrationCourse> waitlistedCourses) {
         this.waitlistedCourses = waitlistedCourses;
     }
 
     public int getRegisteredCredits() {
         int credits = 0;
-        for (KSAdminRegistrationCourse course: registeredCourses) {
+        for (LabsAdminRegistrationCourse course: registeredCourses) {
             credits += course.getCredits();
         }
 
@@ -198,42 +198,42 @@ public class KSAdminRegistrationForm extends UifFormBase implements Serializable
 
     public int getWaitlistedCredits() {
         int credits = 0;
-        for (KSAdminRegistrationCourse course: waitlistedCourses) {
+        for (LabsAdminRegistrationCourse course: waitlistedCourses) {
             credits += course.getCredits();
         }
 
         return credits;
     }
 
-    public List<KSAdminRegistrationCourse> getPendingCourses() {
+    public List<LabsAdminRegistrationCourse> getPendingCourses() {
         return pendingCourses;
     }
 
-    public void setPendingCourses(List<KSAdminRegistrationCourse> pendingCourses) {
+    public void setPendingCourses(List<LabsAdminRegistrationCourse> pendingCourses) {
         this.pendingCourses = pendingCourses;
     }
 
-    public List<KSAdminRegistrationIssue> getRegistrationIssues() {
+    public List<LabsAdminRegistrationIssue> getRegistrationIssues() {
         return registrationIssues;
     }
 
-    public void setRegistrationIssues(List<KSAdminRegistrationIssue> registrationIssues) {
+    public void setRegistrationIssues(List<LabsAdminRegistrationIssue> registrationIssues) {
         this.registrationIssues = registrationIssues;
     }
 
-    public List<KSAdminRegistrationCourse> getCoursesInProcess() {
+    public List<LabsAdminRegistrationCourse> getCoursesInProcess() {
         return coursesInProcess;
     }
 
-    public void setCoursesInProcess(List<KSAdminRegistrationCourse> coursesInProcess) {
+    public void setCoursesInProcess(List<LabsAdminRegistrationCourse> coursesInProcess) {
         this.coursesInProcess = coursesInProcess;
     }
 
-    public KSAdminRegistrationCourse getPendingDropCourse() {
+    public LabsAdminRegistrationCourse getPendingDropCourse() {
         return pendingDropCourse;
     }
 
-    public void setPendingDropCourse(KSAdminRegistrationCourse pendingDropCourse) {
+    public void setPendingDropCourse(LabsAdminRegistrationCourse pendingDropCourse) {
         this.pendingDropCourse = pendingDropCourse;
     }
 
@@ -253,19 +253,19 @@ public class KSAdminRegistrationForm extends UifFormBase implements Serializable
         this.editWaitlistedIndex = editWaitlistedIndex;
     }
 
-    public KSAdminRegistrationCourse getTempRegCourseEdit() {
+    public LabsAdminRegistrationCourse getTempRegCourseEdit() {
         return tempRegCourseEdit;
     }
 
-    public void setTempRegCourseEdit(KSAdminRegistrationCourse tempRegCourseEdit) {
+    public void setTempRegCourseEdit(LabsAdminRegistrationCourse tempRegCourseEdit) {
         this.tempRegCourseEdit = tempRegCourseEdit;
     }
 
-    public KSAdminRegistrationCourse getTempWaitlistCourseEdit() {
+    public LabsAdminRegistrationCourse getTempWaitlistCourseEdit() {
         return tempWaitlistCourseEdit;
     }
 
-    public void setTempWaitlistCourseEdit(KSAdminRegistrationCourse tempWaitlistCourseEdit) {
+    public void setTempWaitlistCourseEdit(LabsAdminRegistrationCourse tempWaitlistCourseEdit) {
         this.tempWaitlistCourseEdit = tempWaitlistCourseEdit;
     }
 }

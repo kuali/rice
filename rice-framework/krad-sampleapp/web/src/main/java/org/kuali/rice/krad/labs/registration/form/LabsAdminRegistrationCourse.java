@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KSAdminRegistrationCourse implements Serializable{
+public class LabsAdminRegistrationCourse implements Serializable{
 
     private static final long serialVersionUID = 5236548204817229477L;
     private String code;
@@ -37,13 +37,13 @@ public class KSAdminRegistrationCourse implements Serializable{
     private Date dropDate;
     private Date effectiveDate;
 
-    private List<KSAdminRegistrationActivity> activities;
+    private List<LabsAdminRegistrationActivity> activities;
     private boolean subterm;
 
-    public KSAdminRegistrationCourse(){}
+    public LabsAdminRegistrationCourse(){}
 
-    public KSAdminRegistrationCourse(String code, String section, String courseName, Integer credits, String regOptions,
-            Date regDate) {
+    public LabsAdminRegistrationCourse(String code, String section, String courseName, Integer credits,
+            String regOptions, Date regDate) {
         this.code = code;
         this.section = section;
         this.courseName = courseName;
@@ -101,17 +101,17 @@ public class KSAdminRegistrationCourse implements Serializable{
         this.regDate = regDate;
     }
 
-    public List<KSAdminRegistrationActivity> getActivities() {
+    public List<LabsAdminRegistrationActivity> getActivities() {
         return activities;
     }
 
-    public void setActivities(List<KSAdminRegistrationActivity> activities) {
+    public void setActivities(List<LabsAdminRegistrationActivity> activities) {
         this.activities = activities;
     }
 
     public List<String> getActivityTypes(){
         ArrayList<String> list = new ArrayList<String>();
-        for (KSAdminRegistrationActivity activity: activities) {
+        for (LabsAdminRegistrationActivity activity: activities) {
             list.add(activity.getType());
         }
 
@@ -120,7 +120,7 @@ public class KSAdminRegistrationCourse implements Serializable{
 
     public List<String> getActivityDateTimes(){
         ArrayList<String> list = new ArrayList<String>();
-        for (KSAdminRegistrationActivity activity: activities) {
+        for (LabsAdminRegistrationActivity activity: activities) {
             list.add(activity.getDateTime());
         }
 
@@ -129,7 +129,7 @@ public class KSAdminRegistrationCourse implements Serializable{
 
     public List<String> getActivityInstructors(){
         ArrayList<String> list = new ArrayList<String>();
-        for (KSAdminRegistrationActivity activity: activities) {
+        for (LabsAdminRegistrationActivity activity: activities) {
             list.add(activity.getInstructor());
         }
 
@@ -138,7 +138,7 @@ public class KSAdminRegistrationCourse implements Serializable{
 
     public List<String> getActivityRooms(){
         ArrayList<String> list = new ArrayList<String>();
-        for (KSAdminRegistrationActivity activity: activities) {
+        for (LabsAdminRegistrationActivity activity: activities) {
             list.add(activity.getRoom());
         }
 
@@ -147,7 +147,7 @@ public class KSAdminRegistrationCourse implements Serializable{
 
     public List<String> getActivityTypeDateTimes() {
         ArrayList<String> list = new ArrayList<String>();
-        for (KSAdminRegistrationActivity activity: activities) {
+        for (LabsAdminRegistrationActivity activity: activities) {
             list.add(activity.getType() + " " + activity.getDateTime());
         }
 

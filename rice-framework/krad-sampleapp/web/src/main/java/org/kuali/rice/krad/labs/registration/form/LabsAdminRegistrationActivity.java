@@ -22,7 +22,7 @@ import java.io.Serializable;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KSAdminRegistrationActivity implements Serializable {
+public class LabsAdminRegistrationActivity implements Serializable {
     private static final long serialVersionUID = -58207877197440410L;
 
     private String type;
@@ -30,7 +30,7 @@ public class KSAdminRegistrationActivity implements Serializable {
     private String instructor;
     private String room;
 
-    public KSAdminRegistrationActivity(String type, String dateTime, String instructor, String room) {
+    public LabsAdminRegistrationActivity(String type, String dateTime, String instructor, String room) {
         this.type = type;
         this.dateTime = dateTime;
         this.instructor = instructor;

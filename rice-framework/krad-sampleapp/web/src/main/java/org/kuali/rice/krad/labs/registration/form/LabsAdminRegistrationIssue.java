@@ -23,9 +23,9 @@ import java.util.List;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KSAdminRegistrationIssue {
+public class LabsAdminRegistrationIssue {
     private List<String> messages = new ArrayList<String>();
-    private KSAdminRegistrationCourse course;
+    private LabsAdminRegistrationCourse course;
 
     public List<String> getMessages() {
         return messages;
@@ -35,11 +35,11 @@ public class KSAdminRegistrationIssue {
         this.messages = messages;
     }
 
-    public KSAdminRegistrationCourse getCourse() {
+    public LabsAdminRegistrationCourse getCourse() {
         return course;
     }
 
-    public void setCourse(KSAdminRegistrationCourse course) {
+    public void setCourse(LabsAdminRegistrationCourse course) {
         this.course = course;
     }
 }

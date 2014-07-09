@@ -17,10 +17,10 @@ package org.kuali.rice.krad.labs.registration.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationActivity;
-import org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationCourse;
-import org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationForm;
-import org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationIssue;
+import org.kuali.rice.krad.labs.registration.form.LabsAdminRegistrationActivity;
+import org.kuali.rice.krad.labs.registration.form.LabsAdminRegistrationCourse;
+import org.kuali.rice.krad.labs.registration.form.LabsAdminRegistrationForm;
+import org.kuali.rice.krad.labs.registration.form.LabsAdminRegistrationIssue;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
@@ -51,13 +51,13 @@ import java.util.Random;
  */
 @Controller
 @RequestMapping(value = "/ksworkshop")
-public class KSAdminRegistrationController extends UifControllerBase {
+public class LabsAdminRegistrationController extends UifControllerBase {
     private static String REG_COLL_ID = "KS-AdminRegistration-Registered";
     private static String WAITLIST_COLL_ID = "KS-AdminRegistration-Waitlist";
 
     @Override
-    protected KSAdminRegistrationForm createInitialForm() {
-        return new KSAdminRegistrationForm();
+    protected LabsAdminRegistrationForm createInitialForm() {
+        return new LabsAdminRegistrationForm();
     }
 
     /**
@@ -66,12 +66,12 @@ public class KSAdminRegistrationController extends UifControllerBase {
     @Override
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(UifFormBase form) {
-        cancelEdits((KSAdminRegistrationForm) form, form.getUpdateComponentId());
+        cancelEdits((LabsAdminRegistrationForm) form, form.getUpdateComponentId());
         return getRefreshControllerService().refresh(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=getStudentInfo")
-    public ModelAndView getStudentInfo(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView getStudentInfo(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         // Pretend service call to get student and populate
         form.setStudentName("Allison Glass");
@@ -85,19 +85,19 @@ public class KSAdminRegistrationController extends UifControllerBase {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=register")
-    public ModelAndView register(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView register(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         DialogResponse dialogResponse = form.getDialogResponse("KS-AdminRegistration-RegisterDialogResponse");
         if (dialogResponse == null) {
-            for (KSAdminRegistrationCourse course : form.getPendingCourses()) {
+            for (LabsAdminRegistrationCourse course : form.getPendingCourses()) {
                 course.setCourseName("Some course name here");
                 course.setCredits(3);
                 course.setRegDate(new Date());
                 course.setRegOptions("reg");
                 course.setEffectiveDate(new Date());
-                List<KSAdminRegistrationActivity> activities = new ArrayList<KSAdminRegistrationActivity>();
-                activities.add(new KSAdminRegistrationActivity("Lec", "MWF 01:00pm - 02:30pm", "Steve Capriani", "PTX 2391"));
-                activities.add(new KSAdminRegistrationActivity("Lab", "MWF 02:30pm - 03:30pm", "Steve Capriani", "PTX 2391"));
+                List<LabsAdminRegistrationActivity> activities = new ArrayList<LabsAdminRegistrationActivity>();
+                activities.add(new LabsAdminRegistrationActivity("Lec", "MWF 01:00pm - 02:30pm", "Steve Capriani", "PTX 2391"));
+                activities.add(new LabsAdminRegistrationActivity("Lab", "MWF 02:30pm - 03:30pm", "Steve Capriani", "PTX 2391"));
                 course.setActivities(activities);
             }
 
@@ -106,14 +106,14 @@ public class KSAdminRegistrationController extends UifControllerBase {
 
         // continue with registration
         form.getCoursesInProcess().addAll(form.getPendingCourses());
-        form.setPendingCourses(new ArrayList<KSAdminRegistrationCourse>());
-        form.getPendingCourses().add(new KSAdminRegistrationCourse());
+        form.setPendingCourses(new ArrayList<LabsAdminRegistrationCourse>());
+        form.getPendingCourses().add(new LabsAdminRegistrationCourse());
 
         return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=dropCourse")
-    public ModelAndView dropCourse(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView dropCourse(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         String selectedCollectionPath = form.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {
@@ -135,9 +135,9 @@ public class KSAdminRegistrationController extends UifControllerBase {
 
         if (dialogResponse == null) {
             // Create temp object with the info we need about the course
-            KSAdminRegistrationCourse pendingDropCourse = new KSAdminRegistrationCourse();
-            pendingDropCourse.setCode(((KSAdminRegistrationCourse) item).getCode());
-            pendingDropCourse.setSection(((KSAdminRegistrationCourse) item).getSection());
+            LabsAdminRegistrationCourse pendingDropCourse = new LabsAdminRegistrationCourse();
+            pendingDropCourse.setCode(((LabsAdminRegistrationCourse) item).getCode());
+            pendingDropCourse.setSection(((LabsAdminRegistrationCourse) item).getSection());
             pendingDropCourse.setDropDate(new Date());
             form.setPendingDropCourse(pendingDropCourse);
 
@@ -145,7 +145,7 @@ public class KSAdminRegistrationController extends UifControllerBase {
         }
 
         // TODO you would do the actual drop call here
-        ((KSAdminRegistrationCourse)item).setDropDate(form.getPendingDropCourse().getDropDate());
+        ((LabsAdminRegistrationCourse)item).setDropDate(form.getPendingDropCourse().getDropDate());
 
         cancelEdits(form, selectedCollectionId);
 
@@ -153,7 +153,7 @@ public class KSAdminRegistrationController extends UifControllerBase {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=removeWaitlistCourse")
-    public ModelAndView removeWaitlistCourse(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView removeWaitlistCourse(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         String selectedCollectionId = form.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
         cancelEdits(form, selectedCollectionId);
@@ -163,7 +163,7 @@ public class KSAdminRegistrationController extends UifControllerBase {
 
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=regUpdateQuery")
     @ResponseBody
-    public Map regUpdateQuery(KSAdminRegistrationForm form) {
+    public Map regUpdateQuery(LabsAdminRegistrationForm form) {
         Map<String, Object> result = new HashMap<String, Object>();
         List<String> updateIds = new ArrayList<String>();
 
@@ -196,7 +196,7 @@ public class KSAdminRegistrationController extends UifControllerBase {
             i = generator.nextInt(5);
             if (i == 0 && !form.getCoursesInProcess().isEmpty()) {
                 // faking an issue found
-                KSAdminRegistrationIssue regIssue = new KSAdminRegistrationIssue();
+                LabsAdminRegistrationIssue regIssue = new LabsAdminRegistrationIssue();
                 regIssue.setCourse(form.getCoursesInProcess().get(0));
                 regIssue.getMessages().add("Some Problem");
                 regIssue.getMessages().add("Some Other Problem");
@@ -217,7 +217,7 @@ public class KSAdminRegistrationController extends UifControllerBase {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=editCourse")
-    public ModelAndView editCourse(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView editCourse(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         String selectedCollectionPath = form.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {
@@ -238,8 +238,8 @@ public class KSAdminRegistrationController extends UifControllerBase {
         cancelEdits(form, selectedCollectionId);
 
         // TODO May want to write your own copy/clone method or alternatively re-retrieve value from db on cancel
-        KSAdminRegistrationCourse
-                tempCourse = (KSAdminRegistrationCourse) (SerializationUtils.clone((KSAdminRegistrationCourse) item));
+        LabsAdminRegistrationCourse
+                tempCourse = (LabsAdminRegistrationCourse) (SerializationUtils.clone((LabsAdminRegistrationCourse) item));
 
         if (selectedCollectionId.equals(REG_COLL_ID)) {
             form.setEditRegisteredIndex(selectedLineIndex);
@@ -253,7 +253,7 @@ public class KSAdminRegistrationController extends UifControllerBase {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=saveEdit")
-    public ModelAndView saveEdit(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView saveEdit(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         String selectedCollectionId = form.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
         if (selectedCollectionId.equals(REG_COLL_ID)) {
@@ -270,7 +270,7 @@ public class KSAdminRegistrationController extends UifControllerBase {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=cancelEdit")
-    public ModelAndView cancelEdit(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView cancelEdit(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         String selectedCollectionId = form.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_ID);
         cancelEdits(form, selectedCollectionId);
@@ -279,7 +279,7 @@ public class KSAdminRegistrationController extends UifControllerBase {
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=allowCourse")
-    public ModelAndView allowCourse(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView allowCourse(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         String selectedCollectionPath = form.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
         if (StringUtils.isBlank(selectedCollectionPath)) {
@@ -297,20 +297,20 @@ public class KSAdminRegistrationController extends UifControllerBase {
         // TODO would Force registration here
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(form, selectedCollectionPath);
         Object item = ((List) collection).get(selectedLineIndex);
-        form.getRegisteredCourses().add(((KSAdminRegistrationIssue) item).getCourse());
+        form.getRegisteredCourses().add(((LabsAdminRegistrationIssue) item).getCourse());
         ((List) collection).remove(selectedLineIndex);
 
         return getModelAndView(form);
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=denyCourse")
-    public ModelAndView denyCourse(@ModelAttribute("KualiForm") KSAdminRegistrationForm form, BindingResult result,
+    public ModelAndView denyCourse(@ModelAttribute("KualiForm") LabsAdminRegistrationForm form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO would deny registration request here
         return deleteLine(form);
     }
 
-    private void cancelEdits(KSAdminRegistrationForm form, String collectionId) {
+    private void cancelEdits(LabsAdminRegistrationForm form, String collectionId) {
         if (collectionId == null) {
             return;
         }

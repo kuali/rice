@@ -138,6 +138,11 @@
             </para></listitem>
             <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12913'>KULRICE-12913</link>] -         UT Failure XML Marshaling
             </para></listitem>
+            
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12931'>KULRICE-12931</link>] -         Server side paging does not work when collection contains a field group
+            </para></listitem>
+      
+              
             </itemizedlist></para>
             </section>
             

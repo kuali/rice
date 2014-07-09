@@ -89,6 +89,18 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
     	waitForTextPresent("Travel Account 2");
     }
+    
+    protected void testBasicLookUpSearchEditSave() throws InterruptedException {
+    	//Search 
+    	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+    	waitAndClickByLinkText("edit");
+    	
+    	//Edit & Save
+    	waitAndTypeByName("document.documentHeader.documentDescription","Edited Description");
+    	waitAndTypeByName("document.newMaintainableObject.dataObject.name"," Edited");
+    	waitAndClickButtonByExactText("Save");
+    	waitForTextPresent("Document was successfully saved.");
+    }
    
     @Test
     public void testBasicLookUpBookmark() throws Exception {
@@ -99,6 +111,18 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     @Test
     public void testBasicLookUpNav() throws Exception {
         testBasicLookUp();
+        passed();
+    }
+    
+    @Test
+    public void testBasicLookUpSearchEditSaveBookmark() throws Exception {
+    	testBasicLookUpSearchEditSave();
+        passed();
+    }
+
+    @Test
+    public void testBasicLookUpSearchEditSaveNav() throws Exception {
+    	testBasicLookUpSearchEditSave();
         passed();
     }
 }

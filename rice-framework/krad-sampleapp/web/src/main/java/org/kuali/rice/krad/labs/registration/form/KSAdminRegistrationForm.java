@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.registration.form;
+package org.kuali.rice.krad.labs.registration.form;
 
 import org.kuali.rice.krad.web.form.UifFormBase;
 

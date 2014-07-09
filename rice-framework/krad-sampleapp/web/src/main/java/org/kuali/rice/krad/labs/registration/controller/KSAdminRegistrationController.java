@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.demo.registration.controller;
+package org.kuali.rice.krad.labs.registration.controller;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationActivity;
-import org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationCourse;
-import org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationForm;
-import org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationIssue;
+import org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationActivity;
+import org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationCourse;
+import org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationForm;
+import org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationIssue;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.web.controller.UifControllerBase;

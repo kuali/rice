@@ -40,7 +40,7 @@
         <value>scripts/KSAdminRegistration.js</value>
       </list>
     </property>
-    <property name="formClass" value="org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationForm"/>
   </bean>
 
   <!-- Css Version -->
@@ -137,7 +137,7 @@
   <bean id="KS-AdminRegistration-RegFor" parent="Uif-TableCollectionGroup"
         p:enterKeyAction="KS-AdminRegistration-RegFor_add" p:colSpan="4">
     <property name="collectionObjectClass"
-              value="org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationCourse"/>
+              value="org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationCourse"/>
     <property name="propertyName" value="pendingCourses"/>
     <property name="renderAddBlankLineButton" value="true"/>
     <property name="addLinePlacement" value="BOTTOM"/>
@@ -167,7 +167,7 @@
 
   <bean id="KS-AdminRegistration-Issues" parent="Uif-TableCollectionGroup" p:colSpan="8">
     <property name="collectionObjectClass"
-              value="org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationIssue"/>
+              value="org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationIssue"/>
     <property name="propertyName" value="registrationIssues"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="layoutManager.richTable.render" value="false"/>
@@ -249,7 +249,7 @@
   <!-- Collection for Registered and Waitlisted Courses -->
   <bean id="KS-AdminRegistration-Collection" parent="Uif-TableCollectionSubSection">
     <property name="collectionObjectClass"
-              value="org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationCourse"/>
+              value="org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationCourse"/>
     <property name="layoutManager.richTable.render" value="false"/>
     <property name="layoutManager.renderSequenceField" value="false"/>
     <property name="renderAddLine" value="false"/>
@@ -372,7 +372,7 @@
         <bean id="KS-AdminRegistration-DialogCollection" parent="Uif-TableCollectionGroup"
               p:layoutManager.numberOfColumns="10">
           <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.registration.form.KSAdminRegistrationCourse"/>
+                    value="org.kuali.rice.krad.labs.registration.form.KSAdminRegistrationCourse"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="renderAddLine" value="false"/>

@@ -69,9 +69,9 @@ public class BaselineTestCase extends BaseModuleTestCase {
     
     /**
      * Whether the test environment is in a "dirty" state.  Each time the unit test starts up
-     * dirty is set to true.  If a subclass installs the {@link TransactionalLifecycle} then
-     * it should clear the dirty flag.  This flag can be used to perform cleanup in case a previous
-     * test left the test environment in a "dirty" state.
+     * dirty is set to true if the mode is ROLLBACK_CLEAR_DB.  If a subclass installs the
+     * {@link TransactionalLifecycle} then it should clear the dirty flag.  This flag can
+     * be used to perform cleanup in case a previous test left the test environment in a "dirty" state.
      */
     protected static boolean dirty = false;
 
@@ -107,13 +107,15 @@ public class BaselineTestCase extends BaseModuleTestCase {
     }
 
     /**
-     * Overridden to set dirty=true each time
+     * Overridden to set dirty=true if the mode is ROLLBACK_CLEAR_DB
      * @see org.kuali.rice.test.RiceTestCase#setUp()
      */
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        dirty = true;
+        if (getMode().equals(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)) {
+            dirty = true;
+        }
     }
 
     @Override

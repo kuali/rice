@@ -1791,7 +1791,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         List<String> roleMemberPrincipalIds = new ArrayList<String>();
         for(RoleMemberBo roleMember : members) {
             if (roleMember.getType().getCode().equals(KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE.getCode())) {
-                if ((!roleMemberPrincipalIds.contains(roleMember.getMemberId())) && roleMember.isActive()) {
+                if (!roleMemberPrincipalIds.contains(roleMember.getMemberId())) {
                     roleMemberPrincipalIds.add(roleMember.getMemberId());
                 }
             }

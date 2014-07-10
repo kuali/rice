@@ -86,6 +86,7 @@ public class DemoTravelAccountLookUpAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='IAT']");
         waitAndClickButtonByText(SEARCH);
+        waitForLoadingProgress();
         waitForTextPresent("IAT - Income");
         waitAndClickButtonByText(CLEAR_VALUES);
 

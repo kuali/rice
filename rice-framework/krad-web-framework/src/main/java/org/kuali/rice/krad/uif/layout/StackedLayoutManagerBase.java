@@ -32,6 +32,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.element.Action;
@@ -248,7 +249,11 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
                     ((ViewModel) lineBuilderContext.getModel()).getClientStateForSyncing());
         }
 
-        stackedGroups.add(lineGroup);
+        // don't add to stackedGroups else will get double set of dialog boxes
+        // see FreeMarkerInlineRenderUtils.renderCollectionGroup near end where renders add line dialog
+        if (lineGroup instanceof DialogGroup == false) {
+            stackedGroups.add(lineGroup);
+        }
     }
 
     /**

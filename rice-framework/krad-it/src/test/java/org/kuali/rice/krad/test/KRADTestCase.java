@@ -34,6 +34,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.xml.namespace.QName;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -164,6 +165,15 @@ public abstract class KRADTestCase extends BaselineTestCase {
         suiteLifecycles.add(new KEWXmlDataLoaderLifecycle(XML_FILE));
 
         return suiteLifecycles;
+    }
+
+    @Override
+    protected List<String> getPerTestTablesNotToClear() {
+        List<String> tablesNotToClear = new ArrayList<String>();
+        tablesNotToClear.add("KRIM_.*");
+        tablesNotToClear.add("KRCR_.*");
+        tablesNotToClear.add("KREW_.*");
+        return tablesNotToClear;
     }
 
     @Override

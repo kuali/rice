@@ -1,0 +1,229 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="LabsKCTemplateMenu" parent="KradSampleAppView">
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-MaintenanceSampleView</value>
+      </list>
+    </property>
+    <property name="page.headerText" value="Basic New"/>
+    <property name="page.items">
+      <list>
+        <bean id="LabsKCTemplateMenuItems" parent="Uif-VerticalBoxSection"
+              p:headerText="KC Template Examples"
+              p:instructionalText="Simple KC layout examples">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="KC Template No Nav"
+                    p:href="uicomponents?viewId=LabsKCTemplate"/>
+              <bean parent="Uif-Link" p:linkText="KC Template Nav"
+                    p:href="uicomponents?viewId=LabsKCTemplate2"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsKCTemplate-AppHeader-View1" parent="Uif-FormView">
+    <property name="headerText" value="Doc Title"/>
+    <!-- ex:Demo-AppHeader-Example1 start-->
+    <!-- Note: The application header can be set globally by overriding the bean Uif-GlobalApplicationHeader -->
+    <property name="applicationHeader">
+      <bean parent="Demo-KC-AppHeader"/>
+    </property>
+    <!-- ex:Demo-AppHeader-Example1 end-->
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page">
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="LabsKCTemplate" parent="LabsKCTemplate-AppHeader-View1">
+    <property name="unifiedHeader" value="false"/>
+    <property name="stickyApplicationHeader" value="true"/>
+    <property name="breadcrumbs.render" value="false"/>
+    <property name="header">
+      <bean parent="Uif-ViewHeader" p:headerText="Doc Title" p:areaTitleText="Area Title"
+            p:supportTitleText="Doc Subtitle">
+        <property name="rightGroup">
+          <ref bean="LabsProposal-DocInfo"/>
+        </property>
+        <property name="lowerGroup">
+          <ref bean="LabsProposal-DocActionBar"/>
+        </property>
+      </bean>
+    </property>
+    <!--<property name="navigation" ref="LabsProposal-Menu"/>-->
+    <property name="items">
+      <list>
+        <ref bean="LabsKCTemplate-Page1"/>
+        <!--<ref bean="LabsProposal-Page"/>-->
+      </list>
+    </property>
+    <property name="stickyFooter" value="true"/>
+    <property name="footer">
+      <bean parent="Uif-GlobalApplicationFooter">
+        <property name="items">
+          <list>
+            <bean parent="Uif-SecondaryActionButton" p:methodToCall="save" p:actionLabel="Save"/>
+            <bean parent="Uif-PrimaryActionButton" p:methodToCall="saveContinue" p:actionLabel="Save and Continue"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="applicationFooter">
+      <null/>
+    </property>
+  </bean>
+
+  <bean id="LabsKCTemplate2" parent="LabsKCTemplate-AppHeader-View1">
+    <property name="unifiedHeader" value="false"/>
+    <property name="stickyApplicationHeader" value="true"/>
+    <property name="breadcrumbs.render" value="false"/>
+    <property name="header">
+      <bean parent="Uif-ViewHeader" p:headerText="Doc Title" p:areaTitleText="Area Title"
+            p:supportTitleText="Doc Subtitle">
+        <property name="rightGroup">
+          <ref bean="LabsProposal-DocInfo"/>
+        </property>
+        <property name="lowerGroup">
+          <ref bean="LabsProposal-DocActionBar"/>
+        </property>
+      </bean>
+    </property>
+    <property name="navigation" ref="LabsProposal-Menu"/>
+    <property name="items">
+      <list>
+        <ref bean="LabsKCTemplate-Page1"/>
+      </list>
+    </property>
+    <property name="stickyFooter" value="true"/>
+    <property name="footer">
+      <bean parent="Uif-GlobalApplicationFooter">
+        <property name="items">
+          <list>
+            <bean parent="Uif-SecondaryActionButton" p:methodToCall="save" p:actionLabel="Save"/>
+            <bean parent="Uif-PrimaryActionButton" p:methodToCall="saveContinue" p:actionLabel="Save and Continue"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="applicationFooter">
+      <null/>
+    </property>
+  </bean>
+
+  <bean id="LabsKCTemplate-Page1" parent="Uif-Page" p:headerText="Template - Standard Form">
+    <property name="items">
+      <list>
+        <bean parent="Uif-CssGridSection-1FieldLabelColumn">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Text Input" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Small Input" p:propertyName="field2">
+                <property name="control">
+                  <bean parent="Uif-SmallTextControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Medium Input" p:propertyName="field3">
+                <property name="control">
+                  <bean parent="Uif-MediumTextControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Large Input" p:propertyName="field4">
+                <property name="control">
+                  <bean parent="Uif-LargeTextControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Dropdown" p:propertyName="field5">
+                <property name="control">
+                  <bean parent="Uif-DropdownControl">
+                    <property name="options">
+                      <list>
+                        <bean parent="Uif-KeyLabelPair" p:key="A" p:value="Value"/>
+                        <bean parent="Uif-KeyLabelPair" p:key="B" p:value="Value"/>
+                        <bean parent="Uif-KeyLabelPair" p:key="C" p:value="Value"/>
+                        <bean parent="Uif-KeyLabelPair" p:key="D" p:value="Value"/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Text Area" p:propertyName="field6">
+                <property name="control">
+                  <bean parent="Uif-TextAreaControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Small Text Area" p:propertyName="field7">
+                <property name="control">
+                  <bean parent="Uif-SmallTextAreaControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Medium Text Area" p:propertyName="field8">
+                <property name="control">
+                  <bean parent="Uif-MediumTextAreaControl"/>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Large Text Area" p:propertyName="field9">
+                <property name="control">
+                  <bean parent="Uif-LargeTextAreaControl"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+
+        <bean parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="3">
+                <property name="headerText" value="Table Layout" />
+                <property name="collectionObjectClass"
+                          value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+                <property name="propertyName" value="list1" />
+                <!--<property name="layoutManager.generateAutoSequence" value="true" />-->
+                <!--<property name="layoutManager.richTable.render" value="true" />-->
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+
+        <!--<ref bean="LabsProposal-StackedSection"/>-->
+
+        <!--<ref bean="LabsProposal-Dialogs"/>-->
+
+        <!--<bean id="LabsProposal-Tabs2" parent="LabsProposal-Tabs"/>-->
+
+      </list>
+    </property>
+  </bean>
+
+</beans>

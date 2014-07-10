@@ -194,6 +194,10 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
     public Object getPropertyValue(String propertyName) throws BeansException {
         registerEditorFromView(propertyName);
 
+        // set auto grow to false here because we don't want empty object created when only
+        // displaying data
+        setAutoGrowNestedPaths(false);
+
         Object value = null;
         try {
             value = super.getPropertyValue(propertyName);
@@ -237,6 +241,10 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
                 originalValueSaved = false;
             }
         }
+
+        // since auto grows is explicity turned off for get, we need to turn it on for set (so our objects
+        // will grow if necessary for user entered data)
+        setAutoGrowNestedPaths(true);
 
         // set the actual property value
         super.setPropertyValue(pv);
@@ -284,6 +292,8 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             // the property value changed or not
             originalValueSaved = false;
         }
+
+        setAutoGrowNestedPaths(true);
 
         // set the actual property value
         super.setPropertyValue(propertyName, value);

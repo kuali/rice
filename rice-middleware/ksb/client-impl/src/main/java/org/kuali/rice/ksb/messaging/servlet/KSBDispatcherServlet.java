@@ -198,14 +198,10 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 			LOG.error("Attempting to acquire non-existent service " + request.getRequestURI());
 		    throw new RiceRuntimeException("Attempting to acquire non-existent service.");
 		}
-        System.out.println("COREY endpoint:"+endpoint.toString());
 		ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
-        System.out.println("COREY serviceConfiguration:"+serviceConfiguration.getEndpointUrl().toString());
 		if (serviceConfiguration instanceof SoapServiceConfiguration) {
 		    return false;
 		}
-        System.out.println("COREY serviceConfiguration.getBusSecurity:"+serviceConfiguration.getBusSecurity().toString());
-        new RuntimeException("DEBUG").printStackTrace();
 		return serviceConfiguration.getBusSecurity();
 	}
 

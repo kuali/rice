@@ -153,8 +153,8 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		throw new RiceRuntimeException("handler of type " + handler.getClass().getName() + " is not known and can't be used by " + KSBDispatcherServlet.class.getName());
 	}
 
-    //@Override
-	protected HandlerExecutionChain getHandler(HttpServletRequest request, boolean cache) throws Exception {
+    @Override
+	protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
 		return this.httpInvokerHandler.getHandler(request);
 	}
 
@@ -198,10 +198,14 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 			LOG.error("Attempting to acquire non-existent service " + request.getRequestURI());
 		    throw new RiceRuntimeException("Attempting to acquire non-existent service.");
 		}
+        System.out.println("COREY endpoint:"+endpoint.toString());
 		ServiceConfiguration serviceConfiguration = endpoint.getServiceConfiguration();
+        System.out.println("COREY serviceConfiguration:"+serviceConfiguration.getEndpointUrl().toString());
 		if (serviceConfiguration instanceof SoapServiceConfiguration) {
 		    return false;
 		}
+        System.out.println("COREY serviceConfiguration.getBusSecurity:"+serviceConfiguration.getBusSecurity().toString());
+        new RuntimeException("DEBUG").printStackTrace();
 		return serviceConfiguration.getBusSecurity();
 	}
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.test.service;
+package org.kuali.rice.kim.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,6 +54,7 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMemberContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
@@ -63,6 +65,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
@@ -126,6 +129,44 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         assertTrue( "Principal is not active on saved record", entity.getPrincipals().get(0).isActive() );
         return entity;
     }
+
+    @Test
+    public void testInactiveRoleMemberOnly() {
+
+        KimType.Builder ktBuilder = KimType.Builder.create();
+        ktBuilder.setId("1");
+        ktBuilder.setNamespaceCode("KUALI");
+        ktBuilder.setName("Default");
+        Long version = new Long(1) ;
+        ktBuilder.setVersionNumber(version);
+        KimType kt = ktBuilder.build() ;
+
+        IdentityManagementRoleDocument identityManagementRoleDocument = new IdentityManagementRoleDocument();
+        identityManagementRoleDocument.setKimType(kt);
+        identityManagementRoleDocument.setRoleId("KRSAP10003");
+        identityManagementRoleDocument.setRoleTypeId("1");
+        identityManagementRoleDocument.setRoleName("Default");
+        identityManagementRoleDocument.setRoleNamespace("KR_SAP");
+        identityManagementRoleDocument.setRoleName("Sample App Admin");
+
+        RoleMemberBo roleMemberBo = new RoleMemberBo();
+        roleMemberBo.setId("KRSAP10003");
+        roleMemberBo.setRoleId("KRSAP1003");
+        roleMemberBo.setMemberId("dev1");
+        roleMemberBo.setTypeCode("P");
+
+        // make the role member inactive
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        roleMemberBo.setActiveToDateValue(timestamp);
+        ArrayList<RoleMemberBo> roleMemberBos = new ArrayList<RoleMemberBo>();
+        roleMemberBos.add(roleMemberBo);
+
+        // We've got one role member, and it is inactive.
+        UiDocumentServiceImpl uiDocumentServiceImpl = new UiDocumentServiceImpl() ;
+        List<KimDocumentRoleMember> kimDocumentRoleMembers = uiDocumentServiceImpl.loadRoleMembers(identityManagementRoleDocument, roleMemberBos);
+        assertEquals("KimDocuemtnRoleMember size is incorrect", 0, kimDocumentRoleMembers.size());
+    }
+
 
     @Test
     public void testInactivatePrincipal() {

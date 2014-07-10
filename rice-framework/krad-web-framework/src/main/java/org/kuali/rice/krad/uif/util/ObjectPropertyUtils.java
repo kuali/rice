@@ -126,7 +126,6 @@ public final class ObjectPropertyUtils {
         }
 
         for (Entry<Class<?>, String> propertyEditorEntry : propertyEditorMap.entrySet()) {
-            
             PropertyEditor editor = (PropertyEditor) dataDictionaryService.getDataDictionary().getDictionaryPrototype(
                     propertyEditorEntry.getValue());
             registry.registerCustomEditor(propertyEditorEntry.getKey(), editor);

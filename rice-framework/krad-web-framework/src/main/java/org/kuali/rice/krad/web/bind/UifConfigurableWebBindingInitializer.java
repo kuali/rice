@@ -30,6 +30,7 @@ public class UifConfigurableWebBindingInitializer extends ConfigurableWebBinding
     @Override
     public void initBinder(WebDataBinder binder, WebRequest request) {
         super.initBinder(binder, request);
+
         ObjectPropertyUtils.registerPropertyEditors(binder);
     }
 

@@ -315,18 +315,18 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return valid;
         }
 
-        Map<String, InputField> criteriaFields = getCriteriaFieldsForValidation((LookupView) form.getView(),
-                form);
-
-        // TODO: this should be an error condition but we have an issue when the search is performed from
-        // the initial request and there is not a posted view
-        if ((criteriaFields == null) || criteriaFields.isEmpty()) {
+        // The form view can't be relied upon since the complete lifecycle hasn't ran against it.  Instead
+        // the viewPostMetadata is being used for the validation.
+        // If the view was not previously posted then it's impossible to validate the search parameters because
+        // of the missing viewPostMetadata.  When this happens we assume the search parameters are correct.
+        // (Calling the search controller method directly without displaying the lookup first can cause
+        // this situation.)
+        if (form.getViewPostMetadata() == null) {
             return valid;
         }
 
         Set<String> unprocessedSearchCriteria = new HashSet<String>(searchCriteria.keySet());
-        for (Map.Entry<String, Map<String, Object>> lookupCriteria :
-                form.getViewPostMetadata().getLookupCriteria().entrySet()) {
+        for (Map.Entry<String, Map<String, Object>> lookupCriteria : form.getViewPostMetadata().getLookupCriteria().entrySet()) {
             String propertyName = lookupCriteria.getKey();
             Map<String, Object> lookupCriteriaAttributes = lookupCriteria.getValue();
 

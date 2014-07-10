@@ -54,7 +54,6 @@ public class TestClient2 extends BaseTestServer {
 
 		WebAppContext context = new WebAppContext(location, CONTEXT);
         context.setThrowUnavailableOnStartupException(true);
-        context.setClassLoader(new KsbTestClientClassLoader());
         server.setHandler(context);
 		return server;
 	}

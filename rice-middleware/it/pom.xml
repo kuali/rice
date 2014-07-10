@@ -49,7 +49,7 @@
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <graph.skip>true</graph.skip>
     <!-- decrease jetty version for it tests to remain compatible with jstl-impl -->
-    <jetty.version>9.2.1.v20140609</jetty.version>
+    <jetty.version>8.1.15.v20140411</jetty.version>
   </properties>
 
   <dependencyManagement>

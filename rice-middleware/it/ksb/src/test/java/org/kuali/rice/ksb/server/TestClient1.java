@@ -16,13 +16,13 @@
 package org.kuali.rice.ksb.server;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.api.config.property.Config;
@@ -82,49 +82,20 @@ public class TestClient1 extends BaseTestServer {
 
         Server server = new Server();
 
-        // HTTP Configuration
-        HttpConfiguration http_config = new HttpConfiguration();
-        http_config.setSecureScheme("https");
-        http_config.setSecurePort(configConstants.SERVER_HTTPS_PORT);
-        http_config.setOutputBufferSize(32768);
-        http_config.setRequestHeaderSize(8192);
-        http_config.setResponseHeaderSize(8192);
-        http_config.setSendServerVersion(true);
-        http_config.setSendDateHeader(false);
+        SelectChannelConnector connector0 = new SelectChannelConnector();
+        connector0.setPort(configConstants.SERVER_HTTP_PORT);
+        connector0.setMaxIdleTime(30000);
+        connector0.setRequestHeaderSize(8192);
 
-        // === jetty-http.xml ===
-        ServerConnector http = new ServerConnector(server,new HttpConnectionFactory(http_config));
-        http.setPort(configConstants.SERVER_HTTP_PORT);
-        http.setIdleTimeout(30000);
-        server.addConnector(http);
+        SslSelectChannelConnector ssl_connector = new SslSelectChannelConnector();
 
-        // === jetty-https.xml ===
-        // SSL Context Factory
-        SslContextFactory sslContextFactory = new SslContextFactory();
-        sslContextFactory.setKeyStorePath(configConstants.KEYSTORE_PATH);
-        sslContextFactory.setKeyStorePassword(configConstants.KEYSTORE_PASS);
-        sslContextFactory.setKeyManagerPassword(configConstants.KEYSTORE_PASS);
-        sslContextFactory.setTrustStorePath(configConstants.KEYSTORE_PATH);
-        sslContextFactory.setTrustStorePassword(configConstants.KEYSTORE_PASS);
-        sslContextFactory.setExcludeCipherSuites(
-                "SSL_RSA_WITH_DES_CBC_SHA",
-                "SSL_DHE_RSA_WITH_DES_CBC_SHA",
-                "SSL_DHE_DSS_WITH_DES_CBC_SHA",
-                "SSL_RSA_EXPORT_WITH_RC4_40_MD5",
-                "SSL_RSA_EXPORT_WITH_DES40_CBC_SHA",
-                "SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA",
-                "SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA");
+        ssl_connector.setPort(configConstants.SERVER_HTTPS_PORT);
+        SslContextFactory cf = ssl_connector.getSslContextFactory();
+        cf.setKeyStore(configConstants.KEYSTORE_PATH);
+        cf.setKeyStorePassword(configConstants.KEYSTORE_PASS);
+        cf.setKeyManagerPassword(configConstants.KEYSTORE_PASS);
 
-        // SSL HTTP Configuration
-        HttpConfiguration https_config = new HttpConfiguration(http_config);
-        https_config.addCustomizer(new SecureRequestCustomizer());
-
-        // SSL Connector
-        ServerConnector sslConnector = new ServerConnector(server,
-                new SslConnectionFactory(sslContextFactory,"http/1.1"),
-                new HttpConnectionFactory(https_config));
-        sslConnector.setPort(configConstants.SERVER_HTTPS_PORT);
-        server.addConnector(sslConnector);
+        server.setConnectors(new Connector[]{connector0, ssl_connector});
 
         URL webRoot = getClass().getClassLoader().getResource(configConstants.WEB_ROOT);
         String location = webRoot.getPath();
@@ -136,10 +107,8 @@ public class TestClient1 extends BaseTestServer {
 		LOG.debug("#####################################");
 
         WebAppContext context = new WebAppContext();
-        context.setDescriptor(location+"/WEB-INF/web.xml");
         context.setResourceBase(location);
         context.setContextPath(configConstants.CONTEXT);
-        context.setWar(location);
 
         HandlerCollection handlers = new HandlerCollection();
         handlers.addHandler(context);

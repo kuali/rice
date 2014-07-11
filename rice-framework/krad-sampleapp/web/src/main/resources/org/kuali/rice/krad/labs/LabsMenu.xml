@@ -120,6 +120,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/ksworkshop?viewId=KS-AdminRegistration"/>
                           <bean parent="Uif-Link" p:linkText="KS Admin Registration - No Css" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/ksworkshop?viewId=KS-AdminRegistration-NoCss"/>
+                          <bean parent="Uif-Link" p:linkText="Configuration" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsConfigurationView"/>
                         </list>
                       </property>
                     </bean>

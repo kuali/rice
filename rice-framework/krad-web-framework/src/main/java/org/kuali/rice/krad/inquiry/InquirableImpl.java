@@ -342,42 +342,4 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
         return CoreApiServiceLocator.getEncryptionService();
     }
 
-    /**
-     * Creates a copy of this {@code InquirableImpl}.
-     *
-     * @return a copy of this {@code InquirableImpl}
-     */
-    public InquirableImpl copy() {
-        InquirableImpl inquirableImplCopy = KRADUtils.createNewObjectFromClass(getClass());
-
-        if (this.getDataObjectClass() != null) {
-            inquirableImplCopy.setDataObjectClass(this.getDataObjectClass());
-        }
-
-        if (this.getConfigurationService() != null) {
-            inquirableImplCopy.setConfigurationService(this.getConfigurationService());
-        }
-
-        if (this.getDataDictionaryService() != null) {
-            inquirableImplCopy.setDataDictionaryService(this.getDataDictionaryService());
-        }
-
-        if (this.getLegacyDataAdapter() != null) {
-            inquirableImplCopy.setLegacyDataAdapter(this.getLegacyDataAdapter());
-        }
-
-        if (this.getDataObjectService() != null) {
-            inquirableImplCopy.setDataObjectService(this.getDataObjectService());
-        }
-
-        if (this.getViewDictionaryService() != null) {
-            inquirableImplCopy.setViewDictionaryService(this.getViewDictionaryService());
-        }
-
-        if (this.getExpressionEvaluatorFactory() != null) {
-            inquirableImplCopy.setExpressionEvaluatorFactory(this.getExpressionEvaluatorFactory());
-        }
-
-        return inquirableImplCopy;
-    }
 }

@@ -51,6 +51,7 @@ import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
+import org.kuali.rice.krad.uif.util.ExpressionFunctions;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.View;
@@ -59,14 +60,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.config.Scope;
 import org.springframework.beans.factory.support.ChildBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.StopWatch;
 
 /**
@@ -124,7 +128,16 @@ public class DataDictionary {
             // UIF post processor that sets component ids
             BeanPostProcessor idPostProcessor = ComponentBeanPostProcessor.class.newInstance();
             beans.addBeanPostProcessor(idPostProcessor);
-            beans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
+            beans.setBeanExpressionResolver(new StandardBeanExpressionResolver() {
+                @Override
+                protected void customizeEvaluationContext(StandardEvaluationContext evalContext) {
+                    try {
+                        evalContext.registerFunction("getService", ExpressionFunctions.class.getDeclaredMethod("getService", new Class[]{String.class}));
+                    } catch(NoSuchMethodException me) {
+                        LOG.error("Unable to register custom expression to data dictionary bean factory", me);
+                    }
+                }
+            });
 
             // special converters for shorthand map and list property syntax
             GenericConversionService conversionService = new GenericConversionService();
@@ -784,6 +797,12 @@ public class DataDictionary {
             Object value;
             if (propertyValue.isConverted()) {
                 value = propertyValue.getConvertedValue();
+            } else if (propertyValue.getValue() instanceof String) {
+                String unconvertedValue = (String) propertyValue.getValue();
+                Scope scope = ddBeans.getRegisteredScope(beanDefinition.getScope());
+                BeanExpressionContext beanExpressionContext = new BeanExpressionContext(ddBeans, scope);
+
+                value = ddBeans.getBeanExpressionResolver().evaluate(unconvertedValue, beanExpressionContext);
             } else {
                 value = propertyValue.getValue();
             }

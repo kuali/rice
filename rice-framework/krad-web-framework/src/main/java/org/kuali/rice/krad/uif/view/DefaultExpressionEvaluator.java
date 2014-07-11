@@ -66,6 +66,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     private static Method isAssignableFrom;
     private static Method empty;
     private static Method emptyList;
+    private static Method getService;
     private static Method listContains;
     private static Method getName;
     private static Method getParam;
@@ -88,6 +89,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
             hasPerm = ExpressionFunctions.class.getDeclaredMethod("hasPerm", new Class[]{String.class, String.class});
             hasPermDtls = ExpressionFunctions.class.getDeclaredMethod("hasPermDtls", new Class[]{String.class, String.class, Map.class, Map.class});
             hasPermTmpl = ExpressionFunctions.class.getDeclaredMethod("hasPermTmpl", new Class[]{String.class, String.class, Map.class, Map.class});
+            getService = ExpressionFunctions.class.getDeclaredMethod("getService", new Class[]{String.class});
             sequence = ExpressionFunctions.class.getDeclaredMethod("sequence", new Class[]{String.class});
             getDataObjectKey = ExpressionFunctions.class.getDeclaredMethod("getDataObjectKey", new Class[]{String.class});
         }catch(NoSuchMethodException e){
@@ -637,6 +639,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         context.registerFunction("isAssignableFrom", isAssignableFrom);
         context.registerFunction("empty", empty);
         context.registerFunction("emptyList", emptyList);
+        context.registerFunction("getService", getService);
         context.registerFunction("listContains", listContains);
         context.registerFunction("getName", getName);
         context.registerFunction("getParam", getParam);

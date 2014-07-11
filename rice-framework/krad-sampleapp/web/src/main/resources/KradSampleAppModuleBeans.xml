@@ -218,5 +218,13 @@
     <property name="collectionControllerService" ref="rice.sap.import.collectionControllerService"/>
   </bean>
 
+  <bean id="rice.sap.import.identityService"
+        class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="kimIdentityService"/>
+
+  <bean id="labsTravelAccountLookupable" class="org.kuali.rice.krad.labs.lookup.LabsTravelAccountLookupableImpl">
+    <property name="identityService" ref="rice.sap.import.identityService"/>
+  </bean>
+
 </beans>
 

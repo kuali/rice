@@ -29,7 +29,7 @@ public class DefaultExpressionEvaluatorTest {
     public void testServerEvaluationPattern() {
         List<String> shouldMatch = Arrays.asList(
                 "(getSomething() || isSomething())",
-                "(getThis())");
+                "(getThis())", "(#getService('test'))");
 
         for (String input: shouldMatch) {
             Matcher matcher = DefaultExpressionEvaluator.SERVER_EVALUATION_PATTERN.matcher(input);

@@ -864,21 +864,4 @@ public class LookupView extends FormView {
         this.additionalSecurePropertyNames = additionalSecurePropertyNames;
     }
 
-    /**
-     * Clones the {@code LookupView} with a deep copy.
-     *
-     * @return a clone of the current {@code LookupView}
-     *
-     * @see org.kuali.rice.krad.uif.component.ComponentBase#clone()
-     */
-    @Override
-    public LookupView clone() throws CloneNotSupportedException {
-        LookupView lookupViewCopy = (LookupView) super.clone();
-
-        if (getViewHelperService() != null) {
-            lookupViewCopy.setViewHelperService(((LookupableImpl) getViewHelperService()).copy());
-        }
-
-        return lookupViewCopy;
-    }
 }

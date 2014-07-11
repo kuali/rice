@@ -76,6 +76,18 @@ public class ExpressionFunctions {
     }
 
     /**
+     * Returns the service indicated by {@code serviceName}.
+     *
+     * @param serviceName the name of the service to obtain
+     * @param <T> the type of the service
+     *
+     * @return the service indicated by {@code serviceName}.
+     */
+    public static <T extends Object> T getService(String serviceName) {
+        return KRADServiceLocatorWeb.getService(serviceName);
+    }
+
+    /**
      * Check to see if the list contains the values passed in.
      *
      * <p>In the SpringEL call values can be single item or array due to the way the EL converts values.

@@ -68,18 +68,18 @@ public class SignatureVerifyingInputStream extends ServletInputStream {
 
     @Override
     public boolean isFinished() {
-        throw new RuntimeException("Not yet implemented");
-        //return false;
+        return this.wrappedInputStream instanceof ServletInputStream && ((ServletInputStream) this.wrappedInputStream).isFinished();
     }
 
     @Override
     public boolean isReady() {
-        throw new RuntimeException("Not yet implemented");
-        //return false;
+        return this.wrappedInputStream instanceof ServletInputStream && ((ServletInputStream) this.wrappedInputStream).isReady();
     }
 
    @Override
     public void setReadListener(ReadListener readListener) {
-        throw new RuntimeException("Not yet implemented");
+        if (this.wrappedInputStream instanceof ServletInputStream) {
+            ((ServletInputStream) this.wrappedInputStream).setReadListener(readListener);
+        }
     }
 }

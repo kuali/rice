@@ -73,12 +73,14 @@ public class LabsMultiFileUploadMultipleUsesOnOnePageAft extends WebDriverLegacy
             System.out.println("Try for setUpResourceDir");
         } catch (Exception e) {
             System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-framework/krad-sampleapp/web attempt to load as resource.");
+            
             try {
                 setUpResourceFiles(resourceDir);
             } catch (Exception e1) {
                 e1.printStackTrace();
                 jiraAwareFail("Problems loading files as resources " + e1.getMessage());
             }
+            
             System.out.println("Catch for setUpResourceDir");
         }
     }
@@ -97,6 +99,7 @@ public class LabsMultiFileUploadMultipleUsesOnOnePageAft extends WebDriverLegacy
             fileUploadList.add(file);
             System.out.println("For for setUpResourceFiles");
         }
+        
         Collections.sort(fileUploadList);
     }
 
@@ -116,6 +119,7 @@ public class LabsMultiFileUploadMultipleUsesOnOnePageAft extends WebDriverLegacy
 
         while(entries.hasMoreElements()) {
             String entry = entries.nextElement().getName();
+            
             if (entry.startsWith(pathStartsWith) && !entry.endsWith("/")) { //filter according to the pathStartsWith skipping directories
                 result.add(entry);
             }
@@ -132,12 +136,15 @@ public class LabsMultiFileUploadMultipleUsesOnOnePageAft extends WebDriverLegacy
 
         if (dir != null && dir.listFiles().length > 0) {
             Integer i = 1;
+            
             for (File file : dir.listFiles()) {
                 if (file.getName().endsWith(".txt")) {
                         fileUploadList.add(file);
                 }
+                
                 i++;
             }
+            
             Collections.sort(fileUploadList);
         } else {
             throw new Exception("----Resources not found----");
@@ -150,6 +157,7 @@ public class LabsMultiFileUploadMultipleUsesOnOnePageAft extends WebDriverLegacy
      */
     private void fileIngester() throws Exception {
     	System.out.println("In for fileIngester");
+    	
         if(fileUploadList!=null && fileUploadList.size()>0)
         {
 	        for (File file : fileUploadList) {
@@ -166,6 +174,7 @@ public class LabsMultiFileUploadMultipleUsesOnOnePageAft extends WebDriverLegacy
      */
     private void fileIngesterCollection() throws Exception {
     	System.out.println("In for fileIngester");
+    	
         if(fileUploadList!=null && fileUploadList.size()>0)
         {
 	        for (File file : fileUploadList) {

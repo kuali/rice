@@ -38,7 +38,7 @@ public class SignatureSigningOutputStream extends ServletOutputStream {
 	private DigitalSigner signer;
 	private BufferedOutputStream bufferedDataHoldingStream;
 	private ByteArrayOutputStream dataHoldingStream;
-	private OutputStream wrappedOutputStream;
+	private ServletOutputStream wrappedOutputStream;
 	
 	/**
 	 * Constructs a SignatureSigningOutputStream with the given DigitalSigner and underlying OutputStream.
@@ -46,7 +46,7 @@ public class SignatureSigningOutputStream extends ServletOutputStream {
 	 * stream is closed, at which point it should forward all data to the wrapped OutputStream.  If delayWrite
 	 * is false, then the data will be forwarded immediately.
 	 */
-	public SignatureSigningOutputStream(DigitalSigner signer, OutputStream wrappedOutputStream, boolean delayWrite) {
+	public SignatureSigningOutputStream(DigitalSigner signer, ServletOutputStream wrappedOutputStream, boolean delayWrite) {
 		super();
 		this.delayWrite = delayWrite;
 		if (delayWrite) {
@@ -96,12 +96,12 @@ public class SignatureSigningOutputStream extends ServletOutputStream {
 
     @Override
     public boolean isReady() {
-        throw new RuntimeException("Not yet implemented");
-        //return false;
+        return this.wrappedOutputStream.isReady();
     }
 
     @Override
     public void setWriteListener(WriteListener writeListener) {
-        throw new RuntimeException("Not yet implemented");
+        this.wrappedOutputStream.setWriteListener(writeListener);
     }
+
 }

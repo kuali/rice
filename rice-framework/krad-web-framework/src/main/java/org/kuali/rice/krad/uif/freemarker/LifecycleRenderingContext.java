@@ -88,6 +88,11 @@ public class LifecycleRenderingContext {
     private final PrintWriter writer;
 
     /**
+     * The listener for asynchronous writing.
+     */
+    private volatile WriteListener listener;
+
+    /**
      * Create FreeMarker environment for rendering within the view lifecycle.
      * 
      * @param request The active servlet request.
@@ -238,24 +243,30 @@ public class LifecycleRenderingContext {
 
         /**
          * {@inheritDoc}
+         *
+         * <p>
+         * Note that this implementation only supports blocking I/O operations and does not support the asynchronous
+         * writing operations introduced in Servlet 3.1.
+         * </p>
          */
         @Override
         public ServletOutputStream getOutputStream() throws IOException {
             return new ServletOutputStream() {
                 @Override
                 public void write(int b) throws IOException {
-                    buffer.write(b);
+                    if (listener == null) {
+                        buffer.write(b);
+                    }
                 }
 
                 @Override
                 public boolean isReady() {
-                    throw new RuntimeException("Not yet implemented");
-                    //return false;
+                    return false;
                 }
 
                 @Override
                 public void setWriteListener(WriteListener writeListener) {
-                    throw new RuntimeException("Not yet implemented");
+                    listener = writeListener;
                 }
             };
         }

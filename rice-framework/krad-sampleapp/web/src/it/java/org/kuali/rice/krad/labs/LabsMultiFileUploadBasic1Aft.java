@@ -73,12 +73,14 @@ public class LabsMultiFileUploadBasic1Aft extends WebDriverLegacyITBase {
             System.out.println("Try for setUpResourceDir");
         } catch (Exception e) {
             System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-framework/krad-sampleapp/web attempt to load as resource.");
+            
             try {
                 setUpResourceFiles(resourceDir);
             } catch (Exception e1) {
                 e1.printStackTrace();
                 jiraAwareFail("Problems loading files as resources " + e1.getMessage());
             }
+            
             System.out.println("Catch for setUpResourceDir");
         }
     }
@@ -97,6 +99,7 @@ public class LabsMultiFileUploadBasic1Aft extends WebDriverLegacyITBase {
             fileUploadList.add(file);
             System.out.println("For for setUpResourceFiles");
         }
+        
         Collections.sort(fileUploadList);
     }
 
@@ -132,12 +135,15 @@ public class LabsMultiFileUploadBasic1Aft extends WebDriverLegacyITBase {
 
         if (dir != null && dir.listFiles().length > 0) {
             Integer i = 1;
+            
             for (File file : dir.listFiles()) {
                 if (file.getName().endsWith(".txt")) {
                         fileUploadList.add(file);
                 }
+                
                 i++;
             }
+            
             Collections.sort(fileUploadList);
         } else {
             throw new Exception("----Resources not found----");
@@ -150,6 +156,7 @@ public class LabsMultiFileUploadBasic1Aft extends WebDriverLegacyITBase {
      */
     private void fileIngester() throws Exception {
     	System.out.println("In for fileIngester");
+    	
         if(fileUploadList!=null && fileUploadList.size()>0)
         {
 	        for (File file : fileUploadList) {
@@ -166,6 +173,7 @@ public class LabsMultiFileUploadBasic1Aft extends WebDriverLegacyITBase {
      */
     private void fileIngesterCollection() throws Exception {
     	System.out.println("In for fileIngester");
+    	
         if(fileUploadList!=null && fileUploadList.size()>0)
         {
 	        for (File file : fileUploadList) {

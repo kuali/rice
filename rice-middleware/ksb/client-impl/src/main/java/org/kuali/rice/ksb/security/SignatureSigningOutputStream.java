@@ -18,7 +18,6 @@ package org.kuali.rice.ksb.security;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 
 import javax.servlet.ServletOutputStream;

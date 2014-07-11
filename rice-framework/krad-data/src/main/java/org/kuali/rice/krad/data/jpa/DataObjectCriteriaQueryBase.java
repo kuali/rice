@@ -90,7 +90,7 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
             throw new IllegalArgumentException("criteria is null");
         }
 
-        final C parent = getQueryTranslator().translateCriteria(type, criteria.getPredicate());
+        final C parent = getQueryTranslator().translateCriteria(type, criteria);
         final Query query = getQueryTranslator().createDeletionQuery(type, parent);
         executeUpdate(query);
     }
@@ -104,7 +104,7 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
         }
 
         final C parent = getQueryTranslator().translateCriteria(type,
-                QueryByCriteria.Builder.create().build().getPredicate());
+                QueryByCriteria.Builder.create().build());
         final Query query = getQueryTranslator().createDeletionQuery(type, parent);
         executeUpdate(query);
     }
@@ -122,7 +122,7 @@ abstract class DataObjectCriteriaQueryBase<C, Q> implements CriteriaQuery {
             throw new IllegalArgumentException("criteria is null");
         }
 
-        final C parent = getQueryTranslator().translateCriteria(queryClass, criteria.getPredicate());
+        final C parent = getQueryTranslator().translateCriteria(queryClass, criteria);
 
         switch (criteria.getCountFlag()) {
             case ONLY:

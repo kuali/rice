@@ -15,6 +15,7 @@ import java.util.TreeMap;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
@@ -285,30 +286,81 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
     }
 
     @Test
-    public void testFindWithResultsWindow() {
+    public void testFindMatchingOrderBy() {
+        // create our sample data
         Map.Entry<List<Object>, QueryByCriteria.Builder> fixture = createForQuery(10);
         List<Object> objects = fixture.getKey();
         for (Object a: objects) {
             provider.save(a);
         }
 
-
+        // get the query for our created sample data
         QueryByCriteria.Builder query = fixture.getValue();
-        query.setStartAtIndex(2);
-        query.setMaxResults(5);
         // specify the order
         OrderByField.Builder orderBy = OrderByField.Builder.create();
         orderBy.setFieldName("number");
         orderBy.setOrderDirection(OrderDirection.ASCENDING);
         query.setOrderByFields(orderBy.build());
-        QueryResults<Object> results = provider.findMatching((Class<Object>) objects.get(0).getClass(), query.build());
 
-        assertEquals(5, results.getResults().size());
-        assertTestObjectIdentityEquals(objects.get(2), results.getResults().get(0));
-        assertTestObjectIdentityEquals(objects.get(3), results.getResults().get(1));
-        assertTestObjectIdentityEquals(objects.get(4), results.getResults().get(2));
-        assertTestObjectIdentityEquals(objects.get(5), results.getResults().get(3));
-        assertTestObjectIdentityEquals(objects.get(6), results.getResults().get(4));
+        // get all created objects, ordered by number column ascending order
+        List<SimpleAccount> ascOrder = provider.findMatching(SimpleAccount.class, query.build()).getResults();
+
+        // get all created objects, ordered by number column descending order
+        orderBy.setOrderDirection(OrderDirection.DESCENDING);
+        query.setOrderByFields(orderBy.build());
+        List<SimpleAccount> descOrder = provider.findMatching(SimpleAccount.class, query.build()).getResults();
+
+        assertEquals(ascOrder.size(), descOrder.size());
+
+        // ensure the two lists are exact opposites
+        if (!CollectionUtils.isEmpty(ascOrder)) {
+            for (int idx = 0; idx<ascOrder.size();idx++) {
+                assertTestObjectIdentityEquals(ascOrder.get(idx), descOrder.get((ascOrder.size() - 1) - idx));
+            }
+        }
+
+    }
+
+    @Test
+    public void testFindWithResultsWindow() {
+        // get all existing Simple Accounts and delete them so we have a fresh start
+        List<SimpleAccount> acctList = provider.findMatching(SimpleAccount.class, QueryByCriteria.Builder.create().build()).getResults();
+        if (CollectionUtils.isEmpty(acctList)) {
+            for (SimpleAccount acct : acctList) {
+                provider.delete(acct);
+            }
+        }
+
+        // now create our sample data
+        Map.Entry<List<Object>, QueryByCriteria.Builder> fixture = createForQuery(10);
+        List<Object> objects = fixture.getKey();
+        for (Object a: objects) {
+            provider.save(a);
+        }
+
+        // get the query for our created sample data
+        QueryByCriteria.Builder query = fixture.getValue();
+
+        // specify the order
+        OrderByField.Builder orderBy = OrderByField.Builder.create();
+        orderBy.setFieldName("number");
+        orderBy.setOrderDirection(OrderDirection.ASCENDING);
+        query.setOrderByFields(orderBy.build());
+
+        // get all created objects, ordered by number column
+        List<SimpleAccount> resultsAll = provider.findMatching(SimpleAccount.class, query.build()).getResults();
+
+        // now create the window, also ordered by number column
+        query.setStartAtIndex(2);
+        query.setMaxResults(5);
+        List<SimpleAccount> results = provider.findMatching(SimpleAccount.class, query.build()).getResults();
+
+        assertEquals(5, results.size());
+        assertTestObjectIdentityEquals(resultsAll.get(2), results.get(0));
+        assertTestObjectIdentityEquals(resultsAll.get(3), results.get(1));
+        assertTestObjectIdentityEquals(resultsAll.get(4), results.get(2));
+        assertTestObjectIdentityEquals(resultsAll.get(5), results.get(3));
+        assertTestObjectIdentityEquals(resultsAll.get(6), results.get(4));
     }
 
     /**

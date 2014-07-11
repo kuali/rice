@@ -18,6 +18,7 @@ package org.kuali.rice.krad.data.jpa;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -44,8 +45,11 @@ import org.kuali.rice.core.api.criteria.NotLikePredicate;
 import org.kuali.rice.core.api.criteria.NotNullPredicate;
 import org.kuali.rice.core.api.criteria.NullPredicate;
 import org.kuali.rice.core.api.criteria.OrPredicate;
+import org.kuali.rice.core.api.criteria.OrderByField;
+import org.kuali.rice.core.api.criteria.OrderDirection;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PropertyPathPredicate;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
 import org.kuali.rice.core.api.criteria.SubQueryPredicate;
 import org.kuali.rice.krad.data.jpa.NativeJpaQueryTranslator.TranslationContext;
@@ -229,6 +233,16 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 	protected abstract void addExistsSubquery(C criteria, String subQueryType, Predicate subQueryPredicate);
 
     /**
+     * Adds an order by clause to the given criteria
+     *
+     * @param criteria the criteria to add the order by clause to
+     * @param propertyPath The attribute name to order by
+     * @param sortAscending Boolean that determines whether to sort by ascending order
+     */
+    protected abstract void addOrderBy(C criteria, String propertyPath, boolean sortAscending);
+
+
+    /**
      * Adds a "=" clause to the property, ignoring case.
      *
      * @param criteria the criteria to add to.
@@ -284,14 +298,30 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
      * {@inheritDoc}
      */
     @Override
-    public C translateCriteria(Class queryClazz, Predicate predicate) {
+    public C translateCriteria(Class queryClazz, QueryByCriteria qbc) {
         final C parent = createCriteria(queryClazz);
 
-        if (predicate != null) {
-            addPredicate(predicate, parent);
+        if (qbc.getPredicate() != null) {
+            addPredicate(qbc.getPredicate(), parent);
+        }
+
+        if (!qbc.getOrderByFields().isEmpty()) {
+            addOrderBy(qbc.getOrderByFields(), parent);
         }
 
         return parent;
+    }
+
+    /**
+     * Adds one or more order by clauses to the criteria
+     *
+     * @param orderByFields
+     * @param parent the pareent criteria to add to
+     */
+    protected void addOrderBy(List<OrderByField> orderByFields, C parent) {
+        for (OrderByField field : orderByFields) {
+            addOrderBy(parent, field.getFieldName(), OrderDirection.ASCENDING.equals(field.getOrderDirection()));
+        }
     }
 
     /**

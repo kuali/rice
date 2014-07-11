@@ -153,8 +153,7 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
 		/**
 		 * Adds a JPA Subquery to the predicates.
 		 * 
-		 * @param predicate
-		 *            the predicate to AND.
+		 * @param subquery the subquery to add.
 		 */
 		void addExistsSubquery(Subquery<?> subquery) {
 			predicates.add(builder.exists(subquery));
@@ -545,6 +544,18 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
     @Override
     protected void addOr(TranslationContext criteria, TranslationContext inner) {
         criteria.or(inner);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void addOrderBy(TranslationContext criteria, String propertyPath, boolean sortAscending) {
+        if (sortAscending) {
+            criteria.query.orderBy(criteria.builder.asc(criteria.root.get(propertyPath)));
+        } else {
+            criteria.query.orderBy(criteria.builder.desc(criteria.root.get(propertyPath)));
+        }
     }
 
 	// protected void addSubquery( TranslationContext criteria )

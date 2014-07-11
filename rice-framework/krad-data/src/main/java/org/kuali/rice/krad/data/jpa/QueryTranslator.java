@@ -28,13 +28,13 @@ import javax.persistence.Query;
 interface QueryTranslator<C, Q> {
 
     /**
-     * Translates the given {@link Predicate} to a platform-specific criteria.
+     * Translates the given {@link org.kuali.rice.core.api.criteria.QueryByCriteria} to a platform-specific criteria.
      *
      * @param queryClazz the type of the query.
-     * @param predicate the {@link Predicate} to translate.
-     * @return a criteria for the given {@link Predicate}.
+     * @param criteria the {@link org.kuali.rice.core.api.criteria.QueryByCriteria} to translate.
+     * @return a criteria for the given {@link org.kuali.rice.core.api.criteria.QueryByCriteria}.
      */
-    C translateCriteria(Class queryClazz, Predicate predicate);
+    C translateCriteria(Class queryClazz, QueryByCriteria criteria);
 
     /**
      * Creates a query from the given criteria.

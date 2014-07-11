@@ -131,6 +131,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitAndTypeByName(fieldName,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText(SEARCH);
         Thread.sleep(1000);
+        
         if(isAlertPresent())    {
             jiraAwareFail(fieldName + " caused XSS.");
         }
@@ -166,6 +167,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
+        
     	if(waitForIsTextPresent("Document was successfully submitted.")) {
     		navigate();
             waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
@@ -210,12 +212,15 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
     	gotoLightBox();
         waitAndClickSearchByText();
+        
     	if(selectorText.equalsIgnoreCase("CAT")){
     		waitAndClickByXpath("//table/tbody/tr[1]/td/div/fieldset/div/a");
     	}
+    	
     	if(selectorText.equalsIgnoreCase("EAT")){
     		waitAndClickByXpath("//table/tbody/tr[2]/td/div/fieldset/div/a");
     	}
+    	
     	if(selectorText.equalsIgnoreCase("IAT")){
     		waitAndClickByXpath("//table/tbody/tr[3]/td/div/fieldset/div/a");
     	}
@@ -239,7 +244,5 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         testTravelAccountLookUpDocumentLocking();
         passed();
     }
-
-
 }
 

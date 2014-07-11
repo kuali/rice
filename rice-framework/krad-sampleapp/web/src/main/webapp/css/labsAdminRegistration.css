@@ -37,6 +37,8 @@
 #KS-AdminRegistration-StudentInfo {
     background-color: #d3d3d3;
     padding-top: .5em;
+    margin-left: -15px;
+    margin-right: -15px;
 }
 
 #KS-AdminRegistration-StudentInfo .uif-cssGridLabelCol {

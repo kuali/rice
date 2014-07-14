@@ -203,6 +203,13 @@ public class ParameterBo extends PersistableBusinessObjectBase implements Parame
         this.parameterType = parameterType;
     }
 
+    /**
+     * Returns the evaluation operator code.  View {@link org.kuali.rice.coreservice.api.parameter.EvaluationOperator}
+     * for applicable codes
+     *
+     *
+     * @return
+     */
     public String getEvaluationOperatorCode() {
         return evaluationOperatorCode;
     }

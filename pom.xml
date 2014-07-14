@@ -203,7 +203,7 @@
     <stests.failsafe.timeout>0</stests.failsafe.timeout>
     <xalan.version>2.7.1</xalan.version>
     <serializer.version>2.7.1</serializer.version>
-    <servlet-api.version>3.1.0</servlet-api.version>
+    <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.7</slf4j.version>
     <soa.model.core.version>1.2.2</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
@@ -1035,7 +1035,7 @@
         </plugin>
 
         <plugin>
-          <groupId>org.eclipse.jetty.jetty</groupId>
+          <groupId>org.mortbay.jetty.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <version>${jetty.version}</version>
           <configuration>

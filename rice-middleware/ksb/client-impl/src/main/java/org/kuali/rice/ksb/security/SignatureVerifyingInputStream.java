@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.Signature;
 
-import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 
 /**
@@ -66,20 +65,4 @@ public class SignatureVerifyingInputStream extends ServletInputStream {
 		}
 	}
 
-    @Override
-    public boolean isFinished() {
-        return this.wrappedInputStream instanceof ServletInputStream && ((ServletInputStream) this.wrappedInputStream).isFinished();
-    }
-
-    @Override
-    public boolean isReady() {
-        return this.wrappedInputStream instanceof ServletInputStream && ((ServletInputStream) this.wrappedInputStream).isReady();
-    }
-
-   @Override
-    public void setReadListener(ReadListener readListener) {
-        if (this.wrappedInputStream instanceof ServletInputStream) {
-            ((ServletInputStream) this.wrappedInputStream).setReadListener(readListener);
-        }
-    }
 }

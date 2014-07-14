@@ -18,10 +18,10 @@ package org.kuali.rice.ksb.security;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
 
 /**
  * An OutputStream which decorates another OutputStream with a wrapper that digitally
@@ -37,7 +37,7 @@ public class SignatureSigningOutputStream extends ServletOutputStream {
 	private DigitalSigner signer;
 	private BufferedOutputStream bufferedDataHoldingStream;
 	private ByteArrayOutputStream dataHoldingStream;
-	private ServletOutputStream wrappedOutputStream;
+	private OutputStream wrappedOutputStream;
 	
 	/**
 	 * Constructs a SignatureSigningOutputStream with the given DigitalSigner and underlying OutputStream.
@@ -45,7 +45,7 @@ public class SignatureSigningOutputStream extends ServletOutputStream {
 	 * stream is closed, at which point it should forward all data to the wrapped OutputStream.  If delayWrite
 	 * is false, then the data will be forwarded immediately.
 	 */
-	public SignatureSigningOutputStream(DigitalSigner signer, ServletOutputStream wrappedOutputStream, boolean delayWrite) {
+	public SignatureSigningOutputStream(DigitalSigner signer, OutputStream wrappedOutputStream, boolean delayWrite) {
 		super();
 		this.delayWrite = delayWrite;
 		if (delayWrite) {
@@ -92,15 +92,5 @@ public class SignatureSigningOutputStream extends ServletOutputStream {
 			super.close();
 		}
 	}
-
-    @Override
-    public boolean isReady() {
-        return this.wrappedOutputStream.isReady();
-    }
-
-    @Override
-    public void setWriteListener(WriteListener writeListener) {
-        this.wrappedOutputStream.setWriteListener(writeListener);
-    }
 
 }

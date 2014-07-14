@@ -28,7 +28,6 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
@@ -86,11 +85,6 @@ public class LifecycleRenderingContext {
      * The FreeMarker writer, for passing character data to the output buffer.
      */
     private final PrintWriter writer;
-
-    /**
-     * The listener for asynchronous writing.
-     */
-    private volatile WriteListener listener;
 
     /**
      * Create FreeMarker environment for rendering within the view lifecycle.
@@ -243,30 +237,13 @@ public class LifecycleRenderingContext {
 
         /**
          * {@inheritDoc}
-         *
-         * <p>
-         * Note that this implementation only supports blocking I/O operations and does not support the asynchronous
-         * writing operations introduced in Servlet 3.1.
-         * </p>
          */
         @Override
         public ServletOutputStream getOutputStream() throws IOException {
             return new ServletOutputStream() {
                 @Override
                 public void write(int b) throws IOException {
-                    if (listener == null) {
-                        buffer.write(b);
-                    }
-                }
-
-                @Override
-                public boolean isReady() {
-                    return false;
-                }
-
-                @Override
-                public void setWriteListener(WriteListener writeListener) {
-                    listener = writeListener;
+                    buffer.write(b);
                 }
             };
         }

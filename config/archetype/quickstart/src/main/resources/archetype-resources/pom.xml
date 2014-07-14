@@ -172,7 +172,7 @@
         A tomcat plugin could also be configured and used if desired.
       -->
       <plugin>
-        <groupId>org.eclipse.jetty</groupId>
+        <groupId>org.mortbay.jetty</groupId>
         <artifactId>jetty-maven-plugin</artifactId>
         <version>\${plugin.jetty.version}</version>
         <configuration>
@@ -253,7 +253,7 @@
           A tomcat plugin could also be configured and used if desired.
           -->
           <plugin>
-            <groupId>org.eclipse.jetty</groupId>
+            <groupId>org.mortbay.jetty</groupId>
             <artifactId>jetty-maven-plugin</artifactId>
             <version>\${plugin.jetty.version}</version>
             <configuration>

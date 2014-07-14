@@ -25,6 +25,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -551,11 +552,17 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
      */
     @Override
     protected void addOrderBy(TranslationContext criteria, String propertyPath, boolean sortAscending) {
-        if (sortAscending) {
-            criteria.query.orderBy(criteria.builder.asc(criteria.root.get(propertyPath)));
-        } else {
-            criteria.query.orderBy(criteria.builder.desc(criteria.root.get(propertyPath)));
+        List<Order> orderList = criteria.query.getOrderList();
+        if (orderList == null) {
+            orderList = new ArrayList<Order>();
         }
+
+        if (sortAscending) {
+            orderList.add(criteria.builder.asc(criteria.root.get(propertyPath)));
+        } else {
+            orderList.add(criteria.builder.desc(criteria.root.get(propertyPath)));
+        }
+        criteria.query.orderBy(orderList);
     }
 
 	// protected void addSubquery( TranslationContext criteria )

@@ -38,6 +38,7 @@ import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.krad.test.document.bo.SimpleAccount;
 import org.kuali.rice.krad.test.document.bo.SimpleAccountExtension;
+import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -297,17 +298,24 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         // get the query for our created sample data
         QueryByCriteria.Builder query = fixture.getValue();
         // specify the order
-        OrderByField.Builder orderBy = OrderByField.Builder.create();
-        orderBy.setFieldName("number");
-        orderBy.setOrderDirection(OrderDirection.ASCENDING);
-        query.setOrderByFields(orderBy.build());
+        OrderByField.Builder nameOrderBy = OrderByField.Builder.create();
+        OrderByField.Builder amIdOrderBy = OrderByField.Builder.create();
+
+        nameOrderBy.setFieldName("number");
+        nameOrderBy.setOrderDirection(OrderDirection.ASCENDING);
+
+        amIdOrderBy.setFieldName("amId");
+        amIdOrderBy.setOrderDirection(OrderDirection.ASCENDING);
+
+        query.setOrderByFields(nameOrderBy.build(), amIdOrderBy.build());
 
         // get all created objects, ordered by number column ascending order
         List<SimpleAccount> ascOrder = provider.findMatching(SimpleAccount.class, query.build()).getResults();
 
         // get all created objects, ordered by number column descending order
-        orderBy.setOrderDirection(OrderDirection.DESCENDING);
-        query.setOrderByFields(orderBy.build());
+        nameOrderBy.setOrderDirection(OrderDirection.DESCENDING);
+        amIdOrderBy.setOrderDirection(OrderDirection.DESCENDING);
+        query.setOrderByFields(nameOrderBy.build(), amIdOrderBy.build());
         List<SimpleAccount> descOrder = provider.findMatching(SimpleAccount.class, query.build()).getResults();
 
         assertEquals(ascOrder.size(), descOrder.size());

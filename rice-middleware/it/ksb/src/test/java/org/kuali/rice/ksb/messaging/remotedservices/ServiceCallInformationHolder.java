@@ -27,7 +27,7 @@ import java.util.Map;
  * Holds a single hashmap that can hold whatever is needed for confirmation of call for 
  * testing. This class is special in that it is excluded from the shadowing so that the KSB test clients and the
  * main test harness classloader can pass values back and forth. Therefore, this class only references classes that are
- * part of the JVM and won't get shadowed by the {@link org.kuali.rice.ksb.server.KsbTestClientClassLoader}.
+ * part of the JVM and won't get shadowed by the {@link org.kuali.rice.core.api.util.ShadowingInstrumentableClassLoader}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

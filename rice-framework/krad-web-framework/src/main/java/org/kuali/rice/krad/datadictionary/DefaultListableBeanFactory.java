@@ -779,6 +779,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
                 this.frozenBeanDefinitionNames = null;
             }
             this.beanDefinitionMap.put(beanName, beanDefinition);
+            // Rice : performance fix for slow loading Spring context
+            if ( StringUtils.hasText( beanDefinition.getParentName() ) ) {
+                addBeanToParentMap(beanDefinition.getParentName(), beanName);
+            }
+            // Rice : END performance fix for slow loading Spring context
         }
 
         resetBeanDefinition(beanName);

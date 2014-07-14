@@ -69,9 +69,9 @@
                           <bean parent="Uif-Link" p:linkText="Parameter Updater" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/parameter?viewId=LabsParameterView"/>
                           <bean parent="Uif-Link" p:linkText="View Fluid Container" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFluid"/>
+                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsAppContainerFluid"/>
                           <bean parent="Uif-Link" p:linkText="View Fixed Container" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFixed"/>
+                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsAppContainerFixed"/>
                           <bean parent="Uif-Link" p:linkText="Bootstrap Icons" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ActionIconMenu"/>
                           <bean parent="Uif-Link" p:linkText="KC Proposal" p:target="_self"

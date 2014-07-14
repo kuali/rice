@@ -26,7 +26,7 @@ public class LabsViewFluidContainerAft extends WebDriverLegacyITBase {
     /**
      * /kr-krad/labs?viewId=LabsAppContainerFluid
      */
-    public static final String BOOKMARK_URL = "/kr-krad/labs?viewId=LabsAppContainerFluid";
+    public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=LabsAppContainerFluid";
 
     @Override
     protected String getBookmarkUrl() {

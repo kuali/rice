@@ -690,7 +690,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     @Override
     public void preInstantiateSingletons() throws BeansException {
 		if (this.logger.isTraceEnabled()) {
-			this.logger.info("Pre-instantiating singletons in " + this);
+			this.logger.trace("Pre-instantiating singletons in " + this);
 		} else if (this.logger.isInfoEnabled()) {
             this.logger.info("Pre-instantiating singletons");
         }
@@ -808,7 +808,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
             if ( StringUtils.hasText( bd.getParentName() ) ) {
                 if (beanDefinitionsByParent.get(bd.getParentName()) != null) {
                     beanDefinitionsByParent.get(bd.getParentName()).remove(beanName);
-                }
+        }
             }
             // Rice : END performance fix for slow loading Spring context
         }
@@ -1135,7 +1135,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
     }
     // Rice : end code copy
 
-	/**
+    /**
      * Determine the primary autowire candidate in the given set of beans.
      * @param candidateBeans a Map of candidate names and candidate instances
      * that match the required type, as returned by {@link #findAutowireCandidates}

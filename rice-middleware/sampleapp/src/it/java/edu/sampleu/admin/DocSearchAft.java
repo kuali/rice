@@ -46,7 +46,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForTitleToEqualKualiPortalIndex();
         waitAndClickByLinkText("Document Type");
         waitForTitleToEqualKualiPortalIndex();
-        selectFrame("iframeportlet");
+        selectFrame(IFRAMEPORTLET_NAME);
         waitAndClickByXpath("//img[contains(@alt,'create new')]");
         waitForElementPresentByXpath("//*[@name='methodToCall.route' and @alt='submit']","save button does not exist on the page");
         waitForElementPresentByXpath("//div[@id='headerarea']/div/table/tbody/tr[1]/td[1]");

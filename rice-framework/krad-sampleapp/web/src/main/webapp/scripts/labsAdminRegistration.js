@@ -32,8 +32,6 @@ function queryForRefresh() {
     var url = jQuery("#" + kradVariables.KUALI_FORM).attr("action");
     var queryData = {};
 
-    console.log("Query");
-
     queryData.methodToCall = "regUpdateQuery";
     queryData.ajaxRequest = true;
     queryData.ajaxReturnType = "update-none";

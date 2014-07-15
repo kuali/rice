@@ -44,6 +44,10 @@ public abstract class BusinessObjectBase implements BusinessObject {
 
             @Override
             public boolean accept(Field field) {
+                // ignore printing out byte arrays in toString methods
+                if (byte[].class.isAssignableFrom(field.getType())) {
+                  return false;
+                }
                 return String.class.isAssignableFrom(field.getType())
                         || ClassUtils.isPrimitiveOrWrapper(field.getType());
             }

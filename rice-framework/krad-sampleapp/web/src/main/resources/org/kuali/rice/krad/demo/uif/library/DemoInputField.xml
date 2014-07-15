@@ -31,6 +31,7 @@
         <ref bean="Demo-InputField-Example2"/>
         <ref bean="Demo-InputField-Example3"/>
         <ref bean="Demo-InputField-Example4"/>
+        <ref bean="Demo-InputField-Example15"/>
         <ref bean="Demo-InputField-Example7"/>
         <ref bean="Demo-InputField-Example8"/>
         <ref bean="Demo-InputField-Example9"/>
@@ -93,7 +94,16 @@
     </property>
   </bean>
 
-
+  <!-- Label left -->
+  <bean id="Demo-InputField-Example15" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-InputField-Example15 start-->
+        <bean parent="Uif-InputField" p:label="Label left" p:labelLeft="true" p:propertyName="inputField15"/>
+        <!-- ex:Demo-InputField-Example15 end-->
+      </list>
+    </property>
+  </bean>
 
   <!-- Quickfinder -->
   <bean id="Demo-InputField-Example7" parent="Uif-VerticalBoxSection">

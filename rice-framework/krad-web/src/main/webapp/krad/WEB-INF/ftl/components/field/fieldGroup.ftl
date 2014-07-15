@@ -26,19 +26,17 @@
     <@krad.div component=field>
 
     <#-- check to see if label exists and if it has been rendered in another field (grid layout)-->
-        <#local renderLabel=field.label?has_content && !field.labelRendered/>
+    <#local renderLabel=field.label?has_content && !field.labelRendered/>
 
     <#-- render field label top -->
-        <#if renderLabel>
-            <@krad.template component=field.fieldLabel/>
-        </#if>
+    <#if renderLabel>
+        <@krad.template component=field.fieldLabel/>
+    </#if>
 
     <fieldset aria-labelledby="${field.id}_label" id="${field.id}_fieldset">
         <legend style="display: none">${field.label!}</legend>
         <@krad.template component=field.group/>
     </fieldset>
-
-
 
     </@krad.div>
 

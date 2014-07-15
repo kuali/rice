@@ -92,6 +92,20 @@ public interface Field extends Component {
 	 */
 	public void setFieldLabel(Label label);
 
+    /**
+     * The label for this field will be positioned to the left of the field content, when true.
+     *
+     * <p>The usage of this option is for one-off instances in which a label must be positioned to the left of a field
+     * for layout purposes. It is recommended that if many fields will have their labels positioned to the left
+     * in a group that a CssGridLabelColumnLayoutManager backed group be used instead.</p>
+     */
+    public boolean isLabelLeft();
+
+    /**
+     * @see Field#isLabelLeft()
+     */
+    public void setLabelLeft(boolean labelLeft);
+
 	/**
 	 * Indicates whether the contained <code>Label</code> has been rendered
 	 * as part of another field and thus should not be rendered with the

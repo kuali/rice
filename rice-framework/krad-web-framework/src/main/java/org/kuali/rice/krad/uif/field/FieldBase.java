@@ -61,6 +61,7 @@ public class FieldBase extends ComponentBase implements Field {
     @DelayedCopy
     private Label fieldLabel;
 
+    private boolean labelLeft;
     private boolean labelRendered;
 
     public FieldBase() {
@@ -148,7 +149,12 @@ public class FieldBase extends ComponentBase implements Field {
                 fieldLabel.setRenderRequiredIndicator(false);
             }
 
-            fieldLabel.addStyleClass("uif-labelBlock");
+            if (labelLeft) {
+                fieldLabel.addStyleClass("uif-labelLeft");
+            }
+            else {
+                fieldLabel.addStyleClass("uif-labelBlock");
+            }
 
             fieldLabel.addDataAttribute(UifConstants.DataAttributes.LABEL_FOR, this.getId());
             if (StringUtils.isNotBlank(this.getFieldLabel().getLabelText())) {
@@ -305,8 +311,26 @@ public class FieldBase extends ComponentBase implements Field {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public boolean isLabelLeft() {
+        return labelLeft;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setLabelLeft(boolean labelLeft) {
+        this.labelLeft = labelLeft;
+    }
+
+    /**
      * @see org.kuali.rice.krad.uif.field.Field#isLabelRendered()
      */
+    @BeanTagAttribute
     public boolean isLabelRendered() {
         return this.labelRendered;
     }

@@ -1,0 +1,158 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-LeftLabel" parent="Uif-FormView">
+    <property name="headerText" value="Left Label"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <bean parent="Uif-InputField" p:label="Label Left" p:labelLeft="true" p:propertyName="inputField1"/>
+            <bean parent="Uif-InputField" p:label="Label Left" p:instructionalText="Instructions Instructions
+            Instructions Instructions Instructions Instructions Instructions Instructions Instructions
+            Instructions Instructions" p:labelLeft="true" p:propertyName="inputField1"/>
+            <bean parent="Uif-InputField" p:label="Label Left" p:instructionalText="Instructions Instructions
+            Instructions Instructions Instructions Instructions Instructions Instructions Instructions
+            Instructions Instructions" p:constraintText="Constraint Constraint Constraint"
+                  p:labelLeft="true" p:propertyName="inputField1"/>
+
+            <bean parent="Uif-MessageField" p:label="Label" p:labelLeft="true" p:messageText="Message Field Text"/>
+            <bean parent="Uif-ImageField" p:label="ImageField 1" p:labelLeft="true"
+                  p:source="@{#ConfigProperties['krad.externalizable.images.url']}pdf.png" />
+            <bean parent="Uif-ActionField" p:label="Label" p:labelLeft="true"
+                  p:action.actionLabel="Action" p:methodToCall="refresh"/>
+            <bean parent="Uif-LinkField" p:label="Label" p:labelLeft="true"
+                  p:href="http://www.kuali.org" p:linkText="Kuali Website"/>
+            <bean parent="Uif-VerticalFieldGroup" p:labelLeft="true" p:label="Field Group">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="inputField1"/>
+                  <bean parent="Uif-InputField" p:propertyName="inputField2"/>
+                </list>
+              </property>
+            </bean>
+
+            <bean parent="Uif-HorizontalBoxGroup">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:label="Text" p:labelLeft="true" p:propertyName="inputField2">
+                    <property name="control">
+                      <bean parent="Uif-TextControl" />
+                    </property>
+                    <property name="quickfinder">
+                      <bean parent="Uif-QuickFinder"
+                            p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                            p:fieldConversions="number:inputField2"/>
+                    </property>
+                    <property name="inquiry">
+                      <bean parent="Uif-Inquiry"
+                            p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                            p:inquiryParameters="inputField2:number"/>
+                    </property>
+                  </bean>
+
+                  <!-- textarea control -->
+                  <bean parent="Uif-InputField" p:label="Text Area" p:labelLeft="true" p:propertyName="inputField3">
+                    <property name="control">
+                      <bean parent="Uif-TextAreaControl"
+                            p:textExpand="true"/>
+                    </property>
+                  </bean>
+
+                  <!-- dropdown(select) control -->
+                  <bean parent="Uif-InputField" p:labelLeft="true" p:propertyName="inputField4" p:label="Dropdown">
+                    <property name="control">
+                      <bean parent="Uif-DropdownControl" />
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+                    </property>
+                  </bean>
+
+                  <!-- date picker control -->
+                  <bean parent="Uif-InputField" p:label="Date Picker" p:labelLeft="true" p:propertyName="inputField5">
+                    <property name="control">
+                      <bean parent="Uif-TextControl" p:size="10" >
+                        <property name="datePicker">
+                          <bean parent="Uif-DatePicker"/>
+                        </property>
+                      </bean>
+                    </property>
+                  </bean>
+
+                  <!-- spinner control -->
+                  <bean parent="Uif-InputField" p:label="Spinner" p:labelLeft="true" p:propertyName="inputField8">
+                    <property name="control">
+                      <bean parent="Uif-SpinnerControl" />
+                    </property>
+                  </bean>
+
+                  <!-- multiselect control -->
+                  <bean parent="Uif-InputField" p:labelLeft="true" p:propertyName="multiSelectField1" p:label="Multi Select">
+                    <property name="control">
+                      <bean parent="Uif-MultiSelectControl" />
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+                    </property>
+                  </bean>
+
+                  <!-- radio control -->
+                  <bean parent="Uif-InputField" p:labelLeft="true" p:propertyName="inputField6" p:label="Radio"
+                        p:width="auto">
+                    <property name="control">
+                      <bean parent="Uif-VerticalRadioControl" />
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+                    </property>
+                  </bean>
+
+                  <!-- checkbox control -->
+                  <bean parent="Uif-InputField" p:labelLeft="true" p:propertyName="inputField7" p:label="Checkbox"
+                        p:defaultValue="true">
+                    <property name="control">
+                      <bean parent="Uif-CheckboxControl"
+                            p:checkboxLabel="Checkbox Label"/>
+                    </property>
+                  </bean>
+
+                  <!-- checkbox group control -->
+                  <bean parent="Uif-InputField" p:labelLeft="true" p:propertyName="checkboxesField1" p:label="Checkboxes 1" p:width="auto">
+                    <property name="control">
+                      <bean parent="Uif-VerticalCheckboxesControl" />
+                    </property>
+                    <property name="optionsFinder">
+                      <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
+                    </property>
+                  </bean>
+                </list>
+              </property>
+            </bean>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
+  </bean>
+
+</beans>

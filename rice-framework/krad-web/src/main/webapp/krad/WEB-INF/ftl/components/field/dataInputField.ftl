@@ -32,6 +32,11 @@
             <@krad.template component=field.fieldLabel/>
         </#if>
 
+        <#-- wrap content if displaying label to the left -->
+        <#if field.labelLeft && renderLabel>
+            <div class="uif-fieldContent">
+        </#if>
+
         <#-- TODO: verify removal -->
         <#--<#if field.renderFieldset>-->
             <#--<fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">-->
@@ -43,7 +48,7 @@
         <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
         <#if readOnly>
             <#if inlineEdit || ajaxInlineEdit>
-                <a class="uif-inlineEdit-view" id="${field.id}_inlineEdit_view" tabindex="0" title="Click to Edit"
+                <button class="uif-inlineEdit-view" id="${field.id}_inlineEdit_view" tabindex="0" title="Click to Edit"
                      data-ajax_edit="true">
             </#if>
 
@@ -91,7 +96,7 @@
             </#if>
 
             <#if inlineEdit || ajaxInlineEdit>
-                </a>
+                </button>
             </#if>
         </#if>
 
@@ -245,6 +250,10 @@
 	            <@spring.formHiddenInput id="${field.id}_h${hiddenPropertyName_index}"
 	            path="KualiForm.${hiddenPropertyName}"/>
 	        </#list>
+        </#if>
+
+        <#if field.labelLeft && renderLabel>
+            </div>
         </#if>
 
     </@krad.div>

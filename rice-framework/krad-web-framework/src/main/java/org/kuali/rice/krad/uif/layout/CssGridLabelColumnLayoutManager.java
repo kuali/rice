@@ -193,6 +193,8 @@ public class CssGridLabelColumnLayoutManager extends CssGridLayoutManagerBase {
      */
     private Label separateLabel(Field field) {
         Label label;
+        field.setLabelLeft(false);
+
         // pull out label field
         field.getFieldLabel().addStyleClass("displayWith-" + field.getId());
         if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {

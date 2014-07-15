@@ -28,7 +28,17 @@ public class GroupBkMrkAft extends GroupAftBase {
     }
 
     @Test
-    public void testGroupBookmark() throws Exception {
-        testGroupBookmark(this);
+    public void testGroupSaveBookmark() throws Exception {
+        testGroupSaveBookmark(this);
+    }
+    
+    @Test
+    public void testGroupSubmitBookmark() throws Exception {
+        testGroupSubmitBookmark(this);
+    }
+    
+    @Test
+    public void testGroupSaveSubmitBookmark() throws Exception {
+        testGroupSaveSubmitBookmark(this);
     }
 }

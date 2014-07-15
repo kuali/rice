@@ -23,7 +23,17 @@ import org.junit.Test;
 public class GroupNavAft extends GroupAftBase {
 
     @Test
-    public void testGroupNav() throws Exception {
-        testGroupNav(this);
+    public void testGroupSaveNav() throws Exception {
+        testGroupSaveNav(this);
+    }
+    
+    @Test
+    public void testGroupSubmitNav() throws Exception {
+        testGroupSubmitNav(this);
+    }
+    
+    @Test
+    public void testGroupSaveSubmitNav() throws Exception {
+        testGroupSaveSubmitNav(this);
     }
 }

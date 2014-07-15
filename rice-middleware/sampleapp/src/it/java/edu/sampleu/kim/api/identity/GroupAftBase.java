@@ -50,13 +50,33 @@ public abstract class GroupAftBase extends AdminTmplMthdAftNavBase {
         return "Group";
     }
    
-    public void testGroupBookmark(JiraAwareFailable failable) throws Exception {
+    public void testGroupSaveBookmark(JiraAwareFailable failable) throws Exception {
         testAddingBrownGroup();
         passed();
     }
 
-    public void testGroupNav(JiraAwareFailable failable) throws Exception {
+    public void testGroupSaveNav(JiraAwareFailable failable) throws Exception {
         testAddingBrownGroup();
+        passed();
+    }
+    
+    public void testGroupSubmitBookmark(JiraAwareFailable failable) throws Exception {
+        testAddingBrownGroupSubmit();
+        passed();
+    }
+
+    public void testGroupSubmitNav(JiraAwareFailable failable) throws Exception {
+        testAddingBrownGroupSubmit();
+        passed();
+    }
+    
+    public void testGroupSaveSubmitBookmark(JiraAwareFailable failable) throws Exception {
+        testAddingBrownGroupSaveSubmit();
+        passed();
+    }
+
+    public void testGroupSaveSubmitNav(JiraAwareFailable failable) throws Exception {
+        testAddingBrownGroupSaveSubmit();
         passed();
     }
 }

@@ -24,7 +24,6 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.dao.LdapPrincipalDao;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
-import org.kuali.rice.kim.ldap.InvalidLdapEntityException;
 import org.kuali.rice.kim.util.Constants;
 import org.springframework.ldap.SizeLimitExceededException;
 import org.springframework.ldap.core.ContextMapper;
@@ -36,7 +35,6 @@ import org.springframework.ldap.filter.LikeFilter;
 import org.springframework.ldap.filter.NotFilter;
 import org.springframework.ldap.filter.OrFilter;
 
-import javax.naming.NameClassPair;
 import javax.naming.directory.SearchControls;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -434,16 +432,5 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
         public CustomContextMapperCallbackHandler(ContextMapper mapper) {
             super(mapper);
         }
-        
-   /*   cannot override, super class is final
-    public void handleNameClassPair(NameClassPair nameClassPair) {
-        try {
-            super.handleNameClassPair(nameClassPair);
-        }
-        catch (InvalidLdapEntityException ieee) {
-            warn("LDAP Search Results yielded an invalid result from ", nameClassPair);
-        }
-    }
-    */
     }
 }

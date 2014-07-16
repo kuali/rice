@@ -38,22 +38,30 @@ import org.springframework.core.Ordered;
 @Import({ SpringServiceConfig.class })
 public class IngestXmlConfig implements ApplicationEventListenerConfig {
 
+    private static final String ORDER_KEY = "rice.ingest.order";
+
+    /**
+     * The ingestion executable.
+     */
     @Autowired
     IngestXmlExecConfig config;
 
+    /**
+     * The Spring environment.
+     */
 	@Autowired
 	EnvironmentService env;
 
-	private static final String ORDER_KEY = "rice.ingest.order";
-
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	@Bean
 	public SmartApplicationListener applicationEventListener() {
-
 		Executable executable = config.ingestXmlExecutable();
+        Integer order = env.getInteger(ORDER_KEY, Integer.valueOf(Ordered.LOWEST_PRECEDENCE));
 
-		// Setup the application event listener
-		int order = env.getInteger(ORDER_KEY, Ordered.LOWEST_PRECEDENCE);
-		return ExecutableApplicationEventListener.builder(executable, ContextRefreshedEvent.class).order(order).build();
+		return ExecutableApplicationEventListener.builder(executable, ContextRefreshedEvent.class).order(order.intValue()).build();
 	}
+
 }

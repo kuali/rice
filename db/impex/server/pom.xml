@@ -17,33 +17,26 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <name>Rice Impex Server</name>
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-impex</artifactId>
     <version>2.5.0-M5-SNAPSHOT</version>
   </parent>
+
   <artifactId>rice-impex-server</artifactId>
   <packaging>pom</packaging>
+
+  <name>Rice Impex Server</name>
+
   <modules>
     <module>demo</module>
     <module>bootstrap</module>
   </modules>
-  <repositories>
-    <repository>
-      <id>kuali.nexus</id>
-      <name>Nexus Repository Manager</name>
-      <url>http://nexus.kuali.org/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+
   <profiles>
+    <!-- Exports a database to the impex format on disk -->
     <profile>
       <id>export</id>
       <build>
@@ -61,6 +54,8 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- Commits the generated XML to version control -->
     <profile>
       <id>commit</id>
       <properties>

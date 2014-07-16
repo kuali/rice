@@ -23,9 +23,11 @@ import org.kuali.common.util.project.model.ProjectIdentifier;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XmlProjectConstants {
+public abstract class XmlProjectConstants {
 
-	// The groupId and artifactId used here must exactly match what is in the pom
+    /**
+     * Defines the groupId and artifactId, which must exactly match what is in the pom.
+     */
 	public static final ProjectIdentifier ID = new ProjectIdentifier(KualiGroup.RICE.getId(), "rice-xml");
 
 }

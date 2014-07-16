@@ -30,7 +30,14 @@ import org.kuali.rice.xml.project.XmlProjectConstants;
  */
 public enum RiceXmlProperties {
 
+    /**
+     * The database properties for the workflow XML ingestion process.
+     */
 	DB(ProjectResource.classpath(XmlProjectConstants.ID, "db.properties")),
+
+    /**
+     * The Rice application properties for the workflow XML ingestion process.
+     */
 	APP(ProjectResource.classpath(XmlProjectConstants.ID, "application-rice-properties.xml", true));
 
     private final ProjectResource resource;
@@ -42,6 +49,11 @@ public enum RiceXmlProperties {
 		checkArgument(LocationUtils.exists(path), "[%s] does not exist", path);
 	}
 
+    /**
+     * Returns the {@link ProjectResource}.
+     *
+     * @return the {@link ProjectResource}
+     */
 	public ProjectResource getResource() {
 		return resource;
 	}

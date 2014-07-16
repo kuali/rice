@@ -325,11 +325,6 @@
         OBJ_ID="B6FDEDA86F967F26E0402E0AA9D728AF" PERM_ID="842"
         PERM_TMPL_ID="29" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y"
-        DESC_TXT="Allows creation and modification of agendas via the agenda editor"
-        NM="Maintain KRMS Agenda" NMSPC_CD="KR-RULE-TEST"
-        OBJ_ID="B7DBFABEFD2B8CBFE0402E0AA9D757C9" PERM_ID="843"
-        PERM_TMPL_ID="52" VER_NBR="1"/>
-    <KRIM_PERM_T ACTV_IND="Y"
         DESC_TXT="Allows user to create a new Term maintainence document"
         NM="Create Term Maintenance Document" NMSPC_CD="KR-NS"
         OBJ_ID="0dbce939-4f22-4e9b-a4bb-1615c0f411a2" PERM_ID="844"
@@ -369,6 +364,6 @@
         PERM_ID="KR1002" PERM_TMPL_ID="16" VER_NBR="1"/>
     <KRIM_PERM_T ACTV_IND="Y" DESC_TXT="Ability to export any record"
         NM="Export Any Record" NMSPC_CD="KR-NS"
-        OBJ_ID="FE4508C48303CC1EE0406E0AC31D13A2" PERM_ID="KR1003"
+        OBJ_ID="FDB356C0060CD620E0406E0AC31D2873" PERM_ID="KR1003"
         PERM_TMPL_ID="KR1004" VER_NBR="1"/>
 </dataset>

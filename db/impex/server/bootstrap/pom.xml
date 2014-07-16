@@ -17,17 +17,21 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <name>Rice Impex Server Bootstrap</name>
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-impex-server</artifactId>
     <version>2.5.0-M5-SNAPSHOT</version>
   </parent>
+
   <artifactId>rice-impex-server-bootstrap</artifactId>
+
+  <name>Rice Impex Server Bootstrap</name>
+
   <properties>
-    <impex.username>RICESERVERBOOTSTRAP</impex.username>
-    <impex.password>RICESERVERBOOTSTRAP</impex.password>
-    <impex.database>RICESERVERBOOTSTRAP</impex.database>
+    <impex.username>RICESRVRBTSP</impex.username>
+    <impex.password>${impex.username}</impex.password>
+    <impex.database>${impex.username}</impex.database>
   </properties>
 </project>

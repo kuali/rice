@@ -17,20 +17,25 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <name>Rice Impex</name>
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-db</artifactId>
     <version>2.5.0-M5-SNAPSHOT</version>
   </parent>
+
   <artifactId>rice-impex</artifactId>
   <packaging>pom</packaging>
+
+  <name>Rice Impex</name>
+
   <modules>
-    <module>master</module>
-    <module>server</module>
     <module>client</module>
+    <module>server</module>
+    <module>master</module>
   </modules>
+
   <properties>
     <properties.resolve>false</properties.resolve>
     <oracle.jdbc.groupId>com.oracle</oracle.jdbc.groupId>
@@ -170,8 +175,8 @@
       purge recyclebin
       /
     </impex.oracle.sql.post.materialization>
-
   </properties>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -349,114 +354,9 @@
       </plugins>
     </pluginManagement>
   </build>
+
   <profiles>
-    <profile>
-      <!-- Pre-generate and bundle SQL for Oracle/MySQL during a release -->
-      <id>kuali-release</id>
-      <properties>
-        <impex.basedir>${project.basedir}</impex.basedir>
-        <impex.schema.name>${project.artifactId}</impex.schema.name>
-      </properties>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.kuali.maven.plugins</groupId>
-              <artifactId>mvn-maven-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>sql</id>
-                  <phase>process-resources</phase>
-                  <goals>
-                    <goal>mvn</goal>
-                  </goals>
-                  <configuration>
-                    <args>
-                      <arg>process-resources</arg>
-                    </args>
-                    <poms>
-                      <param>classpath:org/kuali/common/deploy/mvn/impex-with-sql-plus-meta.xml</param>
-                    </poms>
-                    <properties>
-                      <property>impex.basedir</property>
-                      <property>impex.schema.name</property>
-                      <property>plugin.impex.version</property>
-                    </properties>
-                  </configuration>
-                </execution>
-              </executions>
-              <dependencies>
-                <dependency>
-                  <groupId>org.kuali.common</groupId>
-                  <artifactId>kuali-deploy</artifactId>
-                  <version>${kuali-deploy.version}</version>
-                </dependency>
-              </dependencies>
-            </plugin>
-            <plugin>
-              <artifactId>maven-jar-plugin</artifactId>
-              <executions>
-                <execution>
-                  <id>sql</id>
-                  <goals>
-                    <goal>jar</goal>
-                  </goals>
-                  <configuration>
-                    <skipIfEmpty>true</skipIfEmpty>
-                    <classesDirectory>${project.build.directory}/impex</classesDirectory>
-                    <classifier>sql</classifier>
-                  </configuration>
-                </execution>
-              </executions>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-        <plugins>
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>mvn-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>export</id>
-      <properties>
-        <impex.generate.phase>none</impex.generate.phase>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>maven-impex-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>export</id>
-                <phase>none</phase>
-                <goals>
-                  <goal>exportschema</goal>
-                  <goal>exportdata</goal>
-                  <goal>datadtd</goal>
-                </goals>
-                <configuration>
-                  <driverProperties>
-                    <property>
-                      <name>oracle.jdbc.mapDateToTimestamp</name>
-                      <value>false</value>
-                    </property>
-                  </driverProperties>
-                  <schemaXMLFile>${basedir}/src/main/resources/schema.xml</schemaXMLFile>
-                  <dataXMLDir>${basedir}/src/main/resources</dataXMLDir>
-                  <copyToFile>${basedir}/src/main/resources/data.dtd</copyToFile>
-                  <schema>${impex.database}</schema>
-                  <antCompatibilityMode>true</antCompatibilityMode>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
+    <!-- Defines the defaults for a MySQL database -->
     <profile>
       <id>mysql</id>
       <properties>
@@ -481,29 +381,8 @@
         <impex.sql.UNITTEST.create>CREATE TABLE IF NOT EXISTS ${impex.database}.EN_UNITTEST_T(COL VARCHAR(1) NULL);</impex.sql.UNITTEST.create>
       </properties>
     </profile>
-    <profile>
-      <id>rds_mysql</id>
-      <properties>
-        <db.vendor>mysql</db.vendor>
-        <impex.driver>com.mysql.jdbc.Driver</impex.driver>
-        <impex.database>rice</impex.database>
-        <impex.dba.username>master</impex.dba.username>
-        <impex.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.dba.url>
-        <impex.url>${impex.dba.url}/${impex.database}</impex.url>
-        <jdbc.groupId>mysql</jdbc.groupId>
-        <jdbc.artifactId>${mysql.jdbc.artifactId}</jdbc.artifactId>
-        <jdbc.version>${mysql.jdbc.version}</jdbc.version>
-        <impex.sql.validate>${impex.mysql.sql.validate}</impex.sql.validate>
-        <impex.sql.drop>${impex.mysql.sql.drop}</impex.sql.drop>
-        <impex.sql.pre.export>${impex.mysql.sql.pre.export}</impex.sql.pre.export>
-        <impex.sql.initialize>
-          ${impex.mysql.sql.create}
-          ${impex.mysql.sql.grants}
-        </impex.sql.initialize>
-        <impex.generate.sql.oracle.phase>none</impex.generate.sql.oracle.phase>
-        <impex.sql.UNITTEST.create>CREATE TABLE IF NOT EXISTS ${impex.database}.EN_UNITTEST_T(COL VARCHAR(1) NULL);</impex.sql.UNITTEST.create>
-      </properties>
-    </profile>
+
+    <!-- Defines the defaults for an Oracle database -->
     <profile>
       <id>oracle</id>
       <properties>
@@ -527,46 +406,13 @@
         </impex.sql.UNITTEST.create>
       </properties>
     </profile>
+
+    <!--
+         Connects the dropping/creating/loading of a database to appropriate phases of the Maven build lifecycle.
+         The "clean" phase drops the db, the "initialize" phase creates the db and grants permissions, and the
+         "install" phase loads data into the db.
+    -->
     <profile>
-      <id>integration-test</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>sql-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>pre-integration-test</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>execute</goal>
-                </goals>
-                <configuration>
-                  <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>rds</id>
-      <properties>
-        <!-- Override for JDK6 and Amazon RDS -->
-        <oracle.jdbc.artifactId>ojdbc6_g</oracle.jdbc.artifactId>
-        <oracle.jdbc.version>11.2.0.2</oracle.jdbc.version>
-        <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
-        <impex.dba.url>${impex.url}</impex.dba.url>
-        <impex.dba.username>master</impex.dba.username>
-      </properties>
-    </profile>
-    <profile>
-      <!--
-        This profile connects the dropping/creating/loading of a database to appropriate
-        phases of the Maven build lifecycle. The "clean" phase drops the db, the "initialize" phase creates the
-        db and grants permissions, and the "install" phase loads data into the db
-      -->
       <id>db</id>
       <build>
         <resources>
@@ -610,6 +456,94 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- Installs the integration test database -->
+    <profile>
+      <id>integration-test</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>sql-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>pre-integration-test</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>execute</goal>
+                </goals>
+                <configuration>
+                  <sqlCommand>${impex.sql.UNITTEST.create}</sqlCommand>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Exports a database to the impex format on disk -->
+    <profile>
+      <id>export</id>
+      <properties>
+        <impex.generate.phase>none</impex.generate.phase>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>maven-impex-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>export</id>
+                <phase>none</phase>
+                <goals>
+                  <goal>exportschema</goal>
+                  <goal>exportdata</goal>
+                  <goal>datadtd</goal>
+                </goals>
+                <configuration>
+                  <driverProperties>
+                    <property>
+                      <name>oracle.jdbc.mapDateToTimestamp</name>
+                      <value>false</value>
+                    </property>
+                  </driverProperties>
+                  <schemaXMLFile>${basedir}/src/main/resources/schema.xml</schemaXMLFile>
+                  <dataXMLDir>${basedir}/src/main/resources</dataXMLDir>
+                  <copyToFile>${basedir}/src/main/resources/data.dtd</copyToFile>
+                  <schema>${impex.database}</schema>
+                  <antCompatibilityMode>true</antCompatibilityMode>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Sets up the MySQL Amazon RDS profile -->
+    <profile>
+      <id>rds_mysql</id>
+      <properties>
+        <impex.dba.username>master</impex.dba.username>
+        <impex.dba.url>jdbc:mysql://mysql.rice.kuali.org</impex.dba.url>
+      </properties>
+    </profile>
+
+    <!-- Sets up the Oracle JDK6 Amazon RDS profile -->
+    <profile>
+      <id>rds_oracle</id>
+      <properties>
+        <oracle.jdbc.artifactId>ojdbc6_g</oracle.jdbc.artifactId>
+        <oracle.jdbc.version>11.2.0.2</oracle.jdbc.version>
+        <impex.url>jdbc:oracle:thin:@oracle.rice.kuali.org:1521:ORACLE</impex.url>
+        <impex.dba.url>${impex.url}</impex.dba.url>
+        <impex.dba.username>master</impex.dba.username>
+      </properties>
+    </profile>
+
+    <!-- Commits the generated XML to version control -->
     <profile>
       <id>commit</id>
       <properties>
@@ -681,6 +615,76 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Pre-generate and bundle SQL for Oracle/MySQL during a release -->
+    <profile>
+      <id>kuali-release</id>
+      <properties>
+        <impex.basedir>${project.basedir}</impex.basedir>
+        <impex.schema.name>${project.artifactId}</impex.schema.name>
+      </properties>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.kuali.maven.plugins</groupId>
+              <artifactId>mvn-maven-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>sql</id>
+                  <phase>process-resources</phase>
+                  <goals>
+                    <goal>mvn</goal>
+                  </goals>
+                  <configuration>
+                    <args>
+                      <arg>process-resources</arg>
+                    </args>
+                    <poms>
+                      <param>classpath:org/kuali/common/deploy/mvn/impex-with-sql-plus-meta.xml</param>
+                    </poms>
+                    <properties>
+                      <property>impex.basedir</property>
+                      <property>impex.schema.name</property>
+                      <property>plugin.impex.version</property>
+                    </properties>
+                  </configuration>
+                </execution>
+              </executions>
+              <dependencies>
+                <dependency>
+                  <groupId>org.kuali.common</groupId>
+                  <artifactId>kuali-deploy</artifactId>
+                  <version>${kuali-deploy.version}</version>
+                </dependency>
+              </dependencies>
+            </plugin>
+            <plugin>
+              <artifactId>maven-jar-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>sql</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                  <configuration>
+                    <skipIfEmpty>true</skipIfEmpty>
+                    <classesDirectory>${project.build.directory}/impex</classesDirectory>
+                    <classifier>sql</classifier>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.kuali.maven.plugins</groupId>
+            <artifactId>mvn-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>

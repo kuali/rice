@@ -31,6 +31,9 @@ import org.springframework.context.annotation.Import;
 @Import({ AutowiredProjectConfig.class })
 public class SourceSqlProjectConfig implements ProjectIdentifierConfig {
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public ProjectIdentifier projectIdentifier() {
 		return SqlProjectConstants.ID;

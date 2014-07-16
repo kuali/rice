@@ -19,6 +19,7 @@
       <module fileurl="file://$PROJECT_DIR$/rice-middleware/core-service/web/rice-core-service-web.iml" filepath="$PROJECT_DIR$/rice-middleware/core-service/web/rice-core-service-web.iml" group="rice-middleware and modules/rice-core-service and modules" />
       <module fileurl="file://$PROJECT_DIR$/rice-middleware/core/web/rice-core-web.iml" filepath="$PROJECT_DIR$/rice-middleware/core/web/rice-core-web.iml" group="rice-middleware and modules/rice-core and modules" />
       <module fileurl="file://$PROJECT_DIR$/db/rice-db.iml" filepath="$PROJECT_DIR$/db/rice-db.iml" group="rice-db and modules" />
+      <module fileurl="file://$PROJECT_DIR$/db/config/rice-db-config.iml" filepath="$PROJECT_DIR$/db/config/rice-db-config.iml" group="rice-db and modules" />
       <module fileurl="file://$PROJECT_DIR$/config/deploy/rice-deploy.iml" filepath="$PROJECT_DIR$/config/deploy/rice-deploy.iml" group="rice-config and modules" />
       <module fileurl="file://$PROJECT_DIR$/development-tools/rice-development-tools.iml" filepath="$PROJECT_DIR$/development-tools/rice-development-tools.iml" />
       <module fileurl="file://$PROJECT_DIR$/dist/rice-dist.iml" filepath="$PROJECT_DIR$/dist/rice-dist.iml" />

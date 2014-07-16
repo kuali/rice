@@ -17,27 +17,160 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <name>Rice Xml</name>
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-db</artifactId>
     <version>2.5.0-M5-SNAPSHOT</version>
   </parent>
+
   <artifactId>rice-xml</artifactId>
+
+  <name>Rice Xml</name>
+
   <properties>
     <project.resources.dir>${project.basedir}/src/main/resources</project.resources.dir>
     <project.groupId.path>org/kuali/rice</project.groupId.path>
     <project.resources.filter.pattern>${project.groupId.path}/${project.artifactId}/spring/applicationContext.xml</project.resources.filter.pattern>
   </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.kuali.common</groupId>
+      <artifactId>kuali-util</artifactId>
+      <version>${kuali-util.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.common</groupId>
+      <artifactId>kuali-deploy</artifactId>
+      <version>${kuali-deploy.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-sql</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-api</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-service-framework</artifactId>
+      <version>${project.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-impl</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>${project.resources.dir}</directory>
+        <includes>
+          <include>${project.resources.filter.pattern}</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>${project.resources.dir}</directory>
+        <excludes>
+          <exclude>${project.resources.filter.pattern}</exclude>
+        </excludes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.kuali.maven.plugins</groupId>
+        <artifactId>spring-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>metainf</id>
+            <goals>
+              <goal>load</goal>
+            </goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <annotatedClass>org.kuali.rice.xml.config.spring.RiceXmlConfig</annotatedClass>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.kuali.rice</groupId>
+            <artifactId>rice-db-config</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.kuali.common</groupId>
+            <artifactId>kuali-deploy</artifactId>
+            <version>${kuali-deploy.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
-      <id>db</id>
+      <id>mysql</id>
       <properties>
         <db.vendor>mysql</db.vendor>
         <jdbc.driver.groupId>mysql</jdbc.driver.groupId>
         <jdbc.driver.artifactId>${mysql.jdbc.artifactId}</jdbc.driver.artifactId>
         <jdbc.driver.version>${mysql.jdbc.version}</jdbc.driver.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>oracle</id>
+      <properties>
+        <db.platform>Oracle</db.platform>
+        <db.vendor>oracle</db.vendor>
+        <jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
+        <jdbc.driver.artifactId>ojdbc6_g</jdbc.driver.artifactId>
+        <jdbc.driver.version>11.2.0.2</jdbc.driver.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>local</id>
+      <properties>
+        <properties.decrypt>false</properties.decrypt>
+        <mysql.dba.url>jdbc:mysql://localhost</mysql.dba.url>
+        <mysql.dba.username>root</mysql.dba.username>
+        <mysql.dba.password>NONE</mysql.dba.password>
+        <oracle.dba.url>jdbc:oracle:thin:@localhost:1521:XE</oracle.dba.url>
+        <oracle.dba.username>system</oracle.dba.username>
+        <oracle.dba.password>manager</oracle.dba.password>
+      </properties>
+    </profile>
+    <profile>
+      <id>db</id>
+      <properties>
+        <db.profile>master</db.profile>
       </properties>
       <build>
         <plugins>
@@ -57,6 +190,7 @@
                     <annotatedClass>org.kuali.rice.xml.spring.IngestXmlExecConfig</annotatedClass>
                     <annotatedClass>org.kuali.rice.xml.spring.LaunchRiceConfig</annotatedClass>
                   </annotatedClasses>
+                  <activeProfiles>${db.profile}</activeProfiles>
                 </configuration>
               </execution>
             </executions>
@@ -139,149 +273,18 @@
       </build>
     </profile>
     <profile>
-      <id>oracle</id>
+      <id>server-bootstrap</id>
       <properties>
-        <db.platform>Oracle</db.platform>
-        <db.vendor>oracle</db.vendor>
-        <jdbc.driver.groupId>com.oracle</jdbc.driver.groupId>
-        <jdbc.driver.artifactId>ojdbc6_g</jdbc.driver.artifactId>
-        <jdbc.driver.version>11.2.0.2</jdbc.driver.version>
+        <db.profile>server-bootstrap</db.profile>
+        <jdbc.username>RICESRVRBTSP</jdbc.username>
       </properties>
     </profile>
     <profile>
-      <id>local</id>
+      <id>server-demo</id>
       <properties>
-        <properties.decrypt>false</properties.decrypt>
-        <mysql.dba.url>jdbc:mysql://localhost</mysql.dba.url>
-        <mysql.dba.username>root</mysql.dba.username>
-        <mysql.dba.password>NONE</mysql.dba.password>
-        <oracle.dba.url>jdbc:oracle:thin:@localhost:1521:XE</oracle.dba.url>
-        <oracle.dba.username>system</oracle.dba.username>
-        <oracle.dba.password>manager</oracle.dba.password>
+        <db.profile>server-demo</db.profile>
+        <jdbc.username>RICESRVRDEMO</jdbc.username>
       </properties>
     </profile>
   </profiles>
-  <build>
-    <resources>
-      <resource>
-        <directory>${project.resources.dir}</directory>
-        <includes>
-          <include>${project.resources.filter.pattern}</include>
-        </includes>
-        <filtering>true</filtering>
-      </resource>
-      <resource>
-        <directory>${project.resources.dir}</directory>
-        <excludes>
-          <exclude>${project.resources.filter.pattern}</exclude>
-        </excludes>
-        <filtering>false</filtering>
-      </resource>
-    </resources>
-    <plugins>
-      <plugin>
-        <groupId>org.kuali.maven.plugins</groupId>
-        <artifactId>spring-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>metainf</id>
-            <goals>
-              <goal>load</goal>
-            </goals>
-            <phase>prepare-package</phase>
-            <configuration>
-              <annotatedClass>org.kuali.common.util.metainf.spring.RiceXmlConfig</annotatedClass>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.kuali.common</groupId>
-            <artifactId>kuali-util</artifactId>
-            <version>${kuali-util.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.kuali.common</groupId>
-            <artifactId>kuali-deploy</artifactId>
-            <version>${kuali-deploy.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-              <exclusion>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-              <exclusion>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-              </exclusion>
-            </exclusions>
-          </dependency>
-          <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${servlet-api.version}</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-    </plugins>
-  </build>
-  <dependencies>
-    <dependency>
-      <groupId>org.kuali.common</groupId>
-      <artifactId>kuali-util</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.kuali.common</groupId>
-      <artifactId>kuali-deploy</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-sql</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-api</artifactId>
-      <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-service-framework</artifactId>
-      <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-impl</artifactId>
-      <version>${project.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>${servlet-api.version}</version>
-    </dependency>
-  </dependencies>
 </project>

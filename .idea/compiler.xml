@@ -38,6 +38,7 @@
         <module name="rice-core-service-impl" />
         <module name="rice-core-service-web" />
         <module name="rice-core-web" />
+        <module name="rice-db-config" />
         <module name="rice-deploy" />
         <module name="rice-development-tools" />
         <module name="rice-edl-framework" />
@@ -116,6 +117,7 @@
       <module name="rice-core-service-impl" target="1.7" />
       <module name="rice-core-service-web" target="1.7" />
       <module name="rice-core-web" target="1.7" />
+      <module name="rice-db-config" target="1.7" />
       <module name="rice-deploy" target="1.7" />
       <module name="rice-development-tools" target="1.7" />
       <module name="rice-edl-framework" target="1.7" />

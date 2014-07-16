@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/config/checkstyle" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/config/deploy" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/db" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/db/config" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/db/impex" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/db/impex/client" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/db/impex/client/bootstrap" charset="UTF-8" />

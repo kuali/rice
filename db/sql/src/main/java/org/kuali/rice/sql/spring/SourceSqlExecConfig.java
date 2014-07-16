@@ -31,11 +31,20 @@ import org.springframework.context.annotation.Import;
 @Import({ SourceSqlConfig.class, JdbcResetExecConfig.class })
 public class SourceSqlExecConfig {
 
+    /**
+     * The JDBC reset database configuration.
+     */
     @Autowired
     JdbcResetExecConfig config;
 
+    /**
+     * Returns the executable for launching the database reset process.
+     *
+     * @return the executable for launching the database reset process
+     */
     @Bean
     public Executable sourceSqlExecutable() {
         return config.executable();
     }
+
 }

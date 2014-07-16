@@ -17,50 +17,28 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <name>Rice Impex Master</name>
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-impex</artifactId>
     <version>2.5.0-M5-SNAPSHOT</version>
   </parent>
+
   <artifactId>rice-impex-master</artifactId>
+
+  <name>Rice Impex Master</name>
+
   <properties>
-    <db.branch.qualifier>${project.version.sanitized}</db.branch.qualifier>
-    <impex.username>RICE</impex.username>
-    <impex.password>RICE</impex.password>
+    <impex.username>RICE_${project.version.sanitized}</impex.username>
+    <impex.password>${impex.username}</impex.password>
+    <impex.database>${impex.username}</impex.database>
   </properties>
+
   <profiles>
+    <!-- Exports a database to the impex format on disk -->
     <profile>
-      <id>commit</id>
-      <properties>
-        <impex.invalid.phase>none</impex.invalid.phase>
-      </properties>
-    </profile>
-    <profile>
-      <id>master</id>
-      <properties>
-        <impex.username>RICE_${db.branch.qualifier}</impex.username>
-        <impex.password>${impex.username}</impex.password>
-        <impex.database>${impex.username}</impex.database>
-      </properties>
-    </profile>
-    <profile>
-      <id>commitmaster</id>
-      <properties>
-        <impex.invalid.phase>process-resources</impex.invalid.phase>
-        <scm.phase>process-resources</scm.phase>
-      </properties>
-    </profile>
-    <profile>
-      <id>exportmaster</id>
-      <properties>
-        <export.db.username>RICE_${db.branch.qualifier}</export.db.username>
-        <export.db.password>${export.db.username}</export.db.password>
-        <impex.username>${export.db.username}</impex.username>
-        <impex.password>${export.db.password}</impex.password>
-        <impex.database>${export.db.username}</impex.database>
-      </properties>
+      <id>export</id>
       <build>
         <plugins>
           <plugin>
@@ -76,65 +54,12 @@
         </plugins>
       </build>
     </profile>
+
+    <!-- Commits the generated XML to version control -->
     <profile>
-      <id>dataset</id>
+      <id>commit</id>
       <properties>
-        <impex.username>RICE${dataset.schema.prefix}${dataset.schema.suffix}</impex.username>
-        <impex.password>RICE${dataset.schema.prefix}${dataset.schema.suffix}</impex.password>
-        <impex.database>RICE${dataset.schema.prefix}${dataset.schema.suffix}</impex.database>
-      </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>sql-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>cleanup</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>execute</goal>
-                </goals>
-                <configuration>
-                  <orderFile>NONE</orderFile>
-                  <resourceLocations>
-                    <resourceLocation>${dataset.cleanup.1}</resourceLocation>
-                    <resourceLocation>${dataset.cleanup.2}</resourceLocation>
-                  </resourceLocations>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>client</id>
-      <properties>
-        <dataset.schema.prefix>CLIENT</dataset.schema.prefix>
-        <dataset.script>client</dataset.script>
-      </properties>
-    </profile>
-    <profile>
-      <id>server</id>
-      <properties>
-        <dataset.schema.prefix>SERVER</dataset.schema.prefix>
-        <dataset.script>server</dataset.script>
-      </properties>
-    </profile>
-    <profile>
-      <id>demo</id>
-      <properties>
-        <dataset.schema.suffix>DEMO</dataset.schema.suffix>
-        <dataset.cleanup.1>classpath:demo-${dataset.script}-dataset-cleanup.sql</dataset.cleanup.1>
-      </properties>
-    </profile>
-    <profile>
-      <id>bootstrap</id>
-      <properties>
-        <dataset.schema.suffix>BOOTSTRAP</dataset.schema.suffix>
-        <dataset.cleanup.1>classpath:demo-${dataset.script}-dataset-cleanup.sql</dataset.cleanup.1>
-        <dataset.cleanup.2>classpath:bootstrap-${dataset.script}-dataset-cleanup.sql</dataset.cleanup.2>
+        <scm.phase>process-resources</scm.phase>
       </properties>
     </profile>
   </profiles>

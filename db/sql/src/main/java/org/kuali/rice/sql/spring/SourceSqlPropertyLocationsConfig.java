@@ -38,14 +38,24 @@ import com.google.common.collect.Lists;
 @Import({ PropertiesLocationServiceConfig.class })
 public class SourceSqlPropertyLocationsConfig {
 
+    /**
+     * The property file locator.
+     */
 	@Autowired
 	PropertiesLocationService service;
 
+    /**
+     * Returns a list of locations of Rice properties to run the database reset process.
+     *
+     * @return a list of locations of Rice properties to run the database reset process
+     */
 	@Bean
 	public ImmutableList<Location> riceSourceSqlPropertyLocations() {
 		List<Location> locations = Lists.newArrayList();
+
 		locations.add(service.getLocation(RiceDeployProperties.DB.getResource()));
 		locations.add(service.getLocation(RiceDeployProperties.INIT_SOURCE_DB.getResource()));
+
 		return ImmutableList.copyOf(locations);
 	}
 

@@ -36,19 +36,17 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 /**
- * <p>
  * Locates workflow XML documents available on the classpath and ingests them.
- * </p>
  * 
  * <p>
  * No file system access is required. The XML documents are ingested using Spring's {@code classpath:} notation to
- * locate them, open an {@code InputStream}, and feed them to the ingester service. Any workflow document failing to be
- * ingested correctly results in an exception being thrown.
+ * locate them, open an {@link java.io.InputStream}, and feed them to the ingester service. Any workflow document
+ * failing to be ingested correctly results in an exception being thrown.
  * </p>
  * 
  * <p>
- * If an explicit {@code XmlIngesterService} instance is not provided,
- * {@code CoreApiServiceLocator.getXmlIngesterService()} must be able to correctly locate XmlIngesterService.
+ * If an explicit {@link XmlIngesterService} instance is not provided,
+ * {@code CoreApiServiceLocator.getXmlIngesterService()} must be able to correctly locate {@link XmlIngesterService}.
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -56,125 +54,202 @@ import com.google.common.collect.Lists;
 public final class IngestXmlExecutable implements Executable {
 
 	private static final Logger logger = LoggerUtils.make();
+
 	private static final String XML_SUFFIX = ".xml";
 
-	private final List<String> locationListings;
+	private final List<String> xmlDocumentLocations;
 	private final boolean skip;
-	private final Optional<XmlIngesterService> service;
 
+	private final Optional<XmlIngesterService> xmlIngesterService;
+
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public void execute() {
 		if (skip) {
 			logger.info("Skipping XML ingestion");
 			return;
 		}
+
 		long start = System.currentTimeMillis();
 		logger.info("Starting XML Ingester.");
-        for (String locationListing : locationListings) {
-		    logger.info("Ingesting XML documents listed in [{}]", locationListing);
+
+        for (String xmlDocumentLocation : xmlDocumentLocations) {
+		    logger.info("Ingesting XML documents listed in [{}]", xmlDocumentLocation);
         }
-		List<XmlDocCollection> collections = getXmlDocCollectionList(locationListings);
-		logger.info("Found {} files to ingest.", collections.size());
-		Collection<XmlDocCollection> failures = ingest(collections);
-		validateNoFailures(failures);
-		logger.info("There were zero failures ingesting {} XML documents", collections.size());
-		logger.info("Finished ingesting bootstrap XML - {}", FormatUtils.getTime(System.currentTimeMillis() - start));
+
+		List<XmlDocCollection> xmlDocumentCollections = getXmlDocCollectionList(xmlDocumentLocations);
+		logger.info("Found {} files to ingest.", Integer.valueOf(xmlDocumentCollections.size()));
+
+		Collection<XmlDocCollection> failedXmlDocumentCollections = ingest(xmlDocumentCollections);
+		validateNoFailures(failedXmlDocumentCollections);
+		logger.info("There were zero failures ingesting {} XML documents", Integer.valueOf(xmlDocumentCollections.size()));
+
+        long end = System.currentTimeMillis() - start;
+		logger.info("Finished ingesting bootstrap XML - {}", FormatUtils.getTime(end));
 	}
 
-	protected List<XmlDocCollection> getXmlDocCollectionList(List<String> locationListings) {
-		List<XmlDocCollection> list = Lists.newArrayList();
+    /**
+     * Gets the list of XML documents to ingest.
+     *
+     * @param locationListings the locations to search for XML documents to ingest
+     *
+     * @return the list of XML documents to ingest
+     */
+	private List<XmlDocCollection> getXmlDocCollectionList(List<String> locationListings) {
+		List<XmlDocCollection> xmlDocCollectionList = Lists.newArrayList();
 		List<String> locations = LocationUtils.getLocations(locationListings);
+
 		for (String location : locations) {
 			Preconditions.checkState(StringUtils.endsWith(location.toLowerCase(), XML_SUFFIX), "[%s] is not an XML document", location);
 			Preconditions.checkState(LocationUtils.exists(location), "[%s] does not exist", location);
-			logger.info("[{}]", location);
-			XmlDocCollection element = new LocationXmlDocCollection(location);
-			list.add(element);
+
+            logger.info("[{}]", location);
+
+            xmlDocCollectionList.add(new LocationXmlDocCollection(location));
 		}
-		return list;
+
+		return xmlDocCollectionList;
 	}
 
-	protected void validateNoFailures(Collection<XmlDocCollection> failures) {
-		if (failures.size() == 0) {
+    /**
+     * Ingests the documents in {@code collections}.
+     *
+     * @param collections the list of XML documents to ingest
+     *
+     * @return the list of XML documents that failed to ingest
+     */
+    private Collection<XmlDocCollection> ingest(List<XmlDocCollection> collections) {
+        try {
+            return getXmlIngesterService().ingest(collections);
+        } catch (Exception e) {
+            throw new IllegalStateException("Unexpected error ingesting XML documents", e);
+        }
+    }
+
+    /**
+     * Verifies whether there are any failures in {@code failedXmlDocumentCollections} and lists them if there are.
+     *
+     * @param failedXmlDocumentCollections the list of failures from the ingestion process
+     */
+	private void validateNoFailures(Collection<XmlDocCollection> failedXmlDocumentCollections) {
+		if (failedXmlDocumentCollections.isEmpty()) {
 			return;
 		}
-		StringBuilder sb = new StringBuilder();
-		for (XmlDocCollection failure : failures) {
-			sb.append(failure.getFile().getName());
-			sb.append(",");
+
+        List<String> failureNamesList = Lists.newArrayList();
+		for (XmlDocCollection failedXmlDocumentCollection : failedXmlDocumentCollections) {
+            failureNamesList.add(failedXmlDocumentCollection.getFile().getName());
 		}
-		String docs = sb.substring(0, sb.length() - 1); // Trim off the trailing comma
-		Preconditions.checkState(false, "%s XML documents failed to ingest -> [%s]", failures.size(), docs);
+
+        String failureNames = StringUtils.join(failureNamesList, ", ");
+		Preconditions.checkState(false, "%s XML documents failed to ingest -> [%s]", Integer.valueOf(failedXmlDocumentCollections.size()), failureNames);
 	}
 
-	protected Collection<XmlDocCollection> ingest(List<XmlDocCollection> collections) {
-		XmlIngesterService service = this.service.isPresent() ? this.service.get() : CoreApiServiceLocator.getXmlIngesterService();
-		try {
-			return service.ingest(collections);
-		} catch (Exception e) {
-			throw new IllegalStateException("Unexpected error ingesting XML documents", e);
-		}
-	}
+    /**
+     * Returns the {@link XmlIngesterService}.
+     *
+     * @return the {@link XmlIngesterService}
+     */
+    public XmlIngesterService getXmlIngesterService() {
+        return xmlIngesterService.isPresent() ? xmlIngesterService.get() : CoreApiServiceLocator.getXmlIngesterService();
+    }
 
-	private IngestXmlExecutable(Builder builder) {
-		this.locationListings = builder.locationListings;
-		this.skip = builder.skip;
-		this.service = builder.service;
-	}
+    private IngestXmlExecutable(Builder builder) {
+        this.xmlDocumentLocations = builder.xmlDocumentLocations;
+        this.skip = builder.skip;
+        this.xmlIngesterService = builder.xmlIngesterService;
+    }
 
+    /**
+     * Returns the builder for this {@code IngestXmlExecutable}.
+     *
+     * @param xmlDocumentLocations the list of locations with XML documents to ingest
+     *
+     * @return the builder for this {@code IngestXmlExecutable}
+     */
+    public static Builder builder(List<String> xmlDocumentLocations) {
+        return new Builder(xmlDocumentLocations);
+    }
+
+    /**
+     * Builds this {@link IngestXmlExecutable}.
+     */
 	public static class Builder {
 
 		// Required
-		private final List<String> locationListings;
+		private final List<String> xmlDocumentLocations;
 
 		// Optional
-		private Optional<XmlIngesterService> service = Optional.absent();
-		private boolean skip = false;
+		private Optional<XmlIngesterService> xmlIngesterService = Optional.absent();
+		private boolean skip;
 
-		public Builder(String locationListing) {
-			this.locationListings = Collections.singletonList(locationListing);
+        /**
+         * Builds the {@link IngestXmlExecutable} with a single {@code xmlDocumentLocation}.
+         *
+         * @param xmlDocumentLocation the location with an XML document to ingest
+         */
+		public Builder(String xmlDocumentLocation) {
+			this.xmlDocumentLocations = Collections.singletonList(xmlDocumentLocation);
         }
 
-        public Builder(List<String> locationListings) {
-            this.locationListings = locationListings;
+        /**
+         * Builds the {@link IngestXmlExecutable} with multiple {@code xmlDocumentLocations}.
+         *
+         * @param xmlDocumentLocations the list of locations with XML documents to ingest
+         */
+        public Builder(List<String> xmlDocumentLocations) {
+            this.xmlDocumentLocations = xmlDocumentLocations;
         }
 
+        /**
+         * Sets the {@link XmlIngesterService}.
+         *
+         * @param service the {@link XmlIngesterService} to set
+         *
+         * @return this {@code Builder}
+         */
 		public Builder service(XmlIngesterService service) {
-			this.service = Optional.of(service);
+			this.xmlIngesterService = Optional.of(service);
 			return this;
 		}
 
+        /**
+         * Sets whether to skip this executable or not.
+         *
+         * @param skip whether to skip this executable or not
+         *
+         * @return this {@code Builder}
+         */
 		public Builder skip(boolean skip) {
 			this.skip = skip;
 			return this;
 		}
 
+        /**
+         * Builds the {@link IngestXmlExecutable}.
+         *
+         * @return the built {@link IngestXmlExecutable}
+         */
 		public IngestXmlExecutable build() {
 			IngestXmlExecutable instance = new IngestXmlExecutable(this);
-			validate(instance);
-			return instance;
+
+            validate(instance);
+
+            return instance;
 		}
 
 		private static void validate(IngestXmlExecutable instance) {
-			Preconditions.checkNotNull(instance.service, "service cannot be null");
-			Preconditions.checkArgument(!CollectionUtils.isEmpty(instance.locationListings), "locationListings cannot be empty");
-            for (String locationListing : instance.locationListings) {
+			Preconditions.checkNotNull(instance.xmlIngesterService, "service cannot be null");
+			Preconditions.checkArgument(!CollectionUtils.isEmpty(instance.xmlDocumentLocations), "locationListings cannot be empty");
+
+            for (String locationListing : instance.xmlDocumentLocations) {
                 Preconditions.checkArgument(!StringUtils.isBlank(locationListing), "locationListings cannot have blank entries");
 			    Preconditions.checkArgument(LocationUtils.exists(locationListing), "[%s] does not exist", locationListing);
             }
 		}
-	}
 
-	public Optional<XmlIngesterService> getService() {
-		return service;
-	}
-
-	public List<String> getLocationListings() {
-		return locationListings;
-	}
-
-	public boolean isSkip() {
-		return skip;
 	}
 
 }

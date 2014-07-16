@@ -17,15 +17,17 @@ package org.kuali.rice.xml.spring;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
-import freemarker.core.Configurable;
 import org.kuali.common.util.execute.Executable;
-import org.kuali.common.util.metainf.model.ConfigurablePathComparator;
 import org.kuali.common.util.metainf.model.PathComparator;
 import org.kuali.common.util.metainf.service.MetaInfUtils;
 import org.kuali.common.util.metainf.spring.MetaInfDataLocation;
 import org.kuali.common.util.metainf.spring.MetaInfDataType;
 import org.kuali.common.util.metainf.spring.RiceXmlConfig;
 import org.kuali.common.util.spring.env.EnvironmentService;
+import org.kuali.rice.db.config.profile.MetaInfDataTypeProfileConfig;
+import org.kuali.rice.db.config.profile.RiceServerBootstrapConfig;
+import org.kuali.rice.db.config.profile.RiceServerDemoConfig;
+import org.kuali.rice.db.config.profile.RiceMasterConfig;
 import org.kuali.rice.xml.ingest.IngestXmlExecutable;
 import org.kuali.rice.xml.project.XmlProjectConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -46,36 +44,62 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Configuration
-@Import({ IngestXmlConfig.class })
+@Import({ IngestXmlConfig.class, RiceServerBootstrapConfig.class, RiceServerDemoConfig.class, RiceMasterConfig.class })
 public class IngestXmlExecConfig {
 
+    private static final String SKIP_KEY = "rice.ingest.skip";
+
+    // All paths must have the hardcoded separator to be consistent for deployment
+    private static final String PATH_SEPARATOR = "/";
+
+    private static final String UPGRADE_SQL_PATH = "upgrades" + PATH_SEPARATOR + "*";
+
+    /**
+     * The Spring environment.
+     */
 	@Autowired
 	EnvironmentService env;
 
-	private static final String SKIP_KEY = "rice.ingest.skip";
-	private static final String RESOURCES_KEY = "rice.ingest.resources";
+    /**
+     * The {@link MetaInfDataType} profile.
+     */
+    @Autowired
+    MetaInfDataTypeProfileConfig typeConfig;
 
+    /**
+     * Returns the executable for launching the workflow XML ingestion process.
+     *
+     * @return the executable for launching the workflow XML ingestion process
+     */
 	@Bean
 	public Executable ingestXmlExecutable() {
-        String qualifier = "upgrades" + File.separator + "*";
-        List<String> locations = new ArrayList<String>();
+        List<String> locations = Lists.newArrayList();
 
-        for (MetaInfDataType type : getTypes()) {
+        List<MetaInfDataType> types = getTypes();
+
+        PathComparator comparator = new PathComparator();
+
+        for (MetaInfDataType type : types) {
             List<String> resources = MetaInfUtils.getPatternedClasspathResources(XmlProjectConstants.ID,
-                    Optional.of(qualifier), Optional.<MetaInfDataLocation> absent(), Optional.of(type), RiceXmlConfig.INGEST_FILENAME);
+                    Optional.of(UPGRADE_SQL_PATH), Optional.<MetaInfDataLocation> absent(), Optional.of(type),
+                    RiceXmlConfig.INGEST_FILENAME);
+            Collections.sort(resources, comparator);
             locations.addAll(resources);
         }
 
-        ConfigurablePathComparator comparator = ConfigurablePathComparator.builder().typeOrder(getTypes()).build();
-        Collections.sort(locations, comparator);
+		Boolean skip = env.getBoolean(SKIP_KEY, Boolean.FALSE);
 
-		// Setup the executable
-		boolean skip = env.getBoolean(SKIP_KEY, false);
-		return new IngestXmlExecutable.Builder(locations).skip(skip).build();
+		return IngestXmlExecutable.builder(locations).skip(skip.booleanValue()).build();
 	}
 
-    private List<MetaInfDataType> getTypes() {
-        return Lists.newArrayList(MetaInfDataType.BOOTSTRAP, MetaInfDataType.DEMO, MetaInfDataType.TEST);
+    /**
+     * Returns the list of {@link MetaInfDataType}s to be applied to the database, returning an empty list if no
+     * profiles are active.
+     *
+     * @return the list of {@link MetaInfDataType}s to be applied to the database (if any)
+     */
+    protected List<MetaInfDataType> getTypes() {
+        return typeConfig != null ? typeConfig.getMetaInfDataTypes() : Lists.<MetaInfDataType> newArrayList();
     }
 
 }

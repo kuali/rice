@@ -37,13 +37,23 @@ import com.google.common.collect.Lists;
 @Import({ PropertiesLocationServiceConfig.class })
 public class IngestXmlPropertyLocationsConfig {
 
+    /**
+     * The property file locator.
+     */
 	@Autowired
 	PropertiesLocationService service;
 
+    /**
+     * Returns a list of locations of Rice properties to run the workflow XML ingestion process.
+     *
+     * @return a list of locations of Rice properties to run the workflow XML ingestion process
+     */
 	@Bean
 	public ImmutableList<Location> riceIngestXmlPropertyLocations() {
 		List<Location> locations = Lists.newArrayList();
+
 		locations.add(service.getLocation(RiceXmlProperties.DB.getResource()));
+
 		return ImmutableList.copyOf(locations);
 	}
 

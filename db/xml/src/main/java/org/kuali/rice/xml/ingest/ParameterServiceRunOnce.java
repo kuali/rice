@@ -32,44 +32,62 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Optional;
 
+/**
+ * Locates workflow XML documents available on the classpath and ingests them.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public final class ParameterServiceRunOnce implements RunOnce {
 
 	private static final Logger logger = LoggerUtils.make();
 
+    private static final String CONFIGURATION_PARAMETER_TYPE = "CONFG";
+    private static final String YES = "Y";
+
+    private ParameterService parameterService;
 	private final String applicationId;
 	private final String namespace;
 	private final String component;
 	private final String name;
 	private final Optional<String> description;
-	private final boolean runOnMissingParameter;
 
-	//
-	private boolean initialized = false;
-	private boolean runonce = false;
-	private ParameterService service;
+    private final boolean runOnMissingParameter;
 
-	private static final String CONFIGURATION_PARAMETER_TYPE = "CONFG";
-	private static final String YES = "Y";
+	private boolean initialized;
+	private boolean runonce;
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public synchronized void initialize() {
 		checkState(!initialized, "Already initialized");
-		this.service = CoreFrameworkServiceLocator.getParameterService();
-		Optional<Parameter> parameter = Optional.fromNullable(service.getParameter(namespace, component, name));
+
+		parameterService = CoreFrameworkServiceLocator.getParameterService();
+
+		Optional<Parameter> parameter = Optional.fromNullable(parameterService.getParameter(namespace, component, name));
 		if (!parameter.isPresent() && runOnMissingParameter) {
 			parameter = Optional.of(createParameter());
 		}
-		this.runonce = isRunOnce(parameter);
+		runonce = isRunOnce(parameter);
 		showConfig(parameter);
-		this.initialized = true;
+
+		initialized = true;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public synchronized boolean isTrue() {
 		checkState(initialized, "Not initialized");
-		return runonce;
+
+        return runonce;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public synchronized void changeState(RunOnceState state) {
 		// Ensure things are as they should be
@@ -77,7 +95,7 @@ public final class ParameterServiceRunOnce implements RunOnce {
 		checkNotNull(state, "'state' cannot be null");
 
 		// Get the existing parameter
-		Parameter existingParameter = service.getParameter(namespace, component, name);
+		Parameter existingParameter = parameterService.getParameter(namespace, component, name);
 
 		// Can't change the state of a non-existent parameter
 		// The isRunOnce() method called during initialization cannot return true unless a parameter exists and it's value is set to 'Y'
@@ -87,39 +105,37 @@ public final class ParameterServiceRunOnce implements RunOnce {
 		logger.info("Updating parameter: [{}]", name);
 		Parameter.Builder builder = Parameter.Builder.create(existingParameter);
 		builder.setValue(state.name());
-		Parameter updatedParameter = service.updateParameter(builder.build());
+		Parameter updatedParameter = parameterService.updateParameter(builder.build());
 
 		// This must always return false here
-		this.runonce = isRunOnce(updatedParameter);
+		runonce = isRunOnce(updatedParameter);
 		checkState(!isTrue(), "isTrue() must return false");
 
 		// Emit a log message indicating the change in state
 		logger.info("Transitioned RunOnce to - [{}]", updatedParameter.getValue());
 	}
 
-	protected boolean isRunOnce(Optional<Parameter> parameter) {
-		if (parameter.isPresent()) {
-			return isRunOnce(parameter.get());
-		} else {
-			return false;
-		}
+	private boolean isRunOnce(Optional<Parameter> parameter) {
+		return parameter.isPresent() && isRunOnce(parameter.get());
 	}
 
-	protected boolean isRunOnce(Parameter parameter) {
-		return Boolean.parseBoolean(Truth.strToBooleanIgnoreCase(parameter.getValue()) + "");
+	private boolean isRunOnce(Parameter parameter) {
+		return Truth.strToBooleanIgnoreCase(parameter.getValue(), Boolean.FALSE).booleanValue();
 	}
 
-	protected Parameter createParameter() {
+	private Parameter createParameter() {
 		logger.info("Creating parameter: [{}]=[{}]", name, YES);
-		Parameter.Builder builder = Parameter.Builder.create(applicationId, namespace, component, name, ParameterType.Builder.create(CONFIGURATION_PARAMETER_TYPE));
-		builder.setValue(YES);
+        ParameterType.Builder parameterTypeBuilder = ParameterType.Builder.create(CONFIGURATION_PARAMETER_TYPE);
+		Parameter.Builder parameterBuilder = Parameter.Builder.create(applicationId, namespace, component, name, parameterTypeBuilder);
+        parameterBuilder.setValue(YES);
 		if (description.isPresent()) {
-			builder.setDescription(description.get());
+            parameterBuilder.setDescription(description.get());
 		}
-		return service.createParameter(builder.build());
+
+		return parameterService.createParameter(parameterBuilder.build());
 	}
 
-	protected void showConfig(Optional<Parameter> optional) {
+	private void showConfig(Optional<Parameter> optional) {
 		logger.info(String.format("Parameter Metadata: [%s:%s:%s]", applicationId, namespace, component));
 		if (optional.isPresent()) {
 			Parameter parameter = optional.get();
@@ -127,8 +143,53 @@ public final class ParameterServiceRunOnce implements RunOnce {
 		} else {
 			logger.info("Parameter [{}] does not exist", name);
 		}
-		logger.info("RunOnce: [{}]", runonce);
+		logger.info("RunOnce: [{}]", Boolean.valueOf(runonce));
 	}
+
+    /**
+     * Returns the application identifier of the parameter.
+     *
+     * @return the application identifier of the parameter
+     */
+    public String getApplicationId() {
+        return applicationId;
+    }
+
+    /**
+     * Returns the namespace of the parameter.
+     *
+     * @return the namespace of the parameter
+     */
+    public String getNamespace() {
+        return namespace;
+    }
+
+    /**
+     * Returns the component of the parameter.
+     *
+     * @return the component of the parameter
+     */
+    public String getComponent() {
+        return component;
+    }
+
+    /**
+     * Returns the name of the parameter.
+     *
+     * @return the name of the parameter
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Returns the optional description.
+     *
+     * @return the optional description
+     */
+    public Optional<String> getDescription() {
+        return description;
+    }
 
 	private ParameterServiceRunOnce(Builder builder) {
 		this.applicationId = builder.applicationId;
@@ -139,49 +200,79 @@ public final class ParameterServiceRunOnce implements RunOnce {
 		this.runOnMissingParameter = builder.runOnMissingParameter;
 	}
 
-	public static Builder builder() {
-		return new Builder();
-	}
+    /**
+     * Returns the builder for this {@code ParameterServiceRunOnce}.
+     *
+     * @param applicationId the application identifier of the parameter
+     * @param namespace namespace of the parameter
+     * @param component component of the parameter
+     * @param name name of the parameter
+     *
+     * @return the builder for this {@code ParameterServiceRunOnce}
+     */
+    public static Builder builder(String applicationId, String namespace, String component, String name) {
+        return new Builder(applicationId, namespace, component, name);
+    }
 
+    /**
+     * Builds this {@link ParameterServiceRunOnce}.
+     */
 	public static class Builder {
 
+        // Required
 		private String applicationId;
 		private String namespace;
 		private String component;
 		private String name;
-		private Optional<String> description;
+
+        // Optional
+		private Optional<String> description = Optional.absent();
 		private boolean runOnMissingParameter;
 
-		public Builder runOnMissingParameter(boolean runOnMissingParameter) {
-			this.runOnMissingParameter = runOnMissingParameter;
+        /**
+         * Builds the {@link ParameterServiceRunOnce}.
+         *
+         * @param applicationId the application identifier of the parameter
+         * @param namespace namespace of the parameter
+         * @param component component of the parameter
+         * @param name name of the parameter
+         */
+        public Builder(String applicationId, String namespace, String component, String name) {
+            this.applicationId = applicationId;
+            this.namespace = namespace;
+            this.component = component;
+            this.name = name;
+        }
+
+        /**
+         * Sets the description of the parameter.
+         *
+         * @param description the description to set
+         *
+         * @return this {@code Builder}
+         */
+		public Builder description(String description) {
+			this.description = Optional.fromNullable(description);
 			return this;
 		}
 
-		public Builder applicationId(String applicationId) {
-			this.applicationId = applicationId;
-			return this;
-		}
+        /**
+         * Sets whether or not to add the parameter if it is missing.
+         *
+         * @param runOnMissingParameter whether or not to add the parameter if it is missing
+         *
+         * @return this {@code Builder}
+         */
+        public Builder runOnMissingParameter(boolean runOnMissingParameter) {
+            this.runOnMissingParameter = runOnMissingParameter;
+            return this;
+        }
 
-		public Builder namespace(String namespace) {
-			this.namespace = namespace;
-			return this;
-		}
-
-		public Builder component(String component) {
-			this.component = component;
-			return this;
-		}
-
-		public Builder name(String name) {
-			this.name = name;
-			return this;
-		}
-
-		public Builder description(String name) {
-			this.description = Optional.fromNullable(name);
-			return this;
-		}
-
+        /**
+         * Builds the {@link ParameterServiceRunOnce}.
+         *
+         * @return the built {@link ParameterServiceRunOnce}
+         */
 		public ParameterServiceRunOnce build() {
 			ParameterServiceRunOnce instance = new ParameterServiceRunOnce(this);
 			validate(instance);
@@ -193,73 +284,9 @@ public final class ParameterServiceRunOnce implements RunOnce {
 			checkArgument(!StringUtils.isBlank(instance.getNamespace()), "'namespace' cannot be null");
 			checkArgument(!StringUtils.isBlank(instance.getComponent()), "'component' cannot be null");
 			checkArgument(!StringUtils.isBlank(instance.getName()), "'name' cannot be null");
-			checkNotNull(instance.description, "'description' cannot be null");
+			checkNotNull(instance.getDescription(), "'description' cannot be null");
 		}
 
-		public String getApplicationId() {
-			return applicationId;
-		}
-
-		public void setApplicationId(String applicationId) {
-			this.applicationId = applicationId;
-		}
-
-		public String getNamespace() {
-			return namespace;
-		}
-
-		public void setNamespace(String namespace) {
-			this.namespace = namespace;
-		}
-
-		public String getComponent() {
-			return component;
-		}
-
-		public void setComponent(String component) {
-			this.component = component;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Optional<String> getDescription() {
-			return description;
-		}
-
-		public void setDescription(Optional<String> description) {
-			this.description = description;
-		}
-
-	}
-
-	public String getApplicationId() {
-		return applicationId;
-	}
-
-	public String getNamespace() {
-		return namespace;
-	}
-
-	public String getComponent() {
-		return component;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Optional<String> getDescription() {
-		return description;
-	}
-
-	public boolean isRunOnMissingParameter() {
-		return runOnMissingParameter;
 	}
 
 }

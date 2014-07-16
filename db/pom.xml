@@ -27,6 +27,7 @@
   <artifactId>rice-db</artifactId>
   <packaging>pom</packaging>
   <modules>
+    <module>config</module>
     <module>sql</module>
     <module>impex</module>
     <module>xml</module>

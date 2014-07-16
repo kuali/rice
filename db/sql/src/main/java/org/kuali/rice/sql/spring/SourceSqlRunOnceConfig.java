@@ -18,6 +18,7 @@ package org.kuali.rice.sql.spring;
 import java.io.File;
 import java.util.Properties;
 
+import com.google.common.collect.Lists;
 import org.kuali.common.util.execute.Executable;
 import org.kuali.common.util.execute.spring.ExecutableConfig;
 import org.kuali.common.util.properties.spring.EnvironmentPropertySourceConfig;
@@ -43,29 +44,44 @@ import org.springframework.core.env.PropertySource;
 @Import({ SpringServiceConfig.class, EnvironmentPropertySourceConfig.class })
 public class SourceSqlRunOnceConfig implements ExecutableConfig {
 
-    @Autowired
-    SpringService service;
-
-    @Autowired
-    PropertySource<?> propertySource;
-
     private static final String PROJECT_HOME_KEY = "project.home";
     private static final String RUNONCE_FILENAME = "runonce.properties";
     private static final String ENCODING = "UTF-8";
     private static final String PROPERTY_KEY = "project.db.reset";
 
+    /**
+     * The Spring loader.
+     */
+    @Autowired
+    SpringService service;
+
+    /**
+     * The final list of properties.
+     */
+    @Autowired
+    PropertySource<?> propertySource;
+
+    /**
+     * {@inheritDoc}
+     *
+     * <p>
+     * The {@code project.home} property needs to come from the {@link ConfigContext} instead of the
+     * {@link org.kuali.common.util.spring.env.EnvironmentService} for the scenario where nobody has wired in a
+     * bootstrap PSC in order to help manage the resetting of the database via RunOnce.
+     * </p>
+     */
     @Override
     @Bean(initMethod = "execute")
     public Executable executable() {
-        // This needs to come from ConfigContext instead of EnvironmentService for the scenario where nobody
-        // has wired in a bootstrap PSC in order to help manage the resetting of the database via RunOnce
         Properties properties = ConfigContext.getCurrentContextConfig().getProperties();
         String projectHome = properties.getProperty(PROJECT_HOME_KEY);
 
         File file = new File(projectHome, RUNONCE_FILENAME);
         RunOnce runOnce = PropertiesFileRunOnce.builder(file, ENCODING, PROPERTY_KEY).build();
-        Executable executable = SpringExecUtils.getSpringExecutable(service, propertySource, SourceSqlExecConfig.class);
+        Executable executable = SpringExecUtils.getSpringExecutable(service, propertySource, SourceSqlExecConfig.class,
+                Lists.newArrayList("master"));
 
         return RunOnceExecutable.builder(executable, runOnce).build();
     }
+
 }

@@ -391,6 +391,7 @@
     <orderEntry type="library" name="Maven: org.kuali.common:kuali-deploy:3.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.kuali.common:kuali-http:1.0.8" level="project" />
     <orderEntry type="library" name="Maven: commons-httpclient:commons-httpclient:3.1" level="project" />
+    <orderEntry type="module" module-name="rice-db-config" />
     <orderEntry type="module" module-name="rice-xml" />
     <orderEntry type="module" module-name="rice-it-krad" scope="TEST" production-on-test="" />
     <orderEntry type="module" module-name="rice-it-internal-tools" scope="TEST" />

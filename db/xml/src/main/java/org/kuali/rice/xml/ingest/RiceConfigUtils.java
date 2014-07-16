@@ -44,6 +44,18 @@ public class RiceConfigUtils {
 
 	private static final Logger logger = LoggerUtils.make();
 
+    private RiceConfigUtils() {}
+
+    /**
+     * Gets the {@link Config} from both the current configuration and the ones in {@code loaded}, at {@code location},
+     * and in the {@code servletContext}.
+     *
+     * @param loaded the loaded properties
+     * @param location the location of additional properties
+     * @param servletContext the servlet context in which to add more properties
+     *
+     * @return the final configuration
+     */
 	public static Config getRootConfig(Properties loaded, String location, ServletContext servletContext) {
 		// Get the Rice config object the listener created
 		Config config = ConfigContext.getCurrentContextConfig();
@@ -61,7 +73,7 @@ public class RiceConfigUtils {
 		Properties servlet = PropertySources.convert(servletContext);
 		Properties global = PropertyUtils.getGlobalProperties(servlet);
 		addAndOverride(loaded, global);
-		logger.info("Using {} distinct properties", loaded.size());
+		logger.info("Using {} distinct properties", Integer.valueOf(loaded.size()));
 
 		// Use JAXBConfigImpl in order to perform Rice's custom placeholder resolution logic now that everything is loaded
 		return new JAXBConfigImpl(loaded);
@@ -69,24 +81,23 @@ public class RiceConfigUtils {
 	}
 
 	/**
-	 * Iterate over the list of key/value pairs from {@code properties} and invoke {@code config.putProperty(key,value)}
-	 */
-	public static void putProperties(Config config, Properties properties) {
-		SortedSet<String> keys = Sets.newTreeSet(properties.stringPropertyNames());
-		for (String key : keys) {
-			config.putProperty(key, properties.getProperty(key));
-		}
-	}
-
-	/**
-	 * Parse the configuration stored at {@code location}
-	 */
+	 * Parse the configuration stored at {@code location}.
+     *
+     * @param location the location to get properties from
+     *
+     * @return the new configuration
+     */
 	public static JAXBConfigImpl parseConfig(String location) {
 		return parseConfig(location, ImmutableProperties.of());
 	}
 
 	/**
-	 * Parse the configuration stored at {@code location}
+	 * Parse the configuration stored at {@code location}, adding any additional properties from {@code properties}.
+     *
+     * @param location the location to get properties from
+     * @param properties any additional properties to add
+     *
+     * @return the new configuration
 	 */
 	public static JAXBConfigImpl parseConfig(String location, Properties properties) {
 		try {
@@ -99,14 +110,25 @@ public class RiceConfigUtils {
 	}
 
 	/**
-	 * Parse the configuration stored at {@code location} AND invoke {@code ConfigContext.init(config)}
-	 */
+	 * Parse the configuration stored at {@code location} and initialize.
+     *
+     * @param location the location to get properties from
+     *
+     * @return the new configuration
+     */
 	public static JAXBConfigImpl parseAndInit(String location) {
 		JAXBConfigImpl config = parseConfig(location);
 		ConfigContext.init(config);
 		return config;
 	}
 
+    /**
+     * Returns the {@link Properties} from the given {@code config}.
+     *
+     * @param config the {@link Config} to get the {@link Properties} from
+     *
+     * @return the {@link Properties}
+     */
 	public static Properties getProperties(Config config) {
 		if (config instanceof JAXBConfigImpl) {
 			JAXBConfigImpl jci = (JAXBConfigImpl) config;
@@ -117,42 +139,63 @@ public class RiceConfigUtils {
 		}
 	}
 
-	public static void addAndOverride(Properties oldProps, Properties newProps) {
-		add(oldProps, newProps);
-		override(oldProps, newProps);
-	}
+    /**
+     * Put all of the given {@code properties} into the given {@code config}.
+     *
+     * @param config the {@link Config} to add the {@link Properties} to
+     * @param properties the {@link Properties} to add
+     */
+    public static void putProperties(Config config, Properties properties) {
+        SortedSet<String> keys = Sets.newTreeSet(properties.stringPropertyNames());
+        for (String key : keys) {
+            config.putProperty(key, properties.getProperty(key));
+        }
+    }
 
-	public static void override(Properties oldProps, Properties newProps) {
-		SortedSet<String> commonKeys = Sets.newTreeSet(Sets.intersection(newProps.stringPropertyNames(), oldProps.stringPropertyNames()));
-		if (commonKeys.size() == 0) {
+    private static void add(Properties oldProperties, Properties newProperties) {
+        SortedSet<String> newKeys = Sets.newTreeSet(Sets.difference(newProperties.stringPropertyNames(), oldProperties.stringPropertyNames()));
+
+        if (newKeys.isEmpty()) {
+            return;
+        }
+
+        logger.info("Adding {} properties", Integer.valueOf(newKeys.size()));
+
+        for (String newKey : newKeys) {
+            String value = newProperties.getProperty(newKey);
+            logger.debug("Adding - [{}]=[{}]", newKey, toLogMsg(newKey, value));
+            oldProperties.setProperty(newKey, value);
+        }
+    }
+
+	private static void override(Properties oldProperties, Properties newProperties) {
+		SortedSet<String> commonKeys = Sets.newTreeSet(Sets.intersection(newProperties.stringPropertyNames(), oldProperties.stringPropertyNames()));
+
+		if (commonKeys.isEmpty()) {
 			return;
 		}
-		logger.debug("{} keys in common", commonKeys.size());
-		for (String commonKey : commonKeys) {
-			String oldValue = oldProps.getProperty(commonKey);
-			String newValue = newProps.getProperty(commonKey);
+
+		logger.debug("{} keys in common", Integer.valueOf(commonKeys.size()));
+
+        for (String commonKey : commonKeys) {
+			String oldValue = oldProperties.getProperty(commonKey);
+			String newValue = newProperties.getProperty(commonKey);
+
 			if (!newValue.equals(oldValue)) {
 				Object[] args = { commonKey, toLogMsg(commonKey, oldValue), toLogMsg(commonKey, newValue) };
 				logger.info("Overriding - [{}]=[{}]->[{}]", args);
-				oldProps.setProperty(commonKey, newValue);
+                oldProperties.setProperty(commonKey, newValue);
 			}
 		}
 	}
 
-	public static void add(Properties oldProps, Properties newProps) {
-		SortedSet<String> newKeys = Sets.newTreeSet(Sets.difference(newProps.stringPropertyNames(), oldProps.stringPropertyNames()));
-		if (newKeys.size() == 0) {
-			return;
-		}
-		logger.info("Adding {} properties", newKeys.size());
-		for (String newKey : newKeys) {
-			String value = newProps.getProperty(newKey);
-			logger.debug("Adding - [{}]=[{}]", newKey, toLogMsg(newKey, value));
-			oldProps.setProperty(newKey, value);
-		}
-	}
+    private static void addAndOverride(Properties oldProperties, Properties newProperties) {
+        add(oldProperties, newProperties);
+        override(oldProperties, newProperties);
+    }
 
-	protected static String toLogMsg(String key, String value) {
+	private static String toLogMsg(String key, String value) {
 		return Str.flatten(ConfigLogger.getDisplaySafeValue(key, value));
 	}
+
 }

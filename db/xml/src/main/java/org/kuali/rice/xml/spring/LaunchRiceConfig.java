@@ -29,12 +29,29 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 @ImportResource({ LaunchRiceConfig.JTA, LaunchRiceConfig.DATASOURCE, LaunchRiceConfig.RICE })
 public class LaunchRiceConfig {
 
-	static final String JTA = "classpath:org/kuali/rice/core/RiceJTASpringBeans.xml";
-	static final String DATASOURCE = "classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml";
-	static final String RICE = "classpath:org/kuali/rice/config/RiceSpringBeans.xml";
+    /**
+     * The location of the JTA Spring beans.
+     */
+	protected static final String JTA = "classpath:org/kuali/rice/core/RiceJTASpringBeans.xml";
 
+    /**
+     * The location of the data source Spring beans.
+     */
+	protected static final String DATASOURCE = "classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml";
+
+    /**
+     * The location of the Rice Spring beans.
+     */
+	protected static final String RICE = "classpath:org/kuali/rice/config/RiceSpringBeans.xml";
+
+    /**
+     * Returns a new instance of a {@link PropertySourcesPlaceholderConfigurer}.
+     *
+     * @return a new instance of a {@link PropertySourcesPlaceholderConfigurer}
+     */
 	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+	public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
+
 }

@@ -21,13 +21,16 @@ import org.kuali.rice.xml.project.XmlProjectConstants;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Defines the project identifier for the Rice XML project
+ * Defines the project identifier for the Rice XML project.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Configuration
 public class IngestXmlProjectConfig implements ProjectIdentifierConfig {
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public ProjectIdentifier projectIdentifier() {
 		return XmlProjectConstants.ID;

@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.xml.spring;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.google.common.collect.Lists;
 import org.kuali.common.jdbc.project.spring.JdbcPropertyLocationsConfig;
 import org.kuali.common.util.project.ProjectUtils;
 import org.kuali.common.util.properties.Location;
@@ -44,23 +44,42 @@ import org.springframework.core.env.PropertySource;
 @Import({ JdbcPropertyLocationsConfig.class, DefaultPropertiesServiceConfig.class, SourceSqlPropertyLocationsConfig.class, IngestXmlPropertyLocationsConfig.class })
 public class IngestXmlPSC implements PropertySourceConfig {
 
+    /**
+     * The general JDBC property locations.
+     */
 	@Autowired
 	JdbcPropertyLocationsConfig jdbcConfig;
 
+    /**
+     * The Rice property locations for the database reset process.
+     */
 	@Autowired
 	SourceSqlPropertyLocationsConfig sourceSqlConfig;
 
+    /**
+     * The Rice property locations for the workflow XML ingestion process.
+     */
 	@Autowired
 	IngestXmlPropertyLocationsConfig ingestXmlConfig;
 
+    /**
+     * The property locator.
+     */
 	@Autowired
 	PropertiesService service;
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p>
+     * Here we combine all properties, making sure that the Rice project properties go in last.
+     * </p>
+     */
 	@Override
 	@Bean
 	public PropertySource<?> propertySource() {
-		// Making sure Rice properties go in last
-		List<Location> locations = new ArrayList<Location>();
+		List<Location> locations = Lists.newArrayList();
+
 		locations.addAll(jdbcConfig.jdbcPropertyLocations());
 		locations.addAll(sourceSqlConfig.riceSourceSqlPropertyLocations());
 		locations.addAll(ingestXmlConfig.riceIngestXmlPropertyLocations());
@@ -70,6 +89,7 @@ public class IngestXmlPSC implements PropertySourceConfig {
 		String location = ProjectUtils.getPath(RiceXmlProperties.APP.getResource());
 		Config riceConfig = RiceConfigUtils.parseAndInit(location);
 		RiceConfigUtils.putProperties(riceConfig, properties);
+
 		return new PropertiesPropertySource("properties", riceConfig.getProperties());
 	}
 

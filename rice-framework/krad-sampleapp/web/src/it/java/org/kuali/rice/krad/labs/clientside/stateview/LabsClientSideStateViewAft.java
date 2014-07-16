@@ -59,11 +59,11 @@ public class LabsClientSideStateViewAft extends WebDriverAftBase {
 //        waitAndClickByXpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'show inactive')]"); // the second show inactive is now the only one
         waitAndClickButtonByText("Refresh - Ajax");
         Thread.sleep(2000);
-        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'" + SHOW_INACTIVE + "')]")); // first inactive, still Hide inactive
+        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"][1]/header/div/button[contains(.,'" + SHOW_INACTIVE + "')]")); // first inactive, still Hide inactive
         waitForElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'Hide inactive')]")); // first inactive is Hide inactive
         waitAndClickButtonByText("Refresh - Non-Ajax");
         Thread.sleep(2000);
-        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'" + SHOW_INACTIVE + "')]")); // first show inactive, still Hide inactive
+        waitForElementNotPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"][1]/header/div/button[contains(.,'" + SHOW_INACTIVE + "')]")); // first show inactive, still Hide inactive
         waitForElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"]/header/div/button[contains(.,'Hide inactive')]")); // first inactive is Hide inactive
         assertFalse(isElementPresent(By.xpath("//section[@data-parent=\"Lab-ClientSideState-Page1\"][2]/header/div/button[contains(.,'" + SHOW_INACTIVE + "')]"))); // second show inactive, still Hide inactive
     }

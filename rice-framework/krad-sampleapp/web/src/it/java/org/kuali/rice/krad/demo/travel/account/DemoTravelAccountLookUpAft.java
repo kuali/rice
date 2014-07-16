@@ -159,6 +159,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	gotoLightBox();
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("return value");
+        waitAndClickByLinkText("Ad Hoc Recipients");
     	waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
         waitAndClickAdHocGroupAdd();
     	gotoLightBox();

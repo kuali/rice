@@ -356,7 +356,28 @@ function handleLightboxOpen(link, options, addAppParms, event) {
         // If this is not the top frame, then create the lightbox
         // on the top frame to put overlay over whole window
         options['href'] = link.attr('href');
-        getContext().fancybox(options);
+
+        var dialogOptions = {
+            showHandler: function(event) {
+                var $modal = jQuery(event.target);
+                var $iframe = $modal.find("iframe");
+
+                $iframe.attr("src", options.href);
+
+                iframeModalResize($modal, $iframe);
+
+                jQuery(window).on("resize.modal", function(){
+                    iframeModalResize($modal, $iframe);
+                });
+            },
+            hideHandler: function(event) {
+                jQuery(window).unbind("resize.modal");
+            }
+
+        };
+
+        showDialog("Uif-LookupModal", options['href']);
+
     } else {
         window.location = link.attr('href');
     }
@@ -430,9 +451,28 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
             // Trim the remaining ampersand
             lookupUrl = lookupUrl.substring(0, lookupUrl.length -1);
 
-            options['href'] = lookupUrl.replace(/&amp;/g, '&');
+            options.href = lookupUrl.replace(/&amp;/g, '&');
 
-            getContext().fancybox(options);
+            var dialogOptions = {
+                showHandler: function(event) {
+                    var $modal = jQuery(event.target);
+                    var $iframe = $modal.find("iframe");
+
+                    $iframe.attr("src", options.href);
+
+                    iframeModalResize($modal, $iframe);
+
+                    jQuery(window).on("resize.modal", function(){
+                        iframeModalResize($modal, $iframe);
+                    });
+                },
+                hideHandler: function(event) {
+                    jQuery(window).unbind("resize.modal");
+                }
+
+            };
+
+            showDialog("Uif-LookupModal", dialogOptions);
         } else {
             // add parameters for lightbox and do standard submit
             data['actionParameters[renderedInLightBox]'] = 'true';
@@ -442,6 +482,19 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
             nonAjaxSubmitForm(data['methodToCall'], data);
         }
     });
+}
+
+function iframeModalResize($modal, $iframe){
+    var height = jQuery(window).height()*0.8;
+    var headerHeight = $modal.find(".modal-header").outerHeight();
+    var footerHeight = $modal.find(".modal-footer").outerHeight();
+    var $modalBody = $modal.find(".modal-body");
+
+    $modal.find('.modal-content').css('height', height);
+    $modalBody.css("height", height - headerHeight - footerHeight);
+    $modalBody.css("padding", 0);
+    $iframe.css("height", "100%");
+    $iframe.css("width", "100%");
 }
 
 /**
@@ -510,7 +563,27 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 
             queryString = queryString + "&flow=start&renderedInLightBox=true";
             lightBoxOptions['href'] = url + queryString;
-            getContext().fancybox(lightBoxOptions);
+
+            var dialogOptions = {
+                showHandler: function(event) {
+                    var $modal = jQuery(event.target);
+                    var $iframe = $modal.find("iframe");
+
+                    $iframe.attr("src", lightBoxOptions['href']);
+
+                    iframeModalResize($modal, $iframe);
+
+                    jQuery(window).on("resize.modal", function(){
+                        iframeModalResize($modal, $iframe);
+                    });
+                },
+                hideHandler: function(event) {
+                    jQuery(window).unbind("resize.modal");
+                }
+            };
+
+            showDialog("Uif-LookupModal", dialogOptions);
+
         } else {
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&flow="

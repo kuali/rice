@@ -86,6 +86,76 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue("user3 should have an approve request", document.isApprovalRequested());
         document.approve("");
     }
+
+    @Test public void testDocumentTypeParentChildLinking() throws Exception {
+        super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
+        verifyDocumentTypeLinking();
+
+        // scenario 1, update the parent document type and verify that all linking is correct
+        super.loadXmlFile("ParentWithChildrenDocTypeConfigurationUpdate1.xml");
+        verifyDocumentTypeLinking();
+
+        // scenario 2, update a child document type and verify that all linking is correct
+        super.loadXmlFile("ParentWithChildrenDocTypeConfigurationUpdate2.xml");
+        verifyDocumentTypeLinking();
+
+        // let's reimport from the beginning as well
+        super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
+        verifyDocumentTypeLinking();
+
+        // scenario 3, try an xml file with child doctype listed first
+        super.loadXmlFile("ParentWithChildrenDocTypeConfigurationUpdate3.xml");
+        verifyDocumentTypeLinking();
+
+        // try loading each of these in parallel threads to verify caching can
+        // handle concurrency situations
+        String[] fileNames = {
+                "ParentWithChildrenDocTypeConfiguration.xml",
+                "DocTypeIngestTestConfig1.xml",
+                "DocumentTypeAttributeFetchTest.xml",
+                "ChildDocType1.xml",
+                "ChildDocType2.xml",
+                "ChildDocType3.xml",
+                "ChildDocType4.xml",
+        };
+
+        List<Callback> callbacks = new ArrayList<Callback>();
+        CyclicBarrier barrier = new CyclicBarrier(fileNames.length);
+
+        List<Thread> threads = new ArrayList<Thread>();
+        for (int i = 0; i < fileNames.length; i++) {
+            Callback callback = new Callback();
+            callbacks.add(callback);
+            threads.add(new Thread(new LoadXml(fileNames[i], callback, barrier)));
+        }
+        for (Thread thread : threads) {
+            thread.start();
+        }
+        for (Thread thread : threads) {
+            thread.join(2*60*1000);
+        }
+
+        // What should have happened here was an optimistic lock being thrown from the
+        // document type XML import.  Currently, that code is catching and just logging
+        // those errors (not rethrowing), so there's no way for us to check that the
+        // optimistic lock was thrown. However, the verifyDocumentTypeLinking should pass
+        // because the update was never made, and we can check to make sure that
+        // at least one of the above documents failed to be ingested.
+        boolean atLeastOneFailure = false;
+        for (Callback callback : callbacks) {
+            if (!callback.isXmlLoaded()) {
+                atLeastOneFailure = true;
+            }
+        }
+        assertTrue("At least one of the XML files should have failed the ingestion process", atLeastOneFailure);
+        verifyDocumentTypeLinking();
+
+        // reload again for good measure
+        super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
+        verifyDocumentTypeLinking();
+
+    }
+
     @Test public void testNestedDuplicateNodeNameInRoutePath() throws Exception {
         int waitMilliSeconds = 10000;
         loadXmlFile("DocTypeConfig_nestedNodes.xml");
@@ -431,75 +501,6 @@ public class DocumentTypeTest extends KEWTestCase {
         assertEquals("Third ingested document is set to Current after third ingest", Boolean.FALSE, thirdIngestDoc.getCurrentInd());
         assertEquals("Fourth ingested document is not set to Active after third ingest", Boolean.TRUE, fourthIngestDoc.getActive());
         assertEquals("Fourth ingested document is not set to Current after third ingest", Boolean.TRUE, fourthIngestDoc.getCurrentInd());
-    }
-
-    @Test public void testDocumentTypeParentChildLinking() throws Exception {
-    	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
-    	verifyDocumentTypeLinking();
-
-    	// scenario 1, update the parent document type and verify that all linking is correct
-    	super.loadXmlFile("ParentWithChildrenDocTypeConfigurationUpdate1.xml");
-    	verifyDocumentTypeLinking();
-
-    	// scenario 2, update a child document type and verify that all linking is correct
-    	super.loadXmlFile("ParentWithChildrenDocTypeConfigurationUpdate2.xml");
-    	verifyDocumentTypeLinking();
-
-    	// let's reimport from the beginning as well
-    	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
-    	verifyDocumentTypeLinking();
-
-    	// scenario 3, try an xml file with child doctype listed first
-    	super.loadXmlFile("ParentWithChildrenDocTypeConfigurationUpdate3.xml");
-    	verifyDocumentTypeLinking();
-
-    	// try loading each of these in parallel threads to verify caching can
-    	// handle concurrency situations
-        String[] fileNames = {
-                "ParentWithChildrenDocTypeConfiguration.xml",
-                "DocTypeIngestTestConfig1.xml",
-                "DocumentTypeAttributeFetchTest.xml",
-                "ChildDocType1.xml",
-                "ChildDocType2.xml",
-                "ChildDocType3.xml",
-                "ChildDocType4.xml",
-        };
-
-        List<Callback> callbacks = new ArrayList<Callback>();
-        CyclicBarrier barrier = new CyclicBarrier(fileNames.length);
-
-        List<Thread> threads = new ArrayList<Thread>();
-        for (int i = 0; i < fileNames.length; i++) {
-            Callback callback = new Callback();
-            callbacks.add(callback);
-            threads.add(new Thread(new LoadXml(fileNames[i], callback, barrier)));
-        }
-        for (Thread thread : threads) {
-            thread.start();
-        }
-    	for (Thread thread : threads) {
-    		thread.join(2*60*1000);
-    	}
-
-    	// What should have happened here was an optimistic lock being thrown from the
-    	// document type XML import.  Currently, that code is catching and just logging
-    	// those errors (not rethrowing), so there's no way for us to check that the
-    	// optimistic lock was thrown. However, the verifyDocumentTypeLinking should pass
-    	// because the update was never made, and we can check to make sure that
-    	// at least one of the above documents failed to be ingested.
-    	boolean atLeastOneFailure = false;
-    	for (Callback callback : callbacks) {
-    		if (!callback.isXmlLoaded()) {
-    			atLeastOneFailure = true;
-    		}
-    	}
-    	assertTrue("At least one of the XML files should have failed the ingestion process", atLeastOneFailure);
-    	verifyDocumentTypeLinking();
-
-    	// reload again for good measure
-    	super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
-    	verifyDocumentTypeLinking();
-
     }
     
     @Test public void testSameFileChildParentIngestion() throws Exception {

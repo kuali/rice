@@ -79,7 +79,6 @@ public class AddressTypeAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore("2.3 doesn't display 'No values match this search.'")
     public void testAddressTypeNoResultsBookmark() throws Exception {
         testAddressTypeNoResults();
         passed();
@@ -93,7 +92,6 @@ public class AddressTypeAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore("2.3 doesn't display 'No values match this search.'")
     public void testAddressTypeNoResultsNav() throws Exception {
         testAddressTypeNoResults();
         passed();

@@ -238,28 +238,24 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12799 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountMaintenanceEditAft Blanket Approve doesn't go to FINAL or save changes
     public void testDemoTravelAccountMaintenanceEditBookmark() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12799 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountMaintenanceEditAft Blanket Approve doesn't go to FINAL or save changes
     public void testDemoTravelAccountMaintenanceEditNav() throws Exception {
         testTravelAccountMaintenanceEdit();
         passed();
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12799 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountMaintenanceEditAft Blanket Approve doesn't go to FINAL or save changes
     public void testDemoTravelAccountMaintenanceEditBlanketApproveBookmark() throws Exception {
         testTravelAccountMaintenanceEditBlanketApprove();
         passed();
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12799 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountMaintenanceEditAft Blanket Approve doesn't go to FINAL or save changes
     public void testDemoTravelAccountMaintenanceEditBlanketApproveNav() throws Exception {
         testTravelAccountMaintenanceEditBlanketApprove();
         passed();
@@ -285,7 +281,6 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12799 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountMaintenanceEditAft Blanket Approve doesn't go to FINAL or save changes
     public void testDemoTravelAccountMaintenanceEditFiscalOfficerNav() throws Exception {
         testEditFiscalOfficer();
         passed();

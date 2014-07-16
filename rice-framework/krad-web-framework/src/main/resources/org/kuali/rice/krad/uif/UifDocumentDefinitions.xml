@@ -329,7 +329,7 @@
               p:performClientSideValidation="true"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}" p:defaultEnterKeyAction="true">
           <property name="confirmationDialog">
-            <bean id="ConfirmSubmitDialog" parent="Uif-DialogGroup-OkCancel"
+            <bean id="ConfirmSubmitDialog" parent="Uif-DialogGroup-OkCancel" p:style="top:70%"
                   p:promptText="Are you sure you want to submit this document and send it into routing?"/>
           </property>
         </bean>

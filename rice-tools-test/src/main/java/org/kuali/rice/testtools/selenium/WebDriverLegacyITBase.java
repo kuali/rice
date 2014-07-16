@@ -1063,6 +1063,31 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         testCancelConfirmation();
         assertDocSearchNoResults(docId);
     }
+    
+    protected void testCreateNewSave() throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        String docId = verifyDocInitiated();
+        createNewEnterDetails();
+        waitAndClickSave();
+    }
+    
+    protected void testCreateNewSubmit() throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        String docId = verifyDocInitiated();
+        createNewEnterDetails();
+        waitAndClickSubmit();
+    }
+    
+    protected void testCreateNewSaveSubmit() throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        String docId = verifyDocInitiated();
+        createNewEnterDetails();
+        waitAndClickSave();
+        waitAndClickSubmit();
+    }
 
     private String verifyDocInitiated() throws InterruptedException {
         String docId = waitForDocId();

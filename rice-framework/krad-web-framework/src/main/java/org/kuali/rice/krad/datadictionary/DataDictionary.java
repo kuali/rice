@@ -55,6 +55,7 @@ import org.kuali.rice.krad.uif.util.ExpressionFunctions;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.PropertyValue;
@@ -251,10 +252,12 @@ public class DataDictionary {
         timer.stop();
 
         // the UIF defaulting must be done before the UIF indexing but after the main DD data object indexing
-        timer.start("UIF Defaulting");
-        generateMissingInquiryDefinitions();
-        generateMissingLookupDefinitions();
-        timer.stop();
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.ENABLE_VIEW_AUTOGENERATION)) {
+            timer.start("UIF Defaulting");
+            generateMissingInquiryDefinitions();
+            generateMissingLookupDefinitions();
+            timer.stop();
+        }
 
         timer.start("UIF Indexing");
         uifIndex.run();

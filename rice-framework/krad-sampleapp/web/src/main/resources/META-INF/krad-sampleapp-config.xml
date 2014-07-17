@@ -42,4 +42,6 @@
   <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
   <param name="config.location">classpath:META-INF/common-config-locations.xml</param>
   <param name="config.location">${alt.config.location}</param>
+
+  <param name="rice.krad.views.autoGeneration.enabled">true</param>
 </config>

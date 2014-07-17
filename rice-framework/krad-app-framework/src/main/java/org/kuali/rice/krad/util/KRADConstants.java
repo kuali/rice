@@ -629,6 +629,7 @@ public final class KRADConstants {
         public static final String IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE = "rice.krad.bos.ignoreMissingFieldsOnDeserialize";
         public static final String KNS_ENABLED = "rice.krad.kns.enabled";
         public static final String ENABLE_LEGACY_DATA_FRAMEWORK = "rice.krad.enableLegacyDataFramework";
+        public static final String ENABLE_VIEW_AUTOGENERATION = "rice.krad.views.autoGeneration.enabled";
 
         private Config() {
             throw new UnsupportedOperationException("do not call");

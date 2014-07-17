@@ -178,6 +178,7 @@
         <configuration>
           <webAppConfig>
             <contextPath>/\${artifactId}</contextPath>
+            <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
           </webAppConfig>
           <connectors>
             <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
@@ -259,6 +260,7 @@
             <configuration>
               <webAppConfig>
                 <contextPath>/\${artifactId}</contextPath>
+                <allowDuplicateFragmentNames>true</allowDuplicateFragmentNames>
               </webAppConfig>
               <connectors>
                 <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">

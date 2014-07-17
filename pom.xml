@@ -264,9 +264,9 @@
     <spring.jar.base>${settings.localRepository}/org/springframework</spring.jar.base>
     <spring-instrument.jar>${spring.jar.base}/spring-instrument/${spring.version}/spring-instrument-${spring.version}.jar</spring-instrument.jar>
     <spring-instrument-tomcat.jar>${spring.jar.base}/spring-instrument-tomcat/${spring.version}/spring-instrument-tomcat-${spring.version}.jar</spring-instrument-tomcat.jar>
-    <spring.instrument.javaagent>
+    <spring-instrument-javaagent>
       -javaagent:${spring-instrument.jar}
-    </spring.instrument.javaagent>
+    </spring-instrument-javaagent>
 
     <!-- Pin the tomcat7 plugin to an explicit version -->
     <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
@@ -1048,7 +1048,7 @@
                 <value>${bootstrap.spring.file}</value>
               </systemProperty>
             </systemProperties>
-            <jvmArgs>${spring.instrument.javaagent}</jvmArgs>
+            <jvmArgs>${spring-instrument-javaagent}</jvmArgs>
           </configuration>
 
           <dependencies>
@@ -1181,7 +1181,7 @@
             <reportFormat>plain</reportFormat>
             <argLine>-Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
               -XX:+UseConcMarkSweepGC
-              -XX:+CMSClassUnloadingEnabled ${spring.instrument.javaagent} -Dspring.instrument.javaagent="${spring.instrument.javaagent}"
+              -XX:+CMSClassUnloadingEnabled ${spring-instrument-javaagent} -Dspring.instrument.javaagent="${spring-instrument-javaagent}"
             </argLine>
           </configuration>
           <dependencies>

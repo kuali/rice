@@ -51,5 +51,5 @@
        It is set in the Rice pom as a argLine param for the maven-failsafe-plugin
        -Dspring.instrument.javaagent="${spring.instrument.javaagent}
   -->
-  <param name="spring.instrument.javaagent">${spring.instrument.javaagent}</param>
+  <param name="spring.instrument.javaagent">${spring-instrument-javaagent}</param>
 </config>

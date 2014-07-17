@@ -1,0 +1,98 @@
+/*
+ * Copyright 2006-2014 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/** ProgressBar customizations **/
+
+.progress-details .uif-step {
+  color: #AAAAAA;
+  float: left;
+  padding: 4px 0 6px;
+  text-align: center;
+}
+
+.progress-details .uif-step.active {
+  color: black;
+  font-weight: 700;
+}
+
+.progress-details .uif-step.complete {
+  color: black;
+}
+
+.progress {
+  clear: both;
+  height: 6px;
+  margin-bottom: 5px;
+}
+
+.progress .progress-bar {
+  border-right: 2px solid #F5F5F5;
+}
+
+.progress .progress-bar:last-child {
+  border: none;
+}
+
+.progress-bar-empty {
+  background-image: none;
+  background-color: #CCC;
+  color: #999;
+  text-shadow: none;
+}
+
+.uif-progressBar-vertical {
+  height: 150px;
+  width: 6px;
+  margin-right: 5px;
+  box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.1) inset;
+  clear: none;
+}
+
+.uif-stepProgressBar-vertical .progress {
+  width: 6px;
+}
+
+.uif-stepProgressBar-vertical .progress-bar, .uif-progressBar-vertical .progress-bar {
+  width: 6px;
+  border-right: none;
+  border-bottom: 2px solid #F5F5F5;
+}
+
+.uif-stepProgressBar-vertical .progress-bar:last-child, .uif-progressBar-vertical .progress-bar:last-child {
+  border: none;
+}
+
+.uif-stepProgressBar-vertical .progress {
+  float: left;
+}
+
+.uif-stepProgressBar-vertical .progress-details {
+  padding: none;
+}
+
+.uif-stepProgressBar-vertical .uif-step {
+  position: relative;
+  float: none;
+  padding: none;
+  text-align: left;
+  margin-left: 12px;
+}
+
+.uif-stepProgressBar-vertical .uif-step > span {
+  position: absolute;
+  top: 50%;
+  margin-top: -.8em;
+}

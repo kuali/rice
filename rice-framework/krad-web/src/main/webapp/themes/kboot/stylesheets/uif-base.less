@@ -14,40 +14,52 @@
  * limitations under the License.
  */
 
-body { background: white}
+body {
+  background: white
+}
+
 img {
   vertical-align: top;
 }
+
 a {
   cursor: pointer;
   color: @link-color;
 }
+
 ol, ul {
   list-style: none;
   margin: 0;
 }
+
 h1, h2, h3 {
   line-height: 20px;
 }
+
 label {
   cursor: text;
   display: inline;
 }
+
 input, textarea, .uneditable-input {
   width: inherit;
 
 }
+
 input[type="radio"], input[type="checkbox"] {
   //margin: 0px;
   cursor: pointer;
 }
-input[type="radio"]+label, input[type="checkbox"]+label {
+
+input[type="radio"] + label, input[type="checkbox"] + label {
   font-weight: normal;
 }
+
 /* disabled inputs sibling labels are greyed out */
-input[disabled]+label {
+input[disabled] + label {
   color: #888888;
 }
+
 /* hide IE10 "clear field" button on input fields */
 input::-ms-clear {
   display: none;
@@ -66,36 +78,46 @@ input::-ms-clear {
 body {
   margin: 0px;
 }
+
 input[type="text"], input[type="password"], .uif-textAreaControl {
   .form-control;
   //.input-sm;
   display: inline;
   width: inherit;
 }
+
 .uif-dropdownControl {
   .form-control;
   width: inherit;
   display: inline;
 }
+
 select[multiple] {
   .form-control;
   height: inherit;
   width: inherit;
 }
+
 textarea {
   height: inherit;
   width: inherit;
 }
+
 .form-control {
   height: inherit;
   width: inherit;
 }
+
 ul {
   padding: 0px;
 }
-fieldset {padding: 0px;
+
+fieldset {
+  padding: 0px;
   margin: 0px;
-  border: 0px;}
+  border: 0px;
+}
+
 .dropdown-menu {
   list-style: none !important;
 }
@@ -105,18 +127,12 @@ fieldset {padding: 0px;
   .sr-only
 }
 
-
-
-
-
-
-
-
 /* Layout related ****************************************************************************************/
 
 .clearfix {
   clear: both;
 }
+
 div.clearfix:after {
   display: block;
   height: 0;
@@ -124,38 +140,40 @@ div.clearfix:after {
   clear: both;
   visibility: hidden;
 }
+
 /* IE specific */
 * html .clearfix {
   height: 1%;
 }
+
 .uif-table-fixed {
   width: 100%;
   table-layout: fixed;
 }
+
 .uif-linkGroup div {
   display: inline;
   float: none;
   margin-right: 0px;
 }
+
 .uif-listLayout ul li {
   list-style: disc inside none;
 }
+
 .uif-listLayout ol li {
   list-style: decimal inside none;
 }
+
 .uif-placeholder {
   display: none;
   margin: 0px !important;
   padding: 0px !important;
 }
 
-
 .dataTables_length select {
   width: 80px;
 }
-
-
-
 
 /** inline block cross browser support **/
 .inlineBlock {
@@ -165,18 +183,22 @@ div.clearfix:after {
   zoom: 1;
   *display: inline;
 }
+
 /** inline block cross browser support **/
 a.inlineBlock, span.inlineBlock {
   vertical-align: baseline;
 }
+
 /** for required message below expand collapse button content */
 .uif-requiredInstructionsMessage {
   float: none;
 }
+
 /** for info messages that can appear in fields **/
 .uif-informationalMessage {
   display: block;
 }
+
 /** message that can be configured with an image control **/
 .uif-cutlineMessage {
   padding-left: 5px;
@@ -188,6 +210,7 @@ a.inlineBlock, span.inlineBlock {
 .uif-progressiveDisclosure-highlight {
   background-color: #FFF8C6;
 }
+
 .uif-rightAligned-headerFieldGroup {
   float: right;
 }
@@ -196,12 +219,13 @@ a.inlineBlock, span.inlineBlock {
 
 div.blockOverlay {
   background-color: white;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity = 60) !important;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=60) !important;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)" !important;
   opacity: 0;
   -moz-opacity: 0;
   z-index: 10100 !important;
 }
+
 div.blockElement {
   padding: 0;
   margin: 0;
@@ -210,10 +234,11 @@ div.blockElement {
   background-color: white;
   text-align: center;
   color: #000;
-//  border: 3px solid #aaa;
+  //  border: 3px solid #aaa;
   cursor: wait;
   z-index: 10101 !important;
 }
+
 div.blockPage {
   padding: 0;
   margin: 0;
@@ -222,17 +247,19 @@ div.blockPage {
   left: 35%;
   text-align: center;
   color: #000;
-//  border: 3px solid #aaa;
+  //  border: 3px solid #aaa;
   background-color: white;
   opacity: 0.6;
   cursor: wait;
   z-index: 10101 !important;
   padding-bottom: 12px;
 }
+
 div.blockPage h1 {
-  font-size:20px;
-  line-height:28px;
+  font-size: 20px;
+  line-height: 28px;
 }
+
 div.blockPage h1 img {
   margin-right: 10px;
 }
@@ -243,6 +270,7 @@ img.uif-changedHeaderIcon {
   padding-left: 5px;
   padding-right: 5px
 }
+
 /** Radios and Checkboxes (fieldsets)**************************************************************/
 
 fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"] {
@@ -250,29 +278,30 @@ fieldset[data-type="RadioSet"], fieldset[data-type="CheckboxSet"] {
   padding-right: 0.5em;
   max-width: 64em;
 }
+
 fieldset[data-type="InputSet"] {
   display: inline;
 }
+
 .uif-verticalRadioFieldset > span, .uif-verticalCheckboxesFieldset > span {
   clear: both;
   float: left;
   padding-left: 0.5em;
 }
+
 .uif-horizontalRadioFieldset > span, .uif-verticalCheckboxesFieldset > span {
   padding-left: 0.5em;
 }
-
-
 
 /** Help  *******************************************************************************************/
 .uif-helpImage {
   margin-left: .2em;
 }
+
 .btn.btn-link.uif-helpAction {
   margin-top: -5px;
   padding: 0px;
 }
-
 
 /* div wrapper for the timer countdown plugin, by default want to display inline with the message */
 div.hasCountdown {
@@ -280,28 +309,32 @@ div.hasCountdown {
 }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-  border: 1px solid #d3d3d3/*{borderColorDefault}*/;
+  border: 1px solid #d3d3d3 /*{borderColorDefault}*/;
   background: none;
   background-color: #fff;
-  font-weight: normal/*{fwDefault}*/;
-  color: #555555/*{fcDefault}*/;
+  font-weight: normal /*{fwDefault}*/;
+  color: #555555 /*{fcDefault}*/;
 }
+
 .ui-tabs .ui-tabs-panel {
   border: none;
   border-width: none;
 }
+
 .ui-helper-reset {
   border: inherit
 }
+
 .ui-widget-header {
-  border: 1px solid #ccc/*{borderColorHeader}*/;
-  background: #fff/*{bgColorHeader}*/;
-  color: #222222/*{fcHeader}*/;
+  border: 1px solid #ccc /*{borderColorHeader}*/;
+  background: #fff /*{bgColorHeader}*/;
+  color: #222222 /*{fcHeader}*/;
   font-weight: bold;
 }
+
 .ui-tabs-bottom .ui-widget-header {
-  background: #fff/*{bgColorHeader}*/;
-  color: #222222/*{fcHeader}*/;
+  background: #fff /*{bgColorHeader}*/;
+  color: #222222 /*{fcHeader}*/;
   font-weight: bold;
   border-top-width: 1px;
   border-right-width: 1px;
@@ -316,129 +349,14 @@ div.hasCountdown {
   border-bottom-color: #CCC;
   border-left-color: #CCC;
 }
+
 .ui-state-active a, .ui-state-active a:hover {
   color: #000;
   font-weight: bold;
 }
 
-/** ProgressBar customizations **/
-
-.progress-details .uif-step {
-  color: #AAAAAA;
-  float: left;
-  padding: 4px 0 6px;
-  text-align: center;
-}
-
-.progress-details .uif-step.active {
-  color: black;
-  font-weight: 700;
-}
-
-.progress-details .uif-step.complete {
-  color: black;
-}
-
-.progress {
-  clear: both;
-  height: 6px;
-  margin-bottom: 5px;
-}
-
-.progress .progress-bar {
-  border-right: 2px solid #F5F5F5;
-}
-
-.progress .progress-bar:last-child {
-  border: none;
-}
-
-.progress-bar-empty {
-  background-image:none;
-  background-color:#CCC;
-  color:#999;
-  text-shadow:none;
-}
-
-.uif-progressBar-vertical {
-  height: 150px;
-  width: 6px;
-  margin-right: 5px;
-  box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.1) inset;
-  clear: none;
-}
-
-.uif-stepProgressBar-vertical .progress{
-  width: 6px;
-}
-
-.uif-stepProgressBar-vertical .progress-bar, .uif-progressBar-vertical .progress-bar{
-  width: 6px;
-  border-right: none;
-  border-bottom: 2px solid #F5F5F5;
-}
-
-.uif-stepProgressBar-vertical .progress-bar:last-child, .uif-progressBar-vertical .progress-bar:last-child{
-  border: none;
-}
-
-.uif-stepProgressBar-vertical .progress {
-  float: left;
-}
-
-.uif-stepProgressBar-vertical .progress-details {
-  padding: none;
-}
-
-.uif-stepProgressBar-vertical .uif-step {
-  position: relative;
-  float: none;
-  padding: none;
-  text-align: left;
-  margin-left: 12px;
-}
-
-.uif-stepProgressBar-vertical .uif-step > span {
-  position: absolute;
-  top: 50%;
-  margin-top: -.8em;
-}
-
-.uif-fileUploadCollection{
-  position: relative;
-  min-height: 60px;
-  margin-top: 5px;
-}
-
-.uif-dropBlock {
-  background: none repeat scroll 0 0 #808080;
-  min-height: 60px;
-  height: 100%;
-  opacity: 0.5;
-  top: 0;
-  width: 100%;
-  position: absolute;
-  text-align: center;
-}
-
-.uif-dropText {
-  background-color: #FFFFFF;
-  border: 1px solid #808080;
-  border-radius: 10px;
-  color: #000000;
-  font-size: 1.2em;
-  font-weight: bold;
-  left: 45%;
-  margin-top: auto;
-  opacity: 0.8;
-  padding: 10px;
-  position: absolute;
-  text-align: center;
-  top: 10%;
-}
-
 .ui-datepicker {
-    z-index: 9999 !important;
+  z-index: 9999 !important;
 }
 
 //:focus {

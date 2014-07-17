@@ -34,6 +34,7 @@ import org.apache.ojb.broker.metadata.ObjectReferenceDescriptor;
 import org.apache.ojb.broker.metadata.SuperReferenceDescriptor;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
 import org.kuali.rice.krad.exception.IntrospectionException;
 import org.kuali.rice.krad.exception.ObjectNotABusinessObjectRuntimeException;
@@ -313,11 +314,14 @@ public class PersistenceStructureServiceOjbImpl extends PersistenceServiceImplBa
 			throw new ReferenceAttributeDoesntExistException("Requested attribute: '" + attributeName + "' does not exist " + "on class: '" + clazz.getName() + "'.");
 		}
 
-		// make sure the class of the attribute descends from BusinessObject,
-		// otherwise throw an exception
-		if (!PersistableBusinessObject.class.isAssignableFrom(attributeClass)) {
-			throw new ObjectNotABusinessObjectRuntimeException("Attribute requested (" + attributeName + ") is of class: " + "'" + attributeClass.getName() + "' and is not a " + "descendent of BusinessObject.  Only descendents of BusinessObject " + "can be used.");
-		}
+        // make sure the class of the attribute descends from BusinessObject,
+        // otherwise throw an exception
+        if ((!PersistableBusinessObject.class.isAssignableFrom(attributeClass)) &&
+            (!PersistableBusinessObjectBaseAdapter.class.isAssignableFrom(attributeClass))) {
+                throw new ObjectNotABusinessObjectRuntimeException("Attribute requested (" + attributeName +
+                ") is of class: " + "'" + attributeClass.getName() + "' and is not a " +
+                "descendent of BusinessObject.  Only descendents of BusinessObject " + "can be used.");
+        }
 
 		Map fkMap = new HashMap();
 

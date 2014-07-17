@@ -30,6 +30,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -131,7 +132,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Transient
     protected String attachmentCollectionName;
 
-    @ManyToOne(fetch = FetchType.LAZY,
+    @OneToOne(fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "DOC_HDR_ID",
             insertable = false, updatable = false)

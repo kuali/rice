@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.krad.bo.DocumentAttachment;
@@ -31,6 +32,7 @@ import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.service.BusinessObjectSerializerService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 
 import javax.persistence.Transient;
@@ -42,6 +44,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -97,6 +100,31 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
         this.fileAttachment = fileAttachment;
     }
 
+    /**
+     * The attachment BO is proxied in OJB.  For some reason when an attachment does not yet exist,
+     * refreshReferenceObject is not returning null and the proxy cannot be materialized. So, this method exists to
+     * properly handle the proxied attachment BO.  This is a hack and should be removed post JPA migration.
+     */
+    protected void refreshAttachment() {
+        if (KRADUtils.isNull(attachment)) {
+            this.refreshReferenceObject("attachment");
+            final boolean isProxy = attachment != null && ProxyHelper.isProxy(attachment);
+            if (isProxy && ProxyHelper.getRealObject(attachment) == null) {
+                attachment = null;
+            }
+        }
+    }
+
+    protected void refreshAttachmentList() {
+        if (KRADUtils.isNull(attachments)) {
+            this.refreshReferenceObject("attachments");
+            final boolean isProxy = attachments != null && ProxyHelper.isProxy(attachments);
+            if (isProxy && ProxyHelper.getRealObject(attachments) == null) {
+                attachments = null;
+            }
+        }
+    }
+
     @Override
     public void populateDocumentAttachment() {
         refreshAttachment();
@@ -114,6 +142,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
                     attachment.setFileName(fileAttachment.getFileName());
                     attachment.setContentType(fileAttachment.getContentType());
                     attachment.setAttachmentContent(fileAttachment.getFileData());
+                    attachment.setObjectId(UUID.randomUUID().toString());
                     PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getDataObject();
                     boAttachment.setAttachmentContent(null);
                     attachment.setDocumentNumber(getDocumentNumber());

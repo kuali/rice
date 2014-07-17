@@ -528,6 +528,7 @@ public class UifConstants {
         public static final String FOCUS_ID = "focusId";
         public static final String JUMP_TO_ID = "jumpToId";
         public static final String JUMP_TO_NAME = "jumpToName";
+        public static final String FIELDS_TO_SEND = "fieldsToSend";
     }
 
     public static final class AriaAttributes {

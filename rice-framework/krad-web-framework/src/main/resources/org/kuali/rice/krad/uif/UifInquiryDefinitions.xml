@@ -38,6 +38,7 @@
     <property name="readOnly" value="true"/>
     <property name="singlePageView" value="true"/>
     <property name="disableBrowserCache" value="false"/>
+    <property name="stickyFooter" value="@{renderedInLightBox}"/>
     <property name="page">
       <bean parent="Uif-InquiryPage"/>
     </property>
@@ -90,7 +91,7 @@
           </property>
         </bean>
         <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
-              p:onClickScript="e.preventDefault();closeLightbox();return false;"/>
+              p:onClickScript="e.preventDefault();closeIframeDialog();return false;"/>
         <bean parent="Uif-BackAction" p:render="@{!#form.renderedInLightBox}"/>
       </list>
     </property>

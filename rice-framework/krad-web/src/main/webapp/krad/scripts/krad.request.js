@@ -99,6 +99,10 @@ function KradRequest(action) {
     if (action.data("cleardirtyonaction") !== undefined) {
         this.clearDirtyOnAction = action.data("cleardirtyonaction");
     }
+
+    if (action.data("fieldsToSend") !== undefined) {
+        this.fieldsToSend = action.data("fieldsToSend");
+    }
 }
 
 KradRequest.prototype = {
@@ -110,6 +114,9 @@ KradRequest.prototype = {
 
     // additional data to send with the request (in addition to form data)
     additionalData: {},
+
+    // only send fields specified by this array (along with data required standard by the controller)
+    fieldsToSend: null,
 
     // indicates whether the request should be made with ajax or standard browser submit
     ajaxSubmit: true,
@@ -233,7 +240,7 @@ KradRequest.prototype = {
         }
 
         var inDialog = false;
-        if(this.$action) {
+        if (this.$action) {
             var $dialogGroup = this.$action.closest(kradVariables.DIALOG_SELECTOR);
             inDialog = $dialogGroup.length;
         }
@@ -389,57 +396,120 @@ KradRequest.prototype = {
 
     // handles the request as an ajax request
     _submitAjax: function (data) {
+        this._setupBlocking(submitOptions);
+
         // create a reference to the request for ajax callbacks
         var request = this;
 
-        var submitOptions = {
-            data: data,
+        // if we aren't limiting the fields to send then send the whole form
+        if (!request.fieldsToSend || request.fieldsToSend.length === 0) {
+            var submitOptions = {
+                data: data,
+                success: function (response) {
+                    request._processSuccess(response, request);
+                },
 
-            success: function (response) {
-                var responseContents = document.createElement('div');
-                responseContents.innerHTML = response;
+                error: function (jqXHR, textStatus) {
+                    request._processError(jqXHR, textStatus, request);
+                }
+            };
 
-                // create a response object to process the response contents
-                var kradResponse = new KradResponse(responseContents);
-                kradResponse.processResponse();
+            jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
+        } else {
+            // Serialize all the data we wish to send
+            var dataSerialized = jQuery.param(data, true);
+            if (dataSerialized) {
+                dataSerialized = dataSerialized + "&" + jQuery("#formInfo > input, #formComplete > input").fieldSerialize();
+            }
+            else {
+                dataSerialized = jQuery("#formInfo > input, #formComplete > input").fieldSerialize();
+            }
 
-                var hasError = checkForIncidentReport(response);
-                if (!hasError) {
-                    if (request.successCallback) {
-                        if (typeof request.successCallback == "string") {
-                            eval(request.successCallback);
-                        } else {
-                            request.successCallback(responseContents);
-                        }
-                    }
-                } else if (request.errorCallback) {
-                    if (typeof request.errorCallback == "string") {
-                        eval(request.errorCallback);
-                    } else {
-                        request.errorCallback(responseContents);
-                    }
+            jQuery(request.fieldsToSend).each(function (index, value) {
+                // stop iteration if NO_FIELDS_TO_SEND keyword detected
+                if (value.toUpperCase() === kradVariables.NO_FIELDS_TO_SEND) {
+                    return false;
                 }
 
-                clearHiddens();
-            },
-
-            error: function (jqXHR, textStatus) {
-                if (request.errorCallback) {
-                    if (typeof request.errorCallback == "string") {
-                        eval(request.errorCallback);
-                    } else {
-                        request.errorCallback();
-                    }
+                // check to see if name ends with a wildcard
+                var wildcarded = value.indexOf("*", this.length - 1) !== -1;
+                if (wildcarded) {
+                    dataSerialized = dataSerialized + "&" + jQuery("[name^='" + value.substr(0, value.length - 1) + "']");
+                } else {
+                    dataSerialized = dataSerialized + "&" + jQuery("[name='" + value + "']").fieldSerialize();
                 }
-                else {
-                    alert("Request failed: " + textStatus);
+            });
+
+            var url = jQuery("#" + kradVariables.KUALI_FORM).attr("action");
+            jQuery.ajax({
+                url: url,
+                type: "POST",
+                data: dataSerialized,
+                success: function (response) {
+                    request._processSuccess(response, request);
+                },
+                error: function (jqXHR, textStatus) {
+                    request._processError(jqXHR, textStatus, request);
+                }
+            });
+
+        }
+    },
+
+    /**
+     * Process sucessful ajax submit by calling the appropriate response handler.
+     *
+     * @param response data received from the server for this call
+     * @param request  original KRAD request object
+     * @private
+     */
+    _processSuccess: function (response, request) {
+        var responseContents = document.createElement('div');
+        responseContents.innerHTML = response;
+
+        // create a response object to process the response contents
+        var kradResponse = new KradResponse(responseContents);
+        kradResponse.processResponse();
+
+        var hasError = checkForIncidentReport(response);
+        if (!hasError) {
+            if (request.successCallback) {
+                if (typeof request.successCallback == "string") {
+                    eval(request.successCallback);
+                } else {
+                    request.successCallback(responseContents);
                 }
             }
-        };
+        } else if (request.errorCallback) {
+            if (typeof request.errorCallback == "string") {
+                eval(request.errorCallback);
+            } else {
+                request.errorCallback(responseContents);
+            }
+        }
 
-        this._setupBlocking(submitOptions);
+        clearHiddens();
+    },
 
-        jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
+    /**
+     * Process the error callback state of the ajax call.
+     *
+     * @param jqXHR the jqXHR object
+     * @param textStatus the error text status
+     * @param request the original KRAD request
+     * @private
+     */
+    _processError: function (jqXHR, textStatus, request) {
+        if (request.errorCallback) {
+            if (typeof request.errorCallback == "string") {
+                eval(request.errorCallback);
+            } else {
+                request.errorCallback();
+            }
+        }
+        else {
+            alert("Request failed: " + textStatus);
+        }
     },
 
     // sets up the component or page blocking for an ajax request

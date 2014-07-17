@@ -70,6 +70,7 @@ public class Action extends ContentElementBase {
     private String methodToCall;
     private String actionEvent;
     private String navigateToPageId;
+    private List<String> fieldsToSend;
 
     private String actionScript;
     private UrlInfo actionUrl;
@@ -400,6 +401,8 @@ public class Action extends ContentElementBase {
         addActionDataSettingsValue(actionDataAttributes, dataDefaults,
                 UifConstants.ActionDataAttributes.PERFORM_DIRTY_VALIDATION, Boolean.toString(
                 this.performDirtyValidation));
+        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.FIELDS_TO_SEND,
+                ScriptUtils.translateValue(this.fieldsToSend));
 
         if (confirmationDialog != null) {
             addDataAttribute(UifConstants.ActionDataAttributes.CONFIRM_DIALOG_ID, confirmationDialog.getId());
@@ -642,6 +645,29 @@ public class Action extends ContentElementBase {
      */
     public void setNavigateToPageId(String navigateToPageId) {
         this.navigateToPageId = navigateToPageId;
+    }
+
+    /**
+     * Limits the input fields to send on a methodToCall server call to the names specified in this list.
+     *
+     * <p>The names in the list should be the propertyNames of the fields sent with this request.  A wildcard("*")
+     * can be used at the END of a name to specify all fields with names that begin with the string
+     * before the wildcard.  If the array contains 1 item with the keyword "NONE", then no form fields are sent.  Note
+     * that this only limits the fields which exist on the form and data required by the KRAD framework
+     * is still sent (eg, methodToCall, formKey, sessionId, etc.)</p>
+     *
+     * @return the only input fields to send by name with the action request
+     */
+    @BeanTagAttribute
+    public List<String> getFieldsToSend() {
+        return fieldsToSend;
+    }
+
+    /**
+     * @see Action#fieldsToSend
+     */
+    public void setFieldsToSend(List<String> fieldsToSend) {
+        this.fieldsToSend = fieldsToSend;
     }
 
     /**

@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.layout.StackedLayoutManager;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.Disclosure;
 import org.kuali.rice.krad.uif.element.Pager;
 import org.kuali.rice.krad.uif.widget.Tooltip;
@@ -45,19 +46,19 @@ import freemarker.template.TemplateModelException;
 
 /**
  * Inline FreeMarker rendering utilities.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class FreeMarkerInlineRenderUtils {
 
     /**
      * Resolve a FreeMarker environment variable as a Java object.
-     * 
+     *
      * @param env The FreeMarker environment.
      * @param name The name of the variable.
      * @return The FreeMarker variable, resolved as a Java object.
      * @see #resolve(Environment, String, Class) for the preferred means to resolve variables for
-     *      inline rendering.
+     * inline rendering.
      */
     @SuppressWarnings("unchecked")
     public static <T> T resolve(Environment env, String name) {
@@ -71,11 +72,11 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Resolve a FreeMarker environment variable as a Java object, with type enforcement.
-     * 
+     *
      * <p>
      * This method is the preferred means to resolve variables for inline rendering.
      * </p>
-     * 
+     *
      * @param env The FreeMarker environment.
      * @param name The name of the variable.
      * @param type The expected type of the variable.
@@ -102,10 +103,10 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Get the object wrapper from the FreeMarker environment, as a {@link BeansWrapper}.
-     * 
+     *
      * @param env The FreeMarker environment.
      * @return The object wrapper from the FreeMarker environment, type-cast as {@link BeansWrapper}
-     *         .
+     * .
      */
     public static BeansWrapper getBeansWrapper(Environment env) {
         ObjectWrapper wrapper = env.getObjectWrapper();
@@ -119,12 +120,12 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Resovle a FreeMarker variable as a FreeMarker template model object.
-     * 
+     *
      * @param env The FreeMarker environment.
      * @param name The name of the variable.
      * @return The FreeMarker variable, resolved as a FreeMarker template model object.
      * @see #resolve(Environment, String, Class) for the preferred means to resolve variables for
-     *      inline rendering.
+     * inline rendering.
      */
     public static TemplateModel resolveModel(Environment env, String name) {
         try {
@@ -136,24 +137,23 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render a KRAD component template inline.
-     * 
+     *
      * <p>
      * This method originated as template.ftl, and supercedes the previous content of that template.
      * </p>
-     * 
+     *
      * @param env The FreeMarker environment.
      * @param component The component to render a template for.
      * @param body The nested body.
      * @param componentUpdate True if this is an update, false for full view.
      * @param includeSrc True to include the template source in the environment when rendering,
-     *        false to skip inclusion.
+     * false to skip inclusion.
      * @param tmplParms Additional parameters to pass to the template macro.
      * @throws TemplateException If FreeMarker rendering fails.
      * @throws IOException If rendering is interrupted due to an I/O error.
      */
-    public static void renderTemplate(Environment env, Component component, String body,
-            boolean componentUpdate, boolean includeSrc, Map<String, TemplateModel> tmplParms)
-            throws TemplateException, IOException {
+    public static void renderTemplate(Environment env, Component component, String body, boolean componentUpdate,
+            boolean includeSrc, Map<String, TemplateModel> tmplParms) throws TemplateException, IOException {
         String dataJsScripts = "";
         String templateJsScripts = "";
 
@@ -179,14 +179,14 @@ public class FreeMarkerInlineRenderUtils {
                     env.include(component.getTemplate(), env.getTemplate().getEncoding(), true);
                 }
 
-                Macro fmMacro = component.getTemplateName() == null ? null :
-                        (Macro) env.getMainNamespace().get(component.getTemplateName());
+                Macro fmMacro = component.getTemplateName() == null ? null : (Macro) env.getMainNamespace().get(
+                        component.getTemplateName());
 
                 if (fmMacro == null) {
                     // force inclusion of the source to see if we can get the macro
                     env.include(component.getTemplate(), env.getTemplate().getEncoding(), true);
-                    fmMacro = component.getTemplateName() == null ? null :
-                                            (Macro) env.getCurrentNamespace().get(component.getTemplateName());
+                    fmMacro = component.getTemplateName() == null ? null : (Macro) env.getCurrentNamespace().get(
+                            component.getTemplateName());
 
                     // if still missing throw an exception
                     if (fmMacro == null) {
@@ -239,18 +239,25 @@ public class FreeMarkerInlineRenderUtils {
             out.write("<span id=\"");
             out.write(component.getId());
             out.write("\" data-role=\"placeholder\" class=\"uif-placeholder "
-                    + component.getStyleClassesAsString() + "\"></span>");
+                    + component.getStyleClassesAsString()
+                    + "\"></span>");
         }
 
         if (StringUtils.hasText(component.getProgressiveRender())) {
             for (String cName : component.getProgressiveDisclosureControlNames()) {
-                templateJsScripts +=
-                        "var condition = function(){return ("
-                                + component.getProgressiveDisclosureConditionJs()
-                                + ");};setupProgressiveCheck('" + StringEscapeUtils.escapeJavaScript(cName)
-                                + "', '" + component.getId() + "', condition,"
-                                + component.isProgressiveRenderAndRefresh() + ", '"
-                                + methodToCallOnRefresh + "');";
+                templateJsScripts += "var condition = function(){return ("
+                        + component.getProgressiveDisclosureConditionJs()
+                        + ");};setupProgressiveCheck('"
+                        + StringEscapeUtils.escapeJavaScript(cName)
+                        + "', '"
+                        + component.getId()
+                        + "', condition,"
+                        + component.isProgressiveRenderAndRefresh()
+                        + ", '"
+                        + methodToCallOnRefresh
+                        + "', "
+                        + ScriptUtils.translateValue(component.getFieldsToSendOnRefresh())
+                        + ");";
             }
 
             templateJsScripts += "hiddenInputValidationToggle('" + component.getId() + "');";
@@ -258,22 +265,32 @@ public class FreeMarkerInlineRenderUtils {
 
         if (StringUtils.hasText(component.getConditionalRefresh())) {
             for (String cName : component.getConditionalRefreshControlNames()) {
-                templateJsScripts +=
-                        "var condition = function(){return ("
-                                + component.getConditionalRefreshConditionJs()
-                                + ");};setupRefreshCheck('" + StringEscapeUtils.escapeJavaScript(cName) + "', '"
-                                + component.getId() + "', condition,'"
-                                + methodToCallOnRefresh + "');";
+                templateJsScripts += "var condition = function(){return ("
+                        + component.getConditionalRefreshConditionJs()
+                        + ");};setupRefreshCheck('"
+                        + StringEscapeUtils.escapeJavaScript(cName)
+                        + "', '"
+                        + component.getId()
+                        + "', condition,'"
+                        + methodToCallOnRefresh
+                        + "', "
+                        + ScriptUtils.translateValue(component.getFieldsToSendOnRefresh())
+                        + ");";
             }
         }
 
         List<String> refreshWhenChanged = component.getRefreshWhenChangedPropertyNames();
         if (refreshWhenChanged != null) {
             for (String cName : refreshWhenChanged) {
-                templateJsScripts +=
-                        "setupOnChangeRefresh('" + StringEscapeUtils.escapeJavaScript(cName) + "', '"
-                                + component.getId()
-                                + "','" + methodToCallOnRefresh + "');";
+                templateJsScripts += "setupOnChangeRefresh('"
+                        + StringEscapeUtils.escapeJavaScript(cName)
+                        + "', '"
+                        + component.getId()
+                        + "','"
+                        + methodToCallOnRefresh
+                        + "', "
+                        + ScriptUtils.translateValue(component.getFieldsToSendOnRefresh())
+                        + ");";
             }
         }
 
@@ -285,11 +302,11 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render a KRAD tooltip component.
-     * 
+     *
      * <p>
      * This method originated as template.ftl, and supercedes the previous content of that template.
      * </p>
-     * 
+     *
      * @param component The component to render a tooltip for.
      * @param out The output writer to render to, typically from {@link Environment#getOut()}.
      * @throws IOException If rendering is interrupted due to an I/O error.
@@ -299,9 +316,17 @@ public class FreeMarkerInlineRenderUtils {
         String script = "";
         if (tt != null && StringUtils.hasText(tt.getTooltipContent())) {
             String templateOptionsJSString = tt.getTemplateOptionsJSString();
-            script += "createTooltip('" + component.getId() + "', '" + tt.getTooltipContent() + "', "
-                    + (templateOptionsJSString == null ? "''" : templateOptionsJSString) + ", " + tt.isOnMouseHover()
-                    + ", " + tt.isOnFocus() + ");";
+            script += "createTooltip('"
+                    + component.getId()
+                    + "', '"
+                    + tt.getTooltipContent()
+                    + "', "
+                    + (templateOptionsJSString == null ? "''" : templateOptionsJSString)
+                    + ", "
+                    + tt.isOnMouseHover()
+                    + ", "
+                    + tt.isOnFocus()
+                    + ");";
 
             renderScript(script, component, null, out);
         }
@@ -309,19 +334,20 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render a KRAD script component.
-     * 
+     *
      * <p>
      * This method originated as script.ftl, and supercedes the previous content of that template.
      * </p>
-     * 
+     *
      * @param script The script to render.
      * @param component The component the script is related to.
      * @param out The output writer to render to, typically from {@link Environment#getOut()}.
      * @throws IOException If rendering is interrupted due to an I/O error.
      */
     public static void renderScript(String script, Component component, String role, Writer out) throws IOException {
-        if (script == null || "".equals(script.trim()))
+        if (script == null || "".equals(script.trim())) {
             return;
+        }
         out.write("<input name=\"script\" type=\"hidden\" data-role=\"");
         out.write(role == null ? "script" : role);
         out.write("\" ");
@@ -339,12 +365,12 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render common attributes for a KRAD component.
-     * 
+     *
      * <p>
      * NOTICE: By KULRICE-10353 this method duplicates, but does not replace,
      * krad/WEB-INF/ftl/lib/attrBuild.ftl. When updating this method, also update that template.
      * </p>
-     * 
+     *
      * @param component The component to open a render attributes for.
      * @param out The output writer to render to, typically from {@link Environment#getOut()}.
      * @throws IOException If rendering is interrupted due to an I/O error.
@@ -386,19 +412,19 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render an open div tag for a component.
-     * 
+     *
      * <p>
      * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
      * content, so the open div and close div methods are implemented separately. Always call
      * {@link #renderCloseDiv(Writer)} after rendering the &lt;div&gt; body related to this open
      * tag.
      * </p>
-     * 
+     *
      * <p>
      * NOTICE: By KULRICE-10353 this method duplicates, but does not replace,
      * krad/WEB-INF/ftp/lib/div.ftl. When updating this method, also update that template.
      * </p>
-     * 
+     *
      * @param component The component to render a wrapper div for.
      * @param out The output writer to render to, typically from {@link Environment#getOut()}.
      * @throws IOException If rendering is interrupted due to an I/O error.
@@ -414,19 +440,19 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render a close div tag for a component.
-     * 
+     *
      * <p>
      * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
      * content, so the open div and close div methods are implemented separately. Always call this
      * method after rendering the &lt;div&gt; body related to and open tag rendered by
      * {@link #renderOpenDiv(Component, Writer)}.
      * </p>
-     * 
+     *
      * <p>
      * NOTICE: By KULRICE-10353 this method duplicates, but does not replace,
      * krad/WEB-INF/ftp/lib/div.ftl. When updating this method, also update that template.
      * </p>
-     * 
+     *
      * @param out The output writer to render to, typically from {@link Environment#getOut()}.
      * @throws IOException If rendering is interrupted due to an I/O error.
      */
@@ -436,19 +462,19 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render open tags wrapping a group component.
-     * 
+     *
      * <p>
      * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
      * content, so the open and close methods are implemented separately. Always call
      * {@link #renderCloseGroupWrap(Environment, Group)} after rendering the body related to a call to
      * {@link #renderOpenGroupWrap(Environment, Group)}.
      * </p>
-     * 
+     *
      * <p>
      * This method originated as groupWrap.ftl, and supercedes the previous content of that
      * template.
      * </p>
-     * 
+     *
      * @param env The FreeMarker environment to use for rendering.
      * @param group The group to render open wrapper tags for.
      * @throws IOException If rendering is interrupted due to an I/O error.
@@ -477,19 +503,19 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render close tags wrapping a group component.
-     * 
+     *
      * <p>
      * NOTE: Inline rendering performance is improved by *not* passing continuations for nested body
      * content, so the open and close methods are implemented separately. Always call
      * {@link #renderCloseGroupWrap(Environment, Group)} after rendering the body related to a call to
      * {@link #renderOpenGroupWrap(Environment, Group)}.
      * </p>
-     * 
+     *
      * <p>
      * This method originated as groupWrap.ftl, and supercedes the previous content of that
      * template.
      * </p>
-     * 
+     *
      * @param env The FreeMarker environment to use for rendering.
      * @param group The group to render open wrapper tags for.
      * @throws IOException If rendering is interrupted due to an I/O error.
@@ -516,18 +542,18 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render a collection group inline.
-     * 
+     *
      * <p>
      * This method originated as collectionGroup.ftl, and supercedes the previous content of that
      * template.
      * </p>
-     * 
+     *
      * @param group The collection group to render.
      * @throws IOException If rendering is interrupted due to an I/O error.
      * @throws TemplateException If FreeMarker rendering fails.
      */
-    public static void renderCollectionGroup(Environment env, CollectionGroup group) throws IOException,
-            TemplateException {
+    public static void renderCollectionGroup(Environment env,
+            CollectionGroup group) throws IOException, TemplateException {
         renderOpenGroupWrap(env, group);
 
         Map<String, TemplateModel> tmplParms = new HashMap<String, TemplateModel>();
@@ -583,12 +609,12 @@ public class FreeMarkerInlineRenderUtils {
 
     /**
      * Render a stacked collection inline.
-     * 
+     *
      * <p>
      * This method originated as stacked.ftl, and supercedes the previous content of that
      * template.
      * </p>
-     * 
+     *
      * @param env The FreeMarker environment
      * @param items List of items to render in a stacked layout
      * @param manager Layout manager for the container

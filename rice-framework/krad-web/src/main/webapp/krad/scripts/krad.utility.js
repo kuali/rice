@@ -630,7 +630,9 @@ function occursBefore(name1, name2) {
  */
 function getAttributeId(elementId) {
     var id = elementId;
-    if(!id) { return ''; }
+    if (!id) {
+        return '';
+    }
     id = elementId.replace(/_control\S*/, "");
     return id;
 }
@@ -708,7 +710,7 @@ function openHelpWindow(url) {
 
     /* chrome will not allow a open,close,open */
     var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
-    if(!is_chrome) {
+    if (!is_chrome) {
         myWindow = window.open('', windowName);
         myWindow.close();
     }
@@ -1662,14 +1664,14 @@ function coerceTableCellValue(element) {
 }
 
 function getImmediateChildText(node) {
-  var text = "";
-  for (var child = node.firstChild; !!child; child = child.nextSibling) {
-    // nodeType 3 is a text node
-    if (child.nodeType === 3) {
-      text += child.nodeValue + " ";
+    var text = "";
+    for (var child = node.firstChild; !!child; child = child.nextSibling) {
+        // nodeType 3 is a text node
+        if (child.nodeType === 3) {
+            text += child.nodeValue + " ";
+        }
     }
-  }
-  return text;
+    return text;
 }
 
 /**
@@ -2070,7 +2072,7 @@ function openDataTablePage(tableId, pageNumber) {
         oTable = getDataTableHandle(jQuery('#' + tableId).find('.dataTable').attr('id'));
     }
 
-    if (oTable == null){
+    if (oTable == null) {
         return;
     }
 
@@ -2293,7 +2295,7 @@ function initStickyContent(currentScroll) {
     // Determine which div to apply the margin to by figuring out the first applicable div that exists after all
     // the sticky content, in order to push down that content and content below it correctly
     var applyMarginToContent = jQuery("[data-role='View'] > .uif-sticky:last").next();
-    if (applyMarginToContent.length == 0){
+    if (applyMarginToContent.length == 0) {
         applyMarginToContent = jQuery("[data-role='View']");
     }
 
@@ -2343,7 +2345,7 @@ function handleStickyContent() {
         //adjust the fixed nav position (if navigation exists)
         // TODO support both absolute and fixed
         /* jQuery("#" + kradVariables.NAVIGATION_ID).attr("style", "position:fixed; top: " +
-                (navAdjust) + "px;");*/
+         (navAdjust) + "px;");*/
         var nav = jQuery("#" + kradVariables.NAVIGATION_ID);
         if (nav.length && nav.has(".nav-tabs").length === 0) {
             nav.attr("style", "position:absolute;");
@@ -2385,11 +2387,12 @@ function initStickyFooterContent() {
     });
     currentFooterHeight = bottomOffset;
 
-    var contentWindowDiff = jQuery(window).height() - jQuery("#" + kradVariables.APP_ID).height();
+    var contentWindowDiff = jQuery(window).height() - jQuery("[data-role='View']").height();
     if (bottomOffset > contentWindowDiff) {
-        jQuery("[data-role='View']").css("paddingBottom", bottomOffset + "px");
+        jQuery("[data-role='View']").css("paddingBottom", (bottomOffset) + "px");
     } else {
-        jQuery("[data-role='View']").css("paddingBottom", contentWindowDiff + "px");
+        // 2px adjustment for some scenarios where mysterious pixels are added (unknown cause)
+        jQuery("[data-role='View']").css("paddingBottom", (contentWindowDiff - 2) + "px");
     }
 }
 
@@ -2438,7 +2441,7 @@ function hideEmptyCells() {
         var isCompareFieldAction = jQuery(this).next("td." + kradVariables.COLLECTION_ACTION_CLASS).children().hasClass(kradVariables.ACTION_FIELD_CLASS);
 
         // check if the children is hidden (progressive) or if there is no content(render=false)
-        var cellEmpty = (jQuery(this).children().is(".uif-placeholder") || jQuery(this).is(":empty")) && !isCompareFieldAction ;
+        var cellEmpty = (jQuery(this).children().is(".uif-placeholder") || jQuery(this).is(":empty")) && !isCompareFieldAction;
 
         // hide the header only if the cell and the header is empty
         if (cellEmpty) {
@@ -2564,14 +2567,13 @@ function formatHtml(html) {
         lastType = type;
         var padding = '';
 
-
         indent += transitions[fromTo];
         for (var j = 0; j < indent; j++) {
             padding += '   ';
         }
 
         if (fromTo == 'opening->closing')
-            // substr removes line break (\n) from prev loop
+        // substr removes line break (\n) from prev loop
             formatted = formatted.substr(0, formatted.length - 1) + ln + '\n';
         else
             formatted += padding + ln + '\n';

@@ -75,10 +75,10 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @return True if the component has fully rendered, false if not.
      */
     boolean isRendered();
-    
+
     /**
      * Invoked by the view lifecycle after expressions are evaluated at the apply model phase.
-     * 
+     *
      * <p>
      * In general, this method is preferred to {@link #performApplyModel(Object, LifecycleElement)}
      * for populating model data via code, since it is called before client-side state is synchronize.
@@ -577,8 +577,8 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * size (extra small, small, medium, large) when using a group backed by a CssGridLayoutManager.
      *
      * <p>
-     *     This object is NOT used by other layouts.
-     *     For specifics of how css grids work, refer to the krad guide and bootstrap css grid documentation.
+     * This object is NOT used by other layouts.
+     * For specifics of how css grids work, refer to the krad guide and bootstrap css grid documentation.
      * </p>
      *
      * @return
@@ -1250,6 +1250,24 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     String getMethodToCallOnRefresh();
 
     /**
+     * Limits the input fields to send on a methodToCall server call to the names specified in this list.
+     *
+     * <p>The names in the list should be the propertyNames of the fields sent with this request.  A wildcard("*")
+     * can be used at the END of a name to specify all fields with names that begin with the string
+     * before the wildcard.  If the array contains 1 item with the keyword "NONE", then no form fields are sent.  Note
+     * that this only limits the fields which exist on the form and data required by the KRAD framework
+     * is still sent (eg, methodToCall, formKey, sessionId, etc.)</p>
+     *
+     * @return the only input fields to send by name with the action request
+     */
+    public List<String> getFieldsToSendOnRefresh();
+
+    /**
+     * @see org.kuali.rice.krad.uif.component.Component#getFieldsToSendOnRefresh()
+     */
+    public void setFieldsToSendOnRefresh(List<String> fieldsToSendOnRefresh);
+
+    /**
      * Gets a string representing all CSS style classes.
      *
      * @return string representation of CSS classes
@@ -1259,18 +1277,18 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     /**
      * Names a model property path, which if set and resolves to true, indicates that this component
      * should be excluded from the lifecycle at the initialize phase.
-     * 
+     *
      * <p>
      * If prefixed with the '#' character, this path will be relative to the view's "pre-model"
      * context rather than the model.
      * </p>
-     * 
+     *
      * <p>
      * This property is superseded by {@link #getExcludeUnless()}; when both resolve to true, the
      * component will be included. When neither property is set, the component is unconditionally
      * included.
      * </p>
-     * 
+     *
      * @return model property path
      * @see ViewLifecycleUtils#isExcluded(Component)
      */
@@ -1279,20 +1297,20 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     /**
      * Names a model property path, which if set and resolves to null or false, indicates that this
      * component should be excluded from the lifecycle at the initialize phase.
-     * 
+     *
      * <p>
      * If prefixed with the '#' character, this path will be relative to the view's "pre-model"
      * context rather than the model.
      * </p>
-     * 
+     *
      * <p>
      * This property supersedes {@link #getExcludeIf()}; when both resolve to true, the component
      * will be included.  When neither property is set, the component is unconditionally included.
      * </p>
-     * 
+     *
      * @return model property path
      * @see ViewLifecycleUtils#isExcluded(Component)
      */
     String getExcludeUnless();
-    
+
 }

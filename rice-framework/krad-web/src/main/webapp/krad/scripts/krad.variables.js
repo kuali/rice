@@ -117,7 +117,13 @@ JavascriptKradVariables.prototype = {
         INLINE_EDIT: "_inlineEdit",
         INLINE_EDIT_VIEW: "_inlineEdit_view",
         VIEW_SUFFIX: "_view",
-        VIEW_CLASS: ".uif-inlineEdit-view"
+        VIEW_CLASS: ".uif-inlineEdit-view",
+        EDIT_CLASS: ".uif-inlineEdit-edit",
+        EDIT_BUTTONS_CLASS: ".uif-inlineEdit-buttons",
+        AJAX_EDIT: "ajax_edit",
+        SAVE_FIELD_METHOD_TO_CALL: "saveField",
+        INLINE_EDIT_NAMESPACE: "inlineEdit",
+        ORIGINAL_VALUE: "origVal"
     },
     JUMP_TO_ID: "jumptoid",
     JUMP_TO_NAME: "jumptoname",
@@ -150,7 +156,9 @@ JavascriptKradVariables.prototype = {
     MESSAGE_AFTER: "message.after",
     MESSAGE_PLEASE_ENTER_VALUE: "message.pleaseEnterValue",
     MESSAGE_EXPAND: "message.expand",
+    MESSAGE_CANCEL: "message.cancel",
     MESSAGE_COLLAPSE: "message.collapse",
+    MESSAGE_SAVE: "message.save",
     MESSAGE_SERVER_RESPONSE_ERROR: "message.serverResponseError",
     MESSAGE_STATUS_ERROR: "message.statusError",
     MESSAGE_TOTAL_ERROR: "message.totalError",
@@ -162,9 +170,22 @@ JavascriptKradVariables.prototype = {
     MESSAGE_TOTAL_MESSAGES: "message.totalMessages",
     MESSAGE_THE: "message.the",
     MESSAGE_THE_SECTION_HAS_COUNT: "message.theSectionHasCount",
+    MODAL: {
+        LOOKUP_MODAL: "Uif-DialogGroup-Lookup",
+        INQUIRY_MODAL: "Uif-DialogGroup-Inquiry",
+        IFRAME_MODAL: "Uif-DialogGroup-Iframe",
+        MODAL_NAMESPACE: "modal",
+        MODAL_CLASS: ".modal",
+        MODAL_CONTENT_CLASS: ".modal-content",
+        MODAL_BODY_CLASS: ".modal-body",
+        MODAL_HEADER_CLASS: ".modal-header",
+        MODAL_FOOTER_CLASS: ".modal-footer",
+        MODAL_CLOSE_DIALOG: "close_dialog"
+    },
     NAVIGATION_ID: "Uif-Navigation",
     NAVIGATION_MENU_CLASS: "uif-navigationMenu",
     NAVIGATE_METHOD_TO_CALL: "navigate",
+    NO_FIELDS_TO_SEND: "NONE",
     PAGE_NUMBER_DATA: "num",
     PAGE_CONTENT_WRAPPER: "Uif-PageContentWrapper",
     PAGE_VALIDATION_HEADER_CLASS: "uif-pageValidationHeader",
@@ -229,14 +250,14 @@ JavascriptKradVariables.prototype = {
     DETAILS_DEFAULT_OPEN: "details_default_open",
     EVENT_NAMESPACE: "uif",
     EVENTS: {
-        ADJUST_PAGE_MARGIN : "adjustpagemargin.uif",
-        ADJUST_STICKY : "adjuststicky.uif",
-        DIALOG_RESPONSE : "dialogresponse.uif",
-        UPDATE_CONTENT : "updatecontent.uif",
-        PAGE_UPDATE_COMPLETE : "pageUpdateComplete.uif",
-        SHOW_MODAL : "show.bs.modal",
-        HIDE_MODAL : "hide.bs.modal",
-        HIDDEN_MODAL : "hidden.bs.modal"
+        ADJUST_PAGE_MARGIN: "adjustpagemargin.uif",
+        ADJUST_STICKY: "adjuststicky.uif",
+        DIALOG_RESPONSE: "dialogresponse.uif",
+        UPDATE_CONTENT: "updatecontent.uif",
+        PAGE_UPDATE_COMPLETE: "pageUpdateComplete.uif",
+        SHOW_MODAL: "show.bs.modal",
+        HIDE_MODAL: "hide.bs.modal",
+        HIDDEN_MODAL: "hidden.bs.modal"
     }
 }
 

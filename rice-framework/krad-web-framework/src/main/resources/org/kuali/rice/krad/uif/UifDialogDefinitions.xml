@@ -66,9 +66,9 @@
       </bean>
     </property>
     <property name="dataAttributes">
-       <map merge="true">
-         <entry key="role" value="dialogheader"/>
-       </map>
+      <map merge="true">
+        <entry key="role" value="dialogheader"/>
+      </map>
     </property>
   </bean>
 
@@ -151,7 +151,7 @@
   </bean>
 
   <bean id="Uif-DialogGroup-MultiOpt" parent="Uif-DialogGroup">
-      <property name="footer.cssClasses" value="uif-footer"/>
+    <property name="footer.cssClasses" value="uif-footer"/>
   </bean>
 
   <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup-YesNo">
@@ -209,5 +209,25 @@
       </list>
     </property>
   </bean>
+
+  <bean id="Uif-DialogGroup-Iframe" parent="Uif-DialogGroup-Iframe-parentBean"/>
+  <bean id="Uif-DialogGroup-Iframe-parentBean" parent="Uif-DialogBase">
+    <property name="footer.render" value="false"/>
+    <property name="dialogCssClass" value="modal-lg"/>
+    <property name="layoutManager">
+      <bean parent="Uif-SimpleLayout"/>
+    </property>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Iframe" p:frameborder="0" p:additionalCssClasses="uif-lookupDialog-iframe"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-DialogGroup-Lookup" parent="Uif-DialogGroup-Lookup-parentBean"/>
+  <bean id="Uif-DialogGroup-Lookup-parentBean" parent="Uif-DialogGroup-Iframe"/>
+
+  <bean id="Uif-DialogGroup-Inquiry" parent="Uif-DialogGroup-Inquiry-parentBean"/>
+  <bean id="Uif-DialogGroup-Inquiry-parentBean" parent="Uif-DialogGroup-Iframe"/>
 
 </beans>

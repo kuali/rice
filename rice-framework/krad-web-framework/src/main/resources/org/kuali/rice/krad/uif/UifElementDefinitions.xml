@@ -23,7 +23,7 @@
 
   <bean id="Uif-ContentElementBase" abstract="true" parent="Uif-ContentElementBase-parentBean"/>
   <bean id="Uif-ContentElementBase-parentBean" abstract="true"
-        class="org.kuali.rice.krad.uif.element.ContentElementBase" />
+        class="org.kuali.rice.krad.uif.element.ContentElementBase"/>
 
   <bean id="Uif-Div" abstract="true" parent="Uif-Div-parentBean"/>
   <bean id="Uif-Div-parentBean" parent="Uif-ContentElementBase"
@@ -42,7 +42,6 @@
         scope="prototype">
     <property name="displayMessages" value="true"/>
   </bean>
-
 
   <util:map id="Uif-GroupValidationMessages-DataDefaults">
     <entry key="summarize" value="true"/>
@@ -260,6 +259,7 @@
     <entry key="onClick" value="actionInvokeHandler(this);"/>
     <entry key="submit_data" value="{}"/>
     <entry key="focusId" value="SELF"/>
+    <entry key="fieldsToSend" value="[]"/>
   </util:map>
 
   <bean id="Uif-ActionImage" parent="Uif-ActionImage-parentBean"/>

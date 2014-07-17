@@ -30,7 +30,8 @@
     </property>
     <property name="viewTypeName" value="LOOKUP"/>
     <property name="viewHelperServiceClass" value="org.kuali.rice.krad.lookup.LookupableImpl"/>
-    <property name="presentationControllerClass" value="org.kuali.rice.krad.lookup.LookupViewPresentationControllerBase"/>
+    <property name="presentationControllerClass"
+              value="org.kuali.rice.krad.lookup.LookupViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.lookup.LookupViewAuthorizerBase"/>
     <property name="formClass" value="org.kuali.rice.krad.lookup.LookupForm"/>
     <property name="singlePageView" value="true"/>
@@ -47,6 +48,8 @@
     <property name="resultsGroup">
       <bean parent="Uif-LookupResultsCollectionSection"/>
     </property>
+    <property name="hideCriteriaOnSearch" value="@{renderedInLightBox}"/>
+    <property name="stickyFooter" value="@{renderedInLightBox}"/>
     <property name="rangeFieldGroupPrototype">
       <bean parent="Uif-HorizontalFieldGroup"/>
     </property>
@@ -56,7 +59,8 @@
     <property name="help">
       <bean parent="Uif-Help">
         <property name="helpDefinition">
-          <bean parent="HelpDefinition" p:parameterNamespace="KR-KRAD" p:parameterName="DEFAULT_HELP_URL" p:parameterDetailType="Lookup"/>
+          <bean parent="HelpDefinition" p:parameterNamespace="KR-KRAD" p:parameterName="DEFAULT_HELP_URL"
+                p:parameterDetailType="Lookup"/>
         </property>
       </bean>
     </property>
@@ -71,13 +75,21 @@
   <bean id="Uif-LookupView-Footer-parentBean" parent="Uif-FooterBase" p:render="@{#view.hideCriteriaOnSearch}">
     <property name="items">
       <list>
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
+              p:render="@{!renderedInLightBox}" p:order="100"/>
+        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Close"
+              p:render="@{renderedInLightBox}"
+              p:onClickScript="e.preventDefault();closeIframeDialog();return false;" p:order="200"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="refresh" p:actionLabel="Refine Search"
               p:additionalSubmitData="displayResults:false" p:iconClass="icon-chevron-left" p:ajaxSubmit="false"
-              p:render="@{displayResults}" p:order="100"/>
-        <bean parent="Uif-SecondaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
-              p:render="@{!renderedInLightBox and displayResults}" p:order="200"/>
-        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Close" p:render="@{renderedInLightBox and displayResults}"
-              p:onClickScript="e.preventDefault();closeLightbox();return false;" p:order="300"/>
+              p:render="@{displayResults}" p:order="300"/>
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="clearValues" p:render="@{!displayResults}"
+              p:actionLabel="Clear Values"
+              p:refreshId="uLookupCriteria" p:ajaxSubmit="false" p:order="400"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
+              p:performClientSideValidation="true" p:render="@{!displayResults}"
+              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"
+              p:defaultEnterKeyAction="true" p:order="500"/>
       </list>
     </property>
   </bean>
@@ -122,7 +134,7 @@
     <property name="fieldBindingObjectPath" value="lookupCriteria"/>
     <property name="layoutManager.numberOfColumns" value="2"/>
     <property name="footer">
-      <bean parent="Uif-LookupCriteriaFooter"/>
+      <bean parent="Uif-LookupCriteriaFooter" p:render="@{!#view.hideCriteriaOnSearch}"/>
     </property>
   </bean>
 
@@ -196,7 +208,8 @@
         <value>maintenanceDelete</value>
       </list>
     </property>
-    <property name="render" value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line) and #view.renderMaintenanceLinks}"/>
+    <property name="render"
+              value="@{#ViewHelper.allowsMaintenanceDeleteAction(#line) and #view.renderMaintenanceLinks}"/>
   </bean>
 
   <bean id="Uif-Lookup-MaintenanceReturnLink" parent="Uif-Link">
@@ -230,8 +243,10 @@
               p:onClickScript="e.preventDefault();closeLightbox();return false;" p:order="200"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
               p:refreshId="uLookupCriteria" p:ajaxSubmit="false" p:order="300"/>
-        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search" p:performClientSideValidation="true"
-              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}" p:defaultEnterKeyAction="true" p:order="400"/>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="search" p:actionLabel="Search"
+              p:performClientSideValidation="true"
+              p:additionalSubmitData="displayResults:true" p:ajaxSubmit="@{!#view.hideCriteriaOnSearch}"
+              p:defaultEnterKeyAction="true" p:order="400"/>
       </list>
     </property>
   </bean>

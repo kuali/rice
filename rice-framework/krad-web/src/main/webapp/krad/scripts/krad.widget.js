@@ -162,12 +162,12 @@ function initTabMenu(listId, currentPage) {
         var firstItem = $nav.find("li:first");
         var currentTab = firstItem.find("a");
 
-        if(currentPage){
+        if (currentPage) {
             currentTab = $nav.find("a[name='" + currentPage + "']");
 
         }
 
-        if(currentTab){
+        if (currentTab) {
             currentTab.closest("li").addClass("active");
         }
     });
@@ -186,7 +186,7 @@ function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
     var viewContent = jQuery("#" + kradVariables.VIEW_CONTENT_WRAPPER);
 
     adjustPageLeftMargin();
-    viewContent.on(kradVariables.EVENTS.ADJUST_PAGE_MARGIN, function(){
+    viewContent.on(kradVariables.EVENTS.ADJUST_PAGE_MARGIN, function () {
         adjustPageLeftMargin();
     });
 
@@ -245,7 +245,7 @@ function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
             navMenu).removeClass(closedToggleIconClass).addClass(openedToggleIconClass);
 }
 
-function adjustPageLeftMargin(){
+function adjustPageLeftMargin() {
     var page = jQuery("[data-role='Page']");
     var menuWidth = jQuery("#Uif-Navigation >").outerWidth(true);
     page.css("margin-left", menuWidth);
@@ -355,29 +355,9 @@ function handleLightboxOpen(link, options, addAppParms, event) {
     if (!renderedInLightBox) {
         // If this is not the top frame, then create the lightbox
         // on the top frame to put overlay over whole window
-        options['href'] = link.attr('href');
+        var url = link.attr('href');
 
-        var dialogOptions = {
-            showHandler: function(event) {
-                var $modal = jQuery(event.target);
-                var $iframe = $modal.find("iframe");
-
-                $iframe.attr("src", options.href);
-
-                iframeModalResize($modal, $iframe);
-
-                jQuery(window).on("resize.modal", function(){
-                    iframeModalResize($modal, $iframe);
-                });
-            },
-            hideHandler: function(event) {
-                jQuery(window).unbind("resize.modal");
-            }
-
-        };
-
-        showDialog("Uif-LookupModal", options['href']);
-
+        openIframeDialog(url);
     } else {
         window.location = link.attr('href');
     }
@@ -449,30 +429,11 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
             }
 
             // Trim the remaining ampersand
-            lookupUrl = lookupUrl.substring(0, lookupUrl.length -1);
+            lookupUrl = lookupUrl.substring(0, lookupUrl.length - 1);
 
-            options.href = lookupUrl.replace(/&amp;/g, '&');
+            lookupUrl = lookupUrl.replace(/&amp;/g, '&');
 
-            var dialogOptions = {
-                showHandler: function(event) {
-                    var $modal = jQuery(event.target);
-                    var $iframe = $modal.find("iframe");
-
-                    $iframe.attr("src", options.href);
-
-                    iframeModalResize($modal, $iframe);
-
-                    jQuery(window).on("resize.modal", function(){
-                        iframeModalResize($modal, $iframe);
-                    });
-                },
-                hideHandler: function(event) {
-                    jQuery(window).unbind("resize.modal");
-                }
-
-            };
-
-            showDialog("Uif-LookupModal", dialogOptions);
+            openIframeDialog(lookupUrl, kradVariables.MODAL.LOOKUP_MODAL);
         } else {
             // add parameters for lightbox and do standard submit
             data['actionParameters[renderedInLightBox]'] = 'true';
@@ -484,13 +445,84 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
     });
 }
 
-function iframeModalResize($modal, $iframe){
-    var height = jQuery(window).height()*0.8;
-    var headerHeight = $modal.find(".modal-header").outerHeight();
-    var footerHeight = $modal.find(".modal-footer").outerHeight();
-    var $modalBody = $modal.find(".modal-body");
+/**
+ * Close an open iframe dialog by using post message to pass a message event
+ */
+function closeIframeDialog() {
+    window.parent.postMessage(kradVariables.MODAL.MODAL_CLOSE_DIALOG, "*");
+}
 
-    $modal.find('.modal-content').css('height', height);
+/**
+ * Shows the dialog and resizes the iframe it contains.
+ *
+ * <p>Adds show, hide and message handlers which process the dialog events.</p>
+ *
+ * @param url the url of the iframe
+ * @param dialogId the id of the dialog to use which contains an iframe
+ */
+function openIframeDialog(url, dialogId) {
+    if (!dialogId) {
+        dialogId = kradVariables.MODAL.IFRAME_MODAL;
+    }
+
+    // Add handler to handle the close message event received fromt the iframe
+    jQuery(window).one("message." + kradVariables.MODAL.MODAL_NAMESPACE, function (event) {
+        switch (event.originalEvent.data) {
+            case kradVariables.MODAL.MODAL_CLOSE_DIALOG:
+                jQuery(kradVariables.MODAL.MODAL_CLASS).modal("hide");
+                break;
+        }
+    });
+
+    var dialogOptions = {
+        // Setting the source of the iframe and resizing it
+        showHandler: function (event) {
+            var $modal = jQuery(event.target);
+            var $iframe = $modal.find("iframe");
+
+            $iframe.attr("src", url);
+
+            iframeModalResize($modal, $iframe);
+
+            // Resize the iframe on a window.resize
+            jQuery(window).on("resize." + kradVariables.MODAL.MODAL_NAMESPACE, function () {
+                iframeModalResize($modal, $iframe);
+            });
+
+            showLoading();
+
+            $iframe.one("onload", function () {
+                hideLoading();
+            });
+        },
+        // Removing the resize and message handlers and destroying the modal
+        hideHandler: function (event) {
+            var $modal = jQuery(event.target);
+
+            jQuery(window).unbind("resize." + kradVariables.MODAL.MODAL_NAMESPACE);
+            jQuery(window).unbind("message." + kradVariables.MODAL.MODAL_NAMESPACE);
+
+            $modal.remove();
+        }
+
+    };
+
+    showDialog(dialogId, dialogOptions);
+}
+
+/**
+ * Resizes the iframe to 100% of the modal body
+ *
+ * @param $modal the modal element
+ * @param $iframe the iframe element
+ */
+function iframeModalResize($modal, $iframe) {
+    var height = jQuery(window).height() * 0.8;
+    var headerHeight = $modal.find(kradVariables.MODAL.MODAL_HEADER_CLASS).outerHeight();
+    var footerHeight = $modal.find(kradVariables.MODAL.MODAL_FOOTER_CLASS).outerHeight();
+    var $modalBody = $modal.find(kradVariables.MODAL.MODAL_BODY_CLASS);
+
+    $modal.find(kradVariables.MODAL.MODAL_CONTENT_CLASS).css("height", height);
     $modalBody.css("height", height - headerHeight - footerHeight);
     $modalBody.css("padding", 0);
     $iframe.css("height", "100%");
@@ -563,27 +595,7 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
 
             queryString = queryString + "&flow=start&renderedInLightBox=true";
             lightBoxOptions['href'] = url + queryString;
-
-            var dialogOptions = {
-                showHandler: function(event) {
-                    var $modal = jQuery(event.target);
-                    var $iframe = $modal.find("iframe");
-
-                    $iframe.attr("src", lightBoxOptions['href']);
-
-                    iframeModalResize($modal, $iframe);
-
-                    jQuery(window).on("resize.modal", function(){
-                        iframeModalResize($modal, $iframe);
-                    });
-                },
-                hideHandler: function(event) {
-                    jQuery(window).unbind("resize.modal");
-                }
-            };
-
-            showDialog("Uif-LookupModal", dialogOptions);
-
+            getContext().fancybox(lightBoxOptions);
         } else {
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&flow="
@@ -801,7 +813,7 @@ function createMultiFileUploadForCollection(id, collectionId, additionalOptions)
         options.url = "?" + getUrlQueryString("methodToCall", "fileUpload");
     }
 
-    if(options.acceptFileTypes) {
+    if (options.acceptFileTypes) {
         options.acceptFileTypes = new RegExp(options.acceptFileTypes);
     }
 
@@ -830,7 +842,7 @@ function createMultiFileUploadForCollection(id, collectionId, additionalOptions)
         });
 
         $fileInput.bind('fileuploadprocessfail', function (e, data) {
-           alert( 'Processing ' + data.files[data.index].name + ' of type ' + data.files[data.index].type + ' failed.\nError: ' + data.files[data.index].error );
+            alert('Processing ' + data.files[data.index].name + ' of type ' + data.files[data.index].type + ' failed.\nError: ' + data.files[data.index].error);
         });
     }
 }
@@ -1083,7 +1095,7 @@ function openDetails(oTable, row, actionComponent, animate) {
             kradRequest.methodToCall = kradVariables.REFRESH_METHOD_TO_CALL;
         }
 
-        kradRequest.successCallback = function(){
+        kradRequest.successCallback = function () {
             jQuery("#" + detailsId).show();
         };
 
@@ -1109,7 +1121,7 @@ function toggleColumnVisibility(tableId, columnId, bVisibility) {
     var oTable = getDataTableHandle(tableId);
     var columnIndex = jQuery(oTable).find('thead th' + columnId).index();
     var header = jQuery(oTable).find('thead th' + columnId);
-    var columns = jQuery(oTable).find('tr td:nth-child(' + (columnIndex+1) + ')');
+    var columns = jQuery(oTable).find('tr td:nth-child(' + (columnIndex + 1) + ')');
     var footer = jQuery(oTable).find('tfoot th').eq(columnIndex);
     if (bVisibility) {
         header.show();
@@ -1137,7 +1149,7 @@ function toggleColumnVisibility(tableId, columnId, bVisibility) {
 function hasVisibleElementsInColumn(tableId, columnId) {
     var oTable = getDataTableHandle(tableId);
     var columnIndex = jQuery(oTable).find('thead th' + columnId).index();
-    var columns = jQuery(oTable).find('tr td:nth-child(' + (columnIndex+1) + ')');
+    var columns = jQuery(oTable).find('tr td:nth-child(' + (columnIndex + 1) + ')');
     var isColumnsEmpty = true;
 
     jQuery.each(columns, function (index, td) {
@@ -1150,8 +1162,8 @@ function hasVisibleElementsInColumn(tableId, columnId) {
             columnGroupVisible = false;
         }
 
-        columnContent.filter(function() {
-             return jQuery(this).css("display") != "none";
+        columnContent.filter(function () {
+            return jQuery(this).css("display") != "none";
         });
 
         if (columnContent.size() > 0 && columnGroupVisible) {
@@ -1560,7 +1572,7 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
     }
     if (onMouseHoverFlag) {
 
-        tooltipElement.on("mouseover", function(){
+        tooltipElement.on("mouseover", function () {
             if (!isControlWithMessages(id)) {
                 var tooltipElement = jQuery(this);
                 var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
@@ -1576,7 +1588,7 @@ function createTooltip(id, text, options, onMouseHoverFlag, onFocusFlag) {
             }
         });
 
-        tooltipElement.on("mouseout", function(){
+        tooltipElement.on("mouseout", function () {
             if (!isControlWithMessages(id) && !(onFocusFlag && jQuery("#" + id).is(":focus"))) {
                 var tooltipElement = jQuery(this);
                 var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
@@ -1596,12 +1608,12 @@ function initializeTooltip(tooltipElement, extendedOptions, additionalClasses) {
         classAttr = classAttr + " " + additionalClasses;
     }
     var options = {
-            trigger:"manual",
-            placement: "auto top",
-            html: true,
-            animation: false,
-            template: '<div class="' + classAttr + '"><div class="arrow"></div><div class="popover-content"></div></div>'
-        };
+        trigger: "manual",
+        placement: "auto top",
+        html: true,
+        animation: false,
+        template: '<div class="' + classAttr + '"><div class="arrow"></div><div class="popover-content"></div></div>'
+    };
 
     if (extendedOptions) {
         jQuery.extend(options, extendedOptions);

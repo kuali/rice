@@ -100,7 +100,9 @@ public abstract class IdentityPersonCreateNewAftBase extends AdminTmplMthdAftNav
         waitAndClickByName("newEmail.dflt");
         waitAndClickByName("methodToCall.addEmail.anchor");
         waitAndTypeByName("document.principalName", RandomStringUtils.randomAlphabetic(12).toLowerCase());
-                
+            
+        //Saving Document First
+        waitAndClickByXpath("//input[@name='methodToCall.save' and @alt='save']");
         //Expand All , Submit , Close and Don't Save.        
         waitAndClickByName("methodToCall.route");
         checkForDocError();

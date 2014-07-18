@@ -1001,6 +1001,8 @@ function getConfigParam(paramName) {
 
 jQuery.validator.setDefaults({
     onsubmit: false,
+    errorClass: kradVariables.ERROR_CLASS,
+    validClass: kradVariables.VALID_CLASS,
     ignore: ".ignoreValid",
     wrapper: "",
     onfocusout: false,
@@ -1027,33 +1029,7 @@ jQuery.validator.setDefaults({
         jQuery(element).attr("aria-invalid", "true");
     },
     unhighlight: function (element, errorClass, validClass) {
-        jQuery(element).removeClass(errorClass).addClass(validClass);
-        jQuery(element).removeAttr("aria-invalid");
-
-        var id = getAttributeId(jQuery(element).attr("id"));
-        if (!id) {
-            return;
-        }
-        var field = jQuery("#" + id);
-        var data = getValidationData(field);
-
-        if (data) {
-            data.errors = [];
-            field.data(kradVariables.VALIDATION_MESSAGES, data);
-
-            if (messageSummariesShown) {
-                handleMessagesAtField(id);
-            }
-            else {
-                writeMessagesAtField(id);
-            }
-
-            // force hide of tooltip if no messages present
-            if (!(data.warnings.length || data.info.length || data.serverErrors.length
-                    || data.serverWarnings.length || data.serverInfo.length)) {
-                hideMessageTooltip(id);
-            }
-        }
+        removeClientValidationError(element);
     },
     errorPlacement: function (error, element) {
     },

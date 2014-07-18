@@ -1937,3 +1937,41 @@ function mustOccurCheck(total, min, max) {
         return 0;
     }
 }
+
+/**
+ * Remove client side validation from the control specified (highlight and messages)
+ *
+ * @param control the control to remove validation from
+ */
+function removeClientValidationError(control) {
+    var errorClass = kradVariables.ERROR_CLASS;
+    var validClass = kradVariables.VALID_CLASS;
+
+    jQuery(control).removeClass(errorClass).addClass(validClass);
+    jQuery(control).removeAttr("aria-invalid");
+
+    var id = getAttributeId(jQuery(control).attr("id"));
+    if (!id) {
+        return;
+    }
+    var field = jQuery("#" + id);
+    var data = getValidationData(field);
+
+    if (data) {
+        data.errors = [];
+        field.data(kradVariables.VALIDATION_MESSAGES, data);
+
+        if (messageSummariesShown) {
+            handleMessagesAtField(id);
+        }
+        else {
+            writeMessagesAtField(id);
+        }
+
+        // force hide of tooltip if no messages present
+        if (!(data.warnings.length || data.info.length || data.serverErrors.length
+                || data.serverWarnings.length || data.serverInfo.length)) {
+            hideMessageTooltip(id);
+        }
+    }
+}

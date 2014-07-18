@@ -180,9 +180,18 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         }
 
         @Override
-        public <T> T get(Object o, Class<T> tClass) {
-            // not yet implemented
-            return null;
+        @SuppressWarnings("unchecked")
+        public <T> T get(Object key, Class<T> type) {
+            ValueWrapper wrappedValue = cache.get(key);
+            if (wrappedValue == null || wrappedValue.get() == null) {
+                return null;
+            }
+
+            if (type != null && !type.isInstance(wrappedValue.get())) {
+                throw new IllegalStateException("Cached value is not of required type [" + type.getName() + "]: " + (wrappedValue.get()));
+            }
+
+            return (T) wrappedValue.get();
         }
 
         @Override
@@ -380,11 +389,7 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
 
         @Override public ValueWrapper get(Object key)  { return null; }
 
-        @Override
-        public <T> T get(Object o, Class<T> tClass) {
-            // not yet implemented
-            return null;
-        }
+        @Override public <T> T get(Object o, Class<T> tClass) { return null; }
 
         @Override public void put(Object key, Object value) { }
 

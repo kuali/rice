@@ -20,7 +20,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-  <bean id="Uif-DocumentView" abstract="true" parent="Uif-DocumentView-parentBean"/>
+  <bean id="Uif-DocumentView" abstract="true" parent="Uif-DocumentView-parentBean">
+    <property name="additionalScriptFiles">
+      <list>
+        <value>scripts/krad.document.js</value>
+      </list>
+    </property>
+  </bean>
+
   <bean id="Uif-DocumentView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.DocumentView" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
     <property name="cssClasses">
@@ -325,8 +332,11 @@
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]}"/>
         <bean parent="Uif-SaveAction-Secondary"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]}"/>
+
+        <!-- Special case. Client side validation is turned off for Uif-PrimaryActionButton. See KULRICE-7339 -->
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="Submit"
-              p:performClientSideValidation="true"
+              p:performClientSideValidation="false"
+              p:preSubmitCall="return isRouteToComplete(kradRequest);"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}" p:defaultEnterKeyAction="true">
           <property name="confirmationDialog">
             <bean id="ConfirmSubmitDialog" parent="Uif-DialogGroup-OkCancel" p:style="top:70%"

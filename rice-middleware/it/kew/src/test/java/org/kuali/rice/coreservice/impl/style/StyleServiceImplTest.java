@@ -91,8 +91,9 @@ public class StyleServiceImplTest extends KEWTestCase {
             fail("Wrong exception type '" + e.getClass() + "', should have been '" + RiceRuntimeException.class.getCanonicalName() + "'");
         }
 
-        styleService.getStyle("widgets");
-        // should succeed in loading it's style into the database
+        Style style = styleService.getStyle("widgets");
+        // should succeed in loading the style from the config file
+        assertNotNull(style);
     }
 
     @Test public void testInclusions() throws FileNotFoundException, TransformerConfigurationException, TransformerException {
@@ -185,5 +186,14 @@ public class StyleServiceImplTest extends KEWTestCase {
         assertEquals("test", style.getName());
         assertNotNull(style);
         assertNotNull(style.getXmlContent());
+    }
+
+    /**
+     * Returns the List of tables that should be cleared on every test run.
+     */
+    protected List<String> getPerTestTablesToClear() {
+        List<String> tablesToClear = super.getPerTestTablesToClear();
+        tablesToClear.add("KRCR_STYLE_T");
+        return tablesToClear;
     }
 }

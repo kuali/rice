@@ -78,8 +78,6 @@
   <bean id="Uif-LightBox" parent="Uif-LightBox-parentBean"/>
   <bean id="Uif-LightBox-parentBean" abstract="true" class="org.kuali.rice.krad.uif.widget.LightBox" scope="prototype"
         parent="Uif-WidgetBase">
-    <property name="template" value="/krad/WEB-INF/ftl/components/widget/lightBox.ftl"/>
-    <property name="templateName" value="uif_lightBox"/>
     <!--<property name="height" value="95%"/>-->
     <!--<property name="width" value="75%"/>-->
     <property name="templateOptions">
@@ -153,7 +151,7 @@
     </property>
     <property name="quickfinderAction">
       <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-search" p:methodToCall="performLookup"
-            p:focusOnIdAfterSubmit="NEXT_INPUT" />
+            p:focusOnIdAfterSubmit="NEXT_INPUT"/>
     </property>
   </bean>
 

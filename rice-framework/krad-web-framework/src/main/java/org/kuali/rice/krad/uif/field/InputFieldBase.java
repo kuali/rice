@@ -714,18 +714,32 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         this.control = control;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @BeanTagAttribute
     public boolean isInlineEdit() {
         return inlineEdit;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setInlineEdit(boolean inlineEdit) {
         this.inlineEdit = inlineEdit;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @BeanTagAttribute
     public boolean isAjaxInlineEdit() {
         return ajaxInlineEdit;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void setAjaxInlineEdit(boolean ajaxInlineEdit) {
         this.ajaxInlineEdit = ajaxInlineEdit;
     }

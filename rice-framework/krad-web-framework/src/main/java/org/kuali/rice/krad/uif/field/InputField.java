@@ -72,12 +72,30 @@ public interface InputField extends SimpleConstrainable, CaseConstrainable,
      */
     void setControl(Control control);
 
+    /**
+     * Check to see if a field has an attribute inlineEdit set to true.
+     *
+     * @return  inlineEdit if set to true the field will have the ability to be edited inline
+     */
     public boolean isInlineEdit();
 
+    /**
+     *
+     * @see org.kuali.rice.krad.uif.field.InputFieldBase#isInlineEdit()
+     */
     public void setInlineEdit(boolean inlineEdit);
 
+    /**
+     * Check to see if a field has the attribute ajaxInlineEdit set to true.
+     *
+     * @return ajaxInlneEdit if true the field will have the ability to be edited inline via ajax call
+     */
     public boolean isAjaxInlineEdit();
 
+    /**
+     *
+     * @see InputFieldBase#isAjaxInlineEdit()
+     */
     public void setAjaxInlineEdit(boolean ajaxInlineEdit);
 
     /**

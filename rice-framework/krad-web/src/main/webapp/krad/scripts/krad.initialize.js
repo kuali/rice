@@ -1003,7 +1003,7 @@ jQuery.validator.setDefaults({
     onsubmit: false,
     errorClass: kradVariables.ERROR_CLASS,
     validClass: kradVariables.VALID_CLASS,
-    ignore: kradVariables.IGNORE_VALIDATION,
+    ignore: "." + kradVariables.IGNORE_VALIDATION_CLASS,
     wrapper: "",
     onfocusout: false,
     onclick: false,

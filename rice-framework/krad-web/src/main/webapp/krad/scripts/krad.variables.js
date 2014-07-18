@@ -242,7 +242,7 @@ JavascriptKradVariables.prototype = {
     VIEW_CONTENT_HEADER_CLASS: "Uif-ViewContentWrapper",
     VIEW_STATE: "ViewState",
     VALID_CLASS: "valid",
-    IGNORE_VALIDATION: ".ignoreValid",
+    IGNORE_VALIDATION_CLASS: "ignoreValid",
     ERROR_CLASS: "error",
     WARNING_HIGHLIGHT_SECTION_CLASS: "uif-warningHighlight-section",
     WARNING_MESSAGE_ITEM_CLASS: "uif-warningMessageItem-field",

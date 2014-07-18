@@ -123,7 +123,7 @@ JavascriptKradVariables.prototype = {
         AJAX_EDIT: "ajax_edit",
         SAVE_FIELD_METHOD_TO_CALL: "saveField",
         INLINE_EDIT_NAMESPACE: "inlineEdit",
-        ORIGINAL_VALUE: "origVal"
+        ORIGINAL_VALUE: "orig_val"
     },
     JUMP_TO_ID: "jumptoid",
     JUMP_TO_NAME: "jumptoname",

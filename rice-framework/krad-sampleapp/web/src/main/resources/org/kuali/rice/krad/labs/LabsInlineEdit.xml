@@ -27,28 +27,27 @@
       <bean parent="Uif-Page">
         <property name="items">
           <list>
-            <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions: To save the
-            field, press the enter key. To abandon changes to the field, press the esc key."
+            <bean parent="Uif-InputField" p:label="Inline Edit Field"
+                  p:instructionalText="Instructions:  To abandon changes to the field, press the esc key."
                   p:constraintText="Constraint text" p:required="true"
-                  p:propertyName="dataField3" p:readOnly="true" p:inlineEdit="true"/>
-            <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions: To save the
-            field, press the enter key. To abandon changes to the field, press the esc key."
+                  p:propertyName="dataField5" p:inlineEdit="true"/>
+            <bean parent="Uif-InputField" p:label="Inline Edit Field"
+                  p:instructionalText="Instructions:  To abandon changes to the field, press the esc key."
                   p:constraintText="Constraint text" p:required="true"
-                  p:propertyName="dataField1" p:readOnly="true" p:ajaxInlineEdit="true"/>
-            <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions: To enter a new
-            line, press shift+enter keys. To save the field, press the enter key. To abandon changes to the field,
+                  p:propertyName="dataField6" p:ajaxInlineEdit="true"/>
+            <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions:  To abandon changes to the field,
             press the esc key."
                   p:constraintText="Constraint text" p:required="true"
-                  p:propertyName="dataField4" p:readOnly="true" p:inlineEdit="true">
-              <property name="control">
+                  p:propertyName="dataField4" p:inlineEdit="true">
+            <property name="control">
                 <bean parent="Uif-TextAreaControl"/>
               </property>
             </bean>
             <bean parent="Uif-InputField" p:propertyName="inputField1" p:width="auto" p:label="Inline Edit Field"
-                  p:instructionalText="Instructions: To save the field, press the enter key. To abandon changes to the
+                  p:instructionalText="Instructions: To abandon changes to the
                   field, press the esc key."
-                  p:constraintText="Constraint text" p:required="true" p:readOnly="true" p:inlineEdit="true">
-              <property name="control">
+                  p:constraintText="Constraint text" p:required="true" p:inlineEdit="true">
+            <property name="control">
                 <bean parent="Uif-DropdownControl"/>
               </property>
               <property name="optionsFinder">
@@ -59,23 +58,25 @@
             <bean parent="Uif-SecondaryActionButton-Small" >
               <property name="actionLabel" value="Popover Form Action"/>
               <property name="actionScript"
-                        value="openPopoverContent(e,'Demo-InLineEdit-PopoverContent-Group');"/>
+                        value="openPopoverContent(e,'Demo-InlineEdit-PopoverContent-Group');"/>
             </bean>
-            <bean id="Demo-InLineEdit-PopoverContent-Group" parent="Uif-HorizontalBoxSection">
+            <bean id="Demo-InlineEdit-PopoverContent-Group" parent="Uif-HorizontalBoxSection">
               <property name="hidden" value="true"/>
               <property name="items">
                 <list>
-                  <bean parent="Uif-InputField" p:instructionalText="Instructions: To save the field, press the enter
-                  key. To abandon changes to the field, press the esc key." p:inlineEdit="true" p:required="true"
-                        p:readOnly="true" >
-                    <property name="propertyName" value="dataField1"/>
+                  <bean parent="Uif-InputField"
+                        p:instructionalText="Instructions: To abandon changes to the field, press the esc key."
+                        p:inlineEdit="true" p:required="true"
+                          >
+                  <property name="propertyName" value="dataField1"/>
                     <property name="label" value="Field 1"/>
                     <property name="helpSummary" value="Standard KRAD 'helpSummary' property"/>
                   </bean>
-                  <bean parent="Uif-InputField" p:instructionalText="Instructions: To save the field, press the enter
-                  key. To abandon changes to the field, press the esc key." p:inlineEdit="true" p:required="true"
-                        p:readOnly="true">
-                    <property name="propertyName" value="dataField2"/>
+                  <bean parent="Uif-InputField"
+                        p:instructionalText="Instructions: To abandon changes to the field, press the esc key."
+                        p:inlineEdit="true" p:required="true"
+                          >
+                  <property name="propertyName" value="dataField2"/>
                     <property name="label" value="Field 2"/>
                   </bean>
                   <bean parent="Uif-InputField">
@@ -100,10 +101,10 @@
                     <property name="disclosure.defaultOpen" value="false"/>
                     <property name="items">
                       <list>
-                        <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions: To save the
-            field, press the enter key. To abandon changes to the field, press the esc key."
+                        <bean parent="Uif-InputField" p:label="Inline Edit Field"
+                              p:instructionalText="Instructions:  To abandon changes to the field, press the esc key."
                               p:constraintText="Constraint text" p:required="true"
-                              p:propertyName="dataField3" p:readOnly="true" p:inlineEdit="true"/>
+                              p:propertyName="dataField7" p:inlineEdit="true"/>
                         <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="inputField6"/>
                       </list>
                     </property>

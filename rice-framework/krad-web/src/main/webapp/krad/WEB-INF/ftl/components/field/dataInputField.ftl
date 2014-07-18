@@ -46,7 +46,7 @@
         <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
 
         <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
-        <#if readOnly>
+        <#if readOnly || inlineEdit || ajaxInlineEdit>
             <#if inlineEdit || ajaxInlineEdit>
                 <button class="uif-inlineEdit-view" id="${field.id}_inlineEdit_view" tabindex="0" title="Click to Edit"
                      data-ajax_edit="true">
@@ -100,11 +100,12 @@
             </#if>
         </#if>
 
-        <#if inlineEdit || ajaxInlineEditRefresh>
-            <div class="uif-inlineEdit-edit" id="${field.id}_inlineEdit_edit">
-        </#if>
+        <#if !readOnly>
 
-        <#if !readOnly || inlineEdit || ajaxInlineEditRefresh>
+            <#if inlineEdit || ajaxInlineEditRefresh>
+            <div class="uif-inlineEdit-edit" id="${field.id}_inlineEdit_edit">
+            </#if>
+
             <#if quickfinderInputOnly>
                <#local readOnlyDisplay>
                    <#if field.forcedValue?has_content>
@@ -214,11 +215,9 @@
             <@krad.template component=field.constraintMessage/>
 
             <#-- render field suggest if field is editable -->
-            <#if !readOnly || inlineEdit>
-                <@krad.template component=field.suggest parent=field/>
-            </#if>
+            <@krad.template component=field.suggest parent=field/>
 
-            <#-- transform all text on attribute field to uppercase -->
+        <#-- transform all text on attribute field to uppercase -->
             <#if field.control?? && field.uppercaseValue>
                 <@krad.script value="uppercaseValue('${field.control.id}');"/>
             </#if>

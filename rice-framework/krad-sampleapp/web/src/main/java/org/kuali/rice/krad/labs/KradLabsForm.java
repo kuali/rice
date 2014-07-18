@@ -90,7 +90,7 @@ public class KradLabsForm extends UifFormBase {
     private String dataField2 = "My Book Title";
     private String dataField3 = "My Book Title";
     private String dataField4 = "Option 2";
-    private String dataField5 = "My Second Book Title";
+    private String dataField5 = "Some text";
     private String dataField6 = "Book Title";
     private String dataField7 = "My Book Title";
     private String dataField8 = "My Other Book Title";
@@ -394,6 +394,10 @@ public class KradLabsForm extends UifFormBase {
 
     public void setDataField5(String dataField5) {
         this.dataField5 = dataField5;
+    }
+
+    public String getDataField5() {
+        return dataField5;
     }
 
     public String getDataField6() {

@@ -21,8 +21,10 @@ function initInlineEditFields() {
     jQuery(document).on("click", kradVariables.INLINE_EDIT.VIEW_CLASS, function (event) {
         event.preventDefault();
 
-        var $view = jQuery(this);
-        showInlineEdit($view);
+        // "View" refers to the view state of the inline edit, inline edits have a view state and edit state
+        // this is the component which contains the view state
+        var $viewButton = jQuery(this);
+        showInlineEdit($viewButton);
 
         return false;
     });
@@ -34,67 +36,83 @@ function initInlineEditFields() {
  * <p>Adds buttons and key handlers for the save and cancel functions.  Fields will return to the original value with
  * cancel, and will be sent to the server with methodToCall "saveField" when Saved.</p>
  *
- * @param $view the div element representing the origninal read only state of the field
+ * @param $viewButton the element representing the origninal read only state of the field
  */
-function showInlineEdit($view) {
-    var viewId = $view.attr("id");
-    var editId = viewId.replace(kradVariables.INLINE_EDIT.VIEW_SUFFIX, kradVariables.INLINE_EDIT.EDIT_SUFFIX);
-    var $edit = jQuery("#" + editId);
-    var $control = $edit.find("[data-role='Control']");
+function showInlineEdit($viewButton) {
+    // Inline edits have 2 states: a view state and an edit state
+    var viewButtonId = $viewButton.attr("id");
 
-    var $editButtonBlock = $edit.find(kradVariables.INLINE_EDIT.EDIT_BUTTONS_CLASS);
+    // Derive the editDivId from the viewButtonId by replacing its suffix
+    var editDivId = viewButtonId.replace(kradVariables.INLINE_EDIT.VIEW_SUFFIX, kradVariables.INLINE_EDIT.EDIT_SUFFIX);
 
-    if ($edit.length) {
-        $edit.data("origVal", $control.val());
-    }
+    var $editDiv = jQuery("#" + editDivId);
+    var $control = $editDiv.find("[data-role='Control']");
 
-    if ($edit.is(":visible")) {
-        $edit.focus();
+    // Focus on the control if somehow the editDiv is visible already after an ajax retrieval
+    if ($editDiv.is(":visible")) {
+        $control.focus();
         return;
     }
 
-    $view.hide();
+    // Save original value of the control to be restored on cancel
+    if ($editDiv.length) {
+        $editDiv.data(kradVariables.INLINE_EDIT.ORIGINAL_VALUE, $control.val());
+    }
 
-    if ($view.data(kradVariables.INLINE_EDIT.AJAX_EDIT) === true && $edit.length === 0) {
-        var fieldId = viewId.replace(kradVariables.INLINE_EDIT.INLINE_EDIT_VIEW, "");
+    $viewButton.hide();
+
+    // If the edit version of the field does not exist, retrieve it
+    if ($viewButton.data(kradVariables.INLINE_EDIT.AJAX_EDIT) === true && $editDiv.length === 0) {
+        var fieldId = viewButtonId.replace(kradVariables.INLINE_EDIT.INLINE_EDIT_VIEW, "");
         retrieveComponent(fieldId, kradVariables.REFRESH_METHOD_TO_CALL, function () {
-            var $newView = jQuery("#" + viewId);
+            var $newView = jQuery("#" + viewButtonId);
+
+            // Recall this function to show the edit state of the retrieved field
             showInlineEdit($newView);
         }, null, false, [kradVariables.NO_FIELDS_TO_SEND]);
         // Return because we are waiting for ajax component retrieval
         return;
     }
 
+    // Creating save function to be used by the save button (created here to use current var handles)
     var saveEditFunc = function (event) {
         event.preventDefault();
-        _saveEdit($control, viewId);
+        _saveEdit($control, viewButtonId);
 
         return false;
     };
 
+    // Creating cancel function to be used by the cancel button and other cancel actions
+    // (created here to use current var handles)
     var cancelEditFunc = function (event) {
         event.preventDefault();
 
-        return _cancelEdit($control, $edit, $view);
+        return _cancelEdit($control, $editDiv, $viewButton);
     };
 
+    // Cancel any edit fields that are currently open because we only allow one inline edit at a time
     jQuery(kradVariables.INLINE_EDIT.EDIT_CLASS).each(function () {
         jQuery(this).trigger("cancel." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
     });
 
-    $edit.on("cancel." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE, function (event) {
+    // Add an handler for the cancel event used to close this edit when another is opened
+    $editDiv.on("cancel." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE, function (event) {
         cancelEditFunc(event);
     });
 
-    $edit.show();
-
-    if (!$editButtonBlock.length) {
-        $editButtonBlock = _createInlineEditButtons($control, $edit, saveEditFunc, cancelEditFunc);
-    }
-
+    // Show the edit state
     $control.removeAttr("readonly");
+    $editDiv.show();
     $control.focus();
 
+    // Check to see if the buttons exist, if they don't create and append them (must happen here to correctly
+    // position them)
+    var $editButtonDiv = $editDiv.find(kradVariables.INLINE_EDIT.EDIT_BUTTONS_CLASS);
+    if (!$editButtonDiv.length) {
+        $editButtonDiv = _createInlineEditButtons($control, $editDiv, saveEditFunc, cancelEditFunc);
+    }
+
+    // Setup key handlers for inline edit
     _setupInlineEditKeyHandlers($control, cancelEditFunc);
 }
 
@@ -102,11 +120,12 @@ function showInlineEdit($view) {
  * Save the edit field by calling the saveField method on the controller passing only the control value
  *
  * @param $control the control element
- * @param viewId the id of the view div element for inline edit
+ * @param viewButtonId the id of the view div element for inline edit
  */
-function _saveEdit($control, viewId) {
+function _saveEdit($control, viewButtonId) {
     var valid = true;
 
+    // Validate the new field value
     if (validateClient) {
         var fieldId = getAttributeId(jQuery($control).attr('id'));
         var data = getValidationData(jQuery("#" + fieldId));
@@ -118,12 +137,11 @@ function _saveEdit($control, viewId) {
     if (valid) {
         // Save by retrieving a new instance of the component using the saveField method
         retrieveComponent(fieldId, kradVariables.INLINE_EDIT.SAVE_FIELD_METHOD_TO_CALL, function () {
-            var $newView = jQuery("#" + viewId);
+            var $newView = jQuery("#" + viewButtonId);
             $newView.focus();
         }, null, false, [$control.attr('name')]);
 
         $control.unbind("keydown." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
-        $control.unbind("blur." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
     }
 }
 
@@ -131,13 +149,15 @@ function _saveEdit($control, viewId) {
  * Cancel the edit on an inline edit control
  *
  * @param $control the control element
- * @param $edit the edit div element containing the edit state
- * @param $view the view div element containing the view state
+ * @param $editDiv the edit div element containing the edit state
+ * @param $viewButton the view div element containing the view state
  * @returns {boolean} false for handler purposes
  */
-function _cancelEdit($control, $edit, $view) {
-    $control.val($edit.data(kradVariables.INLINE_EDIT.ORIGINAL_VALUE));
+function _cancelEdit($control, $editDiv, $viewButton) {
+    $control.val($editDiv.data(kradVariables.INLINE_EDIT.ORIGINAL_VALUE));
 
+    // Check for a very rare case where the cancel value may not be valid on the form anymore (this should never happen
+    // if original data is truly valid).  May also occur in cross field constraint situations.
     var valid = true;
     if (validateClient) {
         var fieldId = getAttributeId(jQuery($control).attr('id'));
@@ -152,13 +172,13 @@ function _cancelEdit($control, $edit, $view) {
         return false;
     }
 
-    $edit.hide();
-    $view.show();
-    $view.focus();
+    $editDiv.hide();
+    $viewButton.show();
+    $viewButton.focus();
 
+    // Remove no longer needed handlers
     $control.unbind("keydown." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
-    $control.unbind("blur." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
-    $edit.unbind("cancel." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
+    $editDiv.unbind("cancel." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
 
     return false;
 }
@@ -167,16 +187,18 @@ function _cancelEdit($control, $edit, $view) {
  * Creates the buttons and the div containing them used by inline edit for save and cancel actions
  *
  * @param $control the control used for editing
- * @param $edit the edit element div used for inline edit
+ * @param $editDiv the edit element div used for inline edit
  * @param saveEditFunc the function to call on save
  * @param cancelEditFunc the function to call on cancel
  * @return the edit button div element which contains the buttons
  * @private
  */
-function _createInlineEditButtons($control, $edit, saveEditFunc, cancelEditFunc) {
+function _createInlineEditButtons($control, $editDiv, saveEditFunc, cancelEditFunc) {
     var saveText = getMessage(kradVariables.MESSAGE_SAVE);
     var cancelText = getMessage(kradVariables.MESSAGE_CANCEL);
-    var $editButtonBlock = jQuery("<div class='uif-inlineEdit-buttons' style='display:inline-block'></div>");
+
+    // Create Save and Cancel button content for inline edit
+    var $editButtonDiv = jQuery("<div class='uif-inlineEdit-buttons' style='display:inline-block'></div>");
 
     var saveButton = jQuery("<button class='btn btn-default btn-sm icon-checkmark-circle' style='margin-right: 3px;' title='" + saveText
             + "'><span class='sr-only'>" + saveText + "</span></button>");
@@ -186,15 +208,16 @@ function _createInlineEditButtons($control, $edit, saveEditFunc, cancelEditFunc)
             + "'><span class='sr-only'>" + cancelText + "</span></button>");
     cancelButton.click(cancelEditFunc);
 
-    $editButtonBlock.append(saveButton);
-    $editButtonBlock.append(cancelButton);
-    $edit.append($editButtonBlock);
+    $editButtonDiv.append(saveButton);
+    $editButtonDiv.append(cancelButton);
+    $editDiv.append($editButtonDiv);
 
+    // Position the buttons at the bottom right of the control
     var top = $control.offset().top + $control.outerHeight();
-    var left = $control.offset().left + $control.outerWidth() - $editButtonBlock.outerWidth();
-    $editButtonBlock.offset({top: top, left: left});
+    var left = $control.offset().left + $control.outerWidth() - $editButtonDiv.outerWidth();
+    $editButtonDiv.offset({top: top, left: left});
 
-    return $editButtonBlock;
+    return $editButtonDiv;
 }
 
 /**
@@ -204,28 +227,14 @@ function _createInlineEditButtons($control, $edit, saveEditFunc, cancelEditFunc)
  * @param cancelEditFunc the cancel function to call to cancel
  */
 function _setupInlineEditKeyHandlers($control, cancelEditFunc) {
-    var keycodes = { 16: false, 13: false, 27: false };
-
     $control.on("keydown." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE,function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
 
-        if (event.keyCode in keycodes) {
-            keycodes[event.keyCode] = true;
-
-            // check for escape key
-            if (keycodes[27]) {
-                cancelEditFunc(event);
-                return;
-            }
+        // check for escape key
+        if (keycode === 27) {
+            cancelEditFunc(event);
+            return;
         }
-    }).on("keyup." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE, function (event) {
-                event.preventDefault();
-                event.stopPropagation();
 
-                if (event.keyCode in keycodes) {
-                    keycodes[event.keyCode] = false;
-                }
-
-                $control.unbind("keyup." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
-            });
+    });
 }

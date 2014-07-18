@@ -27,9 +27,7 @@
     <para>Welcome to Rice ${project.version}! </para>
     <section>
       <title>Release Highlights</title>
-      <para>This version of Rice is a patch release consisting of security fixes as well as bug
-        fixes and small items needed by Kuali application partners. There are no database changes
-        and it should be a drop-in replacement.</para>
+      <para>This version of Rice contains bug fixes requested by the Kuali Applications and community. There are no database changes and it should be a drop-in replacement.</para>
     </section>
     <section>
       <title>Download</title>
@@ -61,75 +59,113 @@
   <section xml:id="items_addressed_in_rice">
     <title>Items Addressed in Rice ${project.version}</title>
     
-    <section>
-      <title>Bug Fix</title>
-      <para>
-        <itemizedlist>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9562'>KULRICE-9562</link>] - Using some lookup operators on their own result in an ArrayIndexOutOfBoundsException</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9646'>KULRICE-9646</link>] - IdentityServiceImpl.updatePrincipal should retrieve the original principal by ID instead of name</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9648'>KULRICE-9648</link>] - IdentityServiceImpl.createEntity is not creating entity affiliation and employment info correctly</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10037'>KULRICE-10037</link>] - CSV,XML,XLS file download buttons on collections does not work on inquiry screen</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12252'>KULRICE-12252</link>] - Table line select field does not include object binding path set on the group</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12477'>KULRICE-12477</link>] - Update DocumentRefreshQueueImpl to properly delete old action requests</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12502'>KULRICE-12502</link>] - Add null checks to allow processing to continue when certain data does not exist.</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12513'>KULRICE-12513</link>] - AFT Failure ServerSideTestViewAft - PreRequisite constraint fails</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12546'>KULRICE-12546</link>] - Actions method to calls within rich messages should be accessible by default</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12590'>KULRICE-12590</link>] - KRAD Sample App does not refresh database</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12608'>KULRICE-12608</link>] - Lookup Criteria should be functioning even for secure fields</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12614'>KULRICE-12614</link>] - KRMS - Terms do not persist</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12630'>KULRICE-12630</link>] - Fix style issue with create new link on lookups</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12670'>KULRICE-12670</link>] - Input field not rendering on collection add line item</para>
-          </listitem>
-        </itemizedlist>
-      </para>
-    </section>
-    
-    
-    <section>
-      <title>Task</title>
-      <para>
-        <itemizedlist>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-9525'>KULRICE-9525</link>] - Document best-practices for using JPA with Kuali Rice</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12430'>KULRICE-12430</link>] - Fix excessive memory usage on requests with many action requests</para>
-          </listitem>
-          <listitem>
-            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12491'>KULRICE-12491</link>] - Performance improvement for readXml in XmlHelper</para>
-          </listitem>
-        </itemizedlist>
-      </para>
-    </section>
-    
-    
+    <section><title>        Bug Fix
+    </title>
+    <para><itemizedlist>
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11054'>KULRICE-11054</link>] -         Exported document type does not include app doc status
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11292'>KULRICE-11292</link>] -         Validation messages on tree node components not displayed correctly
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11376'>KULRICE-11376</link>] -         HiddenFields are not submitted when part of progressive rendered section.
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11966'>KULRICE-11966</link>] -         Table details do not remain open when a line is deleted
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12479'>KULRICE-12479</link>] -         Tracking changes does not refresh child objects in an added collection
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12614'>KULRICE-12614</link>] -         KRMS - Terms do not persist
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12619'>KULRICE-12619</link>] -         KS Rice 2.4 Upgrade - subCollection updateComponent is null
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12625'>KULRICE-12625</link>] -         Attribute definitions not being correctly picked up from data dictionary for input fields
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12633'>KULRICE-12633</link>] -         KRAD performance issue with KS CourseOffering view
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12643'>KULRICE-12643</link>] -         Select box in dialog not posted to server
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12667'>KULRICE-12667</link>] -         RuleManagementService fixes from KS
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12699'>KULRICE-12699</link>] -         Change theme builder JS compiler to use WHITESPACE_ONLY option
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12734'>KULRICE-12734</link>] -         Update default values to use a boolean variable rather than a list
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12740'>KULRICE-12740</link>] -         KRMS Agenda cannot add a rule
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12752'>KULRICE-12752</link>] -         Travel Account Lookup: Comma appears in lookup criteria on search
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12753'>KULRICE-12753</link>] -         Context not being set when typed into field in Agenda editor
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12757'>KULRICE-12757</link>] -         AFT Failure HelpAft and DemoWidgetsHelpAft field label help no longer displaying
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12758'>KULRICE-12758</link>] -         AFT Failure many AFTs fail with Incident Report Object for which expression is configured on is null or does not implement UifDictionaryBean: help.toolTip
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12760'>KULRICE-12760</link>] -         AFT Failure many AFTs fail with search results no longer linked
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12764'>KULRICE-12764</link>] -         AFT Failure LabsMaintenanceCopyWithRestrictedFieldAft restricted field value copied
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12765'>KULRICE-12765</link>] -         FilterableLookupCriteriaControl support is broken and causing issues with KIM UserControl and GroupControl
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12767'>KULRICE-12767</link>] -         Version compatibility problem with parameter namespace change
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12779'>KULRICE-12779</link>] -         KSA Transaction: Expand section causes FreeMarker errors
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12782'>KULRICE-12782</link>] -         AFT Failure LabsMaintenanceSampleBasicAft automatic new doc id gives error on submit
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12789'>KULRICE-12789</link>] -         Roles memberships are not checking qualification
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12792'>KULRICE-12792</link>] -         AFT Failure LabsLookupsAft Bookmark has values in input field Nav does not
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12794'>KULRICE-12794</link>] -         AFT Failure DemoTravelAccountMaintenanceNewAft missing search icons
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12797'>KULRICE-12797</link>] -         KCB datasource not getting set correctly
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12798'>KULRICE-12798</link>] -         KRADServiceLocator.getKradApplicationDataSource() always returns rice datasource
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12803'>KULRICE-12803</link>] -         Lifecycle skipping interfering with ajaxDetailsRetrieval
+            </para></listitem>
+
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12826'>KULRICE-12826</link>] -         submitting role doc after saving results in java.lang.IllegalArgumentException: Invalid service name passed, value was null
+            </para></listitem>
+            
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12844'>KULRICE-12844</link>] -         AFT Failure LabsSchemaAft incident report null pointer exception in DataFieldBase.hasAutoInquiryRelationship
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12848'>KULRICE-12848</link>] -         IT Failure RoleServiceImplTest testAddQualifiedPrincipalToRoleDoesNotReusedWrongRoleMember campus code on role member incorrect expected:&lt;[KO]&gt; but was:&lt;[BL]&gt;
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12908'>KULRICE-12908</link>] -         AFT Failure Lookup Search Null Pointer Exception in LookupableImpl.processSearchCriteria
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12909'>KULRICE-12909</link>] -         AFT Failure LabsLookupMultipleValuesReturnAft testLabsLookupMultipleValuesReturnBookmark dialog empty
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12910'>KULRICE-12910</link>] -         AFT Failure LabsLookupMvParentViewAft and LabsLookupMvViewAft search page blank NPE LookupableImpl.validateSearchParameters
+            </para></listitem>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12913'>KULRICE-12913</link>] -         UT Failure XML Marshaling
+            </para></listitem>
+            
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12931'>KULRICE-12931</link>] -         Server side paging does not work when collection contains a field group
+            </para></listitem>
+      
+              
+            </itemizedlist></para>
+            </section>
+            
+            <section><title>        Improvement
+            </title>
+            <para><itemizedlist>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12626'>KULRICE-12626</link>] -         Improvements on binding/method security
+            </para></listitem>
+            </itemizedlist></para>
+            </section>
+            
+            <section><title>        Task
+            </title>
+            <para><itemizedlist>
+            <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12690'>KULRICE-12690</link>] -         Performance issues at the apply-model phase in KS
+            </para></listitem>
+            <listitem>
+            <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12832'>KULRICE-12832</link>] -         Code Report
+            </para>
+            </listitem>
+            </itemizedlist>
+            </para>
+            </section>
     
     
   </section>

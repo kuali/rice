@@ -96,6 +96,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitAndClickButtonByText(CLEAR_VALUES);
         testSearchAndSelect("IAT");
         waitAndClickButtonByText(SEARCH);
+        waitForLoadingProgress();
         waitForTextPresent("IAT - Income");
         waitAndClickButtonByText(CLEAR_VALUES);
         

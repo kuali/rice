@@ -1324,7 +1324,7 @@ public final class KRADUtils {
 
             // check first component type to extract value
             if (firstComponent != null && firstComponent instanceof Field) {
-                value = getSimpleFieldValue(model, field);
+                value = getSimpleFieldValue(model, (Field) firstComponent);
             } else if (firstComponent instanceof Action && StringUtils.isNotBlank(
                     ((Action) firstComponent).getActionLabel())) {
                 value = ((Action) firstComponent).getActionLabel();

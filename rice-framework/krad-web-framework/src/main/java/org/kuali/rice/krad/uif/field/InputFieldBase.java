@@ -256,10 +256,12 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
 
         // if read only do key/value translation if necessary (if alternative and additional properties not set)
-        if (Boolean.TRUE.equals(getReadOnly()) && !fieldOptions.isEmpty() && StringUtils.isBlank(
-                getReadOnlyDisplayReplacement()) && StringUtils.isBlank(getReadOnlyDisplaySuffix()) && StringUtils
-                .isBlank(getReadOnlyDisplayReplacementPropertyName()) && StringUtils.isBlank(
-                getReadOnlyDisplaySuffixPropertyName())) {
+        if (Boolean.TRUE.equals(getReadOnly())
+                && !fieldOptions.isEmpty()
+                && StringUtils.isBlank(getReadOnlyDisplayReplacement())
+                && StringUtils.isBlank(getReadOnlyDisplaySuffix())
+                && StringUtils.isBlank(getReadOnlyDisplayReplacementPropertyName())
+                && StringUtils.isBlank(getReadOnlyDisplaySuffixPropertyName())) {
 
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, getBindingInfo().getBindingPath());
 
@@ -274,11 +276,11 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             }
         }
 
-        if (control != null && quickfinder != null && quickfinder.getQuickfinderAction() != null) {
+        if(control != null && quickfinder != null && quickfinder.getQuickfinderAction() != null) {
             String disabledExpression = control.getPropertyExpression("disabled");
-            if (StringUtils.isNotBlank(disabledExpression)) {
+            if(StringUtils.isNotBlank(disabledExpression)) {
                 quickfinder.getQuickfinderAction().getPropertyExpressions().put("disabled", disabledExpression);
-            } else {
+            }  else {
                 quickfinder.getQuickfinderAction().setDisabled(control.isDisabled());
             }
         }
@@ -296,8 +298,13 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.INPUT_FIELD);
 
-        boolean ajaxInlineEditRefresh = ajaxInlineEdit && ((UifFormBase) model).getUpdateComponentId() != null &&
-                ((UifFormBase) model).getUpdateComponentId().equals(this.getId());
+        // Force a field to appear readOnly if inlineEdit or ajaxInlineEdit is true
+        if (inlineEdit || ajaxInlineEdit) {
+            this.setReadOnly(true);
+        }
+
+        boolean ajaxInlineEditRefresh = ajaxInlineEdit && ((UifFormBase)model).getUpdateComponentId() != null &&
+                ((UifFormBase)model).getUpdateComponentId().equals(this.getId());
 
         // if read only or the control is null no input can be given so no need to setup validation
         if ((Boolean.TRUE.equals(getReadOnly()) && !inlineEdit && !ajaxInlineEditRefresh) || getControl() == null) {
@@ -414,8 +421,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.VALID_CHARACTER_CONSTRAINT,
                 this.getValidCharactersConstraint());
 
-        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.CASE_CONSTRAINT,
-                this.getCaseConstraint());
+        viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.CASE_CONSTRAINT, this.getCaseConstraint());
 
         viewPostMetadata.addComponentPostData(this, UifConstants.PostMetadata.MUST_OCCUR_CONSTRAINTS,
                 this.getMustOccurConstraints());
@@ -492,12 +498,12 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             } else {
                 String maintenanceAction = null;
                 if (view.getViewTypeName().equals(UifConstants.ViewType.MAINTENANCE)) {
-                    maintenanceAction = ((MaintenanceDocumentForm) model).getMaintenanceAction();
+                    maintenanceAction =((MaintenanceDocumentForm) model).getMaintenanceAction();
                 }
 
-                if ((!view.getViewTypeName().equals(UifConstants.ViewType.LOOKUP)) && (!KRADConstants
-                        .MAINTENANCE_COPY_ACTION.equals(maintenanceAction))) {
-                    setReadOnly(true);
+                if ((!view.getViewTypeName().equals(UifConstants.ViewType.LOOKUP)) &&
+                    (!KRADConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction))) {
+                        setReadOnly(true);
                 }
             }
         }
@@ -1325,9 +1331,10 @@ public class InputFieldBase extends DataFieldBase implements InputField {
             }
         }
 
+
         if (getControl() != null && !(getControl() instanceof TextControl
                 || getControl() instanceof TextAreaControl
-                || getControl() instanceof SelectControl)) {
+                || getControl() instanceof SelectControl)){
 
             if (CollectionUtils.isNotEmpty(this.getPostInputAddons())) {
                 String currentValues[] = {"propertyName =" + getPropertyName()};
@@ -1338,6 +1345,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         super.completeValidation(tracer.getCopy());
     }
+
 
     /**
      * Determines wheter or not to create an automatic quickfinder widget for this field within the current lifecycle.
@@ -1357,7 +1365,8 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         }
 
         // get relationship from metadata service
-        @SuppressWarnings("deprecation") DataObjectRelationship relationship = null;
+        @SuppressWarnings("deprecation")
+        DataObjectRelationship relationship = null;
         if (parentObject != null) {
             relationship = KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectRelationship(parentObject,
                     parentObjectClass, propertyName, "", true, true, false);

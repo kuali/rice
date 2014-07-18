@@ -138,10 +138,9 @@ public abstract class UifControllerBase {
         return getNavigationControllerService().returnToPrevious(form);
     }
 
+
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=saveField")
-    public ModelAndView saveField(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception{
-        GlobalVariables.getMessageMap().putError("dataField3", "serverTestError");
+    public ModelAndView saveField(UifFormBase uifForm) throws Exception{
         // Hook method for saving individual fields
         return refresh(uifForm);
     }

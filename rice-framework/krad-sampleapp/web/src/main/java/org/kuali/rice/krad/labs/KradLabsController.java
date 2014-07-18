@@ -73,8 +73,7 @@ public class KradLabsController extends UifControllerBase {
 
     @Override
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=saveField")
-    public ModelAndView saveField(@ModelAttribute("KualiForm") final UifFormBase uifForm, BindingResult result,
-            HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView saveField(UifFormBase uifForm) throws Exception {
         GlobalVariables.getMessageMap().putError("dataField3", "serverTestError");
         // Hook method for saving individual fields
         return refresh(uifForm);

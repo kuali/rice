@@ -129,7 +129,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         if (component == null) {
             return;
         }
-        
+
         Group group = (Group) component;
 
         // list to hold the generated compare items
@@ -140,9 +140,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
         // evaluate expressions on comparables
         Map<String, Object> context = new HashMap<String, Object>();
-        
+
         View view = ViewLifecycle.getView();
-        
+
         Map<String, Object> viewContext = view.getContext();
         if (viewContext != null) {
             context.putAll(view.getContext());
@@ -167,7 +167,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 compareHeaderField.setHeaderText(comparable.getHeaderText());
                 comparisonItems.add(compareHeaderField);
             }
-            
+
             // if group is using grid layout, make first row a header
             if (group.getLayoutManager() instanceof GridLayoutManager) {
                 ((GridLayoutManager) group.getLayoutManager()).setRenderFirstRowHeader(true);
@@ -231,12 +231,14 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                             groupToSetHeader = (Group) group.getContext().get(UifConstants.ContextVariableNames.PARENT);
                         }
 
-                        if (groupToSetHeader.getDisclosure().isRender()) {
-                            groupToSetHeader.getDisclosure().setOnDocumentReadyScript(
-                                    "showChangeIconOnDisclosure('" + groupToSetHeader.getId() + "');");
-                        } else if (groupToSetHeader.getHeader() != null) {
-                            groupToSetHeader.getHeader().setOnDocumentReadyScript(
-                                    "showChangeIconOnHeader('" + groupToSetHeader.getHeader().getId() + "');");
+                        if (groupToSetHeader != null) {
+                            if (groupToSetHeader.getDisclosure().isRender()) {
+                                groupToSetHeader.getDisclosure().setOnDocumentReadyScript(
+                                        "showChangeIconOnDisclosure('" + groupToSetHeader.getId() + "');");
+                            } else if (groupToSetHeader.getHeader() != null) {
+                                groupToSetHeader.getHeader().setOnDocumentReadyScript(
+                                        "showChangeIconOnHeader('" + groupToSetHeader.getHeader().getId() + "');");
+                            }
                         }
 
                         changeIconShowedOnHeader = true;
@@ -250,7 +252,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 suppressLabel = true;
             }
         }
-        
+
         // update the group's list of components
         group.setItems(comparisonItems);
     }
@@ -274,6 +276,9 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         boolean valueChanged = false;
         for (DataField field : itemFields) {
             String fieldBindingPath = field.getBindingInfo().getBindingPath();
+            if (!fieldBindingPath.endsWith(field.getPropertyName())) {
+                fieldBindingPath += "." + field.getPropertyName();
+            }
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, fieldBindingPath);
 
             String compareBindingPath = StringUtils.replaceOnce(fieldBindingPath,

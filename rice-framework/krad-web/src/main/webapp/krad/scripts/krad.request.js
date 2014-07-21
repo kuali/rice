@@ -436,15 +436,16 @@ KradRequest.prototype = {
                     return false;
                 }
 
+                // Check to see if name ends with a wildcard
+                var wildcarded = value.indexOf("*", this.length - 1) !== -1;
+
                 // If fields to send start with a # look inside that field or group for inputs serialize
                 if (value.indexOf("#") === 0) {
                     dataSerialized = dataSerialized + "&" + jQuery(value).find("[name]").fieldSerialize();
-                }
-
-                // Check to see if name ends with a wildcard
-                var wildcarded = value.indexOf("*", this.length - 1) !== -1;
-                if (wildcarded) {
-                    dataSerialized = dataSerialized + "&" + jQuery("[name^='" + value.substr(0, value.length - 1) + "']").fieldSerialize();
+                } else if (wildcarded) {
+                    // Look for inputs which start with name specified before wildcard
+                    dataSerialized = dataSerialized + "&"
+                            + jQuery("[name^='" + value.substr(0, value.length - 1) + "']").fieldSerialize();
                 } else {
                     dataSerialized = dataSerialized + "&" + jQuery("[name='" + value + "']").fieldSerialize();
                 }

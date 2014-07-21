@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.useroptions;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,7 +34,8 @@ import org.kuali.rice.kew.api.preferences.Preferences;
 @IdClass(UserOptionsId.class)
 @Entity
 @Table(name="KREW_USR_OPTN_T")
-public class UserOptions implements Comparable {
+@Cacheable(false)
+public class UserOptions implements Comparable<UserOptions> {
 
 	@Id
 	@Column(name="PRNCPL_ID")
@@ -85,16 +87,13 @@ public class UserOptions implements Comparable {
     /**
      * Compares the given object is an instance of this class, then determines comparison based on the option id.
      * @param o the object to compare with
-     * @return The value 0 if the argument is a string lexicographically equal to this string; a value less than 0 if
-     * the argument is a string lexicographically greater than this string; and a value greater than 0 if the argument
-     * is a string lexicographically less than this string.
+     * @return The value 0 if the option ID is equal; a value less than 0 if
+     * the Option ID is greater than this object's; and a value greater than 0 if the argument's
+     * Option ID less than this object's.
      */
     @Override
-    public int compareTo(Object o) {
-        if (o instanceof UserOptions) {
-            return this.getOptionId().compareTo(((UserOptions)o).getOptionId());
-        }
-        return 0;
+    public int compareTo(UserOptions o) {
+        return getOptionId().compareTo(o.getOptionId());
     }
 
 }

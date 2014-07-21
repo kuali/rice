@@ -489,7 +489,7 @@ function evalHiddenScript(jqueryObj) {
  *          the value that should be set for the methodToCall parameter
  */
 function setMethodToCall(methodToCall) {
-    jQuery("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo(jQuery("#formComplete"));
+    jQuery("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo(jQuery("#" + kradVariables.FORM_COMPLETE_ID));
 }
 
 /**
@@ -509,7 +509,7 @@ function writeHiddenToForm(propertyName, propertyValue) {
         propertyValue = propertyValue.replace(/"/g, "\\\"");
     }
 
-    jQuery("<input type='hidden' name='" + propertyName + "'" + ' value="' + propertyValue + '"/>').appendTo(jQuery("#formComplete"));
+    jQuery("<input type='hidden' name='" + propertyName + "'" + ' value="' + propertyValue + '"/>').appendTo(jQuery("#" + kradVariables.FORM_COMPLETE_ID));
 }
 
 /**
@@ -519,7 +519,7 @@ function writeHiddenToForm(propertyName, propertyValue) {
  * be called to clear the hiddens
  */
 function clearHiddens() {
-    jQuery("#formComplete").html("");
+    jQuery("#" + kradVariables.FORM_COMPLETE_ID).html("");
 }
 
 /**

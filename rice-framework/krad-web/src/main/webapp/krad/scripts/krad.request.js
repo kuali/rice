@@ -420,10 +420,12 @@ KradRequest.prototype = {
             // The formInfo and formComplete data is data that is always necessary or added for the controller call
             var dataSerialized = jQuery.param(data, true);
             if (dataSerialized) {
-                dataSerialized = dataSerialized + "&" + jQuery("#formInfo > input, #formComplete > input").fieldSerialize();
+                dataSerialized = dataSerialized + "&" + jQuery("#" + kradVariables.FORM_INFO_ID + " > input,"
+                        + " #" + kradVariables.FORM_COMPLETE_ID + "> input").fieldSerialize();
             }
             else {
-                dataSerialized = jQuery("#formInfo > input, #formComplete > input").fieldSerialize();
+                dataSerialized = jQuery("#" + kradVariables.FORM_INFO_ID + " > input,"
+                        + " #" + kradVariables.FORM_COMPLETE_ID + "> input").fieldSerialize();
             }
 
             jQuery(request.fieldsToSend).each(function (index, value) {

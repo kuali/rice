@@ -371,7 +371,7 @@ function createLightBoxPost(componentId, options, lookupReturnByScript) {
             data['actionParameters[returnByScript]'] = lookupReturnByScript;
             data['actionParameters[methodToCall]'] = "start";
             data['actionParameters[flowKey]'] = "start";
-            data['actionParameters[returnFormKey]'] = jQuery("#formInfo").children("input[name='formKey']").val();
+            data['actionParameters[returnFormKey]'] = jQuery("#" + kradVariables.FORM_INFO_ID).children("input[name='formKey']").val();
 
             var lookupParameters = data['actionParameters[lookupParameters]'];
             if (lookupParameters !== "" && typeof lookupParameters !== "undefined") {

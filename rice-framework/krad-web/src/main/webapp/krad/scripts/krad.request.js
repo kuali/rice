@@ -115,7 +115,9 @@ KradRequest.prototype = {
     // additional data to send with the request (in addition to form data)
     additionalData: {},
 
-    // only send fields specified by this array (along with data required standard by the controller)
+    // only send field inputs specified by name in this array.  A group id or field id with "#" id selector prefix
+    // can be used to send all inputs which are nested within them.  Sends only the data specified,
+    // along with data required standard by the controller for KRAD.
     fieldsToSend: null,
 
     // indicates whether the request should be made with ajax or standard browser submit
@@ -429,15 +431,20 @@ KradRequest.prototype = {
             }
 
             jQuery(request.fieldsToSend).each(function (index, value) {
-                // stop iteration if NO_FIELDS_TO_SEND keyword detected
+                // Stop iteration if NO_FIELDS_TO_SEND keyword detected
                 if (value.toUpperCase() === kradVariables.NO_FIELDS_TO_SEND) {
                     return false;
                 }
 
-                // check to see if name ends with a wildcard
+                // If fields to send start with a # look inside that field or group for inputs serialize
+                if (value.indexOf("#") === 0) {
+                    dataSerialized = dataSerialized + "&" + jQuery(value).find("[name]").fieldSerialize();
+                }
+
+                // Check to see if name ends with a wildcard
                 var wildcarded = value.indexOf("*", this.length - 1) !== -1;
                 if (wildcarded) {
-                    dataSerialized = dataSerialized + "&" + jQuery("[name^='" + value.substr(0, value.length - 1) + "']");
+                    dataSerialized = dataSerialized + "&" + jQuery("[name^='" + value.substr(0, value.length - 1) + "']").fieldSerialize();
                 } else {
                     dataSerialized = dataSerialized + "&" + jQuery("[name='" + value + "']").fieldSerialize();
                 }

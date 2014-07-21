@@ -1250,13 +1250,15 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     String getMethodToCallOnRefresh();
 
     /**
-     * Limits the input fields to send on a methodToCall server call to the names specified in this list.
+     * Limits the field data to send on a refresh methodToCall server call to the names/group id/field id
+     * specified in this list.
      *
      * <p>The names in the list should be the propertyNames of the fields sent with this request.  A wildcard("*")
      * can be used at the END of a name to specify all fields with names that begin with the string
-     * before the wildcard.  If the array contains 1 item with the keyword "NONE", then no form fields are sent.  Note
-     * that this only limits the fields which exist on the form and data required by the KRAD framework
-     * is still sent (eg, methodToCall, formKey, sessionId, etc.)</p>
+     * before the wildcard.  If the array contains 1 item with the keyword "NONE", then no form fields are sent.
+     * In addition, a group id or field id with the "#" id selector prefix can be used to send all input data which
+     * are nested within them. Note that this only limits the fields which exist on the form and data required
+     * by the KRAD framework is still sent (eg, methodToCall, formKey, sessionId, etc.)</p>
      *
      * @return the only input fields to send by name with the action request
      */

@@ -87,11 +87,6 @@
     </property>
   </bean>
 
-  <bean id="Uif-InlineEdit-InputField-TextArea" parent="Uif-InlineEdit-InputField-TextArea-parentBean"/>
-  <bean id="Uif-InlineEdit-InputField-TextArea-parentBean" parent="Uif-InputField"
-        p:instructionalText="Instructions: To enter a new line, press shift+enter keys.
-        To save the field, press the enter key. To abandon changes to the field, press the esc key."/>
-
   <bean id="Uif-LookupCriteriaInputField" parent="Uif-LookupCriteriaInputField-parentBean"/>
   <bean id="Uif-LookupCriteriaInputField-parentBean" abstract="true"
         class="org.kuali.rice.krad.lookup.LookupInputField"

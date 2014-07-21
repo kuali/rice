@@ -417,6 +417,7 @@ KradRequest.prototype = {
             jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
         } else {
             // Serialize all the data we wish to send
+            // The formInfo and formComplete data is data that is always necessary or added for the controller call
             var dataSerialized = jQuery.param(data, true);
             if (dataSerialized) {
                 dataSerialized = dataSerialized + "&" + jQuery("#formInfo > input, #formComplete > input").fieldSerialize();

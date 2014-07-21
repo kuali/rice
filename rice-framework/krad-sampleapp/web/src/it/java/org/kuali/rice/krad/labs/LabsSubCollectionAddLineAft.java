@@ -40,7 +40,7 @@ public class LabsSubCollectionAddLineAft extends WebDriverLegacyITBase {
 
     protected void testSubCollectionAddLine() throws InterruptedException {
     	waitAndTypeByXpath("//section/div/div/table/tbody/tr/td/div/input","a");
-    	waitAndClickByXpath("//section/div/div/div/button[contains(text(),'add')]");
+    	waitAndClickByXpath("//section/div/div/div/button[contains(text(),'Add')]");
     	waitForElementPresentByXpath("//section/div/div[2]/table/tbody/tr/td/div/input[@value='a']");
     	waitAndClickByXpath("//section/div/div[2]/table/tbody/tr[2]/td/div/fieldset/section/div/button[contains(text(),'Add Line')]");
     	waitAndTypeByXpath("//form[@id='kualiLightboxForm']/div/div/input","b");

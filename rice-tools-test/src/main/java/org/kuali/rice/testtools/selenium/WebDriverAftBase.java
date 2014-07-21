@@ -494,6 +494,24 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         System.out.println(jGrowlHeader + " sessionId is " + sessionId);
     }
 
+    protected String determinePage() {
+        String url = driver.getCurrentUrl();
+
+        String viewId = "";
+        if (url.contains("viewId=")) {
+            viewId = url.substring(url.indexOf("viewId=") + 7, url.length());
+            viewId = viewId.substring(0, viewId.indexOf("&"));
+        }
+
+        String pageId = "";
+        if (url.contains("pageId=")) {
+            pageId = url.substring(url.indexOf("pageId=") + 7, url.length());
+            pageId = "-" + pageId.substring(0, pageId.indexOf("&"));
+        }
+
+        return viewId + pageId;
+    }
+
     protected void determineTestMethodName() {
         if (testName != null && testName.getMethodName() != null) { // JUnit
             testMethodName = testName.getMethodName();
@@ -970,7 +988,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void screenshot() throws IOException {
-        webDriverScreenshotHelper.screenshot(driver, this.getClass().getSimpleName(), testName.getMethodName());
+        webDriverScreenshotHelper.screenshot(driver, this.getClass().getSimpleName(), testName.getMethodName(), determinePage());
     }
 
     protected void startSession(Method method) throws Exception {

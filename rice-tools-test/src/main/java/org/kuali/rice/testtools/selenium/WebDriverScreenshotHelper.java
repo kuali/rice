@@ -68,10 +68,30 @@ public class WebDriverScreenshotHelper {
      * @throws IOException
      */
     public void screenshot(WebDriver driver, String testName, String testMethodName) throws IOException {
+        screenshot(driver, testName, testMethodName, "");
+    }
+
+    /**
+     * Screenshots will be saved using either the value of (#REMOTE_DRIVER_SCREENSHOT_FILENAME or if none, testName.testNameMethod)
+     * appended with a date time stamp and the png file extension.
+     *
+     * @see WebDriverUtils#getDateTimeStampFormatted
+     *
+     * @param driver to use, if not of type TakesScreenshot no screenshot will be taken
+     * @param testName to save test as, unless #REMOTE_DRIVER_SCREENSHOT_FILENAME is set
+     * @param testMethodName to save test as, unless #REMOTE_DRIVER_SCREENSHOT_FILENAME is set
+     * @throws IOException
+     */
+    public void screenshot(WebDriver driver, String testName, String testMethodName, String screenName) throws IOException {
         if (driver instanceof TakesScreenshot) {
+
+            if (!"".equals(screenName)) {
+                screenName = "-" + screenName + "-";
+            }
+
             File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             String screenshotFileName = System.getProperty(REMOTE_DRIVER_SCREENSHOT_FILENAME, testName
-                    + "." + testMethodName) + "-" + WebDriverUtils.getDateTimeStampFormatted() + ".png";
+                    + "." + testMethodName) + screenName + WebDriverUtils.getDateTimeStampFormatted() + ".png";
             FileUtils.copyFile(scrFile, new File(System.getProperty(REMOTE_DRIVER_SCREENSHOT_DIR, ".")
                     + File.separator, screenshotFileName));
             String archiveUrl = System.getProperty(REMOTE_DRIVER_SCREENSHOT_ARCHIVE_URL, "");

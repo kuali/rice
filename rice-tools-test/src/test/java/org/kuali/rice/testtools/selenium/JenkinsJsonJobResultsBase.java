@@ -66,7 +66,7 @@ public class JenkinsJsonJobResultsBase {
     public static final String JENKINS_BASE_URL = "jenkins.base.url";
 
     /**
-     * -Djenkins.jobs= comma delimited with optional colon delimited list of jobs:jobNumbers default is rice-2.4-smoke-test.
+     * REQUIRED -Djenkins.jobs= comma delimited with optional colon delimited list of jobs:jobNumbers.
      *
      * If no jobNumbers are included the last completed build number for the given job will be used.  If "all" is given for
      * the jobNumbers all available job builds will be used.
@@ -89,6 +89,11 @@ public class JenkinsJsonJobResultsBase {
     String downloadDir;
 
     public void setUp() throws MalformedURLException, InterruptedException {
+        if (System.getProperty(JENKINS_JOBS) == null) {
+            System.out.println("Don't know what jobs to retrieve.  -D" + JENKINS_JOBS + "= must be declared.");
+            System.exit(1);
+        }
+
         jenkinsBase = System.getProperty(JENKINS_BASE_URL, "http://ci.kuali.org");
         outputDirectory = System.getProperty(JSON_OUTPUT_DIR);
 
@@ -123,7 +128,7 @@ public class JenkinsJsonJobResultsBase {
         WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.xpath("//span[contains(text(), 'Page generated')]"), this.getClass().toString());
 
         // setup jobs builds
-        jobsBuildsStrings = System.getProperty(JENKINS_JOBS, "rice-2.4-smoke-test").split("[,\\s]");
+        jobsBuildsStrings = System.getProperty(JENKINS_JOBS).split("[,\\s]");
         String job;
         for (String jobsBuildsString : jobsBuildsStrings) {
             if (jobsBuildsString.contains(":")) {
@@ -248,6 +253,7 @@ public class JenkinsJsonJobResultsBase {
 
         outputFile = calcOutputFile(job, jobNumber);
 
+        // Add some end of lines to avoid the entire file being written out as 1 line
         json = json.replaceAll("}],", "}],\n\n");
 
         FileUtils.writeStringToFile(new File(outputFile), json);

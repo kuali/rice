@@ -23,7 +23,7 @@ import java.net.MalformedURLException;
 import java.util.Set;
 
 /**
- * @author Kuali Rice Team (rice.collab@kuali.org) *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class JenkinsJsonJobsBuildsResults extends JenkinsJsonJobResultsBase {
 

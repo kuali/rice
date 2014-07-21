@@ -81,8 +81,7 @@ public class IngestXmlExecConfig {
 
         for (MetaInfDataType type : types) {
             List<String> resources = MetaInfUtils.getPatternedClasspathResources(XmlProjectConstants.ID,
-                    Optional.of(UPGRADE_SQL_PATH), Optional.<MetaInfDataLocation> absent(), Optional.of(type),
-                    RiceXmlConfig.INGEST_FILENAME);
+                    Optional.of(UPGRADE_SQL_PATH), Optional.<MetaInfDataLocation> absent(), Optional.of(type), RiceXmlConfig.INGEST_FILENAME);
             Collections.sort(resources, comparator);
             locations.addAll(resources);
         }

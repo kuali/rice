@@ -112,8 +112,9 @@ public class RiceSqlConfig implements MetaInfContextsConfig {
             for (MetaInfDataLocation location : MetaInfDataLocation.values()) {
                 for (String vendor : vendors) {
                     for (MetaInfGroup group : groups) {
-                        MetaInfContext context = getMetaInfContext(group, INITIAL_SQL_PATH, vendor, location, type);
-                        metaInfContexts.add(context);
+                        List<MetaInfContext> contexts = getMetaInfContexts(group, INITIAL_SQL_PATH, vendor,
+                                location, type);
+                        metaInfContexts.addAll(contexts);
                     }
                 }
             }
@@ -122,8 +123,9 @@ public class RiceSqlConfig implements MetaInfContextsConfig {
         for (MetaInfDataType type : types) {
             for (MetaInfDataLocation location : MetaInfDataLocation.values()) {
                 for (String vendor : vendors) {
-                    MetaInfContext context = getMetaInfContext(MetaInfGroup.OTHER, UPGRADE_SQL_PATH, vendor, location, type);
-                    metaInfContexts.add(context);
+                    List<MetaInfContext> contexts = getMetaInfContexts(MetaInfGroup.OTHER, UPGRADE_SQL_PATH, vendor,
+                            location, type);
+                    metaInfContexts.addAll(contexts);
                 }
             }
         }
@@ -132,7 +134,7 @@ public class RiceSqlConfig implements MetaInfContextsConfig {
     }
 
     /**
-     * Creates the META-INF context for the given {@code group}, {@code qualifier}, {@code vendor},
+     * Creates a list of META-INF contexts for the given {@code group}, {@code qualifier}, {@code vendor},
      * {@code location}, and {@code type}.
      *
      * @param group the group of the data to create the context for
@@ -141,26 +143,38 @@ public class RiceSqlConfig implements MetaInfContextsConfig {
      * @param location the location of the data to create the context for
      * @param type the type of data to create the context for
      *
-     * @return the META-INF context
+     * @return a list of META-INF contexts
      */
-    protected MetaInfContext getMetaInfContext(MetaInfGroup group, String qualifier, String vendor, MetaInfDataLocation location, MetaInfDataType type) {
-        File outputFile = MetaInfUtils.getOutputFile(project, build, Optional.of(vendor), Optional.of(location), Optional.of(type), group.name().toLowerCase());
-        String encoding = build.getEncoding();
+    protected List<MetaInfContext> getMetaInfContexts(MetaInfGroup group, String qualifier, String vendor, MetaInfDataLocation location, MetaInfDataType type) {
+        List<MetaInfContext> metaInfContexts = Lists.newArrayList();
+
         File scanDir = build.getOutputDir();
+        String encoding = build.getEncoding();
 
         Comparator<MetaInfResource> comparator = new MetaInfResourceLocationComparator();
 
         String includesKey = MetaInfConfigUtils.getIncludesKey(group, PREFIX) + "." + vendor;
         String excludesKey = MetaInfConfigUtils.getExcludesKey(group, PREFIX) + "." + vendor;
-        Map<MetaInfGroup, String> defaultIncludes = getDefaultIncludes(qualifier, vendor, location, type);
-        Map<MetaInfGroup, String> defaultExcludes = getDefaultExcludes(defaultIncludes);
-        List<String> includes = SpringUtils.getNoneSensitiveListFromCSV(env, includesKey, defaultIncludes.get(group));
-        List<String> excludes = SpringUtils.getNoneSensitiveListFromCSV(env, excludesKey, defaultExcludes.get(group));
 
         Boolean relativePaths = env.getBoolean(RELATIVE_KEY, DEFAULT_GENERATE_RELATIVE_PATHS);
 
-        return MetaInfContext.builder(outputFile, encoding, scanDir).comparator(comparator)
-                .includes(includes).excludes(excludes).relativePaths(relativePaths.booleanValue()).build();
+        List<String> pathQualifiers = MetaInfUtils.getQualifiers(scanDir, project, Lists.newArrayList(qualifier), Lists.<String> newArrayList());
+
+        for (String pathQualifier : pathQualifiers) {
+            File outputFile = MetaInfUtils.getOutputFile(project, build, Optional.of(pathQualifier + PATH_SEPARATOR + vendor),
+                    Optional.of(location), Optional.of(type), group.name().toLowerCase());
+
+            Map<MetaInfGroup, String> defaultIncludes = getDefaultIncludes(pathQualifier, vendor, location, type);
+            Map<MetaInfGroup, String> defaultExcludes = getDefaultExcludes(defaultIncludes);
+            List<String> includes = SpringUtils.getNoneSensitiveListFromCSV(env, includesKey, defaultIncludes.get(group));
+            List<String> excludes = SpringUtils.getNoneSensitiveListFromCSV(env, excludesKey, defaultExcludes.get(group));
+
+            MetaInfContext context = MetaInfContext.builder(outputFile, encoding, scanDir).comparator(comparator)
+                    .includes(includes).excludes(excludes).relativePaths(relativePaths.booleanValue()).build();
+            metaInfContexts.add(context);
+        }
+
+        return metaInfContexts;
     }
 
     /**

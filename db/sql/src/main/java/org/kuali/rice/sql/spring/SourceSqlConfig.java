@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.sql.spring;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -30,13 +31,11 @@ import org.kuali.common.jdbc.suppliers.ResourcesSupplierFactory;
 import org.kuali.common.jdbc.suppliers.SqlSupplier;
 import org.kuali.common.jdbc.suppliers.spring.SuppliersFactoryConfig;
 import org.kuali.common.jdbc.vendor.model.DatabaseVendor;
+import org.kuali.common.util.metainf.model.PathComparator;
 import org.kuali.common.util.metainf.service.MetaInfUtils;
 import org.kuali.common.util.metainf.spring.MetaInfDataLocation;
 import org.kuali.common.util.metainf.spring.MetaInfDataType;
 import org.kuali.common.util.metainf.spring.MetaInfGroup;
-import org.kuali.common.util.project.ProjectService;
-import org.kuali.common.util.project.model.Project;
-import org.kuali.common.util.project.spring.ProjectServiceConfig;
 import org.kuali.rice.db.config.profile.MetaInfDataLocationProfileConfig;
 import org.kuali.rice.db.config.profile.MetaInfDataTypeProfileConfig;
 import org.kuali.rice.db.config.profile.MetaInfFilterConfig;
@@ -48,7 +47,6 @@ import org.kuali.rice.db.config.profile.RiceMasterConfig;
 import org.kuali.rice.db.config.profile.RiceServerBootstrapConfig;
 import org.kuali.rice.sql.project.SqlProjectConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -62,10 +60,16 @@ import com.google.common.collect.ImmutableList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Configuration
-@Import({ DbaContextConfig.class, SuppliersFactoryConfig.class, ProjectServiceConfig.class, DefaultJdbcResetConfig.class,
+@Import({ DbaContextConfig.class, SuppliersFactoryConfig.class, DefaultJdbcResetConfig.class,
           RiceClientBootstrapConfig.class, RiceClientDemoConfig.class, RiceServerBootstrapConfig.class, RiceServerDemoConfig.class,
           RiceServerDemoFilterConfig.class, RiceMasterConfig.class })
 public class SourceSqlConfig implements JdbcContextsConfig {
+
+    // All paths must have the hardcoded separator to be consistent for deployment
+    private static final String PATH_SEPARATOR = "/";
+
+    private static final String INITIAL_SQL_PATH = "initial-sql" + PATH_SEPARATOR + "2.3.0";
+    private static final String UPGRADE_SQL_PATH = "upgrades" + PATH_SEPARATOR + "*";
 
     /**
      * The DBA context.
@@ -78,12 +82,6 @@ public class SourceSqlConfig implements JdbcContextsConfig {
      */
 	@Autowired
 	ResourcesSupplierFactory factory;
-
-    /**
-     * The Maven project service.
-     */
-	@Autowired
-	ProjectService projectService;
 
     /**
      * The vendor of the database to run the SQL against.
@@ -116,16 +114,6 @@ public class SourceSqlConfig implements JdbcContextsConfig {
     MetaInfFilterConfig serverDemoFilterConfig;
 
     /**
-     * Returns the Rice Maven project.
-     *
-     * @return the Rice Maven project
-     */
-	@Bean
-	public Project riceSqlProject() {
-		return projectService.getProject(SqlProjectConstants.ID);
-	}
-
-    /**
      * {@inheritDoc}
      *
      * <p>
@@ -148,10 +136,10 @@ public class SourceSqlConfig implements JdbcContextsConfig {
         for (MetaInfDataType type : types) {
             for (MetaInfDataLocation location : locations) {
                 for (MetaInfGroup group : groups) {
-                    jdbcContexts.add(getJdbcContext(group, location, type, true));
+                    jdbcContexts.add(getJdbcContext(group, INITIAL_SQL_PATH, vendor.getCode(), location, type, true));
                 }
 
-                jdbcContexts.add(getJdbcContext(MetaInfGroup.OTHER, location, type, false));
+                jdbcContexts.add(getJdbcContext(MetaInfGroup.OTHER, UPGRADE_SQL_PATH, vendor.getCode(), location, type, false));
             }
         }
 
@@ -184,21 +172,26 @@ public class SourceSqlConfig implements JdbcContextsConfig {
      * Creates the JDBC context for the given {@code group}, {@code location}, and {@code type}.
      *
      * @param group the group of the data to create the context for
+     * @param qualifier the prefix to add to the initial resource path
+     * @param vendor the database vendor to create the context for
      * @param location the location of the data to create the context for
      * @param type the type of data to create the context for
      * @param multithreaded whether or not to run the context in multiple threads
      *
      * @return the JDBC context
      */
-	protected JdbcContext getJdbcContext(MetaInfGroup group, MetaInfDataLocation location, MetaInfDataType type, boolean multithreaded) {
+	protected JdbcContext getJdbcContext(MetaInfGroup group, String qualifier, String vendor, MetaInfDataLocation location, MetaInfDataType type, boolean multithreaded) {
         DataSource dataSource = dataSources.dataSource();
 
         List<SqlSupplier> suppliers = Lists.newArrayList();
 
+        PathComparator comparator = new PathComparator();
+
         if (isIncluded(group, location, type) && !isExcluded(group, location, type)) {
-            String resourcesLocation = MetaInfUtils.getClasspathResource(riceSqlProject(), Optional.of(vendor.getCode()),
-                    Optional.of(location), Optional.of(type), group.name().toLowerCase());
-            suppliers.addAll(factory.getSuppliers(resourcesLocation));
+            List<String> resources = MetaInfUtils.getPatternedClasspathResources(SqlProjectConstants.ID,
+                    Optional.of(qualifier + PATH_SEPARATOR + vendor), Optional.of(location), Optional.of(type), group.name().toLowerCase());
+            Collections.sort(resources, comparator);
+            suppliers.addAll(factory.getSuppliers(resources));
         }
 
         String message = "[" + group.name().toLowerCase() + ":" + (multithreaded ? "concurrent" : "sequential") + "]";

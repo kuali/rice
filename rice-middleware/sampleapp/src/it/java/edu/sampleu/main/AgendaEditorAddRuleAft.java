@@ -135,7 +135,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
         if (StringUtils.isNoneBlank(propComparison)) {
             waitAndSelectByName(propositionPath + "parameters[2].value", propComparison);
             unfocusElement();
-            Thread.sleep(3000); // need time for next input to be reloaded
+            Thread.sleep(8000); // need time for next input to be reloaded
         }
 
         if (StringUtils.isNoneBlank(propositionValue)) {

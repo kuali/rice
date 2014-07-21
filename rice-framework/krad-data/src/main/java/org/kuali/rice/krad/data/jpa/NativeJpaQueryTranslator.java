@@ -557,11 +557,22 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
             orderList = new ArrayList<Order>();
         }
 
-        if (sortAscending) {
-            orderList.add(criteria.builder.asc(criteria.root.get(propertyPath)));
+        if (propertyPath.contains(".")) {
+            String propertyPathStart = StringUtils.substringBefore( propertyPath, "." );
+            String propertyPathEnd = StringUtils.substringAfter( propertyPath, "." );
+            if (sortAscending) {
+                orderList.add(criteria.builder.asc(criteria.root.get(propertyPathStart).get(propertyPathEnd)));
+            } else {
+                orderList.add(criteria.builder.desc(criteria.root.get(propertyPathStart).get(propertyPathEnd)));
+            }
         } else {
-            orderList.add(criteria.builder.desc(criteria.root.get(propertyPath)));
+            if (sortAscending) {
+                orderList.add(criteria.builder.asc(criteria.root.get(propertyPath)));
+            } else {
+                orderList.add(criteria.builder.desc(criteria.root.get(propertyPath)));
+            }
         }
+
         criteria.query.orderBy(orderList);
     }
 

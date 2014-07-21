@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.krad.uif.modifier;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -31,7 +24,6 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Header;
-import org.kuali.rice.krad.uif.field.ActionField;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.SpaceField;
@@ -43,6 +35,13 @@ import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Generates <code>Field</code> instances to produce a comparison view among
@@ -168,9 +167,12 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 comparisonItems.add(compareHeaderField);
             }
 
-            // if group is using grid layout, make first row a header
+            // if group is using grid layout then some extra processing needed
             if (group.getLayoutManager() instanceof GridLayoutManager) {
+                // make first row a header
                 ((GridLayoutManager) group.getLayoutManager()).setRenderFirstRowHeader(true);
+                // add blank row CSS class
+                ((GridLayoutManager) group.getLayoutManager()).getRowCssClasses().add("");
             }
         }
 
@@ -187,8 +189,25 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         // generate the compare items from the configured group
         boolean changeIconShowedOnHeader = false;
         for (Component item : group.getItems()) {
+
+            // leave Header object as is, just increase colSpan and change css class
+            if (item instanceof Header) {
+                comparisonItems.add(item);
+                item.setColSpan(groupComparables.size() + 1);
+
+                // if group is using grid layout then some extra processing needed
+                if (group.getLayoutManager() instanceof GridLayoutManager) {
+                    // add row CSS class
+                    ((GridLayoutManager) group.getLayoutManager()).getRowCssClasses().add("row-separator");
+                }
+
+                continue;
+            }
+
             int defaultSuffix = 0;
             boolean suppressLabel = false;
+
+            String rowCssClass = "";
 
             for (ComparableInfo comparable : groupComparables) {
                 String comparableId = comparable.getComparableId();
@@ -243,6 +262,11 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
 
                         changeIconShowedOnHeader = true;
                     }
+
+                    // if value changed then set row CSS class for later use if using GridLayoutManager
+                    if (valueChanged) {
+                        rowCssClass = "uif-compared";
+                    }
                 }
 
                 comparisonItems.add(compareItem);
@@ -250,6 +274,12 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
                 defaultSuffix++;
 
                 suppressLabel = true;
+            }
+
+            // if group is using grid layout then some extra processing needed
+            if (group.getLayoutManager() instanceof GridLayoutManager) {
+                // add row CSS class
+                ((GridLayoutManager) group.getLayoutManager()).getRowCssClasses().add(rowCssClass);
             }
         }
 

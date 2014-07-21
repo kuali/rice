@@ -1,0 +1,113 @@
+<!--
+
+    Copyright 2005-2014 The Kuali Foundation
+
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.opensource.org/licenses/ecl2.php
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+  <!-- Table Compare demo -->
+  <bean id="Demo-TableComparisonView" parent="ComponentLibraryView" p:componentName="Table Comparison">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoTableComparison.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.view.View"/>
+    <property name="docBookAnchor" value="d7339e4811"/>
+    <property name="exampleSize" value="LARGE"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-TableComparisonView-Example1"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableComparisonView-Example1" parent="Uif-VerticalBoxSection" p:headerText="Table Comparison Example">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Message" p:messageText="This example compares two similar objects and allows editing of one object. There is an 'onChange' JavaScript on fields for 'Value 1' and 'Value 2'."/>
+        <bean parent="Uif-Link" p:linkText="Table Comparison Example"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableComparison-View1&amp;methodToCall=start"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- ex:Demo-TableComparisonView-Example1 start-->
+  <bean id="Demo-TableComparison-View1" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-KradSampleAppPortalParentLocation"/>
+    </property>
+    <property name="headerText" value="Table Comparison Example"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-GridGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-HeaderTwo" p:headerText="Group 1"/>
+                    <bean parent="Uif-InputField" p:label="field1" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:label="field2" p:propertyName="field2"/>
+                    <bean parent="Uif-HeaderThree" p:headerText="Group 2"/>
+                    <bean parent="Uif-InputField" p:label="This is Field1" p:propertyName="field1"/>
+                    <bean parent="Uif-InputField" p:label="field3" p:propertyName="field3">
+                      <property name="control">
+                        <bean parent="Uif-TextAreaControl"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-HeaderFour" p:headerText="Group 3"/>
+                    <bean parent="Uif-InputField" p:label="Boolean 1" p:propertyName="bfield">
+                      <property name="control">
+                        <bean parent="Uif-CheckboxControl" p:checkboxLabel=""/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:label="Boolean 2" p:propertyName="bfield2"/>
+                    <bean parent="Uif-InputField" id="int1" p:label="Value 1" p:propertyName="int1" p:onChangeScript="alert('changed int1');"/>
+                    <bean parent="Uif-InputField" id="int2" p:label="Value 2" p:propertyName="int2" p:onChangeScript="alert('changed int2');"/>
+                    <bean parent="Uif-DataField" p:label="Value 3" p:propertyName="int3"/>
+                  </list>
+                </property>
+                <!-- need 3 columns since one for the label and 2 value columns -->
+                <property name="layoutManager.numberOfColumns" value="3"/>
+                <property name="layoutManager.applyDefaultCellWidths" value="false"/>
+                <property name="layoutManager.renderAlternatingHeaderColumns" value="false"/>
+                <property name="componentModifiers">
+                  <list merge="true">
+                    <bean parent="Uif-CompareFieldCreate-Modifier">
+                      <property name="headerFieldPrototype">
+                        <bean parent="Uif-HeaderOne"/>
+                      </property>
+                      <property name="comparables">
+                        <list>
+                          <bean parent="Uif-CompareConfig" p:readOnly="true" p:headerText="uiTestObject1" p:compareToForValueChange="true"
+                                p:bindingObjectPath="uiTestObject1"/>
+                          <bean parent="Uif-CompareConfig" p:headerText="uiTestObject2" p:compareToForFieldRender="true"
+                                p:bindingObjectPath="uiTestObject2"/>
+                        </list>
+                      </property>
+                      <property name="generateCompareHeaders" value="true"/>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
+  </bean>
+  <!-- ex:Demo-TableComparisonView-Example1 end-->
+</beans>

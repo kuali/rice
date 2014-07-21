@@ -120,11 +120,13 @@ rowDataAttributes<br>
 
         <#if (index == 1)>
 
+            <#-- spanning multiple columns? -->
             <#if item.colSpan != 1 || hasColSpan>
                 <#local colSpan="colspan=\"${item.colSpan}\""/>
                 <#local hasColSpan=true/>
             </#if>
 
+            <#-- spanning multiple rows? -->
             <#if item.rowSpan != 1 || hasRowSpan>
                 <#local rowSpan="rowspan=\"${item.rowSpan}\""/>
                 <#local hasRowSpan=true/>
@@ -147,7 +149,7 @@ rowDataAttributes<br>
             <#local columnLoopArray = columnLoopArray + item.rowSpan + splitter />
             <#local colCount=colCount + item.colSpan - 1/>
 
-            <#--skip the number of columns if colspan more than 1 and append the rowspan-->
+            <#-- skip the number of columns if colspan more than 1 and append the rowspan -->
             <#if (item.colSpan > 1)>
                 <#list 1..item.colSpan - 1 as j>
                     <#local jValue = (columnArray[columnIndex + j]?number)/>

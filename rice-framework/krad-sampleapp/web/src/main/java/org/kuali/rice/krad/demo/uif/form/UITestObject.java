@@ -48,9 +48,12 @@ public class UITestObject implements Serializable {
     private KualiDecimal feeAmount;
 
     private static int count = 0;
-    private Integer int1;
+    private Integer int1 = 1;
+    private Integer int2 = 2;
+    private Integer int3 = 3;
 
     private boolean bfield;
+    private boolean bfield2;
 
     private List<String> stringList = Arrays.asList("String1", "String2", "String3");
 
@@ -78,6 +81,7 @@ public class UITestObject implements Serializable {
         remoteFieldValuesMap.put("remoteField4", "Fruit");
 
         int1 = ++count;
+        int3 = int1 * int2;
 
         feeAmount = new KualiDecimal(int1);
 
@@ -131,10 +135,8 @@ public class UITestObject implements Serializable {
 
     public UITestObject(String field1, String field2, String field3, String field4, String field5, String field6,
             String field7, String field8) {
-        this(field1, field2, field3, field4);
+        this(field1, field2, field3, field4, field5, field6);
 
-        this.field5 = field5;
-        this.field6 = field6;
         this.field7 = field7;
         this.field8 = field8;
     }
@@ -145,37 +147,22 @@ public class UITestObject implements Serializable {
         this.innerObject = innerObject;
     }
 
-    /**
-     * @return the field1
-     */
     public String getField1() {
         return this.field1;
     }
 
-    /**
-     * @param field1 the field1 to set
-     */
     public void setField1(String field1) {
         this.field1 = field1;
     }
 
-    /**
-     * @return the field2
-     */
     public String getField2() {
         return this.field2;
     }
 
-    /**
-     * @param field2 the field2 to set
-     */
     public void setField2(String field2) {
         this.field2 = field2;
     }
 
-    /**
-     * @return the field3
-     */
     public String getField3() {
         return this.field3;
     }
@@ -190,23 +177,14 @@ public class UITestObject implements Serializable {
         return this.field3;
     }
 
-    /**
-     * @param field3 the field3 to set
-     */
     public void setField3(String field3) {
         this.field3 = field3;
     }
 
-    /**
-     * @return the field4
-     */
     public String getField4() {
         return this.field4;
     }
 
-    /**
-     * @param field4 the field4 to set
-     */
     public void setField4(String field4) {
         this.field4 = field4;
     }
@@ -268,16 +246,10 @@ public class UITestObject implements Serializable {
     //        this.fileUploadName = fileUploadName;
     //    }
 
-    /**
-     * @param subList the subList to set
-     */
     public void setSubList(List<UITestObject> subList) {
         this.subList = subList;
     }
 
-    /**
-     * @return the subList
-     */
     public List<UITestObject> getSubList() {
         return subList;
     }
@@ -290,20 +262,20 @@ public class UITestObject implements Serializable {
         this.remoteFieldValuesMap = remoteFieldValuesMap;
     }
 
-    /**
-     * boolean field
-     *
-     * @return bField
-     */
     public boolean isBfield() {
         return bfield;
     }
 
-    /**
-     * @param bfield boolean field
-     */
     public void setBfield(boolean bfield) {
         this.bfield = bfield;
+    }
+
+    public boolean isBfield2() {
+        return bfield2;
+    }
+
+    public void setBfield2(boolean bfield2) {
+        this.bfield2 = bfield2;
     }
 
     @Override
@@ -365,6 +337,22 @@ public class UITestObject implements Serializable {
 
     public void setInt1(Integer int1) {
         this.int1 = int1;
+    }
+
+    public Integer getInt2() {
+        return int2;
+    }
+
+    public void setInt2(Integer int2) {
+        this.int2 = int2;
+    }
+
+    public Integer getInt3() {
+        return int3;
+    }
+
+    public void setInt3(Integer int3) {
+        this.int3 = int3;
     }
 
     public Date getDate1() {

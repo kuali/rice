@@ -97,12 +97,16 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private List<String> checkboxesField2;
     private List<String> checkboxesField3;
     private List<String> checkboxesField4;
+
     private List<String> multiSelectField1;
 
     private String testPersonId;
     private Person testPerson;
 
     private String testGroupId;
+
+    private UITestObject uiTestObject1;
+    private UITestObject uiTestObject2;
 
     //DataField
     private String dataField1 = "1001";
@@ -189,6 +193,9 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public KradSampleAppForm() {
         super();
+
+        uiTestObject1 = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
+        uiTestObject2 = new UITestObject("Foo", "FooBar2", "FooBear", "FooRacket2");
 
         messageField1 = "fruits";
 
@@ -291,25 +298,22 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         inactivatableCollection.add(new UIInactivatableTestObject("a", "s", "d", "f", true));
         inactivatableCollection.add(new UIInactivatableTestObject("Fall", "2002", "AAA123", "3", false));
 
+        // groupedCollection1
         groupedCollection1.add(new UITestObject("A", "100", "200", "300"));
         groupedCollection1.add(new UITestObject("A", "101", "200", "300"));
         groupedCollection1.add(new UITestObject("A", "102", "200", "300"));
         groupedCollection1.add(new UITestObject("A", "103", "200", "300"));
         groupedCollection1.add(new UITestObject("A", "104", "200", "300"));
-
         groupedCollection1.add(new UITestObject("B", "100", "200", "300"));
         groupedCollection1.add(new UITestObject("B", "101", "200", "300"));
         groupedCollection1.add(new UITestObject("B", "102", "200", "300"));
-
         groupedCollection1.add(new UITestObject("C", "100", "200", "300"));
         groupedCollection1.add(new UITestObject("C", "101", "200", "300"));
         groupedCollection1.add(new UITestObject("C", "102", "200", "300"));
         groupedCollection1.add(new UITestObject("C", "103", "200", "300"));
 
-
-
+        // groupedCollection2
         groupedCollection2.addAll(groupedCollection1);
-
         groupedCollection2.add(new UITestObject("D", "100", "200", "300"));
         groupedCollection2.add(new UITestObject("D", "101", "200", "300"));
         groupedCollection2.add(new UITestObject("D", "102", "200", "300"));
@@ -335,28 +339,25 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         groupedCollection2.add(new UITestObject("D", "102", "200", "300"));
         groupedCollection2.add(new UITestObject("D", "103", "200", "300"));
 
+        // groupedCollection3
         groupedCollection3.addAll(groupedCollection2);
 
+        // doubleGroupedCollection
         doubleGroupedCollection.add(new UITestObject("Fall", "2001", "AAA123", "2"));
         doubleGroupedCollection.add(new UITestObject("Fall", "2001", "BBB123", "3"));
         doubleGroupedCollection.add(new UITestObject("Fall", "2001", "CCC123", "4"));
         doubleGroupedCollection.add(new UITestObject("Fall", "2001", "DDD123", "3"));
-
         doubleGroupedCollection.add(new UITestObject("Fall", "2002", "AAA123", "3"));
         doubleGroupedCollection.add(new UITestObject("Fall", "2002", "BBB123", "2"));
         doubleGroupedCollection.add(new UITestObject("Fall", "2002", "CCC123", "3"));
-
         doubleGroupedCollection.add(new UITestObject("Fall", "2003", "AAA123", "3"));
         doubleGroupedCollection.add(new UITestObject("Fall", "2003", "CCC123", "3"));
-
         doubleGroupedCollection.add(new UITestObject("Spring", "2001", "AAA123", "3"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2001", "BBB123", "3"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2001", "CCC123", "3"));
-
         doubleGroupedCollection.add(new UITestObject("Spring", "2002", "AAA123", "4"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2002", "BBB123", "4"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2002", "CCC123", "2"));
-
         doubleGroupedCollection.add(new UITestObject("Spring", "2003", "AAA123", "4"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2003", "BBB123", "3"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2003", "CCC123", "3"));
@@ -396,35 +397,26 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         }
 
         { // scope for name hiding purposes
-            Node<UITestObject, String> item1 = new Node<UITestObject, String>(new UITestObject("1-A", "1-B", "1-C",
-                    "1-D"), "Item 1");
-            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SA-A", "1SA-B", "1SA-C", "1SA-D"),
-                    "SubItem A"));
-            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SB-A", "1SB-B", "1SB-C", "1SB-D"),
-                    "SubItem B"));
+            Node<UITestObject, String> item1 = new Node<UITestObject, String>(new UITestObject("1-A", "1-B", "1-C", "1-D"), "Item 1");
+            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SA-A", "1SA-B", "1SA-C", "1SA-D"), "SubItem A"));
+            item1.addChild(new Node<UITestObject, String>(new UITestObject("1SB-A", "1SB-B", "1SB-C", "1SB-D"), "SubItem B"));
 
-            Node<UITestObject, String> item2 = new Node<UITestObject, String>(new UITestObject("2-A", "2-B", "2-C",
-                    "2-D"), "Item 2");
-            item2.addChild(new Node<UITestObject, String>(new UITestObject("SA-a", "SA-b", "SA-c", "SA-d"),
-                    "SubItem A"));
-            Node<UITestObject, String> sub2B = new Node<UITestObject, String>(new UITestObject("SB-a", "SB-b", "SB-c",
-                    "SB-d"), "SubItem B");
+            Node<UITestObject, String> item2 = new Node<UITestObject, String>(new UITestObject("2-A", "2-B", "2-C", "2-D"), "Item 2");
+            item2.addChild(new Node<UITestObject, String>(new UITestObject("SA-a", "SA-b", "SA-c", "SA-d"), "SubItem A"));
+            Node<UITestObject, String> sub2B = new Node<UITestObject, String>(new UITestObject("SB-a", "SB-b", "SB-c", "SB-d"), "SubItem B");
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("AA", "BB", "CC", "DD"), "Item B-1"));
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("Aa", "Bb", "Cc", "Dd"), "Item B-2"));
             sub2B.addChild(new Node<UITestObject, String>(new UITestObject("aA", "bB", "cC", "dD"), "Item B-3"));
             item2.addChild(sub2B);
-            item2.addChild(new Node<UITestObject, String>(new UITestObject("SC-a", "SC-b", "SC-c", "SC-d"),
-                    "SubItem C"));
+            item2.addChild(new Node<UITestObject, String>(new UITestObject("SC-a", "SC-b", "SC-c", "SC-d"), "SubItem C"));
 
-            Node<UITestObject, String> item3 = new Node<UITestObject, String>(new UITestObject("3-A", "3-B", "3-C",
-                    "3-D"), "Item 3");
+            Node<UITestObject, String> item3 = new Node<UITestObject, String>(new UITestObject("3-A", "3-B", "3-C", "3-D"), "Item 3");
             item3.addChild(new Node<UITestObject, String>(new UITestObject("A", "B", "C", "D"), "SubItem A"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("1", "2", "3", "4"), "SubItem B"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("w", "x", "y", "z"), "SubItem C"));
             item3.addChild(new Node<UITestObject, String>(new UITestObject("!", "@", "#", "$"), "SubItem D"));
 
-            Node<UITestObject, String> root = new Node<UITestObject, String>(new UITestObject("foo", "bar", "baz",
-                    "roo"), "Root");
+            Node<UITestObject, String> root = new Node<UITestObject, String>(new UITestObject("foo", "bar", "baz", "roo"), "Root");
             root.addChild(item1);
             root.addChild(item2);
             root.addChild(item3);
@@ -436,8 +428,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         try {
 			DocumentSearchCriteria.Builder builder = DocumentSearchCriteria.Builder.create();
 			builder.setDocumentTypeName("TravelAuthorization");
-            DocumentSearchService documentSearchService =
-				org.kuali.rice.kew.service.KEWServiceLocator.getDocumentSearchService();
+            DocumentSearchService documentSearchService = org.kuali.rice.kew.service.KEWServiceLocator.getDocumentSearchService();
             if (documentSearchService != null) {
                 results = documentSearchService.lookupDocuments(null, builder.build()).getSearchResults();
             }
@@ -448,22 +439,19 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         if (results.isEmpty()) {
         	if (KRADServiceLocatorWeb.getDocumentService() != null) {
 	            try {
-	                Document newDocument
-	                        = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
+	                Document newDocument = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
 	                newDocument.getDocumentHeader().setDocumentDescription("Test");
 	
 	                TravelAuthorizationDocument newTravelAuthorizationDocument = (TravelAuthorizationDocument) newDocument;
 	                newTravelAuthorizationDocument.setCellPhoneNumber("555-555-5555");
 	
 	                QueryByCriteria query = QueryByCriteria.Builder.create().build();
-	                List<TravelDestination> travelDestinations
-	                        = KRADServiceLocator.getDataObjectService().findMatching(TravelDestination.class, query).getResults();
+	                List<TravelDestination> travelDestinations = KRADServiceLocator.getDataObjectService().findMatching(TravelDestination.class, query).getResults();
 	                if (!travelDestinations.isEmpty()) {
 	                    newTravelAuthorizationDocument.setTripDestinationId(travelDestinations.get(0).getTravelDestinationId());
 	                }
 
-	                Document document
-	                        = KRADServiceLocatorWeb.getDocumentService().saveDocument(newTravelAuthorizationDocument);
+	                Document document = KRADServiceLocatorWeb.getDocumentService().saveDocument(newTravelAuthorizationDocument);
 	                setDocumentNumber(document.getDocumentNumber());
 	            } catch (WorkflowException we) {
 	                // ignore
@@ -1190,7 +1178,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     }
 
     /**
-     * @param tree1 the tree2 to set
+     * @param tree2 the tree2 to set
      */
     public void setTree2(Tree<UITestObject, String> tree2) {
         this.tree2 = tree2;
@@ -1282,5 +1270,21 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         }
 
         return StringUtils.EMPTY;
+    }
+
+    public UITestObject getUiTestObject2() {
+        return uiTestObject2;
+    }
+
+    public void setUiTestObject2(UITestObject uiTestObject2) {
+        this.uiTestObject2 = uiTestObject2;
+    }
+
+    public UITestObject getUiTestObject1() {
+        return uiTestObject1;
+    }
+
+    public void setUiTestObject1(UITestObject uiTestObject1) {
+        this.uiTestObject1 = uiTestObject1;
     }
 }

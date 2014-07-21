@@ -660,6 +660,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-AuthorizationView"/>
         <bean parent="Uif-Link" p:linkText="Data Attributes"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataAttributesView"/>
+        <bean parent="Uif-Link" p:linkText="Focus And JumpTo"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FocusNJumpToView"/>
         <bean parent="Uif-Link" p:linkText="Icons"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-IconsView"/>
         <bean parent="Uif-Link" p:linkText="Read Only"
@@ -670,10 +672,10 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyFooterView"/>
         <bean parent="Uif-Link" p:linkText="Sticky Header Options"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-StickyHeaderView"/>
+        <bean parent="Uif-Link" p:linkText="Table Comparison"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableComparisonView"/>
         <bean parent="Uif-Link" p:linkText="Unified View Header"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UnifiedHeaderView"/>
-        <bean parent="Uif-Link" p:linkText="Focus And JumpTo"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-FocusNJumpToView"/>
       </list>
     </property>
   </bean>

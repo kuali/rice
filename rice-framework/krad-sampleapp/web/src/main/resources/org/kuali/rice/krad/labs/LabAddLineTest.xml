@@ -27,7 +27,7 @@
        <bean parent="Uif-Page">
          <property name="items">
            <list>
-             <bean parent="Uif-StackedCollectionSubSection">
+             <bean parent="Uif-StackedCollectionSubSection" p:addWithDialog="true">
                <property name="headerText" value="Table Layout"/>
                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
                <property name="propertyName" value="collection5"/>
@@ -50,7 +50,7 @@
      <property name="formClass" value="org.kuali.rice.krad.labs.KradLabsForm"/>
    </bean>
 
-  <bean id="Lab-AddLineTestSection" parent="Uif-StackedCollectionSubSection" p:addWithDialog="true">
+  <bean id="Lab-AddLineTestSection" parent="Uif-StackedCollectionSubSection">
     <property name="headerText" value="Table Layout"/>
     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
     <property name="propertyName" value="subList"/>

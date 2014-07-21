@@ -282,55 +282,18 @@ function setupTextPopout(id, label, summary, constraint, readOnly) {
 }
 
 /**
- * Uses jQuery fancybox to open a lightbox for a link's content. The second
- * argument is a Map of options that are available for the FancyBox. See
- * <link>http://fancybox.net/api</link> for documentation on these options.
+ * Uses a modal to open a link's content in an iframe. The second
+ * argument is a Map of options that are available for the FancyBox.
  * The third argument should only be true for inquiries and lookups.  When this
  * argument is true additional URL parameters are added for the bread crumbs history.
  *
  * @param linkId -
- *          id for the link that the fancybox should be linked to
+ *          id for the link that the modal iframe should be linked to
  * @param options -
  *          map of option settings (option name/value pairs) for the plugin
  * @parm isAddAppParms -
  *          true if application parameters should be added to the link, false otherwise
  */
-function createLightBoxLink(linkId, options, addAppParms) {
-    jQuery(function () {
-        var renderedInLightBox = isCalledWithinLightbox();
-
-        // first time content is brought up in lightbox we don't want to continue history
-        var flow = 'start';
-        if (renderedInLightBox) {
-            flow = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
-        }
-
-        var link = jQuery("#" + linkId);
-        // Check if this is called within a light box
-        if (!renderedInLightBox) {
-            // If this is not the top frame, then create the lightbox
-            // on the top frame to put overlay over whole window
-            link.click(function (e) {
-                e.preventDefault();
-
-                options['href'] = link.attr('href');
-                getContext().fancybox(options);
-            });
-        } else {
-            link.attr('target', '_self');
-        }
-
-        if (addAppParms) {
-            // Set the renderedInLightBox = true param
-            if (link.attr('href').indexOf('&renderedInLightBox=true') == -1) {
-                var href = link.attr('href');
-
-                link.attr('href', href + '&renderedInLightBox=true&flow=' + flow);
-            }
-        }
-    });
-}
-
 function handleLightboxOpen(link, options, addAppParms, event) {
     event.preventDefault();
     var renderedInLightBox = isCalledWithinLightbox();
@@ -594,8 +557,8 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
             lightBoxOptions['beforeClose'] = cleanupClosedLightboxForms;
 
             queryString = queryString + "&flow=start&renderedInLightBox=true";
-            lightBoxOptions['href'] = url + queryString;
-            getContext().fancybox(lightBoxOptions);
+            url = url + queryString;
+            openIframeDialog(url, kradVariables.MODAL.INQUIRY_MODAL);
         } else {
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&flow="

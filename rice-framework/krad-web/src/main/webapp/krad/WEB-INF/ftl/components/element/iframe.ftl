@@ -40,7 +40,8 @@
         <#local attributes='${attributes} title="${element.title}"'/>
     </#if>
 
-    <iframe id="${element.id}" src="${element.source}" ${attributes} ${element.simpleDataAttributes}>
-    </iframe>
+<iframe id="${element.id}"
+        src="${element.source!}" ${krad.attrBuild(element)} ${attributes} ${element.simpleDataAttributes}>
+</iframe>
 
 </#macro>

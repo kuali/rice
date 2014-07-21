@@ -560,7 +560,7 @@ function setupRefreshCheck(controlName, refreshId, condition, methodToCall, fiel
         var refreshComp = jQuery("#" + refreshId);
         if (refreshComp.length) {
             if (condition()) {
-                retrieveComponent(disclosureId, methodToCall, null, null, false, fieldsToSend);
+                retrieveComponent(refreshId, methodToCall, null, null, false, fieldsToSend);
             }
         }
     });

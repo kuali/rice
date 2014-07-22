@@ -157,7 +157,7 @@ public class DocumentTypeTest extends KEWTestCase {
     }
 
     @Test public void testNestedDuplicateNodeNameInRoutePath() throws Exception {
-        int waitMilliSeconds = 10000;
+        int waitMilliSeconds = 15000;
         loadXmlFile("DocTypeConfig_nestedNodes.xml");
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestDoubleNodeDocumentType");
@@ -173,6 +173,7 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
 
         // Split1, Right, Innersplit, Right (user4)
+        Thread.sleep(waitMilliSeconds);
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
         assertTrue("user4 should have an approve request", document.isApprovalRequested());
         document.approve("");

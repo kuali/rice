@@ -16,11 +16,6 @@
 
 -->
 <config>
-  <!-- NOTE: This environment parameter must be the first parameter in the file. -->
-  <param name="environment" override="false">dev</param>
-  <param name="external.config.home" override="false">${user.home}/kuali/main/${environment}</param>
-
-  <param name="config.location">${external.config.home}/common-config.xml</param>
-  <param name="config.location">${external.config.home}/${module.name}-config.xml</param>
-  <param name="config.location">classpath:META-INF/${rice.jpa.persistence.provider}-config-defaults.xml</param>
+	<param name="rice.krad.jpa.global.eclipselink.cache.shared.default" override="false">false</param>
+	<param name="rice.krad.jpa.global.eclipselink.session.customizer" override="false">org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkCustomizer</param>
 </config>

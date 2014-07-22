@@ -95,7 +95,7 @@ abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
 
         String errorMessage = validateActionRules();
         if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
-            LOG.info("User not authorized");
+            LOG.info("User not authorized: " + errorMessage);
             List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
             errors.add(new WorkflowServiceErrorImpl(errorMessage, AUTHORIZATION));
             throw new WorkflowServiceErrorException(errorMessage, errors);
@@ -115,7 +115,7 @@ abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
             notifyStatusChange(newStatus, oldStatus);
         } catch (Exception ex) {
             LOG.error("Caught Exception talking to post processor", ex);
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("Caught Exception talking to post processor: " + this + " / Doc ID: " + getDocumentId(), ex);
         }
         
         processActionTaken(actionTaken);

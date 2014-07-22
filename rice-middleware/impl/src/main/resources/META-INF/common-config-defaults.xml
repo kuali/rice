@@ -86,6 +86,7 @@
     <param name="datasource.pool.class" override="false">oracle.jdbc.xa.client.OracleXADataSource</param>
     <param name="datasource.pool.class.non.xa" override="false">bitronix.tm.resource.jdbc.lrc.LrcXADataSource</param>
 
+	<param name="rice.jpa.persistence.provider" override="false">eclipselink</param>
 
     <!-- developer use only, if set to true, will serialize everything in memory on startup to quickly find objects that aren't serializable -->
     <!-- this parameter doesn't matter in a prod environment, as the serialization won't occur in prod environment -->

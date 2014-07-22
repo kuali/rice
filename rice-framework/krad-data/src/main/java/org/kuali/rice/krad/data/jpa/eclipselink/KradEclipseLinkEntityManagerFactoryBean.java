@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.data.jpa.eclipselink;
 
+import java.util.Map;
+
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
-
-import java.util.Map;
 
 /**
  * A KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean which can be used to configure an
@@ -52,11 +52,16 @@ public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFa
      */
     @Override
     protected void loadCustomJpaDefaults(Map<String, String> jpaProperties) {
-        if (getPersistenceUnitManager().getDefaultJtaDataSource() != null) {
+		if (getPersistenceUnitManager().getDefaultJtaDataSource() != null
+				&& !jpaProperties.containsKey(PersistenceUnitProperties.TARGET_SERVER)) {
             jpaProperties.put(PersistenceUnitProperties.TARGET_SERVER, JtaTransactionController.class.getName());
         }
-        jpaProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, KradEclipseLinkCustomizer.class.getName());
-        jpaProperties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT, "false");
+		if (!jpaProperties.containsKey(PersistenceUnitProperties.SESSION_CUSTOMIZER)) {
+			jpaProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, KradEclipseLinkCustomizer.class.getName());
+		}
+		if (!jpaProperties.containsKey(PersistenceUnitProperties.CACHE_SHARED_DEFAULT)) {
+			jpaProperties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT, "false");
+		}
     }
 
 }

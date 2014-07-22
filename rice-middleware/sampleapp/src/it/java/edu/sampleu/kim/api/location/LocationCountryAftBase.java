@@ -62,6 +62,12 @@ public abstract class LocationCountryAftBase extends AdminTmplMthdAftNavBase {
         testSearchEditCancel();
         driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
         testCreateNewCancel();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSave();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSubmit();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSaveSubmit();
         passed();
     }
 

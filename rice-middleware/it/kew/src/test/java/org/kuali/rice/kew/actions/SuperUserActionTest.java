@@ -54,10 +54,9 @@ public class SuperUserActionTest extends KEWTestCase {
         assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
         document.superUserBlanketApprove("");
         assertTrue("Document should be 'processed' after Super User Approve", document.isProcessed());
-        List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertTrue("Should be active requests still", requests.size() == 2);//number of acks and fyi's configured through rules
-        for (Iterator iter = requests.iterator(); iter.hasNext();) {
-			ActionRequestValue request = (ActionRequestValue) iter.next();
+        for ( ActionRequestValue request : requests ) {
 			if (request.isApproveOrCompleteRequest()) {
 				fail("There should be no approve or complete requests after su approve");
 			}
@@ -92,9 +91,7 @@ public class SuperUserActionTest extends KEWTestCase {
         assertTrue("jhopf should be able to SU Approve", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
         document.superUserBlanketApprove("blanket approving as jhopf");
 
-        //assertTrue(document.isFinal());
-        assertTrue(document.isProcessed());
-        assertTrue(document.isApproved());
+        assertEquals("Document status incorrect", DocumentStatus.PROCESSED, document.getStatus());
         assertFalse("jhopf should NOT be able to SU Approve", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
 
         List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
@@ -102,7 +99,7 @@ public class SuperUserActionTest extends KEWTestCase {
         for (ActionRequestValue request: requests) {
             System.err.println(request.getActionRequestedLabel() + " -> " + request.getPrincipal().getPrincipalName());
             if (request.isApproveOrCompleteRequest()) {
-                fail("There should be no approve or complete requests after su approve");
+                fail("There should be no approve or complete requests after su approve.  Found: " + request);
             }
         }
     }
@@ -117,13 +114,13 @@ public class SuperUserActionTest extends KEWTestCase {
         }
         TestUtilities.getExceptionThreader().join();
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("Document should be in exception routing", document.isException());
+        assertEquals("Document status incorrect", DocumentStatus.EXCEPTION, document.getStatus());
         document.superUserBlanketApprove("");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("Document should be final", document.isFinal());
+        assertEquals("Document status incorrect", DocumentStatus.FINAL, document.getStatus());
         
-        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
-        assertTrue("Should be no active requests for SU Approved document", actionRequests.isEmpty());
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
+        assertEquals("Should be no active requests for SU Approved document.  Found: " + actionRequests, 0, actionRequests.size());
     }
     
     @Test public void testSuperUserApproveExceptionCasesWithNotifications() throws Exception {
@@ -136,16 +133,15 @@ public class SuperUserActionTest extends KEWTestCase {
         }
         TestUtilities.getExceptionThreader().join();
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("Document should be in exception routing", document.isException());
+        assertEquals("Document status incorrect", DocumentStatus.EXCEPTION, document.getStatus());
         document.superUserBlanketApprove("");
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-        assertTrue("Document should be 'processed'", document.isProcessed());
+        assertEquals("Document status incorrect after blanket approve", DocumentStatus.PROCESSED, document.getStatus());
         
-        List actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
+        List<ActionRequestValue> actionRequests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertFalse("Should be active requests for SU Approved document", actionRequests.isEmpty());
-        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-			ActionRequestValue request = (ActionRequestValue) iter.next();
-			assertTrue("Should be an ack notification request", request.isAcknowledgeRequest());
+        for (ActionRequestValue request: actionRequests) {
+			assertEquals("Should be an ack notification request", ActionType.ACKNOWLEDGE, ActionType.fromCode(request.getActionRequested()) );
 		}
     }
     
@@ -153,11 +149,10 @@ public class SuperUserActionTest extends KEWTestCase {
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
         document.superUserBlanketApprove("");
-        assertTrue("Document should be 'processed' after Super User Approve", document.isProcessed());
-        List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
-        assertTrue("Should be active requests still", requests.size() == 2);//number of acks and fyi's configured through rules
-        for (Iterator iter = requests.iterator(); iter.hasNext();) {
-			ActionRequestValue request = (ActionRequestValue) iter.next();
+        assertEquals("Document status incorrect after super user approve", DocumentStatus.PROCESSED, document.getStatus());
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
+        assertEquals("Should be active requests still", 2, requests.size() );//number of acks and fyi's configured through rules
+        for (ActionRequestValue request: requests) {
 			if (request.isApproveOrCompleteRequest()) {
 				fail("There should be no approve or complete requests after su approve");
 			}
@@ -168,7 +163,7 @@ public class SuperUserActionTest extends KEWTestCase {
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "NotificationTestChild");
         assertTrue("WorkflowDocument should indicate ewestfal as SuperUser", document.isValidAction(ActionType.SU_BLANKET_APPROVE));
         document.superUserBlanketApprove("");
-        assertTrue("Document should be 'processed' after Super User Approve", document.isProcessed());
+        assertEquals("Document status incorrect after super user approve", DocumentStatus.PROCESSED, document.getStatus());
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getDocumentId());
         assertTrue("Should be active requests still", requests.size() > 2);//number of acks and fyi's configured through rules - we need these for approvals too
         for (Iterator iter = requests.iterator(); iter.hasNext();) {

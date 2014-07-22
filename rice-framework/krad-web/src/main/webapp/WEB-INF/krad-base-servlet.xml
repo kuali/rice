@@ -150,6 +150,10 @@
     <property name="serviceName" value="refreshControllerService"/>
   </bean>
 
+  <bean id="saveControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="saveControllerService"/>
+  </bean>
+
   <bean id="queryControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="queryControllerService"/>
   </bean>

@@ -16,6 +16,7 @@
 package org.kuali.rice.krms.test;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -130,7 +131,12 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         functionBoService = KrmsRepositoryServiceLocator.getBean("functionRepositoryService");
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
 
-        ContextDefinition contextDefintion1 = contextRepository.getContextByNameAndNamespace(CONTEXT1, NAMESPACE1);
+        ContextDefinition contextDefintion1 = null;
+
+        String namespace = getNamespaceByContextName(CONTEXT1);
+        if (StringUtils.isNotBlank(namespace)) {
+            contextDefintion1 = contextRepository.getContextByNameAndNamespace(CONTEXT1, NAMESPACE1);
+        }
 
         // only set this stuff up if we don't already have Context1 (we don't clear out KRMS tables between test methods)
         if (contextDefintion1 == null) {
@@ -316,7 +322,8 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         Map<String, String> queryArgs = new HashMap<String, String>();
         queryArgs.put("specification.namespace", contextDefinition.getNamespace());
         queryArgs.put("specification.name", termName);
-        QueryResults<TermBo> queryResults = getDataObjectService().findMatching(TermBo.class, QueryByCriteria.Builder.andAttributes(queryArgs).build());
+        QueryResults<TermBo> queryResults = getDataObjectService().findMatching(TermBo.class,
+                QueryByCriteria.Builder.andAttributes(queryArgs).build());
 
         if (!CollectionUtils.isEmpty(queryResults.getResults())) {
             return TermBo.to(queryResults.getResults().get(0));

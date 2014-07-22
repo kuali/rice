@@ -58,6 +58,7 @@ import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -75,6 +76,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,6 +150,7 @@ import java.util.Map;
                     ,@NamedAttributeNode("docVersion")
                     })
 })
+@Cacheable(false)
 public class DocumentRouteHeaderValue extends DataObjectBase implements DocumentContract, DocumentSearchCriteriaEbo {
 
     private static final long serialVersionUID = -4700736340527913220L;

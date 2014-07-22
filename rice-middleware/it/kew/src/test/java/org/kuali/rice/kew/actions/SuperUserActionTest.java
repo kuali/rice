@@ -211,7 +211,7 @@ public class SuperUserActionTest extends KEWTestCase {
             KEWServiceLocator.getWorkflowDocumentService().superUserCancelAction(bmcgoughPrincipalId, KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId()), "", false);
         } catch (Exception e) {
             LOG.error("Exception Found:", e);
-            fail("Document should not throw an exception when ignoring post processor during superUserCancelAction");
+            fail("Document should not throw an exception when ignoring post processor during superUserCancelAction " + e.getClass().getName() + " : " + e.getMessage() );
         }
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), generateDummyEnrouteDocument("ewestfal").getDocumentId());

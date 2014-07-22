@@ -500,13 +500,21 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         String viewId = "";
         if (url.contains("viewId=")) {
             viewId = url.substring(url.indexOf("viewId=") + 7, url.length());
-            viewId = viewId.substring(0, viewId.indexOf("&"));
+            if (viewId.indexOf("&") > -1) {
+                viewId = viewId.substring(0, viewId.indexOf("&"));
+            } else {
+                viewId = viewId.substring(0, viewId.length());
+            }
         }
 
         String pageId = "";
         if (url.contains("pageId=")) {
             pageId = url.substring(url.indexOf("pageId=") + 7, url.length());
-            pageId = "-" + pageId.substring(0, pageId.indexOf("&"));
+            if (pageId.indexOf("&") > -1) {
+                pageId = "-" + pageId.substring(0, pageId.indexOf("&"));
+            } else {
+                pageId = "-" + pageId.substring(0, pageId.length());
+            }
         }
 
         return viewId + pageId;

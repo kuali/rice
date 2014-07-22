@@ -57,7 +57,8 @@ public class InquiryForm extends UifFormBase {
         }
 
         Inquirable inquirable = getInquirable();
-        if ((inquirable != null) && (inquirable.getDataObjectClass() == null)) {
+        //KULRICE-12985 always update the data object class for inquirable, not just the first time.
+        if (inquirable != null) {
             Class<?> dataObjectClass;
             try {
                 dataObjectClass = Class.forName(getDataObjectClassName());

@@ -29,16 +29,21 @@ public class SaveControllerServiceImpl implements SaveControllerService{
 
     private ModelAndViewService modelAndViewService;
 
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ModelAndView save(UifFormBase form) {
+        // This is a hook method for persistence of a full form save
         return getModelAndViewService().getModelAndView(form);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ModelAndView saveField(UifFormBase form) {
-        return getModelAndViewService().getModelAndView(form);
-    }
-
-    public ModelAndView saveLine(UifFormBase form) {
+        // This is a hook method for persistence of a single field save
         return getModelAndViewService().getModelAndView(form);
     }
 

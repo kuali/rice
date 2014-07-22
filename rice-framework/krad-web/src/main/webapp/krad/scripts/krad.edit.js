@@ -134,11 +134,12 @@ function _saveEdit($control, viewButtonId) {
     }
 
     if (valid) {
+        var propertyName = $control.attr('name');
         // Save by retrieving a new instance of the component using the saveField method
         retrieveComponent(fieldId, kradVariables.INLINE_EDIT.SAVE_FIELD_METHOD_TO_CALL, function () {
             var $newView = jQuery("#" + viewButtonId);
             $newView.focus();
-        }, null, false, [$control.attr('name')]);
+        }, {saveFieldPath: propertyName}, false, [propertyName]);
 
         $control.unbind("keydown." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE);
     }

@@ -26,6 +26,7 @@ import org.kuali.rice.krad.web.service.ModelAndViewService;
 import org.kuali.rice.krad.web.service.NavigationControllerService;
 import org.kuali.rice.krad.web.service.QueryControllerService;
 import org.kuali.rice.krad.web.service.RefreshControllerService;
+import org.kuali.rice.krad.web.service.SaveControllerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -60,6 +61,9 @@ public abstract class UifControllerBase {
 
     @Autowired
     private CollectionControllerService collectionControllerService;
+
+    @Autowired
+    private SaveControllerService saveControllerService;
 
     @Autowired
     private RefreshControllerService refreshControllerService;
@@ -138,11 +142,22 @@ public abstract class UifControllerBase {
         return getNavigationControllerService().returnToPrevious(form);
     }
 
+    /**
+     * @see org.kuali.rice.krad.web.service.SaveControllerService#save(org.kuali.rice.krad.web.form.UifFormBase)
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=save")
+    public ModelAndView save(UifFormBase form) throws Exception{
+        // Hook method for saving the form
+        return getSaveControllerService().save(form);
+    }
 
+    /**
+     * @see org.kuali.rice.krad.web.service.SaveControllerService#saveField(org.kuali.rice.krad.web.form.UifFormBase)
+     */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=saveField")
-    public ModelAndView saveField(UifFormBase uifForm) throws Exception{
+    public ModelAndView saveField(UifFormBase form) throws Exception{
         // Hook method for saving individual fields
-        return refresh(uifForm);
+        return getSaveControllerService().saveField(form);
     }
 
     /**
@@ -377,6 +392,14 @@ public abstract class UifControllerBase {
 
     public void setRefreshControllerService(RefreshControllerService refreshControllerService) {
         this.refreshControllerService = refreshControllerService;
+    }
+
+    public SaveControllerService getSaveControllerService() {
+        return saveControllerService;
+    }
+
+    public void setSaveControllerService(SaveControllerService saveControllerService) {
+        this.saveControllerService = saveControllerService;
     }
 
     protected QueryControllerService getQueryControllerService() {

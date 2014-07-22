@@ -578,6 +578,10 @@
     <property name="modelAndViewService" ref="modelAndViewService"/>
   </bean>
 
+  <bean id="saveControllerService" class="org.kuali.rice.krad.web.service.impl.SaveControllerServiceImpl">
+    <property name="modelAndViewService" ref="modelAndViewService"/>
+  </bean>
+
   <bean id="queryControllerService" class="org.kuali.rice.krad.web.service.impl.QueryControllerServiceImpl">
     <property name="modelAndViewService" ref="modelAndViewService"/>
     <property name="attributeQueryService" ref="attributeQueryService"/>

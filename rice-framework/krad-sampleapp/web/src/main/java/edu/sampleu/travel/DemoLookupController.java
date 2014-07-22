@@ -40,4 +40,11 @@ public class DemoLookupController extends LookupController {
     public ModelAndView start(UifFormBase form) {
         return super.start(form);
     }
+
+    @Override
+    @MethodAccessible
+    @RequestMapping(params = "methodToCall=refresh")
+    public ModelAndView refresh(UifFormBase form) {
+        return super.refresh(form);
+    }
 }

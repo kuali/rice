@@ -1776,6 +1776,70 @@ function validateFieldValue(fieldControl) {
 }
 
 /**
+ * Validates all fields requiring validation. Removes any
+ * kradVariables.IGNORE_VALIDATION_TEMP_CLASS class names which may have been applied
+ * when limiting validation to a subset of fields.
+ *
+ * @returns {boolean} true if all fields requiring validation are valid, false otherwise
+ */
+function validateForm() {
+
+    jQuery("." + kradVariables.IGNORE_VALIDATION_TEMP_CLASS).removeClass(kradVariables.IGNORE_VALIDATION_TEMP_CLASS);
+
+    return _validateFormOrDialog();
+}
+
+/**
+ * Validates fields requiring validation, except for those listed, if a specified
+ * condition is met.
+ *
+ * @param $fieldsToSkip Array of jQuery objects on which to ignore validation.
+ * @param skipConditionFunc callback function which determines if validation should
+ * be ignored for $fieldsToSkip.
+ *
+ * @returns {boolean} true if all fields requiring validation are valid, false otherwise
+ */
+function validatePartialForm($fieldsToSkip, skipConditionFunc) {
+
+    if (skipConditionFunc()) {
+        $fieldsToSkip.addClass(kradVariables.IGNORE_VALIDATION_TEMP_CLASS);
+        jQuery("." + kradVariables.IGNORE_VALIDATION_CLASS + ", ." + kradVariables.IGNORE_VALIDATION_TEMP_CLASS).each(function () {
+            removeClientValidationError(this);
+        });
+    } else {
+        jQuery("." + kradVariables.IGNORE_VALIDATION_TEMP_CLASS).removeClass(kradVariables.IGNORE_VALIDATION_TEMP_CLASS);
+    }
+
+    return _validateFormOrDialog();
+}
+
+/**
+ * Validates all fields requiring validation, in a form or dialog.
+ *
+ * @returns {boolean} true if all fields requiring validation are valid, false otherwise
+ *
+ * @private
+ */
+function _validateFormOrDialog() {
+
+    var inDialog = false;
+    if (this.$action) {
+        var $dialogGroup = this.$action.closest(kradVariables.DIALOG_SELECTOR);
+        inDialog = $dialogGroup.length;
+    }
+
+    var valid = true;
+    if (!inDialog) {
+        valid = validate();
+    }
+    else if (inDialog) {
+        valid = validate($dialogGroup);
+    }
+
+    return valid;
+}
+
+/**
  * Checks to see if any controls depend on the control being validated, if they do calls validate
  * on them as well which will either add errors or remove them
  * Note: with the way that validation works the field must have been previously validated

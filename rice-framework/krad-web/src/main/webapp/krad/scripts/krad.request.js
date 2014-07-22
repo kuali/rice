@@ -241,19 +241,7 @@ KradRequest.prototype = {
             return true;
         }
 
-        var inDialog = false;
-        if (this.$action) {
-            var $dialogGroup = this.$action.closest(kradVariables.DIALOG_SELECTOR);
-            inDialog = $dialogGroup.length;
-        }
-
-        var valid = true;
-        if (!inDialog) {
-            valid = validate();
-        }
-        else if (inDialog) {
-            valid = validate($dialogGroup);
-        }
+        valid = validateForm();
 
         if (!valid) {
             clearHiddens();

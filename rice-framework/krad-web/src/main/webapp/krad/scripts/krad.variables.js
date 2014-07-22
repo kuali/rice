@@ -243,6 +243,7 @@ JavascriptKradVariables.prototype = {
     VIEW_STATE: "ViewState",
     VALID_CLASS: "valid",
     IGNORE_VALIDATION_CLASS: "ignoreValid",
+    IGNORE_VALIDATION_TEMP_CLASS: "ignoreTemp",
     ERROR_CLASS: "error",
     WARNING_HIGHLIGHT_SECTION_CLASS: "uif-warningHighlight-section",
     WARNING_MESSAGE_ITEM_CLASS: "uif-warningMessageItem-field",

@@ -22,7 +22,7 @@
 
   <!-- Inline Edit demo -->
   <bean id="Demo-InlineEdit" parent="ComponentLibraryView">
-    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoInlineEdit.xml"/>
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoInlineEditField.xml"/>
     <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.component.ComponentBase"/>
     <property name="docBookAnchor" value="d6813e4605"/>
     <property name="componentName" value="Inline Edit"/>
@@ -167,9 +167,5 @@
       </list>
     </property>
   </bean>
-
-  <bean parent="Uif-PrimaryActionButton" p:actionLabel="Confirm Action" p:methodToCall="refresh"
-        p:confirmationPromptText="Note: This operation cannot be undone. Are you sure you want to take this action?"/>
-
 
 </beans>

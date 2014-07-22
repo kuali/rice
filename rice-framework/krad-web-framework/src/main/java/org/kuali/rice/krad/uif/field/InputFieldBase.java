@@ -298,11 +298,6 @@ public class InputFieldBase extends DataFieldBase implements InputField {
 
         this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.INPUT_FIELD);
 
-        // Force a field to appear readOnly if inlineEdit or ajaxInlineEdit is true
-        if (inlineEdit || ajaxInlineEdit) {
-            this.setReadOnly(true);
-        }
-
         boolean ajaxInlineEditRefresh = ajaxInlineEdit && ((UifFormBase)model).getUpdateComponentId() != null &&
                 ((UifFormBase)model).getUpdateComponentId().equals(this.getId());
 
@@ -383,7 +378,7 @@ public class InputFieldBase extends DataFieldBase implements InputField {
         ClientValidationUtils.processAndApplyConstraints(this, view, model);
 
         if (inlineEdit || ajaxInlineEdit) {
-            this.addDataAttribute(KRADConstants.INLINE_EDIT, "true");
+            this.addDataAttribute(UifConstants.DataAttributes.INLINE_EDIT, "true");
         }
 
         // Generate validation messages

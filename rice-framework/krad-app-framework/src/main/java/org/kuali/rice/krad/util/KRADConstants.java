@@ -44,8 +44,8 @@ public final class KRADConstants {
     public static final String KRAD_INQUIRY_URL_KEY = "krad.inquiry.url";
     public static final String KRAD_LOOKUP_URL_KEY = "krad.lookup.url";
     public static final String KRAD_SERVER_LOOKUP_URL_KEY = "rice.server.krad.lookup.url";
-    public static final String KRAD_INITIATED_DOCUMENT_URL_KEY="initiated.document.url";
-    public static final String KRAD_INITIATED_DOCUMENT_VIEW_NAME="InitiatedDocumentView";
+    public static final String KRAD_INITIATED_DOCUMENT_URL_KEY = "initiated.document.url";
+    public static final String KRAD_INITIATED_DOCUMENT_VIEW_NAME = "InitiatedDocumentView";
 
     public static final String KRAD_DICTIONARY_INDEX_POOL_SIZE = "krad.dictionary.indexPoolSize";
 
@@ -214,7 +214,6 @@ public final class KRADConstants {
     public static final String TOGGLE_INACTIVE_METHOD = "toggleInactiveRecordDisplay";
     public static final String DICTIONARY_BO_NAME = "dictionaryBusinessObjectName";
     public static final String DISPATCH_REQUEST_PARAMETER = "methodToCall";
-    public static final String INLINE_EDIT = "inline_edit";
 
     /**
      * Constant defined to match with method call in module-locked.jsp which is
@@ -626,7 +625,8 @@ public final class KRADConstants {
         public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.krad.illegalBusinessObjectsForSave";
         public static final String COMPONENT_PUBLISHING_ENABLED = "rice.krad.componentPublishing.enabled";
         public static final String COMPONENT_PUBLISHING_DELAY = "rice.krad.componentPublishing.delay";
-        public static final String IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE = "rice.krad.bos.ignoreMissingFieldsOnDeserialize";
+        public static final String IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE =
+                "rice.krad.bos.ignoreMissingFieldsOnDeserialize";
         public static final String KNS_ENABLED = "rice.krad.kns.enabled";
         public static final String ENABLE_LEGACY_DATA_FRAMEWORK = "rice.krad.enableLegacyDataFramework";
         public static final String ENABLE_VIEW_AUTOGENERATION = "rice.krad.views.autoGeneration.enabled";

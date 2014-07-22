@@ -15,7 +15,6 @@
  */
 var prevPageMessageTotal = 0;
 
-
 /**
  * Get validation data for the component element by merging custom settings with defaults
  *
@@ -65,7 +64,7 @@ function hideMessageTooltip(fieldId) {
         element = jQuery(element).filter(".uif-tooltip");
     }
 
-    var popoverData =  element.data(kradVariables.POPOVER_DATA);
+    var popoverData = element.data(kradVariables.POPOVER_DATA);
     if (!popoverData) {
         return;
     }
@@ -203,7 +202,6 @@ function showMessageTooltip(fieldId, showAndClose, change) {
                             hideTooltips();
                         }
 
-
                         tooltipElement.popover("show");
 
                     }
@@ -247,7 +245,7 @@ function writeMessagesAtField(id) {
         var messagesDiv = jQuery("[data-messages_for='" + id + "']");
         var createMessagesDiv = messagesDiv.length === 0;
 
-        if (createMessagesDiv){
+        if (createMessagesDiv) {
             messagesDiv = jQuery("<div id='" + id +
                     "_errors' class='alert' data-messages_for='" + id + "' style='display: none;'>");
         }
@@ -267,19 +265,15 @@ function writeMessagesAtField(id) {
                 + generateListItems(data.warnings, kradVariables.WARNING_MESSAGE_ITEM_CLASS, 0, false, warningImage)
                 + generateListItems(data.info, kradVariables.INFO_MESSAGE_ITEM_CLASS, 0, false, infoImage) + "</ul></div>");
 
+        // Create an edit link for inline edit fields which now have associated server messages
         var editLink = "";
-        if (field.data("inline_edit")) {
-            editLink = " <a onclick=\"var $view=jQuery('#" + id + "_inlineEdit_view'); showInlineEdit($view);"
-                    + "return false;\">Edit</a>";
-        }
-
-        var serverMessagesStyle = "";
-        if (jQuery(clientMessages).find("ul").children().length) {
-            serverMessagesStyle = "style='margin-top: 5px;'";
+        if (field.data(kradVariables.INLINE_EDIT.INLINE_EDIT_DATA_ATTR)) {
+            var editText = getMessage(kradVariables.MESSAGE_EDIT);
+            editLink = " <a onclick=\"activateInlineEdit('" + id + "'); return false;\">" + editText + "</a>";
         }
 
         //generate server side based messages
-        var serverMessages = jQuery("<div " +  serverMessagesStyle + " class='" + kradVariables.SERVER_MESSAGE_ITEMS_CLASS + "'><ul>"
+        var serverMessages = jQuery("<div class='" + kradVariables.SERVER_MESSAGE_ITEMS_CLASS + "'><ul>"
                 + generateListItems(data.serverErrors, kradVariables.ERROR_MESSAGE_ITEM_CLASS, 0, false, errorImage, editLink)
                 + generateListItems(data.serverWarnings, kradVariables.WARNING_MESSAGE_ITEM_CLASS, 0, false, warningImage, editLink)
                 + generateListItems(data.serverInfo, kradVariables.INFO_MESSAGE_ITEM_CLASS, 0, false, infoImage, editLink) + "</ul></div>");
@@ -287,7 +281,7 @@ function writeMessagesAtField(id) {
         var hasServerMessages = false;
         //only append if messages exist
         if (jQuery(clientMessages).find("ul").children().length) {
-            if (createMessagesDiv){
+            if (createMessagesDiv) {
                 field.append(messagesDiv);
                 createMessagesDiv = false;
             }
@@ -296,7 +290,7 @@ function writeMessagesAtField(id) {
         }
 
         if (jQuery(serverMessages).find("ul").children().length) {
-            if (createMessagesDiv){
+            if (createMessagesDiv) {
                 field.append(messagesDiv);
                 createMessagesDiv = false;
             }
@@ -403,7 +397,6 @@ function writeMessagesAtField(id) {
 
             handleTabStyle(id, false, false, false);
         }
-
     }
 }
 
@@ -1033,11 +1026,11 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
 
 //              Check to see if the info message is coming from a lookup result page. If yes then
 //              do not display the count message at the top.
-                if(countMessage != "" && jQuery("#uLookupResults.uif-infoMessageItem").length > 0)   {
+                if (countMessage != "" && jQuery("#uLookupResults.uif-infoMessageItem").length > 0) {
                     countMessage = countMessage + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null, infoTotal);
                 }
-                else{
-                    countMessage ="";
+                else {
+                    countMessage = "";
                 }
             }
             else {
@@ -1393,7 +1386,7 @@ function generateFieldLink(messageData, fieldId, collapseMessages, showLabel) {
                 var field = jQuery("#" + fieldId);
 
                 // Inline edit view check
-                if(field.is("[data-inline_edit]") && field.find(".uif-inlineEdit-view:visible").length){
+                if (field.is("[data-inline_edit]") && field.find(".uif-inlineEdit-view:visible").length) {
                     field.find(".uif-inlineEdit-view").focus();
                 }
                 else if (control.length) {
@@ -1623,7 +1616,7 @@ function generateFieldLinkSublist(parentSectionData, currentFields, messageMap, 
  */
 function generateSummaryLink(sectionId) {
     //determine section title and section type
-    var sectionTitle =  getGroupHeaderElement(sectionId).find(".uif-headerText-span").text();
+    var sectionTitle = getGroupHeaderElement(sectionId).find(".uif-headerText-span").text();
     if (sectionTitle == null || sectionTitle == "") {
         //field group case
         sectionTitle = jQuery("#" + sectionId).data("label");
@@ -1746,14 +1739,14 @@ function runValidationScript(scriptFunction) {
  */
 function validateFieldValue(fieldControl) {
     // skip validation for add line fields unless there is a value. The add button will handle validation
-    if(jQuery(fieldControl).attr('id').match(new RegExp(kradVariables.ID_SUFFIX.ADD_LINE_INPUT_FIELD))
+    if (jQuery(fieldControl).attr('id').match(new RegExp(kradVariables.ID_SUFFIX.ADD_LINE_INPUT_FIELD))
             && !jQuery(fieldControl).val()) {
         return true;
     }
 
     //remove the ignore class if any due to a bug in the validate 
     //plugin for direct validation on certain types
-    if(jQuery(fieldControl).attr('id').match(/ID_SUFFIXADD_LINE_INPUT_FIELD/) )   {
+    if (jQuery(fieldControl).attr('id').match(/ID_SUFFIXADD_LINE_INPUT_FIELD/)) {
         jQuery(fieldControl).removeClass("ignoreValid");
         return true;
     }

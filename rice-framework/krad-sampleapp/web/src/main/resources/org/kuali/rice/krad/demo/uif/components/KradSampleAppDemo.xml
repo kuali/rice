@@ -533,8 +533,6 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GrowlsView"/>
         <bean parent="Uif-Link" p:linkText="Help"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-HelpView"/>
-        <bean parent="Uif-Link" p:linkText="Inline Editing"
-              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InlineEditField"/>
         <bean parent="Uif-Link" p:linkText="Inquiry"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InquiryView"/>
         <bean parent="Uif-Link" p:linkText="Lightbox"
@@ -647,6 +645,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-EventsView"/>
         <bean parent="Uif-Link" p:linkText="Progressive Disclosure"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ProgressiveDisclosureView"/>
+        <bean parent="Uif-Link" p:linkText="Inline Editing"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InlineEdit"/>
       </list>
     </property>
   </bean>

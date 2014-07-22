@@ -75,7 +75,7 @@ public class ComponentUtils {
 
     /**
      * Copy a list of components
-     * 
+     *
      * @param <T> component type
      * @param <T> component type
      * @param components the list of components to copy
@@ -591,8 +591,9 @@ public class ComponentUtils {
                 (component.getRefreshWhenChangedPropertyNames() != null && !component
                         .getRefreshWhenChangedPropertyNames().isEmpty());
 
-        boolean isInlineEditField = component instanceof InputField &&
-                (((InputField)component).isInlineEdit() || ((InputField)component).isAjaxInlineEdit());
+        boolean isInlineEditField =
+                component instanceof InputField && (((InputField) component).isInlineEdit() || ((InputField) component)
+                        .isAjaxInlineEdit());
 
         return hasRefreshCondition || component.isRefreshedByAction() || component.isDisclosedByAction() ||
                 component.isRetrieveViaAjax() || isInlineEditField;
@@ -782,7 +783,7 @@ public class ComponentUtils {
                         }
                     }
                 }
-            // Check for Maps that can contain lifecycle elements
+                // Check for Maps that can contain lifecycle elements
             } else if (Map.class.isAssignableFrom(field.getType())) {
                 ReflectionUtils.makeAccessible(field);
                 Map<Object, Object> elements = (Map<Object, Object>) ReflectionUtils.getField(field, lifecycleElement);
@@ -793,7 +794,7 @@ public class ComponentUtils {
                         }
                     }
                 }
-            // Check if field is a lifecycle element itself
+                // Check if field is a lifecycle element itself
             } else if (LifecycleElement.class.isAssignableFrom(field.getType())) {
                 ReflectionUtils.makeAccessible(field);
                 LifecycleElement nestedElement = (LifecycleElement) ReflectionUtils.getField(field, lifecycleElement);
@@ -815,7 +816,7 @@ public class ComponentUtils {
      * items share the same order value, all but the last item found in the list
      * will be removed.
      * </p>
-     * 
+     *
      * @param <T> ordered type
      * @param <T> ordered type
      * @param items

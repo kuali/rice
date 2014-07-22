@@ -237,3 +237,13 @@ function _setupInlineEditKeyHandlers($control, cancelEditFunc) {
 
     });
 }
+
+/**
+ * Activate (ie show) the edit version of an inline edit enabled field by field id
+ *
+ * @param id the id of the field to change to edit mode
+ */
+function activateInlineEdit(id) {
+    var $viewButton = jQuery("#" + id + "_inlineEdit_view");
+    showInlineEdit($viewButton);
+}

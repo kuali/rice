@@ -39,12 +39,11 @@ import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.uif.widget.Suggest;
 
 /**
- * TODO mark don't forget to fill this in. 
- * 
+ * TODO mark don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface InputField extends SimpleConstrainable, CaseConstrainable,
-        PrerequisiteConstrainable, MustOccurConstrainable, ValidCharactersConstrainable, DataField {
+public interface InputField extends SimpleConstrainable, CaseConstrainable, PrerequisiteConstrainable, MustOccurConstrainable, ValidCharactersConstrainable, DataField {
 
     /**
      * @see DataField#isInputAllowed()
@@ -73,27 +72,29 @@ public interface InputField extends SimpleConstrainable, CaseConstrainable,
     void setControl(Control control);
 
     /**
-     * Check to see if a field has an attribute inlineEdit set to true.
+     * When inlineEdit is enabled, the field will appear as text, and when clicked the user will be able to edit that
+     * field's value and save that new value.
      *
-     * @return  inlineEdit if set to true the field will have the ability to be edited inline
+     * <p>The method that is called by inlineEdit is saveField.</p>
+     *
+     * @return inlineEdit if set to true the field will have the ability to be edited inline
      */
     public boolean isInlineEdit();
 
     /**
-     *
      * @see org.kuali.rice.krad.uif.field.InputFieldBase#isInlineEdit()
      */
     public void setInlineEdit(boolean inlineEdit);
 
     /**
-     * Check to see if a field has the attribute ajaxInlineEdit set to true.
+     * When ajaxInlineEdit is enabled, the field will appear as text, and when clicked, the input version of that field
+     * is retrieved from the server; the user will be able to edit that field's value and save that new value.
      *
      * @return ajaxInlneEdit if true the field will have the ability to be edited inline via ajax call
      */
     public boolean isAjaxInlineEdit();
 
     /**
-     *
      * @see InputFieldBase#isAjaxInlineEdit()
      */
     public void setAjaxInlineEdit(boolean ajaxInlineEdit);

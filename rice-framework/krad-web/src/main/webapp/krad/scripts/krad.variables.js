@@ -115,6 +115,7 @@ JavascriptKradVariables.prototype = {
     },
     IMAGE_LOCATION: "kradImageLocation",
     INLINE_EDIT: {
+        INLINE_EDIT_DATA_ATTR: "inline_edit",
         EDIT_SUFFIX: "_edit",
         INLINE_EDIT: "_inlineEdit",
         INLINE_EDIT_VIEW: "_inlineEdit_view",
@@ -158,6 +159,7 @@ JavascriptKradVariables.prototype = {
     MESSAGE_AFTER: "message.after",
     MESSAGE_PLEASE_ENTER_VALUE: "message.pleaseEnterValue",
     MESSAGE_EXPAND: "message.expand",
+    MESSAGE_EDIT: "message.edit",
     MESSAGE_CANCEL: "message.cancel",
     MESSAGE_COLLAPSE: "message.collapse",
     MESSAGE_SAVE: "message.save",

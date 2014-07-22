@@ -40,7 +40,7 @@
         PARM_NM="DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE"
         PARM_TYP_CD="CONFG" VAL="MM/dd/yyyy" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-NS" OBJ_ID="FE7D937A2AAE264AE0406E0AC31D0918"
+        NMSPC_CD="KR-NS" OBJ_ID="FECB2C176A4A4C47E0406E0AC31D41BB"
         PARM_DESC_TXT="Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected."
         PARM_NM="DEFAULT_COUNTRY" PARM_TYP_CD="CONFG" VAL="US" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
@@ -167,7 +167,7 @@
         PARM_NM="DEFAULT_HELP_URL" PARM_TYP_CD="HELP"
         VAL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#lookup" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Lookup" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-KRAD" OBJ_ID="FE7D937A2AA3264AE0406E0AC31D0918"
+        NMSPC_CD="KR-KRAD" OBJ_ID="FECB2C176A3F4C47E0406E0AC31D41BB"
         PARM_DESC_TXT="Maximum number of rows that will be displayed on a look-up results screen."
         PARM_NM="MULTIPLE_VALUE_RESULTS_LIMIT" PARM_TYP_CD="CONFG"
         VAL="100" VER_NBR="1"/>

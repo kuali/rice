@@ -62,10 +62,12 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
         assertTrue(CollectionUtils.isEmpty(getAgendaBoService().getAgendaItemsByContext("#$^$ BogusContextId !@#$")));
 
         for (String contextName : Arrays.asList(CONTEXT1, CONTEXT2, CONTEXT3)) {
+            String namespace = getNamespaceByContextName(contextName);
+            if (StringUtils.isBlank(namespace)) {
+                throw new RiceRuntimeException("namespace is " + namespace + " for context with name " + contextName);
+            }
 
-            String contextId = getContextRepository().getContextByNameAndNamespace(contextName,
-                    getNamespaceByContextName(contextName))
-                    .getId();
+            String contextId = getContextRepository().getContextByNameAndNamespace(contextName, namespace).getId();
 
             List<AgendaDefinition> agendas = getAgendaBoService().getAgendasByContextId(contextId);
             List<AgendaItemDefinition> agendaItems = getAgendaBoService().getAgendaItemsByContext(contextId);
@@ -183,6 +185,7 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
             if (StringUtils.isBlank(namespace)) {
                 throw new RiceRuntimeException("namespace is " + namespace + " for context with name " + contextName);
             }
+
             String contextId = getContextRepository().getContextByNameAndNamespace(contextName, namespace).getId();
 
             // depending on good behavior of getAgendasByContextId which is tested elsewhere
@@ -239,8 +242,12 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
 
             List<KrmsTypeDefinition> agendaTypes =  getAgendaTypesForContexts(Collections.singletonList(contextName));
 
-            ContextDefinition context = getContextRepository().getContextByNameAndNamespace(contextName,
-                    getNamespaceByContextName(contextName));
+            String namespace = getNamespaceByContextName(contextName);
+            if (StringUtils.isBlank(namespace)) {
+                throw new RiceRuntimeException("namespace is " + namespace + " for context with name " + contextName);
+            }
+
+            ContextDefinition context = getContextRepository().getContextByNameAndNamespace(contextName, namespace);
 
             for (KrmsTypeDefinition agendaType : agendaTypes) {
 
@@ -327,9 +334,12 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
     // createAgendaItem
     @Test
     public void testAgendaCrud() {
+        String namespace = getNamespaceByContextName(CONTEXT1);
+        if (StringUtils.isBlank(namespace)) {
+            throw new RiceRuntimeException("namespace is " + namespace + " for context with name " + CONTEXT1);
+        }
 
-        ContextDefinition context = getContextRepository().getContextByNameAndNamespace(CONTEXT1,
-                getNamespaceByContextName(CONTEXT1));
+        ContextDefinition context = getContextRepository().getContextByNameAndNamespace(CONTEXT1, namespace);
 
         // Get an agenda to use as a template for agenda creation
         List<AgendaDefinition> agendas = getAgendaBoService().getAgendasByContextId(context.getId());

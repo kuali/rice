@@ -790,7 +790,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void gotoLightBox() {
-        driver.switchTo().frame(driver.findElement(By.cssSelector(".fancybox-iframe")));
+        driver.switchTo().frame(driver.findElement(By.cssSelector(".uif-lookupDialog-iframe")));
     }
 
     protected int howManyAreVisible(By by) throws InterruptedException {

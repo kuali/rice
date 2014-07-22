@@ -333,7 +333,10 @@
         <bean parent="Uif-SaveAction-Secondary"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]}"/>
 
-        <!-- Special case. Client side validation is turned off for Uif-PrimaryActionButton. See KULRICE-7339 -->
+        <!-- Special case. Client side validation is turned off for Uif-PrimaryActionButton.
+        Will still perform client side validation, because isRouteComplete() forces client side valication
+        to be performed.  To skip client side validation, a new action must be defined, or it must be
+        turned off at the view level.  See KULRICE-7339 -->
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="Submit"
               p:performClientSideValidation="false"
               p:preSubmitCall="return isRouteToComplete(kradRequest);"

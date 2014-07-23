@@ -175,6 +175,7 @@ public class DocumentTypeTest extends KEWTestCase {
         // Split1, Right, Innersplit, Right (user4)
         Thread.sleep(waitMilliSeconds);
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
         assertTrue("user4 should have an approve request", document.isApprovalRequested());
         document.approve("");
 

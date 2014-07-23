@@ -62,6 +62,12 @@ public abstract class LocationPostCodeAftBase extends AdminTmplMthdAftNavBase {
 
     public void testLocationPostCodeBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSave();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSubmit();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSaveSubmit();
         passed();
     }
 

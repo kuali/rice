@@ -62,6 +62,12 @@ public abstract class LocationCountyAftBase extends AdminTmplMthdAftNavBase {
 
     public void testLocationCountyBookmark(JiraAwareFailable failable) throws Exception {
         testCreateNewCancel();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSave();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSubmit();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSaveSubmit();
         passed();
     }
 

@@ -58,8 +58,6 @@ function showInlineEdit($viewButton) {
         $editDiv.data(kradVariables.INLINE_EDIT.ORIGINAL_VALUE, $control.val());
     }
 
-    $viewButton.hide();
-
     // If the edit version of the field does not exist, retrieve it
     if ($viewButton.data(kradVariables.INLINE_EDIT.AJAX_EDIT) === true && $editDiv.length === 0) {
         var fieldId = viewButtonId.replace(kradVariables.INLINE_EDIT.INLINE_EDIT_VIEW, "");
@@ -68,10 +66,12 @@ function showInlineEdit($viewButton) {
 
             // Recall this function to show the edit state of the retrieved field
             showInlineEdit($newView);
-        }, null, false, [kradVariables.NO_FIELDS_TO_SEND]);
+        });
         // Return because we are waiting for ajax component retrieval
         return;
     }
+
+    $viewButton.hide();
 
     // Creating save function to be used by the save button (created here to use current var handles)
     var saveEditFunc = function (event) {

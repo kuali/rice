@@ -48,10 +48,12 @@
         <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->
         <#if readOnly || inlineEdit || ajaxInlineEdit>
             <#if inlineEdit>
-            <button class="uif-inlineEdit-view" id="${field.id}_inlineEdit_view" tabindex="0" title="Click to Edit">
+                <button class="uif-inlineEdit-view" id="${field.id}_inlineEdit_view" tabindex="0" title="Click to Edit">
             <#elseif ajaxInlineEdit>
-            <button class="uif-inlineEdit-view" id="${field.id}_inlineEdit_view" tabindex="0" title="Click to Edit"
+                <button class="uif-inlineEdit-view" id="${field.id}_inlineEdit_view" tabindex="0" title="Click to Edit"
                     data-ajax_edit="true">
+            <#else>
+                <span id="${field.id}_control" tabindex="0">
             </#if>
 
             <#local readOnlyDisplay>
@@ -99,13 +101,15 @@
 
             <#if inlineEdit || ajaxInlineEdit>
                 </button>
+            <#else>
+                </span>
             </#if>
         </#if>
 
         <#if (!readOnly && !ajaxInlineEdit) || (!readOnly && ajaxInlineEditRefresh)>
 
             <#if inlineEdit || ajaxInlineEditRefresh>
-            <div class="uif-inlineEdit-edit" id="${field.id}_inlineEdit_edit">
+                <div class="uif-inlineEdit-edit" id="${field.id}_inlineEdit_edit">
             </#if>
 
             <#if quickfinderInputOnly>

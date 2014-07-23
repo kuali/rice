@@ -100,8 +100,8 @@ function KradRequest(action) {
         this.clearDirtyOnAction = action.data("cleardirtyonaction");
     }
 
-    if (action.data("fieldsToSend") !== undefined) {
-        this.fieldsToSend = action.data("fieldsToSend");
+    if (action.data("fieldstosend") !== undefined) {
+        this.fieldsToSend = action.data("fieldstosend");
     }
 }
 
@@ -386,8 +386,6 @@ KradRequest.prototype = {
 
     // handles the request as an ajax request
     _submitAjax: function (data) {
-        this._setupBlocking(submitOptions);
-
         // create a reference to the request for ajax callbacks
         var request = this;
 
@@ -404,6 +402,10 @@ KradRequest.prototype = {
                 }
             };
 
+            // Show visual loading/blocking indication
+            this._setupBlocking(submitOptions);
+
+            // Submit request
             jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
         } else {
             // Serialize all the data we wish to send
@@ -439,9 +441,8 @@ KradRequest.prototype = {
                 }
             });
 
-            var url = jQuery("#" + kradVariables.KUALI_FORM).attr("action");
-            jQuery.ajax({
-                url: url,
+            var submitOptions = {
+                url: jQuery("#" + kradVariables.KUALI_FORM).attr("action"),
                 type: "POST",
                 data: dataSerialized,
                 success: function (response) {
@@ -450,8 +451,13 @@ KradRequest.prototype = {
                 error: function (jqXHR, textStatus) {
                     request._processError(jqXHR, textStatus, request);
                 }
-            });
+            };
 
+            // Show visual loading/blocking indication
+            this._setupBlocking(submitOptions);
+
+            // Submit request
+            jQuery.ajax(submitOptions);
         }
     },
 

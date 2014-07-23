@@ -329,8 +329,8 @@ INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_C
 INSERT INTO KRCR_PARM_T(NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
   VALUES('KR-NS', 'All', 'SENSITIVE_DATA_PATTERNS_WARNING_IND', '8A37388A2D7A46EF9E6BF3FA8D08A044', 1, 'CONFG', 'Y', 'Warn For Sensitive Data.', 'A', 'KUALI')
 /
-insert into KRLC_CNTRY_T(postal_cntry_cd, obj_id, ver_nbr, postal_cntry_nm, pstl_cntry_rstrc_ind, actv_ind)
-	values('US', 'C20A15A9C0354C108C71CA3AFED063AF', 1, 'UNITED STATES', 'N', 'Y')
+insert into KRLC_CNTRY_T(postal_cntry_cd, obj_id, ver_nbr, postal_cntry_nm, pstl_cntry_rstrc_ind, actv_ind, ALT_POSTAL_CNTRY_CD)
+	values('US', 'C20A15A9C0354C108C71CA3AFED063AF', 1, 'UNITED STATES', 'N', 'Y', 'USA')
 /
 insert into KRLC_ST_T(postal_state_cd, postal_cntry_cd, obj_id, ver_nbr, postal_state_nm, actv_ind)
 	values('AZ','US', 'E68FB90D901741C69B4B73FE46CD8BDC', 1, 'ARIZONA', 'Y')

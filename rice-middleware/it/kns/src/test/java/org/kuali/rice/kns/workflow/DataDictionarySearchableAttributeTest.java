@@ -160,10 +160,10 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
 		
 		// Ensure that DD searchable attribute float fields function correctly when searched on. Also ensure that the CurrencyFormatter is working.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountBalance",
-				new String[] {"501.??", "*.54" , "!2.22", "10000051.0|771.05", "<0.0", ">501", "<=4.54", ">=-99.99", ">4.54|<=-1", ">=0&&<501.77", "!",
+				new String[] {"501.??", "*.54" , "!2.22", "10000051.0|771.05", "<0.0", ">501", "<=4.54", ">=-99.99", ">4.54|<=-1", ">=0&&<501.77",
 						"<=0|>=10000051", ">501&&<501.77", "-100|>771.05", "2.22..501", "-100..4.54&&<=0", "2.22|501.77..10000051.0", "Zero",
 						"-$100", "<(501)&&>=($2.22)", "$4.54|<(1)", "($0.00)..$771.05", ">=$(500)", ")501(", "4.54$", "$501..0"},
-				new int[]    {-1      , -1     , 7      , 2                  , 1     , 3     , 4       , 7         , 5           , 4             , -1,
+				new int[]    {-1      , -1     , 7      , 2                  , 1     , 3     , 4       , 7         , 5           , 4             ,
 						3               , 0              , 2             , 3          , 2                , 4                        , -1,
 						1      , 2                  , 3           , 6                 , -1        , -1     , -1     , 0});
 		
@@ -249,9 +249,6 @@ public class DataDictionarySearchableAttributeTest extends KRADTestCase {
         DocumentSearchResults results = null;
         DocumentSearchService docSearchService = KEWServiceLocator.getDocumentSearchService();
         for (int i = 0; i < resultSizes.length; i++) {
-            if (searchValues[i].toString().equalsIgnoreCase("Zero")) {
-                int num = 1 + 1;
-            }
         	criteria = DocumentSearchCriteria.Builder.create();
         	criteria.setDocumentTypeName(docType.getName());
             if (searchValues instanceof String[][]) {

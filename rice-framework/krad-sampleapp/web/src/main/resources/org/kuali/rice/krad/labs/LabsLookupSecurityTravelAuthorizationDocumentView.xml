@@ -54,12 +54,11 @@
   <bean id="LabsLookupSecurityTravelAuthorization-TripOverview-TravelerSection" parent="TravelAuthorization-TripOverview-TravelerSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:label="Traveler Lookup" p:propertyName="travelerDetailId">
+        <bean parent="Uif-InputField" p:label="Traveler Lookup"  p:propertyName="travelerDetailId">
           <property name="id" value="travelerQuickfinder"/>
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder"
                   p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelerDetail">
-              <property name="lightBox.render" value="false"/>
               <property name="fieldConversions">
                 <map>
                   <entry key="id" value="travelerDetailId"/>
@@ -72,7 +71,10 @@
                   <entry key="stateCode" value="travelerDetail.stateCode"/>
                   <entry key="countryCode" value="travelerDetail.countryCode"/>
                   <entry key="zipCode" value="travelerDetail.zipCode"/>
+                  <entry key="emailAddress" value="travelerDetail.emailAddress"/>
                   <entry key="phoneNumber" value="travelerDetail.phoneNumber"/>
+                  <entry key="liabilityInsurance" value="travelerDetail.liabilityInsurance"/>
+                  <entry key="citizenship" value="travelerDetail.citizenship"/>
                 </map>
               </property>
             </bean>
@@ -81,7 +83,7 @@
             <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="travelerDetail.customerNumber" />
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.customerNumber" />
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.firstName"/>
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.lastName"/>
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine1"/>
@@ -90,8 +92,8 @@
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.stateCode"/>
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.countryCode"/>
         <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
-        <bean parent="Uif-InputField" p:propertyName="travelerDetail.emailAddress" p:label="Alternate Email Address"/>
-        <bean parent="Uif-InputField" p:propertyName="travelerDetail.phoneNumber"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.emailAddress"/>
+        <bean parent="Uif-DataField" p:propertyName="travelerDetail.phoneNumber"/>
         <bean parent="Uif-InputField" p:propertyName="cellPhoneNumber" p:required="true" p:colSpan="3" />
       </list>
     </property>

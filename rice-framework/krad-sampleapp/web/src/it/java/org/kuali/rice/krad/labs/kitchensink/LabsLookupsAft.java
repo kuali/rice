@@ -29,8 +29,6 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
      */
     public static final String BOOKMARK_URL = "/kr-krad/uicomponents?viewId=UifCompView&pageId=UifCompView-Page6&lightbox=true";
 
-    private static final String IFRAME_XPATH="//iframe[@class='fancybox-iframe']";
-    
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -96,11 +94,11 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
         waitForTextPresent("Travel Account 1");
 
         waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
-    	gotoIframeByXpath(IFRAME_XPATH);
+    	gotoLightBoxIframe();
         waitAndClickSearchByText();
     	waitAndClickReturnValue();
         waitAndClickByXpath("//div[@data-parent='refreshLookups1']/div/div/button[@class='btn btn-default uif-action icon-search']");
-    	gotoIframeByXpath(IFRAME_XPATH);
+        gotoLightBoxIframe();
         waitAndClickSearchByText();
         waitAndClickReturnValue();
 

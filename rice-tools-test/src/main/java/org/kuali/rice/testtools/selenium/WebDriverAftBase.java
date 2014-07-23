@@ -788,17 +788,24 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             System.out.println("Unable to find " + iframeId);
         }
     }
-    protected void gotoIframeByXpath(final String iframeXpath) {
+    protected WebElement gotoIframeByXpath(final String iframeXpath) {
         if (driver.findElements(By.xpath(iframeXpath)).size() > 0) {  // find elements so an exception isn't thrown if not found
             WebElement contentFrame = driver.findElement(By.xpath(iframeXpath)); // don't highlight
             driver.switchTo().frame(contentFrame);
+            return contentFrame;
         } else {
             System.out.println("Unable to find " + iframeXpath);
         }
+        return null;
     }
 
     protected void gotoLightBox() {
         driver.switchTo().frame(driver.findElement(By.cssSelector(".uif-lookupDialog-iframe")));
+    }
+
+    protected WebElement gotoLightBoxIframe() {
+        selectTopFrame();
+        return gotoIframeByXpath("//iframe[@class='uif-iFrame uif-lookupDialog-iframe']");
     }
 
     protected int howManyAreVisible(By by) throws InterruptedException {

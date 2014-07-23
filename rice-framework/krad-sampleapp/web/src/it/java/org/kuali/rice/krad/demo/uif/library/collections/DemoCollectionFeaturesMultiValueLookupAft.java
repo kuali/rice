@@ -64,10 +64,8 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends WebDriverLegacyIT
 
     private void lightBoxLookupAddMultipleLines() throws InterruptedException {
         waitAndClickByLinkText("Lookup/Add Multiple Lines");
-
-        driver.switchTo().frame(driver.findElement(By.cssSelector(".fancybox-iframe")));
-        selectTopFrame();
-        gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
+        gotoLightBox();
+        gotoLightBoxIframe();
     }
 
     @Test

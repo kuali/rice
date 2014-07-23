@@ -51,7 +51,7 @@ public class LabsLookupMultipleValuesReturnAft extends LabsLookupBase {
     
     protected void testLabsLookupMultipleValuesReturn()throws Exception {
     	waitAndClickByLinkText("Lookup/Add Multiple Lines");
-    	gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
+        gotoLightBoxIframe();
         waitAndTypeByName("lookupCriteria[name]","*");
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","eri*");
         waitAndClickSearch3();

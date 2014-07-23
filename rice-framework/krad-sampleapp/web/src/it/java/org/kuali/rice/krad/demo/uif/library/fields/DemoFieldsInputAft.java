@@ -186,7 +186,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
 
         Thread.sleep(2000);
 
-        driver.switchTo().frame(driver.findElement(By.cssSelector(".fancybox-iframe")));
+        gotoLightBox();
 
         WebElement travelAccountNumberField = driver.findElement(By.cssSelector(
                 "div[data-label='Travel Account Number']"));
@@ -218,10 +218,9 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
 
         Thread.sleep(2000);
 
-        driver.switchTo().frame(driver.findElement(By.cssSelector(".fancybox-iframe")));
+        gotoLightBox();
         assertTextPresent("Travel Account");
-        selectTopFrame();
-        gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
+        gotoLightBoxIframe();
 
         waitAndClickButtonByText("Close");
         selectTopFrame();
@@ -275,7 +274,7 @@ public class DemoFieldsInputAft extends DemoLibraryBase {
     protected void testInputFieldWidgetInputOnlyWithInquiry() throws Exception {
     	waitAndClickByLinkText("widgetInputOnly with Inquiry");
     	waitAndClickByXpath("//div[@data-parent='Demo-InputField-Example10']/span/input[@type='image' and @title='Direct Inquiry']");
-    	gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
+        gotoLightBoxIframe();
     	waitForTextPresent("a2");
     	waitForTextPresent("Travel Account 2");
     	waitForTextPresent("EAT - Expense");

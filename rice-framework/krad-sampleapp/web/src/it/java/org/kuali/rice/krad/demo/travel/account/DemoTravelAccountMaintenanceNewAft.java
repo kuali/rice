@@ -32,11 +32,6 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     public static final String FANCY_BOX_CLOSE_XPATH = "//div[@class='fancybox-item fancybox-close']";
 
     /**
-     * //div[@class='fancybox-item fancybox-close']
-     */
-    public static final String FANCY_BOX_IFRAME_XPATH = "//iframe[@class='fancybox-iframe']";
-
-    /**
      * /kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true
      */
     public static final String BOOKMARK_URL = "/kr-krad/maintenance?methodToCall=start&dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount&hideReturnLink=true";

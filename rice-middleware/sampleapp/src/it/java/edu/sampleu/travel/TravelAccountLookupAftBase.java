@@ -100,8 +100,7 @@ public abstract class TravelAccountLookupAftBase extends WebDriverLegacyITBase {
         //Thread.sleep(2000);
         //selectTopFrame();
         //Thread.sleep(5000);
-        //WebElement iframe1= driver.findElement(By.xpath("//iframe[@class='fancybox-iframe']"));
-        //driver.switchTo().frame(iframe1);
+        //gotoLightBox();
         //assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
         //assertEquals("CAT - Clearing Account Type", getTextByXpath("//*[@id='u44_control']").trim());
         //waitAndClickByXpath("//button[@id='u13']");

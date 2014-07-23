@@ -54,11 +54,6 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
      */
     public static final String CRITERIA_NAME="lookupCriteria";
     
-    /**
-     * //iframe[@class='fancybox-iframe']
-     */
-    public static final String FANCYBOX_IFRAME_XPATH="//iframe[@class='fancybox-iframe']";
-    
     protected void navigation() throws Exception {
         waitAndClickKRAD();
         //waitAndClickByLinkText(TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT);
@@ -82,8 +77,7 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
         waitAndClickByXpath("//*[@alt='Direct Inquiry']");
         selectTopFrame();
         Thread.sleep(5000);
-        WebElement iframe1 = driver.findElement(By.xpath(FANCYBOX_IFRAME_XPATH));
-        driver.switchTo().frame(iframe1);
+        gotoLightBox();
         SeleneseTestBase.assertEquals("Travel Account Inquiry", getTextByXpath("//h1/span").trim());
         assertElementPresentByLinkText("a1");
         selectTopFrame();
@@ -105,8 +99,7 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
         waitAndClickByXpath("//*[@id='u229']");
         selectTopFrame();
         Thread.sleep(5000);
-        WebElement iframe2 = driver.findElement(By.xpath(FANCYBOX_IFRAME_XPATH));
-        driver.switchTo().frame(iframe2);
+        gotoLightBox();
         Assert.assertEquals("Fiscal Officer Lookup", getTextByXpath("//h1/span").trim());
         Assert.assertEquals("1", waitAndGetAttributeByName(CRITERIA_NAME + "[id]", "value"));
         waitAndClickByXpath(SEARCH_BUTTON_XPATH);
@@ -115,8 +108,7 @@ public abstract class InquiryAftBase extends WebDriverLegacyITBase {
         waitAndClickByXpath("//fieldset[@id='u232_fieldset']/input[@alt='Search Field']");
         selectTopFrame();
         Thread.sleep(5000);
-        WebElement iframe3 = driver.findElement(By.xpath(FANCYBOX_IFRAME_XPATH));
-        driver.switchTo().frame(iframe3);
+        gotoLightBox();
         Assert.assertEquals("Travel Account Type Lookup", getTextByXpath("//h1/span").trim());
         Assert.assertEquals("CAT", waitAndGetAttributeByName(CRITERIA_NAME + "[accountTypeCode]", "value"));
         waitAndClickByXpath(SEARCH_BUTTON_XPATH);

@@ -85,7 +85,9 @@ public class DemoFieldsLinkAft extends DemoLibraryBase {
         assertIsVisible("#" + fieldId);
         waitAndClickByLinkText(field.getText());
 
-        WebElement lightboxIFrame = driver.findElement(By.cssSelector(".fancybox-iframe"));
+        waitForLoadingProgress();
+        gotoLightBox();
+        WebElement lightboxIFrame = gotoLightBoxIframe();
         if (!lightboxIFrame.getAttribute("src").contains("www.kuali.org")) {
             fail("Lightbox did not appear");
         }

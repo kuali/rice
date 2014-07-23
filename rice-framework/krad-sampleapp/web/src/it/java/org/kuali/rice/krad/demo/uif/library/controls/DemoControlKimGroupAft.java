@@ -48,7 +48,8 @@ public class DemoControlKimGroupAft extends WebDriverLegacyITBase {
     protected void testLibraryControlKIMGroupWidgetInputOnly() throws Exception {
         waitAndClickByLinkText("Widget Input Only");
         waitAndClickByXpath("//div[@data-label='Name' and @data-parent='Demo-KIMGroupControl-Example2']/div/button");
-        gotoIframeByXpath("//iframe[@class='fancybox-iframe']");
+        gotoLightBox();
+        gotoLightBoxIframe();
         waitAndClickSearchByText();
         waitAndClickByLinkText("return value");
     }

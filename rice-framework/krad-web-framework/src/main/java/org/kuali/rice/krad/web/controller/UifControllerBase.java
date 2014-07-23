@@ -252,6 +252,7 @@ public abstract class UifControllerBase {
     /**
      * @see org.kuali.rice.krad.web.service.RefreshControllerService#refresh(org.kuali.rice.krad.web.form.UifFormBase)
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=refresh")
     public ModelAndView refresh(UifFormBase form) {
         return getRefreshControllerService().refresh(form);

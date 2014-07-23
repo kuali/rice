@@ -52,7 +52,7 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Account Inquiry");
     }
 

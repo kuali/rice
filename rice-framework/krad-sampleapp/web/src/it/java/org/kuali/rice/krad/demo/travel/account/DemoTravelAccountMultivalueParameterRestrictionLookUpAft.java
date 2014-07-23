@@ -40,7 +40,7 @@ public class DemoTravelAccountMultivalueParameterRestrictionLookUpAft extends Vi
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Account Multi-Value Lookup");
     }
 

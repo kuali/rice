@@ -77,7 +77,7 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Authorization Document");
     }
 

@@ -1412,6 +1412,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
      */
     protected void waitForPageToLoad() throws InterruptedException {
         Thread.sleep(5000);
+        checkForIncidentReport();
     }
 
     protected WebElement waitFor(By by) throws InterruptedException {

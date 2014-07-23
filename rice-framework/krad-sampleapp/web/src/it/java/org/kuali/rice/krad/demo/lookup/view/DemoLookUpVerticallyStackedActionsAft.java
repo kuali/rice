@@ -60,7 +60,7 @@ public class DemoLookUpVerticallyStackedActionsAft extends ViewDemoAftBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Lookup vertically stacked actions");
     }
 

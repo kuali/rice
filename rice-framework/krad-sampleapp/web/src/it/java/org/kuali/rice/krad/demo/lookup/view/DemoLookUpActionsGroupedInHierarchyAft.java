@@ -60,7 +60,7 @@ public class DemoLookUpActionsGroupedInHierarchyAft extends ViewDemoAftBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Lookup actions grouped into a hierarchy");
     }
 

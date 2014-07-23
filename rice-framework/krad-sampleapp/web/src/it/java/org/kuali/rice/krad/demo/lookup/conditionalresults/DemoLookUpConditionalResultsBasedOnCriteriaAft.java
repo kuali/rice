@@ -68,7 +68,7 @@ public class DemoLookUpConditionalResultsBasedOnCriteriaAft extends WebDriverLeg
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Lookup Conditional Results Based On Criteria");
     }
 

@@ -59,7 +59,8 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
      * @throws Exception
      */
     protected void testTransactionalLookupSecurity() throws Exception {
-        waitAndClick(By.id("travelerQuickfinder_quickfinder_act"));
+        waitAndClickTravelerQuickfinder();
+
         waitAndClickSearch3();
         waitAndClickReturnValue();
 
@@ -71,6 +72,12 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
         assertTextNotPresent(PHONE_NUMBER_DECRYPTED);
     }
 
+    private void waitAndClickTravelerQuickfinder() throws InterruptedException {
+        jGrowl("Click Traveler Quickfinder Icon");
+        waitAndClick(By.id("travelerQuickfinder_quickfinder_act"));
+        waitForPageToLoad();
+    }
+
     /**
      * Tests the case in which the data dictionary phone number conversion field is changed to have it appear in the
      * email address field, which is not secured.
@@ -78,8 +85,7 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
      * @throws Exception
      */
     protected void testTransactionalLookupSecurityAddDataDictionaryConversionField() throws Exception {
-        waitAndClick(By.id("travelerQuickfinder_quickfinder_act"));
-        waitForPageToLoad();
+        waitAndClickTravelerQuickfinder();
 
         String newUrl = StringUtils.replace(driver.getCurrentUrl(), PHONE_NUMBER_NAME, EMAIL_ADDRESS_NAME);
         open(newUrl);
@@ -103,8 +109,7 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
      * @throws Exception
      */
     protected void testTransactionalLookupSecurityAddUifConversionField() throws Exception {
-        waitAndClick(By.id("travelerQuickfinder_quickfinder_act"));
-        waitForPageToLoad();
+        waitAndClickTravelerQuickfinder();
 
         String newUrl = StringUtils.replace(driver.getCurrentUrl(), CUSTOMER_NUMBER_NAME, EMAIL_ADDRESS_NAME);
         open(newUrl);
@@ -128,8 +133,7 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
      * @throws Exception
      */
     protected void testTransactionalLookupSecurityAddHiddenConversionField() throws Exception {
-        waitAndClick(By.id("travelerQuickfinder_quickfinder_act"));
-        waitForPageToLoad();
+        waitAndClickTravelerQuickfinder();
 
         int splitPosition = StringUtils.indexOf(driver.getCurrentUrl(), CONVERSION_FIELDS) + CONVERSION_FIELDS.length();
         String before = StringUtils.substring(driver.getCurrentUrl(), 0, splitPosition);

@@ -45,7 +45,7 @@ public class DemoTravelAccountInquiryWithCollectionsAft extends WebDriverLegacyI
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Account Inquiry with Collections");
     }
 

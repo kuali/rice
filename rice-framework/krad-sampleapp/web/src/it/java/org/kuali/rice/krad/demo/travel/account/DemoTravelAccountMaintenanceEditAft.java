@@ -77,7 +77,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     }
 
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");
     }
 
@@ -138,7 +138,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent", "42");
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         acceptAlert();
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {

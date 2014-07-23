@@ -2722,6 +2722,14 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         Thread.sleep(3000);
     }
 
+    protected void waitAndClickAdministration() throws InterruptedException {
+        waitAndClickByLinkText(ADMINISTRATION_LINK_TEXT, this);
+    }
+
+    protected void waitAndClickClearValues() throws InterruptedException {
+        waitAndClickButtonByText("Clear Values");
+    }
+
     protected void waitAndClickConfirmationOk() throws InterruptedException {
         jGrowl("Click OK Confirmation");
         waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
@@ -2730,10 +2738,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     protected void waitAndClickConfirmBlanketApproveOk() throws InterruptedException {
         jGrowl("Click OK Confirmation");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
-    }
-
-    protected void waitAndClickAdministration() throws InterruptedException {
-        waitAndClickByLinkText(ADMINISTRATION_LINK_TEXT, this);
     }
 
     /**
@@ -2791,6 +2795,11 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
      */
     protected void waitAndClickCopy() throws InterruptedException {
         waitAndClickByLinkText(COPY_LINK_TEXT);
+    }
+
+    protected void waitAndClickDemoLink() throws InterruptedException {
+        jGrowl("Click Demo Link");
+        waitAndClickById("Demo-DemoLink", "");
     }
 
     /**

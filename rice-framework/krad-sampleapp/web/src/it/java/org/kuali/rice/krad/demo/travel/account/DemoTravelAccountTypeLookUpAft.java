@@ -56,7 +56,7 @@ public class DemoTravelAccountTypeLookUpAft extends ViewDemoAftBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Account Type Lookup");
     }
 

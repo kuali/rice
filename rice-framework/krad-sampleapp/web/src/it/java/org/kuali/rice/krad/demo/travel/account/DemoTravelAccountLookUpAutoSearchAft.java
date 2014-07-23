@@ -45,7 +45,7 @@ public class DemoTravelAccountLookUpAutoSearchAft extends ViewDemoAftBase {
     }
 
     public void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Account Lookup Auto Search Pre-Filtered");
     }
 

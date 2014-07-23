@@ -42,7 +42,7 @@ public class DemoTravelAccountMultivalueLookUpAft extends ViewDemoAftBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Account Multi-Value Lookup");
     }
 

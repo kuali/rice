@@ -97,7 +97,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
     }
 
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Account Maintenance (New)");
     }
 

@@ -40,7 +40,7 @@ public class DemoTravelAccountBulkUpdateEditAft extends WebDriverLegacyITBase {
     }
 
     public void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Account Bulk Update (Edit)");
     }
 

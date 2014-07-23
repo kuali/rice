@@ -46,7 +46,7 @@ public class DemoTravelPerDiemLookUpAft extends ViewDemoAftBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Per Diem Lookup");
     }
 

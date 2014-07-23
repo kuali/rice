@@ -39,16 +39,6 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     private static final String TRAVEL_ACCOUNT_NAME="lookupCriteria[name]";
     
     /**
-     *	Search 
-     */
-    private static final String SEARCH_BUTTON_TEXT="Search";
-    
-    /**
-     *	Clear Values 
-     */
-    private static final String CLEAR_VALUES_BUTTON_TEXT="Clear Values";
-    
-    /**
      * lookupCriteria[fiscalOfficer.principalName]
      */
     private static final String PRINCIPAL_NAME="lookupCriteria[fiscalOfficer.principalName]";
@@ -60,39 +50,40 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-DemoLink", "");
+        waitAndClickDemoLink();
+        jGrowl("Click Lookup Link (Basic Lookup)");
         waitAndClickByXpath("//a[@href='lookup?methodToCall=start&viewId=LookupSampleView']");
     }
 
     protected void testBasicLookUp() throws InterruptedException {
     	//Search By Number
     	waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_NAME,"BALFTYHTB");
-    	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+    	waitAndClickSearchByText();
     	waitForTextPresent("BALFTYHTB");
-    	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
-    	
+        waitAndClickClearValues();
+
     	//Search By Name
     	waitAndTypeByName(TRAVEL_ACCOUNT_NAME,"Travel Account 2");
-    	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitAndClickSearchByText();
     	waitForTextPresent("Travel Account 2");
-    	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
+        waitAndClickClearValues();
     	
     	//Search By Principal Name
     	waitAndTypeByName(PRINCIPAL_NAME,"fred");
-    	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitAndClickSearchByText();
     	waitForTextPresent("Travel Account 1");
-    	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
+        waitAndClickClearValues();
     	
     	//Search By Date
     	waitAndTypeByName("lookupCriteria[rangeLowerBoundKeyPrefix_createDate]","06/01/2000");
     	waitAndTypeByName("lookupCriteria[createDate]","06/01/2050");
-    	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitAndClickSearchByText();
     	waitForTextPresent("Travel Account");
     }
     
     protected void testBasicLookUpSearchEditSave() throws InterruptedException {
     	//Search 
-    	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitAndClickSearchByText();
     	waitAndClickByLinkText("edit");
     	
     	//Edit & Save

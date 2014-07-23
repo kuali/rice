@@ -1637,16 +1637,24 @@ function coerceTableCellValue(element) {
     if (inputField.length > 0) {
         //TODO : use coerceValue()? would we do totals on other types of input
         inputFieldValue = inputField.val();
-    } else {
-        // This might be after sorting or just read only
-        if (tdObject.is("div[data-role='InputField']")) {
-            // readonly fields
-            inputFieldValue = getImmediateChildText(tdObject[0]).trim();
-        } else {
-            // after sorting
-            inputFieldValue = element;
+    } else if (tdObject.is(kradVariables.INPUT_FIELD_SELECTOR) || tdObject.is("." + kradVariables.FIELD_CLASS)) {
+        // readonly fields
+        if (tdObject.find(kradVariables.INLINE_EDIT.VIEW_CLASS).length) {
+            inputFieldValue = getImmediateChildText(tdObject.find(kradVariables.INLINE_EDIT.VIEW_CLASS)[0]).trim();
         }
+        else if (tdObject.find("> span").length) {
+            inputFieldValue = getImmediateChildText(tdObject.find("> span")[0]).trim();
+        }
+        else {
+            inputFieldValue = getImmediateChildText(tdObject[0]).trim();
+        }
+    } else if (tdObject.is("span")) {
+        inputFieldValue = getImmediateChildText(tdObject[0]).trim();
+    } else {
+        // after sorting
+        inputFieldValue = element;
     }
+
 
     // boolean matching
     if (inputFieldValue && inputFieldValue.toUpperCase() == "TRUE") {

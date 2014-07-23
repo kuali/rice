@@ -252,7 +252,7 @@ calculation applied to each column here-->
 
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="field2" p:label="Value 1"/>
+              <bean parent="Uif-DataField" p:propertyName="field2" p:label="Value 1"/>
               <bean parent="Uif-InputField" p:propertyName="field3" p:label="Value 2"/>
               <bean parent="Uif-InputField" p:propertyName="field4" p:label="Value 3"/>
               <bean parent="Uif-InputField" p:propertyName="field1" p:label="Group Value"/>

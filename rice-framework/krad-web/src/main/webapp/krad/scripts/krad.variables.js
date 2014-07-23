@@ -135,7 +135,7 @@ JavascriptKradVariables.prototype = {
     INCIDENT_REPORT_VIEW_CLASS: "Uif-IncidentReportView",
     INFO_HIGHLIGHT_SECTION_CLASS: "uif-infoHighlight-section",
     INFO_MESSAGE_ITEM_CLASS: "uif-infoMessageItem-field",
-    INPUT_FIELD_SELECTOR: "[data-role:'InputField']",
+    INPUT_FIELD_SELECTOR: "[data-role='InputField']",
     KEEP_SESSION_ALIVE_METHOD_TO_CALL: "keepSessionAlive",
     KRAD_URL: "kradUrl",
     KUALI_FORM: "kualiForm",

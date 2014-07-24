@@ -218,7 +218,7 @@ function _addDialogDataAttributeToActions(dialogId, $dialog) {
  */
 function _attachDialogResponseHandler(dialogId, $dialog, responseHandler, responseEventData) {
     // check for a response handler defined on the dialog group itself
-    if (!responseHandler && $dialog.is("[" + kradVariables.ATTRIBUTES.DATA_RESPONSE_HANDLER +"]")) {
+    if (!responseHandler && $dialog.is("[" + kradVariables.ATTRIBUTES.DATA_RESPONSE_HANDLER + "]")) {
         responseHandler = wrapAsHandler($dialog.attr(kradVariables.ATTRIBUTES.DATA_RESPONSE_HANDLER));
     }
 
@@ -269,7 +269,7 @@ function _bindShowDialogHandlers($dialog, showHandler) {
  */
 function _bindHideDialogHandlers($dialog, hideHandler) {
     // check for a show handler defined on the dialog group itself
-    if (!hideHandler && $dialog.is("[" + kradVariables.ATTRIBUTES.DATA_HIDE_HANDLER +"]")) {
+    if (!hideHandler && $dialog.is("[" + kradVariables.ATTRIBUTES.DATA_HIDE_HANDLER + "]")) {
         hideHandler = wrapAsHandler($dialog.attr(kradVariables.ATTRIBUTES.DATA_HIDE_HANDLER));
     }
 
@@ -314,12 +314,12 @@ function handleServerDialogResponse(event) {
 }
 
 /**
- * Shows the dialog and resizes the iframe it contains.
+ * Shows the dialog and resizes the iframe it contains; the dialog must only contain iframe content.
  *
- * <p>Adds show, hide and message handlers which process the dialog events.</p>
+ * <p>Adds show, hide, and message handlers which process the iframe dialog events.</p>
  *
  * @param url the url of the iframe
- * @param dialogId the id of the dialog to use which contains an iframe
+ * @param dialogId id of dialog to use, if not set Uif-DialogGroup-Iframe will be used
  */
 function openIframeDialog(url, dialogId) {
     if (!dialogId) {
@@ -384,7 +384,7 @@ function openIframeDialog(url, dialogId) {
 }
 
 /**
- * Close an open iframe dialog by using post message to pass a message event
+ * Close an open iframe dialog by using post message to pass a message event.
  */
 function closeIframeDialog() {
     window.parent.postMessage(kradVariables.MODAL.MODAL_CLOSE_DIALOG, "*");

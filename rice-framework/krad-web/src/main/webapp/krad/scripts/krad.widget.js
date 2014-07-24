@@ -310,17 +310,16 @@ function isCalledWithinDialog() {
 }
 
 /**
- * Opens the inquiry window
- * Is called from the onclick event on the direct inquiry
- * The parameters is added by dynamically getting the values
- * for the fields in the parameter maps and then added to the url string
+ * Shows the direct inquiry dialog
  *
- * @param url -
- *          the base url to use to call the inquiry
- * @param paramMap -
- *          array of field parameters for the inquiry
- * @param showInDialog -
- *          flag to indicate if it must be shown in a dialog
+ * <p>Function that is called from the onclick event on the direct inquiry.
+ * The parameters is added by dynamically getting the values
+ * for the fields in the parameter maps and then added to the url string.</p>
+ *
+ * @param url the base url to use to call the inquiry
+ * @param paramMap array of field parameters for the inquiry
+ * @param showInDialog flag to indicate if it must be shown in a dialog
+ * @param dialogId(optional) id of dialog to use, if not set Uif-DialogGroup-Iframe will be used
  */
 function showDirectInquiry(url, paramMap, showInDialog, dialogId) {
     var parameterPairs = paramMap.split(",");

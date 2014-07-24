@@ -36,7 +36,7 @@ public class DemoCollectionFeaturesSelectLineAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Select Line");
     }

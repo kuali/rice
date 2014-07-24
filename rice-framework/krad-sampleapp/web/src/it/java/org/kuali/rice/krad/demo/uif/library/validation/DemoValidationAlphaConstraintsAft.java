@@ -42,7 +42,7 @@ public class DemoValidationAlphaConstraintsAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Alpha Constraint");
     }

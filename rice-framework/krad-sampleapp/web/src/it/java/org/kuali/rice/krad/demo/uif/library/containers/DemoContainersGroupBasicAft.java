@@ -38,7 +38,7 @@ public class DemoContainersGroupBasicAft extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
     }
 
     protected void navigationMenu() throws Exception {

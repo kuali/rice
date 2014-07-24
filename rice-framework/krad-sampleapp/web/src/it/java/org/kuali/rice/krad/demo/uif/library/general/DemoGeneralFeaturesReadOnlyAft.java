@@ -37,7 +37,7 @@ public class DemoGeneralFeaturesReadOnlyAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("General Features");
         waitAndClickByLinkText("Read Only");
     }

@@ -36,7 +36,7 @@ public class DemoElementsActionAft extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Elements");
         waitAndClickByLinkText("Action");
     }

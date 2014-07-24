@@ -37,7 +37,7 @@ public class DemoCollectionFeaturesInactiveFilterAft extends WebDriverLegacyITBa
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Inactive Filter");
     }

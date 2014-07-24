@@ -38,7 +38,7 @@ public class DemoClientResponsivenessDisableAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Client Responsiveness");
         waitAndClickByLinkText("Disable");
     }

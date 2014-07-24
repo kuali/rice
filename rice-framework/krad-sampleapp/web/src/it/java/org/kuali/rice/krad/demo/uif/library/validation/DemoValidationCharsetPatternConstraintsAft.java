@@ -36,7 +36,7 @@ public class DemoValidationCharsetPatternConstraintsAft extends WebDriverLegacyI
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Charset Constraint");
     }

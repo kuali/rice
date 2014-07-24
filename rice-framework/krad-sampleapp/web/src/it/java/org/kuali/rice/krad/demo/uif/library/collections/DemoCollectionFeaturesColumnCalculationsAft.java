@@ -38,7 +38,7 @@ public class DemoCollectionFeaturesColumnCalculationsAft extends WebDriverLegacy
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Column Calculations");
     }

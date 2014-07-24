@@ -36,7 +36,7 @@ public class DemoValidationFloatingPointConstraintsAft extends WebDriverLegacyIT
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Floating Point Constraint");
     }

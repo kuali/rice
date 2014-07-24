@@ -36,7 +36,7 @@ public class DemoCollectionFeaturesServerPagingAft extends WebDriverLegacyITBase
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Server Paging");
     }

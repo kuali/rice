@@ -36,7 +36,7 @@ public class DemoValidationAnyCharacterConstraintsAft extends WebDriverLegacyITB
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Any Character Constraint");
     }

@@ -36,7 +36,7 @@ public class DemoClientResponsivenessConditionalRefreshAft extends WebDriverLega
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Client Responsiveness");
         waitAndClickByLinkText("Conditional Refresh");
     }

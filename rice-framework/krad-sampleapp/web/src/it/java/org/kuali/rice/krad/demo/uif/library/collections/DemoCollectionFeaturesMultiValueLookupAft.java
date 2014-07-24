@@ -37,7 +37,7 @@ public class DemoCollectionFeaturesMultiValueLookupAft extends WebDriverLegacyIT
     @Override
     protected void navigate() throws Exception {
         jGrowl("Click the Library Link");
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Multi-Value Lookup");
     }

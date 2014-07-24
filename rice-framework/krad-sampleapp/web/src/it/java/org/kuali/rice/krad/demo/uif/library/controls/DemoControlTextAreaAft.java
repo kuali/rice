@@ -35,7 +35,7 @@ public class DemoControlTextAreaAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Controls");
         waitAndClickByLinkText("Text Area");
     }

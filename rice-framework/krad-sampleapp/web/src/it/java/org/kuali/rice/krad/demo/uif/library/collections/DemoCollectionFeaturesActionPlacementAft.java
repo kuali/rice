@@ -36,7 +36,7 @@ public class DemoCollectionFeaturesActionPlacementAft extends WebDriverLegacyITB
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Action Placement");
     }

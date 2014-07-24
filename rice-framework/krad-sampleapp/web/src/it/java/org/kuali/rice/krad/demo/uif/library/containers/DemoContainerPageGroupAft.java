@@ -36,7 +36,7 @@ public class DemoContainerPageGroupAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Containers");
         waitAndClickByLinkText("Page Group");
     }

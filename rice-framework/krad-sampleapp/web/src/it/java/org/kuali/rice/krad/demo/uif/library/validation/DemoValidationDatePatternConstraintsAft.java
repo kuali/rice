@@ -37,7 +37,7 @@ public class DemoValidationDatePatternConstraintsAft extends WebDriverLegacyITBa
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Date Constraint");
     }

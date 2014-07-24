@@ -39,7 +39,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("General Features");
         waitAndClickByLinkText("Rich Messages");
     }

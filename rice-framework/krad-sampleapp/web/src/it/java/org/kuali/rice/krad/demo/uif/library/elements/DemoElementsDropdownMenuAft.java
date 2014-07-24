@@ -36,7 +36,7 @@ public class DemoElementsDropdownMenuAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Elements");
         waitAndClickByLinkText("Dropdown Menu");
     }

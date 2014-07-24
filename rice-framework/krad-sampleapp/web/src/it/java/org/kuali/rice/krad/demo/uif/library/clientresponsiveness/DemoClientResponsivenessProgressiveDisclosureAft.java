@@ -40,7 +40,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickById("Demo-LibraryLink", "");
+        waitAndClickLibraryLink();;
         waitAndClickByLinkText("Client Responsiveness");
         waitAndClickByLinkText("Progressive Disclosure");
     }

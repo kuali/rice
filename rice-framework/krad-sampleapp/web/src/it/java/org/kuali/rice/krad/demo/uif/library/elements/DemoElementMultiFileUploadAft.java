@@ -56,7 +56,7 @@ public class DemoElementMultiFileUploadAft extends DemoLibraryBase {
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickById("Demo-LibraryLink", "");
+    	waitAndClickLibraryLink();;
         waitAndClickByLinkText("Elements");
     	waitAndClickByLinkText("Multi-file Upload");
     }

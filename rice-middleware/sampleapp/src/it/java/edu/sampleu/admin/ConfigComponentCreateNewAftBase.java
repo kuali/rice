@@ -82,7 +82,7 @@ public abstract class ConfigComponentCreateNewAftBase extends ConfigComponentAft
         String tempValue=AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.documentHeader.documentDescription","Description for Duplicate");
         selectByName("document.newMaintainableObject.namespaceCode","KR-BUS - Service Bus");
-        waitAndTypeByName("document.newMaintainableObject.code","COMPCODE");
+        waitAndTypeByName("document.newMaintainableObject.code","COMPCODE" + tempValue);
         waitAndTypeByName("document.newMaintainableObject.name","Component Name "+tempValue);
         waitAndClickByXpath("//input[@name='methodToCall.route']");
         waitForTextPresent("Document was successfully submitted.");
@@ -94,7 +94,7 @@ public abstract class ConfigComponentCreateNewAftBase extends ConfigComponentAft
         selectFrameIframePortlet();
         waitAndTypeByName("document.documentHeader.documentDescription","Description for Duplicate");
         selectByName("document.newMaintainableObject.namespaceCode","KR-BUS - Service Bus");
-        waitAndTypeByName("document.newMaintainableObject.code","COMPCODE");
+        waitAndTypeByName("document.newMaintainableObject.code","COMPCODE" + tempValue);
         waitAndTypeByName("document.newMaintainableObject.name","Component Name "+tempValue);
         waitAndClickByXpath("//input[@name='methodToCall.route']");
         waitForTextPresent("This document cannot be Saved or Routed because a record with the same primary key already exists.");

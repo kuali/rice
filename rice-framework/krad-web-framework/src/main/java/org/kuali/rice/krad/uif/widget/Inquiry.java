@@ -273,11 +273,6 @@ public class Inquiry extends WidgetBase {
             urlParameters.setProperty(UifParameters.VIEW_NAME, this.viewName);
         }
 
-        // add inquiry specific parms to url
-        if (getInquiryLink().getLightBox() != null) {
-            getInquiryLink().getLightBox().setAddAppParms(true);
-        }
-
         // configure inquiry when read only
         if (isParentReadOnly()) {
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
@@ -368,13 +363,8 @@ public class Inquiry extends WidgetBase {
             }
             String paramMapString = StringUtils.removeEnd(paramMapStringBuilder.toString(), ",");
 
-            // Check if lightbox is set. Get lightbox options.
-            String lightBoxOptions = "";
-            boolean lightBoxShow = (getInquiryLink().getLightBox() != null);
-            if (lightBoxShow) {
-                lightBoxOptions = getInquiryLink().getLightBox().getTemplateOptionsJSString();
-            }
-            else {
+            // Check if showing in dialog
+            if (!getInquiryLink().isOpenInDialog()) {
                 String title = this.getTitle();
                 if (StringUtils.isNotBlank(title)) {
                     this.setTitle(title + " - " + messageService.getMessageText("accessibility.link.opensTab"));
@@ -391,10 +381,10 @@ public class Inquiry extends WidgetBase {
             onClickScript.append("\", \"");
             onClickScript.append(paramMapString);
             onClickScript.append("\", ");
-            onClickScript.append(lightBoxShow);
-            onClickScript.append(", ");
-            onClickScript.append(lightBoxOptions);
-            onClickScript.append(");");
+            onClickScript.append(getInquiryLink().isOpenInDialog());
+            onClickScript.append(", \"");
+            onClickScript.append(getInquiryLink().getLinkDialogId());
+            onClickScript.append("\");");
 
             directInquiryAction.setPerformDirtyValidation(false);
             directInquiryAction.setActionScript(onClickScript.toString());

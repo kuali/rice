@@ -282,228 +282,17 @@ function setupTextPopout(id, label, summary, constraint, readOnly) {
 }
 
 /**
- * Uses a modal to open a link's content in an iframe. The second
- * argument is a Map of options that are available for the FancyBox.
- * The third argument should only be true for inquiries and lookups.  When this
- * argument is true additional URL parameters are added for the bread crumbs history.
- *
- * @param linkId -
- *          id for the link that the modal iframe should be linked to
- * @param options -
- *          map of option settings (option name/value pairs) for the plugin
- * @parm isAddAppParms -
- *          true if application parameters should be added to the link, false otherwise
- */
-function handleLightboxOpen(link, options, addAppParms, event) {
-    event.preventDefault();
-    var renderedInLightBox = isCalledWithinLightbox();
-
-    // first time content is brought up in lightbox we don't want to continue history
-    var flow = 'start';
-    if (renderedInLightBox) {
-        flow = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
-    }
-
-    if (addAppParms) {
-        // Set the renderedInLightBox = true param
-        if (link.attr('href').indexOf('&renderedInLightBox=true') == -1) {
-            var href = link.attr('href');
-
-            //set lightbox flag and continue flow
-            link.attr('href', href + '&renderedInLightBox=true&flow=' + flow);
-        }
-    }
-
-    // Check if this is called within a light box
-    if (!renderedInLightBox) {
-        // If this is not the top frame, then create the lightbox
-        // on the top frame to put overlay over whole window
-        var url = link.attr('href');
-
-        openIframeDialog(url);
-    } else {
-        window.location = link.attr('href');
-    }
-}
-
-/**
- * Submits the form based on the quickfinder action identified by the given id and display the result content in
- * a lightbox using the jQuery fancybox. If we are not currently in a lightbox, we will request a redirect URL
- * for the lightbox contents. Otherwise, the internal iframe of the lightbox will be redirected.
- *
- * <p>
- * See <link>http://fancybox.net/api</link> for documentation on plugin options
- * </p>
- *
- * @param componentId
- *          id for the action component that the fancybox should be linked to
- * @param options
- *          map of option settings (option name/value pairs) for the fancybox plugin
- * @param lookupReturnByScript - boolean that indicates whether the lookup should return through script
- *        or via a server post
- */
-function createLightBoxPost(componentId, options, lookupReturnByScript) {
-    jQuery(function () {
-        var data = {};
-        var submitData = jQuery("#" + componentId).data(kradVariables.SUBMIT_DATA);
-        jQuery.extend(data, submitData);
-
-        if (!lookupReturnByScript) {
-            dirtyFormState.skipDirtyChecks = true;
-        }
-
-        // Check if this is not called within a lightbox
-        var renderedInLightBox = isCalledWithinLightbox();
-        if (!renderedInLightBox) {
-            if (top === self) {
-                data['actionParameters[returnTarget]'] = '_parent';
-            } else {
-                data['actionParameters[returnTarget]'] = 'iframeportlet';
-            }
-
-            var baseURI = this.documentURI;
-            if (baseURI.indexOf("?") > -1) {
-                baseURI = baseURI.substring(0, baseURI.indexOf("?"));
-            }
-
-            data['actionParameters[returnLocation]'] = encodeURIComponent(baseURI);
-            data['actionParameters[renderedInLightBox]'] = true;
-            data['actionParameters[returnByScript]'] = lookupReturnByScript;
-            data['actionParameters[methodToCall]'] = "start";
-            data['actionParameters[flowKey]'] = "start";
-            data['actionParameters[returnFormKey]'] = jQuery("#" + kradVariables.FORM_INFO_ID).children("input[name='formKey']").val();
-
-            var lookupParameters = data['actionParameters[lookupParameters]'];
-            if (lookupParameters !== "" && typeof lookupParameters !== "undefined") {
-                var lookupField = lookupParameters.substring(lookupParameters.indexOf(":") + 1);
-                var lookupValue = jQuery("#" + componentId).parent().parent().children("input").val();
-                if (lookupField !== "" && typeof lookupField !== "undefined" && lookupValue !== "" && typeof lookupValue !== "undefined") {
-                    data['actionParameters[lookupCriteria[&quot;' + lookupField + '&quot;]]'] = lookupValue;
-                }
-            }
-
-            var lookupUrl = data['actionParameters[baseLookupUrl]'] + "?";
-
-            for (var key in data) {
-                if (key.indexOf("actionParameters") !== -1) {
-                    var parameterName = key.replace("actionParameters[", "").replace("]", "").replace(new RegExp("&quot;", 'g'), "'");
-                    lookupUrl += parameterName + "=" + data[key] + "&";
-                }
-            }
-
-            // Trim the remaining ampersand
-            lookupUrl = lookupUrl.substring(0, lookupUrl.length - 1);
-
-            lookupUrl = lookupUrl.replace(/&amp;/g, '&');
-
-            openIframeDialog(lookupUrl, kradVariables.MODAL.LOOKUP_MODAL);
-        } else {
-            // add parameters for lightbox and do standard submit
-            data['actionParameters[renderedInLightBox]'] = 'true';
-            data['actionParameters[returnTarget]'] = '_self';
-            data['actionParameters[flowKey]'] = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
-
-            nonAjaxSubmitForm(data['methodToCall'], data);
-        }
-    });
-}
-
-/**
- * Close an open iframe dialog by using post message to pass a message event
- */
-function closeIframeDialog() {
-    window.parent.postMessage(kradVariables.MODAL.MODAL_CLOSE_DIALOG, "*");
-}
-
-/**
- * Shows the dialog and resizes the iframe it contains.
- *
- * <p>Adds show, hide and message handlers which process the dialog events.</p>
- *
- * @param url the url of the iframe
- * @param dialogId the id of the dialog to use which contains an iframe
- */
-function openIframeDialog(url, dialogId) {
-    if (!dialogId) {
-        dialogId = kradVariables.MODAL.IFRAME_MODAL;
-    }
-
-    // Add handler to handle the close message event received fromt the iframe
-    jQuery(window).one("message." + kradVariables.MODAL.MODAL_NAMESPACE, function (event) {
-        switch (event.originalEvent.data) {
-            case kradVariables.MODAL.MODAL_CLOSE_DIALOG:
-                jQuery(kradVariables.MODAL.MODAL_CLASS).modal("hide");
-                break;
-        }
-    });
-
-    var dialogOptions = {
-        // Setting the source of the iframe and resizing it
-        showHandler: function (event) {
-            var $modal = jQuery(event.target);
-            var $iframe = $modal.find("iframe");
-
-            $iframe.attr("src", url);
-
-            iframeModalResize($modal, $iframe);
-
-            // Resize the iframe on a window.resize
-            jQuery(window).on("resize." + kradVariables.MODAL.MODAL_NAMESPACE, function () {
-                iframeModalResize($modal, $iframe);
-            });
-
-            showLoading();
-
-            $iframe.one("onload", function () {
-                hideLoading();
-            });
-        },
-        // Removing the resize and message handlers and destroying the modal
-        hideHandler: function (event) {
-            var $modal = jQuery(event.target);
-
-            jQuery(window).unbind("resize." + kradVariables.MODAL.MODAL_NAMESPACE);
-            jQuery(window).unbind("message." + kradVariables.MODAL.MODAL_NAMESPACE);
-
-            $modal.remove();
-        }
-
-    };
-
-    showDialog(dialogId, dialogOptions);
-}
-
-/**
- * Resizes the iframe to 100% of the modal body
- *
- * @param $modal the modal element
- * @param $iframe the iframe element
- */
-function iframeModalResize($modal, $iframe) {
-    var height = jQuery(window).height() * 0.8;
-    var headerHeight = $modal.find(kradVariables.MODAL.MODAL_HEADER_CLASS).outerHeight();
-    var footerHeight = $modal.find(kradVariables.MODAL.MODAL_FOOTER_CLASS).outerHeight();
-    var $modalBody = $modal.find(kradVariables.MODAL.MODAL_BODY_CLASS);
-
-    $modal.find(kradVariables.MODAL.MODAL_CONTENT_CLASS).css("height", height);
-    $modalBody.css("height", height - headerHeight - footerHeight);
-    $modalBody.css("padding", 0);
-    $iframe.css("height", "100%");
-    $iframe.css("width", "100%");
-}
-
-/**
  * Check if the code is inside a lightbox
  *
  * @return true if called within a lightbox, false otherwise
  */
-function isCalledWithinLightbox() {
-    var isRenderedInLightbox = jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val();
-    if (isRenderedInLightbox == undefined) {
+function isCalledWithinDialog() {
+    var isRenderedInDialog = jQuery("input[name='" + kradVariables.RENDERED_IN_DIALOG + "']").val();
+    if (isRenderedInDialog == undefined) {
         return false;
     }
 
-    return isRenderedInLightbox.toUpperCase() == 'TRUE' || isRenderedInLightbox.toUpperCase() == 'YES';
+    return isRenderedInDialog.toUpperCase() == 'TRUE' || isRenderedInDialog.toUpperCase() == 'YES';
     // reverting for KULRICE-8346
 //    try {
 //        // For security reasons the browsers will not allow cross server scripts and
@@ -530,12 +319,10 @@ function isCalledWithinLightbox() {
  *          the base url to use to call the inquiry
  * @param paramMap -
  *          array of field parameters for the inquiry
- * @param showLightBox -
- *          flag to indicate if it must be shown in a lightbox
- * @param lightBoxOptions -
- *          map of option settings (option name/value pairs) for the lightbox plugin
+ * @param showInDialog -
+ *          flag to indicate if it must be shown in a dialog
  */
-function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
+function showDirectInquiry(url, paramMap, showInDialog, dialogId) {
     var parameterPairs = paramMap.split(",");
     var queryString = "";
 
@@ -550,23 +337,20 @@ function showDirectInquiry(url, paramMap, showLightBox, lightBoxOptions) {
         }
     }
 
-    if (showLightBox) {
+    if (showInDialog) {
         // Check if this is called within a light box
         if (!getContext().find('.fancybox-inner', parent.document).length) {
-            // Perform cleanup when lightbox is closed
-            lightBoxOptions['beforeClose'] = cleanupClosedLightboxForms;
 
-            queryString = queryString + "&flow=start&renderedInLightBox=true";
+            queryString = queryString + "&flow=start&renderedInDialog=true";
             url = url + queryString;
-            openIframeDialog(url, kradVariables.MODAL.INQUIRY_MODAL);
+            openIframeDialog(url, dialogId);
         } else {
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&flow="
-                    + jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val() + "&renderedInLightBox=true";
+                    + jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val() + "&renderedInDialog=true";
             window.open(url + queryString, "_self");
         }
     } else {
-        queryString = queryString;
         window.open(url + queryString, "_blank", "width=640, height=600, scrollbars=yes");
     }
 }

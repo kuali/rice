@@ -318,10 +318,8 @@
       <list>
         <bean id="UifCompView-LinkField1" parent="Uif-LinkField" p:href="http://www.kuali.org"/>
 
-        <bean id="UifCompView-LinkField2" parent="Uif-LinkField" p:target="_blank" p:href="http://www.kuali.org">
-          <property name="lightBox">
-            <bean parent="Uif-LightBox"/>
-          </property>
+        <bean id="UifCompView-LinkField2" parent="Uif-LinkField" p:target="_blank" p:href="http://www.kuali.org"
+                p:openInDialog="true">
         </bean>
 
         <bean id="UifCompView-LinkField3" parent="Uif-LinkGroup" p:groupBeginDelimiter="[" p:groupEndDelimiter="]"

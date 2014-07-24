@@ -48,8 +48,8 @@
     <property name="resultsGroup">
       <bean parent="Uif-LookupResultsCollectionSection"/>
     </property>
-    <property name="hideCriteriaOnSearch" value="@{renderedInLightBox}"/>
-    <property name="stickyFooter" value="@{renderedInLightBox}"/>
+    <property name="hideCriteriaOnSearch" value="@{renderedInDialog}"/>
+    <property name="stickyFooter" value="@{renderedInDialog}"/>
     <property name="rangeFieldGroupPrototype">
       <bean parent="Uif-HorizontalFieldGroup"/>
     </property>
@@ -79,9 +79,9 @@
               p:additionalSubmitData="displayResults:false" p:iconClass="icon-chevron-left" p:ajaxSubmit="false"
               p:render="@{displayResults}" p:order="100"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
-              p:render="@{!renderedInLightBox}" p:order="200"/>
+              p:render="@{!renderedInDialog}" p:order="200"/>
         <bean parent="Uif-SecondaryActionButton" p:actionLabel="Close"
-              p:render="@{renderedInLightBox}"
+              p:render="@{renderedInDialog}"
               p:onClickScript="e.preventDefault();closeIframeDialog();return false;" p:order="300"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="clearValues" p:render="@{!displayResults}"
               p:actionLabel="Clear Values"
@@ -238,8 +238,8 @@
     <property name="items">
       <list>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="cancel" p:actionLabel="Cancel"
-              p:render="@{!#form.renderedInLightBox}" p:order="100"/>
-        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInLightBox}"
+              p:render="@{!#form.renderedInDialog}" p:order="100"/>
+        <bean parent="Uif-SecondaryActionButton" p:actionLabel="Close" p:render="@{#form.renderedInDialog}"
               p:onClickScript="e.preventDefault();closeLightbox();return false;" p:order="200"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="clearValues" p:actionLabel="Clear Values"
               p:refreshId="uLookupCriteria" p:ajaxSubmit="false" p:order="300"/>

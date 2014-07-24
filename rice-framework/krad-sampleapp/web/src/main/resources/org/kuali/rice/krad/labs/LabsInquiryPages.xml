@@ -230,7 +230,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-Link" p:linkText="Link to specify the number of columns within an non-collection inquiry section." p:target="_self"
-                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krms.impl.repository.ContextBo&amp;id=CONTEXT1&amp;renderedInLightBox=true&amp;flow=start"/>
+                    p:href="@{#ConfigProperties['krad.url']}/inquiry?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krms.impl.repository.ContextBo&amp;id=CONTEXT1&amp;renderedInDialog=true&amp;flow=start"/>
             </list>
           </property>
         </bean>

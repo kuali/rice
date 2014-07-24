@@ -115,7 +115,7 @@ public class UifFormBase implements ViewModel {
     protected String state;
 
     @RequestAccessible
-    protected boolean renderedInLightBox;
+    protected boolean renderedInDialog;
 
     @RequestAccessible
     protected boolean renderedInIframe;
@@ -203,7 +203,7 @@ public class UifFormBase implements ViewModel {
     protected HttpServletRequest request;
 
     public UifFormBase() {
-        renderedInLightBox = false;
+        renderedInDialog = false;
         renderedInIframe = false;
         requestRedirected = false;
 
@@ -1106,17 +1106,17 @@ public class UifFormBase implements ViewModel {
      *
      * @return boolean true if view is rendered within a lightbox, false if not
      */
-    public boolean isRenderedInLightBox() {
-        return this.renderedInLightBox;
+    public boolean isRenderedInDialog() {
+        return this.renderedInDialog;
     }
 
     /**
      * Setter for the rendered within lightbox indicator
      *
-     * @param renderedInLightBox
+     * @param renderedInDialog
      */
-    public void setRenderedInLightBox(boolean renderedInLightBox) {
-        this.renderedInLightBox = renderedInLightBox;
+    public void setRenderedInDialog(boolean renderedInDialog) {
+        this.renderedInDialog = renderedInDialog;
     }
 
     /**

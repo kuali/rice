@@ -201,7 +201,7 @@ JavascriptKradVariables.prototype = {
     PERFORM_DIRTY_VALIDATION: "performdirtyvalidation",
     PROGRESSIVE_DISCLOSURE_HIGHLIGHT_CLASS: "uif-progressiveDisclosure-highlight",
     POPOVER_DATA: "bs.popover",
-    RENDERED_IN_LIGHTBOX: "renderedInLightBox",
+    RENDERED_IN_DIALOG: "renderedInDialog",
     REFRESH_METHOD_TO_CALL: "refresh",
     RETRIEVE_MESSAGE_METHOD_TO_CALL: "retrieveMessage",
     RETRIEVE_COLLECTION_PAGE_METHOD_TO_CALL: "retrieveCollectionPage",
@@ -264,6 +264,7 @@ JavascriptKradVariables.prototype = {
         UPDATE_CONTENT: "updatecontent.uif",
         PAGE_UPDATE_COMPLETE: "pageUpdateComplete.uif",
         SHOW_MODAL: "show.bs.modal",
+        SHOWN_MODAL: "shown.bs.modal",
         HIDE_MODAL: "hide.bs.modal",
         HIDDEN_MODAL: "hidden.bs.modal"
     }

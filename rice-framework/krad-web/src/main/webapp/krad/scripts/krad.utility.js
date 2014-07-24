@@ -916,11 +916,11 @@ function showLightboxComponent(componentId, overrideOptions, alwaysRefresh) {
         alwaysRefresh = false;
     }
 
-    // set renderedInLightBox indicator and remove it when lightbox is closed
-    if (jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val() != true) {
-        jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(true);
+    // set renderedInDialog indicator and remove it when lightbox is closed
+    if (jQuery("input[name='" + kradVariables.RENDERED_IN_DIALOG + "']").val() != true) {
+        jQuery("input[name='" + kradVariables.RENDERED_IN_DIALOG + "']").val(true);
         _appendCallbackFunctions(overrideOptions, {afterClose: function () {
-            jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(false);
+            jQuery("input[name='" + kradVariables.RENDERED_IN_DIALOG + "']").val(false);
         }});
     }
 
@@ -964,7 +964,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
             jQuery("#" + componentId).css("display", cssDisplay);
             jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId));
 
-            jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(false);
+            jQuery("input[name='" + kradVariables.RENDERED_IN_DIALOG + "']").val(false);
 
             activeDialogId = null;
         }});
@@ -978,7 +978,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
             jQuery("#" + componentId).css("display", cssDisplay);
             jQuery("#" + componentId + kradVariables.DIALOG_PLACEHOLDER).replaceWith(parent.jQuery("#" + componentId));
 
-            jQuery("input[name='" + kradVariables.RENDERED_IN_LIGHTBOX + "']").val(false);
+            jQuery("input[name='" + kradVariables.RENDERED_IN_DIALOG + "']").val(false);
 
             activeDialogId = null;
         }});

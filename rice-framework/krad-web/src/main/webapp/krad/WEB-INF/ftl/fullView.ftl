@@ -69,7 +69,7 @@
                 <@spring.formHiddenInput path="KualiForm.dirtyForm"/>
 
                 <#-- indicator which is set to true when content is being rendered inside a lightbox -->
-                <@spring.formHiddenInput path="KualiForm.renderedInLightBox"/>
+                <@spring.formHiddenInput path="KualiForm.renderedInDialog"/>
 
                 <#-- indicator for single page view, used to drive script page handling logic -->
                 <@spring.formHiddenInput path="KualiForm.view.singlePageView"/>

@@ -20,14 +20,12 @@ import java.util.ArrayList;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.validator.ErrorReport;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
-import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.LightBox;
@@ -48,13 +46,13 @@ public class Link extends ContentElementBase {
     private String iconClass;
     private String linkIconPlacement;
 
-    private boolean openInLightbox;
-
-    private LightBox lightBox;
+    private String linkDialogId;
+    private boolean openInDialog;
 
     public Link() {
         super();
         linkIconPlacement = UifConstants.Position.LEFT.name();
+        linkDialogId = "";
     }
 
     /**
@@ -69,10 +67,6 @@ public class Link extends ContentElementBase {
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
-
-        if (openInLightbox && (lightBox == null)) {
-            lightBox = ComponentFactory.getLightBox();
-        }
     }
 
     /**
@@ -84,11 +78,11 @@ public class Link extends ContentElementBase {
 
         MessageService messageService = KRADServiceLocatorWeb.getMessageService();
 
-        if (lightBox != null && lightBox.isRender()){
-            this.addDataAttribute(UifConstants.DataAttributes.ONCLICK, "handleLightboxOpen(jQuery(this), " +
-                    lightBox.getTemplateOptionsJSString() + ", " + lightBox.isAddAppParms() + ", e);");
+        if (openInDialog){
+            this.addDataAttribute(UifConstants.DataAttributes.ONCLICK, "e.preventDefault(); "
+                    + "openLinkInDialog(jQuery(this), \""
+                    + linkDialogId + "\");");
             this.addDataAttribute(UifConstants.DataAttributes.ROLE, UifConstants.RoleTypes.ACTION);
-            lightBox.setRender(false);
         }
 
         // when icon only is set, add the icon class to the action
@@ -168,8 +162,16 @@ public class Link extends ContentElementBase {
         this.href = href;
     }
 
+    public String getLinkDialogId() {
+        return linkDialogId;
+    }
+
+    public void setLinkDialogId(String linkDialogId) {
+        this.linkDialogId = linkDialogId;
+    }
+
     /**
-     * Indicates whether the link URL should be opened in a lightbox
+     * Indicates whether the link URL should be opened in a dialog
      *
      * <p>
      * If set the target attribute is ignored and the URL is opened in a lightbox instead
@@ -177,36 +179,17 @@ public class Link extends ContentElementBase {
      *
      * @return true to open link in a lightbox, false if not (follow standard target attribute)
      */
-    public boolean isOpenInLightbox() {
-        return openInLightbox;
+    public boolean isOpenInDialog() {
+        return openInDialog;
     }
 
     /**
-     * Setter that indicates whether the link should be opened in a lightbox
+     * Setter that indicates whether the link should be opened in a dialog
      *
-     * @param openInLightbox
+     * @param openInDialog
      */
-    public void setOpenInLightbox(boolean openInLightbox) {
-        this.openInLightbox = openInLightbox;
-    }
-
-    /**
-     * Returns the <code>LightBox</code> used to open the link in
-     *
-     * @return The <code>LightBox</code>
-     */
-    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
-    public LightBox getLightBox() {
-        return lightBox;
-    }
-
-    /**
-     * Setter for the lightBox
-     *
-     * @param lightBox
-     */
-    public void setLightBox(LightBox lightBox) {
-        this.lightBox = lightBox;
+    public void setOpenInDialog(boolean openInDialog) {
+        this.openInDialog = openInDialog;
     }
 
     /**

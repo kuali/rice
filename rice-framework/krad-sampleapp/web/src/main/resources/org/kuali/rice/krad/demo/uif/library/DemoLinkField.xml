@@ -62,10 +62,8 @@
     <property name="items">
       <list>
         <!-- ex:Demo-LinkField-Example3 start-->
-        <bean parent="Uif-LinkField" p:href="http://www.kuali.org" p:linkText="Kuali Website in a lightbox" >
-          <property name="lightBox">
-            <bean parent="Uif-LightBox"/>
-          </property>
+        <bean parent="Uif-LinkField" p:href="http://www.kuali.org" p:linkText="Kuali Website in a lightbox"
+              p:link.openInDialog="true">
         </bean>
         <!-- ex:Demo-LinkField-Example3 end-->
       </list>

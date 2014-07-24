@@ -36,7 +36,7 @@
   </bean>
 
   <!-- Default -->
-  <bean id="Demo-Link-Example1"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Link-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Link-Example1 start-->
@@ -48,7 +48,7 @@
   </bean>
 
   <!-- Link with custom target -->
-  <bean id="Demo-Link-Example2"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Link-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Link-Example2 start-->
@@ -61,23 +61,34 @@
   </bean>
 
   <!-- Link in lightbox -->
-  <bean id="Demo-Link-Example3"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Link-Example3" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Link-Example3 start-->
-        <bean parent="Uif-Link" p:href="http://www.kuali.org"
-              p:linkText="Kuali Website in a lightbox" >
-          <property name="lightBox">
-            <bean parent="Uif-LightBox"/>
-          </property>
-        </bean>
+        <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Kuali Website in a lightbox"
+              p:openInDialog="true" p:linkDialogId="Demo-Link-CustomDialog"/>
         <!-- ex:Demo-Link-Example3 end-->
       </list>
     </property>
   </bean>
 
+  <!-- ex:Demo-Link-Example3 start-->
+
+  <!-- Customized iframe dialog with a header and footer change -->
+  <bean id="Demo-Link-CustomDialog" parent="Uif-DialogGroup-Iframe">
+    <property name="headerText" value="Kuali Website"/>
+    <property name="footer.render" value="true"/>
+    <property name="footer.items">
+      <list>
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Close"
+              p:actionScript="dismissDialog('Demo-Link-CustomDialog');"/>
+      </list>
+    </property>
+  </bean>
+  <!-- ex:Demo-Link-Example3 end-->
+
   <!-- Link with bootstrap icon -->
-  <bean id="Demo-Link-Example4"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-Link-Example4" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-Link-Example4 start-->

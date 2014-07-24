@@ -150,7 +150,7 @@
   <bean id="Uif-ApplicationHeaderBase" parent="Uif-ApplicationHeaderBase-parentBean"/>
   <bean id="Uif-ApplicationHeaderBase-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.element.ApplicationHeader"
-        parent="Uif-HeaderBase" scope="prototype" p:render="@{!renderedInLightBox}">
+        parent="Uif-HeaderBase" scope="prototype" p:render="@{!renderedInDialog}">
     <property name="template" value="/krad/WEB-INF/ftl/components/element/appHeader.ftl"/>
     <property name="templateName" value="uif_appHeader"/>
     <property name="cssClasses">

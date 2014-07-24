@@ -559,7 +559,7 @@ public class UifConstants {
 
     public static final class JsFunctions {
         public static final String COLLECTION_LINE_CHANGED = "collectionLineChanged";
-        public static final String CREATE_LIGHTBOX_POST = "createLightBoxPost";
+        public static final String SHOW_LOOKUP_DIALOG = "showLookupDialog";
         public static final String HANDLE_SERVER_DIALOG_RESPONSE = "handleServerDialogResponse";
         public static final String INITIALIZE_VIEW_STATE = "initializeViewState";
         public static final String INITIALIZE_SESSION_TIMERS = "initializeSessionTimers";

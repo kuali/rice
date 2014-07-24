@@ -312,3 +312,132 @@ function handleServerDialogResponse(event) {
 
     request.send();
 }
+
+/**
+ * Shows the dialog and resizes the iframe it contains.
+ *
+ * <p>Adds show, hide and message handlers which process the dialog events.</p>
+ *
+ * @param url the url of the iframe
+ * @param dialogId the id of the dialog to use which contains an iframe
+ */
+function openIframeDialog(url, dialogId) {
+    if (!dialogId) {
+        dialogId = kradVariables.MODAL.IFRAME_MODAL;
+    }
+
+    // Add handler to handle the close message event received fromt the iframe
+    jQuery(window).one("message." + kradVariables.MODAL.MODAL_NAMESPACE, function (event) {
+        switch (event.originalEvent.data) {
+            case kradVariables.MODAL.MODAL_CLOSE_DIALOG:
+                jQuery(kradVariables.MODAL.MODAL_CLASS).modal("hide");
+                break;
+        }
+    });
+
+    var dialogOptions = {
+        // Setting the source of the iframe and resizing it
+        showHandler: function (event) {
+            var $modal = jQuery(event.target);
+            var $iframe = $modal.find("iframe");
+
+            $iframe.attr("src", url);
+
+            iframeModalResize($modal, $iframe);
+
+            // Hide the modal footer temporarily get around a placement issue
+            $modal.find(kradVariables.MODAL.MODAL_FOOTER_CLASS).hide();
+
+            // Also resize on the shown event to make sure we have correct dimensions
+            $modal.on(kradVariables.EVENTS.SHOWN_MODAL, function () {
+                // Show the modal footer to get around a placement issue
+                $modal.find(kradVariables.MODAL.MODAL_FOOTER_CLASS).show();
+                iframeModalResize($modal, $iframe);
+            });
+
+            // Resize the iframe on a window.resize
+            jQuery(window).on("resize." + kradVariables.MODAL.MODAL_NAMESPACE, function () {
+                iframeModalResize($modal, $iframe);
+            });
+
+            // Destroy the modal to fix problem with showing old content and scroll bar issues
+            $modal.one(kradVariables.EVENTS.HIDDEN_MODAL, function () {
+                $modal.remove();
+            });
+
+            showLoading();
+
+            $iframe[0].onload = function () {
+                hideLoading();
+
+            };
+        },
+        // Removing the resize and message handlers
+        hideHandler: function (event) {
+            jQuery(window).unbind("resize." + kradVariables.MODAL.MODAL_NAMESPACE);
+            jQuery(window).unbind("message." + kradVariables.MODAL.MODAL_NAMESPACE);
+        }
+
+    };
+
+    showDialog(dialogId, dialogOptions);
+}
+
+/**
+ * Close an open iframe dialog by using post message to pass a message event
+ */
+function closeIframeDialog() {
+    window.parent.postMessage(kradVariables.MODAL.MODAL_CLOSE_DIALOG, "*");
+}
+
+/**
+ * Resizes the iframe to 100% of the modal body
+ *
+ * @param $modal the modal element
+ * @param $iframe the iframe element
+ */
+function iframeModalResize($modal, $iframe) {
+    var height = jQuery(window).height() * 0.85;
+    var headerHeight = $modal.find(kradVariables.MODAL.MODAL_HEADER_CLASS).outerHeight();
+    var footerHeight = $modal.find(kradVariables.MODAL.MODAL_FOOTER_CLASS).outerHeight();
+    var $modalBody = $modal.find(kradVariables.MODAL.MODAL_BODY_CLASS);
+
+    $modal.find(kradVariables.MODAL.MODAL_CONTENT_CLASS).css("height", height);
+    $modalBody.css("height", height - headerHeight - footerHeight);
+    $modalBody.css("padding", 0);
+    $iframe.css("height", "100%");
+    $iframe.css("width", "100%");
+}
+
+/**
+ * Uses a modal to open a link's content in an iframe dialog.
+ *
+ * @param $link the link jQuery object
+ * @param dialogId(optional) the dialog to use by id, if not set a default iframe dialog will be used
+ */
+function openLinkInDialog($link, dialogId) {
+    var renderedInDialog = isCalledWithinDialog();
+
+    // first time content is brought up in lightbox we don't want to continue history
+    var flow = "start";
+    if (renderedInDialog) {
+        flow = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
+    }
+
+    var href = $link.attr("href");
+    // Set the renderedInDialog = true param
+    if (href.indexOf("&renderedInDialog=true") === -1 && href.indexOf("?") > 0) {
+
+        //set lightbox flag and continue flow
+        $link.attr("href", href + "&renderedInDialog=true&flow=" + flow);
+    }
+
+    // Check if this is called within a light box
+    if (!renderedInDialog) {
+        // If this is not the top frame, then create the lightbox
+        // on the top frame to put overlay over whole window
+        openIframeDialog(href, dialogId);
+    } else {
+        window.location = href;
+    }
+}

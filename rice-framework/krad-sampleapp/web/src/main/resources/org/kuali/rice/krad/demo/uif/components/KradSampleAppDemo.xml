@@ -21,11 +21,11 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
   <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"
-        p:template="/WEB-INF/ftl/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox and !renderedInIframe}"
+        p:template="/WEB-INF/ftl/kradSampleAppHeader.ftl" p:render="@{!renderedInDialog and !renderedInIframe}"
         p:templateName="demo_kradappheader"/>
 
   <bean id="Uif-GlobalApplicationFooter" parent="Uif-GlobalApplicationFooter-parentBean"
-        p:template="/WEB-INF/ftl/kradSampleAppFooter.ftl" p:render="@{!renderedInLightBox and !renderedInIframe}"
+        p:template="/WEB-INF/ftl/kradSampleAppFooter.ftl" p:render="@{!renderedInDialog and !renderedInIframe}"
         p:templateName="demo_kradappfooter"/>
 
   <bean id="Uif-View" abstract="true" parent="Uif-View-parentBean">
@@ -63,12 +63,12 @@
     <property name="stickyApplicationHeader" value="true"/>
     <property name="applicationHeader">
       <bean parent="Uif-GlobalApplicationHeader-parentBean"
-            p:template="/WEB-INF/ftl/kradSampleAppHeader.ftl" p:render="@{!renderedInLightBox}"
+            p:template="/WEB-INF/ftl/kradSampleAppHeader.ftl" p:render="@{!renderedInDialog}"
             p:templateName="demo_kradappheader"/>
     </property>
     <property name="applicationFooter">
       <bean parent="Uif-GlobalApplicationFooter-parentBean"
-            p:template="/WEB-INF/ftl/kradSampleAppFooter.ftl" p:render="@{!renderedInLightBox}"
+            p:template="/WEB-INF/ftl/kradSampleAppFooter.ftl" p:render="@{!renderedInDialog}"
             p:templateName="demo_kradappfooter"/>
     </property>
     <property name="breadcrumbs.render" value="false"/>

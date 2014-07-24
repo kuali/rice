@@ -1052,9 +1052,9 @@ if (&quot;NOT_USED_DELETE&quot;.equals(vars.get(&quot;PAGEID&quot;))) {
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 </elementProp>
-                <elementProp name="renderedInLightBox" elementType="HTTPArgument">
+                <elementProp name="renderedInDialog" elementType="HTTPArgument">
                   <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                  <stringProp name="Argument.name">renderedInLightBox</stringProp>
+                  <stringProp name="Argument.name">renderedInDialog</stringProp>
                   <stringProp name="Argument.value">false</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
@@ -2085,9 +2085,9 @@ if (&quot;NOT_USED_DELETE&quot;.equals(vars.get(&quot;PAGEID&quot;))) {
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>
                     </elementProp>
-                    <elementProp name="renderedInLightBox" elementType="HTTPArgument">
+                    <elementProp name="renderedInDialog" elementType="HTTPArgument">
                       <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                      <stringProp name="Argument.name">renderedInLightBox</stringProp>
+                      <stringProp name="Argument.name">renderedInDialog</stringProp>
                       <stringProp name="Argument.value">false</stringProp>
                       <stringProp name="Argument.metadata">=</stringProp>
                       <boolProp name="HTTPArgument.use_equals">true</boolProp>

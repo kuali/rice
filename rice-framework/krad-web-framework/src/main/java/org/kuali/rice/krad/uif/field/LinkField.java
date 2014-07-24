@@ -153,31 +153,6 @@ public class LinkField extends FieldBase {
         link.setHref(hrefText);
     }
 
-    /**
-     * Returns the <code>LightBox</code> used to open the link in
-     *
-     * @return The <code>LightBox</code>
-     */
-    @BeanTagAttribute(type= BeanTagAttribute.AttributeType.DIRECTORBYTYPE)
-    public LightBox getLightBox() {
-        if (link != null) {
-            return link.getLightBox();
-        }
-
-        return null;
-    }
-
-    /**
-     * Setter for the lightBox
-     *
-     * @param lightBox
-     */
-    public void setLightBox(LightBox lightBox) {
-        if (link != null) {
-            link.setLightBox(lightBox);
-        }
-    }
-
     @BeanTagAttribute(name = "sortAs")
     public String getSortAs() {
         return sortAs;

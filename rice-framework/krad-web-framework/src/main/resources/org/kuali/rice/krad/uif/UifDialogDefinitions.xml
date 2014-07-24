@@ -225,9 +225,13 @@
   </bean>
 
   <bean id="Uif-DialogGroup-Lookup" parent="Uif-DialogGroup-Lookup-parentBean"/>
-  <bean id="Uif-DialogGroup-Lookup-parentBean" parent="Uif-DialogGroup-Iframe"/>
+  <bean id="Uif-DialogGroup-Lookup-parentBean" parent="Uif-DialogGroup-Iframe">
+    <property name="headerText" value="Lookup"/>
+  </bean>
 
   <bean id="Uif-DialogGroup-Inquiry" parent="Uif-DialogGroup-Inquiry-parentBean"/>
-  <bean id="Uif-DialogGroup-Inquiry-parentBean" parent="Uif-DialogGroup-Iframe"/>
+  <bean id="Uif-DialogGroup-Inquiry-parentBean" parent="Uif-DialogGroup-Iframe">
+    <property name="headerText" value="Inquiry"/>
+  </bean>
 
 </beans>

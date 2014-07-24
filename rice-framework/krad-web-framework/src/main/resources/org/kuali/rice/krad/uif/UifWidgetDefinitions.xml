@@ -146,9 +146,8 @@
     <!-- TODO: change to use config krad.url -->
     <property name="baseLookupUrl" value="@{#ConfigProperties['application.url']}/kr-krad/lookup"/>
     <property name="multipleValuesSelect" value="false"/>
-    <property name="lightBox">
-      <bean parent="Uif-LightBox"/>
-    </property>
+    <property name="lookupDialogId" value="Uif-DialogGroup-Lookup"/>
+    <property name="openInDialog" value="true"/>
     <property name="quickfinderAction">
       <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-search" p:methodToCall="performLookup"
             p:focusOnIdAfterSubmit="NEXT_INPUT"/>
@@ -176,9 +175,8 @@
     <property name="enableDirectInquiry" value="true"/>
     <property name="inquiryLink">
       <bean parent="Uif-Link">
-        <property name="lightBox">
-          <bean parent="Uif-LightBox"/>
-        </property>
+        <property name="linkDialogId" value="Uif-DialogGroup-Inquiry"/>
+        <property name="openInDialog" value="true"/>
       </bean>
     </property>
     <property name="directInquiryAction">

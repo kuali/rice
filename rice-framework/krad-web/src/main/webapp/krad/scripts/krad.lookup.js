@@ -58,6 +58,84 @@ jQuery(document).ready(function () {
 });
 
 /**
+ * Submits the form based on the quickfinder action identified by the given id and display the result content in
+ * a dialog using a modal. If we are not currently in a modal, we will request a URL to be used in the created dialog's
+ * iframe content. Otherwise, the internal iframe of the dialog will be redirected.
+ *
+ * @param quickfinderActionId
+ *          id for the action component that the fancybox should be linked to
+ * @param options
+ *          map of option settings (option name/value pairs) for the fancybox plugin
+ * @param lookupReturnByScript - boolean that indicates whether the lookup should return through script
+ *        or via a server post
+ */
+function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialogId) {
+    jQuery(function () {
+        var data = {};
+        var submitData = jQuery("#" + quickfinderActionId).data(kradVariables.SUBMIT_DATA);
+        jQuery.extend(data, submitData);
+
+        if (!lookupReturnByScript) {
+            dirtyFormState.skipDirtyChecks = true;
+        }
+
+        // Check if this is not called within a lightbox
+        var renderedInDialog = isCalledWithinDialog();
+        if (!renderedInDialog) {
+            if (top === self) {
+                data['actionParameters[returnTarget]'] = '_parent';
+            } else {
+                data['actionParameters[returnTarget]'] = 'iframeportlet';
+            }
+
+            var baseURI = this.documentURI;
+            if (baseURI.indexOf("?") > -1) {
+                baseURI = baseURI.substring(0, baseURI.indexOf("?"));
+            }
+
+            data['actionParameters[returnLocation]'] = encodeURIComponent(baseURI);
+            data['actionParameters[renderedInDialog]'] = true;
+            data['actionParameters[returnByScript]'] = lookupReturnByScript;
+            data['actionParameters[methodToCall]'] = "start";
+            data['actionParameters[flowKey]'] = "start";
+            data['actionParameters[returnFormKey]'] = jQuery("#" + kradVariables.FORM_INFO_ID).children("input[name='formKey']").val();
+
+            var lookupParameters = data['actionParameters[lookupParameters]'];
+            if (lookupParameters !== "" && typeof lookupParameters !== "undefined") {
+                var lookupField = lookupParameters.substring(lookupParameters.indexOf(":") + 1);
+                var lookupValue = jQuery("#" + quickfinderActionId).parent().parent().children("input").val();
+                if (lookupField !== "" && typeof lookupField !== "undefined" && lookupValue !== "" && typeof lookupValue !== "undefined") {
+                    data['actionParameters[lookupCriteria[&quot;' + lookupField + '&quot;]]'] = lookupValue;
+                }
+            }
+
+            var lookupUrl = data['actionParameters[baseLookupUrl]'] + "?";
+
+            for (var key in data) {
+                if (key.indexOf("actionParameters") !== -1) {
+                    var parameterName = key.replace("actionParameters[", "").replace("]", "").replace(new RegExp("&quot;", 'g'), "'");
+                    lookupUrl += parameterName + "=" + data[key] + "&";
+                }
+            }
+
+            // Trim the remaining ampersand
+            lookupUrl = lookupUrl.substring(0, lookupUrl.length - 1);
+
+            lookupUrl = lookupUrl.replace(/&amp;/g, '&');
+
+            openIframeDialog(lookupUrl, lookupDialogId);
+        } else {
+            // add parameters for lightbox and do standard submit
+            data['actionParameters[renderedInDialog]'] = 'true';
+            data['actionParameters[returnTarget]'] = '_self';
+            data['actionParameters[flowKey]'] = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
+
+            nonAjaxSubmitForm(data['methodToCall'], data);
+        }
+    });
+}
+
+/**
  * Registers the onChange event on the input element inside of the lookup results collection
  * by updating the selection count depending on whether the checkbox has been checked or not
  *
@@ -230,7 +308,7 @@ function returnLookupResultsByScript(returnLink) {
         returnField.focus();
     }
 
-    closeLightbox();
+    closeIframeDialog();
 }
 
 /**

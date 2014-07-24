@@ -235,7 +235,7 @@ validateDirty,applyDirtyCheck
 supportsReadOnlyFieldsOverride,supportsRequestOverrideOfReadOnlyFields
 translateCodes,translateCodesOnReadOnlyDisplay
 viewMenuGrouping,viewMenuGroupName
-dialogMode,renderedInLightBox
+dialogMode,renderedInDialog
 fieldInquiry,inquiry
 fieldDirectInquiry.render,inquiry.enableDirectInquiry
 clientSideJs,actionScript

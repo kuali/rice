@@ -86,7 +86,7 @@ public class WebDriverScreenshotHelper {
         if (driver instanceof TakesScreenshot) {
 
             if (!"".equals(screenName)) {
-                screenName = "-" + screenName + "-";
+                screenName = "-" + screenName;
             }
 
             File scrFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);

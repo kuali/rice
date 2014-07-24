@@ -1080,14 +1080,19 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     @After
     public void tearDown() {
         try {
+
+            if (!isPassed()) {
+                System.out.println("Last AFT URL: " + driver.getCurrentUrl());
+            }
+
+            if ((!isPassed() && webDriverScreenshotHelper.screenshotOnFailure()) || webDriverScreenshotHelper.screenshotSteps()) {
+                screenshot();
+            }
+
             if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
                 logout();
-            } else {
-                System.out.println("Last AFT URL: " + driver.getCurrentUrl());
-                if (webDriverScreenshotHelper.screenshotOnFailure() || webDriverScreenshotHelper.screenshotSteps()) {
-                    screenshot();
-                }
             }
+
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user, getClass().getSimpleName(), testName.getMethodName());
         } catch (Throwable t) {
             System.out.println("Exception in tearDown " + t.getMessage());
@@ -1202,7 +1207,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         jGrowl("Click link " + linkText + " labeled with " + label);
         waitAndClick(By.xpath("//th/label[contains(text(), '"
                 + label
-                + "')]/../following-sibling::*/div/a[contains(text(), '"
+                + "')]/../following-sibling::*/div/span/a[contains(text(), '"
                 + linkText
                 + "')]"));
     }

@@ -224,13 +224,11 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testGeneralFeaturesRichMessagesActionCustomBookmark() throws Exception {
         testGeneralFeaturesRichMessagesActionCustom();
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testGeneralFeaturesRichMessagesActionCustomNav() throws Exception {
         testGeneralFeaturesRichMessagesActionCustom();
     }

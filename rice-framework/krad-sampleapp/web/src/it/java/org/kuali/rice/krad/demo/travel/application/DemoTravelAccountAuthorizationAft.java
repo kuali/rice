@@ -165,14 +165,12 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/RICEQA-467 AFT Failure DemoTravelAccountAuthorizationAft intermittent Column TRVL_AUTH_DOC_ID cannot be null
     public void testTravelAccountAuthorizationSubmitBookmark() throws Exception {
     	testTravelAccountAuthorizationSubmit();
         passed();
     }
     
     @Test
-    @Ignore // https://jira.kuali.org/browse/RICEQA-467 AFT Failure DemoTravelAccountAuthorizationAft intermittent Column TRVL_AUTH_DOC_ID cannot be null
     public void testTravelAccountAuthorizationBlanketApproveBookmark() throws Exception {
         testTravelAccountAuthorizationBlanketApprove();
         passed();

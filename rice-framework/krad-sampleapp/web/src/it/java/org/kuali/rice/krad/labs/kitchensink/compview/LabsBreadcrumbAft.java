@@ -45,7 +45,6 @@ public class LabsBreadcrumbAft extends BreadcrumbAftBase {
 
     @Test
     @Override
-    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testBreadcrumbBookmark() throws Exception {
         testBreadcrumbs();
         passed();
@@ -53,7 +52,6 @@ public class LabsBreadcrumbAft extends BreadcrumbAftBase {
 
     @Test
     @Override
-    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testBreadcrumbShuffledBookmark() throws Exception {
         testBreadcrumbsShuffled();
         passed();

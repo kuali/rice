@@ -40,14 +40,12 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
 	}
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testAjaxLookupBookmark() throws Exception {
         testAjaxLookup();
         passed();
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testAjaxLookupNav() throws Exception {
         testAjaxLookup();
         passed();

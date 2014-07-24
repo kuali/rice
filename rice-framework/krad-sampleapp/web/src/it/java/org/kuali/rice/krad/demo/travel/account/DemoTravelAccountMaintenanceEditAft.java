@@ -274,7 +274,6 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     }
     
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12799 Won't be fixed in 2.4 - AFT Failure DemoTravelAccountMaintenanceEditAft Blanket Approve doesn't go to FINAL or save changes
     public void testDemoTravelAccountMaintenanceEditFiscalOfficerBookmark() throws Exception {
     	testEditFiscalOfficer();
         passed();

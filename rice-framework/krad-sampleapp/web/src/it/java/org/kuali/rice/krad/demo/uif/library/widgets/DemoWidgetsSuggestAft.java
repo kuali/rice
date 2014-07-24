@@ -153,7 +153,6 @@ public class DemoWidgetsSuggestAft extends DemoLibraryBase {
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/RICEQA-434 AFT Failures in CI that pass locally
     public void testWidgetsTooltipServiceSortingBookmark() throws Exception {
         testWidgetsSuggest("Service Method and Sorting Configuration", "inputField6", "Tr", "Travel Account 1");
         passed();

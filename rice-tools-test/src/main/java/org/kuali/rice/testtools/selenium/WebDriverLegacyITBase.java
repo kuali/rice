@@ -2818,6 +2818,11 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickByXpath(DOC_SEARCH_XPATH_TITLE);
     }
 
+    protected void waitAndClickLibraryLink() throws InterruptedException {
+        jGrowl("Click Library Link");
+        waitAndClickById("Demo-LibraryLink", "");
+    }
+
     /**
      * {@link #LOGOUT_XPATH}
      * @throws InterruptedException

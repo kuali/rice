@@ -97,6 +97,7 @@ public class DetailedDocSearchAft extends WebDriverLegacyITBase {
         searchByDateLastFinalizedFrom();
         searchByDateLastFinalizedTo();
         searchByTitle();
+        passed();
     }
 
     private String getDateToUseForSearch() {

@@ -1573,18 +1573,26 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         return present;
     }
 
-    protected void waitForLoadingProgress() throws InterruptedException {
+    protected void waitForProgress(String altText) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         for (int second = 0;; second++) {
             Thread.sleep(1000);
             if (second >= waitSeconds) {
                 jiraAwareFail(TIMEOUT_MESSAGE + " still Loading after " + waitSeconds);
             }
-            if (!isVisible(By.xpath("//img[@alt='Loading...']"))) {
+            if (!isVisible(By.xpath("//img[@alt='" + altText + "']"))) {
                 break;
             }
         }
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
+    }
+
+    protected void waitForProgressAddingLine() throws InterruptedException {
+        waitForProgress("Adding Line...");
+    }
+
+    protected void waitForProgressLoading() throws InterruptedException {
+        waitForProgress("Loading...");
     }
 
     protected void waitForTextPresent(String text) throws InterruptedException {

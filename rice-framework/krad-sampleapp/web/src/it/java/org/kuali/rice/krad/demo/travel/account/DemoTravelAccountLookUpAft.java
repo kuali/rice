@@ -16,8 +16,6 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.krad.demo.ViewDemoAftBase;
-import org.junit.Ignore;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 
@@ -96,7 +94,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitAndClickButtonByText(CLEAR_VALUES);
         testSearchAndSelect("IAT");
         waitAndClickButtonByText(SEARCH);
-        waitForLoadingProgress();
+        waitForProgressLoading();
         waitForTextPresent("IAT - Income");
         waitAndClickButtonByText(CLEAR_VALUES);
         

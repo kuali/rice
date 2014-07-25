@@ -85,7 +85,7 @@ public class DemoFieldsLinkAft extends DemoLibraryBase {
         assertIsVisible("#" + fieldId);
         waitAndClickByLinkText(field.getText());
 
-        waitForLoadingProgress();
+        waitForProgressLoading();
         gotoLightBox();
         WebElement lightboxIFrame = gotoLightBoxIframe();
         if (!lightboxIFrame.getAttribute("src").contains("www.kuali.org")) {

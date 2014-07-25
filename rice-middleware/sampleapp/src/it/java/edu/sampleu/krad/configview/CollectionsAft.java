@@ -140,11 +140,12 @@ public class CollectionsAft extends WebDriverLegacyITBase {
     protected void testAddBlankLine() throws Exception {
         waitAndClickByLinkText("Add Blank Line");
         waitAndClickById("Collections-AddBlankLine-TableTop_del_line0"); // the line withe asdf1, etc.
-        Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible would be better
+        waitForProgressLoading();
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
-        Thread.sleep(3000); //  TODO a wait until the loading.gif isn't visible would be better
+        waitForProgressLoading();
         waitForElementPresentByName("list1[0].field1");
         assertTableLayout();
+        waitForProgressAddingLine();
         assertEquals("", waitAndGetAttributeByName("list1[0].field1", "value"));
         assertEquals("", waitAndGetAttributeByName("list1[0].field2", "value"));
         assertEquals("", waitAndGetAttributeByName("list1[0].field3", "value"));
@@ -222,7 +223,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Add Via Lightbox");
         Integer preValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         waitAndClickButtonByText("Add Line");
-        Thread.sleep(3000);
+        testColumnSequence();
         waitAndTypeByXpath("//div[@class='modal-body']/div[2]/div/input", "1");
         waitAndTypeByXpath("//div[@class='modal-body']/div[4]/div/input", "1");
         waitAndTypeByXpath("//div[@class='modal-body']/div[6]/div/input", "1");
@@ -238,7 +239,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
     protected void testColumnSequence() throws Exception {
         waitAndClickByLinkText("Column Sequence");
         acceptAlert();
-        Thread.sleep(3000);
+        waitForProgressAddingLine();
         waitAndTypeByName("newCollectionLines['list1'].field1", "1");
         waitAndTypeByName("newCollectionLines['list1'].field2", "1");
         waitAndTypeByName("newCollectionLines['list1'].field3", "1");
@@ -256,7 +257,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
     protected void testSequencerow() throws Exception {
         waitAndClickByLinkText("Save Row");
         acceptAlert();
-        Thread.sleep(3000);
+        waitForProgressAddingLine();
         waitAndTypeByName("newCollectionLines['list1'].field1", "1");
         waitAndTypeByName("newCollectionLines['list1'].field2", "1");
         waitAndTypeByName("newCollectionLines['list1'].field3", "1");

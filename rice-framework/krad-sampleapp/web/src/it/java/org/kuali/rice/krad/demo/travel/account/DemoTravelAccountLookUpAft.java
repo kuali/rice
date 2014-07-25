@@ -94,7 +94,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitAndClickButtonByText(CLEAR_VALUES);
         testSearchAndSelect("IAT");
         waitAndClickButtonByText(SEARCH);
-        waitForLoadingProgress();
+        waitForProgressLoading();
         waitForTextPresent("IAT - Income");
         waitAndClickButtonByText(CLEAR_VALUES);
         
@@ -169,7 +169,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        waitForLoadingProgress();
+        waitForProgressLoading();
 
     	if(waitForIsTextPresent("Document was successfully submitted.")) {
     		navigate();
@@ -190,7 +190,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
             waitAndClickSubmitByText();
             waitAndClickConfirmationOk();
-            waitForLoadingProgress();
+            waitForProgressLoading();
 
     		waitForTextPresent("This document cannot be Saved or Routed");
     	}

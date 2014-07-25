@@ -102,6 +102,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         List<String> wildcardAsLiteralSearchCriteria = identifyWildcardDisabledFields(form, adjustedSearchCriteria);
 
+        Integer searchResultsLimit = null;
+        if (bounded) {
+            searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass(), form);
+        }
+
         // return empty search results (none found) when the search doesn't have any adjustedSearchCriteria although
         // a filtered search criteria is specified
         if (adjustedSearchCriteria == null) {
@@ -111,35 +116,15 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             return new ArrayList<Object>();
         }
 
-        // if this class is an EBO, just call the module service to get the results
+        Collection<?> searchResults = null;
+
+        // if this class is an EBO, call the module service to get the results, otherwise call the lookup search
         if (ExternalizableBusinessObject.class.isAssignableFrom(getDataObjectClass())) {
-            return getSearchResultsForEBO(adjustedSearchCriteria, !bounded);
+            searchResults = getSearchResultsForEBO(adjustedSearchCriteria, !bounded);
+        } else {
+            searchResults = getSearchResults(adjustedSearchCriteria, wildcardAsLiteralSearchCriteria, !bounded,
+                    searchResultsLimit);
         }
-
-        // if any of the properties refer to an embedded EBO, call the EBO lookups first and apply to the local lookup
-        try {
-            if (LookupUtils.hasExternalBusinessObjectProperty(getDataObjectClass(), adjustedSearchCriteria)) {
-                adjustedSearchCriteria = LookupUtils.adjustCriteriaForNestedEBOs(getDataObjectClass(),
-                        adjustedSearchCriteria, !bounded);
-
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Passing these results into the lookup service: " + adjustedSearchCriteria);
-                }
-            }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException("Error trying to check for nested external business objects", e);
-        } catch (InstantiationException e1) {
-            throw new RuntimeException("Error trying to check for nested external business objects", e1);
-        }
-
-        Integer searchResultsLimit = null;
-        if (bounded) {
-            searchResultsLimit = LookupUtils.getSearchResultsLimit(getDataObjectClass(), form);
-        }
-
-        // invoke the lookup search to carry out the search
-        Collection<?> searchResults = executeSearch(adjustedSearchCriteria, wildcardAsLiteralSearchCriteria, bounded,
-                searchResultsLimit);
 
         generateLookupResultsMessages(adjustedSearchCriteria, searchResults, bounded, searchResultsLimit);
 
@@ -594,6 +579,38 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 Collections.sort(searchResults, Collections.reverseOrder(comparator));
             }
         }
+    }
+
+    /**
+     * Performs a normal search using the {@link LookupService}.
+     *
+     * @param searchCriteria map of criteria currently set
+     * @param wildcardAsLiteralSearchCriteria list of property names which have wildcard characters disabled
+     * @param unbounded indicates whether the complete result should be returned.  When set to false the result is
+     * limited (if necessary) to the max search result limit configured.
+     * @param searchResultsLimit result set limit
+     * @return list of result objects, possibly bounded
+     */
+    protected Collection<?> getSearchResults(Map<String, String> searchCriteria,
+            List<String> wildcardAsLiteralSearchCriteria, boolean unbounded, Integer searchResultsLimit) {
+        // if any of the properties refer to an embedded EBO, call the EBO lookups first and apply to the local lookup
+        try {
+            if (LookupUtils.hasExternalBusinessObjectProperty(getDataObjectClass(), searchCriteria)) {
+                searchCriteria = LookupUtils.adjustCriteriaForNestedEBOs(getDataObjectClass(),
+                        searchCriteria, unbounded);
+
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Passing these results into the lookup service: " + searchCriteria);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException("Error trying to check for nested external business objects", e);
+        } catch (InstantiationException e1) {
+            throw new RuntimeException("Error trying to check for nested external business objects", e1);
+        }
+
+        // invoke the lookup search to carry out the search
+        return executeSearch(searchCriteria, wildcardAsLiteralSearchCriteria, !unbounded, searchResultsLimit);
     }
 
     /**

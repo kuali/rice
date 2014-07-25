@@ -773,7 +773,7 @@ public class WebDriverUtils {
 
     /**
      * <p>
-     * Print jGrowl Excetion to System.out, if {@see #JGROWL_ERROR_FAILURE} is set to true, fail.
+     * Print jGrowl Exception to System.out, if {@see #JGROWL_ERROR_FAILURE} is set to true, fail.
      * </p>
      *
      * @param throwable message and stack trace to print and if configured fail with

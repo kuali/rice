@@ -129,7 +129,11 @@ public abstract class WebDriverITBase {
     @After
     public void tearDown() throws Exception {
         if (WebDriverUtils.dontTearDownPropertyNotSet()) {
-            driver.quit(); // TODO not tested with chrome, the service stop might need this check too
+            if (driver != null) {
+                driver.quit(); // TODO not tested with chrome, the service stop might need this check too
+            } else {
+                System.out.println("WebDriver was null in WebDriverUtils.tearDown()");
+            }
         }
     }
 

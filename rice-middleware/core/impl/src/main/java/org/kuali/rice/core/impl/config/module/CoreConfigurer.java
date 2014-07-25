@@ -100,6 +100,7 @@ public class CoreConfigurer extends ModuleConfigurer {
 
     @Override
     public List<String> getPrimarySpringFiles() {
+        LOG.info("CoreConfigurer:getPrimarySpringFiles: getRunMode => " + getRunMode());
         final List<String> springFileLocations = new ArrayList<String>();
         springFileLocations.add("classpath:org/kuali/rice/core/config/CORESpringBeans.xml");
         return springFileLocations;

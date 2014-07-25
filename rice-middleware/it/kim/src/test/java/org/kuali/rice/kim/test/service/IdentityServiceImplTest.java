@@ -235,7 +235,7 @@ public class IdentityServiceImplTest extends KIMTestCase {
         entityEmploymentBuilder.setEntityAffiliation(affiliationStaff);
         entityEmploymentBuilder.setActive(true);
         entityEmploymentBuilder.setEmployeeId("1234test");
-        entityEmploymentBuilder.setPrimary(true);
+        entityEmploymentBuilder.setPrimary(false);
         entityEmploymentBuilder.setBaseSalaryAmount(new KualiDecimal(8000));
         entityEmploymentBuilder.setPrimaryDepartmentCode("BL-CHEM");
         builder.getEmploymentInformation().add(entityEmploymentBuilder);

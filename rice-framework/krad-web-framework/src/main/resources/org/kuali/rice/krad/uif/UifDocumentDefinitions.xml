@@ -43,6 +43,17 @@
     <property name="authorizerClass" value="org.kuali.rice.krad.document.DocumentViewAuthorizerBase"/>
     <property name="viewHelperServiceClass"
               value="org.kuali.rice.krad.uif.service.impl.DocumentViewHelperServiceImpl"/>
+    <property name="help">
+      <bean parent="Uif-Help">
+        <property name="helpDefinition">
+         <bean parent="HelpDefinition">
+            <property name="parameterNamespace" value="KR-KRAD"/>
+            <property name="parameterName" value="DEFAULT_HELP_URL"/>
+            <property name="parameterDetailType" value="@{#DocumentEntry.documentTypeName}" />
+          </bean>
+        </property>
+      </bean>
+    </property>
     <property name="header">
       <bean parent="Uif-DocumentViewHeader"/>
     </property>

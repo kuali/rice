@@ -16,10 +16,13 @@
 package org.kuali.rice.krad.datadictionary;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 
 /**
  * The help element provides the keys to obtain a
@@ -37,17 +40,26 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
  * parameterDetailType: detail type of the parameter that has the path to the help page
  */
 @BeanTag(name = "helpDefinition")
-public class HelpDefinition extends DataDictionaryDefinitionBase implements Serializable {
+public class HelpDefinition extends DataDictionaryDefinitionBase implements UifDictionaryBean, Serializable {
     private static final long serialVersionUID = -6869646654597012863L;
 
     protected String parameterNamespace;
     protected String parameterDetailType;
     protected String parameterName;
 
+    private Map<String, String> expressionGraph;
+    private Map<String, String> refreshExpressionGraph;
+    private Map<String, String> propertyExpressions;
+
     /**
      * Constructs a HelpDefinition.
      */
-    public HelpDefinition() {}
+    public HelpDefinition() {
+        expressionGraph = new HashMap<String, String>();
+        refreshExpressionGraph = new HashMap<String, String>();
+        propertyExpressions = new HashMap<String, String>();
+
+    }
 
     /**
      * @return parameter name
@@ -95,6 +107,47 @@ public class HelpDefinition extends DataDictionaryDefinitionBase implements Seri
             throw new IllegalArgumentException("invalid (blank) parameterDetailType");
         }
         this.parameterDetailType = parameterDetailType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, String> getExpressionGraph() {
+        return expressionGraph;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setExpressionGraph(Map<String, String> expressionGraph) {
+        this.expressionGraph = expressionGraph;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean#getPropertyExpressions
+     */
+    public Map<String, String> getPropertyExpressions() {
+        return propertyExpressions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setPropertyExpressions(Map<String, String> propertyExpressions) {
+        this.propertyExpressions = propertyExpressions;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getPropertyExpression(String propertyName) {
+        if (this.propertyExpressions.containsKey(propertyName)) {
+            return this.propertyExpressions.get(propertyName);
+        }
+
+        return null;
     }
 
 }

@@ -24,6 +24,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.krad.datadictionary.HelpDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
+import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.element.Action;
@@ -31,6 +32,7 @@ import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 
 /**
  * Widget that renders help on a component
@@ -44,6 +46,8 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 @BeanTag(name = "help", parent = "Uif-Help")
 public class Help extends WidgetBase {
 	private static final long serialVersionUID = -1514436681476297241L;
+
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Help.class);
 
     private Action helpAction;
     private HelpDefinition helpDefinition;
@@ -66,10 +70,11 @@ public class Help extends WidgetBase {
         super.performInitialization(model);
 
         if (helpAction == null) {
-            // TODO: check for expressions on helpDefinition?
-            if ((StringUtils.isNotBlank(externalHelpUrl) || (getPropertyExpression("externalHelpUrl") != null))
-                    || ((helpDefinition != null) && StringUtils.isNotBlank(helpDefinition.getParameterName()))
-                    && StringUtils.isNotBlank(helpDefinition.getParameterDetailType())) {
+            if(hasValueOrPropertyExpression(externalHelpUrl, this, "externalHelpUrl") ||  (
+                    helpDefinition != null &&
+                            hasValueOrPropertyExpression(helpDefinition.getParameterName(), helpDefinition, "parameterName") &&
+                            hasValueOrPropertyExpression(helpDefinition.getParameterDetailType(), helpDefinition, "parameterDetailType")
+            )){
                 helpAction = ComponentFactory.getHelpAction();
                 helpAction.addDataAttribute(UifConstants.DataAttributes.ROLE, "help");
             }
@@ -77,6 +82,19 @@ public class Help extends WidgetBase {
         else{
             helpAction.addDataAttribute(UifConstants.DataAttributes.ROLE, "help");
         }
+    }
+
+    /**
+     * Helper function to check if value or property expression exists
+     *
+     * @param defaultValue
+     * @param dictionaryBean
+     * @param expressionName
+     * @return
+     */
+    private boolean hasValueOrPropertyExpression(String defaultValue, UifDictionaryBean dictionaryBean, String expressionName) {
+        return StringUtils.isNotBlank(defaultValue) || (dictionaryBean != null && dictionaryBean.getPropertyExpressions() != null &&
+                StringUtils.isNotBlank(dictionaryBean.getPropertyExpression(expressionName)));
     }
 
     /**
@@ -139,6 +157,22 @@ public class Help extends WidgetBase {
             String parameterNamespace = helpDefinition.getParameterNamespace();
             String parameterDetailType = helpDefinition.getParameterDetailType();
             String parameterName = helpDefinition.getParameterName();
+
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
+            if (parameterNamespace == null && helpDefinition.getPropertyExpression("parameterNamespace") != null) {
+                parameterNamespace = (String) expressionEvaluator.evaluateExpression(this.getContext(),
+                        helpDefinition.getPropertyExpression("parameterNamespace"));
+            }
+
+            if (parameterDetailType == null && helpDefinition.getPropertyExpression("parameterDetailType") != null) {
+                parameterDetailType = (String) expressionEvaluator.evaluateExpression(this.getContext(),
+                        helpDefinition.getPropertyExpression("parameterDetailType"));
+            }
+
+            if (parameterName == null && helpDefinition.getPropertyExpression("parameterName") != null) {
+                parameterName = (String) expressionEvaluator.evaluateExpression(this.getContext(),
+                        helpDefinition.getPropertyExpression("parameterName"));
+            }
 
             if (StringUtils.isNotBlank(parameterNamespace)
                     && StringUtils.isNotBlank(parameterDetailType)

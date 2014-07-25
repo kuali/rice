@@ -65,7 +65,6 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 				}
 		)
 )
-@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestCase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data

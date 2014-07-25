@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kcb.dao;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kcb.bo.RecipientPreference;
@@ -112,7 +111,6 @@ public class RecipientPreferenceDaoTest extends KCBTestCase {
      *
      */
     @Test
-    @Ignore // until I fix how this test uses test data
     public void testUpdate() {
         testCreate();
         pref1.setValue(updatedValues[0]);

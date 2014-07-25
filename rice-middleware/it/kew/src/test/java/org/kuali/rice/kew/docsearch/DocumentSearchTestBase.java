@@ -30,7 +30,6 @@ import org.kuali.rice.kew.test.KEWTestCase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@Ignore("This class is a helper class only with no specific tests within")
 public class DocumentSearchTestBase extends KEWTestCase {
 
     /**

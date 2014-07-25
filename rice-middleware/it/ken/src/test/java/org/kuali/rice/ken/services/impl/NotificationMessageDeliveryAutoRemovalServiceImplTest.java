@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
@@ -37,7 +36,6 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.isNotNull;
  * Tests NotificationMessageDeliveryAutoRemovalServiceImpl
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Ignore // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTestCase {
 	// NOTE: this value is highly dependent on test data 
 	private static final int EXPECTED_SUCCESSES = 6;

@@ -131,7 +131,6 @@ public class DisapproveActionTest extends KEWTestCase {
      * Tests whether the initator who disapproved a doc gets an acknowledgement
      *
      */
-    //@Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorRoleDisapprove() throws WorkflowException {
         // test initiator disapproval of their own doc via InitiatorRoleAttribute
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("arh14"), "InitiatorRoleApprovalTest");
@@ -145,10 +144,9 @@ public class DisapproveActionTest extends KEWTestCase {
     }
 
     /**
-     * Tests whether the initator who disapproved a doc gets an acknowledgement
+     * Tests whether the initiator who disapproved a doc gets an acknowledgement
      * 
      */
-    //@Ignore("This test will fail until KULRICE-752 is resolved")
     @Test public void testInitiatorDisapprove() throws WorkflowException {
         // test initiator disapproval, via normal request with forceAction=true
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), NotifySetup.DOCUMENT_TYPE_NAME);

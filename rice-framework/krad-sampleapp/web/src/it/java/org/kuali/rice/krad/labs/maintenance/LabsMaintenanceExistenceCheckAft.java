@@ -74,15 +74,15 @@ public class LabsMaintenanceExistenceCheckAft extends LabsMaintenanceBase {
         assertTextPresent("ENROUTE");
     }
 
-    @Ignore
-    @Test //Ignore these tests until KULRICE-12849 and KULRICE-12850 are fixed.  They will fail until that time.
+    @Test
+    @Ignore //Ignore these tests until KULRICE-12849 and KULRICE-12850 are fixed.  They will fail until that time.
     public void testMaintenanceExistenceCheckBookmark() throws Exception {
         testMaintenanceExistenceCheck();
         passed();
     }
 
-    @Ignore
-    @Test //Ignore these tests until KULRICE-12849 and KULRICE-12850 are fixed.  They will fail until that time.
+    @Test
+    @Ignore //Ignore these tests until KULRICE-12849 and KULRICE-12850 are fixed.  They will fail until that time.
     public void testMaintenanceExistenceCheckNav() throws Exception {
         testMaintenanceExistenceCheck();
         passed();

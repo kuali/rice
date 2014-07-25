@@ -167,7 +167,7 @@ public class LookupView extends FormView {
         LookupForm lookupForm = (LookupForm) model;
 
         // don't render criteria group footer/actions
-        if (!renderCriteriaActions) {
+        if (!renderCriteriaActions || hideCriteriaOnSearch) {
             criteriaGroup.getFooter().setRender(false);
         }
 

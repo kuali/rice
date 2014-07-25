@@ -33,6 +33,7 @@
         <ref bean="Demo-SelectControl-Example3"/>
         <ref bean="Demo-SelectControl-Example4"/>
         <ref bean="Demo-SelectControl-Example5"/>
+        <ref bean="Demo-SelectControl-Example6"/>
       </list>
     </property>
   </bean>
@@ -55,23 +56,22 @@
     </property>
   </bean>
 
-    <!-- MultiSelectControl -->
+  <!-- MultiSelectControl -->
   <bean id="Demo-SelectControl-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-SelectControl-Example2 start-->
-          <bean parent="Uif-InputField" p:propertyName="inputField2" >
+        <bean parent="Uif-InputField" p:propertyName="multiSelectField1">
           <property name="control">
-            <bean parent="Uif-MultiSelectControl" p:size="3" p:options-ref="test-options"/>
+            <bean parent="Uif-MultiSelectControl" p:size="3" p:options-ref="test-options2"/>
           </property>
-
         </bean>
         <!-- ex:Demo-SelectControl-Example2 end-->
       </list>
     </property>
   </bean>
   <!-- ex:Demo-SelectControl-Example2 start-->
-  <util:list id="test-options">
+  <util:list id="test-options2">
     <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Select 1"/>
     <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Select 2"/>
     <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Select 3"/>
@@ -172,5 +172,29 @@
       </list>
     </property>
   </bean>
+
+  <!-- MultiSelectControl -->
+  <bean id="Demo-SelectControl-Example6" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-SelectControl-Example6 start-->
+        <bean parent="Uif-InputField" p:propertyName="names">
+          <property name="control">
+            <bean parent="Uif-MultiSelectControl" p:size="3" p:options-ref="test-options6"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-SelectControl-Example6 end-->
+        <bean parent="Uif-PrimaryActionButton" p:actionLabel="Submit" p:methodToCall="submitMultiSelect"/>
+      </list>
+    </property>
+  </bean>
+  <!-- ex:Demo-SelectControl-Example6 start-->
+  <util:list id="test-options6">
+    <bean parent="Uif-KeyLabelPair" p:key="1" p:value="Select Jack Buck"/>
+    <bean parent="Uif-KeyLabelPair" p:key="2" p:value="Select Joe"/>
+    <bean parent="Uif-KeyLabelPair" p:key="3" p:value="Select John Wayne"/>
+    <bean parent="Uif-KeyLabelPair" p:key="4" p:value="Select Jim"/>
+  </util:list>
+  <!-- ex:Demo-SelectControl-Example6 end-->
 
 </beans>

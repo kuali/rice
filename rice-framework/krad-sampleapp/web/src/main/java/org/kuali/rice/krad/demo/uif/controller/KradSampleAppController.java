@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.uif.controller;
 
 import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
+import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.view.ViewTheme;
@@ -25,8 +26,11 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.service.FileControllerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -170,5 +175,56 @@ public class KradSampleAppController extends UifControllerBase {
     @Override
     public void setFileControllerService(FileControllerService fileControllerService) {
         super.setFileControllerService(fileControllerService);
+    }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) throws Exception {
+        binder.registerCustomEditor(List.class, "names", new UITestObjectEditor());
+    }
+
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=submitMultiSelect")
+    public ModelAndView submitMultiSelect(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        Object obj = request.getParameter("names");
+        return getModelAndView(form);
+    }
+
+    protected class UITestObjectEditor extends CustomCollectionEditor {
+        public UITestObjectEditor() {
+            super(List.class);
+        }
+
+        @Override
+        protected Object convertElement(Object element) {
+            // not a very good example but shows converting string selected to UITestObject
+            KradSampleAppForm form = new KradSampleAppForm();
+            for (UITestObject to : form.getNames()) {
+                if (to.getInputField1().equals(element)) {
+                    return to;
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        public String getAsText() {
+            Object obj = this.getValue();
+
+            if (obj == null) {
+                return null;
+            }
+
+            StringBuffer buf = new StringBuffer();
+            List<UITestObject> l = (List)obj;
+            for (UITestObject to : l) {
+                buf.append(to.getInputField1().charAt(0)).append(",");
+            }
+
+            if (buf.toString().length() > 0) {
+                return buf.toString().substring(0, buf.toString().length()-1);
+            }
+            return buf.toString();
+        }
     }
 }

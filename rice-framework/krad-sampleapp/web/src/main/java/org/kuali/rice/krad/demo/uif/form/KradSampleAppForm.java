@@ -184,15 +184,18 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private List<TravelAccount> travelAccounts = new ArrayList<TravelAccount>();
 
     private List<FileMetaBlob> files = new ArrayList<FileMetaBlob>();
-
     private List<FileMetaBlob> files1 = new ArrayList<FileMetaBlob>();
-
     private List<FileMetaBlob> files2 = new ArrayList<FileMetaBlob>();
-
     private List<FileMetaBlob> files3 = new ArrayList<FileMetaBlob>();
 
     public KradSampleAppForm() {
         super();
+
+        // added to test multiselect control
+        this.inputField2 = "2,4";
+        this.multiSelectField1 = new ArrayList();
+        this.multiSelectField1.add("2");
+        this.multiSelectField1.add("4");
 
         uiTestObject1 = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
         uiTestObject2 = new UITestObject("Foo", "FooBar2", "FooBear", "FooRacket2");
@@ -363,10 +366,10 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         doubleGroupedCollection.add(new UITestObject("Spring", "2003", "CCC123", "3"));
         doubleGroupedCollection.add(new UITestObject("Spring", "2003", "DDD123", "2"));
 
-        names.add(new UITestObject("Jack", "", "", ""));
-        names.add(new UITestObject("Joe", "", "", ""));
-        names.add(new UITestObject("John", "", "", ""));
-        names.add(new UITestObject("Jim", "", "", ""));
+        names.add(new UITestObject("1", "Jack", "Buck", ""));
+        names.add(new UITestObject("2", "Joe", "", ""));
+        names.add(new UITestObject("3", "John", "Wayne", ""));
+        names.add(new UITestObject("4", "Jim", "", ""));
 
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
@@ -608,7 +611,6 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     }
 
     public String getInputField3() {
-
         return inputField3;
     }
 

@@ -270,6 +270,12 @@
 -->
 <#macro formMultiSelect path options id="" attributes="">
     <@bind path/>
+<#if status.expression = "names">
+expression=>${status.expression}<br>
+<#if status.actualValue??><#if status.actualValue?is_sequence>actualValue=>${status.actualValue?join(", ")}<#else>actualValue=>${status.actualValue}</#if><#else>actualValue=>null</#if><br>
+<#if status.value??><#if status.value?is_sequence>value=>${status.value?join(", ")}<#else>value=>${status.value}</#if><#else>value=>null</#if><br>
+<br>
+</#if>
     <select multiple="multiple" id="${id!}" name="${status.expression}" ${attributes}>
         <#assign inGroup=false>
         <#list options as option>
@@ -280,7 +286,7 @@
                 <optgroup label="${option.label?html}">
                 <#assign inGroup=true>
             <#else>
-                <#assign isSelected = contains(status.actualValue?default([""]), option.key)>
+                <#assign isSelected = contains(status.value?default([""]), option.key)>
                 <option value="${option.key?html}"<#if isSelected> selected="selected"</#if>>${option.value?html}</option>
             </#if>
         </#list>
@@ -303,7 +309,6 @@
 -->
 <#macro formRadioButtons id path options separator attributes="">
     <#-- Start Kuali enhancements and changes -->
-    <#--<span class="uif-tooltip" style="width:100%;height:0px;"></span>-->
     <#list options as option>
     <@bind path/>
     <#local controlId="${id}_${option_index}">
@@ -337,11 +342,10 @@
 -->
 <#macro formCheckboxes id path options separator attributes="">
     <#-- Start Kuali enhancements and changes -->
-    <#--<span class="uif-tooltip" style="width:100%;height:0px;"></span>-->
     <#list options as option>
     <@bind path/>
     <#local controlId="${id}_${option_index}">
-    <#local isSelected = contains(status.actualValue?default([""]), option.key)>
+    <#local isSelected = contains(status.value?default([""]), option.key)>
     <span class="uif-tooltip">
         <input type="checkbox" id="${controlId}" name="${status.expression}" value="${option.key?html}"<#if isSelected> checked="checked"</#if> ${attributes}<@closeTag/>
         <#if option.message.richMessage>
@@ -369,7 +373,7 @@
 -->
 <#macro formCheckbox path label id="" attributes="">
     <#-- Start Kuali enhancements and changes -->
-	<@bind path />
+    <@bind path />
     <#local name="${status.expression}">
     <#local isSelected = false>
     <#if status.value??>
@@ -382,8 +386,8 @@
             <#local isSelected = status.value?string=="true">
         </#if>
     </#if>
-	<input type="hidden" name="_${name}" value="on"/>
-	<input type="checkbox" id="${id!}" name="${name}"<#if isSelected> checked="checked"</#if> ${attributes}/>
+    <input type="hidden" name="_${name}" value="on"/>
+    <input type="checkbox" id="${id!}" name="${name}"<#if isSelected> checked="checked"</#if> ${attributes}/>
     <#if label?has_content && label.messageText?has_content>
         <label onclick="handleCheckboxLabelClick('${id}',event); return false;" for="${id}">
             <@krad.template component=label/>
@@ -439,14 +443,20 @@
  * Surprisingly not a FreeMarker builtin.
  * This function is used internally but can be accessed by user code if required.
  *
- * @param list the list to search for the item
+ * @param list the list to search for the item OR a string with comma as a delimiter
  * @param item the item to search for in the list
  * @return true if item is found in the list, false otherwise
 -->
 <#function contains list item>
-    <#list list as nextInList>
-    <#if nextInList == item><#return true></#if>
-    </#list>
+    <#if list?is_sequence>
+        <#list list as nextInList>
+            <#if nextInList == item><#return true></#if>
+        </#list>
+    <#else>
+        <#list list?split(",") as nextInList>
+            <#if nextInList == item><#return true></#if>
+        </#list>
+    </#if>
     <#return false>
 </#function>
 

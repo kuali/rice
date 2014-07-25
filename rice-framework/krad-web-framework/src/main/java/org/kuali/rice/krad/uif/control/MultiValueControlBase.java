@@ -65,7 +65,7 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
     @Override
     public void performApplyModel(Object model, LifecycleElement parent) {
         super.performApplyModel(model, parent);
-getStyleClassesAsString();
+        getStyleClassesAsString();
         if (options != null && richOptions == null) {
             richOptions = new ArrayList<KeyMessage>();
             internalMessageComponents = new ArrayList<Message>();

@@ -66,7 +66,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitAndClickButtonByText(SEARCH);
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
-        
+
         //Inquiry check on Travel Account Number
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a1");
         waitAndClickByXpath("//button[@title='Direct Inquiry']");
@@ -75,14 +75,14 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitForTextPresent("Travel Account 1");
         waitAndClickButtonByText("Close");
         selectTopFrame();
-        
+
         //Search by Travel Account Name
         waitAndTypeByName("lookupCriteria[name]","Travel Account 1");
         waitAndClickButtonByText(SEARCH);
         waitForElementPresentByXpath("//a[contains(text(),'a1')]");
         waitForTextPresent("Travel Account 1");
         waitAndClickButtonByText(CLEAR_VALUES);
-         
+
         //Search by Travel Account Type Code
         testSearchAndSelect("CAT");
         waitAndClickButtonByText(SEARCH);
@@ -94,7 +94,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitAndClickButtonByText(CLEAR_VALUES);
         testSearchAndSelect("IAT");
         waitAndClickButtonByText(SEARCH);
-        waitForProgressLoading();
+        waitForLoadingProgress();
         waitForTextPresent("IAT - Income");
         waitAndClickButtonByText(CLEAR_VALUES);
         
@@ -105,6 +105,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitForElementPresentByXpath("//input[@name='lookupCriteria[accountTypeCode]' and @value='CAT']");
         waitAndClickButtonByText("Close");
         selectTopFrame();
+        waitAndClickButtonByText(CLEAR_VALUES);
 
         //Search by Travel Account Date Created
         waitAndTypeByName("lookupCriteria[createDate]", "06/01/2014");
@@ -149,6 +150,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     }
 
     private void testTravelAccountLookUpDocumentLocking() throws Exception {
+
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("edit");
@@ -167,7 +169,8 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        
+        waitForLoadingProgress();
+
     	if(waitForIsTextPresent("Document was successfully submitted.")) {
     		navigate();
             waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
@@ -186,6 +189,9 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         	waitAndClickByLinkText("return value");
         	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
             waitAndClickSubmitByText();
+            waitAndClickConfirmationOk();
+            waitForLoadingProgress();
+
     		waitForTextPresent("This document cannot be Saved or Routed");
     	}
     	else{
@@ -226,23 +232,23 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	}
     }
 
-    @Test
-    public void testTravelAccountLookUpNav() throws Exception {
-        testTravelAccountLookUp();
-        testXss();
-        passed();
-    }
+        @Test
+        public void testTravelAccountLookUpNav() throws Exception {
+            testTravelAccountLookUp();
+            testXss();
+            passed();
+        }
 
-    @Test
-    public void testTravelAccountLookUpDocumentLockingBookmark() throws Exception {
-        testTravelAccountLookUpDocumentLocking();
-        passed();
-    }
+        @Test
+        public void testTravelAccountLookUpDocumentLockingBookmark() throws Exception {
+            testTravelAccountLookUpDocumentLocking();
+            passed();
+        }
 
-    @Test
-    public void testTravelAccountLookUpDocumentLockingNav() throws Exception {
-        testTravelAccountLookUpDocumentLocking();
-        passed();
-    }
+        @Test
+        public void testTravelAccountLookUpDocumentLockingNav() throws Exception {
+            testTravelAccountLookUpDocumentLocking();
+            passed();
+        }
 }
 

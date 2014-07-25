@@ -36,7 +36,7 @@ public class DemoElementsLinkAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Elements");
         waitAndClickByLinkText("Link");
     }
@@ -58,7 +58,7 @@ public class DemoElementsLinkAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Link using lightbox");
         waitAndClickByXpath("//section[@id='Demo-Link-Example3']/a");
         waitForElementPresentByXpath("//iframe[@src='http://www.kuali.org']");
-        waitAndClickByXpath("//a[@title='Close']");
+        waitAndClickByXpath("//button[contains(text(),'Close')]");
     }
     
     protected void testLibraryElementsLinkUsingBootstrapIcon() throws Exception {

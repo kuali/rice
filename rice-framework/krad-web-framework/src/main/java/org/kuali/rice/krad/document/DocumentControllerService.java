@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
@@ -185,6 +186,30 @@ public interface DocumentControllerService extends ControllerService {
     ModelAndView cancelAttachment(DocumentFormBase form);
 
     /**
+     * Invoked to take super user actions on a document.
+     *
+     * @param form form instance containing the actions.
+     * @return ModelAndView instance for rendering the document view
+     */
+    ModelAndView superUserTakeActions(DocumentFormBase form);
+
+    /**
+     * Sends a super user approve workflow action for the document contained on the form.
+     *
+     * @param form form instance containing the document the super user approve request will be generated for
+     * @return ModelAndView instance for rendering the document view
+     */
+    ModelAndView superUserApprove(DocumentFormBase form);
+
+    /**
+     * Sends a super user disapprove workflow action for the document contained on the form.
+     *
+     * @param form form instance containing the document the super user disapprove request will be generated for
+     * @return ModelAndView instance for rendering the document view
+     */
+    ModelAndView superUserDisapprove(DocumentFormBase form);
+
+    /**
      * Invokes the {@link org.kuali.rice.krad.service.DocumentService} to carry out a request workflow action and adds a
      * success message, if requested a check for sensitive data is also performed.
      *
@@ -205,4 +230,26 @@ public interface DocumentControllerService extends ControllerService {
      * supported for the save action
      */
     void performWorkflowAction(DocumentFormBase form, UifConstants.WorkflowAction action, DocumentEvent documentEvent);
+
+    /**
+     * Invokes the {@link org.kuali.rice.krad.service.DocumentService} to carry out a super user request workflow action
+     * and adds a success message.
+     *
+     * @param form document form instance containing the document for which the super user action will be taken on
+     * @param action {@link org.kuali.rice.krad.uif.UifConstants.SuperUserWorkflowAction} enum indicating what super
+     * user workflow action to take
+     */
+    void performSuperUserWorkflowAction(DocumentFormBase form, UifConstants.SuperUserWorkflowAction action);
+
+    /**
+     * Invokes the {@link org.kuali.rice.krad.service.DocumentService} to carry out a super user request workflow action
+     * and adds a success message.
+     *
+     * @param form document form instance containing the document for which the super user action will be taken on
+     * @param action {@link org.kuali.rice.krad.uif.UifConstants.SuperUserWorkflowAction} enum indicating what super
+     * user workflow action to take
+     * @param actionRequest the requested action to take, currenly only available for take action
+     */
+    void performSuperUserWorkflowAction(DocumentFormBase form, UifConstants.SuperUserWorkflowAction action, ActionRequest actionRequest);
+
 }

@@ -69,4 +69,38 @@ public interface DocumentPresentationController {
      * @since 2.1
      */
     public boolean canRecall(Document document);
+
+    /**
+     * Determines if the document state should allow a super user taking an action.
+     *
+     * @param document document to check
+     *
+     * @return true the document state should allow a super user taking an action, otherwise false
+     *
+     * @since 2.5
+     */
+    boolean canSuperUserTakeAction(Document document);
+
+    /**
+     * Determines if the document state should allow a super user approving the document.
+     *
+     * @param document document to check
+     *
+     * @return true if the document state should allow a super user approving the document, otherwise false
+     *
+     * @since 2.5
+     */
+    boolean canSuperUserApprove(Document document);
+
+    /**
+     * Determines if the document state should allow a super user disapproving the document.
+     *
+     * @param document document to check
+     *
+     * @return true if the document state should allow a super user disapproving the document, otherwise false
+     *
+     * @since 2.5
+     */
+    boolean canSuperUserDisapprove(Document document);
+
 }

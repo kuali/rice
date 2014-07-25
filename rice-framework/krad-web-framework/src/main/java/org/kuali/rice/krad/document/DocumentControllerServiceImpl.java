@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
@@ -23,7 +24,13 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterConstants;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.DocumentActionParameters;
+import org.kuali.rice.kew.api.action.WorkflowDocumentActionsService;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSessionUtils;
@@ -37,6 +44,7 @@ import org.kuali.rice.krad.exception.ValidationException;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.rules.rule.event.AddNoteEvent;
 import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
+import org.kuali.rice.krad.rules.rule.event.RouteDocumentEvent;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.service.AttachmentService;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -62,14 +70,17 @@ import org.kuali.rice.krad.web.service.CollectionControllerService;
 import org.kuali.rice.krad.web.service.ModelAndViewService;
 import org.kuali.rice.krad.web.service.NavigationControllerService;
 import org.kuali.rice.krad.web.service.impl.ControllerServiceImpl;
+import org.kuali.rice.ksb.api.KsbApiServiceLocator;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Default implementation of the document controller service.
@@ -609,6 +620,102 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
      * {@inheritDoc}
      */
     @Override
+    public ModelAndView superUserTakeActions(DocumentFormBase form) {
+        Document document = form.getDocument();
+
+        if (StringUtils.isBlank(document.getSuperUserAnnotation())) {
+            GlobalVariables.getMessageMap().putErrorForSectionId(
+                    "Uif-SuperUserAnnotation", RiceKeyConstants.ERROR_SUPER_USER_TAKE_ACTIONS_MISSING);
+        }
+
+        Set<String> selectedActionRequests = form.getSelectedCollectionLines().get(UifPropertyPaths.ACTION_REQUESTS);
+
+        if (CollectionUtils.isEmpty(selectedActionRequests)) {
+            GlobalVariables.getMessageMap().putErrorForSectionId(
+                    "Uif-SuperUserActionRequests", RiceKeyConstants.ERROR_SUPER_USER_TAKE_ACTIONS_NONE_SELECTED);
+        }
+
+        if (GlobalVariables.getMessageMap().hasErrors()) {
+            return getModelAndViewService().getModelAndView(form);
+        }
+
+        for (String selectedActionRequest : selectedActionRequests) {
+            ActionRequest actionRequest = ObjectPropertyUtils.getPropertyValue(document, selectedActionRequest);
+
+            if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()) ||
+                    StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
+                document = getDocumentService().validateAndPersistDocument(document, new RouteDocumentEvent(document));
+                form.setDocument(document);
+            }
+
+            performSuperUserWorkflowAction(form, UifConstants.SuperUserWorkflowAction.TAKEACTION, actionRequest);
+        }
+
+        document.setSuperUserAnnotation("");
+
+        return getModelAndViewService().getModelAndView(form);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModelAndView superUserApprove(DocumentFormBase form) {
+        Document document = form.getDocument();
+
+        if (StringUtils.isBlank(document.getSuperUserAnnotation())) {
+            GlobalVariables.getMessageMap().putErrorForSectionId(
+                    "Uif-SuperUserAnnotation", RiceKeyConstants.ERROR_SUPER_USER_APPROVE_MISSING);
+        }
+
+        Set<String> selectedCollectionLines = form.getSelectedCollectionLines().get(UifPropertyPaths.ACTION_REQUESTS);
+
+        if (!CollectionUtils.isEmpty(selectedCollectionLines)) {
+            GlobalVariables.getMessageMap().putErrorForSectionId(
+                    "Uif-SuperUserActionRequests", RiceKeyConstants.ERROR_SUPER_USER_APPROVE_ACTIONS_CHECKED);
+        }
+
+        if (GlobalVariables.getMessageMap().hasErrors()) {
+            return getModelAndViewService().getModelAndView(form);
+        }
+
+        performSuperUserWorkflowAction(form, UifConstants.SuperUserWorkflowAction.APPROVE);
+
+        return getModelAndViewService().getModelAndView(form);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModelAndView superUserDisapprove(DocumentFormBase form) {
+        Document document = form.getDocument();
+
+        if (StringUtils.isBlank(document.getSuperUserAnnotation())) {
+            GlobalVariables.getMessageMap().putErrorForSectionId(
+                    "Uif-SuperUserAnnotation", RiceKeyConstants.ERROR_SUPER_USER_DISAPPROVE_MISSING);
+        }
+
+        Set<String> selectedCollectionLines = form.getSelectedCollectionLines().get(UifPropertyPaths.ACTION_REQUESTS);
+
+        if (!CollectionUtils.isEmpty(selectedCollectionLines)) {
+            GlobalVariables.getMessageMap().putErrorForSectionId(
+                    "Uif-SuperUserActionRequests", RiceKeyConstants.ERROR_SUPER_USER_DISAPPROVE_ACTIONS_CHECKED);
+        }
+
+        if (GlobalVariables.getMessageMap().hasErrors()) {
+            return getModelAndViewService().getModelAndView(form);
+        }
+
+        performSuperUserWorkflowAction(form, UifConstants.SuperUserWorkflowAction.DISAPPROVE);
+
+        return getModelAndViewService().getModelAndView(form);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void performWorkflowAction(DocumentFormBase form, UifConstants.WorkflowAction action) {
         performWorkflowAction(form, action, null);
     }
@@ -735,6 +842,120 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
         adHocRecipients.addAll(document.getAdHocRouteWorkgroups());
 
         return adHocRecipients;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performSuperUserWorkflowAction(DocumentFormBase form, UifConstants.SuperUserWorkflowAction action) {
+        performSuperUserWorkflowAction(form, action, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void performSuperUserWorkflowAction(DocumentFormBase form, UifConstants.SuperUserWorkflowAction action,
+            ActionRequest actionRequest) {
+        Document document = form.getDocument();
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Performing super user workflow action " + action.name() + "for document: " + document.getDocumentNumber());
+        }
+
+        try {
+            String documentTypeId = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeId();
+            String documentNumber = document.getDocumentNumber();
+            String principalId = GlobalVariables.getUserSession().getPrincipalId();
+            String superUserAnnotation = document.getSuperUserAnnotation();
+
+            WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentTypeId);
+            DocumentActionParameters parameters = DocumentActionParameters.create(documentNumber, principalId, superUserAnnotation);
+
+            String successMessageKey = null;
+            switch (action) {
+                case TAKEACTION:
+                    if (actionRequest != null) {
+                        documentActions.superUserTakeRequestedAction(parameters, true, actionRequest.getId());
+
+                        String actionRequestedCode = actionRequest.getActionRequested().getCode();
+                        if (StringUtils.equals(actionRequestedCode, ActionRequestType.ACKNOWLEDGE.getCode())) {
+                            successMessageKey = RiceKeyConstants.MESSAGE_SUPER_USER_ACTION_REQUEST_ACKNOWLEDGED;
+                        } else if (StringUtils.equals(actionRequestedCode, ActionRequestType.FYI.getCode())) {
+                            successMessageKey = RiceKeyConstants.MESSAGE_SUPER_USER_ACTION_REQUEST_FYIED;
+                        } else if (StringUtils.equals(actionRequestedCode, ActionRequestType.COMPLETE.getCode())) {
+                            successMessageKey = RiceKeyConstants.MESSAGE_SUPER_USER_ACTION_REQUEST_COMPLETED;
+                        } else if (StringUtils.equals(actionRequestedCode, ActionRequestType.APPROVE.getCode())) {
+                            successMessageKey = RiceKeyConstants.MESSAGE_SUPER_USER_ACTION_REQUEST_APPROVED;
+                        } else {
+                            successMessageKey = RiceKeyConstants.MESSAGE_SUPER_USER_ACTION_REQUEST_APPROVED;
+                        }
+                    }
+                    break;
+                case APPROVE:
+                    documentActions.superUserBlanketApprove(parameters, true);
+
+                    successMessageKey = RiceKeyConstants.MESSAGE_SUPER_USER_APPROVED;
+                    break;
+                case DISAPPROVE:
+                    documentActions.superUserDisapprove(parameters, true);
+
+                    successMessageKey = RiceKeyConstants.MESSAGE_SUPER_USER_DISAPPROVED;
+                    break;
+            }
+
+            if (successMessageKey != null) {
+                if (actionRequest != null) {
+                    GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, successMessageKey,
+                            document.getDocumentNumber(), actionRequest.getId());
+                } else {
+                    GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, successMessageKey,
+                            document.getDocumentNumber());
+                }
+            }
+        } catch (ValidationException e) {
+            // log the error and swallow exception so screen will draw with errors.
+            // we don't want the exception to bubble up and the user to see an incident page, but instead just return to
+            // the page and display the actual errors. This would need a fix to the API at some point.
+            KRADUtils.logErrors();
+            LOG.error("Validation Exception occured for document :" + document.getDocumentNumber(), e);
+
+            // if no errors in map then throw runtime because something bad happened
+            if (GlobalVariables.getMessageMap().hasNoErrors()) {
+                throw new RiceRuntimeException("Validation Exception with no error message.", e);
+            }
+        } catch (Exception e) {
+            throw new RiceRuntimeException(
+                    "Exception trying to invoke action " + action.name() + " for document: " + document
+                            .getDocumentNumber(), e);
+        }
+
+        document.setSuperUserAnnotation("");
+    }
+
+    /**
+     * Helper method to get the correct {@link WorkflowDocumentActionsService} from the {@code applicationId} of the
+     * document type.
+     *
+     * @param documentTypeId the document type to get the application id from
+     *
+     * @return the correct {@link WorkflowDocumentActionsService} from the {@code applicationId} of the document type
+     */
+    protected WorkflowDocumentActionsService getWorkflowDocumentActionsService(String documentTypeId) {
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(documentTypeId);
+        String applicationId = documentType.getApplicationId();
+        QName serviceName = new QName(KewApiConstants.Namespaces.KEW_NAMESPACE_2_0,
+                KewApiConstants.ServiceNames.WORKFLOW_DOCUMENT_ACTIONS_SERVICE_SOAP);
+
+        WorkflowDocumentActionsService service = (WorkflowDocumentActionsService) KsbApiServiceLocator.getServiceBus()
+                .getService(serviceName, applicationId);
+
+        if (service == null) {
+            service = KewApiServiceLocator.getWorkflowDocumentActionsService();
+        }
+
+        return service;
     }
 
     /**

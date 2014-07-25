@@ -75,6 +75,7 @@
         <bean parent="Uif-DocumentNotesSection" p:disclosure.defaultOpen="false" p:order="30"/>
         <bean parent="Uif-DocumentAdHocRecipientsSection" p:disclosure.defaultOpen="false" p:order="40"/>
         <bean parent="Uif-DocumentRouteLogSection" p:disclosure.defaultOpen="false" p:order="50"/>
+        <bean parent="Uif-DocumentSuperUserSection" p:disclosure.defaultOpen="false" p:order="60"/>
       </list>
     </property>
     <property name="footer">
@@ -281,6 +282,59 @@
           <property name="source"
                     value="@{#ConfigProperties['workflow.url']}/RouteLog.do?documentId=@{workflowDocument.documentId}"/>
           <property name="onLoadScript" value="setRouteLogIframeDimensions();"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Uif-DocumentSuperUserSection" parent="Uif-Disclosure-VerticalBoxSection"
+        p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION]
+                 or #actionFlags[#Constants.KUALI_ACTION_CAN_SUPER_USER_APPROVE]
+                 or #actionFlags[#Constants.KUALI_ACTION_CAN_SUPER_USER_DISAPPROVE]}">
+    <property name="headerText" value="Super User Actions"/>
+    <property name="readOnly" value="false"/>
+    <property name="items">
+      <list>
+        <bean id="Uif-SuperUserAnnotation" parent="Uif-InputField" p:propertyName="superUserAnnotation" p:label="Annotation">
+          <property name="bindingInfo.bindingObjectPath" value="document"/>
+          <property name="control">
+            <bean parent="Uif-TextAreaControl"/>
+          </property>
+        </bean>
+        <bean id="Uif-SuperUserActionRequests" parent="Uif-TableCollectionSection"
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION]}">
+          <property name="collectionObjectClass" value="org.kuali.rice.kew.api.action.ActionRequest"/>
+          <property name="propertyName" value="actionRequests"/>
+          <property name="headerText" value="Super User Actions"/>
+          <property name="bindingInfo.bindingObjectPath" value="document"/>
+          <property name="renderAddLine" value="false"/>
+          <property name="renderLineActions" value="false"/>
+          <property name="includeLineSelectionField" value="true" />
+          <property name="layoutManager.renderSequenceField" value="false"/>
+          <property name="layoutManager.richTable.render" value="false"/>
+          <property name="cssClasses" value="tableborders wrap"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="actionRequested" p:label="Action"/>
+              <bean parent="Uif-DataField" p:propertyName="principalId" p:label="Requested Of" p:render="@{#lp.userRequest}"/>
+              <bean parent="Uif-DataField" p:propertyName="groupId" p:label="Requested Of" p:render="@{#lp.groupRequest}"/>
+              <bean parent="Uif-DataField" p:propertyName="roleName" p:label="Requested Of" p:render="@{#lp.roleRequest}"/>
+              <bean parent="Uif-DataField" p:propertyName="dateCreated" p:label="Date/Time"/>
+              <bean parent="Uif-DataField" p:propertyName="annotation" p:label="Annotation"/>
+            </list>
+          </property>
+        </bean>
+        <bean id="Uif-SuperUserActions" parent="Uif-HorizontalBoxGroup">
+          <property name="items">
+            <list>
+              <bean parent="Uif-SecondaryActionButton" p:methodToCall="superUserTakeActions" p:actionLabel="Take Selected Actions"
+                    p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION]}"/>
+              <bean parent="Uif-SecondaryActionButton" p:methodToCall="superUserApprove" p:actionLabel="Approve"
+                    p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SUPER_USER_APPROVE]}"/>
+              <bean parent="Uif-SecondaryActionButton" p:methodToCall="superUserDisapprove" p:actionLabel="Disapprove"
+                    p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SUPER_USER_DISAPPROVE]}"/>
+            </list>
+          </property>
         </bean>
       </list>
     </property>

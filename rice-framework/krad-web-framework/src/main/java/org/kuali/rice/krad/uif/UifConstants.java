@@ -110,6 +110,10 @@ public class UifConstants {
         SAVE, ROUTE, BLANKETAPPROVE, APPROVE, DISAPPROVE, CANCEL, FYI, ACKNOWLEDGE, COMPLETE, SENDADHOCREQUESTS, RECALL
     }
 
+    public static enum SuperUserWorkflowAction {
+        TAKEACTION, APPROVE, DISAPPROVE
+    }
+
     /**
      * Enum of return types. Used to return the type of response being sent by the server to the client.
      */

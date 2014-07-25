@@ -172,6 +172,36 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @see DocumentControllerService#superUserTakeActions(org.kuali.rice.krad.web.form.DocumentFormBase)
+     */
+    @RequestMapping(params = "methodToCall=superUserTakeActions")
+    public ModelAndView superUserTakeActions(DocumentFormBase form) {
+        return getControllerService().superUserTakeActions(form);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see DocumentControllerService#superUserApprove(org.kuali.rice.krad.web.form.DocumentFormBase)
+     */
+    @RequestMapping(params = "methodToCall=superUserApprove")
+    public ModelAndView superUserApprove(DocumentFormBase form) {
+        return getControllerService().superUserApprove(form);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see DocumentControllerService#superUserDisapprove(org.kuali.rice.krad.web.form.DocumentFormBase)
+     */
+    @RequestMapping(params = "methodToCall=superUserDisapprove")
+    public ModelAndView superUserDisapprove(DocumentFormBase form) {
+        return getControllerService().superUserDisapprove(form);
+    }
+
+    /**
      * @see DocumentControllerService#downloadAttachment(org.kuali.rice.krad.web.form.DocumentFormBase,
      * javax.servlet.http.HttpServletResponse)
      */

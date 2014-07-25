@@ -16,6 +16,8 @@
 package org.kuali.rice.krad.document;
 
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
@@ -296,6 +298,27 @@ public interface Document extends GloballyUnique {
      * @return true if the note was successfully removed, false if the list did not contain the given note
      */
     boolean removeNote(Note note);
+
+    /**
+     * This method gets a list of the {@link ActionRequest} objects associated with this document.
+     *
+     * @return list of action requests
+     */
+    List<ActionRequest> getActionRequests();
+
+    /**
+     * This method gets the annotation to be attached to a super user action.
+     *
+     * @return the super user annotation
+     */
+    String getSuperUserAnnotation();
+
+    /**
+     * This method sets the annotation to be attached to a super user action.
+     *
+     * @param superUserAnnotation the super user annotation
+     */
+    void setSuperUserAnnotation(String superUserAnnotation);
 
     /**
      * This method gets a list of the {@link PessimisticLock} objects associated with this document

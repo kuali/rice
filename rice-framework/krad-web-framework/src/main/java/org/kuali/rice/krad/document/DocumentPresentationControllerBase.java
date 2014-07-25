@@ -18,12 +18,19 @@ package org.kuali.rice.krad.document;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionRequest;
+import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -171,6 +178,124 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
             return true;
         }
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserTakeAction(Document document) {
+        return hasActionRequests(document) && canTakeAction(document);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserApprove(Document document) {
+        return canApproveOrDisapprove(document);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserDisapprove(Document document) {
+        return canApproveOrDisapprove(document);
+    }
+
+    /**
+     * Returns whether the {@code document} has any APPROVE or COMPLETE action requests.
+     *
+     * @param document the document to check
+     *
+     * @return true if the {@code document} has any APPROVE or COMPLETE action requests, false otherwise
+     */
+    protected boolean hasActionRequests(Document document) {
+        boolean hasActionRequests = false;
+
+        for (ActionRequest actionRequest : document.getActionRequests()) {
+            if  (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())
+                    || StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode())) {
+                hasActionRequests = true;
+                break;
+            }
+        }
+
+        return hasActionRequests;
+    }
+
+    /**
+     * Returns whether a super user action can be taken on the {@code document}.
+     *
+     * <p>
+     * Typically, actions can only be taken on a document not in INITIATED, FINAL, or CANCELLED status.
+     * </p>
+     *
+     * @param document the document to check
+     *
+     * @return true if a super user action can be taken on the {@code document}, false otherwise
+     */
+    protected boolean canTakeAction(Document document) {
+        String documentNumber = document.getDocumentNumber();
+        DocumentStatus status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentNumber);
+
+        return !isStateInitiatedFinalCancelled(status);
+    }
+
+    /**
+     * Returns whether a super user approve or disapprove action can be taken on the {@code document}.
+     *
+     * <p>
+     * Typically, actions can only be taken on a document not in INITIATED, SAVED, PROCESSED, DISAPPROVED, FINAL, or
+     * CANCELLED status.
+     * </p>
+     *
+     * @param document the document to check
+     *
+     * @return true if a super user approve or disapprove action can be taken on the {@code document}, false otherwise
+     */
+    protected boolean canApproveOrDisapprove(Document document) {
+        String documentNumber = document.getDocumentNumber();
+        DocumentStatus status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentNumber);
+
+        return !isStateInitiatedFinalCancelled(status) && !isStateSaved(status) && !isStateProcessedOrDisapproved(status);
+    }
+
+    /**
+     * Returns whether the {@code document} is in a INITIATED, FINAL, or CANCELLED state.
+     *
+     * @param status the document status
+     *
+     * @return true if the {@code document} is in a INITIATED, FINAL, or CANCELLED state, false otherwise
+     */
+    protected boolean isStateInitiatedFinalCancelled(DocumentStatus status) {
+        return (StringUtils.equals(status.getCode(), DocumentStatus.INITIATED.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.FINAL.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.CANCELED.getCode()));
+    }
+
+    /**
+     * Returns whether the {@code document} is in a SAVED state.
+     *
+     * @param status the document status
+     *
+     * @return true if the {@code document} is in a SAVED state, false otherwise
+     */
+    protected boolean isStateSaved(DocumentStatus status) {
+        return (StringUtils.equals(status.getCode(), DocumentStatus.SAVED.getCode()));
+    }
+
+    /**
+     * Returns whether the {@code document} is in a PROCESSED or DISAPPROVED state.
+     *
+     * @param status the document status
+     *
+     * @return true if the {@code document} is in a PROCESSED or DISAPPROVED state, false otherwise
+     */
+    protected boolean isStateProcessedOrDisapproved(DocumentStatus status) {
+        return (StringUtils.equals(status.getCode(), DocumentStatus.PROCESSED.getCode()) ||
+                StringUtils.equals(status.getCode(), DocumentStatus.DISAPPROVED.getCode()));
     }
 
     protected ParameterService getParameterService() {

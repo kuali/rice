@@ -173,6 +173,13 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_RECALL_NOTE_TEXT_INTRO = "message.recall.noteTextIntro";
     public static final String MESSAGE_RECALL_NOT_SUPPORTED= "message.recall.not.supported";
 
+    public static final String MESSAGE_SUPER_USER_ACTION_REQUEST_ACKNOWLEDGED = "general.routing.superuser.actionRequestAcknowledged";
+    public static final String MESSAGE_SUPER_USER_ACTION_REQUEST_FYIED = "general.routing.superuser.actionRequestFYI";
+    public static final String MESSAGE_SUPER_USER_ACTION_REQUEST_COMPLETED = "general.routing.superuser.actionRequestCompleted";
+    public static final String MESSAGE_SUPER_USER_ACTION_REQUEST_APPROVED = "general.routing.superuser.actionRequestApproved";
+    public static final String MESSAGE_SUPER_USER_APPROVED = "general.routing.superuser.approved";
+    public static final String MESSAGE_SUPER_USER_DISAPPROVED = "general.routing.superuser.disapproved";
+
     public static final String INFO_LOOKUP_RESULTS_DISPLAY_ALL = "lookup.results.found.display.all";
     public static final String INFO_LOOKUP_RESULTS_DISPLAY_ONE = "lookup.results.found.display.one";
     public static final String INFO_LOOKUP_RESULTS_NONE_FOUND = "lookup.results.none.found";
@@ -256,6 +263,14 @@ public final class RiceKeyConstants {
 
     // PeopleFlow
     public static final String PEOPLEFLOW_DUPLICATE = "peopleFlow.duplicate";
+
+    // Super User
+    public static final String ERROR_SUPER_USER_TAKE_ACTIONS_MISSING = "superuser.takeactions.annotation.missing";
+    public static final String ERROR_SUPER_USER_TAKE_ACTIONS_NONE_SELECTED = "superuser.takeactions.none.selected";
+    public static final String ERROR_SUPER_USER_APPROVE_MISSING = "superuser.approve.annotation.missing";
+    public static final String ERROR_SUPER_USER_APPROVE_ACTIONS_CHECKED = "superuser.approve.when.actions.checked";
+    public static final String ERROR_SUPER_USER_DISAPPROVE_MISSING = "superuser.disapprove.annotation.missing";
+    public static final String ERROR_SUPER_USER_DISAPPROVE_ACTIONS_CHECKED = "superuser.disapprove.when.actions.checked";
 
     private RiceKeyConstants() {
         throw new UnsupportedOperationException("do not call");

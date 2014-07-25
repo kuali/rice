@@ -23,6 +23,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.doctype.RoutePath;
+import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.bo.authorization.BusinessObjectAuthorizerBase;
@@ -32,6 +33,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -139,6 +141,18 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         if (documentActions.contains(KRADConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT) && !canPerformRouteReport(document,
                 user)) {
             documentActions.remove(KRADConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT);
+        }
+
+        if (documentActions.contains(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION) && !canSuperUserTakeAction(document, user)) {
+            documentActions.remove(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION);
+        }
+
+        if (documentActions.contains(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_APPROVE) && !canSuperUserApprove(document, user)) {
+            documentActions.remove(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_APPROVE);
+        }
+
+        if (documentActions.contains(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_DISAPPROVE) && !canSuperUserDisapprove(document, user)) {
+            documentActions.remove(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_DISAPPROVE);
         }
 
         return documentActions;
@@ -317,6 +331,75 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
         return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.TAKE_REQUESTED_ACTION, user.getPrincipalId(),
                 additionalPermissionDetails, Collections.<String, String>emptyMap());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserTakeAction(Document document, Person user) {
+        if (!document.getDocumentHeader().hasWorkflowDocument()) {
+            return false;
+        }
+
+        String principalId = user.getPrincipalId();
+
+        String documentTypeId = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeId();
+        if (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, documentTypeId)) {
+            return true;
+        }
+
+        String documentTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
+        List<RouteNodeInstance> routeNodeInstances = document.getDocumentHeader().getWorkflowDocument().getRouteNodeInstances();
+        String documentStatus =  document.getDocumentHeader().getWorkflowDocument().getStatus().getCode();
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveSingleActionRequest(
+                principalId, documentTypeName, routeNodeInstances, documentStatus);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserApprove(Document document, Person user) {
+        if (!document.getDocumentHeader().hasWorkflowDocument()) {
+            return false;
+        }
+
+        String principalId = user.getPrincipalId();
+
+        String documentTypeId = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeId();
+        if (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, documentTypeId)) {
+            return true;
+        }
+
+        String documentTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
+        List<RouteNodeInstance> routeNodeInstances = document.getDocumentHeader().getWorkflowDocument().getRouteNodeInstances();
+        String documentStatus =  document.getDocumentHeader().getWorkflowDocument().getStatus().getCode();
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserApproveDocument(
+                principalId, documentTypeName, routeNodeInstances, documentStatus);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserDisapprove(Document document, Person user) {
+        if (!document.getDocumentHeader().hasWorkflowDocument()) {
+            return false;
+        }
+
+        String principalId = user.getPrincipalId();
+
+        String documentTypeId = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeId();
+        if (KewApiServiceLocator.getDocumentTypeService().isSuperUserForDocumentTypeId(principalId, documentTypeId)) {
+            return true;
+        }
+
+        String documentTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentTypeName();
+        List<RouteNodeInstance> routeNodeInstances = document.getDocumentHeader().getWorkflowDocument().getRouteNodeInstances();
+        String documentStatus =  document.getDocumentHeader().getWorkflowDocument().getStatus().getCode();
+        return KewApiServiceLocator.getDocumentTypeService().canSuperUserDisapproveDocument(
+                principalId, documentTypeName, routeNodeInstances, documentStatus);
     }
 
     @Override

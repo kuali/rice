@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
@@ -95,6 +96,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
     protected List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
     @Transient
     protected List<Note> notes;
+    @Transient
+    private String superUserAnnotation = "";
 
     private transient NoteService noteService;
     private transient AttachmentService attachmentService;
@@ -647,6 +650,30 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
             throw new IllegalArgumentException("List of notes must be non-null.");
         }
         this.notes = notes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ActionRequest> getActionRequests() {
+        return KewApiServiceLocator.getWorkflowDocumentService().getPendingActionRequests(getDocumentNumber());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getSuperUserAnnotation() {
+        return superUserAnnotation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSuperUserAnnotation(String superUserAnnotation) {
+        this.superUserAnnotation = superUserAnnotation;
     }
 
     /**

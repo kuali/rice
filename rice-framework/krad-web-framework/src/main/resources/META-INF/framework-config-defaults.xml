@@ -78,7 +78,7 @@
   <!-- list of resource bundle names (full qualified classnames) for application messages (default namespace
    of KUALI), for messages associated with a namespace use the resourceBundleName configuration on the
    corresponding ModuleDefinition -->
-  <param name="resourceBundleNames" override="false">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
+  <param name="resourceBundleNames" override="false">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.krms.ApplicationResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
 
   <param name="krad.ehcache.config.location" override="false">classpath:org/kuali/rice/krad/config/krad.ehcache.xml</param>
 

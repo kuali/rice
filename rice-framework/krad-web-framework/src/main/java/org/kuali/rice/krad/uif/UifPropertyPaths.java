@@ -25,6 +25,7 @@ public class UifPropertyPaths {
     private UifPropertyPaths() {}
 
     public static final String ACTION_PARAMETERS = "actionParameters";
+    public static final String ACTION_REQUESTS = "document.actionRequests";
     public static final String ACTIVE = "active";
     public static final String AUTO_ADD_ACTIVE_CRITERIA = "autoAddActiveCriteria";
     public static final String BASE_ID = "baseId";

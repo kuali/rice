@@ -131,6 +131,18 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
             documentActions.add(KRADConstants.KUALI_ACTION_CAN_RECALL);
         }
 
+        if (canSuperUserTakeAction(document)) {
+            documentActions.add(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION);
+        }
+
+        if (canSuperUserApprove(document)) {
+            documentActions.add(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_APPROVE);
+        }
+
+        if (canSuperUserDisapprove(document)) {
+            documentActions.add(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_DISAPPROVE);
+        }
+
         return documentActions;
     }
 
@@ -226,6 +238,30 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
 
     public boolean canComplete(Document document) {
         return getDocumentPresentationController().canComplete(document);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserTakeAction(Document document) {
+        return getDocumentPresentationController().canSuperUserTakeAction(document);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserApprove(Document document) {
+        return getDocumentPresentationController().canSuperUserApprove(document);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserDisapprove(Document document) {
+        return getDocumentPresentationController().canSuperUserDisapprove(document);
     }
 
     public DocumentPresentationController getDocumentPresentationController() {

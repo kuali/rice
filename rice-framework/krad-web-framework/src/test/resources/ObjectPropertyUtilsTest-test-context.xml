@@ -46,6 +46,7 @@
 				<entry key="java.sql.Date" value="dateEditor" />
 				<entry key="java.util.Date" value="dateEditor" />
 				<entry key="java.sql.Timestamp" value="timestampEditor" />
+        <entry key="org.joda.time.DateTime" value="dateTimeEditor" />
 				<entry key="boolean" value="booleanEditor" />
 				<entry key="java.lang.Boolean" value="booleanEditor" />
 				<entry key="java.math.BigDecimal" value="decimalEditor" />

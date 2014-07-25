@@ -45,6 +45,8 @@
 
   <bean id="timestampEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifTimestampEditor" />
 
+  <bean id="dateTimeEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifDateTimeEditor" />
+
   <bean id="booleanEditor" scope="prototype" class="org.kuali.rice.krad.web.bind.UifBooleanEditor" />
 
   <bean id="stringEditor" scope="prototype" class="org.springframework.beans.propertyeditors.StringTrimmerEditor">

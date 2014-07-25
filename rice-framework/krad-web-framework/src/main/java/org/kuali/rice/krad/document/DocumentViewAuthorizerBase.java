@@ -151,6 +151,18 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
             actions.remove(KRADConstants.KUALI_ACTION_PERFORM_ROUTE_REPORT);
         }
 
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION) && !canSuperUserTakeAction(document, user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION);
+        }
+
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_APPROVE) && !canSuperUserApprove(document, user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_APPROVE);
+        }
+
+        if (actions.contains(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_DISAPPROVE) && !canSuperUserDisapprove(document, user)) {
+            actions.remove(KRADConstants.KUALI_ACTION_CAN_SUPER_USER_DISAPPROVE);
+        }
+
         return actions;
     }
 
@@ -473,6 +485,36 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
         initializeDocumentAuthorizerIfNecessary(document);
 
         return getDocumentAuthorizer().canTakeRequestedAction(document, actionRequestCode, user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserTakeAction(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
+        return getDocumentAuthorizer().canSuperUserTakeAction(document, user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserApprove(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
+        return getDocumentAuthorizer().canSuperUserApprove(document, user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canSuperUserDisapprove(Document document, Person user) {
+        initializeDocumentAuthorizerIfNecessary(document);
+
+        return getDocumentAuthorizer().canSuperUserDisapprove(document, user);
     }
 
     /**

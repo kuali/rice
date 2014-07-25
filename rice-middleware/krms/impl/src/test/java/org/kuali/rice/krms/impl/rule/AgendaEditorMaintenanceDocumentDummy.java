@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.impl.rule;
 
+import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.framework.postprocessor.ActionTakenEvent;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
@@ -41,7 +42,7 @@ public class AgendaEditorMaintenanceDocumentDummy implements MaintenanceDocument
     protected Maintainable newMaintainableObject;
 
     public String getXmlDocumentContents() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public Maintainable getNewMaintainableObject() {
@@ -53,7 +54,6 @@ public class AgendaEditorMaintenanceDocumentDummy implements MaintenanceDocument
     }
 
     public void setXmlDocumentContents(String documentContents) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setNewMaintainableObject(Maintainable newMaintainableObject) {
@@ -65,270 +65,250 @@ public class AgendaEditorMaintenanceDocumentDummy implements MaintenanceDocument
     }
 
     public Object getDocumentDataObject() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void populateXmlDocumentContentsFromMaintainables() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void populateMaintainablesFromXmlDocumentContents() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public boolean isOldDataObjectInDocument() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public boolean isNew() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public boolean isEdit() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public boolean isNewWithExisting() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public boolean isFieldsClearedOnCopy() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public void setFieldsClearedOnCopy(boolean keysClearedOnCopy) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public boolean isDisplayTopicFieldInNotes() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public void setDisplayTopicFieldInNotes(boolean displayTopicFieldInNotes) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public DocumentHeader getDocumentHeader() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void setDocumentHeader(DocumentHeader documentHeader) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public String getDocumentNumber() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void setDocumentNumber(String documentHeaderId) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void populateDocumentForRouting() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public String serializeDocumentToXml() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public String getXmlForRouteReport() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void doActionTaken(ActionTakenEvent event) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void afterActionTaken(ActionType performed, ActionTakenEvent event) {
-
     }
 
     public void afterWorkflowEngineProcess(boolean successfullyProcessed) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void beforeWorkflowEngineProcess() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public List<String> getWorkflowEngineDocumentIdsToLock() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public String getDocumentTitle() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public List<AdHocRoutePerson> getAdHocRoutePersons() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public List<AdHocRouteWorkgroup> getAdHocRouteWorkgroups() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void setAdHocRoutePersons(List<AdHocRoutePerson> adHocRoutePersons) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setAdHocRouteWorkgroups(List<AdHocRouteWorkgroup> adHocRouteWorkgroups) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void prepareForSave() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void validateBusinessRules(DocumentEvent event) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void prepareForSave(DocumentEvent event) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void postProcessSave(DocumentEvent event) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void processAfterRetrieve() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public boolean getAllowsCopy() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public List<DocumentEvent> generateSaveEvents() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public NoteType getNoteType() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public PersistableBusinessObject getNoteTarget() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void addNote(Note note) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public List<Note> getNotes() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void setNotes(List<Note> notes) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Note getNote(int index) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public boolean removeNote(Note note) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
+    }
+
+    public List<ActionRequest> getActionRequests() {
+        return null;
+    }
+
+    public String getSuperUserAnnotation() {
+        return null;
+    }
+
+    public void setSuperUserAnnotation(String superUserAnnotation) {
     }
 
     public List<PessimisticLock> getPessimisticLocks() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void refreshPessimisticLocks() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void addPessimisticLock(PessimisticLock lock) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public List<String> getLockClearingMethodNames() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public List<String> getLockClearningMethodNames() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public String getBasePathToDocumentDuringSerialization() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public Object wrapDocumentWithMetadataForXmlSerialization() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public boolean useCustomLockDescriptors() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public String getCustomLockDescriptor(Person user) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void setVersionNumber(Long versionNumber) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void setObjectId(String objectId) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public PersistableBusinessObjectExtension getExtension() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public void setExtension(PersistableBusinessObjectExtension extension) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void refreshNonUpdateableReferences() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void refreshReferenceObject(String referenceObjectName) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public List<Collection<PersistableBusinessObject>> buildListOfDeletionAwareLists() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public boolean isNewCollectionRecord() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     public void setNewCollectionRecord(boolean isNewCollectionRecord) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void linkEditableUserFields() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public void refresh() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public String getObjectId() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     public Long getVersionNumber() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
+
 }

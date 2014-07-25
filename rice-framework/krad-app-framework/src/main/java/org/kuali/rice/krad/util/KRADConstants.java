@@ -82,6 +82,9 @@ public final class KRADConstants {
     public static final String KUALI_ACTION_CAN_SEND_NOTE_FYI = "canSendNoteFyi";
     public static final String KUALI_ACTION_CAN_EDIT_DOCUMENT_OVERVIEW = "canEditDocumentOverview";
     public static final String KUALI_ACTION_CAN_EXPORT = "canExport";
+    public static final String KUALI_ACTION_CAN_SUPER_USER_TAKE_ACTION = "canSuperUserTakeAction";
+    public static final String KUALI_ACTION_CAN_SUPER_USER_APPROVE = "canSuperUserApprove";
+    public static final String KUALI_ACTION_CAN_SUPER_USER_DISAPPROVE = "canSuperUserDisapprove";
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
     public static final String USE_CACHE_ADMINISTRATION_SCREEN = "Use Cache Adminstration Screen";
     public static final String KUALI_ACTION_CAN_COMPLETE = "canComplete";

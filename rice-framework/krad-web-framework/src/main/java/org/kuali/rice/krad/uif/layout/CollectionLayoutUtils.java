@@ -63,19 +63,26 @@ public class CollectionLayoutUtils {
             ((DataBinding) selectField).getBindingInfo().setBindToForm(true);
         }
 
-        setControlValueToLineIdentifier(selectField, line);
+        setControlValueToLineIdentifier(selectField, line, lineBindingPath);
     }
 
-    protected static void setControlValueToLineIdentifier(Field selectField, Object line) {
+    protected static void setControlValueToLineIdentifier(Field selectField, Object line, String lineBindingPath) {
         if (selectField instanceof InputField) {
             Control selectControl = ((InputField) selectField).getControl();
 
-            selectControl.addStyleClass(CssConstants.Classes.SELECT_FIELD_STYLE_CLASS);
+            if (selectControl != null) {
+                selectControl.addStyleClass(CssConstants.Classes.SELECT_FIELD_STYLE_CLASS);
 
-            if ((selectControl != null) && (selectControl instanceof ValueConfiguredControl)) {
-                String lineIdentifier =
-                        KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectIdentifierString(line);
-                ((ValueConfiguredControl) selectControl).setValue(lineIdentifier);
+                if (selectControl instanceof ValueConfiguredControl) {
+                    String lineIdentifier
+                            = KRADServiceLocatorWeb.getLegacyDataAdapter().getDataObjectIdentifierString(line);
+
+                    if (StringUtils.isBlank(lineIdentifier)) {
+                        lineIdentifier = lineBindingPath;
+                    }
+
+                    ((ValueConfiguredControl) selectControl).setValue(lineIdentifier);
+                }
             }
         }
     }

@@ -137,4 +137,39 @@ public interface DocumentAuthorizer extends DataObjectAuthorizer {
      * @since 2.1
      */
     public boolean canRecall(Document document, Person user);
+
+    /**
+     * Determines if the user has permission to take a super user action.
+     *
+     * @param document document to check
+     * @param user current user
+     *
+     * @return true if the user has permissions to take a super user action, otherwise false
+     *
+     * @since 2.5
+     */
+    boolean canSuperUserTakeAction(Document document, Person user);
+
+    /**
+     * Determines if the user has permission to approve a document as a super user.
+     *
+     * @param document document to check
+     * @param user current user
+     *
+     * @return true if the user has permissions to approve a document as a super user, otherwise false
+     * @since 2.5
+     */
+    boolean canSuperUserApprove(Document document, Person user);
+
+    /**
+     * Determines if the user has permission to disapprove a document as a super user.
+     *
+     * @param document document to check
+     * @param user current user
+     *
+     * @return true if the user has permissions to disapprove a document as a super user, otherwise false
+     * @since 2.5
+     */
+    boolean canSuperUserDisapprove(Document document, Person user);
+
 }

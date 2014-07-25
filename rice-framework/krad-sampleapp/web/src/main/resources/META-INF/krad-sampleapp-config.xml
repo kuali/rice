@@ -36,7 +36,7 @@
 
   <param name="project.home">${external.config.home}/${project.artifactId}</param>
   <param name="version">${project.name} :: ${project.version} :: ${kuali.build.timestamp}</param>
-  <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources,KradSampleAppResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
+  <param name="resourceBundleNames">org.kuali.rice.krad.KRADApplicationResources,org.kuali.rice.krad.ApplicationResources,org.kuali.rice.kew.ApplicationResources,KradSampleAppResources,org.kuali.rice.core.web.cache.CacheApplicationResources</param>
 	<param name="rice.krad.enableLegacyDataFramework">true</param>
 
   <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>

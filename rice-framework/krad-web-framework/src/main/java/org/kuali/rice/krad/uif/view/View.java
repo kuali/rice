@@ -182,7 +182,7 @@ public class View extends ContainerBase {
     private boolean singlePageView;
     private boolean mergeWithPageItems;
     private PageGroup page;
-    
+
     @ReferenceCopy(referenceTransient=true)
     private PageGroup currentPage;
 
@@ -312,7 +312,7 @@ public class View extends ContainerBase {
     @Override
     public void afterEvaluateExpression() {
         super.afterEvaluateExpression();
-        
+
         if (getReadOnly() == null) {
             setReadOnly(false);
         }
@@ -452,6 +452,24 @@ public class View extends ContainerBase {
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateObjectBindingPath",
                 stateObjectBindingPath);
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping", stateMapping);
+
+        setNestedComponentId(getInstructionalMessage(), this.getId() + UifConstants.IdSuffixes.INSTRUCTIONAL);
+        setNestedComponentId(getHeader(), this.getId() + UifConstants.IdSuffixes.HEADER_WRAPPER);
+        setNestedComponentId(getHeader().getUpperGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_UPPER_GROUP);
+        setNestedComponentId(getHeader().getRightGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_RIGHT_GROUP);
+        setNestedComponentId(getHeader().getLowerGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_LOWER_GROUP);
+    }
+
+    /**
+     * Helper method for setting a new ID for the nested components
+     *
+     * @param component component to adjust ID for
+     * @param newId
+     */
+    protected void setNestedComponentId(Component component, String newId) {
+        if (component != null) {
+            component.setId(newId);
+        }
     }
 
     /**
@@ -530,7 +548,7 @@ public class View extends ContainerBase {
         if (currentPage != null) {
             return currentPage;
         }
-        
+
         for (Component item : this.getItems()) {
             if (!(item instanceof PageGroup)) {
                 continue;
@@ -1177,7 +1195,7 @@ public class View extends ContainerBase {
 
     /**
      * Adds a template to the views include list.
-     * 
+     *
      * @param template path to template to add
      */
     public void addViewTemplate(String template) {

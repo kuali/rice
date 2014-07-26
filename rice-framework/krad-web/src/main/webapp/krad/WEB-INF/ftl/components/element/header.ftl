@@ -33,7 +33,7 @@
     </#if>
 
     <#if element.headerLevel?has_content>
-        <#local headerOpenTag="<${element.headerLevel} id='${element.id}_header' ${style!} ${styleClass!}>"/>
+        <#local headerOpenTag="<${element.headerLevel} id='${element.id?replace(\"_headerWrapper\", \"\")}_header' ${style!} ${styleClass!}>"/>
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
 

@@ -226,6 +226,12 @@ public class UifConstants {
         public static final String QUICK_FINDER = "_quickfinder";
         public static final String SPAN = "_span";
         public static final String TAB = "_tab";
+        public static final String HEADER_WRAPPER = "_headerWrapper";
+        public static final String HEADER_UPPER_GROUP = "_headerUpperGroup";
+        public static final String HEADER_RIGHT_GROUP = "_headerRightGroup";
+        public static final String HEADER_LOWER_GROUP = "_headerLowerGroup";
+        public static final String HELP_WRAPPER = "_helpWrapper";
+        public static final String HELP = "_help";
     }
 
     public static class ViewPhases {

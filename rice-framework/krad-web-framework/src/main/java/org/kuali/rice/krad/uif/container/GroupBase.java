@@ -43,6 +43,7 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Disclosure;
+import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.uif.widget.Scrollpane;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -148,7 +149,7 @@ public class GroupBase extends ContainerBase implements Group {
         Iterator<? extends Component> itemIterator = getItems().iterator();
         while (itemIterator.hasNext()) {
             Component component = itemIterator.next();
-            
+
             if (component == null) {
                 continue;
             }
@@ -159,14 +160,14 @@ public class GroupBase extends ContainerBase implements Group {
                 itemIterator.remove();
                 continue;
             }
-            
+
             String excludeIf = component.getExcludeIf();
             if (StringUtils.isNotBlank(excludeIf) &&
                     Boolean.TRUE.equals(ObjectPropertyUtils.getPropertyValue(model, excludeIf))) {
                 itemIterator.remove();
                 continue;
             }
-            
+
             // append group's field bind by name prefix (if set) to each
             // attribute field's binding prefix
             if (component instanceof DataBinding) {
@@ -226,7 +227,7 @@ public class GroupBase extends ContainerBase implements Group {
     @Override
     public void afterEvaluateExpression() {
         super.afterEvaluateExpression();
-     
+
         if (getReadOnly() == null) {
             Component parent = ViewLifecycle.getPhase().getParent();
             setReadOnly(parent == null ? null : parent.getReadOnly());
@@ -247,6 +248,26 @@ public class GroupBase extends ContainerBase implements Group {
             wrapperTag = UifConstants.WrapperTags.SECTION;
         } else if (StringUtils.isBlank(wrapperTag)) {
             wrapperTag = UifConstants.WrapperTags.DIV;
+        }
+
+        setNestedComponentId(getInstructionalMessage(), this.getId() + UifConstants.IdSuffixes.INSTRUCTIONAL);
+        setNestedComponentId(getHeader(), this.getId() + UifConstants.IdSuffixes.HEADER_WRAPPER);
+        setNestedComponentId(getHelp(), this.getId() + UifConstants.IdSuffixes.HELP_WRAPPER);
+
+        if (getHelp() != null && getHelp().getHelpAction() != null) {
+            setNestedComponentId(getHelp().getHelpAction(), this.getId() + UifConstants.IdSuffixes.HELP);
+        }
+    }
+
+    /**
+     * Helper method for setting a new ID for the nested components
+     *
+     * @param component component to adjust ID for
+     * @param newId
+     */
+    protected void setNestedComponentId(Component component, String newId) {
+        if (component != null) {
+            component.setId(newId);
         }
     }
 

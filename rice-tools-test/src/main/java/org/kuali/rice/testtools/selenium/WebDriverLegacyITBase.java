@@ -961,7 +961,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected void testCancelConfirmation() throws InterruptedException {
         waitAndCancelConfirmation();
-        passed();
     }
 
     protected void testConfigParamaterBlanketApprove() throws Exception {

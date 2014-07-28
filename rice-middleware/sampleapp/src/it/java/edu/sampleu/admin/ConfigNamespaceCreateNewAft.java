@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin;
 
+import org.junit.Test;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -22,7 +23,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNavBase {
+public class ConfigNamespaceCreateNewAft extends AdminTmplMthdAftNavCreateNewBase {
 
     /**
      * ITUtil.PORTAL+"?channelTitle=Namespace&channelUrl="+WebDriverUtils.getBaseUrlString()+
@@ -32,6 +33,12 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Namespace&channelUrl="+ WebDriverUtils
             .getBaseUrlString()+"/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.coreservice.impl.namespace.NamespaceBo&docFormKey=88888888&returnLocation="+
             AutomatedFunctionalTestUtils.PORTAL_URL+ AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
+
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.code", "code" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+    }
 
     @Override
     protected String getBookmarkUrl() {
@@ -84,5 +91,15 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
 
 //        waitAndClickByName("methodToCall.close");
 ////         waitAndClickByName("methodToCall.processAnswer.button1");
+    }
+
+    @Test
+    public void testConfigNamespaceCreateNewBookmark() throws Exception {
+        testConfigNamespaceCreateNewBookmark(this);
+    }
+
+    @Test
+    public void testConfigNamespaceCreateNewNav() throws Exception {
+        testConfigNamespaceCreateNewNav(this);
     }
 }

@@ -18,7 +18,7 @@ package edu.sampleu.admin;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ConfigComponentAftBase extends AdminTmplMthdAftNavBase {
+public abstract class ConfigComponentAftBase extends AdminTmplMthdAftNavCreateNewBase {
 
     protected void createNewEnterDetails() throws InterruptedException {
         waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());

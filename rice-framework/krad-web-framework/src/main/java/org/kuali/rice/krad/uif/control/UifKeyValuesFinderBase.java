@@ -22,6 +22,7 @@ import org.kuali.rice.krad.keyvalues.KeyValuesBase;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public abstract class UifKeyValuesFinderBase extends KeyValuesBase implements Ui
      * {@inheritDoc}
      */
     public List<KeyValue> getKeyValues() {
-        return null;
+        return Collections.emptyList();
     }
 
     /**

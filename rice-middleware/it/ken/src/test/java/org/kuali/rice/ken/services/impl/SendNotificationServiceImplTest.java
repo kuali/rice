@@ -15,7 +15,19 @@
  */
 package org.kuali.rice.ken.services.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Level;
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
@@ -25,26 +37,17 @@ import org.kuali.rice.ken.api.notification.Notification;
 import org.kuali.rice.ken.api.notification.NotificationResponse;
 import org.kuali.rice.ken.api.service.SendNotificationService;
 import org.kuali.rice.ken.bo.NotificationBo;
+import org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.quartz.SchedulerException;
-
-import javax.xml.namespace.QName;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.*;
-
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * This class tests the notification service impl.
@@ -57,11 +60,17 @@ public class SendNotificationServiceImplTest extends KENTestCase {
     public SendNotificationServiceImplTest() {
     }
 
+    @Before
+    public void flushNotificationCache() {
+        KradDataServiceLocator.getDataObjectService().flush(NotificationBo.class);
+    }
+
     @Test
     // deadlocks
     public void testSendNotificationAsXml_validInput() throws InterruptedException, SchedulerException, IOException, XmlException  {
+        org.apache.log4j.Logger.getLogger(NotificationMessageDeliveryResolverServiceImpl.class).setLevel(Level.DEBUG);
         services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
-        
+
         Thread.sleep(10000);
         services.getNotificationMessageDeliveryAutoRemovalService().processAutoRemovalOfDeliveredNotificationMessageDeliveries();
 
@@ -78,7 +87,7 @@ public class SendNotificationServiceImplTest extends KENTestCase {
         //final NotificationService nSvc = services.getNotificationService();
         final SendNotificationService sendNotificationService = (SendNotificationService) GlobalResourceLoader.getService(new QName(
                 KenApiConstants.Namespaces.KEN_NAMESPACE_2_0, "sendNotificationService"));
-        
+
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("valid_input.xml"));
 
         QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();

@@ -98,7 +98,7 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     }
 
     protected void testGeneralFeaturesRichMessagesActionCustom() throws InterruptedException {
-        waitAndClickByLinkText("Action"); // default is loaded after jGrowl display
+        selectByName("exampleShown", "Action");
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][5]/a"));
         WebDriverUtils.waitToAcceptAlert(getDriver(), WebDriverUtils.configuredImplicityWait() * 2,
                 this.getClass().toString());

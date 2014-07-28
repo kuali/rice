@@ -866,18 +866,40 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         this.quickfinderAction = quickfinderAction;
     }
 
+    /**
+     * The id of the DialogGroup to use when the openInDialog property is true.
+     *
+     * <p>The DialogGroup should only contain an iframe for its items.  When not set, a default dialog
+     * will be used.</p>
+     *
+     * @return the id of the dialog to use for this quickfinder
+     */
+    @BeanTagAttribute
     public String getLookupDialogId() {
         return lookupDialogId;
     }
 
+    /**
+     * @see QuickFinder#getLookupDialogId()
+     */
     public void setLookupDialogId(String lookupDialogId) {
         this.lookupDialogId = lookupDialogId;
     }
 
+    /**
+     * True if the quickfinder's lookup should be opened in a dialog; true is the default setting for the
+     * bean.
+     *
+     * @return true if the lookup should be opened in a dialog, false to open in a new window
+     */
+    @BeanTagAttribute
     public boolean isOpenInDialog() {
         return openInDialog;
     }
 
+    /**
+     * @see QuickFinder#isOpenInDialog()
+     */
     public void setOpenInDialog(boolean openInDialog) {
         this.openInDialog = openInDialog;
     }

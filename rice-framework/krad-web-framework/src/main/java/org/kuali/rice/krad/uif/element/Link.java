@@ -162,31 +162,42 @@ public class Link extends ContentElementBase {
         this.href = href;
     }
 
+    /**
+     * The id of the DialogGroup to use when the openInDialog property is true.
+     *
+     * <p>The DialogGroup should only contain an iframe for its items.  When not set, a default dialog
+     * will be used.</p>
+     *
+     * @return the id of the dialog to use for this link
+     */
+    @BeanTagAttribute
     public String getLinkDialogId() {
         return linkDialogId;
     }
 
+    /**
+     * @see org.kuali.rice.krad.uif.element.Link#getLinkDialogId()
+     */
     public void setLinkDialogId(String linkDialogId) {
         this.linkDialogId = linkDialogId;
     }
 
     /**
-     * Indicates whether the link URL should be opened in a dialog
+     * Indicates whether the link URL should be opened in a dialog.
      *
      * <p>
-     * If set the target attribute is ignored and the URL is opened in a lightbox instead
+     * If set the target attribute is ignored and the URL is opened in a dialog instead.
      * </p>
      *
-     * @return true to open link in a lightbox, false if not (follow standard target attribute)
+     * @return true to open link in a dialog, false if not (follow standard target attribute)
      */
+    @BeanTagAttribute
     public boolean isOpenInDialog() {
         return openInDialog;
     }
 
     /**
-     * Setter that indicates whether the link should be opened in a dialog
-     *
-     * @param openInDialog
+     * @see org.kuali.rice.krad.uif.element.Link#isOpenInDialog()
      */
     public void setOpenInDialog(boolean openInDialog) {
         this.openInDialog = openInDialog;

@@ -17,12 +17,14 @@ package org.kuali.rice.ken.services.impl;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.Collection;
 
@@ -36,13 +38,14 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.isNotNull;
  * Tests NotificationMessageDeliveryAutoRemovalServiceImpl
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTestCase {
 	// NOTE: this value is highly dependent on test data 
 	private static final int EXPECTED_SUCCESSES = 6;
 
 	protected void assertProcessResults() {
 		// one error should have occurred and the delivery should have been marked unlocked again
-		Collection<NotificationMessageDelivery> lockedDeliveries = getLockedDeliveries();
+		Collection<NotificationMessageDelivery> lockedDeliveries = services.getNotificationMessegDeliveryDao().getLockedDeliveries(NotificationBo.class, KRADServiceLocator.getDataObjectService());
 
 		assertEquals(0, lockedDeliveries.size());
 
@@ -113,16 +116,4 @@ public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTe
 
     }
 
-    /**
-     * Gets all locked deliveries for the given entity.
-     * @return null
-     */
-    protected Collection<NotificationMessageDelivery> getLockedDeliveries() {
-        QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
-        criteria.setPredicates(isNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE));
-        Collection<NotificationMessageDelivery> lockedDeliveries = KRADServiceLocator.getDataObjectService().findMatching(
-                NotificationMessageDelivery.class, criteria.build()).getResults();
-
-        return null;
-    }
 }

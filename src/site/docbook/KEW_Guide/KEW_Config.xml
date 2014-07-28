@@ -158,7 +158,7 @@
                                                 the Thin Java Client</para>
                                         </listitem>
                                         <listitem>
-                                            <para>Cannot be used by KNS-enabled client applications
+                                            <para>Cannot be used by KRAD or KNS enabled client applications
                                             </para>
                                         </listitem>
                                     </itemizedlist>
@@ -411,7 +411,7 @@
                 bus for accessing the KEW services of the Standalone Rice Server.</para>
             <caution>
                 <para>Limitations of Remote KEW Java Clients: </para>
-                <para>At present, KNS-enabled Java clients cannot be used as Remote KEW Java Clients. </para>
+                <para>At present, KRAD or KNS-enabled Java clients cannot be used as Remote KEW Java Clients. </para>
             </caution>
         </section>
         <section>
@@ -1014,10 +1014,10 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     role="italic">enEmailService</emphasis> loaded by the KEW module and implement a
                 custom email service. </para>
             <para>In order for KEW to send out emails, several steps need to be done. In order to
-                have KEW send out any emails, the "SEND_EMAIL_NOTIFICATION_IND" KNS System Parameter
+                have KEW send out any emails, the "SEND_EMAIL_NOTIFICATION_IND" System Parameter
                 needs to be set to 'Y'. For emails to real people, the environment code must be set
                 to 'prd'. If this is not set to 'prd', an email can still be sent out to a test
-                address. This test address is set by the KNS System Parameter,
+                address. This test address is set by the System Parameter,
                 "EMAIL_NOTIFICATION_TEST_ADDRESS". Emails sent in a test system will only be sent to
                 the address specified by the EMAIL_NOTIFICATION_TEST_ADDRESS. The "from" address may
                 also be set with a System Parameter. To do this, set the "FROM_ADDRESS" System
@@ -1396,6 +1396,9 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
             <para>In addition to the previous discussion of KEW configuration, there are a few other
                 aspects relevant to implementing KEW at your institution.</para>
             <section>
+
+                <!-- TODO: replace this material with something that is up to date and correct -->
+                <!--
                 <title>Bootstrap data</title>
                 <para>Because the operation of parts of KEW is dependent on a set of Document Types
                     and Attributes being available within the system, there is some bootstrap XML
@@ -1429,6 +1432,8 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
                                 by the default application constants </para>
                         </listitem>
                     </itemizedlist></para>
+                -->
+
                 <para>Application constants you may want to change:<itemizedlist>
                         <listitem>
                             <para>Config.Application.AdminUserList: this should be set to a

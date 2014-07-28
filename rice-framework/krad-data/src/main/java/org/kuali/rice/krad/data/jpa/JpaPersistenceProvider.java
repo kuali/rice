@@ -184,15 +184,14 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
                 // save has been completed
                 if(optionSet.contains(PersistenceOption.FLUSH) || optionSet.contains(PersistenceOption.LINK_KEYS) ||
                         LazyConfigHolder.autoFlush){
-			        sharedEntityManager.flush();
-					// if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
-					// sharedEntityManager
-					// .getEntityManagerFactory()
-					// .getCache()
-					// .evict(dataObject.getClass(),
-					// sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
-					// .getIdentifier(dataObject));
-					// }
+					sharedEntityManager.flush();
+					if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+						Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
+								.getIdentifier(mergedDataObject);
+						if (dataObjectKey != null) {
+							sharedEntityManager.getEntityManagerFactory().getCache().evict(dataObject.getClass());
+						}
+					}
                 }
 
                 return mergedDataObject;

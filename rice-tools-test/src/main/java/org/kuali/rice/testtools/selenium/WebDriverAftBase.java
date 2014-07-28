@@ -1347,6 +1347,12 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         return elements;
     }
 
+    protected String waitAndGetLabeledText(String label) throws InterruptedException {
+        return waitForElementPresent(By.xpath("//th/label[contains(text(), '"
+                + label
+                + "')]/../following-sibling::*/div/span")).getText();
+    }
+
     protected String[] waitAndGetText(By by) throws InterruptedException {
         WebDriverUtils.waitFors(driver, WebDriverUtils.configuredImplicityWait(), by, this.getClass().toString());
         List<WebElement> found = findElements(by);

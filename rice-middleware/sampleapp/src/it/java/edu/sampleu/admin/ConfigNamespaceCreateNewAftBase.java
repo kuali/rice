@@ -73,8 +73,9 @@ public abstract class ConfigNamespaceCreateNewAftBase extends AdminTmplMthdAftNa
 
         addAdHocRecipientsPerson(new String[]{getUserName(), "A"});
 
-        waitAndClickByName("methodToCall.route");
-
+//        waitAndClickByName("methodToCall.route");
+        waitAndClickSave();
+        waitAndClickSubmit();
         assertActionList(docId, "A", "ENROUTE");
         assertOutbox(docId, "FINAL");
         checkForDocError();

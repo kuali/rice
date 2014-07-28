@@ -75,6 +75,12 @@ public class ComponentAft extends ConfigComponentAftBase {
     @Test
     public void testCreateNewCancelComponentBookmark() throws Exception {
         testCreateNewCancel();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSave();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSubmit();
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        testCreateNewSaveSubmit();
         passed();
     }
 

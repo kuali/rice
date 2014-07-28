@@ -401,14 +401,23 @@
         <!-- Special case. Client side validation is turned off for Uif-PrimaryActionButton.
         Will still perform client side validation, because isRouteComplete() forces client side valication
         to be performed.  To skip client side validation, a new action must be defined, or it must be
-        turned off at the view level.  See KULRICE-7339 -->
+        turned off at the view level.  The confirmationDialog must also have client side validation
+        turned off.  See KULRICE-7339 -->
         <bean parent="Uif-PrimaryActionButton" p:methodToCall="route" p:actionLabel="Submit"
               p:performClientSideValidation="false"
               p:preSubmitCall="return isRouteToComplete(kradRequest);"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}" p:defaultEnterKeyAction="true">
           <property name="confirmationDialog">
-            <bean id="ConfirmSubmitDialog" parent="Uif-DialogGroup-OkCancel" p:style="top:70%"
-                  p:promptText="Are you sure you want to submit this document and send it into routing?"/>
+            <bean parent="Uif-DialogGroup" p:style="top:70%"
+                  p:promptText="Are you sure you want to submit this document and send it into routing?">
+              <property name="headerText" value="Please Confirm to Continue"/>
+              <property name="footer.items">
+                <list>
+                  <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
+                  <bean parent="Uif-DialogConfirmButton" p:actionLabel="OK" p:performClientSideValidation="false"/>
+                </list>
+              </property>
+            </bean>
           </property>
         </bean>
         <bean parent="Uif-RecallAction"

@@ -61,12 +61,10 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     protected void testTransactionalLookupSecurity() throws Exception {
         waitAndClickTravelerQuickfinder();
 
+        gotoLightBoxIframe();
         waitAndClickSearch3();
         waitAndClickReturnValue();
-
-        assertElementPresentByName(PHONE_NUMBER_NAME);
-        WebElement element = findElement(By.name(PHONE_NUMBER_NAME));
-        String phoneNumber = element.getAttribute("value");
+        String phoneNumber = waitAndGetLabeledText("Phone Number:");
 
         assertTrue("Secure field phoneNumber was not empty", StringUtils.isBlank(phoneNumber));
         assertTextNotPresent(PHONE_NUMBER_DECRYPTED);

@@ -15,7 +15,14 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import com.google.common.collect.Sets;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.metamodel.ManagedType;
+
 import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -38,12 +45,7 @@ import org.springframework.dao.support.PersistenceExceptionTranslator;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NonUniqueResultException;
-import javax.persistence.metamodel.ManagedType;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
+import com.google.common.collect.Sets;
 
 /**
  * Java Persistence API (JPA) implementation of {@link PersistenceProvider}.
@@ -183,6 +185,14 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
                 if(optionSet.contains(PersistenceOption.FLUSH) || optionSet.contains(PersistenceOption.LINK_KEYS) ||
                         LazyConfigHolder.autoFlush){
 			        sharedEntityManager.flush();
+					if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+						sharedEntityManager
+								.getEntityManagerFactory()
+								.getCache()
+								.evict(dataObject.getClass(),
+										sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
+												.getIdentifier(dataObject));
+					}
                 }
 
                 return mergedDataObject;
@@ -330,6 +340,11 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
             @Override
 			public Object call() {
                 sharedEntityManager.flush();
+				// If the L2 cache is enabled, items will still be served from the cache
+				// So, we need to flush that as well for the given type
+				if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+					sharedEntityManager.getEntityManagerFactory().getCache().evict(type);
+				}
                 return null;
             }
         });

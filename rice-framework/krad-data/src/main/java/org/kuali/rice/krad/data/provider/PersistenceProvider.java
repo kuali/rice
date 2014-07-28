@@ -172,17 +172,19 @@ public interface PersistenceProvider extends Provider {
     boolean handles(Class<?> type);
 
     /**
-     * Flush any outstanding changes within the current context for the provider pertaining to the given data object
-     * Class type.
-     *
-     * <p>
-     * If an implementation of this interface does not support or require the concept of "flushing", this method can be
-     * ignored.
-     * </p>
-     *
-     * @param type the type of the data object for which to perform the flush. This shoul be used to identify the
-     * context in which to perform the flush.
-     */
+	 * Flush any outstanding changes within the current context for the provider pertaining to the given data object
+	 * Class type.
+	 * 
+	 * <p>
+	 * If an implementation of this interface does not support or require the concept of "flushing", this method can be
+	 * ignored. However, when used, this must purge *all* cache items for the given types from all caches managed by
+	 * this provider.
+	 * </p>
+	 * 
+	 * @param type
+	 *            the type of the data object for which to perform the flush. This should be used to identify the
+	 *            context in which to perform the flush.
+	 */
     void flush(Class<?> type);
 
 }

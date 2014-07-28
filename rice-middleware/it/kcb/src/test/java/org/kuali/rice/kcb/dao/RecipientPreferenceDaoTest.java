@@ -19,6 +19,8 @@ import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.test.KCBTestCase;
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
@@ -36,37 +38,36 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
  */
 public class RecipientPreferenceDaoTest extends KCBTestCase {
 
-    RecipientPreference pref1 = new RecipientPreference();
-    RecipientPreference pref2 = new RecipientPreference();
-    
-    private String[] recipientTypes = {"Type 1", "Type 2"};
     private String[] recipientIds = {"unit_test_recip1", "unit_test_recip2"};
     private String[] propertys = {"Property A", "Property B"};
     private String[] values = {"Value A", "Value B"};
     private String[] updatedValues = {"Value C", "Value D"};
-    
+
     /**
-     *
+     * Tests creating a {@link RecipientPreference}.
      */
     @Test
-    public void testDelete() {
-        testCreate();
-        KRADServiceLocator.getDataObjectService().delete(pref1);
-        KRADServiceLocator.getDataObjectService().delete(pref2);
+    public void testCreate() {
+        RecipientPreference pref1 = createRecipientPreference(0);
+        assertNotNull(pref1.getId());
+
+        RecipientPreference pref2 = createRecipientPreference(1);
+        assertNotNull(pref2.getId());
     }
     
     /**
-     *
+     * Tests finding a {@link RecipientPreference}.
      */
     @Test
-    public void testReadByQuery() {
-        testCreate();
+    public void testFind() {
+        RecipientPreference pref1 = createRecipientPreference(0);
+        RecipientPreference pref2 = createRecipientPreference(1);
 
         QueryByCriteria.Builder criteria1 = QueryByCriteria.Builder.create();
         criteria1.setPredicates(equal(RecipientPreference.RECIPIENT_FIELD, recipientIds[0]),
                 equal(RecipientPreference.PROPERTY_FIELD, propertys[0]));
         List<RecipientPreference> prefs1 =
-                KRADServiceLocator.getDataObjectService().findMatching(RecipientPreference.class, criteria1.build()).getResults();
+                getDataObjectService().findMatching(RecipientPreference.class, criteria1.build()).getResults();
 
         assertNotNull(pref1);
         assertEquals(prefs1.size(), 1);
@@ -75,54 +76,63 @@ public class RecipientPreferenceDaoTest extends KCBTestCase {
         assertNotNull(pref1);
         assertEquals(recipientIds[0], pref1.getRecipientId());
 
-
         QueryByCriteria.Builder criteria2 = QueryByCriteria.Builder.create();
         criteria2.setPredicates(equal(RecipientPreference.RECIPIENT_FIELD, recipientIds[1]),
                 equal(RecipientPreference.PROPERTY_FIELD, propertys[1]));
         List<RecipientPreference> prefs2 =
-                KRADServiceLocator.getDataObjectService().findMatching(RecipientPreference.class, criteria2.build()).getResults();
+                getDataObjectService().findMatching(RecipientPreference.class, criteria2.build()).getResults();
 
         assertNotNull(pref2);
         assertEquals(prefs2.size(), 1);
         pref2 = prefs2.get(0);
         assertNotNull(pref2);
         assertEquals(recipientIds[1], pref2.getRecipientId());
-    
     }
     
     /**
-     *
-     */
-    @Test
-    public void testCreate() {
-        pref1.setRecipientId(recipientIds[0]);
-        pref1.setProperty(propertys[0]);
-        pref1.setValue(values[0]);
-        
-        pref2.setRecipientId(recipientIds[1]);
-        pref2.setProperty(propertys[1]);
-        pref2.setValue(values[1]);
-        
-        pref1 = KRADServiceLocator.getDataObjectService().save(pref1, PersistenceOption.FLUSH);
-        pref2 = KRADServiceLocator.getDataObjectService().save(pref2, PersistenceOption.FLUSH);
-    }
-    
-    /**
-     *
+     * Tests updating a {@link RecipientPreference}.
      */
     @Test
     public void testUpdate() {
-        testCreate();
+        RecipientPreference pref1 = createRecipientPreference(0);
+        RecipientPreference pref2 = createRecipientPreference(1);
+
         pref1.setValue(updatedValues[0]);
-        
         pref2.setValue(updatedValues[1]);
     
         pref1 = KRADServiceLocator.getDataObjectService().save(pref1, PersistenceOption.FLUSH);
         pref2 = KRADServiceLocator.getDataObjectService().save(pref2, PersistenceOption.FLUSH);
         
-        testReadByQuery();
-        
         assertEquals(updatedValues[0], pref1.getValue());
         assertEquals(updatedValues[1], pref2.getValue());
     }
+
+    /**
+     * Tests deleting a {@link RecipientPreference}.
+     */
+    @Test
+    public void testDelete() {
+        RecipientPreference pref1 = createRecipientPreference(0);
+        RecipientPreference pref2 = createRecipientPreference(1);
+
+        KRADServiceLocator.getDataObjectService().delete(pref1);
+        KRADServiceLocator.getDataObjectService().delete(pref2);
+
+        assertEquals(0, getDataObjectService().findAll(RecipientPreference.class).getResults().size());
+
+    }
+
+    private RecipientPreference createRecipientPreference(int index) {
+        RecipientPreference recipientPreference = new RecipientPreference();
+        recipientPreference.setRecipientId(recipientIds[index]);
+        recipientPreference.setProperty(propertys[index]);
+        recipientPreference.setValue(values[index]);
+
+        return getDataObjectService().save(recipientPreference, PersistenceOption.FLUSH);
+    }
+
+    private DataObjectService getDataObjectService() {
+        return KRADServiceLocator.getDataObjectService();
+    }
+
 }

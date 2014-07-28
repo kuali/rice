@@ -57,12 +57,33 @@ import org.kuali.rice.test.BaselineTestCase;
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class LocationDataJPATest extends LocationTestCase {
 
+    /**
+     * This overridden method ...
+     *
+     * @see org.kuali.rice.krad.test.KRADTestCase#setUp()
+     */
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+
+        setupPostalCodeBoDataObjectAndSave();
+        setupCampusBoDataObjectAndSave();
+
+        // If we don't do this, then some of the objects are created without
+        // their reference object proxies in place.  This forces all the objects which
+        // were created by the above methods to be reloaded as needed during the test.
+        KRADServiceLocator.getDataObjectService().flush(PostalCodeBo.class);
+        KRADServiceLocator.getDataObjectService().flush(CountryBo.class);
+        KRADServiceLocator.getDataObjectService().flush(CountyBo.class);
+        KRADServiceLocator.getDataObjectService().flush(StateBo.class);
+        KRADServiceLocator.getDataObjectService().flush(CampusTypeBo.class);
+        KRADServiceLocator.getDataObjectService().flush(CampusBo.class);
+    }
+
     @Test
     public void testPostalCodeBoDataObject() throws Exception {
         assertTrue("PostalCodeBo is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(
                 PostalCodeBo.class));
-        setupPostalCodeBoDataObjectAndSave();
-
         PostalCodeBo postalCodeBo = KRADServiceLocator.getDataObjectService().find(PostalCodeBo.class, new PostalCodeId(
                 "US", "47203"));
         assertTrue("PostalCode BO fetched after save", postalCodeBo != null && StringUtils.equals(
@@ -79,13 +100,11 @@ public class LocationDataJPATest extends LocationTestCase {
     @Test
     public void testCountyBoDataObject() throws Exception {
         assertTrue("CountyBO is not mapped in JPA", KRADServiceLocator.getDataObjectService().supports(CountryBo.class));
+        CountyBo countyBo = KRADServiceLocator.getDataObjectService().find(CountyBo.class, new CountyId("MON", "US", "IN"));
 
-        setupCountyBoDataObjectAndSave();
-
-        CountyBo countyBo = KRADServiceLocator.getDataObjectService().find(CountyBo.class, new CountyId("MON", "US",
-                "IN"));
         Assert.assertNotNull( "County BO not retrieved after save", countyBo );
         Assert.assertEquals( "County name incorrect upon retrieve", "Monroe", countyBo.getName() );
+        Assert.assertEquals( "State code incorrect upon retrieve", "IN", countyBo.getStateCode() );
 
         Assert.assertNotNull( "State on County BO should not be null", countyBo.getState() );
         Assert.assertEquals( "State name on county incorrect", "Indiana", countyBo.getState().getName() );
@@ -97,7 +116,6 @@ public class LocationDataJPATest extends LocationTestCase {
     @Test
     public void testStateBoDataObject() throws Exception {
         assertTrue("StateBO is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(StateBo.class));
-        setupStateBoDataObjectAndSave();
 
         StateBo stateBo = KRADServiceLocator.getDataObjectService().find(StateBo.class, new StateId("IN", "US"));
         assertTrue("State BO fetched after save", stateBo != null && StringUtils.equals(stateBo.getName(), "Indiana"));
@@ -109,7 +127,6 @@ public class LocationDataJPATest extends LocationTestCase {
     @Test
     public void testCountryBoDataObject() throws Exception {
         assertTrue("CountryBO is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(CountryBo.class));
-        setupCountryBoDataObjectAndSave();
 
         CountryBo countryBo = KRADServiceLocator.getDataObjectService().find(CountryBo.class, "CA");
         assertNotNull("Country BO unable to be retrieved", countryBo);
@@ -119,7 +136,6 @@ public class LocationDataJPATest extends LocationTestCase {
     @Test
     public void testCampusBoDataObject() throws Exception {
         assertTrue("CampusBO is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(CampusBo.class));
-        setupCampusBoDataObjectAndSave();
 
         CampusBo campusBo = KRADServiceLocator.getDataObjectService().find(CampusBo.class, "SE");
         assertTrue("Campus BO fetched after save", campusBo != null && StringUtils.equals(campusBo.getName(),
@@ -132,7 +148,6 @@ public class LocationDataJPATest extends LocationTestCase {
     public void testCampusTypeBoDataObject() throws Exception {
         assertTrue("CampusTypeBo is mapped in JPA", KRADServiceLocator.getDataObjectService().supports(
                 CampusTypeBo.class));
-        setupCampusTypeBoDataObjectAndSave();
 
         CampusTypeBo campusTypeBoFetched = KRADServiceLocator.getDataObjectService().find(CampusTypeBo.class, "C");
         assertTrue("Campus Type BO refetched after save",
@@ -141,7 +156,6 @@ public class LocationDataJPATest extends LocationTestCase {
 
     @Test
     public void testCampusServiceImplJPA() throws Exception {
-        setupCampusBoDataObjectAndSave();
         Campus campusBo = LocationApiServiceLocator.getCampusService().getCampus("SE");
         assertTrue("getCampusService retrieved correct call", campusBo != null && StringUtils.equals(campusBo.getCode(),
                 "SE"));
@@ -166,7 +180,6 @@ public class LocationDataJPATest extends LocationTestCase {
 
     @Test
     public void testCountryServiceImplJPA() throws Exception {
-        setupCountryBoDataObjectAndSave();
         Country countryBo = LocationApiServiceLocator.getCountryService().getCountry("US");
 
         assertNotNull("Country BO unable to be retrieved", countryBo);
@@ -194,8 +207,6 @@ public class LocationDataJPATest extends LocationTestCase {
 
     @Test
     public void testCountyServiceImplJPA() throws Exception {
-        setupCountyBoDataObjectAndSave();
-
         County county = LocationApiServiceLocator.getCountyService().getCounty("US", "IN", "MON");
         assertTrue("getCounty retrieved correctly", county != null && StringUtils.equals("MON", county.getCode()));
 
@@ -210,8 +221,6 @@ public class LocationDataJPATest extends LocationTestCase {
 
     @Test
     public void testStateServiceImplJPA() throws Exception {
-        setupStateBoDataObjectAndSave();
-
         State state = LocationApiServiceLocator.getStateService().getState("US", "IN");
         assertTrue("getState retrieved correctly", state != null && StringUtils.equals("IN", state.getCode()));
         List<State> stateList = LocationApiServiceLocator.getStateService().findAllStatesInCountry("US");
@@ -225,8 +234,6 @@ public class LocationDataJPATest extends LocationTestCase {
 
     @Test
     public void testPostalCodeServiceImplJPA() throws Exception {
-        setupPostalCodeBoDataObjectAndSave();
-
         PostalCode postalCode = LocationApiServiceLocator.getPostalCodeService().getPostalCode("US", "47203");
         assertTrue("getPostalCode retrieved correctly", postalCode != null && StringUtils.equals(postalCode.getCode(),
                 "47203"));
@@ -266,7 +273,7 @@ public class LocationDataJPATest extends LocationTestCase {
             countyBo.setName("Monroe");
             countyBo.setStateCode("IN");
 
-            KRADServiceLocator.getDataObjectService().save(countyBo);
+            countyBo = KRADServiceLocator.getDataObjectService().save(countyBo);
         }
     }
 

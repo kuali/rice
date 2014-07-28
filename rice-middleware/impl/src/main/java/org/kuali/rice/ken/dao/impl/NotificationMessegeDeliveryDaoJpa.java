@@ -93,9 +93,7 @@ public class NotificationMessegeDeliveryDaoJpa implements NotificationMessegeDel
     public Collection<NotificationMessageDelivery> getLockedDeliveries(Class clazz, DataObjectService dataObjectService) {
         QueryByCriteria.Builder criteria = QueryByCriteria.Builder.create();
         criteria.setPredicates(isNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE));
-        Collection<NotificationMessageDelivery> lockedDeliveries = dataObjectService.findMatching(clazz, criteria.build()).getResults();
-
-        return null;
+        return dataObjectService.findMatching(clazz, criteria.build()).getResults();
     }
 
 

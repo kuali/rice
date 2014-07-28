@@ -15,23 +15,20 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
-import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryResolverService;
 import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
-import org.kuali.rice.ken.service.UserPreferenceService;
 import org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.data.PerTestUnitTestData;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
@@ -41,11 +38,10 @@ import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-
-//import org.kuali.rice.core.jpa.criteria.Criteria;
 
 /**
  * Tests NotificationMessageDeliveryResolverServiceImpl
@@ -65,6 +61,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 				}
 		)
 )
+@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.CLEAR_DB)
 public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestCase {
     // NOTE: this value is HIGHLY dependent on the test data, make sure that it reflects the results
     // expected from the test data
@@ -128,12 +125,7 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestC
 
         ProcessingResult result = nSvc.resolveNotificationMessageDeliveries();
 
-        Thread.sleep(20000);
-
         assertEquals(EXPECTED_SUCCESSES, result.getSuccesses().size());
-
-        MessageService ms = (MessageService) GlobalKCBServiceLocator.getInstance().getMessageService();
-        assertEquals(result.getSuccesses().size(), ms.getAllMessages().size());
 
         assertProcessResults();
     }

@@ -17,8 +17,8 @@ package org.kuali.rice.krad.labs.ruleevent;
 
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentController;
-import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -34,7 +34,7 @@ public class DefaultRuleEventController extends MaintenanceDocumentController {
 
     @Override
     @RequestMapping(params = "methodToCall=save")
-    public ModelAndView save(DocumentFormBase form) {
+    public ModelAndView save(UifFormBase form) {
         MaintenanceDocumentForm docForm = (MaintenanceDocumentForm) form;
         MaintenanceDocument document = docForm.getDocument();
 

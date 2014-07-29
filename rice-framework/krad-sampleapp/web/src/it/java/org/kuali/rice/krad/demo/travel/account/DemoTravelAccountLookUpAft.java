@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.travel.account;
 import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -151,6 +152,8 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
 
     private void testTravelAccountLookUpDocumentLocking() throws Exception {
 
+        String documentId = "";
+
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("edit");
@@ -172,31 +175,30 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitForProgressLoading();
 
     	if(waitForIsTextPresent("Document was successfully submitted.")) {
+
+            //get document number so that we can unlock after
+            WebElement webElement = findElement(By.xpath("./html/body/form/div/header/div/table/tbody/tr[1]/td[1]/div"));
+            documentId = webElement.getText();
+
     		navigate();
             waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
     		waitAndClickButtonByText(SEARCH);
         	waitAndClickByLinkText("edit");
         	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
-        	waitAndClickByLinkText("Ad Hoc Recipients");
-            waitAndClickAdHocPersonAdd();
-        	gotoLightBox();
-        	waitAndClickButtonByText(SEARCH);
-        	waitAndClickByLinkText("return value");
-        	waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-            waitAndClickAdHocGroupAdd();
-        	gotoLightBox();
-        	waitAndClickButtonByText(SEARCH);
-        	waitAndClickByLinkText("return value");
-        	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
             waitAndClickSubmitByText();
             waitAndClickConfirmationOk();
             waitForProgressLoading();
+    	}
 
-    		waitForTextPresent("This document cannot be Saved or Routed");
-    	}
-    	else{
-            waitForTextPresent("This document cannot be Saved or Routed");
-    	}
+        waitForTextPresent("This document cannot be Saved or Routed");
+
+        //unlock record
+        if(documentId != "") {
+            open(getBaseUrlString() + "/kew/DocHandler.do?docId=" + documentId + "&command=displayActionListView");
+            waitAndClickByXpath("/html/body/form/div/div[2]/main/section[7]/header/h3/a/span/span[1]");
+            waitAndTypeByXpath("/html/body/form/div/div[2]/main/section[7]/div/div[1]/textarea", "blocking test");
+            waitAndClickByXpath("/html/body/form/div/div[2]/main/section[7]/div/div[2]/button[2]");
+        }
     }
 
     @Test

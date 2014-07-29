@@ -22,7 +22,7 @@ import org.kuali.rice.krad.uif.view.View;
 
 /**
  * Performs the pre-process phase on a view, for use prior to caching.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewLifecyclePreProcessBuild implements Runnable {
@@ -32,10 +32,11 @@ public class ViewLifecyclePreProcessBuild implements Runnable {
      */
     @Override
     public void run() {
-        ViewLifecyclePhase phase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder()
-                .buildPhase(UifConstants.ViewPhases.PRE_PROCESS);
-
         View view = ViewLifecycle.getView();
+
+        ViewLifecyclePhase phase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(view,
+                UifConstants.ViewPhases.PRE_PROCESS, null);
+
         ProcessLogger.trace("pre-view-lifecycle:" + view.getId());
 
         ViewLifecycle.getProcessor().performPhase(phase);

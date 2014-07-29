@@ -67,8 +67,8 @@ public class PreProcessElementPhase extends ViewLifecyclePhaseBase {
     protected ViewLifecyclePhase initializeSuccessor(LifecycleElement nestedElement, String nestedPath,
             Component nestedParent) {
         if (nestedElement != null && !UifConstants.ViewStatus.CACHED.equals(nestedElement.getViewStatus())) {
-            ViewLifecyclePhase preProcessPhase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder()
-                    .buildPhase(UifConstants.ViewPhases.PRE_PROCESS, nestedElement, nestedParent, nestedPath);
+            ViewLifecyclePhase preProcessPhase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
+                    UifConstants.ViewPhases.PRE_PROCESS, nestedElement, nestedParent, nestedPath, getRefreshPaths());
             return preProcessPhase;
         }
 

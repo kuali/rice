@@ -21,21 +21,66 @@ import static org.kuali.rice.krad.uif.UifConstants.ViewPhases.INITIALIZE;
 
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.view.View;
+
+import java.util.List;
 
 /**
  * Default phase builder implementation.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewLifecyclePhaseBuilderBase implements ViewLifecyclePhaseBuilder {
 
     /**
-     * Return the previous view phase, for automatic phase spawning.
-     * 
-     * @param viewPhase view phase
-     * @return previous view phase
+     * {@inheritDoc}
      */
-    private static String getPreviousViewPhase(ViewLifecyclePhase phase) {
+    @Override
+    public ViewLifecyclePhase buildPhase(View view, String viewPhase, List<String> refreshPaths) {
+        return buildPhase(viewPhase, view, null, "", refreshPaths);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ViewLifecyclePhase buildPhase(String viewPhase, LifecycleElement element, Component parent,
+            String parentPath, List<String> refreshPaths) {
+        ViewLifecyclePhase phase = LifecyclePhaseFactory.buildPhase(viewPhase);
+        phase.prepare(element, parent, parentPath, refreshPaths);
+
+        return finishBuildPhase(phase);
+    }
+
+    /**
+     * Determines if the previous phases have been run for the given element and if not backs up
+     * until it finds the first phase we need to run.
+     *
+     * @param phase phase being requested
+     * @return phase that should be run
+     */
+    protected ViewLifecyclePhase finishBuildPhase(ViewLifecyclePhase phase) {
+        String previousViewPhase = getPreviousViewPhase(phase);
+
+        while (previousViewPhase != null) {
+            ViewLifecyclePhase prevPhase = LifecyclePhaseFactory.buildPhase(previousViewPhase);
+            prevPhase.prepare(phase.getElement(), phase.getParent(), phase.getParentPath(), phase.getRefreshPaths());
+
+            prevPhase.setNextPhase(phase);
+            phase = prevPhase;
+
+            previousViewPhase = getPreviousViewPhase(phase);
+        }
+
+        return phase;
+    }
+
+    /**
+     * Return the previous view phase, for automatic phase spawning.
+     *
+     * @return phase view phase
+     */
+    protected static String getPreviousViewPhase(ViewLifecyclePhase phase) {
         String viewPhase = phase.getViewPhase();
         if (FINALIZE.equals(viewPhase) && !phase.getElement().isModelApplied()) {
             return APPLY_MODEL;
@@ -46,46 +91,6 @@ public class ViewLifecyclePhaseBuilderBase implements ViewLifecyclePhaseBuilder 
         }
 
         return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ViewLifecyclePhase buildPhase(String viewPhase) {
-        ViewLifecyclePhase phase = LifecyclePhaseFactory.buildPhase(viewPhase);
-        phase.prepareView();
-        return finishBuildPhase(phase);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ViewLifecyclePhase buildPhase(String viewPhase, LifecycleElement element, Component parent, String parentPath) {
-        ViewLifecyclePhase phase = LifecyclePhaseFactory.buildPhase(viewPhase);
-        phase.prepareElement(element, parent, parentPath);
-        return finishBuildPhase(phase);
-    }
-    
-    private ViewLifecyclePhase finishBuildPhase(ViewLifecyclePhase phase) {
-        String previousViewPhase = getPreviousViewPhase(phase);
-        while (previousViewPhase != null) {
-            
-            ViewLifecyclePhase prevPhase = LifecyclePhaseFactory.buildPhase(previousViewPhase);
-            if (phase.getParent() == null) {
-                prevPhase.prepareView();
-            } else {
-                prevPhase.prepareElement(phase.getElement(), phase.getParent(), phase.getParentPath());
-            }
-            
-            prevPhase.setNextPhase(phase);
-            phase = prevPhase;
-            
-            previousViewPhase = getPreviousViewPhase(phase);
-        }
-
-        return phase;
     }
 
 }

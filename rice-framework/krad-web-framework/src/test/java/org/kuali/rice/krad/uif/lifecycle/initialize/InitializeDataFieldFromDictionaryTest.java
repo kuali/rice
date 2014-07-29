@@ -30,8 +30,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.lifecycle.InitializeComponentPhase;
-import org.kuali.rice.krad.uif.lifecycle.LifecyclePhaseFactory;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -131,14 +129,14 @@ public class InitializeDataFieldFromDictionaryTest extends ProcessLoggingUnitTes
             String foopath = "items[0]";
             DataField foofield = ObjectPropertyUtils.getPropertyValue(parent, foopath);
             ViewLifecyclePhase foophase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
-                    UifConstants.ViewPhases.INITIALIZE, foofield, parent, foopath);
+                    UifConstants.ViewPhases.INITIALIZE, foofield, parent, foopath, null);
             InitializeDataFieldFromDictionaryTask footask = new InitializeDataFieldFromDictionaryTask();
             footask.setElementState(foophase);
 
             String barpath = "items[1]";
             DataField barfield = ObjectPropertyUtils.getPropertyValue(parent, barpath);
             ViewLifecyclePhase barphase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
-                    UifConstants.ViewPhases.INITIALIZE, barfield, parent, barpath);
+                    UifConstants.ViewPhases.INITIALIZE, barfield, parent, barpath, null);
             InitializeDataFieldFromDictionaryTask bartask = new InitializeDataFieldFromDictionaryTask();
             bartask.setElementState(barphase);
 

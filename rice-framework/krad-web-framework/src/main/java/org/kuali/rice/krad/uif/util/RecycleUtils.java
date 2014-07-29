@@ -28,6 +28,7 @@ import java.util.Queue;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 
 /**
@@ -54,6 +55,11 @@ public final class RecycleUtils {
      */
     private final static Map<Class<?>, List<Field>> FIELD_CACHE = 
             Collections.synchronizedMap(new WeakHashMap<Class<?>, List<Field>>());
+
+    /**
+     * Private constructor - utility class only.
+     */
+    private RecycleUtils() {}
 
     /**
      * Get an instance of the given class that has previously been recycled on the same thread, if
@@ -125,7 +131,10 @@ public final class RecycleUtils {
                 if (name == null) {
                     rv = c.newInstance();
                 } else {
-                    rv = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getPrototype(name, c);
+                   // rv = (T) KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(name);
+                    Object phaseBean = KRADServiceLocatorWeb.getDataDictionaryService().getDictionaryBean(name);
+
+                    rv = (T) CopyUtils.copy((Copyable) phaseBean);
                 }
             } catch (InstantiationException e) {
                 throw new IllegalStateException("Unabled to instantiate " + c);
@@ -284,10 +293,5 @@ public final class RecycleUtils {
 
         return recycleQueue;
     }
-
-    /**
-     * Private constructor - utility class only.
-     */
-    private RecycleUtils() {}
 
 }

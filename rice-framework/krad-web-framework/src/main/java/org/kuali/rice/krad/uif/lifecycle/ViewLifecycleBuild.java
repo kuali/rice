@@ -120,8 +120,14 @@ public class ViewLifecycleBuild implements Runnable {
      */
     protected void runInitializePhase() {
         ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+
+        List<String> refreshPaths = null;
+        if (refreshPathMappings != null) {
+            refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.INITIALIZE);
+        }
+
         ViewLifecyclePhase phase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
-                UifConstants.ViewPhases.INITIALIZE);
+                ViewLifecycle.getView(), UifConstants.ViewPhases.INITIALIZE, refreshPaths);
 
         View view = ViewLifecycle.getView();
         ViewHelperService helper = ViewLifecycle.getHelper();
@@ -134,13 +140,6 @@ public class ViewLifecycleBuild implements Runnable {
         }
 
         helper.performCustomViewInitialization(model);
-
-        if (refreshPathMappings != null) {
-            List<String> refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.INITIALIZE);
-            if (refreshPaths != null) {
-                phase.setRefreshPaths(refreshPaths);
-            }
-        }
 
         processor.performPhase(phase);
 
@@ -155,8 +154,14 @@ public class ViewLifecycleBuild implements Runnable {
      */
     protected void runApplyModelPhase() {
         ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+
+        List<String> refreshPaths = null;
+        if (refreshPathMappings != null) {
+            refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.APPLY_MODEL);
+        }
+
         ViewLifecyclePhase phase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
-                UifConstants.ViewPhases.APPLY_MODEL);
+                ViewLifecycle.getView(), UifConstants.ViewPhases.APPLY_MODEL, refreshPaths);
 
         View view = ViewLifecycle.getView();
         ViewHelperService helper = ViewLifecycle.getHelper();
@@ -181,13 +186,6 @@ public class ViewLifecycleBuild implements Runnable {
         // set view context for conditional expressions
         helper.setViewContext();
 
-        if (refreshPathMappings != null) {
-            List<String> refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.APPLY_MODEL);
-            if (refreshPaths != null) {
-                phase.setRefreshPaths(refreshPaths);
-            }
-        }
-
         processor.performPhase(phase);
 
         ProcessLogger.trace("apply-model:" + view.getId());
@@ -200,19 +198,18 @@ public class ViewLifecycleBuild implements Runnable {
      */
     protected void runFinalizePhase() {
         ViewLifecycleProcessor processor = ViewLifecycle.getProcessor();
+
+        List<String> refreshPaths = null;
+        if (refreshPathMappings != null) {
+            refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.FINALIZE);
+        }
+
         ViewLifecyclePhase phase = KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
-                UifConstants.ViewPhases.FINALIZE);
+                ViewLifecycle.getView(), UifConstants.ViewPhases.FINALIZE, refreshPaths);
 
         View view = ViewLifecycle.getView();
         if (LOG.isInfoEnabled()) {
             LOG.info("performing finalize phase for view: " + view.getId());
-        }
-
-        if (refreshPathMappings != null) {
-            List<String> refreshPaths = refreshPathMappings.get(UifConstants.ViewPhases.FINALIZE);
-            if (refreshPaths != null) {
-                phase.setRefreshPaths(refreshPaths);
-            }
         }
 
         processor.performPhase(phase);

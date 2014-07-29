@@ -32,7 +32,7 @@
     <constructor-arg value="**"/>
   </bean>
 
-  <bean id="ViewLifecyclePhase-PRE_PROCESS" scope="prototype"
+  <bean id="ViewLifecyclePhase-PRE_PROCESS" scope="singleton"
       class="org.kuali.rice.krad.uif.lifecycle.PreProcessElementPhase">
     <property name="tasks">
       <list>
@@ -47,7 +47,7 @@
     </property>
   </bean>
 
-  <bean id="ViewLifecyclePhase-INITIALIZE" scope="prototype"
+  <bean id="ViewLifecyclePhase-INITIALIZE" scope="singleton"
       class="org.kuali.rice.krad.uif.lifecycle.InitializeComponentPhase">
     <property name="tasks">
       <list>
@@ -71,7 +71,7 @@
     </property>
   </bean>
 
-  <bean id="ViewLifecyclePhase-APPLY_MODEL" scope="prototype"
+  <bean id="ViewLifecyclePhase-APPLY_MODEL" scope="singleton"
       class="org.kuali.rice.krad.uif.lifecycle.ApplyModelComponentPhase">
     <property name="tasks">
       <list>
@@ -95,7 +95,7 @@
     </property>
   </bean>
 
-  <bean id="ViewLifecyclePhase-FINALIZE" scope="prototype"
+  <bean id="ViewLifecyclePhase-FINALIZE" scope="singleton"
       class="org.kuali.rice.krad.uif.lifecycle.FinalizeComponentPhase">
     <property name="tasks">
       <list>
@@ -114,7 +114,7 @@
     </property>
   </bean>
 
-  <bean id="ViewLifecyclePhase-RENDER" scope="prototype"
+  <bean id="ViewLifecyclePhase-RENDER" scope="singleton"
       class="org.kuali.rice.krad.uif.lifecycle.RenderComponentPhase">
     <property name="tasks">
       <list>

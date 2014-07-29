@@ -104,7 +104,7 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
     @Override
     protected void verifyCompleted() {
         super.verifyCompleted();
-        
+
         if (renderPhase != null) {
             renderPhase.verifyCompleted();
         }
@@ -124,13 +124,12 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
             if (predecessor instanceof FinalizeComponentPhase) {
                 parentRenderPhase = ((FinalizeComponentPhase) predecessor).renderPhase;
             }
-            
-            @SuppressWarnings("unchecked")
-            Set<String> pendingChildren = RecycleUtils.getInstance(LinkedHashSet.class);
+
+            @SuppressWarnings("unchecked") Set<String> pendingChildren = RecycleUtils.getInstance(LinkedHashSet.class);
             for (ViewLifecyclePhase successor : successors) {
                 boolean skipSuccessor;
                 if (successor instanceof ViewLifecyclePhaseBase) {
-                    skipSuccessor = ((ViewLifecyclePhaseBase) successor).shouldSkipLifecycle(); 
+                    skipSuccessor = ((ViewLifecyclePhaseBase) successor).shouldSkipLifecycle();
                 } else {
                     // TODO: consider moving shouldSkipLifecycle to public interface
                     skipSuccessor = successor.getElement().skipLifecycle();
@@ -141,23 +140,18 @@ public class FinalizeComponentPhase extends ViewLifecyclePhaseBase {
                 if (skipSuccessor) {
                     continue;
                 }
-                
+
                 // Queue the successor, with strict validation that it hasn't already been queued
                 if (!pendingChildren.add(successor.getParentPath())) {
-                    ViewLifecycle.reportIllegalState("Successor is already pending " + pendingChildren + "\n"
-                            + successor + "\n" + this);
+                    ViewLifecycle.reportIllegalState(
+                            "Successor is already pending " + pendingChildren + "\n" + successor + "\n" + this);
                 }
             }
 
-            if (getParent() == null) {
-                renderPhase = (RenderComponentPhase) KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
-                        UifConstants.ViewPhases.RENDER);
-            } else {
-                renderPhase = (RenderComponentPhase) KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
-                        UifConstants.ViewPhases.RENDER, getElement(), getParent(), getParentPath());
-            }
+            renderPhase = (RenderComponentPhase) KRADServiceLocatorWeb.getViewLifecyclePhaseBuilder().buildPhase(
+                    UifConstants.ViewPhases.RENDER, getElement(), getParent(), getParentPath(), getRefreshPaths());
             renderPhase.prepareRenderPhase(parentRenderPhase, pendingChildren);
-            
+
             trace("create-render " + getElement().getId() + " " + pendingChildren);
         }
 

@@ -757,23 +757,6 @@ public class DataDictionary {
     }
 
     /**
-     * Retrieves a dictionary bean prototype.
-     * 
-     * @param beanName prototype bean name
-     * @param beanClass prototype bean class
-     * 
-     * @return bean prototype instance
-     * @throws IllegalArgumentException If the named bean is not defined as a prototype in the data dictionary.
-     */
-    public <T> T getPrototype(String beanName, Class<T> beanClass) {
-        if (!ddBeans.isPrototype(beanName)) {
-            throw new IllegalArgumentException(beanName + " is not defined as a prototype " + beanClass);
-        }
-        
-        return ddBeans.getBean(beanName, beanClass);
-    }
-    
-    /**
      * Returns a property value for the bean with the given name from the dictionary.
      *
      * @param beanName id or name for the bean definition

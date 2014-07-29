@@ -34,7 +34,6 @@ import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.WeakHashMap;
 
-import org.apache.commons.beanutils.MethodUtils;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.Copyable;

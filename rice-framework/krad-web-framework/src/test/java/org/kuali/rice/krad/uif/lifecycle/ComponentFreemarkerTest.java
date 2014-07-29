@@ -136,7 +136,7 @@ public class ComponentFreemarkerTest extends ProcessLoggingUnitTest {
                 msg.setViewStatus(UifConstants.ViewStatus.FINAL);
 
                 RenderComponentPhase renderPhase = (RenderComponentPhase) KRADServiceLocatorWeb
-                        .getViewLifecyclePhaseBuilder().buildPhase(UifConstants.ViewPhases.RENDER, msg, null, "");
+                        .getViewLifecyclePhaseBuilder().buildPhase(UifConstants.ViewPhases.RENDER, msg, null, "", null);
 
                 try {
                     ViewLifecycle.getProcessor().performPhase(renderPhase);

@@ -33,15 +33,15 @@ public final class LifecyclePhaseFactory {
 
     /**
      * Build a phase instance for processing the given view phase.
-     * 
+     *
      * @param viewPhase view phase
      * @return phase instance
      */
     @SuppressWarnings("unchecked")
     public static <T extends ViewLifecyclePhase> T buildPhase(String viewPhase) {
-        return RecycleUtils.<T> getInstance("ViewLifecyclePhase-"+viewPhase, (Class<T>) ViewLifecyclePhase.class);
+        return RecycleUtils.<T>getInstance("ViewLifecyclePhase-" + viewPhase, (Class<T>) ViewLifecyclePhase.class);
     }
-    
+
     /**
      * Recycles a task instance after processing.
      *

@@ -15,38 +15,77 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
+import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Base abstract implementation for a lifecycle task.
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
  * @param <T> Top level element type for this task
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
-    
     private final Logger LOG = LoggerFactory.getLogger(ViewLifecycleTaskBase.class);
 
-    /**
-     * Property value for {@link #getElementType()}.
-     */
     private final Class<T> elementType;
-    
-    /**
-     * Property value for {@link #getElementState()}.
-     */
+
+    @ReferenceCopy
     private LifecycleElementState elementState;
 
     /**
      * Creates a lifecycle processing task for a specific phase.
-     * 
-     * @param elementState The phase this task is a part of.
-     * @param elementType Top level element type.
+     *
+     * @param elementType Top level element type
      */
     protected ViewLifecycleTaskBase(Class<T> elementType) {
         this.elementType = elementType;
+    }
+
+    /**
+     * Executes the lifecycle task.
+     *
+     * <p>
+     * This method performs state validation and updates component view status. Override
+     * {@link #performLifecycleTask()} to provide task-specific behavior.
+     * </p>
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public final void run() {
+        try {
+            if (!getElementType().isInstance(elementState.getElement())) {
+                return;
+            }
+
+            if (ProcessLogger.isTraceActive()) {
+                ProcessLogger.countBegin("lc-task-" + elementState.getViewPhase());
+            }
+
+            try {
+                performLifecycleTask();
+            } finally {
+
+                if (ProcessLogger.isTraceActive()) {
+                    ProcessLogger.countEnd("lc-task-" + elementState.getViewPhase(),
+                            getClass().getName() + " " + elementState.getClass().getName() + " " + elementState
+                                    .getElement().getClass().getName() + " " + elementState.getElement().getId());
+                }
+            }
+
+        } catch (Throwable t) {
+            LOG.warn("Error in lifecycle phase " + this, t);
+
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            } else if (t instanceof Error) {
+                throw (Error) t;
+            } else {
+                throw new IllegalStateException("Unexpected error in lifecycle phase " + this, t);
+            }
+        }
     }
 
     /**
@@ -64,7 +103,7 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
 
     /**
      * Sets the phase on a recycled task.
-     * 
+     *
      * @param elementState The phase to set.
      * @see #getElementState()
      */
@@ -81,58 +120,11 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
     }
 
     /**
-     * Executes the lifecycle task.
-     * 
-     * <p>
-     * This method performs state validation and updates component view status. Override
-     * {@link #performLifecycleTask()} to provide task-specific behavior.
-     * </p>
-     * 
      * {@inheritDoc}
      */
     @Override
-    public final void run() {
-        try {
-            if (!getElementType().isInstance(elementState.getElement())) {
-                return;
-            }
-
-            // TODO: REMOVE this restriction
-            //            if (ViewLifecycle.getPhase() != elementState) {
-            //                throw new IllegalStateException("The phase this task is a part of is not active.");
-            //            }
-
-            if (ProcessLogger.isTraceActive()) {
-                ProcessLogger.countBegin("lc-task-" + elementState.getViewPhase());
-            }
-
-            try {
-                performLifecycleTask();
-            } finally {
-
-                if (ProcessLogger.isTraceActive()) {
-                    ProcessLogger.countEnd("lc-task-" + elementState.getViewPhase(),
-                            getClass().getName()
-                            + " "
-                            + elementState.getClass().getName()
-                            + " "
-                            + elementState.getElement().getClass().getName()
-                            + " "
-                            + elementState.getElement().getId());
-                }
-            }
-            
-        } catch (Throwable t) {
-            LOG.warn("Error in lifecycle phase " + this, t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else if (t instanceof Error) {
-                throw (Error) t;
-            } else {
-                throw new IllegalStateException("Unexpected error in lifecycle phase " + this, t);
-            }
-        }
+    public ViewLifecycleTaskBase<T> clone() throws CloneNotSupportedException {
+        return (ViewLifecycleTaskBase<T>) super.clone();
     }
 
     /**
@@ -141,8 +133,10 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
     @Override
     public String toString() {
         return getClass().getSimpleName()
-                + " " + getElementState().getElement().getClass().getSimpleName()
-                + " " + getElementState().getElement().getId();
+                + " "
+                + getElementState().getElement().getClass().getSimpleName()
+                + " "
+                + getElementState().getElement().getId();
     }
 
 }

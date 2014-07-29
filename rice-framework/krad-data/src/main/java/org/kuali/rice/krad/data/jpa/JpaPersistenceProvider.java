@@ -189,7 +189,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
 						Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
 								.getIdentifier(mergedDataObject);
 						if (dataObjectKey != null) {
-							sharedEntityManager.getEntityManagerFactory().getCache().evict(dataObject.getClass());
+							sharedEntityManager.getEntityManagerFactory().getCache()
+									.evict(dataObject.getClass(), dataObjectKey);
 						}
 					}
                 }
@@ -260,7 +261,16 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
             @Override
 			public Object call() {
                 verifyDataObjectWritable(dataObject);
-                sharedEntityManager.remove(sharedEntityManager.merge(dataObject));
+				Object mergedDataObject = sharedEntityManager.merge(dataObject);
+				sharedEntityManager.remove(mergedDataObject);
+				if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+					Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
+							.getIdentifier(mergedDataObject);
+					if (dataObjectKey != null) {
+						sharedEntityManager.getEntityManagerFactory().getCache()
+								.evict(dataObject.getClass(), dataObjectKey);
+					}
+				}
                 return null;
             }
         });
@@ -275,6 +285,11 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
             @Override
             public Object call() {
                 new JpaCriteriaQuery(getSharedEntityManager()).deleteMatching(type, queryByCriteria);
+				// If the L2 cache is enabled, items will still be served from the cache
+				// So, we need to flush that as well for the given type
+				if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+					sharedEntityManager.getEntityManagerFactory().getCache().evict(type);
+				}
                 return null;
             }
         });
@@ -289,6 +304,11 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
             @Override
             public Object call() {
                 new JpaCriteriaQuery(getSharedEntityManager()).deleteAll(type);
+				// If the L2 cache is enabled, items will still be served from the cache
+				// So, we need to flush that as well for the given type
+				if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+					sharedEntityManager.getEntityManagerFactory().getCache().evict(type);
+				}
                 return null;
             }
         });

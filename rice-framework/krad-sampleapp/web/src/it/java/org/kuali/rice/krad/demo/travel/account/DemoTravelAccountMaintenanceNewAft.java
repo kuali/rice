@@ -20,6 +20,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -129,6 +130,16 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndClickConfirmationOk();
         failOnErrorMessageItem();
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
+
+        //unlock record
+        WebElement webElement = findElement(By.xpath("./html/body/form/div/header/div/table/tbody/tr[1]/td[1]/div"));
+        String documentId = webElement.getText();
+        if(documentId != "") {
+            open(getBaseUrlString() + "/kew/DocHandler.do?docId=" + documentId + "&command=displayActionListView");
+            waitAndClickByXpath("/html/body/form/div/div[2]/main/section[7]/header/h3/a/span/span[1]");
+            waitAndTypeByXpath("/html/body/form/div/div[2]/main/section[7]/div/div[1]/textarea", "test");
+            waitAndClickByXpath("/html/body/form/div/div[2]/main/section[7]/div/div[2]/button[2]");
+        }
     }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {

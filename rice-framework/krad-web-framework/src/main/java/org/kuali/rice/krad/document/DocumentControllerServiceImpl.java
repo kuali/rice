@@ -639,9 +639,13 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
             return getModelAndViewService().getModelAndView(form);
         }
 
+        List<ActionRequest> actionRequests = new ArrayList<ActionRequest>();
         for (String selectedActionRequest : selectedActionRequests) {
             ActionRequest actionRequest = ObjectPropertyUtils.getPropertyValue(document, selectedActionRequest);
+            actionRequests.add(actionRequest);
+        }
 
+        for (ActionRequest actionRequest : actionRequests) {
             if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()) ||
                     StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
                 document = getDocumentService().validateAndPersistDocument(document, new RouteDocumentEvent(document));

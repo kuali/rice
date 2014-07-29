@@ -185,14 +185,14 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
                 if(optionSet.contains(PersistenceOption.FLUSH) || optionSet.contains(PersistenceOption.LINK_KEYS) ||
                         LazyConfigHolder.autoFlush){
 					sharedEntityManager.flush();
-					if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
-						Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
-								.getIdentifier(mergedDataObject);
-						if (dataObjectKey != null) {
-							sharedEntityManager.getEntityManagerFactory().getCache()
-									.evict(dataObject.getClass(), dataObjectKey);
-						}
-					}
+					// if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+					// Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
+					// .getIdentifier(mergedDataObject);
+					// if (dataObjectKey != null) {
+					// sharedEntityManager.getEntityManagerFactory().getCache()
+					// .evict(dataObject.getClass(), dataObjectKey);
+					// }
+					// }
                 }
 
                 return mergedDataObject;
@@ -263,14 +263,14 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
                 verifyDataObjectWritable(dataObject);
 				Object mergedDataObject = sharedEntityManager.merge(dataObject);
 				sharedEntityManager.remove(mergedDataObject);
-				if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
-					Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
-							.getIdentifier(mergedDataObject);
-					if (dataObjectKey != null) {
-						sharedEntityManager.getEntityManagerFactory().getCache()
-								.evict(dataObject.getClass(), dataObjectKey);
-					}
-				}
+				// if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+				// Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
+				// .getIdentifier(mergedDataObject);
+				// if (dataObjectKey != null) {
+				// sharedEntityManager.getEntityManagerFactory().getCache()
+				// .evict(dataObject.getClass(), dataObjectKey);
+				// }
+				// }
                 return null;
             }
         });

@@ -235,7 +235,8 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         }
     }
 
-    protected void assertFocusTypeBlurValid(String field, String textToType) throws InterruptedException {
+    protected void assertFocusTypeBlurValid(final String field, String textToType) throws InterruptedException {
+        clearTextByName(field);
         fireEvent(field, "focus");
         waitAndTypeByName(field, textToType);
         fireEvent(field, "blur");

@@ -48,10 +48,10 @@ public class DemoControlSelectAft extends WebDriverLegacyITBase {
     
     protected void testLibraryControlSelectMultiSelect() throws Exception {
         waitAndClickByLinkText("MultiSelect");
-        assertElementPresentByXpath("//select[@name='inputField2' and @multiple='multiple']");
-        selectByName("inputField2","Select 1");
-        selectByName("inputField2","Select 2");
-        selectByName("inputField2","Select 3");
+        assertElementPresentByXpath("//select[@name='multiSelectField1' and @multiple='multiple']");
+        selectByName("multiSelectField1","Select 1");
+        selectByName("multiSelectField1","Select 2");
+        selectByName("multiSelectField1","Select 3");
     }
     
     protected void testLibraryControlSelectDisabled() throws Exception {

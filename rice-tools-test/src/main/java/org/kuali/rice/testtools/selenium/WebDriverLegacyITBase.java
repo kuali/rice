@@ -578,6 +578,10 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitForTextPresent("No values match this search.");
     }
 
+    protected void assertRouteStatus(String status) throws InterruptedException {
+        waitForElementPresentByXpath("//th[contains(.,'Route Status')]/../following-sibling::*/td[contains(.,'" + status + "')]");
+    }
+
     protected void assertTableLayout() throws Exception {
         waitForTextPresent("Actions");
         String pageSource = driver.getPageSource();
@@ -1069,14 +1073,22 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSave();
+        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
+        assertDocSearch(docId, "SAVED");
+        waitAndClickRouteLogIcon();
+        assertRouteStatus("SAVED");
     }
-    
+
     protected void testCreateNewSubmit() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSubmit();
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH);
+        assertDocSearch(docId, "FINAL");
+        waitAndClickRouteLogIcon();
+        assertRouteStatus("FINAL");
     }
     
     protected void testCreateNewSaveSubmit() throws Exception {
@@ -1085,7 +1097,12 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSave();
+        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
         waitAndClickSubmit();
+        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH);
+        assertDocSearch(docId, "FINAL");
+        waitAndClickRouteLogIcon();
+        assertRouteStatus("FINAL");
     }
 
     private String verifyDocInitiated() throws InterruptedException {
@@ -2852,6 +2869,11 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
      */
     private void waitAndClickMainMenu(JiraAwareFailable failable) throws InterruptedException {
         waitAndClickByLinkText(MAIN_MENU_LINK_TEXT, failable);
+    }
+
+    protected void waitAndClickRouteLogIcon() throws InterruptedException {
+        jGrowl("Click Route Log link");
+        waitAndClickByXpath("//img[@alt=\"Route Log for Document\"]");
     }
 
     /**

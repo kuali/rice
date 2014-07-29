@@ -73,7 +73,7 @@ public class LabsInquiryDefaultInquirableAft extends LabsInquiryBase {
         clickExpandAll();
         assertLabeledTextPresent(lightBoxTravelAccountLabeledText);
         assertLabeledTextPresent(lightBoxFiscalOfficerLabeledText);
-        waitAndClickButtonByText(CLOSE);
+        waitAndClickLightBoxClose();
         selectTopFrame();
         assertLabeledTextPresent(lightBoxTravelAccountLabeledText);
         assertLabeledTextPresent(lightBoxFiscalOfficerLabeledText);

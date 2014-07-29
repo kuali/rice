@@ -59,8 +59,8 @@ public class LabsInquiryParameterDecryptionAft extends LabsInquiryBase {
          clickCollapseAll();
          assertLabeledTextNotPresent(LabeledTextLightBox);
          clickExpandAll();
-         assertLabeledTextPresent(LabeledTextLightBox);  
-         waitAndClickButtonByText(CLOSE);
+         assertLabeledTextPresent(LabeledTextLightBox);
+         waitAndClickLightBoxClose();
          selectTopFrame();
          String[][] LabeledText = {{"Travel Account Type Code:", TRAVEL_ACCOUNT_TYPE_CODE_ENCRYPTED},
         		 {"Account Type Name:","Clearing"},

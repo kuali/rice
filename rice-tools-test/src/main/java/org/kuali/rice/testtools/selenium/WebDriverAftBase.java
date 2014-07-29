@@ -1212,6 +1212,11 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
                 + "')]"));
     }
 
+    protected void waitAndClickLightBoxClose() throws InterruptedException {
+        jGrowl("Click lightbox close");
+        waitAndClickByXpath("//button[contains(text(),'x')]");
+    }
+
     protected void waitAndClickLinkContainingText(String linkText) throws InterruptedException {
         waitAndClickLinkContainingText(linkText, this.getClass().toString());
     }

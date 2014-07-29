@@ -58,7 +58,7 @@ public class LabsInquiryAuthorizerAndComponentSecurityAft extends LabsInquiryBas
         assertLabeledTextNotPresent(lightBoxLabeledText);
         clickExpandAll();
         assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickButtonByText(CLOSE);
+        waitAndClickLightBoxClose();
         selectTopFrame();
         String[][] LabeledText = {{"Id:", "10000"},
                 {"Primary Destination:", "10000"},
@@ -80,7 +80,7 @@ public class LabsInquiryAuthorizerAndComponentSecurityAft extends LabsInquiryBas
         assertLabeledTextNotPresent(lightBoxLabeledText);
         clickExpandAll();
         assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickButtonByText(CLOSE);
+        waitAndClickLightBoxClose();
         selectTopFrame();
         assertLabeledTextPresent(LabeledText);
         clickCollapseAll();

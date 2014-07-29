@@ -44,7 +44,7 @@ public class LabsInquiryCustomHeaderAft extends LabsInquiryBase {
         waitAndClickByLinkText("IAT");
         gotoLightBox();
         assertLabeledIatText();
-        waitAndClickButtonByText(CLOSE);
+        waitAndClickLightBoxClose();
         selectTopFrame();
         assertLabeledTextPresent(LABELED_IAT_TEXT);
         assertTextPresent("Account Type Information");

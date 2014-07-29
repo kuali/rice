@@ -59,7 +59,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
         assertLabeledTextNotPresent(lightBoxLabeledText);
         clickExpandAll();
         assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickButtonByText(CLOSE);
+        waitAndClickLightBoxClose();
         selectTopFrame();
         assertLabeledTextPresent(lightBoxLabeledText);
         waitAndClickButtonByText("< Back");

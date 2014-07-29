@@ -56,7 +56,7 @@ public class LabsInquirySuppressInquiryAft extends LabsInquiryBase {
          assertLabeledTextNotPresent(lightBoxLabeledText);
          clickExpandAll();
          assertLabeledTextPresent(lightBoxLabeledText);
-         waitAndClickButtonByText(CLOSE);
+         waitAndClickLightBoxClose();
          selectTopFrame();
          String[][] LabeledText = {{"Id:", "10000"},
         		 {" Travel Authorization Document","10000"},

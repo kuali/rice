@@ -18,6 +18,7 @@ package org.kuali.rice.krad.document;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.service.ControllerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -70,9 +71,10 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     /**
      * @see DocumentControllerService#save(org.kuali.rice.krad.web.form.DocumentFormBase)
      */
+    @Override
     @RequestMapping(params = "methodToCall=save")
-    public ModelAndView save(DocumentFormBase form) {
-        return getControllerService().save(form);
+    public ModelAndView save(UifFormBase form) {
+        return getControllerService().save((DocumentFormBase) form);
     }
 
     /**

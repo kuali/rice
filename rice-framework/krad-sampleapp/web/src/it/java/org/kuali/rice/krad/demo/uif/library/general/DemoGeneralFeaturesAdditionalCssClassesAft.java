@@ -36,7 +36,7 @@ public class DemoGeneralFeaturesAdditionalCssClassesAft extends WebDriverLegacyI
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("General Features");
         waitAndClickByLinkText("Additional CSS Classes");
     }

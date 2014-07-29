@@ -36,7 +36,7 @@ public class DemoCollectionFeaturesLightTableAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Light Table");
     }

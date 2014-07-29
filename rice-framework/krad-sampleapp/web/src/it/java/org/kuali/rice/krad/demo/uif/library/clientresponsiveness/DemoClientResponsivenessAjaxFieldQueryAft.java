@@ -38,7 +38,7 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Client Responsiveness");
         waitAndClickByLinkText("AJAX Field Query");
     }

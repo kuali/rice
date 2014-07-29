@@ -36,7 +36,7 @@ public class DemoElementsSpaceAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Elements");
         waitAndClickByLinkText("Space");
     }

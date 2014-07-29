@@ -41,7 +41,7 @@ public class DemoValidationIntegerConstraintsAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Integer Constraint");
     }

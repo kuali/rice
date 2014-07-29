@@ -67,7 +67,7 @@ public class DemoValidationMustOccurConstraintsAft extends WebDriverLegacyITBase
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Must Occur Constraint");
     }

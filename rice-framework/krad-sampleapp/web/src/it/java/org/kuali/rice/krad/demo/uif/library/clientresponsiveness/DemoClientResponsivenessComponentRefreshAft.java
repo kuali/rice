@@ -41,7 +41,7 @@ public class DemoClientResponsivenessComponentRefreshAft extends WebDriverLegacy
      */
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Client Responsiveness");
         waitAndClickByLinkText("Component Refresh");
     }

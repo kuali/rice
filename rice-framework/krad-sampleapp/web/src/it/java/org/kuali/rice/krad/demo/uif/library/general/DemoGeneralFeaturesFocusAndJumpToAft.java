@@ -36,7 +36,7 @@ public class DemoGeneralFeaturesFocusAndJumpToAft extends WebDriverLegacyITBase 
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("General Features");
         waitAndClickByLinkText("Focus And JumpTo");
     }

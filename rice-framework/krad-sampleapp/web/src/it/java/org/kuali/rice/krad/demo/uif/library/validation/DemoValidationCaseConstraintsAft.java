@@ -37,7 +37,7 @@ public class DemoValidationCaseConstraintsAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Case Constraint");
     }

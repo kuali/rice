@@ -37,7 +37,7 @@ public class DemoGeneralFeaturesUnifiedViewHeaderAft extends WebDriverLegacyITBa
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("General Features");
         waitAndClickByLinkText("Unified View Header");
     }

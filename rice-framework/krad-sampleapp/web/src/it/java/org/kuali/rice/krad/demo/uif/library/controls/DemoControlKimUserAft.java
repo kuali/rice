@@ -36,7 +36,7 @@ public class DemoControlKimUserAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Controls");
         waitAndClickByLinkText("KIM User");
     }

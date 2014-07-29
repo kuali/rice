@@ -36,7 +36,7 @@ public class DemoLayoutManagersListLayoutAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Layout Managers");
         waitAndClickByLinkText("List Layout");
     }

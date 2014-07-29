@@ -36,7 +36,7 @@ public class DemoClientResponsivenessEnterKeySupportAft extends WebDriverLegacyI
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Client Responsiveness");
         waitAndClickByLinkText("Enter Key Support");
     }

@@ -36,7 +36,7 @@ public class DemoValidationFixedPointConstraintsAft extends WebDriverLegacyITBas
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("Fixed Point Constraint");
     }

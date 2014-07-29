@@ -41,7 +41,7 @@ public class DemoValidationAlphaNumericConstraintsAft extends WebDriverLegacyITB
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Validation");
         waitAndClickByLinkText("AlphaNumeric Constraint");
     }

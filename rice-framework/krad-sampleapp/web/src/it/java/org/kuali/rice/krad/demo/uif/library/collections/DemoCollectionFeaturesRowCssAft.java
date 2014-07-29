@@ -36,7 +36,7 @@ public class DemoCollectionFeaturesRowCssAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Row Css");
     }

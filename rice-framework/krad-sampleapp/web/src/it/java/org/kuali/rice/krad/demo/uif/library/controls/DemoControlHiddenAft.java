@@ -36,7 +36,7 @@ public class DemoControlHiddenAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Controls");
         waitAndClickByLinkText("Hidden");
     }

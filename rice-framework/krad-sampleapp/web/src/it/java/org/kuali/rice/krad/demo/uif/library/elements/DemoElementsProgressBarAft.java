@@ -36,7 +36,7 @@ public class DemoElementsProgressBarAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Elements");
         waitAndClickByLinkText("Progress Bar");
     }

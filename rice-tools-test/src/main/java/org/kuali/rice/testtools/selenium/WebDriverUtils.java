@@ -728,7 +728,7 @@ public class WebDriverUtils {
             WebDriverUtils.highlightElement(driver, By.xpath("//*[contains(text(), '" + text + "')]"));
             textPresent = Boolean.TRUE;
         }
-        WebDriverUtils.jGrowl(driver, "Is Text Present?", false, "Is text '" + text + " present?" + " " + textPresent);
+        WebDriverUtils.jGrowl(driver, "Is Text Present?", false, "Is text '" + text + "' present?" + " " + textPresent);
         return textPresent;
     }
 

@@ -36,7 +36,7 @@ public class DemoElementsLabelAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Elements");
         waitAndClickByLinkText("Label");
     }

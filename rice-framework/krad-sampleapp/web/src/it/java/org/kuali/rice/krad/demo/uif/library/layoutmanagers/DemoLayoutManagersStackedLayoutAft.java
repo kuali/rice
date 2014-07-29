@@ -36,7 +36,7 @@ public class DemoLayoutManagersStackedLayoutAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Layout Managers");
         waitAndClickByLinkText("Stacked Layout");
     }

@@ -34,7 +34,7 @@ public class DemoApplicationHeaderAft extends DemoLibraryNavigationBase {
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickLibraryLink();;
+    	waitAndClickLibraryLink();
         waitAndClickByLinkText("Navigation");
         waitAndClickByLinkText("Application Header");
     }

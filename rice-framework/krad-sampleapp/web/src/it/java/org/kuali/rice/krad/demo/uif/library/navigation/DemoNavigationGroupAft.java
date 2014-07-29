@@ -36,7 +36,7 @@ public class DemoNavigationGroupAft extends DemoLibraryNavigationBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Navigation");
         waitAndClickByLinkText("Navigation Group");
     }

@@ -36,7 +36,7 @@ public class DemoContainerTreeGroupAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Containers");
         waitAndClickByLinkText("Tree Group");
     }

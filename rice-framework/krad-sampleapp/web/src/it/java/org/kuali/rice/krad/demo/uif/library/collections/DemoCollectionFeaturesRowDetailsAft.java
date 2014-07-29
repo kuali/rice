@@ -36,7 +36,7 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Collection Features");
         waitAndClickByLinkText("Row Details");
     }

@@ -36,7 +36,7 @@ public class DemoLayoutManagersCssGridLayoutAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-        waitAndClickLibraryLink();;
+        waitAndClickLibraryLink();
         waitAndClickByLinkText("Layout Managers");
         waitAndClickByLinkText("Css Grid Layout");
     }

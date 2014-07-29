@@ -226,13 +226,11 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             throw new RiceIllegalStateException("MemberType unknown: " + delegate.getMemberType());
         }
 
-        String actionRequestPolicyCode = getDelegateActionRequestPolicyCode(member, delegate);
-
         String delegationAnnotation = generateDelegationAnnotation(memberRequest, member, delegate);
 
         context.getActionRequestFactory().addDelegationRequest(memberRequest, recipient,
                 delegate.getResponsibilityId(), memberRequest.getForceAction(),
-                delegate.getDelegationType(), actionRequestPolicyCode, delegationAnnotation, null);
+                delegate.getDelegationType(), delegationAnnotation, null);
     }
 
     /**

@@ -545,33 +545,7 @@ public class ActionRequestFactory {
     /**
      * Add a delegation request to the given parent action request.
      *
-     * @param parentRequest the parent request to add it to
-     * @param recipient the recipient to send the delegation request to
-     * @param responsibilityId
-     * @param forceAction
-     * @param delegationType primary or secondary?
-     * @param actionRequestPolicyCode the action request policy code specifying when the action requests are considered to be completed
-     * @param annotation the annotation to put on the delegation request
-     * @param ruleId
-     * @return the delegation request that was added
-     */
-    public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, String responsibilityId, Boolean forceAction, DelegationType delegationType, String actionRequestPolicyCode, String annotation, String ruleId) {
-        if (! relatedToRoot(parentRequest)) {
-            throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
-        }
-        ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, forceAction, actionRequestPolicyCode, ruleId, annotation);
-        delegationRequest.setDelegationType(delegationType);
-
-        parentRequest.getChildrenRequests().add(delegationRequest);
-        delegationRequest.setParentActionRequest(parentRequest);
-
-        return delegationRequest;
-    }
-
-    /**
-     * Add a delegation request to the given parent action request.
-     *
-     * <p>no action type policy code will be specified.</p>
+     * <p>no action type policy code can be specified as it only applies to roles.</p>
      *
      * @param parentRequest the parent request to add it to
      * @param recipient the recipient to send the delegation request to
@@ -583,7 +557,16 @@ public class ActionRequestFactory {
      * @return the delegation request that was added
      */
     public ActionRequestValue addDelegationRequest(ActionRequestValue parentRequest, Recipient recipient, String responsibilityId, Boolean forceAction, DelegationType delegationType, String annotation, String ruleId) {
-    	return addDelegationRequest(parentRequest, recipient, responsibilityId, forceAction, delegationType, null, annotation, ruleId);
+        if (! relatedToRoot(parentRequest)) {
+            throw new WorkflowRuntimeException("The parent request is not related to any request managed by this factory");
+        }
+        ActionRequestValue delegationRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), recipient, parentRequest.getResponsibilityDesc(), responsibilityId, forceAction, null, ruleId, annotation);
+        delegationRequest.setDelegationType(delegationType);
+
+        parentRequest.getChildrenRequests().add(delegationRequest);
+        delegationRequest.setParentActionRequest(parentRequest);
+
+        return delegationRequest;
     }
 
     //could probably base behavior off of recipient type

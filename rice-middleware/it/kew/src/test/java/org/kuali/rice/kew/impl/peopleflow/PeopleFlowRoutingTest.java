@@ -128,7 +128,9 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         earl = getPrincipalIdForName("earl");
         testWorkgroup = getGroupIdForName("KR-WKFLW", "TestWorkgroup");
 
-        createTestRolesIfNotExists();
+        // Create roles and groups, then get IDs for test verification
+        createTestRolesAndGroupsIfNotExists();
+
         ppfTestRole1 = getRoleIdForName(NAMESPACE_CODE, "ppfTestRole1");
         ppfTestRole2 = getRoleIdForName(NAMESPACE_CODE, "ppfTestRole2");
         ppfTestRole3 = getRoleIdForName(NAMESPACE_CODE, "ppfTestRole3");
@@ -145,7 +147,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         return peopleFlowService;
     }
 
-    private void createTestRolesIfNotExists() {
+    private void createTestRolesAndGroupsIfNotExists() {
         RoleService roleService = KimApiServiceLocator.getRoleService();
         GroupService groupService = KimApiServiceLocator.getGroupService();
 
@@ -597,7 +599,8 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
      *
      * </pre>
      *
-     * this test will ensure that the delegate, a role is properly delegated to when the member is a principal
+     * this test will ensure that the delegate, a role, is properly delegated to when the primary responsible party is
+     * a principal.
      */
     @Test
     public void test_PrincipalMember_roleDelegate() throws Exception {

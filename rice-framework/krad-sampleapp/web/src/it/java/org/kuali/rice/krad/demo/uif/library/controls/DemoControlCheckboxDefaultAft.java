@@ -92,11 +92,11 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
         assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_2"));
         assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_3"));
         assertTrue(isEnabledById("ST-DemoCheckboxControlExample2-Input1_control_4"));
-        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_0"));
-        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_1"));
-        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_2"));
-        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_3"));
-        assertFalse(isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_4"));
+        assertFalse("Checkbox ST-DemoCheckboxControlExample2-Input1_control_0 is checked", isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_0"));
+        assertFalse("Checkbox ST-DemoCheckboxControlExample2-Input1_control_1 is checked", isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_1"));
+        assertFalse("Checkbox ST-DemoCheckboxControlExample2-Input1_control_2 is checked", isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_2"));
+        assertFalse("Checkbox ST-DemoCheckboxControlExample2-Input1_control_3 is checked", isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_3"));
+        assertFalse("Checkbox ST-DemoCheckboxControlExample2-Input1_control_4 is checked", isCheckedById("ST-DemoCheckboxControlExample2-Input1_control_4"));
 
         // set check mark on second checkbox control
        checkById("ST-DemoCheckboxControlExample2-Input1_control_1");

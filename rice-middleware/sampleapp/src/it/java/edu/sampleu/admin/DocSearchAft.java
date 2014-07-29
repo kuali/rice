@@ -178,6 +178,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitAndClickByName("methodToCall.approve", "approve button does not exist on the page");
         jGrowl("Click Cancel Button");
         waitAndClickByXpath("//a[@href='DocumentSearch.do']/img[@alt='cancel']");
+        waitAndTypeByName("documentId", docId);
         waitAndClickMethodToCallSearchButton();
         waitForPageToLoad();
         assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText());

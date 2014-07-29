@@ -203,6 +203,10 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             value = super.getPropertyValue(propertyName);
         } catch (NullValueInNestedPathException e) {
             // swallow null values in path and return null as the value
+        } catch (InvalidPropertyException e1) {
+            if (!(e1.getRootCause() instanceof NullValueInNestedPathException)) {
+                throw e1;
+            }
         }
 
         return value;
@@ -225,6 +229,10 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             return;
         }
 
+        // since auto grows is explicity turned off for get, we need to turn it on for set (so our objects
+        // will grow if necessary for user entered data)
+        setAutoGrowNestedPaths(true);
+
         Object value = processValueBeforeSet(pv.getName(), pv.getValue());
 
         pv = new PropertyValue(pv, value);
@@ -241,10 +249,6 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
                 originalValueSaved = false;
             }
         }
-
-        // since auto grows is explicity turned off for get, we need to turn it on for set (so our objects
-        // will grow if necessary for user entered data)
-        setAutoGrowNestedPaths(true);
 
         // set the actual property value
         super.setPropertyValue(pv);
@@ -280,6 +284,8 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             return;
         }
 
+        setAutoGrowNestedPaths(true);
+
         value = processValueBeforeSet(propertyName, value);
 
         // save off the original value
@@ -292,8 +298,6 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             // the property value changed or not
             originalValueSaved = false;
         }
-
-        setAutoGrowNestedPaths(true);
 
         // set the actual property value
         super.setPropertyValue(propertyName, value);
@@ -527,10 +531,10 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         BeanWrapperImpl beanWrapper;
         try {
             beanWrapper = getBeanWrapperForPropertyPath(propertyPath);
-        } catch (NotReadablePropertyException nrpe) {
+        } catch (NotReadablePropertyException | NullValueInNestedPathException e) {
             LOG.debug("Bean wrapper was not found for "
                     + propertyPath
-                    + ", but since it cannot be accessed it will not be set as secure.", nrpe);
+                    + ", but since it cannot be accessed it will not be set as secure.", e);
             return false;
         }
 

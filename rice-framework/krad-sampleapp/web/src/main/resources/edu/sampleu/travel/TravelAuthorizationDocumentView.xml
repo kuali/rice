@@ -93,7 +93,8 @@
           <bean parent="Uif-TextControl" p:readOnly="true" p:size="21"/>
         </property>
       </bean>
-      <bean parent="Uif-DataField" p:propertyName="travelerDetail.firstName"/>
+      <bean parent="Uif-DataField" p:propertyName="travelerDetail.firstName"
+            p:readOnlyDisplaySuffixPropertyName="travelerDetail.lastName"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.lastName"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine1"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.streetAddressLine2"/>
@@ -103,7 +104,7 @@
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.zipCode"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.emailAddress"/>
       <bean parent="Uif-DataField" p:propertyName="travelerDetail.phoneNumber"/>
-      <bean parent="Uif-InputField" p:propertyName="cellPhoneNumber" p:required="true" p:colSpan="3" />
+      <bean parent="Uif-InputField" p:propertyName="travelerDetail.travelerType.name" p:colSpan="3" />
     </list>
   </property>
 </bean>
@@ -113,7 +114,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="tripDestinationId" p:label="Primary Destination Id"
-              p:required="true" p:colSpan="1">
+               p:colSpan="1">
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="edu.sampleu.travel.dataobject.TravelDestination">
               <property name="fieldConversions">

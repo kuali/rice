@@ -83,7 +83,7 @@ public class DemoLookUpConditionalResultsAft extends ViewDemoAftBase {
         // Case 2 - Empty research shows all columns
         clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
         waitAndClickButtonByText(SEARCH);
-        waitForTextPresent("items retrieved, displaying");
+        waitForTextPresent("Showing 1 to 10 of");
         Assert.assertEquals(4, getCssCount(DATA_TABLE_TH_CSS));
         assertElementPresent(DATA_TABLE_TH_CSS + ":nth-child(2)");
         assertTextPresent(TRAVEL_ACCOUNT_NUMBER_COLUMN_NAME, DATA_TABLE_TH_CSS + ":nth-child(2) label",

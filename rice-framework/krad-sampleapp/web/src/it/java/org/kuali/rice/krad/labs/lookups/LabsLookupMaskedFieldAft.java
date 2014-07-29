@@ -73,6 +73,6 @@ public class LabsLookupMaskedFieldAft extends LabsLookupBase {
 
     protected void testLabsLookupMaskedFieldNoSearchCriteria()throws Exception {
         waitAndClickButtonByText("Search");
-        waitForTextPresent("items retrieved, displaying all items.");
+        waitForTextPresent("Showing 1 to 10 of");
     }
 }

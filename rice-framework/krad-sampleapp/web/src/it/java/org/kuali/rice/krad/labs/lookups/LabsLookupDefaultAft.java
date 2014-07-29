@@ -63,6 +63,6 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
 
     protected void testLabsLookupDefaultEmpty()throws Exception {
         waitAndClickSearch3();
-        waitForTextPresent("items retrieved, displaying all items.");
+        waitForTextPresent("Showing 1 to 10 of");
     }
 }

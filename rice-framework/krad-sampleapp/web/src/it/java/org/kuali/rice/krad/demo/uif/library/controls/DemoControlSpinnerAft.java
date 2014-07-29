@@ -55,11 +55,11 @@ public class DemoControlSpinnerAft extends WebDriverLegacyITBase {
     protected void testLibraryControlSpinnerCurrency() throws Exception {
         waitAndClickByLinkText("Currency option");
 
-        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@value='5']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@aria-valuenow='24']");
         waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/a[contains(@class,'ui-spinner-up')]");
-        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@aria-valuenow='30']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@aria-valuenow='55']");
         waitAndClickByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/a[contains(@class,'ui-spinner-down')]");
-        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@aria-valuenow='5']");
+        assertElementPresentByXpath("//div[@data-parent='Demo-SpinnerControl-Example2']/span/input[@aria-valuenow='24']");
     }
     
     protected void testLibraryControlSpinnerDecimal() throws Exception {
@@ -86,16 +86,16 @@ public class DemoControlSpinnerAft extends WebDriverLegacyITBase {
     @Test
     public void testControlSpinnerBookmark() throws Exception {
         testLibraryControlSpinnerDefault();
-        testLibraryControlSpinnerCurrency();
         testLibraryControlSpinnerDecimal();
         testLibraryControlSpinnerWidgetInput();
+        testLibraryControlSpinnerCurrency();
         passed();
     }
 
     @Test
     public void testControlSpinnerNav() throws Exception {
-        testLibraryControlSpinnerDefault();
         testLibraryControlSpinnerCurrency();
+        testLibraryControlSpinnerDefault();
         testLibraryControlSpinnerDecimal();
         testLibraryControlSpinnerWidgetInput();
         passed();

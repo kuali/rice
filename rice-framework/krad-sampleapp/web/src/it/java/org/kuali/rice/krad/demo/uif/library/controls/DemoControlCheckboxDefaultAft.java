@@ -156,7 +156,7 @@ public class DemoControlCheckboxDefaultAft extends DemoLibraryBase {
 
     @Test
     public void testCheckboxControlKeyValuePairBookmark() throws Exception {
-        testCheckboxControlOptionsFinder();
+        testCheckboxControlKeyValuePair();
         passed();
     }
 

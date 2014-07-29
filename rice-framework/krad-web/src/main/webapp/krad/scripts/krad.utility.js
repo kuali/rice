@@ -2591,7 +2591,15 @@ function formatHtml(html) {
 }
 
 function getGroupHeaderElement(groupId) {
+    // get the header wrapper element
     var headerWrapper = jQuery("[data-header_for='" + groupId + "']");
+
+    // get the header wrapper id, and if it exists, get the base id
     var wrapperId = headerWrapper.attr("id");
+    if (wrapperId) {
+        wrapperId = wrapperId.replace("_headerWrapper", "");
+    }
+
+    // get the header element
     return headerWrapper.find("#" + wrapperId + "_header");
 }

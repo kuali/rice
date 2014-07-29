@@ -515,7 +515,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
 
         //retrieve header for section
         if (data.isSection === undefined) {
-            var sectionHeader = jQuery("[data-header_for='" + id + "']").find("> :header, > label");
+            var sectionHeader = getGroupHeaderElement(id);
             data.isSection = sectionHeader.length;
         }
 

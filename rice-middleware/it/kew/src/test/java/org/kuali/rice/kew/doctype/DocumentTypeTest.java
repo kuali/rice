@@ -87,7 +87,8 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
     }
 
-    @Test public void testDocumentTypeParentChildLinking() throws Exception {
+    @Test
+    public void testDocumentTypeParentChildLinking() throws Exception {
         super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
         verifyDocumentTypeLinking();
 
@@ -109,30 +110,27 @@ public class DocumentTypeTest extends KEWTestCase {
 
         // try loading each of these in parallel threads to verify caching can
         // handle concurrency situations
-        String[] fileNames = {
-                "ParentWithChildrenDocTypeConfiguration.xml",
-                "DocTypeIngestTestConfig1.xml",
-                "DocumentTypeAttributeFetchTest.xml",
-                "ChildDocType1.xml",
-                "ChildDocType2.xml",
-                "ChildDocType3.xml",
-                "ChildDocType4.xml",
-        };
+        String[] fileNames = {"ParentWithChildrenDocTypeConfiguration.xml", "DocTypeIngestTestConfig1.xml",
+                "DocumentTypeAttributeFetchTest.xml", "ChildDocType1.xml", "ChildDocType2.xml", "ChildDocType3.xml",
+                "ChildDocType4.xml",};
 
         List<Callback> callbacks = new ArrayList<Callback>();
         CyclicBarrier barrier = new CyclicBarrier(fileNames.length);
 
         List<Thread> threads = new ArrayList<Thread>();
+
         for (int i = 0; i < fileNames.length; i++) {
             Callback callback = new Callback();
             callbacks.add(callback);
             threads.add(new Thread(new LoadXml(fileNames[i], callback, barrier)));
         }
+
         for (Thread thread : threads) {
             thread.start();
         }
+
         for (Thread thread : threads) {
-            thread.join(2*60*1000);
+            thread.join(2 * 60 * 1000);
         }
 
         // What should have happened here was an optimistic lock being thrown from the
@@ -142,18 +140,19 @@ public class DocumentTypeTest extends KEWTestCase {
         // because the update was never made, and we can check to make sure that
         // at least one of the above documents failed to be ingested.
         boolean atLeastOneFailure = false;
+
         for (Callback callback : callbacks) {
             if (!callback.isXmlLoaded()) {
                 atLeastOneFailure = true;
             }
         }
+
         assertTrue("At least one of the XML files should have failed the ingestion process", atLeastOneFailure);
         verifyDocumentTypeLinking();
 
         // reload again for good measure
         super.loadXmlFile("ParentWithChildrenDocTypeConfiguration.xml");
         verifyDocumentTypeLinking();
-
     }
 
     @Test public void testNestedDuplicateNodeNameInRoutePath() throws Exception {
@@ -173,22 +172,25 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
 
         // Split1, Right, Innersplit, Right (user4)
-        Thread.sleep(waitMilliSeconds);
-        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
+        for (int j=10; j >= 0; j--) {
+            Thread.sleep(waitMilliSeconds);
+            document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
+            if (document.isApprovalRequested()) {
+                break;
+            }
+        }
         assertTrue("user4 should have an approve request", document.isApprovalRequested());
         document.approve("");
 
         // Split1, Right, Innersplit, Left  (rkirkend --> user3)
-        Thread.sleep(waitMilliSeconds);
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
         assertTrue("user3 should have an approve request; the first request", document.isApprovalRequested());
         document.approve("");
 
-        // Split2, Left  (rkirkend --> user3)
+        // Split2, Left  (rkirkend --> user3)  NOTE - Split2, Right is a NoOp node
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have an approve request; the second request", document.isApprovalRequested());
         document.approve("");
-        Thread.sleep(waitMilliSeconds);
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
         assertTrue("user3 should have an approve request; the second request", document.isApprovalRequested());
         document.approve("");

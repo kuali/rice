@@ -408,7 +408,7 @@
               p:preSubmitCall="return isRouteToComplete(kradRequest);"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}" p:defaultEnterKeyAction="true">
           <property name="confirmationDialog">
-            <bean parent="Uif-DialogGroup" p:style="top:70%"
+            <bean id="ConfirmSubmitDialog" parent="Uif-DialogGroup" p:style="top:70%"
                   p:promptText="Are you sure you want to submit this document and send it into routing?">
               <property name="headerText" value="Please Confirm to Continue"/>
               <property name="footer.items">

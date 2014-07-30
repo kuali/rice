@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
-import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 import org.apache.commons.lang.RandomStringUtils;
@@ -207,6 +206,11 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         jGrowl("Click OK");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
         acceptAlert();
+
+        // Redirected to Home page after Blanket Approve https://jira.kuali.org/browse/KULRICE-13042
+        waitAndClickDemoLink();
+        waitAndClickByLinkText("Travel Account Maintenance (Edit)");
+
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {
             jiraAwareFail("Fiscal Officer Not Changed to " + newUser);
         }

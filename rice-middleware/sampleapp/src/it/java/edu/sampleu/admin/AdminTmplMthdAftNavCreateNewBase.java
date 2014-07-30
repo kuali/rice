@@ -23,15 +23,25 @@ import org.junit.Test;
 public abstract class AdminTmplMthdAftNavCreateNewBase extends AdminTmplMthdAftNavBase {
 
     @Test
+    public void testCreateNewCancelBookmark() throws Exception {
+        testCreateNewCancel();
+        passed();
+    }
+
+    @Test
     public void testCreateNewCancelNav() throws Exception {
         testCreateNewCancel();
         passed();
     }
 
     @Test
-    public void testCreateNewCancelBookmark() throws Exception {
-        testCreateNewCancel();
-        passed();
+    public void testCreateNewRequiredBookmark() throws Exception {
+        testCreateNewRequired();
+    }
+
+    @Test
+    public void testCreateNewRequiredNav() throws Exception {
+        testCreateNewRequired();
     }
 
     @Test

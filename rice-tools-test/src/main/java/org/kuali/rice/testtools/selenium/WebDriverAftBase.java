@@ -1459,6 +1459,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         waitForElementVisibleBy(By.cssSelector(elementLocator), message);
     }
 
+    protected WebElement waitForElementVisibleBy(By by) throws InterruptedException {
+        return waitForElementVisibleBy(by, by.toString() + " NOT visible for class " + this.getClass().getSimpleName());
+    }
+
     protected WebElement waitForElementVisibleBy(By by, String message) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 

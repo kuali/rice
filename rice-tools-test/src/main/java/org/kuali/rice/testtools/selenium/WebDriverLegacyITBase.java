@@ -1066,6 +1066,13 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         testCancelConfirmation();
         assertDocSearchNoResults(docId);
     }
+
+    protected void testCreateNewRequired() throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        waitAndClickSubmit();
+        waitForElementVisibleBy(By.xpath("//div[@class='error']")).getText().contains(" error(s) found on page.");
+    }
     
     protected void testCreateNewSave() throws Exception {
         selectFrameIframePortlet();
@@ -1073,7 +1080,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSave();
-        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
+        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         assertDocSearch(docId, "SAVED");
         waitAndClickRouteLogIcon();
         assertRouteStatus("SAVED");
@@ -1085,7 +1092,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSubmit();
-        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH);
+        waitForElementVisibleBy(By.xpath(DOC_SUBMIT_SUCCESS_MSG_XPATH));
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
@@ -1097,15 +1104,15 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSave();
-        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH);
+        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         waitAndClickSubmit();
-        waitForElementPresentByXpath(DOC_SUBMIT_SUCCESS_MSG_XPATH);
+        waitForElementVisibleBy(By.xpath(DOC_SUBMIT_SUCCESS_MSG_XPATH));
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
     }
 
-    private String verifyDocInitiated() throws InterruptedException {
+    protected String verifyDocInitiated() throws InterruptedException {
         String docId = waitForDocId();
         assertEquals("INITIATED", waitForDocStatus());
         assertEquals(getUserName(), waitForDocInitiator());
@@ -1519,27 +1526,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickByXpath("//table[@id='row']/tbody/tr[4]/td[1]/a");
         String cityName = "Validation Test Postal Code " + code;
         waitAndTypeByXpath("//input[@id='document.newMaintainableObject.cityName']", cityName);
-        blanketApproveTest(docId);
-    }
-
-    protected void testLocationStateBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test State");
-        assertBlanketApproveButtonsPresent();
-
-        //jiraAwareWaitAndClick("methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;" + getBaseUrlString() + "/kr/lookup.do;::::).anchor4");
-        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        waitAndClickByXpath(countryLookUp);
-        waitAndClickSearch();
-        waitAndClickReturnValue();
-        String code = RandomStringUtils.randomAlphabetic(2).toUpperCase();
-        waitAndTypeByXpath(DOC_CODE_XPATH, code);
-        String state = "Validation Test State " + code;
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", state);
-        waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
         blanketApproveTest(docId);
     }
 
@@ -1984,6 +1970,11 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     protected void createNewEnterDetails() throws InterruptedException {
         // overload to utilize
         fail("createNewEnterDetails must be implemented by test class");
+    }
+
+    protected void createNewLookupDetails() throws InterruptedException {
+        // overload to utilize
+        fail("createNewLookupDetails must be implemented by test class");
     }
 
 //    protected String createNewTemplateMethod() throws InterruptedException {
@@ -2893,6 +2884,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
      * @throws InterruptedException
      */
     protected void waitAndClickSubmit() throws InterruptedException {
+        jGrowl("Click Submit");
         waitAndClickByXpath(SUBMIT_XPATH);
     }
 

@@ -21,6 +21,7 @@ import edu.sampleu.common.NavTemplateMethodAftBase;
  * blanket approving a new document, results in a final document
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @Deprecated use AdminTmplMthdAftNavBlanketAppBase
  */
 public abstract class AdminTmplMthdBlanketAppAftNavBase extends NavTemplateMethodAftBase {
 

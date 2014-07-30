@@ -15,15 +15,15 @@
  */
 package edu.sampleu.kim.api.location;
 
-import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
+import edu.sampleu.admin.AdminTmplMthdAftNavBlanketAppBase;
+import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LocationStateBlanketAppAftBase extends AdminTmplMthdAftNavBase {
+public class LocationStateAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=State&channelUrl=" 
@@ -33,7 +33,7 @@ public abstract class LocationStateBlanketAppAftBase extends AdminTmplMthdAftNav
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=State&channelUrl="
             + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KNS_LOOKUP_METHOD +
             "org.kuali.rice.location.impl.state.StateBo&docFormKey=88888888&returnLocation=" +
-            AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK ;
+            AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK + AutomatedFunctionalTestUtils.SHOW_MAINTENANCE_LINKS;
 
     @Override
     protected String getBookmarkUrl() {
@@ -49,14 +49,39 @@ public abstract class LocationStateBlanketAppAftBase extends AdminTmplMthdAftNav
     protected String getLinkLocator() {
         return "State";
     }
-   
-    public void testLocationStateBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
-        testLocationStateBlanketApprove();
+
+    protected void createNewEnterDetails() throws InterruptedException {
+        inputDetails();
+
+        jiraAwareTypeByName("document.newMaintainableObject.countryCode", "US");
+    }
+
+    private void inputDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
+    }
+
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        inputDetails();
+
+        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(countryLookUp);
+        waitAndClickSearch();
+        waitAndClickReturnValue();
+    }
+
+    @Test
+    public void testEditCancelBookmark() throws Exception {
+        testEditCancel();
         passed();
     }
 
-    public void testLocationStateBlanketAppNav(JiraAwareFailable failable) throws Exception {
-        testLocationStateBlanketApprove();
+    @Test
+    public void testEditCancelNav() throws Exception {
+        testEditCancel();
         passed();
     }
 }

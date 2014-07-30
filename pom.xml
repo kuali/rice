@@ -46,6 +46,7 @@
   </ciManagement>
 
   <properties>
+    <project.java.version>1.7</project.java.version>
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
 
     <!-- These properties modify the release process -->

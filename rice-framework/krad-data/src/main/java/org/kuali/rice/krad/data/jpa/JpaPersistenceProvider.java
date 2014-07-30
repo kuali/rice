@@ -21,6 +21,7 @@ import java.util.concurrent.Callable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.metamodel.ManagedType;
 
 import org.eclipse.persistence.jpa.JpaEntityManager;
@@ -185,15 +186,20 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
                 if(optionSet.contains(PersistenceOption.FLUSH) || optionSet.contains(PersistenceOption.LINK_KEYS) ||
                         LazyConfigHolder.autoFlush){
 					sharedEntityManager.flush();
-					// if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
-					// Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
-					// .getIdentifier(mergedDataObject);
-					// if (dataObjectKey != null) {
-					// sharedEntityManager.getEntityManagerFactory().getCache()
-					// .evict(dataObject.getClass(), dataObjectKey);
-					// }
-					// }
                 }
+
+				if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+					try {
+						Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
+								.getIdentifier(mergedDataObject);
+						if (dataObjectKey != null) {
+							sharedEntityManager.getEntityManagerFactory().getCache()
+									.evict(dataObject.getClass(), dataObjectKey);
+						}
+					} catch (PersistenceException ex) {
+						// JPA fails if it can't create the key field classes - we just need to catch and ignore here
+					}
+				}
 
                 return mergedDataObject;
             }
@@ -261,16 +267,22 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
             @Override
 			public Object call() {
                 verifyDataObjectWritable(dataObject);
+				// If the L2 cache is enabled, the item will still be served from the cache
+				// So, we need to flush that as well for the given type and key
+				if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+					try {
+						Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
+								.getIdentifier(dataObject);
+						if (dataObjectKey != null) {
+							sharedEntityManager.getEntityManagerFactory().getCache()
+									.evict(dataObject.getClass(), dataObjectKey);
+						}
+					} catch (PersistenceException ex) {
+						// JPA fails if it can't create the key field classes - we just need to catch and ignore here
+					}
+				}
 				Object mergedDataObject = sharedEntityManager.merge(dataObject);
 				sharedEntityManager.remove(mergedDataObject);
-				// if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
-				// Object dataObjectKey = sharedEntityManager.getEntityManagerFactory().getPersistenceUnitUtil()
-				// .getIdentifier(mergedDataObject);
-				// if (dataObjectKey != null) {
-				// sharedEntityManager.getEntityManagerFactory().getCache()
-				// .evict(dataObject.getClass(), dataObjectKey);
-				// }
-				// }
                 return null;
             }
         });
@@ -361,9 +373,13 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
                 sharedEntityManager.flush();
 				// If the L2 cache is enabled, items will still be served from the cache
 				// So, we need to flush that as well for the given type
-				if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
-					sharedEntityManager.getEntityManagerFactory().getCache().evict(type);
-				}
+				// if (sharedEntityManager.getEntityManagerFactory().getCache() != null) {
+				// if (type != null) {
+				// sharedEntityManager.getEntityManagerFactory().getCache().evict(type);
+				// } else {
+				// sharedEntityManager.getEntityManagerFactory().getCache().evictAll();
+				// }
+				// }
                 return null;
             }
         });

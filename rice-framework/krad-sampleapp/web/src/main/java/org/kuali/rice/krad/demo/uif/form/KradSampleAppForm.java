@@ -192,7 +192,6 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         super();
 
         // added to test multiselect control
-        this.inputField2 = "2,4";
         this.multiSelectField1 = new ArrayList();
         this.multiSelectField1.add("2");
         this.multiSelectField1.add("4");

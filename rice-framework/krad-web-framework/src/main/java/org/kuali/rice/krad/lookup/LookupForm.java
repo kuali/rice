@@ -103,7 +103,7 @@ public class LookupForm extends UifFormBase {
         }
 
         Lookupable lookupable = getLookupable();
-        if ((lookupable != null) && (lookupable.getDataObjectClass() == null)) {
+        if (lookupable != null) {
             Class<?> dataObjectClass;
             try {
                 dataObjectClass = Class.forName(getDataObjectClassName());

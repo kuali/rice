@@ -15,15 +15,14 @@
  */
 package edu.sampleu.kim.api.identity;
 
-import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
+import edu.sampleu.admin.AdminTmplMthdAftNavBlanketAppBase;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class IdentityGroupAftBase extends AdminTmplMthdAftNavBase {
+public class IdentityGroupAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Group&channelUrl=" 
@@ -52,30 +51,25 @@ public abstract class IdentityGroupAftBase extends AdminTmplMthdAftNavBase {
 
     @Override
     protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-        selectOptionByName("document.groupNamespace", namespaceCode);
-        jiraAwareTypeByName("document.groupName", "GroupName" + uniqueString);
+        inputDetails();
+
         jiraAwareTypeByName("member.memberId", "admin");
         waitAndClickByName("methodToCall.addMember.anchorAssignees");
     }
 
-    public void testIdentityGroupBookmark(JiraAwareFailable failable) throws Exception {
-        testSearchEditCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSave();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSubmit();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSaveSubmit();
-        passed();
+    private void inputDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        selectOptionByName("document.groupNamespace", namespaceCode);
+        jiraAwareTypeByName("document.groupName", "GroupName" + uniqueString);
     }
 
-    public void testIdentityGroupNav(JiraAwareFailable failable) throws Exception {
-        testEditCancel();
-        navigate();
-        testCreateNewCancelNav();
-        passed();
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        inputDetails();
+
+        waitAndClickByName(
+                "methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
+        waitAndClickSearch();
+        waitAndClickReturnValue();
     }
 }

@@ -1361,24 +1361,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         //-----Step 3 verified that doc is final -------
     }
 
-    protected void testIdentityGroupBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Group " + dtsTwo);
-        assertBlanketApproveButtonsPresent();
-        selectByXpath("//select[@id='document.groupNamespace']", LABEL_KUALI_KUALI_SYSTEMS);
-        waitAndTypeByXpath("//input[@id='document.groupName']", "Validation Test Group1 " + dtsTwo);
-        waitAndClickByName(
-                "methodToCall.performLookup.(!!org.kuali.rice.kim.impl.identity.PersonImpl!!).(((principalId:member.memberId,principalName:member.memberName))).((``)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;;::::).anchorAssignees");
-        waitAndClickSearch();
-        waitAndClickReturnValue();
-        waitAndClickByName("methodToCall.addMember.anchorAssignees");
-        waitForPageToLoad();
-        blanketApproveTest(docId);
-    }
-
     protected void testIdentityPermissionBlanketApprove() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();

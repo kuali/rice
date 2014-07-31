@@ -1447,31 +1447,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         }
     }
 
-    protected void testLocationCountyBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test County");
-        assertBlanketApproveButtonsPresent();
-        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        waitAndClickByXpath(countryLookUp);
-        waitAndTypeByName("code", "US");
-        waitAndClickSearch();
-        waitAndClickReturnValue();
-        waitAndTypeByXpath(DOC_CODE_XPATH, RandomStringUtils.randomAlphabetic(2).toUpperCase());
-        String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        waitAndClickByXpath(stateLookUp);
-        waitAndTypeByName("code", "IN");
-        waitAndClickSearch();
-        waitAndClickReturnValue();
-        String countyName = "Validation Test County" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countyName);
-        waitAndClickByXpath("//input[@id='document.newMaintainableObject.active']");
-        blanketApproveTest(docId);
-    }
-
     protected void testLocationPostBlanketApprove() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();

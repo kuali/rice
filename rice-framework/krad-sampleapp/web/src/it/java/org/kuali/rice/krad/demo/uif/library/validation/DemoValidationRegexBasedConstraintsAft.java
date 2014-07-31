@@ -51,8 +51,6 @@ public class DemoValidationRegexBasedConstraintsAft extends WebDriverLegacyITBas
     protected void testValidationRegexBasedConstraintsEmail() throws Exception {
         waitAndClickByLinkText("Email");
 
-        assertEquals("Default value 2,4 for inputField2 not found", "2,4", waitAndGetAttributeByName("inputField2", "value"));
-
         assertFocusTypeBlurValid("inputField2", "a@kuali.org");
         assertFocusTypeBlurValid("inputField2", "aa@kuali.org");
         assertFocusTypeBlurValid("inputField2", "a.a@kuali.org");

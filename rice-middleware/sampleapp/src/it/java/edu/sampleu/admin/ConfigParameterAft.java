@@ -15,15 +15,13 @@
  */
 package edu.sampleu.admin;
 
-import org.junit.Test;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterAft extends AdminTmplMthdAftNavCreateNewBase {
+public class ConfigParameterAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL+"?channelTitle=Parameter&channelUrl="+WebDriverUtils.getBaseUrlString()+
@@ -48,10 +46,16 @@ public class ConfigParameterAft extends AdminTmplMthdAftNavCreateNewBase {
     protected String getLinkLocator() {
         return "Parameter";
     }
- 
+
+    @Override
     protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        inputDetails();
+
         selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
+    }
+
+    private void inputDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
         jiraAwareTypeByName("document.newMaintainableObject.componentCode", "ActionList");
         jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
         jiraAwareTypeByName("document.newMaintainableObject.description", "desc" + uniqueString);
@@ -59,24 +63,16 @@ public class ConfigParameterAft extends AdminTmplMthdAftNavCreateNewBase {
         waitAndClickByName("document.newMaintainableObject.evaluationOperatorCode");
     }
 
-    public void testConfigParameterSearchEdit(JiraAwareFailable failable) throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        createNewEnterDetails();
-        testSearchEditCancel();
-        passed();
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        inputDetails();
+
+        assertEquals("", getTextByName(CANCEL_NAME));
+
+        String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(componentLookUp);
+        waitAndClickSearch();
+        waitAndClickReturnValue();
     }
-    
-    @Test
-    public void testConfigParameterBookmark() throws Exception {
-        testConfigParameterSearchEdit(this);
-        passed();
-    }
-     
-    @Test
-    public void testConfigParameterNav() throws Exception {
-        testConfigParameterSearchEdit(this);
-        passed();
-     }
 }

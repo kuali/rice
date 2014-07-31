@@ -967,30 +967,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndCancelConfirmation();
     }
 
-    protected void testConfigParamaterBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Parameter ");
-        assertBlanketApproveButtonsPresent();
-        assertEquals("", getTextByName(CANCEL_NAME));
-        selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", "KR-NS - Kuali Nervous System");
-        String componentLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.coreservice.impl.component.ComponentBo!!).(((code:document.newMaintainableObject.componentCode,namespaceCode:document.newMaintainableObject.namespaceCode,))).((`document.newMaintainableObject.componentCode:code,document.newMaintainableObject.namespaceCode:namespaceCode,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        waitAndClickByXpath(componentLookUp);
-        waitAndClickSearch();
-        waitAndClickReturnValue();
-        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
-        String parameterName = "ValidationTestParameter" + dtsTwo;
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", parameterName);
-        waitAndTypeByXpath("//textarea[@id='document.newMaintainableObject.description']",
-                "Validation Test Parameter Description" + dtsTwo);
-        selectByXpath("//select[@id='document.newMaintainableObject.parameterTypeCode']", "Document Validation");
-        waitAndClickByXpath("//input[@id='document.newMaintainableObject.evaluationOperatorCodeAllowed']");
-        waitForPageToLoad();
-        blanketApproveTest(docId);
-    }
-
     protected void testCreateNewAgenda() throws Exception {
         selectFrameIframePortlet();
         selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");

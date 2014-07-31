@@ -17,8 +17,6 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,21 +39,22 @@ public class DemoWidgetsInquiryAft extends DemoLibraryBase {
     }
 
     protected void testWidgetsInquiry() throws Exception {
-    	waitAndClickByXpath("//a[contains(text(),'a2')]");
+        waitAndClickByLinkText("a2");
     	gotoLightBox();
     	waitForElementPresentByXpath("//a[contains(text(),'a2')]");
     	waitForTextPresent("Travel Account 2");
-    	waitAndClickByXpath("//button[contains(text(),'Close')]");
+        waitAndClickLightBoxClose();
     	selectTopFrame();
     }
 
     protected void testWidgetDirectInquiry() throws Exception {
-       waitAndClickByXpath("//a[contains(text(),'Direct Inquiry')]");
+       waitAndClickByLinkText("Direct Inquiry");
+       jGrowl("Click Direct Inquiry button");
        waitAndClickByXpath("//button[@title='Direct Inquiry']");
        gotoLightBox();
    	   waitForElementPresentByXpath("//a[contains(text(),'a1')]");
    	   waitForTextPresent("Travel Account 1");
-   	   waitAndClickByXpath("//button[contains(text(),'Close')]");
+       waitAndClickLightBoxClose();
     }
  
     private void testAllInquiry() throws Exception {

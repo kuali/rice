@@ -15,16 +15,13 @@
  */
 package edu.sampleu.admin;
 
-import org.apache.commons.lang.RandomStringUtils;
-import org.junit.Test;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterTypeAft extends AdminTmplMthdAftNavCreateNewBase {
+public class ConfigParameterTypeAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL+"?channelTitle=Parameter%20Type&channelUrl="+WebDriverUtils.getBaseUrlString()+
@@ -53,28 +50,12 @@ public class ConfigParameterTypeAft extends AdminTmplMthdAftNavCreateNewBase {
     @Override
     protected void createNewEnterDetails() throws InterruptedException {
         waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-        jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(6));
+        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(uniqueString.length() - 6, uniqueString.length()));
         jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
     }
-    
-    public void testConfigParameterTypeSearchEdit(JiraAwareFailable failable) throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        createNewEnterDetails();
-        testSearchEditCancel();
-        passed();
+
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        createNewEnterDetails(); // no required lookups
     }
-    
-    @Test
-    public void testConfigParameterTypeBookmark() throws Exception {
-        testConfigParameterTypeSearchEdit(this);
-        passed();
-    }
-     
-    @Test
-    public void testConfigParameterTypeNav() throws Exception {
-        testConfigParameterTypeSearchEdit(this);
-        passed();
-     }
 }

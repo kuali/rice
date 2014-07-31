@@ -2469,29 +2469,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         passed();
     }
 
-    protected void testWorkFlowDocTypeBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        assertBlanketApproveButtonsPresent();
-        String dts = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Document Type " + dts);
-        String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        waitAndClickByXpath(parentDocType);
-        waitAndClickSearch();
-        waitAndClickReturnValue();
-        String docTypeName = "DocType" + dts;
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", docTypeName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedDocHandlerUrl']",
-                "${kr.url}/maintenance.do?methodToCall=docHandler");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.label']",
-                "Workflow Maintenance Document Type Document " + dts);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.unresolvedHelpDefinitionUrl']",
-                "default.htm?turl=WordDocuments%2Fdocumenttype.htm");
-        blanketApproveTest(docId);
-    }
-
     protected void typeEnter() {
         jGrowl("Press Enter");
         driver.switchTo().activeElement().sendKeys(Keys.ENTER);

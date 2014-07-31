@@ -15,14 +15,13 @@
  */
 package edu.sampleu.admin;
 
-import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WorkFlowDocTypeAftBase extends AdminTmplMthdAftNavBase {
+public class WorkFlowDocTypeAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Document%20Type&channelUrl=" 
@@ -51,26 +50,27 @@ public abstract class WorkFlowDocTypeAftBase extends AdminTmplMthdAftNavBase {
 
     @Override
     protected void createNewEnterDetails() throws InterruptedException {
+        inputDetails();
+    }
+
+    private void inputDetails() throws InterruptedException {
         waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
         jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        waitAndTypeByName("document.newMaintainableObject.unresolvedHelpDefinitionUrl",
+                "${kr.url}/maintenance.do?methodToCall=docHandler"); // optional
         jiraAwareTypeByName("document.newMaintainableObject.label", "label" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.unresolvedHelpDefinitionUrl",
+                "default.htm?turl=WordDocuments%2Fdocumenttype.htm"); // optional
     }
 
-    public void testWorkFlowDocTypeBookmark(JiraAwareFailable failable) throws Exception {
-        testCreateNewCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testSearchEditCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateDocType();
-        passed();
-    }
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        inputDetails();
 
-    public void testWorkFlowDocTypeNav(JiraAwareFailable failable) throws Exception {
-        testCreateNewCancel();
-        navigate();
-        testSearchEditCancel();
-        navigate();
-        testCreateDocType();
-        passed();
+        String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(parentDocType);
+        waitAndClickSearch();
+        waitAndClickReturnValue();
     }
 }

@@ -172,7 +172,7 @@ public class DocumentTypeTest extends KEWTestCase {
         document.approve("");
 
         // Split1, Right, Innersplit, Right (user4)
-        for (int j=10; j >= 0; j--) {
+        for (int j=15; j >= 0; j--) {
             Thread.sleep(waitMilliSeconds);
             document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
             if (document.isApprovalRequested()) {

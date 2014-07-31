@@ -241,7 +241,7 @@ KradRequest.prototype = {
             return true;
         }
 
-        valid = validateForm();
+        valid = validateForm(this.$action);
 
         if (!valid) {
             clearHiddens();

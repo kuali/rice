@@ -1773,13 +1773,15 @@ function validateFieldValue(fieldControl) {
  * kradVariables.IGNORE_VALIDATION_TEMP_CLASS class names which may have been applied
  * when limiting validation to a subset of fields.
  *
+ * @param $action(optional) element of that initiated the request, used to determine if invoked in dialog
+ *
  * @returns {boolean} true if all fields requiring validation are valid, false otherwise
  */
-function validateForm() {
+function validateForm($action) {
 
     jQuery("." + kradVariables.IGNORE_VALIDATION_TEMP_CLASS).removeClass(kradVariables.IGNORE_VALIDATION_TEMP_CLASS);
 
-    return _validateFormOrDialog();
+    return _validateFormOrDialog($action);
 }
 
 /**
@@ -1789,10 +1791,11 @@ function validateForm() {
  * @param $fieldsToSkip Array of jQuery objects on which to ignore validation.
  * @param skipConditionFunc callback function which determines if validation should
  * be ignored for $fieldsToSkip.
+ * @param $action(optional) element of that initiated the request, used to determine if invoked in dialog
  *
  * @returns {boolean} true if all fields requiring validation are valid, false otherwise
  */
-function validatePartialForm($fieldsToSkip, skipConditionFunc) {
+function validatePartialForm($fieldsToSkip, skipConditionFunc, $action) {
 
     if (skipConditionFunc()) {
         $fieldsToSkip.addClass(kradVariables.IGNORE_VALIDATION_TEMP_CLASS);
@@ -1803,21 +1806,23 @@ function validatePartialForm($fieldsToSkip, skipConditionFunc) {
         jQuery("." + kradVariables.IGNORE_VALIDATION_TEMP_CLASS).removeClass(kradVariables.IGNORE_VALIDATION_TEMP_CLASS);
     }
 
-    return _validateFormOrDialog();
+    return _validateFormOrDialog($action);
 }
 
 /**
  * Validates all fields requiring validation, in a form or dialog.
  *
+ * @param $action(optional) element that initiated the request, used to determine if invoked in dialog
+ *
  * @returns {boolean} true if all fields requiring validation are valid, false otherwise
  *
  * @private
  */
-function _validateFormOrDialog() {
+function _validateFormOrDialog($action) {
 
     var inDialog = false;
-    if (this.$action) {
-        var $dialogGroup = this.$action.closest(kradVariables.DIALOG_SELECTOR);
+    if ($action) {
+        var $dialogGroup = $action.closest(kradVariables.DIALOG_SELECTOR);
         inDialog = $dialogGroup.length;
     }
 

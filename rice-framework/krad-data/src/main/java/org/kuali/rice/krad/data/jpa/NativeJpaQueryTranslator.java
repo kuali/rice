@@ -560,6 +560,7 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
         if (propertyPath.contains(".")) {
             String propertyPathStart = StringUtils.substringBefore( propertyPath, "." );
             String propertyPathEnd = StringUtils.substringAfter( propertyPath, "." );
+
             if (sortAscending) {
                 orderList.add(criteria.builder.asc(criteria.root.get(propertyPathStart).get(propertyPathEnd)));
             } else {

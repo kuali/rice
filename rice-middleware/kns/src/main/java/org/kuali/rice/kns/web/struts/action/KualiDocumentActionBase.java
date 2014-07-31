@@ -1755,7 +1755,7 @@ public class KualiDocumentActionBase extends KualiAction {
         } else if (StringUtils.isNotBlank(form.getBackLocation())) {
             dest = new ActionForward(form.getBackLocation(), true);
         } else {
-            dest = mapping.findForward(KRADConstants.MAPPING_PORTAL);
+            dest = new ActionForward("/portal.do", true);
         }
 
         setupDocumentExit();

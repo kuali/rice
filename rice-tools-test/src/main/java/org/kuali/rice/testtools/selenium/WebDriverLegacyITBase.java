@@ -1439,21 +1439,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         blanketApproveTest(docId);
     }
 
-    protected void testLocationCountryBlanketApprove() throws InterruptedException {
-        selectFrameIframePortlet();
-        String randomCode = searchForAvailableCode(2);
-
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        String countryName = "Validation Test Country " + randomCode + " " + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, countryName);
-        waitAndTypeByXpath(DOC_CODE_XPATH, randomCode);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", countryName);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.alternateCode']", "V" + randomCode);
-
-        finishBlanketApprovalTest(docId);
-    }
-
     protected void finishBlanketApprovalTest(String docId) throws InterruptedException {
         assertBlanketApproveButtonsPresent();
         blanketApproveCheck();

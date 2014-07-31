@@ -15,16 +15,14 @@
  */
 package edu.sampleu.kim.api.location;
 
-import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
+import edu.sampleu.admin.AdminTmplMthdAftNavBlanketAppBase;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LocationCountryAftBase extends AdminTmplMthdAftNavBase {
+public class LocationCountryAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Country&channelUrl=" 
@@ -54,27 +52,12 @@ public abstract class LocationCountryAftBase extends AdminTmplMthdAftNavBase {
     @Override
     protected void createNewEnterDetails() throws InterruptedException {
         waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-        jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphabetic(2));
+        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
         jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
     }
 
-    public void testLocationCountryBookmark(JiraAwareFailable failable) throws Exception {
-        testSearchEditCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSave();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSubmit();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSaveSubmit();
-        passed();
-    }
-
-    public void testLocationCountryNav(JiraAwareFailable failable) throws Exception {
-        testEditCancel();
-        navigate();
-        testCreateNewCancelNav();
-        passed();
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        createNewEnterDetails(); // no required lookups
     }
 }

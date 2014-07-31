@@ -15,16 +15,14 @@
  */
 package edu.sampleu.kim.api.location;
 
-import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.apache.commons.lang.RandomStringUtils;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
+import edu.sampleu.admin.AdminTmplMthdAftNavBlanketAppBase;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LocationPostCodeAftBase extends AdminTmplMthdAftNavBase {
+public class LocationPostCodeAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Postal%20Code&channelUrl=" 
@@ -53,26 +51,33 @@ public abstract class LocationPostCodeAftBase extends AdminTmplMthdAftNavBase {
 
     @Override
     protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        inputDetails();
+
         jiraAwareTypeByName("document.newMaintainableObject.countryCode", "US");
-        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString);
         jiraAwareTypeByName("document.newMaintainableObject.stateCode", "IN");
+    }
+
+    private void inputDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(7, 12));
         jiraAwareTypeByName("document.newMaintainableObject.cityName", "name" + uniqueString);
     }
 
-    public void testLocationPostCodeBookmark(JiraAwareFailable failable) throws Exception {
-        testCreateNewCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSave();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSubmit();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSaveSubmit();
-        passed();
-    }
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        inputDetails();
 
-    public void testLocationPostCodeNav(JiraAwareFailable failable) throws Exception {
-        testCreateNewCancelNav();
-        passed();
+        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(countryLookUp);
+        waitAndTypeByName("code", "US");
+        waitAndClickSearch();
+        waitAndClickReturnValue();
+
+        String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
+        waitAndClickByXpath(stateLookUp);
+        waitAndClickSearch();
+        waitAndClickByXpath("//table[@id='row']/tbody/tr[4]/td[1]/a");
     }
 }

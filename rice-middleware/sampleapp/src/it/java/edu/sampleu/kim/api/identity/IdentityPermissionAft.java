@@ -15,15 +15,14 @@
  */
 package edu.sampleu.kim.api.identity;
 
-import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
+import edu.sampleu.admin.AdminTmplMthdAftNavBlanketAppBase;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class IdentityPermissionBlanketAppAftBase extends AdminTmplMthdAftNavBase {
+public class IdentityPermissionAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Permission&channelUrl=" 
@@ -49,14 +48,17 @@ public abstract class IdentityPermissionBlanketAppAftBase extends AdminTmplMthdA
     protected String getLinkLocator() {
         return "Permission";
     }
-   
-    public void testIdentityPermissionBlanketAppBookmark(JiraAwareFailable failable) throws Exception {
-        testIdentityPermissionBlanketApprove();
-        passed();
+
+    @Override
+    protected void createNewEnterDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        selectOptionByName("document.newMaintainableObject.templateId", "35"); // KR-IDM : Assign Role
+        selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
     }
 
-    public void testIdentityPermissionBlanketAppNav(JiraAwareFailable failable) throws Exception {
-        testIdentityPermissionBlanketApprove();
-        passed();
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        createNewEnterDetails(); // no lookups
     }
 }

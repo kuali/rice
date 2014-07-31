@@ -15,24 +15,24 @@
  */
 package edu.sampleu.kim.api.identity;
 
-import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
+import edu.sampleu.admin.AdminTmplMthdAftNavBlanketAppBase;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class IdentityPermissionAftBase extends AdminTmplMthdAftNavBase {
+public class IdentityResponsibilityAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
-     * ITUtil.PORTAL + "?channelTitle=Permission&channelUrl=" 
-     * + WebDriverUtils.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.impl.permission.UberPermissionBo&docFormKey=88888888&returnLocation=" +
+     * ITUtil.PORTAL + "?channelTitle=Responsibility&channelUrl=" 
+     * + WebDriverUtils.getBaseUrlString() + ITUtil.KNS_LOOKUP_METHOD + "org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo&docFormKey=88888888&returnLocation=" +
      * ITUtil.PORTAL_URL + ITUtil.HIDE_RETURN_LINK;
      */
-    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Permission&channelUrl="
+    public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Responsibility&channelUrl="
             + WebDriverUtils.getBaseUrlString() + AutomatedFunctionalTestUtils.KNS_LOOKUP_METHOD +
-            "org.kuali.rice.kim.impl.permission.UberPermissionBo&docFormKey=88888888&returnLocation=" +
+            "org.kuali.rice.kim.impl.responsibility.UberResponsibilityBo&docFormKey=88888888&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK ;
 
     @Override
@@ -42,39 +42,36 @@ public abstract class IdentityPermissionAftBase extends AdminTmplMthdAftNavBase 
 
     /**
      * {@inheritDoc}
-     * Permission
+     * Responsibility
      * @return
      */
     @Override
     protected String getLinkLocator() {
-        return "Permission";
+        return "Responsibility";
     }
 
     @Override
     protected void createNewEnterDetails() throws InterruptedException {
+        inputDetails();
+
+        jiraAwareTypeByName("document.newMaintainableObject.documentTypeName", "DocumentTypeDocument");
+    }
+
+    private void inputDetails() throws InterruptedException {
         waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-        selectOptionByName("document.newMaintainableObject.templateId", "35"); // KR-IDM : Assign Role
         selectOptionByName("document.newMaintainableObject.namespaceCode", namespaceCode);
         jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.routeNodeName", "routeNodeName" + uniqueString);
+        waitAndClick(By.name("document.newMaintainableObject.actionDetailsAtRoleMemberLevel"));
+        waitAndClick(By.name("document.newMaintainableObject.required"));
     }
 
-    public void testIdentityPermissionBookmark(JiraAwareFailable failable) throws Exception {
-        testSearchEditCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSave();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSubmit();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSaveSubmit();
-        passed();
-    }
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        inputDetails();
 
-    public void testIdentityPermissionNav(JiraAwareFailable failable) throws Exception {
-        testEditCancel();
-        navigate();
-        testCreateNewCancelNav();
-        passed();
+        waitAndClickByXpath("//input[@alt='Search Document Type Name']");
+        waitAndClickSearch();
+        waitAndClickReturnValue();
     }
 }

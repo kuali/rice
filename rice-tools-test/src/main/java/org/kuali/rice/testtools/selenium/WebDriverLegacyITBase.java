@@ -1361,22 +1361,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         //-----Step 3 verified that doc is final -------
     }
 
-    protected void testIdentityPermissionBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitAndTypeByXpath("//input[@name='document.documentHeader.documentDescription']",
-                "Validation Test Permission " + dtsTwo);
-        assertBlanketApproveButtonsPresent();
-        waitAndTypeByXpath("//input[@name='document.documentHeader.organizationDocumentNumber']", "10012");
-        selectByXpath("//select[@name='document.newMaintainableObject.namespaceCode']", LABEL_KUALI_KUALI_SYSTEMS);
-        selectByXpath("//select[@name='document.newMaintainableObject.templateId']", LABEL_KUALI_DEFAULT);
-        waitAndTypeByXpath("//input[@name='document.newMaintainableObject.name']",
-                "ValidationTestPermission" + dtsTwo);
-        blanketApproveTest(docId);
-    }
-
     protected void testIdentityPersonBlanketApprove() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
@@ -1398,23 +1382,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickByName("newName.dflt");
         waitAndClickByName("methodToCall.addName.anchor");
         waitForPageToLoad();
-        blanketApproveTest(docId);
-    }
-
-    protected void testIdentityResponsibilityBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Responsibility " + dtsTwo);
-        assertBlanketApproveButtonsPresent();
-        selectByXpath("//select[@id='document.newMaintainableObject.namespaceCode']", LABEL_KUALI_KUALI_SYSTEMS);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']",
-                "Validation Test Responsibility " + dtsTwo);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.documentTypeName']", "Test " + dtsTwo);
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.routeNodeName']", "Test " + dtsTwo);
-        waitAndClickByXpath("//input[@id='document.newMaintainableObject.actionDetailsAtRoleMemberLevel']");
-        waitAndClickByXpath("//input[@id='document.newMaintainableObject.required']");
         blanketApproveTest(docId);
     }
 
@@ -1445,30 +1412,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         if (!hasDocError("same primary key already exists")) { // don't fail as to still have the same key after 25 sequential attempts we've created many today already
             blanketApproveAssert(docId);
         }
-    }
-
-    protected void testLocationPostBlanketApprove() throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        String docId = waitForDocId();
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Validation Test Postal Code");
-        assertBlanketApproveButtonsPresent();
-        String countryLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.country.CountryBo!!).(((code:document.newMaintainableObject.countryCode,))).((`document.newMaintainableObject.countryCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        waitAndClickByXpath(countryLookUp);
-        waitAndTypeByName("code", "US");
-        waitAndClickSearch();
-        waitAndClickReturnValue();
-        String code = RandomStringUtils.randomNumeric(5);
-        waitAndTypeByXpath(DOC_CODE_XPATH, code);
-        String stateLookUp = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.location.impl.state.StateBo!!).(((countryCode:document.newMaintainableObject.countryCode,code:document.newMaintainableObject.stateCode,))).((`document.newMaintainableObject.countryCode:countryCode,document.newMaintainableObject.stateCode:code,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
-                + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
-        waitAndClickByXpath(stateLookUp);
-        waitAndClickSearch();
-        waitAndClickByXpath("//table[@id='row']/tbody/tr[4]/td[1]/a");
-        String cityName = "Validation Test Postal Code " + code;
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.cityName']", cityName);
-        blanketApproveTest(docId);
     }
 
     protected void testLookUp() throws Exception {

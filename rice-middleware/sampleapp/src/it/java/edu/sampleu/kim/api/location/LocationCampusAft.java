@@ -15,15 +15,14 @@
  */
 package edu.sampleu.kim.api.location;
 
-import edu.sampleu.admin.AdminTmplMthdAftNavBase;
-import org.kuali.rice.testtools.common.JiraAwareFailable;
+import edu.sampleu.admin.AdminTmplMthdAftNavBlanketAppBase;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class LocationCampusAftBase extends AdminTmplMthdAftNavBase {
+public class LocationCampusAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Campus&channelUrl=" 
@@ -52,29 +51,25 @@ public abstract class LocationCampusAftBase extends AdminTmplMthdAftNavBase {
 
     @Override
     protected void createNewEnterDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
-        jiraAwareTypeByName("document.newMaintainableObject.shortName", uniqueString);
+        inputDetails();
+
         selectOptionByName("document.newMaintainableObject.campusTypeCode", "F");
     }
 
-    public void testLocationCampusBookmark(JiraAwareFailable failable) throws Exception {
-        testSearchEditCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewCancel();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSave();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSubmit();
-        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
-        testCreateNewSaveSubmit();
-        passed();
+    private void inputDetails() throws InterruptedException {
+        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
+        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareTypeByName("document.newMaintainableObject.shortName", uniqueString);
     }
 
-    public void testLocationCampusNav(JiraAwareFailable failable) throws Exception {
-        testEditCancel();
-        navigate();
-        testCreateNewCancelNav();
-        passed();
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        inputDetails();
+
+        jGrowl("Click Campus Type Code lookup");
+        waitAndClickByXpath("//input[@alt='Search Campus Type Code']");
+        waitAndClickSearch();
+        waitAndClickReturnValue();
     }
 }

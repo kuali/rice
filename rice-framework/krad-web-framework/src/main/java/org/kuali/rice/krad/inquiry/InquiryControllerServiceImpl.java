@@ -50,7 +50,10 @@ public class InquiryControllerServiceImpl extends ControllerServiceImpl {
         InquiryForm inquiryForm = (InquiryForm) form;
         HttpServletRequest request = form.getRequest();
 
-        if (!inquiryForm.isRedirectedInquiry()) {
+        Boolean hasRedirectedInquiryParameter = (request.getParameter(UifParameters.REDIRECTED_INQUIRY) != null
+                                         && request.getParameter(UifParameters.REDIRECTED_INQUIRY).contains("true"));
+
+        if (!inquiryForm.isRedirectedInquiry() && !hasRedirectedInquiryParameter) {
             ModelAndView redirectModelAndView = checkForModuleInquiryRedirect(inquiryForm, request);
             if (redirectModelAndView != null) {
                 return redirectModelAndView;

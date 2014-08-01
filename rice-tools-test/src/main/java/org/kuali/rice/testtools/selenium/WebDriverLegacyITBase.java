@@ -563,7 +563,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertEquals(docStatus, getTextByXpath(DOC_STATUS_XPATH_2));
     }
 
-    private void docSearch(String docId) throws InterruptedException {
+    protected void docSearch(String docId) throws InterruptedException {
         selectParentWindow();
         selectTopFrame();
         waitAndClickDocSearchTitle();
@@ -1034,13 +1034,14 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         return docId;
     }
 
-    protected void testCreateNewCancel() throws Exception {
+    protected String testCreateNewCancel() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         testCancelConfirmation();
         assertDocSearchNoResults(docId);
+        return docId;
     }
 
     protected void testCreateNewRequired() throws Exception {
@@ -1050,7 +1051,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitForElementVisibleBy(By.xpath("//div[@class='error']")).getText().contains(" error(s) found on page.");
     }
     
-    protected void testCreateNewSave() throws Exception {
+    protected String testCreateNewSave() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
         String docId = verifyDocInitiated();
@@ -1060,9 +1061,10 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertDocSearch(docId, "SAVED");
         waitAndClickRouteLogIcon();
         assertRouteStatus("SAVED");
+        return docId;
     }
 
-    protected void testCreateNewSubmit() throws Exception {
+    protected String testCreateNewSubmit() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
         String docId = verifyDocInitiated();
@@ -1072,9 +1074,10 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
+        return docId;
     }
     
-    protected void testCreateNewSaveSubmit() throws Exception {
+    protected String testCreateNewSaveSubmit() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
         String docId = verifyDocInitiated();
@@ -1086,6 +1089,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
+        return docId;
     }
 
     protected String verifyDocInitiated() throws InterruptedException {

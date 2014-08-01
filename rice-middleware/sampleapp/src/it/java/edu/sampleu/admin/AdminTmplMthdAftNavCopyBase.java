@@ -24,14 +24,13 @@ import org.openqa.selenium.By;
 public abstract class AdminTmplMthdAftNavCopyBase extends AdminTmplMthdAftNavEditBase {
 
     public void testLookUpCopySave() throws Exception {
-        selectFrameIframePortlet();
-        waitAndTypeByName("name", "name*"); // use a document created by one of our AFTs
-        waitAndClickSearchSecond();
-        waitAndClickByLinkText("copy");
+        String docId = testCreateNewSubmit(); // create a new doc we are going to copy
+        docSearch(docId);
 
+        waitAndClickByLinkText("copy");
         String desc = getDescriptionUnique();
         jiraAwareTypeByName("document.documentHeader.documentDescription", desc);
-        String docId = verifyDocInitiated();
+        assertEquals("Document Id created does not match document id copied", docId, verifyDocInitiated());
         waitAndClickSave();
         waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         assertDocSearch(docId, "SAVED");

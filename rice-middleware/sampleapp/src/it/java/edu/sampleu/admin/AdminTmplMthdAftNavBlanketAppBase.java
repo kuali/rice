@@ -33,13 +33,14 @@ public abstract class AdminTmplMthdAftNavBlanketAppBase extends AdminTmplMthdAft
         return AdminTmplMthdAftNavBase.CREATE_NEW_LOCATOR;
     }
 
-    protected void testBlanketApprove() throws Exception {
+    protected String testBlanketApprove() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
         String docId = verifyDocInitiated();
         assertBlanketApproveButtonsPresent();
         createNewLookupDetails();
         blanketApproveTest(docId);
+        return docId;
     }
 
     @Test

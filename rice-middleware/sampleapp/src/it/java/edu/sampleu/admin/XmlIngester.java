@@ -65,7 +65,9 @@ public class XmlIngester extends AdminTmplMthdAftNavBase {
 
     @Ignore // empty test, XML Ingester does not have Create New Cancel functionality
     @Override
-    public void testCreateNewCancel() throws Exception {}
+    public String testCreateNewCancel() throws Exception {
+        return null;
+    }
 
     @Ignore // empty test, XML Ingester does not have Edit Cancel functionality
     @Override

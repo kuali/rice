@@ -24,14 +24,13 @@ import org.openqa.selenium.By;
 public abstract class AdminTmplMthdAftNavEditBase extends AdminTmplMthdAftNavBlanketAppBase {
 
     public void testLookUpEditSave() throws Exception {
-        selectFrameIframePortlet();
-        waitAndTypeByName("name", "name*"); // use a document created by one of our AFTs
-        waitAndClickSearchSecond();
-        waitAndClickByLinkText("edit");
+        String docId = testCreateNewSubmit(); // create a new doc we are going to copy
+        docSearch(docId);
 
+        waitAndClickByLinkText("edit");
         String desc = getDescriptionUnique();
         jiraAwareTypeByName("document.documentHeader.documentDescription", desc);
-        String docId = verifyDocInitiated();
+        assertEquals("Document Id created does not match document id edited", docId, verifyDocInitiated());
         waitAndClickSave();
         waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         assertDocSearch(docId, "SAVED");

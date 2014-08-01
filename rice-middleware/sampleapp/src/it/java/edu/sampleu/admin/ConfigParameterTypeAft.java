@@ -21,7 +21,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConfigParameterTypeAft extends AdminTmplMthdAftNavBlanketAppBase {
+public class ConfigParameterTypeAft extends AdminTmplMthdAftNavCopyBase {
 
     /**
      * ITUtil.PORTAL+"?channelTitle=Parameter%20Type&channelUrl="+WebDriverUtils.getBaseUrlString()+

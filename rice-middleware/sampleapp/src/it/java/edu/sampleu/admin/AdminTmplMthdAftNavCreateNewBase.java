@@ -37,11 +37,13 @@ public abstract class AdminTmplMthdAftNavCreateNewBase extends AdminTmplMthdAftN
     @Test
     public void testCreateNewRequiredBookmark() throws Exception {
         testCreateNewRequired();
+        passed();
     }
 
     @Test
     public void testCreateNewRequiredNav() throws Exception {
         testCreateNewRequired();
+        passed();
     }
 
     @Test

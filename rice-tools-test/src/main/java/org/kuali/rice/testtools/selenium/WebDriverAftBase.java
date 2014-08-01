@@ -322,6 +322,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void assertTextPresent(String[] text) throws InterruptedException {
+        assertTextPresent("", text);
+    }
+
+    protected void assertTextPresent( String message, String[] text) throws InterruptedException {
         StringBuilder missingText = new StringBuilder("");
         boolean present = true;
         for (int i = 0, s = text.length; i < s; i++) {
@@ -338,7 +342,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             }
         }
         if (!present) {
-            jiraAwareFail(missingText + " not present for " + this.getClass().toString());
+            jiraAwareFail(message + " " + missingText + " not present for " + this.getClass().toString());
         }
     }
 
@@ -523,8 +527,12 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void determineTestMethodName() {
         if (testName != null && testName.getMethodName() != null) { // JUnit
-            testMethodName = testName.getMethodName();
+            setTestMethodName(testName.getMethodName());
         }
+    }
+
+    public void setTestMethodName(String testMethodName) {
+        this.testMethodName = testMethodName;
     }
 
     protected void determineUser() {
@@ -661,6 +669,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     @Override
     protected WebDriver getDriver() {
         return driver;
+    }
+
+    public void setDriver(WebDriver driver) {
+        this.driver = driver;
     }
 
     protected WebElement getElementByAttribute(String attributeName){
@@ -1121,18 +1133,12 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     public void testSetUp() {
         // TODO it would be better if all opening of urls and logging in was not done in setUp, failures in setUp case the test to not be recorded. extract to setUp and call first for all tests.
         try { // Don't throw any exception from this methods, exceptions in Before annotations really mess up maven, surefire, or failsafe
-            determineTestMethodName();
-
-            determineImplicitWait();
-
-            determineUser();
+            setUpSetUp();
 
             String testUrl = getTestUrl();
 
             driver = WebDriverUtils.setUp(getUserName(), testUrl, getClass().getSimpleName(), testMethodName);
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
-
-            determineJgrowlHeader();
 
             WebDriverUtils.jGrowl(driver, "Open URL", false, "Open " + testUrl);
             login(driver, getUserName(), this);
@@ -1146,6 +1152,13 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
                     + t.getMessage()
                     + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
         }
+    }
+
+    public void setUpSetUp() {
+        determineTestMethodName();
+        determineImplicitWait();
+        determineUser();
+        determineJgrowlHeader();
     }
 
     protected void uncheck(By by) throws InterruptedException {

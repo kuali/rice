@@ -1057,6 +1057,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSave();
+        checkForDocError();
         waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         assertDocSearch(docId, "SAVED");
         waitAndClickRouteLogIcon();
@@ -1070,6 +1071,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSubmit();
+        checkForDocError();
         waitForElementVisibleBy(By.xpath(DOC_SUBMIT_SUCCESS_MSG_XPATH));
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
@@ -1085,6 +1087,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickSave();
         waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         waitAndClickSubmit();
+        checkForDocError();
         waitForElementVisibleBy(By.xpath(DOC_SUBMIT_SUCCESS_MSG_XPATH));
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();

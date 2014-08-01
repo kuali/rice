@@ -15,6 +15,7 @@
  */
 package edu.sampleu.kew;
 
+import edu.sampleu.admin.ConfigComponentActionListBkMrkAft;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -48,7 +49,23 @@ public class QuickLinksAft extends WebDriverLegacyITBase {
 
     protected void testQuickLinks() throws Exception {
         selectFrameIframePortlet();
-        assertTextPresent(new String[] {"Quick Action List", "ENROUTE", "Route Log"});
+        assertTextPresent(new String[] {"Named Searches", "Quick EDoc Search", "Quick EDoc Watch", "Quick Action List"});
+
+        String rootWindow = driver.getWindowHandle();
+
+        ConfigComponentActionListBkMrkAft test = new ConfigComponentActionListBkMrkAft();
+        test.setTestMethodName("QuickLinksAft." + testMethodName);
+        test.setUpSetUp();
+        test.setDriver(getDriver()); // Use this tests WebDriver as the tests own has not been setup
+        open(getBaseUrlString() + test.getBookmarkUrl());
+        test.testActionListAcknowledgePerson_WithPendingApprove();
+        close(); // action list window
+        driver.switchTo().window(rootWindow);
+        logout(); // as fran
+
+        open(getBaseUrlString() + getBookmarkUrl());
+        selectFrameIframePortlet();
+        assertTextPresent(new String[] {"ENROUTE", "Route Log"});
     }
 
     @Test

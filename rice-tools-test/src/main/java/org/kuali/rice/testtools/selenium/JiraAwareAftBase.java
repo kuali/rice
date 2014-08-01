@@ -529,6 +529,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @param failable to call fail on
      */
     protected void jiraAwareFail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
+        passed = false;
         if (!contents.startsWith("\nIncident report") && !message.startsWith("\nIncident report")) {
             String errorMessage = AutomatedFunctionalTestUtils.incidentReportMessage(getDriver().getPageSource(), "", message);
             if (errorMessage != null) {

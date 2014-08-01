@@ -153,13 +153,13 @@ public class AutomatedFunctionalTestUtils {
     }
 
     /**
-     * Creates a 13 digit time stamp with two random characters inserted into it to avoid the 9 continous digit varification some fields use.
+     * Creates a 13 digit time stamp with two random characters inserted into it to avoid the 9 continuous digit verification some fields use.
      *
      * @return
      */
     public static String createUniqueDtsPlusTwoRandomCharsNot9Digits() {
         String dtsTwo = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
-        dtsTwo = dtsTwo.substring(0, 5) + dtsTwo.substring(13, 14) + dtsTwo.substring(6, 12);
+        dtsTwo = dtsTwo.substring(0, 5) + dtsTwo.substring(13, 15) + dtsTwo.substring(6, 12);
         return dtsTwo;
     }
 

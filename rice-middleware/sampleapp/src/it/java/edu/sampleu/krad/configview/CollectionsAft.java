@@ -223,13 +223,13 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Add Via Lightbox");
         Integer preValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         waitAndClickButtonByText("Add Line");
-        testColumnSequence();
+        waitForProgressAddingLine();
         waitAndTypeByXpath("//div[@class='modal-body']/div[2]/div/input", "1");
         waitAndTypeByXpath("//div[@class='modal-body']/div[4]/div/input", "1");
         waitAndTypeByXpath("//div[@class='modal-body']/div[6]/div/input", "1");
         waitAndTypeByXpath("//div[@class='modal-body']/div[8]/div/input", "1");
         waitAndClickByXpath("//button[@id='Collections-AddViaLightbox-TableTop_add']");
-        Thread.sleep(3000);
+        waitForProgressAddingLine();
         Integer postValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         if(preValue>postValue) {
             jiraAwareFail("Totalling not working in " + getClass().toString());
@@ -239,13 +239,13 @@ public class CollectionsAft extends WebDriverLegacyITBase {
     protected void testColumnSequence() throws Exception {
         waitAndClickByLinkText("Column Sequence");
         acceptAlert();
-        waitForProgressAddingLine();
+        waitForProgressLoading();
         waitAndTypeByName("newCollectionLines['list1'].field1", "1");
         waitAndTypeByName("newCollectionLines['list1'].field2", "1");
         waitAndTypeByName("newCollectionLines['list1'].field3", "1");
         waitAndTypeByName("newCollectionLines['list1'].field4", "1");
         waitAndClick(By.id("Collections-ColumnSequence-TableDefault_add"));
-        Thread.sleep(3000);
+        waitForProgressAddingLine();
 
         //Check if row has been added really or not
         testIfRowHasBeenAdded();
@@ -257,13 +257,13 @@ public class CollectionsAft extends WebDriverLegacyITBase {
     protected void testSequencerow() throws Exception {
         waitAndClickByLinkText("Save Row");
         acceptAlert();
-        waitForProgressAddingLine();
+        waitForProgressLoading();
         waitAndTypeByName("newCollectionLines['list1'].field1", "1");
         waitAndTypeByName("newCollectionLines['list1'].field2", "1");
         waitAndTypeByName("newCollectionLines['list1'].field3", "1");
         waitAndTypeByName("newCollectionLines['list1'].field4", "1");
         clickAdd();
-        Thread.sleep(3000);
+        waitForProgressAddingLine();
 
         //Check if row has been added really or not
         testIfRowHasBeenAdded();

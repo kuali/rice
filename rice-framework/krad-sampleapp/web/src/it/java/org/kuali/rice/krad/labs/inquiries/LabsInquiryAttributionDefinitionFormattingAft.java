@@ -54,6 +54,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                                           {"Expense Amount:", "1,278.97"},
                                           {"Reimbursable:", "true"},
                                           {"Taxable:", "true"}};
+        waitForProgressLoading();
         assertLabeledTextPresent(lightBoxLabeledText);
         clickCollapseAll();
         assertLabeledTextNotPresent(lightBoxLabeledText);

@@ -430,6 +430,7 @@ function openLinkInDialog($link, dialogId) {
 
         //set lightbox flag and continue flow
         $link.attr("href", href + "&renderedInDialog=true&flow=" + flow);
+        href = $link.attr("href");
     }
 
     // Check if this is called within a light box

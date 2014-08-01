@@ -53,6 +53,8 @@ import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.pojo.PojoForm;
+import org.kuali.rice.kns.web.struts.action.ActionForwardCallback;
+import org.kuali.rice.kns.web.struts.action.PostTransactionActionForward;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
@@ -541,9 +543,15 @@ public class KualiRequestProcessor extends RequestProcessor {
 				forward = e.getActionForward();
 			}
 
+            if (forward != null && forward instanceof PostTransactionActionForward) {
+                final ActionForwardCallback act = ((PostTransactionActionForward) forward).getCallback();
+                forward = act.callback(request, response, form, mapping);
+            }
+
 			publishMessages(request);
 			saveMessages(request);
 			saveAuditErrors(request);
+
 
 			if (form instanceof PojoForm) {
 				if (((PojoForm)form).getEditableProperties() == null

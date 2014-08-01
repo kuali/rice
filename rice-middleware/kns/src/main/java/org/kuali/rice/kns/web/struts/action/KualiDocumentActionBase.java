@@ -42,6 +42,7 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.core.api.util.RiceConstants;
@@ -84,6 +85,8 @@ import org.kuali.rice.kns.web.struts.form.BlankFormFile;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+import org.kuali.rice.kns.web.struts.action.ActionForwardCallback;
+import org.kuali.rice.kns.web.struts.action.PostTransactionActionForward;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
@@ -120,8 +123,13 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.util.SessionTicket;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.DefaultTransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springmodules.orm.ojb.OjbOperationException;
-
 
 /**
  * This class handles all of the document handling related actions in terms of passing them from here at a central point to the
@@ -154,6 +162,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private BusinessObjectService businessObjectService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
     private EntityManagerFactory entityManagerFactory;
+	private PlatformTransactionManager transactionManager;
 
     @Override
     protected void checkAuthorization(ActionForm form, String methodToCall) throws AuthorizationException {
@@ -2140,6 +2149,9 @@ public class KualiDocumentActionBase extends KualiAction {
             	Document document = documentForm.getDocument();
                 document = getDocumentService().validateAndPersistDocument(document, new RouteDocumentEvent(document));
                 documentForm.setDocument(document);
+                if (documentForm.getDocumentActions().containsKey(KRADConstants.KUALI_ACTION_CAN_SAVE)) {
+                    documentForm.getDocumentActions().remove(KRADConstants.KUALI_ACTION_CAN_SAVE);
+                }
             }
 
             WorkflowDocumentActionsService documentActions = getWorkflowDocumentActionsService(documentForm.getWorkflowDocument().getDocumentTypeId());
@@ -2159,8 +2171,34 @@ public class KualiDocumentActionBase extends KualiAction {
             }
             GlobalVariables.getMessageMap().putInfo("document", messageString, documentForm.getDocId(), actionRequestId);
         }
+
         documentForm.setSuperUserAnnotation("");
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+
+        return new PostTransactionActionForward(mapping.findForward(RiceConstants.MAPPING_BASIC),
+                                                new ActionForwardCallback() {
+                                                    public ActionForward callback(final HttpServletRequest request, 
+                                                                                  final HttpServletResponse response, 
+                                                                                  final ActionForm form, 
+                                                                                  final ActionMapping mapping) {
+                                                        try {
+                                                            Thread.sleep(5000);
+                                                        }
+                                                        catch (Exception e) {
+                                                        }
+                                                        
+                                                        final KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
+                                                        documentForm.populate(request);
+                                                        documentForm.getDocument().getDocumentHeader().getWorkflowDocument().refresh();
+                                                        if (documentForm.getDocument().getDocumentHeader().getWorkflowDocument().isProcessed()
+                                                            || documentForm.getDocument().getDocumentHeader().getWorkflowDocument().isFinal()
+                                                            || documentForm.getDocument().getDocumentHeader().getWorkflowDocument().isCanceled()) {
+                                                            documentForm.getDocumentActions().remove(KRADConstants.KUALI_ACTION_CAN_SAVE);
+                                                        }
+                                                        
+                                                        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+                                                    }
+                                                    
+                                                    });
     }
 
     public ActionForward superUserDisapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {

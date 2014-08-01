@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns="http://www.kuali.org/krad/schema" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.kuali.org/krad/schema" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
-<!--
-
-    Copyright 2005-2014 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
   <xsd:import namespace="http://www.springframework.org/schema/beans"/>
   <xsd:include schemaLocation="krad-elements.xsd"/>
   <xsd:element name="property" type="spring:propertyType"/>
@@ -73,7 +56,13 @@
       <xsd:element maxOccurs="unbounded" minOccurs="0" ref="spring:value"/>
       <xsd:element maxOccurs="unbounded" minOccurs="0" ref="value"/>
     </xsd:sequence>
-    <xsd:attribute name="merge" type="xsd:boolean"/>
+  </xsd:complexType>
+  <xsd:complexType name="listOrSetType">
+    <xsd:complexContent>
+      <xsd:extension base="spring:listOrSetType">
+        <xsd:attribute name="merge" type="xsd:boolean"/>
+      </xsd:extension>
+    </xsd:complexContent>
   </xsd:complexType>
   <xsd:complexType name="componentAttributes-type">
     <xsd:choice maxOccurs="unbounded" minOccurs="0"/>
@@ -470,12 +459,6 @@
  ]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="onSubmitScript">
-      <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
     <xsd:attribute name="conditionalRefresh">
       <xsd:annotation>
         <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -494,6 +477,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="onSubmitScript">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
     <xsd:attribute name="rowSpan">
@@ -756,19 +745,6 @@
  fired]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
-    <xsd:attribute name="cssClasses">
-      <xsd:annotation>
-        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
-
- 
- Declares style classes for the component. Multiple classes are specified
- with a space delimiter. This is used by the renderer to set the class
- attribute on the corresponding element. The class(s) declared must be
- available in the common style sheets or the style sheets specified for
- the view
- ]]></xsd:documentation>
-      </xsd:annotation>
-    </xsd:attribute>
     <xsd:attribute name="templateName">
       <xsd:annotation>
         <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[The name for which the template can be invoked by
@@ -781,6 +757,19 @@
 
  
  e.g. 'uif_text'
+ ]]></xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="cssClasses">
+      <xsd:annotation>
+        <xsd:documentation source="org.kuali.rice.krad.uif.component.ComponentBase" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+
+ 
+ Declares style classes for the component. Multiple classes are specified
+ with a space delimiter. This is used by the renderer to set the class
+ attribute on the corresponding element. The class(s) declared must be
+ available in the common style sheets or the style sheets specified for
+ the view
  ]]></xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
@@ -1196,6 +1185,7 @@
       <xsd:element ref="progressBarField-bean"/>
       <xsd:element ref="stepProgressBarField-bean"/>
       <xsd:element ref="controlBase"/>
+      <xsd:element ref="multiFileUploadCollection"/>
       <xsd:element ref="transactionalDocumentView"/>
       <xsd:element ref="navbar"/>
       <xsd:element ref="metaTag"/>
@@ -1718,6 +1708,7 @@
       <xsd:element ref="stepProgressBarField-bean"/>
       <xsd:element ref="groupValidationMessages"/>
       <xsd:element ref="controlBase"/>
+      <xsd:element ref="multiFileUploadCollection"/>
       <xsd:element ref="transactionalDocumentView"/>
       <xsd:element ref="breadcrumbOptions"/>
       <xsd:element ref="cssGridLayoutBase"/>
@@ -1763,14 +1754,14 @@
       <xsd:element ref="mediumTextControl"/>
       <xsd:element ref="contentElement"/>
       <xsd:element ref="mask"/>
+      <xsd:element ref="kbootTheme"/>
+      <xsd:element ref="theme"/>
       <xsd:element ref="dialogOkCancelExpl"/>
       <xsd:element ref="actionConfirmation"/>
       <xsd:element ref="dialog"/>
       <xsd:element ref="dialogYesNo"/>
       <xsd:element ref="dialogOkCancel"/>
       <xsd:element ref="actionConfirmationExpl"/>
-      <xsd:element ref="kbootTheme"/>
-      <xsd:element ref="theme"/>
       <xsd:element ref="boxLayout"/>
       <xsd:element ref="horizontalBoxLayout"/>
       <xsd:element ref="verticalBoxLayout"/>
@@ -2062,6 +2053,14 @@
       <xsd:element ref="bindingInfo"/>
     </xsd:choice>
   </xsd:complexType>
+  <xsd:complexType name="org.kuali.rice.krad.uif.element.FieldValidationMessages">
+    <xsd:choice maxOccurs="unbounded" minOccurs="0">
+      <xsd:element ref="bean"/>
+      <xsd:element ref="ref"/>
+      <xsd:element ref="inc"/>
+      <xsd:element ref="fieldValidationMessages"/>
+    </xsd:choice>
+  </xsd:complexType>
   <xsd:complexType name="org.kuali.rice.krad.uif.widget.RichTable">
     <xsd:choice maxOccurs="unbounded" minOccurs="0">
       <xsd:element ref="bean"/>
@@ -2296,14 +2295,6 @@
       <xsd:element ref="bean"/>
       <xsd:element ref="ref"/>
       <xsd:element ref="inc"/>
-    </xsd:choice>
-  </xsd:complexType>
-  <xsd:complexType name="org.kuali.rice.krad.uif.element.PageBreadcrumbOptions">
-    <xsd:choice maxOccurs="unbounded" minOccurs="0">
-      <xsd:element ref="bean"/>
-      <xsd:element ref="ref"/>
-      <xsd:element ref="inc"/>
-      <xsd:element ref="pageBreadcrumbOptions"/>
     </xsd:choice>
   </xsd:complexType>
 </xsd:schema>

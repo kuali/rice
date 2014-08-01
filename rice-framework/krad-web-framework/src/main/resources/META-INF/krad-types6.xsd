@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns="http://www.kuali.org/krad/schema" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.kuali.org/krad/schema" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
-<!--
-
-    Copyright 2005-2014 The Kuali Foundation
-
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-    http://www.opensource.org/licenses/ecl2.php
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-
--->
   <xsd:import namespace="http://www.springframework.org/schema/beans"/>
   <xsd:include schemaLocation="krad-baseTypes1.xsd"/>
   <xsd:include schemaLocation="krad-baseTypes2.xsd"/>
@@ -386,6 +369,16 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="position" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
@@ -401,16 +394,6 @@
                 </xsd:extension>
               </xsd:complexContent>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="position" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onInputScript" type="xsd:string">
             <xsd:annotation>
@@ -441,16 +424,16 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onKeyUpScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="renderedHtmlOutput" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[Rendering output for the component that will be sent as part of the
  response (can contain static text and HTML)]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onKeyUpScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyUp event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onCloseScript" type="xsd:string">
@@ -513,12 +496,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -537,6 +514,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tabs" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -1205,6 +1188,11 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
@@ -1220,11 +1208,6 @@
                 </xsd:extension>
               </xsd:complexContent>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onInputScript" type="xsd:string">
             <xsd:annotation>
@@ -1321,12 +1304,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -1345,6 +1322,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -1449,6 +1432,12 @@
             <xsd:element ref="tooltipFocus"/>
             <xsd:element ref="tooltipHelp"/>
           </xsd:choice>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOverScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="preContent">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
@@ -1458,12 +1447,6 @@
                 <xsd:any minOccurs="0" processContents="skip"/>
               </xsd:sequence>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseOverScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Space" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseOver event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="editAuthz" type="xsd:string">
             <xsd:annotation>
@@ -1778,6 +1761,11 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Script that should be executed when the component's onLoad event is fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="loadingMessageText" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Gets the loading message used by action's blockUI.]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodInvoker" type="org.kuali.rice.krad.uif.component.MethodInvokerConfig">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
@@ -1795,11 +1783,6 @@
  will be set as the component's renderOutput. The selfRendered indicator will also
  be set to true on the component.
  ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="loadingMessageText" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Gets the loading message used by action's blockUI.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="jumpToIdAfterSubmit" type="xsd:string">
@@ -1888,6 +1871,16 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="jumpToNameAfterSubmit" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[The name to jump to in the next page, the element with this name will be
+ jumped to automatically when the new page is retrieved after a submit.
+ Passing in nothing for both jumpToIdAfterSubmit and jumpToNameAfterSubmit
+ will result in this Action being jumped to by default if it is
+ present on the new page. WARNING: jumpToIdAfterSubmit always takes
+ precedence over jumpToNameAfterSubmit, if set.]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="actionParameters" type="map-type">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Parameters that should be sent when the action is invoked
@@ -1915,16 +1908,6 @@
  Support exists in the UifControllerBase for handling
  navigation between pages.
  ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="jumpToNameAfterSubmit" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[The name to jump to in the next page, the element with this name will be
- jumped to automatically when the new page is retrieved after a submit.
- Passing in nothing for both jumpToIdAfterSubmit and jumpToNameAfterSubmit
- will result in this Action being jumped to by default if it is
- present on the new page. WARNING: jumpToIdAfterSubmit always takes
- precedence over jumpToNameAfterSubmit, if set.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="title" type="xsd:string">
@@ -2113,6 +2096,12 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Indicates whether or not to perform line action auth.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onFocusScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderViaAJAX" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved from the server when
@@ -2124,12 +2113,6 @@
  capabilities will always be already within the client html and toggled to be hidden or
  visible.
  ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onFocusScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
- fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onChangeScript" type="xsd:string">
@@ -2292,6 +2275,18 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="align" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
+
+ 
+ All components belong to a Container and are placed using a
+ LayoutManager. This property specifies how the component
+ should be aligned horizontally within the container. During the finalize
+ phase the CSS text-align style will be created for the align setting.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="width" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Width the component should take up in the container
@@ -2306,18 +2301,6 @@
 
  
  e.g. '30%', '55px'
- ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="align" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Horizontal alignment of the component within its container
-
- 
- All components belong to a Container and are placed using a
- LayoutManager. This property specifies how the component
- should be aligned horizontally within the container. During the finalize
- phase the CSS text-align style will be created for the align setting.
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -2478,16 +2461,6 @@
  client-side.  This will only be performed if this action is a request based action.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="ajaxReturnType" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Gets the return type for the ajax call
-
- 
- The ajax return type indicates how the response content will be handled in the client. Typical
- examples include updating a component, the page, or doing a redirect.
- ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="refreshId" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Id for the component that should be refreshed after the action completes
@@ -2495,6 +2468,16 @@
  
  Either refresh id or refresh property name can be set to configure the component that should
  be refreshed after the action completes. If both are blank, the page will be refreshed
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="ajaxReturnType" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Gets the return type for the ajax call
+
+ 
+ The ajax return type indicates how the response content will be handled in the client. Typical
+ examples include updating a component, the page, or doing a redirect.
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -2636,6 +2619,16 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Evaluate the disable condition on controls which disable it on each key up event.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="actionEvent" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Name of the event that will be set when the action is invoked
+
+ 
+ Action events can be looked at by the view or components in order to render differently depending on
+ the action requested.
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="methodToCall" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Name of the method that should be called when the action is selected
@@ -2648,23 +2641,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="actionEvent" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Name of the event that will be set when the action is invoked
-
- 
- Action events can be looked at by the view or components in order to render differently depending on
- the action requested.
- ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:choice maxOccurs="1" minOccurs="0">
-            <xsd:element ref="fieldSecurity"/>
-            <xsd:element ref="dataFieldSecurity"/>
-            <xsd:element ref="actionSecurity"/>
-            <xsd:element ref="collectionGroupSecurity"/>
-            <xsd:element ref="componentSecurity"/>
-          </xsd:choice>
           <xsd:element maxOccurs="1" minOccurs="0" name="additionalSubmitData" type="map-type">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Map of additional data that will be posted when the action is invoked.
@@ -2684,6 +2660,13 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:choice maxOccurs="1" minOccurs="0">
+            <xsd:element ref="fieldSecurity"/>
+            <xsd:element ref="dataFieldSecurity"/>
+            <xsd:element ref="actionSecurity"/>
+            <xsd:element ref="collectionGroupSecurity"/>
+            <xsd:element ref="componentSecurity"/>
+          </xsd:choice>
           <xsd:element maxOccurs="1" minOccurs="0" name="performDirtyValidation" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Indicates whether or not to perform dirty validation.]]></xsd:documentation>
@@ -2905,6 +2888,16 @@
             <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[The css class (some which exist in bootstrap css) to use to render an icon for this action.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
+        <xsd:attribute name="jumpToNameAfterSubmit">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[The name to jump to in the next page, the element with this name will be
+ jumped to automatically when the new page is retrieved after a submit.
+ Passing in nothing for both jumpToIdAfterSubmit and jumpToNameAfterSubmit
+ will result in this Action being jumped to by default if it is
+ present on the new page. WARNING: jumpToIdAfterSubmit always takes
+ precedence over jumpToNameAfterSubmit, if set.]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
         <xsd:attribute name="actionParameters">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Parameters that should be sent when the action is invoked
@@ -2932,16 +2925,6 @@
  Support exists in the UifControllerBase for handling
  navigation between pages.
  ]]></xsd:documentation>
-          </xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="jumpToNameAfterSubmit">
-          <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[The name to jump to in the next page, the element with this name will be
- jumped to automatically when the new page is retrieved after a submit.
- Passing in nothing for both jumpToIdAfterSubmit and jumpToNameAfterSubmit
- will result in this Action being jumped to by default if it is
- present on the new page. WARNING: jumpToIdAfterSubmit always takes
- precedence over jumpToNameAfterSubmit, if set.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="displayResponseInLightBox">
@@ -3067,16 +3050,6 @@
  client-side.  This will only be performed if this action is a request based action.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
-        <xsd:attribute name="ajaxReturnType">
-          <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Gets the return type for the ajax call
-
- 
- The ajax return type indicates how the response content will be handled in the client. Typical
- examples include updating a component, the page, or doing a redirect.
- ]]></xsd:documentation>
-          </xsd:annotation>
-        </xsd:attribute>
         <xsd:attribute name="refreshId">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Id for the component that should be refreshed after the action completes
@@ -3084,6 +3057,16 @@
  
  Either refresh id or refresh property name can be set to configure the component that should
  be refreshed after the action completes. If both are blank, the page will be refreshed
+ ]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="ajaxReturnType">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Gets the return type for the ajax call
+
+ 
+ The ajax return type indicates how the response content will be handled in the client. Typical
+ examples include updating a component, the page, or doing a redirect.
  ]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
@@ -3112,6 +3095,16 @@
             <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Evaluate the disable condition on controls which disable it on each key up event.]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
+        <xsd:attribute name="actionEvent">
+          <xsd:annotation>
+            <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Name of the event that will be set when the action is invoked
+
+ 
+ Action events can be looked at by the view or components in order to render differently depending on
+ the action requested.
+ ]]></xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
         <xsd:attribute name="methodToCall">
           <xsd:annotation>
             <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Name of the method that should be called when the action is selected
@@ -3121,16 +3114,6 @@
  method in the mapped controller that should be invoked when the action is
  selected. For client side calls gives the name of the script function
  that should be invoked when the action is selected
- ]]></xsd:documentation>
-          </xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="actionEvent">
-          <xsd:annotation>
-            <xsd:documentation source="org.kuali.rice.krad.uif.element.Action" xml:lang="en"><![CDATA[Name of the event that will be set when the action is invoked
-
- 
- Action events can be looked at by the view or components in order to render differently depending on
- the action requested.
  ]]></xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
@@ -3501,6 +3484,11 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
@@ -3516,11 +3504,6 @@
                 </xsd:extension>
               </xsd:complexContent>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onInputScript" type="xsd:string">
             <xsd:annotation>
@@ -3623,12 +3606,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -3647,6 +3624,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -3926,19 +3909,6 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="list-type">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
-
- 
- Declares style classes for the component. Multiple classes are specified
- with a space delimiter. This is used by the renderer to set the class
- attribute on the corresponding element. The class(s) declared must be
- available in the common style sheets or the style sheets specified for
- the view
- ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateName" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[The name for which the template can be invoked by
@@ -3951,6 +3921,19 @@
 
  
  e.g. 'uif_text'
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="list-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.DatePicker" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+
+ 
+ Declares style classes for the component. Multiple classes are specified
+ with a space delimiter. This is used by the renderer to set the class
+ attribute on the corresponding element. The class(s) declared must be
+ available in the common style sheets or the style sheets specified for
+ the view
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -4301,6 +4284,11 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
@@ -4316,11 +4304,6 @@
                 </xsd:extension>
               </xsd:complexContent>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onInputScript" type="xsd:string">
             <xsd:annotation>
@@ -4423,12 +4406,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -4447,6 +4424,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -4726,19 +4709,6 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="list-type">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
-
- 
- Declares style classes for the component. Multiple classes are specified
- with a space delimiter. This is used by the renderer to set the class
- attribute on the corresponding element. The class(s) declared must be
- available in the common style sheets or the style sheets specified for
- the view
- ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateName" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[The name for which the template can be invoked by
@@ -4751,6 +4721,19 @@
 
  
  e.g. 'uif_text'
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="list-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Accordion" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+
+ 
+ Declares style classes for the component. Multiple classes are specified
+ with a space delimiter. This is used by the renderer to set the class
+ attribute on the corresponding element. The class(s) declared must be
+ available in the common style sheets or the style sheets specified for
+ the view
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -5092,11 +5075,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="addAppParms" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[Indicates that the light box link should have application parameters added to it.]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="finalizeMethodInvoker" type="org.kuali.rice.krad.uif.component.MethodInvokerConfig">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[MethodInvokerConfig instance for the method that should be invoked
@@ -5114,6 +5092,11 @@
  will be set as the component's renderOutput. The selfRendered indicator will also
  be set to true on the component.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="addAppParms" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[Indicates that the light box link should have application parameters added to it.]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="viewAuthz" type="xsd:string">
@@ -5145,6 +5128,11 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
@@ -5160,11 +5148,6 @@
                 </xsd:extension>
               </xsd:complexContent>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onInputScript" type="xsd:string">
             <xsd:annotation>
@@ -5267,12 +5250,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -5291,6 +5268,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.LightBox" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -5627,7 +5610,7 @@
  ]]></xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element maxOccurs="1" minOccurs="0" name="constraintStateOverrides" type="spring:listOrSetType">
+      <xsd:element maxOccurs="1" minOccurs="0" name="constraintStateOverrides" type="listOrSetType">
         <xsd:annotation>
           <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.FixedPointPatternConstraint" xml:lang="en"><![CDATA[Get the list of constraintStateOverrides which represent constraints that will replace THIS constraint
  when their state is matched during validation.
@@ -6501,12 +6484,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.element.StepProgressBar" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.element.StepProgressBar" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -6525,6 +6502,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.element.StepProgressBar" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -6978,7 +6961,7 @@
  ]]></xsd:documentation>
         </xsd:annotation>
       </xsd:element>
-      <xsd:element maxOccurs="1" minOccurs="0" name="constraintStateOverrides" type="spring:listOrSetType">
+      <xsd:element maxOccurs="1" minOccurs="0" name="constraintStateOverrides" type="listOrSetType">
         <xsd:annotation>
           <xsd:documentation source="org.kuali.rice.krad.datadictionary.validation.constraint.IntegerPatternConstraint" xml:lang="en"><![CDATA[Get the list of constraintStateOverrides which represent constraints that will replace THIS constraint
  when their state is matched during validation.
@@ -7190,15 +7173,15 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="cols" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Number of columns the control should span (vertical length)]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onKeyPressScript" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onKeyPress event is
  fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="cols" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Number of columns the control should span (vertical length)]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="scriptDataAttributes" type="map-type">
@@ -7398,6 +7381,12 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseDownScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
+ fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="width" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Width the component should take up in the container
@@ -7413,12 +7402,6 @@
  
  e.g. '30%', '55px'
  ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onMouseDownScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onMouseDown event is
- fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="ariaAttributes" type="map-type">
@@ -7682,12 +7665,6 @@
  If not set on control, min length of field will be used]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -7706,6 +7683,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -7987,11 +7970,6 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"/>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="disabled" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="progressiveRenderViaAJAX" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[When progressiveRenderViaAJAX is true, this component will be retrieved from the server when
@@ -8005,10 +7983,28 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="disabled" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onFocusScript" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[Script that should be executed when the component's onFocus event is
  fired]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="list-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+
+ 
+ Declares style classes for the component. Multiple classes are specified
+ with a space delimiter. This is used by the renderer to set the class
+ attribute on the corresponding element. The class(s) declared must be
+ available in the common style sheets or the style sheets specified for
+ the view
+ ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateName" type="xsd:string">
@@ -8023,19 +8019,6 @@
 
  
  e.g. 'uif_text'
- ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="list-type">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.control.TextAreaControl" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
-
- 
- Declares style classes for the component. Multiple classes are specified
- with a space delimiter. This is used by the renderer to set the class
- attribute on the corresponding element. The class(s) declared must be
- available in the common style sheets or the style sheets specified for
- the view
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
@@ -8542,7 +8525,7 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.field.FieldGroup" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="items" type="spring:listOrSetType">
+          <xsd:element maxOccurs="1" minOccurs="0" name="items" type="listOrSetType">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.field.FieldGroup" xml:lang="en"><![CDATA[List of Component instances contained in the nested group
 
@@ -8713,12 +8696,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.field.FieldGroup" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.field.FieldGroup" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -8737,6 +8714,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.field.FieldGroup" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -9534,6 +9517,11 @@
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[documentation not available]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="propertyReplacers">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[gets a list of PropertyReplacer instances
@@ -9549,11 +9537,6 @@
                 </xsd:extension>
               </xsd:complexContent>
             </xsd:complexType>
-          </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onDocumentReadyScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[Script to be run when the document ready event is triggered]]></xsd:documentation>
-            </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="onInputScript" type="xsd:string">
             <xsd:annotation>
@@ -9656,12 +9639,6 @@
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
- fired]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="conditionalRefresh" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[When set if the condition is satisfied, the component will be refreshed.
@@ -9680,6 +9657,12 @@
  component should be refreshed every time it is shown, use the progressiveRenderAndRefresh
  option with this property instead.
  ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="onSubmitScript" type="xsd:string">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[Script that should be executed when the component's onSubmit event is
+ fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="rowSpan" type="xsd:string">
@@ -9959,19 +9942,6 @@
  fired]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="list-type">
-            <xsd:annotation>
-              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
-
- 
- Declares style classes for the component. Multiple classes are specified
- with a space delimiter. This is used by the renderer to set the class
- attribute on the corresponding element. The class(s) declared must be
- available in the common style sheets or the style sheets specified for
- the view
- ]]></xsd:documentation>
-            </xsd:annotation>
-          </xsd:element>
           <xsd:element maxOccurs="1" minOccurs="0" name="templateName" type="xsd:string">
             <xsd:annotation>
               <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[The name for which the template can be invoked by
@@ -9984,6 +9954,19 @@
 
  
  e.g. 'uif_text'
+ ]]></xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element maxOccurs="1" minOccurs="0" name="cssClasses" type="list-type">
+            <xsd:annotation>
+              <xsd:documentation source="org.kuali.rice.krad.uif.widget.Tree" xml:lang="en"><![CDATA[CSS style class(s) to be applied to the component
+
+ 
+ Declares style classes for the component. Multiple classes are specified
+ with a space delimiter. This is used by the renderer to set the class
+ attribute on the corresponding element. The class(s) declared must be
+ available in the common style sheets or the style sheets specified for
+ the view
  ]]></xsd:documentation>
             </xsd:annotation>
           </xsd:element>

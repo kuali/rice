@@ -18,7 +18,6 @@
 -->
 <spring:beans xmlns:spring="http://www.springframework.org/schema/beans" xmlns="http://www.kuali.org/krad/schema"
               xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
-              xmlns:kc="http://www.kuali.org/kc/schema"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                                   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
@@ -40,6 +39,7 @@
         </content>
         <inc compId="LabsSchema-Content"/>
         <inc compId="LabsSchema-Section3"/>
+        <inc compId="LabsSchema-Section4"/>
       </items>
 
       <footer>
@@ -57,7 +57,7 @@
     </property>
   </mockView>
 
-  <verticalSection id="LabsSchema-Section2"  headerText="Section Header 2">
+  <verticalSection id="LabsSchema-Section2" headerText="Section Header 2">
     <preContent>
       <div>Pre Wrapper</div>
     </preContent>
@@ -106,20 +106,23 @@
     </footer>
   </verticalSection>
 
+  <verticalSection id="LabsSchema-Section4" parent="LabsSchema-Section2" headerText="Section Header 4">
+    <items merge="true">
+      <data propertyName="fieldl0" label="Field 10"/>
+    </items>
+  </verticalSection>
+
   <content id="LabsSchema-Content">
     <div>Another foo!</div>
   </content>
 
-  <tableSection id="LabsSchema-Section3"  headerText="Section Header 3" propertyName="collection1">
+  <tableSection id="LabsSchema-Section3" headerText="Section Header 3" propertyName="collection1">
     <items>
       <input propertyName="field1" label="Field 1"/>
       <input propertyName="field2" label="Field 2"/>
       <input propertyName="field3" label="Field 3"/>
       <input propertyName="field4" label="Field 4"/>
     </items>
-    <!--<subCollections>-->
-    <!--<ref compId="LabsSchema-SubCollection"/>-->
-    <!--</subCollections>-->
   </tableSection>
 
   <stackedSubCollection-withinSection id="LabsSchema-SubCollection" headerText="Sub-collection"

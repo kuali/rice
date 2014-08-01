@@ -37,12 +37,6 @@
             <div class="uif-fieldContent">
         </#if>
 
-        <#-- TODO: verify removal -->
-        <#--<#if field.renderFieldset>-->
-            <#--<fieldset data-type="InputSet" aria-labelledby="${field.id}_label" id="${field.id}_fieldset">-->
-                <#--<legend style="display: none">${field.label!}</legend>-->
-        <#--</#if>-->
-
         <#local quickfinderInputOnly=(field.widgetInputOnly!false) && ((field.quickfinder.dataObjectClassName)!"")?has_content />
 
         <#-- render field value (if read-only/quickfinder-input-only) or control (if edit) -->

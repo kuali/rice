@@ -100,6 +100,9 @@ public class KradLabsForm extends UifFormBase {
     private String messageField1;
     private String richMessageField = "[color=green][b]Message[/b][/color]";
 
+    // do not initialize this object (for binding testing)
+    private UITestObject nestedObject1;
+
     // Collections
     private List<UITestObject> collection1 = new ArrayList<UITestObject>();
     private List<UITestObject> collection1_2 = new ArrayList<UITestObject>();
@@ -683,6 +686,14 @@ public class KradLabsForm extends UifFormBase {
 
     public void setEmptyCollection(List<UITestObject> emptyCollection) {
         this.emptyCollection = emptyCollection;
+    }
+
+    public UITestObject getNestedObject1() {
+        return nestedObject1;
+    }
+
+    public void setNestedObject1(UITestObject nestedObject1) {
+        this.nestedObject1 = nestedObject1;
     }
 
     public List<UITestObject> getCollection1() {

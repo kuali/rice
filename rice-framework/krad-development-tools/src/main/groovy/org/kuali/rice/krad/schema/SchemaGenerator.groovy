@@ -11,8 +11,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+ * limitations under the License.*/
 package org.kuali.rice.krad.schema
 
 import org.apache.commons.lang.StringUtils
@@ -297,7 +296,7 @@ class SchemaGenerator {
                         attrType = "map-type"
                     } else if (aInfo.getType().equals(BeanTagAttribute.AttributeType.LISTBEAN) || aInfo.getType().
                             equals(BeanTagAttribute.AttributeType.SETBEAN)) {
-                        attrType = "spring:listOrSetType"
+                        attrType = "listOrSetType"
                     }
 
                     //create the element and documentation
@@ -769,6 +768,21 @@ class SchemaGenerator {
         basicListType.appendChild(basicListSequence)
         basicListType.appendChild(basicListMergeAttribute)
         schema.appendChild(basicListType)
+
+        // list or set type
+        Element listOrSetComplexType = baseTypesDocument.createElement("xsd:complexType")
+        listOrSetComplexType.setAttribute("name", "listOrSetType")
+
+        Element listOrSetContentElement = baseTypesDocument.createElement("xsd:complexContent")
+        listOrSetComplexType.appendChild(listOrSetContentElement)
+
+        Element listOrSetExtensionElement = baseTypesDocument.createElement("xsd:extension")
+        listOrSetExtensionElement.setAttribute("base", "spring:listOrSetType")
+        listOrSetContentElement.appendChild(listOrSetExtensionElement)
+
+        listOrSetExtensionElement.appendChild(basicListMergeAttribute)
+
+        schema.appendChild(listOrSetComplexType)
 
         schema.appendChild(baseTypesDocument.importNode(componentBaseElement, true))
     }

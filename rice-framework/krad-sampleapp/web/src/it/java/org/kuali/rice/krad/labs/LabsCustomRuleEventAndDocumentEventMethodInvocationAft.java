@@ -48,6 +48,7 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
          waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
          waitAndClickByName("document.newMaintainableObject.dataObject.accountTypeCode");
          waitAndClickButtonByExactText("Save");
+         waitForProgressSaving();
          waitForTextPresent("Document was successfully saved.");
 //         waitAndClickByXpath("//button[@data-dismissdialogid='ConfirmBlanketApproveDialog' and contains(text(),'OK')]");
          waitAndClickSubmitByText();

@@ -124,6 +124,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//a[contains(text(),subAccount)]");
 
         waitAndClickSaveByText();
+        waitForProgressSaving();
         waitForTextPresent("Document was successfully saved.");
         assertTextPresent("SAVED");
         waitAndClickSubmitByText();

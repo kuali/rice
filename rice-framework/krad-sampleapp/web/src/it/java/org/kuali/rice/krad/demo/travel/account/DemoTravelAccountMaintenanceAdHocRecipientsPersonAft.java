@@ -51,8 +51,9 @@ public class DemoTravelAccountMaintenanceAdHocRecipientsPersonAft extends WebDri
         jGrowl("Click Add button");
         waitAndClickById("Uif-AdHocPersonCollection_add");
         waitForElementPresentByXpath("//div[@data-parent=\"Uif-AdHocPersonCollection\"]/div/span[contains(text(), 'KR']"); // kr added and now displayed on the page
-        waitAndClickSaveByText();
 
+        waitAndClickSaveByText();
+        waitForProgressSaving();
         waitForTextPresent("Document was successfully saved.");
 
         clearTextByName("document.adHocRoutePersons[0].id");

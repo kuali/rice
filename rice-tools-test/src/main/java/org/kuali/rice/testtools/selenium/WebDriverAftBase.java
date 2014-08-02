@@ -1625,7 +1625,11 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void waitForProgressLoading() throws InterruptedException {
-        waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 2);
+        waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 4);
+    }
+
+    protected void waitForProgressSaving() throws InterruptedException {
+        waitForProgress("Saving...", WebDriverUtils.configuredImplicityWait() * 4);
     }
 
     protected void waitForTextPresent(String text) throws InterruptedException {

@@ -454,10 +454,12 @@ public class View extends ContainerBase {
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping", stateMapping);
 
         setNestedComponentId(getInstructionalMessage(), this.getId() + UifConstants.IdSuffixes.INSTRUCTIONAL);
-        setNestedComponentId(getHeader(), this.getId() + UifConstants.IdSuffixes.HEADER_WRAPPER);
-        setNestedComponentId(getHeader().getUpperGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_UPPER_GROUP);
-        setNestedComponentId(getHeader().getRightGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_RIGHT_GROUP);
-        setNestedComponentId(getHeader().getLowerGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_LOWER_GROUP);
+        if (getHeader() != null) {
+            setNestedComponentId(getHeader(), this.getId() + UifConstants.IdSuffixes.HEADER_WRAPPER);
+            setNestedComponentId(getHeader().getUpperGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_UPPER_GROUP);
+            setNestedComponentId(getHeader().getRightGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_RIGHT_GROUP);
+            setNestedComponentId(getHeader().getLowerGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_LOWER_GROUP);
+        }
     }
 
     /**

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.dataobject;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -129,7 +130,12 @@ public class TravelAccount extends DataObjectBase implements Serializable {
     }
 
     public Person getFiscalOfficer() {
-    	fiscalOfficer = KimApiServiceLocator.getPersonService().updatePersonIfNecessary(foId, fiscalOfficer);
+        // KULRICE-12849.  Must be an existing person in KIM
+        fiscalOfficer = KimApiServiceLocator.getPersonService().updatePersonIfNecessary(foId, fiscalOfficer);
+        if (StringUtils.isBlank(fiscalOfficer.getPrincipalId())) {
+            fiscalOfficer = null;
+        }
+
         return fiscalOfficer;
     }
 

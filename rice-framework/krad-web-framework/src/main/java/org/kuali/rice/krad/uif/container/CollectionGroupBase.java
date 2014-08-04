@@ -655,6 +655,9 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     @Override
     @BeanTagAttribute
     public boolean isRenderAddLine() {
+        if (this.useServerPaging && this.renderAddLine) {
+            return this.displayStart == 0 ? true : false;
+        }
         return this.renderAddLine;
     }
 

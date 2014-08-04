@@ -36,7 +36,7 @@ public class ServerPagingTestObject implements Serializable {
 
     private BigDecimal doubleField;
     private Integer integerField = 0;
-    private String   stringField;
+    private String stringField;
 
     public ServerPagingTestObject() { }
 
@@ -70,11 +70,10 @@ public class ServerPagingTestObject implements Serializable {
      */
     public void setIntegerField(Integer integerField) {
         this.integerField = integerField;
-
     }
 
     /**
-     * @return the tringField
+     * @return the stringField
      */
     public String getStringField() {
         return stringField;
@@ -95,4 +94,3 @@ public class ServerPagingTestObject implements Serializable {
     }
 
 }
-

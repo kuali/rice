@@ -42,6 +42,7 @@
   </build>
 
   <dependencies>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-app-framework</artifactId>
@@ -64,17 +65,7 @@
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-service-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-service-framework</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-kew-framework</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -123,6 +114,7 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time-jsptags</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.kuali.db.ojb</groupId>
@@ -133,18 +125,24 @@
       <artifactId>spring-modules-ojb</artifactId>
     </dependency>
 
+    <!-- test-scoped dependencies: -->
 
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
 
   <dependencyManagement>

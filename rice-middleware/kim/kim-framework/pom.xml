@@ -27,26 +27,27 @@
   <artifactId>rice-kim-framework</artifactId>
   <name>Rice KIM Framework</name>
   <dependencies>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-krad-app-framework</artifactId>
+      <artifactId>rice-core-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-kim-api</artifactId>
       <version>${project.version}</version>
     </dependency>
 
+    <!-- test-scoped dependencies: -->
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-    </dependency>
+
   </dependencies>
 
   <properties>

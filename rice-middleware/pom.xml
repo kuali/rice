@@ -46,6 +46,7 @@
     <module>serviceregistry</module>
     <module>standalone</module>
     <module>web</module>
+    <module>legacy-web</module>
   </modules>
 
 </project>

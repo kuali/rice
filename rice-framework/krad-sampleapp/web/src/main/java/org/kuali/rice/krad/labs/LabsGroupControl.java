@@ -80,4 +80,6 @@ public class LabsGroupControl extends AbstractMemberBo implements GroupMemberCon
     public void setMyGroupNameSpace(String myGroupNameSpace) {
         this.myGroupNameSpace = myGroupNameSpace;
     }
+
+
 }

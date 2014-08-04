@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.krad.data;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.Serializable;
 
-import org.apache.commons.lang.StringUtils;
 
 /**
  * PersistenceOption is used when saving through the data object service to configure how the data will be stored.

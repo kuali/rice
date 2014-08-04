@@ -40,13 +40,13 @@ public class TypeUtils {
     @SuppressWarnings("unchecked")
     private static final Collection<Class<?>> SIMPLE_CLASSES = add(BOOLEAN_CLASSES, INTEGRAL_CLASSES, DECIMAL_CLASSES, TEMPORAL_CLASSES, STRING_CLASSES);
 
-    private static final ConcurrentMap<Class<?>, Boolean> IS_BOOLEAN_CACHE = new MapMaker().softKeys().makeMap();
-    private static final ConcurrentMap<Class<?>, Boolean> IS_INTEGRAL_CACHE = new MapMaker().softKeys().makeMap();
-    private static final ConcurrentMap<Class<?>, Boolean> IS_DECIMAL_CACHE = new MapMaker().softKeys().makeMap();
-    private static final ConcurrentMap<Class<?>, Boolean> IS_TEMPORAL_CACHE = new MapMaker().softKeys().makeMap();
-    private static final ConcurrentMap<Class<?>, Boolean> IS_STRING_CACHE = new MapMaker().softKeys().makeMap();
-    private static final ConcurrentMap<Class<?>, Boolean> IS_SIMPLE_CACHE = new MapMaker().softKeys().makeMap();
-    private static final ConcurrentMap<Class<?>, Boolean> IS_CACHE_CACHE = new MapMaker().softKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_BOOLEAN_CACHE = new MapMaker().weakKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_INTEGRAL_CACHE = new MapMaker().weakKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_DECIMAL_CACHE = new MapMaker().weakKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_TEMPORAL_CACHE = new MapMaker().weakKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_STRING_CACHE = new MapMaker().weakKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_SIMPLE_CACHE = new MapMaker().weakKeys().makeMap();
+    private static final ConcurrentMap<Class<?>, Boolean> IS_CACHE_CACHE = new MapMaker().weakKeys().makeMap();
 
     private TypeUtils() {
         throw new UnsupportedOperationException("do not call.");

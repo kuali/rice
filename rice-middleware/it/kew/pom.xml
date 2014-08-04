@@ -43,6 +43,7 @@
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-it-internal-tools</artifactId>
@@ -185,8 +186,8 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

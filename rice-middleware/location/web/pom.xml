@@ -27,11 +27,6 @@
   <artifactId>rice-location-web</artifactId>
 
   <dependencies>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-framework</artifactId>
-      <version>${project.version}</version>
-    </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -41,21 +36,10 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-location-framework</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>rice-location-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
 
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-krad-app-framework</artifactId>
-      <version>${project.version}</version>
-    </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-web-framework</artifactId>
@@ -77,6 +61,8 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>
+
+    <!-- test-scoped dependencies: -->
 
     <dependency>
       <groupId>log4j</groupId>

@@ -13,8 +13,8 @@
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
-    limitations under the License.
- 
+    limitations under the License. 
+
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -88,9 +88,7 @@
     <maven.failsafe.useSystemClassLoader>true</maven.failsafe.useSystemClassLoader>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <maven.failsafe.includes>**/*Test.java</maven.failsafe.includes>
-    <maven.failsafe.includes.file />
     <maven.failsafe.excludes>NOT_NULL</maven.failsafe.excludes>
-    <maven.failsafe.excludes.file />
 
     <readme.date.format>MMMM d, yyyy</readme.date.format>
 
@@ -99,16 +97,18 @@
     <maven.surefire.includes>**/*Test.java</maven.surefire.includes>
     <maven.surefire.skip>false</maven.surefire.skip>
 
-    <!-- project dependencies -->
+    <!-- project dependency versions: -->
+
     <ant.version>1.7.0</ant.version>
     <antlr.version>2.7.7</antlr.version>
     <aopalliance.version>1.0</aopalliance.version>
     <asm.version>3.3.1</asm.version>
-    <bcprov.version>1.46</bcprov.version>
-    <cas-client-core.version>3.2.1</cas-client-core.version>
-    <cglib.version>2.2.2</cglib.version>
     <aspectj.version>1.6.8</aspectj.version>
-    <bitronix.version>2.1.2</bitronix.version>
+    <bcprov.version>1.46</bcprov.version>
+    <bitronix.version>2.1.4</bitronix.version>
+    <cas-client-core.version>3.2.1</cas-client-core.version>
+    <closure.version>v20130603</closure.version>
+    <cglib.version>2.2.2</cglib.version>
     <commons-beanutils.version>1.8.3-kuali-4</commons-beanutils.version>
     <commons-codec.version>1.6</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
@@ -120,36 +120,21 @@
     <commons-pool.version>1.5.7</commons-pool.version>
     <commons-digester.version>2.0</commons-digester.version>
     <commons-validator.version>1.3.1</commons-validator.version>
-    <cxf.version>2.7.0</cxf.version>
-    <jaxb-impl.version>2.2.6</jaxb-impl.version>
-    <!--
-      There appears to be a problem with the 2.2.5 version of jaxb-impl which cxf 2.7.0 depends on by default.
-      Get the following exception when attempting to run cxf-java2ws-plugin on services that use certain Enums:
-
-      java.lang.ClassCastException: com.sun.xml.bind.v2.model.impl.RuntimeEnumLeafInfoImpl cannot be cast to com.sun.xml.bind.v2.model.impl.ClassInfoImpl
-
-      One of the specific offenders here is WorkflowDocumentService and it's use of DocumentStatus enum.
-      Switching to the 2.1-based verson of jaxb-impl version 2.1.13 causes the problem to go away.
-    -->
-    <!-- Not used in RICE
-    <cxf-java2ws-plugin.jaxb-impl.version>2.1.13</cxf-java2ws-plugin.jaxb-impl.version>
-    -->
+    <cxf.version>2.7.12</cxf.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
+    <eclipselink.version>2.5.2</eclipselink.version>
     <ehcache.version>2.6.9</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <freemarker.version>2.3.20-patch2</freemarker.version>
-    <plexus-utils.version>3.0.10</plexus-utils.version>
+    <jaxb-impl.version>2.2.6</jaxb-impl.version>
     <lesscss.version>1.3.3</lesscss.version>
-    <yuicompressor.version>2.4.7</yuicompressor.version>
-    <closure.version>v20130603</closure.version>
     <wro4j.version>1.7.0</wro4j.version>
     <glassfish-javax-json.version>1.0.1</glassfish-javax-json.version>
-    <groovy.version>1.8.6</groovy.version>
-    <guava.version>13.0</guava.version>
-    <httpclient.version>4.3.3</httpclient.version>
-    <eclipselink.version>2.5.1</eclipselink.version>
+    <groovy.version>1.8.9</groovy.version>
+    <guava.version>17.0</guava.version>
+    <httpclient.version>4.3.4</httpclient.version>
     <jpa.version>2.1.0</jpa.version>
     <jackson.version>1.8.8</jackson.version>
     <javassist.version>3.15.0-GA</javassist.version>
@@ -157,17 +142,13 @@
     <jaxen.version>1.1.3</jaxen.version>
     <jdom.version>1.1</jdom.version>
     <jetty.version>8.1.15.v20140411</jetty.version>
-    <plugin.jmeter.version>1.8.1</plugin.jmeter.version>
-    <plugin.saucelabs.connect.version>1.0.19</plugin.saucelabs.connect.version>
-    <plugin.build-helper.version>1.8</plugin.build-helper.version>
-    <plugin.gmaven.version>1.5</plugin.gmaven.version>
-    <joda-time.version>2.3</joda-time.version>
+    <joda-time.version>2.4</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10-kuali-1</jotm.version>
     <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>
+    <jsr305.version>2.0.3</jsr305.version>
     <jsr311-api.version>1.1.1</jsr311-api.version>
-    <validation.version>1.0.0.GA</validation.version>
 
     <!--
       KULRICE-7262: Bad jstl version in maven repository
@@ -178,31 +159,21 @@
     <jta.version>1.1</jta.version>
     <junit.version>4.11</junit.version>
     <kuali-mvn.version>1.0.2</kuali-mvn.version>
-    <log4j.version>1.2.16</log4j.version>
-    <mail.version>1.4.4</mail.version>
+    <log4j.version>1.2.17</log4j.version>
+    <mail.version>1.5.2</mail.version>
     <mockito.version>1.9.5</mockito.version>
-    <persistence.version>1.0.1.Final</persistence.version>
+    <plexus-utils.version>3.0.10</plexus-utils.version>
+
+    <!-- According to KULRICE-11635 (see comment) we'll need to upgrade this to >= 2.1.4 to get to Spring 4.1-->
     <!-- Quartz 1.8.5 appears to cause strange errors in spring on startup,
       Quartz 2.0.x is an impacting api and database-level change -->
     <quartz.version>1.8.4</quartz.version>
+    <reflections.version>0.9.9-RC1</reflections.version>
     <sauce.java.common.version>1.0.19</sauce.java.common.version>
     <sauce.junit.version>1.0.19</sauce.junit.version>
     <sauce.rest.version>1.0.11</sauce.rest.version>
     <saucelabs.connect.version>3.1.32</saucelabs.connect.version>
-    <saucelabs.connect.excludes>NOT_NULL</saucelabs.connect.excludes>
-    <saucelabs.connect.includes>**/*SeAFT.java</saucelabs.connect.includes>
-    <saucelabs.connect.skip>true</saucelabs.connect.skip>
-    <saucelabs.connect.failsafe.timeout>0</saucelabs.connect.failsafe.timeout>
-    <saucelabs.user>SAUCELABS_USER</saucelabs.user>
-    <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
     <selenium-java.version>2.41.0</selenium-java.version>
-    <stests.excludes>NOT_NULL</stests.excludes>
-    <stests.excludes.file />
-    <stests.includes>**/*SeTest.java</stests.includes>
-    <stests.includes.file />
-    <stests.skip>true</stests.skip>
-    <stests.failsafe.timeout>0</stests.failsafe.timeout>
-    <xalan.version>2.7.1</xalan.version>
     <serializer.version>2.7.1</serializer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.7</slf4j.version>
@@ -211,18 +182,51 @@
     <spring.version>4.0.5.RELEASE</spring.version>
     <spring.security.version>3.2.4.RELEASE</spring.security.version>
     <struts.version>1.3.10</struts.version>
-    <subethasmtp.version>3.1.6</subethasmtp.version>
+    <subethasmtp.version>3.1.7</subethasmtp.version>
+    <validation.version>1.0.0.GA</validation.version>
+
+    <!-- Need to analyze impact of bumping this one to >=1.7 as there are syntax changes.  e.g. see
+         http://grokbase.com/t/velocity/user/1161hsgsp4/syntax-change-in-velocity-1-7 -->
     <velocity.version>1.6.4</velocity.version>
     <velocity.tools.version>2.0</velocity.tools.version>
-
-    <!-- Version 2.3.6 of cxf requires wss4j 1.5.11 or 1.5.12 and does not work with 1.6.0 -->
-    <wss4j.version>1.6.7</wss4j.version>
+    <wss4j.version>1.6.16</wss4j.version>
+    <xalan.version>2.7.1</xalan.version>
     <xapool.version>1.5.0-patch4</xapool.version>
     <!-- 2.11.0 is not in maven central repo https://issues.apache.org/jira/browse/XERCESJ-1454 -->
     <xercesImpl.version>2.9.1</xercesImpl.version>
     <xmlunit.version>1.3</xmlunit.version>
     <xstream.version>1.2.2</xstream.version>
-    <reflections.version>0.9.9-RC1</reflections.version>
+    <yuicompressor.version>2.4.7</yuicompressor.version>
+
+    <!-- Plugin versions: -->
+
+    <plugin.build-helper.version>1.8</plugin.build-helper.version>
+    <plugin.gmaven.version>1.5</plugin.gmaven.version>
+    <plugin.http.version>1.0.5</plugin.http.version>
+    <plugin.jetty.version>9.2.1.v20140609</plugin.jetty.version>
+    <plugin.jmeter.version>1.8.1</plugin.jmeter.version>
+    <plugin.saucelabs.connect.version>1.0.19</plugin.saucelabs.connect.version>
+    <plugin.selenium.version>2.3</plugin.selenium.version>
+    <!-- Pin the tomcat7 plugin to an explicit version -->
+    <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
+
+    <!-- Saucelabs settings (aside from version, which is above): -->
+
+    <saucelabs.connect.excludes>NOT_NULL</saucelabs.connect.excludes>
+    <saucelabs.connect.includes>**/*SeAFT.java</saucelabs.connect.includes>
+    <saucelabs.connect.skip>true</saucelabs.connect.skip>
+    <saucelabs.connect.failsafe.timeout>0</saucelabs.connect.failsafe.timeout>
+    <saucelabs.user>SAUCELABS_USER</saucelabs.user>
+    <saucelabs.key>SAUCELABS_KEY</saucelabs.key>
+
+    <!-- stests profile settings: -->
+
+    <stests.excludes>NOT_NULL</stests.excludes>
+    <stests.excludes.file />
+    <stests.includes>**/*SeTest.java</stests.includes>
+    <stests.includes.file />
+    <stests.skip>true</stests.skip>
+    <stests.failsafe.timeout>0</stests.failsafe.timeout>
 
     <!-- database drivers location -->
     <jdbc.drivers.location>${settings.localRepository}</jdbc.drivers.location>
@@ -259,7 +263,6 @@
 
     <!-- Directory wsdl's get generated into -->
     <wsdl.dir>${project.build.directory}/wsdl</wsdl.dir>
-    <plugin.http.version>1.0.5</plugin.http.version>
 
     <!-- Location's for Spring instrumentation related jar's -->
     <spring.jar.base>${settings.localRepository}/org/springframework</spring.jar.base>
@@ -269,10 +272,6 @@
       -javaagent:${spring-instrument.jar}
     </spring-instrument-javaagent>
 
-    <!-- Pin the tomcat7 plugin to an explicit version -->
-    <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
-
-    <plugin.selenium.version>2.3</plugin.selenium.version>
   </properties>
 
   <profiles>
@@ -1038,7 +1037,7 @@
         <plugin>
           <groupId>org.mortbay.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
-          <version>${jetty.version}</version>
+          <version>${plugin.jetty.version}</version>
           <configuration>
             <webAppConfig>
               <contextPath>${web.launch.context.path}</contextPath>
@@ -1729,8 +1728,8 @@
       </dependency>
 
       <dependency>
-        <groupId>javax.mail</groupId>
-        <artifactId>mail</artifactId>
+        <groupId>com.sun.mail</groupId>
+        <artifactId>javax.mail</artifactId>
         <version>${mail.version}</version>
         <exclusions>
           <exclusion>
@@ -2332,6 +2331,12 @@
             <artifactId>cas-client-core</artifactId>
           </exclusion>
         </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>${jsr305.version}</version>
       </dependency>
 
       <dependency>

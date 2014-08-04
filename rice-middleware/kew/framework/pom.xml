@@ -25,7 +25,9 @@
   <artifactId>rice-kew-framework</artifactId>
   <version>2.5.0-M6-SNAPSHOT</version>
   <name>Rice KEW Framework</name>
+
   <dependencies>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-api</artifactId>
@@ -37,10 +39,21 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-ksb-api</artifactId>
+      <version>${project.version}</version>
     </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+
   </dependencies>
+
   <properties>
     <svc.sa.name>SearchableAttribute</svc.sa.name>
     <svc.sa.wsdl>${wsdl.dir}/${svc.sa.name}.wsdl</svc.sa.wsdl>

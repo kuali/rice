@@ -28,15 +28,16 @@
   <artifactId>rice-krad-web-framework</artifactId>
 
   <dependencies>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-krad-app-framework</artifactId>
+      <artifactId>rice-core-api</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-api</artifactId>
+      <artifactId>rice-krad-app-framework</artifactId>
       <version>${project.version}</version>
     </dependency>
 
@@ -69,14 +70,6 @@
       <artifactId>rice-kim-framework</artifactId>
       <version>${project.version}</version>
     </dependency>
-
-    <!--<dependency>-->
-      <!--<groupId>${project.groupId}</groupId>-->
-      <!--<artifactId>rice-krad-web</artifactId>-->
-      <!--<version>${project.version}</version>-->
-			<!--<type>war</type>-->
-			<!--<scope>test</scope>-->
-    <!--</dependency>-->
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -143,7 +136,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-			<scope>compile</scope>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
@@ -155,11 +148,6 @@
       <groupId>org.freemarker</groupId>
       <artifactId>freemarker</artifactId>
       <version>${freemarker.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-core-asl</artifactId>
     </dependency>
 
     <dependency>
@@ -185,6 +173,11 @@
     </dependency>
 
     <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+    </dependency>
+
+    <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
     </dependency>
@@ -201,13 +194,8 @@
       <scope>runtime</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>1.3.9</version>
-    </dependency>
+    <!-- test dependencies: -->
 
-    <!-- test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -231,6 +219,13 @@
       <artifactId>reflections</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>

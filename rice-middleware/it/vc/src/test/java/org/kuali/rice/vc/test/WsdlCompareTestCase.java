@@ -81,7 +81,11 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
 
     private static final List<String> ignoreBreakageRegexps = Arrays.asList(
             ".*Position of any changed from .*", // change in position of an 'any' doesn't indicate a breakage for us
-            ".*Position of element null changed.$" // this also indicates an 'any' changing position, ignore it too
+            ".*Position of element null changed.$", // this also indicates an 'any' changing position, ignore it too
+            " *ComplexType [^ ]* removed.$", // If a ComplexType that is unused is removed, it isn't a VC breakage
+
+            " *Element [^ ]* removed.$",   // If a simpleType that is unused is removed, it isn't a VC breakage, but
+            " *SimpleType [^ ]* removed.$" //   it produces both of these errors
     );
 
     public WsdlCompareTestCase(String moduleName) {

@@ -15,23 +15,18 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.expressions.Expression;
 import org.eclipse.persistence.expressions.ExpressionBuilder;
-import org.eclipse.persistence.internal.helper.DatabaseField;
-import org.eclipse.persistence.mappings.DatabaseMapping;
 import org.eclipse.persistence.mappings.ForeignReferenceMapping;
 import org.eclipse.persistence.mappings.OneToManyMapping;
 import org.eclipse.persistence.mappings.OneToOneMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.AttributeConverter;
 import javax.persistence.Convert;
 import java.lang.reflect.Field;
-import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -132,35 +127,7 @@ public class Filter {
         }
 
         if (field != null) {
-            Convert convert = field.getAnnotation(Convert.class);
-
-            if (convert != null) {
-                return coerceConverterValue(convert, attributeName, attributeValue);
-            }
-
             return coerceValue(field.getType(), attributeName, attributeValue);
-        }
-
-        return attributeValue;
-    }
-
-    /**
-     * Uses the {@link Convert} converter to first translate the {@code attributeValue} to the desired type and then
-     * convert it to the database format for searching.
-     *
-     * @param convert the conversion annotation.
-     * @param attributeName the attribute name of the field to coerce.
-     * @param attributeValue the value to coerce.
-     * @return the coerced value.
-     */
-    private static Object coerceConverterValue(Convert convert, String attributeName, String attributeValue) {
-        try {
-            AttributeConverter<Object, String> converter
-                    = (AttributeConverter<Object, String>) convert.converter().newInstance();
-            Object entityAttribute = converter.convertToEntityAttribute(attributeValue);
-            return converter.convertToDatabaseColumn(entityAttribute);
-        } catch (Exception e) {
-            LOG.error("Could not create the converter for " + attributeName, e);
         }
 
         return attributeValue;

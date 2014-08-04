@@ -28,8 +28,7 @@ import javax.persistence.Converter;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Converter(
-		autoApply = true)
+@Converter(autoApply = true)
 public class BooleanYNConverter implements AttributeConverter<Boolean, String> {
 
     /**

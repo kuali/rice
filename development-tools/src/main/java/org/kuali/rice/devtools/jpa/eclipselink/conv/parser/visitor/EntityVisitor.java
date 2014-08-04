@@ -23,10 +23,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.ParserUtil;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.AnnotationHelper;
@@ -59,12 +57,10 @@ import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.Tempo
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.TransientResolver;
 import org.kuali.rice.devtools.jpa.eclipselink.conv.parser.helper.resolver.VersionResolver;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * For visiting ojb mapped entities and their super classes.

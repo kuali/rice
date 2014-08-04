@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.data.provider;
 
-import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.krad.data.provider.impl.ProviderRegistryImpl;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -236,12 +236,14 @@ public class ProviderRegistryImplTest {
         final BlockingQueue<Provider> queue = new LinkedBlockingQueue<Provider>();
         ExecutorService threadpool = Executors.newFixedThreadPool(threads);
 
+        final Random random = new Random(System.currentTimeMillis());
+
         Callable<Object>[] producers = new Callable[providers];
         Callable<Object>[] consumers = new Callable[providers];
         Callable<Object> producer = new Callable<Object>() {
             @Override
             public Object call() throws Exception {
-                Provider p = mock(TYPES[RandomUtils.nextInt(5)]);
+                Provider p = mock(TYPES[random.nextInt(5)]);
                 registry.registerProvider(p);
                 queue.add(p);
                 return null;

@@ -26,29 +26,6 @@
   <name>Rice KRMS Gen</name>
   <artifactId>rice-krms-gen</artifactId>
   <dependencies>
-    <!-- TODO: get rid of this when ModuleConfigurer modularity work is fixed -->
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-impl</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-core-service-impl</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-krms-framework</artifactId>
-      <version>${project.version}</version>
-      <classifier>tests</classifier>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>rice-krms-api</artifactId>
-      <version>${project.version}</version>
-      <classifier>tests</classifier>
-    </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krms-impl</artifactId>
@@ -64,17 +41,18 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>compile</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <scope>compile</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <artifactId>rice-development-tools</artifactId>
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
 </project>

@@ -45,7 +45,7 @@ public final class ConcreteKeyValue extends AbstractKeyValue implements Comparab
 	public ConcreteKeyValue(KeyValue keyValue) {
 		super(keyValue);
 	}
-	
+
 	public ConcreteKeyValue(Map.Entry<String, String> entry) {
 		super(entry);
 	}

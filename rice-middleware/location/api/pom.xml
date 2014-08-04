@@ -35,10 +35,9 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-    </dependency>
+
+    <!-- test-scoped dependencies: -->
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

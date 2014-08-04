@@ -221,11 +221,6 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.servlet.jsp</groupId>
-      <artifactId>jsp-api</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>javax.ws.rs</groupId>
       <artifactId>jsr311-api</artifactId>
     </dependency>
@@ -238,6 +233,7 @@
     <dependency>
       <groupId>org.jasig.cas.client</groupId>
       <artifactId>cas-client-core</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -246,8 +242,8 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
     </dependency>
 
     <dependency>
@@ -264,16 +260,7 @@
       <artifactId>jstl</artifactId> -->
       <groupId>org.glassfish.web</groupId>
       <artifactId>jstl-impl</artifactId>
-      <exclusions>
-        <exclusion>
-          <artifactId>servlet-api</artifactId>
-          <groupId>javax.servlet</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jsp-api</artifactId>
-          <groupId>javax.servlet.jsp</groupId>
-        </exclusion>
-      </exclusions>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -281,10 +268,6 @@
       <artifactId>javax.servlet-api</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
@@ -296,6 +279,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -304,6 +288,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -312,6 +297,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -328,10 +314,12 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-cas</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -357,6 +345,7 @@
     <dependency>
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -367,17 +356,20 @@
     <dependency>
       <groupId>xapool</groupId>
       <artifactId>xapool</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.kuali.jotm</groupId>
       <artifactId>jotm-core</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <!-- bitronix -->
     <dependency>
-     <groupId>org.codehaus.btm</groupId>
-     <artifactId>btm</artifactId>
+      <groupId>org.codehaus.btm</groupId>
+      <artifactId>btm</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -394,6 +386,7 @@
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts-el</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -404,6 +397,7 @@
     <dependency>
       <groupId>org.apache.struts</groupId>
       <artifactId>struts-taglib</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -417,23 +411,19 @@
     </dependency>
 
     <dependency>
-      <groupId>org.directwebremoting</groupId>
-      <artifactId>dwr</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.quartz-scheduler</groupId>
       <artifactId>quartz</artifactId>
     </dependency>
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
-      <scope>compile</scope>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>xerces</groupId>
       <artifactId>xercesImpl</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -454,21 +444,26 @@
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.javassist</groupId>
       <artifactId>javassist</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.ws.security</groupId>
-      <artifactId>wss4j</artifactId>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
+    </dependency>
+
+    <!-- test-scoped dependencies: -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -481,17 +476,6 @@
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
       <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>1.3.9</version>
     </dependency>
 
   </dependencies>

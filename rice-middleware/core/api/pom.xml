@@ -25,7 +25,9 @@
     <version>2.5.0-M6-SNAPSHOT</version>
   </parent>
   <artifactId>rice-core-api</artifactId>
+
   <dependencies>
+
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
@@ -79,8 +81,8 @@
       <artifactId>joda-time</artifactId>
     </dependency>
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -89,7 +91,11 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
+      <scope>runtime</scope>
     </dependency>
+
+    <!-- test-scoped dependencies: -->
+
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
@@ -100,7 +106,9 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
+
   <properties>
     <svc.cca.name>CacheAdminService</svc.cca.name>
     <svc.cca.wsdl>${wsdl.dir}/${svc.cca.name}.wsdl</svc.cca.wsdl>

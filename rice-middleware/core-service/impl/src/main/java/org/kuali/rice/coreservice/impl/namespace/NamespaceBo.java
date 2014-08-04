@@ -123,6 +123,7 @@ public class NamespaceBo extends PersistableBusinessObjectBase implements Namesp
         if (this == o) {
             return true;
         }
+
         if (o == null || getClass() != o.getClass()) {
             return false;
         }

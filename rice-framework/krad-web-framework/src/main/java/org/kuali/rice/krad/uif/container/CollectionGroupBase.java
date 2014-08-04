@@ -223,14 +223,23 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             }
         }
 
+        // if no add line items specified then assume same items showing
         if ((addLineItems == null) || addLineItems.isEmpty()) {
             addLineItems = getItems();
         }
 
-        if (addWithDialog && (addLineDialog == null)) {
-            addLineDialog = (DialogGroup) ComponentFactory.getNewComponentInstance(ComponentFactory.ADD_LINE_DIALOG);
-
+        // if addWithDialog...
+        if (addWithDialog) {
+            // if not defined use default
+            if (addLineDialog == null) {
+                addLineDialog = (DialogGroup) ComponentFactory.getNewComponentInstance(ComponentFactory.ADD_LINE_DIALOG);
+            }
+            // assign this group to the layout manager
             ((CollectionLayoutManager) getLayoutManager()).setAddLineGroup(addLineDialog);
+            // if the add dialog group had items then use them
+            if (!addLineDialog.getItems().isEmpty()) {
+                addLineItems = addLineDialog.getItems();
+            }
         }
 
         // if active collection filter not set use default
@@ -358,13 +367,10 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             sessionPage = "last";
         }
 
-        String actionScript = UifConstants.JsFunctions.WRITE_CURRENT_PAGE_TO_SESSION +
-                "(this, '" + sessionPage + "');";
+        String actionScript = UifConstants.JsFunctions.WRITE_CURRENT_PAGE_TO_SESSION + "(this, '" + sessionPage + "');";
         actionScript = ScriptUtils.appendScript(addWithDialogAction.getActionScript(), actionScript);
-
         actionScript = ScriptUtils.appendScript(actionScript, ScriptUtils.buildFunctionCall(
                 UifConstants.JsFunctions.SHOW_DIALOG, addLineDialog.getId()));
-
         addWithDialogAction.setActionScript(actionScript);
     }
 

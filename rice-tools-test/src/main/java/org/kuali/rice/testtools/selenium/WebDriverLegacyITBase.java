@@ -804,6 +804,13 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         }
     }
 
+    protected void lookupDocByWildcardedUniqueStringName() throws InterruptedException {
+        open(getBaseUrlString() + getBookmarkUrl());
+        selectFrameIframePortlet();
+        waitAndTypeByName("name", "*" + uniqueString);
+        waitAndClickSearch();
+    }
+
     protected boolean noAffilication() {
         return !isElementPresentByName("document.affiliations[0].dflt");
     }
@@ -1232,6 +1239,18 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertElementPresentByXpath("//table[@id='row']/tbody/tr[contains(td[2], '" + docIdOld + "')]");
     }
 
+    protected void testEditCopy(String docId) throws InterruptedException {
+        String desc = getDescriptionUnique();
+        jiraAwareTypeByName("document.documentHeader.documentDescription", desc);
+        String thisDocId = verifyDocInitiated();
+        assertFalse("Document id should not be the same as original (" + docId + ").", docId.equals(thisDocId));
+        waitAndClickSave();
+        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
+        assertDocSearch(docId, "FINAL");
+        waitAndClickRouteLogIcon();
+        assertRouteStatus("FINAL");
+        waitForElementPresentByXpath("//th[contains(.,'Title')]/../following-sibling::*/td[contains(.,'" + desc + "')]");
+    }
 
     protected List<String> testEditParameterType(String docId, String parameterType, String parameterCode) throws Exception {
         selectFrameIframePortlet();

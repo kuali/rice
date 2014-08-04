@@ -25,18 +25,12 @@ public abstract class AdminTmplMthdAftNavEditBase extends AdminTmplMthdAftNavBla
 
     public void testLookUpEditSave() throws Exception {
         String docId = testCreateNewSubmit(); // create a new doc we are going to copy
-        docSearch(docId);
+
+        lookupDocByWildcardedUniqueStringName();
 
         waitAndClickByLinkText("edit");
-        String desc = getDescriptionUnique();
-        jiraAwareTypeByName("document.documentHeader.documentDescription", desc);
-        assertEquals("Document Id created does not match document id edited", docId, verifyDocInitiated());
-        waitAndClickSave();
-        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
-        assertDocSearch(docId, "SAVED");
-        waitAndClickRouteLogIcon();
-        assertRouteStatus("SAVED");
-        waitForElementPresentByXpath("//th[contains(.,'Title')]/../following-sibling::*/td[contains(.,'" + desc + "')]");
+
+        testEditCopy(docId);
     }
 
     @Test

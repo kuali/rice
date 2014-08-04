@@ -25,18 +25,12 @@ public abstract class AdminTmplMthdAftNavCopyBase extends AdminTmplMthdAftNavEdi
 
     public void testLookUpCopySave() throws Exception {
         String docId = testCreateNewSubmit(); // create a new doc we are going to copy
-        docSearch(docId);
+
+        lookupDocByWildcardedUniqueStringName();
 
         waitAndClickByLinkText("copy");
-        String desc = getDescriptionUnique();
-        jiraAwareTypeByName("document.documentHeader.documentDescription", desc);
-        assertEquals("Document Id created does not match document id copied", docId, verifyDocInitiated());
-        waitAndClickSave();
-        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
-        assertDocSearch(docId, "SAVED");
-        waitAndClickRouteLogIcon();
-        assertRouteStatus("SAVED");
-        waitForElementPresentByXpath("//th[contains(.,'Title')]/../following-sibling::*/td[contains(.,'" + desc + "')]");
+
+        testEditCopy(docId);
     }
 
     @Test

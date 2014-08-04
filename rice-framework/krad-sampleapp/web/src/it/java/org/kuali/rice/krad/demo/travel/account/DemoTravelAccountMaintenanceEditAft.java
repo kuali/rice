@@ -129,7 +129,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         assertTextPresent("SAVED");
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        waitAndClickButtonByText("reload");
+        waitAndClickButtonByText("Reload");
         waitForTextPresent("Document was successfully reloaded.");
         assertTextPresent("FINAL");
     }

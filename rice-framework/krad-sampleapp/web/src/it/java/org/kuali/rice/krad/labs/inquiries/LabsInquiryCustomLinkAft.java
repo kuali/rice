@@ -65,8 +65,7 @@ public class LabsInquiryCustomLinkAft extends LabsInquiryBase {
         clickExpandAll();
         assertLabeledTextPresent(lightBoxLabeledText);
 
-        // Back opens previous page inside lightbox, is that correct behavior?
-        waitAndClickButtonByText("< Back");
+        waitAndClickButtonByText("Close");
     }
 
     @Test

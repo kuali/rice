@@ -29,6 +29,7 @@ import org.kuali.rice.krad.messages.MessageService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.control.TextControl;
+import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
@@ -617,8 +618,7 @@ public class ClientValidationUtils {
         if (StringUtils.isEmpty(message)) {
             message = "prerequisite - No message";
         } else {
-            InputField requiredField = (InputField) view.getViewIndex().getDataFieldByPath(
-                    constraint.getPropertyName());
+            Field requiredField = (Field) view.getViewIndex().getDataFieldByPath(constraint.getPropertyName());
             if (requiredField != null && StringUtils.isNotEmpty(requiredField.getLabel())) {
                 message = MessageFormat.format(message, requiredField.getLabel());
             } else {

@@ -39,6 +39,7 @@
         <ref bean="Demo-TableLayoutManager-Example9"/>
         <ref bean="Demo-TableLayoutManager-Example10"/>
         <ref bean="Demo-TableLayoutManager-Example11"/>
+        <ref bean="Demo-TableLayoutManager-Example12"/>
       </list>
     </property>
   </bean>
@@ -446,6 +447,29 @@
           </property>
         </bean>
         <!-- ex:Demo-TableLayoutManager-Example11 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-TableLayoutManager-Example12" parent="Uif-VerticalBoxSection" p:headerText="bindToForm Example"
+        p:instructionalText="Example of using bindToForm to display a property outside of the collection.">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-TableLayoutManager-Example12 start-->
+        <bean parent="Uif-TableCollectionSection" p:layoutManager.numberOfColumns="3">
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1"/>
+          <property name="renderAddLine" value="false"/>
+          <property name="renderLineActions" value ="false"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="checkboxesField1" p:label="checkboxesField1" p:bindingInfo.bindToForm="true"/>
+              <bean parent="Uif-DataField" p:propertyName="field1" p:label="field1"/>
+              <bean parent="Uif-DataField" p:propertyName="field2" p:label="field2"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-TableLayoutManager-Example12 end-->
       </list>
     </property>
   </bean>

@@ -238,6 +238,12 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         getCollection1().add(new UITestObject("5", "5", "5", "5", "5", "5"));
         getCollection1().add(new UITestObject("5", "7", "3", "1", "9", "11"));
 
+        // populate checkboxesField1 to test bindToForm
+        this.checkboxesField1 = new ArrayList<>();
+        for (UITestObject to : this.getCollection1()) {
+            this.checkboxesField1.add("check" + to.getField3());
+        }
+
         collection1_2.addAll(collection1);
         collection1_3.addAll(collection1);
         collection1_4.addAll(collection1);

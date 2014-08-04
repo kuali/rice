@@ -1103,7 +1103,7 @@ public class DataFieldBase extends FieldBase implements DataField {
     }
 
     /**
-     * Determines wheter or not to create an automatic inqury widget for this field within the current lifecycle.
+     * Determines whether or not to create an automatic inquiry widget for this field within the current lifecycle.
      * 
      * @return True if an automatic inquiry widget should be created for this field on the current lifecycle.
      */

@@ -200,10 +200,19 @@ public class CollectionGroupLineBuilder implements Serializable {
      * @param lineFields list of fields to update
      */
     protected void adjustFieldBindingAndId(List<Field> lineFields) {
-        ComponentUtils.prefixBindingPath(lineFields, lineBuilderContext.getBindingPath());
-
         for (Field field : lineFields) {
+            if (field instanceof DataBinding) {
+                if (!((DataBinding)field).getBindingInfo().isBindToForm()) {
+                    ComponentUtils.prefixBindingPath(field, lineBuilderContext.getBindingPath());
+                }
+                else {
+                    ((DataBinding)field).getBindingInfo().setCollectionPath(null);
+                    ((DataBinding)field).getBindingInfo().setBindingName(((DataBinding)field).getBindingInfo().getBindingName() + "[" + lineBuilderContext.getLineIndex() + "]");
+                }
+            }
+
             ComponentUtils.updateIdWithSuffix(field, lineBuilderContext.getIdSuffix());
+
             field.setContainerIdSuffix(lineBuilderContext.getIdSuffix());
         }
 

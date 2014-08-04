@@ -301,21 +301,29 @@ public class ComponentUtils {
 
     public static void prefixBindingPath(List<? extends Component> components, String addBindingPrefix) {
         for (Component component : components) {
-            if (component instanceof DataBinding) {
-                prefixBindingPath((DataBinding) component, addBindingPrefix);
-            } else if ((component instanceof FieldGroup) && (((FieldGroup) component).getItems() != null)) {
-                List<? extends Component> fieldGroupItems = ((FieldGroup) component).getItems();
-                prefixBindingPath(fieldGroupItems, addBindingPrefix);
-
-                //                List<Field> groupFields = ViewLifecycleUtils
-                //                        .getElementsOfTypeDeep(((FieldGroup) field).getItems(), Field.class);
-                //                prefixBindingPath(groupFields, addBindingPrefix);
-            } else if ((component instanceof Group) && (((Group) component).getItems() != null) &&
-                    !(component instanceof CollectionGroup)) {
-                List<? extends Component> groupItems = ((Group) component).getItems();
-                prefixBindingPath(groupItems, addBindingPrefix);
-            }
+            prefixBindingPath(component, addBindingPrefix);
         }
+    }
+
+    public static void prefixBindingPath(Component component, String addBindingPrefix) {
+        if (component instanceof DataBinding) {
+            prefixBindingPath((DataBinding) component, addBindingPrefix);
+        } else if ((component instanceof FieldGroup) && (((FieldGroup) component).getItems() != null)) {
+            List<? extends Component> fieldGroupItems = ((FieldGroup) component).getItems();
+            prefixBindingPath(fieldGroupItems, addBindingPrefix);
+        } else if ((component instanceof Group) && (((Group) component).getItems() != null) &&
+                !(component instanceof CollectionGroup)) {
+            List<? extends Component> groupItems = ((Group) component).getItems();
+            prefixBindingPath(groupItems, addBindingPrefix);
+        }
+    }
+
+    public static void prefixBindingPath(DataBinding field, String addBindingPrefix) {
+        String bindingPrefix = addBindingPrefix;
+        if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
+            bindingPrefix += "." + field.getBindingInfo().getBindByNamePrefix();
+        }
+        field.getBindingInfo().setBindByNamePrefix(bindingPrefix);
     }
 
     public static void prefixBindingPathNested(Component component, String addBindingPrefix) {
@@ -345,14 +353,6 @@ public class ComponentUtils {
         }
     }
 
-    public static void prefixBindingPath(DataBinding field, String addBindingPrefix) {
-        String bindingPrefix = addBindingPrefix;
-        if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
-            bindingPrefix += "." + field.getBindingInfo().getBindByNamePrefix();
-        }
-        field.getBindingInfo().setBindByNamePrefix(bindingPrefix);
-    }
-
     public static void updateIdsWithSuffixNested(List<? extends Component> components, String idSuffix) {
         for (Component component : components) {
             updateIdsWithSuffixNested(component, idSuffix);
@@ -363,6 +363,25 @@ public class ComponentUtils {
         updateIdWithSuffix(component, idSuffix);
 
         updateChildIdsWithSuffixNested(component, idSuffix);
+    }
+
+    /**
+     * add a suffix to the id
+     *
+     * @param element the component instance whose id will be changed
+     * @param idSuffix the suffix to be appended
+     */
+    public static void updateIdWithSuffix(LifecycleElement element, String idSuffix) {
+        if (element != null && !StringUtils.isEmpty(idSuffix)) {
+            element.setId(element.getId() + idSuffix);
+        }
+
+        if (element instanceof Container) {
+            LayoutManager manager = ((Container) element).getLayoutManager();
+            if (manager != null) {
+                manager.setId(manager.getId() + idSuffix);
+            }
+        }
     }
 
     public static void updateChildIdsWithSuffixNested(Component component, String idSuffix) {
@@ -471,25 +490,6 @@ public class ComponentUtils {
         } finally {
             toClear.clear();
             RecycleUtils.recycle(toClear);
-        }
-    }
-
-    /**
-     * add a suffix to the id
-     *
-     * @param element the component instance whose id will be changed
-     * @param idSuffix the suffix to be appended
-     */
-    public static void updateIdWithSuffix(LifecycleElement element, String idSuffix) {
-        if (element != null && !StringUtils.isEmpty(idSuffix)) {
-            element.setId(element.getId() + idSuffix);
-        }
-
-        if (element instanceof Container) {
-            LayoutManager manager = ((Container) element).getLayoutManager();
-            if (manager != null) {
-                manager.setId(manager.getId() + idSuffix);
-            }
         }
     }
 

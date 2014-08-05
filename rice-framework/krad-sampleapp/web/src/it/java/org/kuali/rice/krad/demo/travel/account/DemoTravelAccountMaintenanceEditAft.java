@@ -138,8 +138,12 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent", "42");
+        waitAndClickBlanketApprove();
+
+        //click on confirmation message
+        waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
+        acceptAlertIfPresent();
         waitAndClickDemoLink();
-        acceptAlert();
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {
             jiraAwareFail("BlanketApprove was not successful. subsidizedPercent should be 42");
@@ -147,7 +151,9 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndClickBlanketApprove();
-        waitAndClickConfirmationOk();
+        waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
+        acceptAlertIfPresent();
+
     }
 
 
@@ -300,4 +306,5 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         testSubAccountOperations();
         passed();
     }
+
 }

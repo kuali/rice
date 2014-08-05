@@ -146,16 +146,16 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             form = uifFormManager.getSessionForm(formKeyParam);
         }
 
-        // if we don't have the view post data, access cannot be granted based on the view
-        if ((form == null) || (form.getViewPostMetadata() == null) || (form.getViewPostMetadata()
-                .getAccessibleMethodToCalls() == null)) {
-            return false;
+        // if we don't have the view post data, there is nothing to validate
+        if ((form == null) || (form.getViewPostMetadata() == null)) {
+            return true;
         }
 
         // if the method to call is listed as a method in either the available methods to call or the
         // view's accessible methods to call, then return true
-        return !form.getViewPostMetadata().getAvailableMethodToCalls().contains(methodToCall) ||
-                form.getViewPostMetadata().getAccessibleMethodToCalls().contains(methodToCall);
+        return !form.getViewPostMetadata().getAvailableMethodToCalls().contains(methodToCall) || ((form
+                .getViewPostMetadata().getAccessibleMethodToCalls() != null) && form.getViewPostMetadata()
+                .getAccessibleMethodToCalls().contains(methodToCall));
     }
 
     /**

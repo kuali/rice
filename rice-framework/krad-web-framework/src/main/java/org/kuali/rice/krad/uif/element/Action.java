@@ -293,10 +293,14 @@ public class Action extends ContentElementBase {
         if (StringUtils.isBlank(getActionScript()) && (actionUrl != null) && actionUrl.isFullyConfigured()) {
             String actionScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.REDIRECT, actionUrl.getHref());
             setActionScript(actionScript);
+
+            if (StringUtils.isNotBlank(actionUrl.getMethodToCall())) {
+                ViewLifecycle.getViewPostMetadata().addAvailableMethodToCall(actionUrl.getMethodToCall());
+            }
         }
 
         // add the method to call as an available method
-        if (StringUtils.isNotBlank(methodToCall)) {
+        if (StringUtils.isBlank(getActionScript()) && StringUtils.isNotBlank(methodToCall)) {
             ViewLifecycle.getViewPostMetadata().addAvailableMethodToCall(methodToCall);
         }
 
@@ -306,7 +310,10 @@ public class Action extends ContentElementBase {
                 ViewLifecycle.getViewPostMetadata().addAccessibleBindingPath(additionalSubmitPath);
             }
 
-            if (StringUtils.isNotBlank(methodToCall)) {
+            if ((actionUrl != null) && actionUrl.isFullyConfigured() && StringUtils.isNotBlank(
+                    actionUrl.getMethodToCall())) {
+                ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(actionUrl.getMethodToCall());
+            } else if (StringUtils.isBlank(getActionScript()) && StringUtils.isNotBlank(methodToCall)) {
                 ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(methodToCall);
             }
         }

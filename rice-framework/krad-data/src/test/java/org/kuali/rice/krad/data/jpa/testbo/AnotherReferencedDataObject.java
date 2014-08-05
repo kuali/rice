@@ -20,10 +20,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+@IdClass(AnotherReferencedDataObjectId.class)
 @Entity
 @Table(name = "KRTST_TEST_ANOTHER_REF_OBJ_T")
 public class AnotherReferencedDataObject {
@@ -31,10 +33,12 @@ public class AnotherReferencedDataObject {
 	@Id
 	@Column(name = "STR_PROP")
 	String stringProperty;
+
 	@Id
 	@Column(name = "DATE_PROP")
 	@Temporal(TemporalType.DATE)
 	Date dateProperty;
+
 	@Column(name = "OTHER_STR_PROP")
 	String someOtherStringProperty;
 

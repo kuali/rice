@@ -144,16 +144,28 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
         waitForDocIdKrad();
-    	checkForRequiredFields();
         waitAndTypeByName(DESCRIPTION_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(EXPLANATION_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(ORGANIZATION_DOCUMENT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
+        waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT']");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","\"/><script>alert('!')</script>");
+        waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
+        waitAndClickButtonByText("Add");
+        waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent", "\"/><script>alert('!')</script>");
+        waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
+        waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", "\"/><script>alert('!')</script>");
+        waitAndClickById("Uif-AdHocPersonCollection_add");
+        waitAndClickSaveByText();
+        Thread.sleep(1000);
+        if(isAlertPresent())    {
+            fail("XSS vulnerability identified.");
+        }
         waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"Xss");
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"Xss");
-        waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT']");
-        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","a1");
-        waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
-        waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
+        waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"eric");
         waitAndClickSaveByText();
         Thread.sleep(1000);
         if(isAlertPresent())    {
@@ -161,7 +173,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         }
     }
     
-    private void checkForRequiredFields() throws Exception{
+    private void testRequiredFields() throws Exception{
     	waitForElementPresentByXpath("//label[contains(text(),'Description')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Number:')]/span[contains(text(),'*')]");
     	waitForElementPresentByXpath("//label[contains(text(),'Travel Account Name:')]/span[contains(text(),'*')]");
@@ -197,15 +209,37 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
 
     @Test
     public void testDemoTravelAccountMaintenanceNewBookmark() throws Exception {
-        testTravelAccountMaintenanceEditXss();
         testTravelAccountMaintenanceNew();
         passed();
     }
 
     @Test
     public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
-        testTravelAccountMaintenanceEditXss();
         testTravelAccountMaintenanceNew();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceNewRequiredBookmark() throws Exception {
+        testRequiredFields();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceNewRequiredNav() throws Exception {
+        testRequiredFields();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceNewXssBookmark() throws Exception {
+        testTravelAccountMaintenanceEditXss();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceNewXssNav() throws Exception {
+        testTravelAccountMaintenanceEditXss();
         passed();
     }
 }

@@ -106,6 +106,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/ruleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
                           <bean parent="Uif-Link" p:linkText="Collection Add Line: Non-updateable Refreshes" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineNonUpdateableRefreshes"/>
+                          <bean parent="Uif-Link" p:linkText="Collection Add Line: Using Property Editor" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineWithPropertyEditor"/>
                           <bean parent="Uif-Link" p:linkText="MultiFile Upload Basic 1" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload1"/>
                           <bean parent="Uif-Link" p:linkText="MultiFile Upload - Multiple Uses on One Page" p:target="_self"

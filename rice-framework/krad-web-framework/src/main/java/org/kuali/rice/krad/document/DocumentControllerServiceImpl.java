@@ -59,6 +59,8 @@ import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.DocumentView;
+import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -120,14 +122,18 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
     @Override
     public ModelAndView docHandler(DocumentFormBase form) throws WorkflowException {
         String command = form.getCommand();
+        DocumentView view = (DocumentView) form.getView();
 
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && (form.getDocId() != null)) {
             loadDocument(form);
+            if (KewApiConstants.SUPERUSER_COMMAND.equals(command)) {
+                view.setSuperUserView(true);
+                view.setReadOnly(true);
+            }
         } else if (KewApiConstants.INITIATE_COMMAND.equals(command)) {
-            if (form.getView() != null) {
+            if (view != null) {
                 form.setApplyDefaultValues(true);
             }
-
             createDocument(form);
         } else {
             LOG.error("docHandler called with invalid parameters");

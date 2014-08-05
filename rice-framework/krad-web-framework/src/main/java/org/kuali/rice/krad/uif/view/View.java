@@ -67,6 +67,7 @@ import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.widget.BlockUI;
 import org.kuali.rice.krad.uif.widget.Breadcrumbs;
 import org.kuali.rice.krad.uif.widget.Growls;
+import org.kuali.rice.krad.uif.widget.Help;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -454,11 +455,19 @@ public class View extends ContainerBase {
         ViewLifecycle.getViewPostMetadata().addComponentPostData(this, "stateMapping", stateMapping);
 
         setNestedComponentId(getInstructionalMessage(), this.getId() + UifConstants.IdSuffixes.INSTRUCTIONAL);
-        if (getHeader() != null) {
-            setNestedComponentId(getHeader(), this.getId() + UifConstants.IdSuffixes.HEADER_WRAPPER);
-            setNestedComponentId(getHeader().getUpperGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_UPPER_GROUP);
-            setNestedComponentId(getHeader().getRightGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_RIGHT_GROUP);
-            setNestedComponentId(getHeader().getLowerGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_LOWER_GROUP);
+
+        Header header = getHeader();
+        Help help = getHelp();
+
+        if (header != null) {
+            setNestedComponentId(header, this.getId() + UifConstants.IdSuffixes.HEADER_WRAPPER);
+            setNestedComponentId(header.getUpperGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_UPPER_GROUP);
+            setNestedComponentId(header.getRightGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_RIGHT_GROUP);
+            setNestedComponentId(header.getLowerGroup(), this.getId() + UifConstants.IdSuffixes.HEADER_LOWER_GROUP);
+            setNestedComponentId(help, this.getId() + UifConstants.IdSuffixes.HELP_WRAPPER);
+            if (help != null && help.getHelpAction() != null) {
+                setNestedComponentId(help.getHelpAction(), this.getId() + UifConstants.IdSuffixes.HELP_WRAPPER);
+            }
         }
     }
 

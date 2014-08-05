@@ -1092,6 +1092,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSave();
+        checkForDocError();
         waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         waitAndClickSubmit();
         checkForDocError();

@@ -48,7 +48,8 @@ public class RowDetailsAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//a[@id='Demo-RowDetails-Section1_detLink_line0']");
         waitForElementPresentByXpath("//input[@name='list2[0].field4']");
         waitAndClickByXpath("//a[@id='Demo-RowDetails-Section2_detLink_line0']");
-        waitForElementPresentByXpath("//tr/td/div/div[@data-label='Field 3']");      
+        waitForElementPresentByXpath("//tr/td/div/div[@data-label='Field 3']");
+        jGrowl("Expand TableCollection inside the details itself SubCollection");
         waitAndClickByXpath("//a[@id='Demo-RowDetails-Section3_detLink_line0']");
         waitForTextPresent("SubField 2");
         waitAndClickByXpath("//a[@id='Demo-RowDetails-Section4_detLink_line0']");

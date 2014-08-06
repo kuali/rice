@@ -17,6 +17,7 @@ package org.kuali.rice.krad.labs.kitchensink;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 
 /**
@@ -63,13 +64,10 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
         passed();
     }
 
-    // this has been failing in CI
     protected void testAjaxLookup() throws InterruptedException {
         clearTextByName("field79");
         waitAndTypeByName("field79", "a3");
-        driver.switchTo().activeElement().sendKeys(Keys.TAB);
-//        fireEvent("field79", "blur");
-//        waitAndClickByName("field60"); // force blur on field79
+        ((JavascriptExecutor)driver).executeScript("document.getElementsByName('field79')[0].blur();");
         waitForTextPresent("Travel Account 3");
     }
 

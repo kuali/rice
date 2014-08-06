@@ -26,6 +26,9 @@ import java.util.Map;
  * Quickfinder's view service implementation class that handles callbacks.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ * Cheezy example of using callback methods.  Each method is specified in
+ * LabsQuickFinderCallback.xml.
  */
 public class QuickfinderViewHelperServiceImpl extends LookupableImpl {
 
@@ -37,20 +40,48 @@ public class QuickfinderViewHelperServiceImpl extends LookupableImpl {
      * @param quickfinderId - the quickfinder id of the lookup component
      * @param callbackContext - a map of parameters to manipulate the collection
      */
-    public void doCallback( UifFormBase form, String quickfinderId, Map<String, String> callbackContext ) {
-        QuickfinderForm qForm = ( QuickfinderForm ) form;
+    public void doCallbackTable1( UifFormBase form, String quickfinderId, Map<String, String> callbackContext ) {
+        QuickfinderForm qForm = (QuickfinderForm)form;
+        List<PersonAccount> collection = qForm.getPersonAccounts1();
+        conditionallyModAccountName(callbackContext, collection, "Foo Bar");
+    }
 
-        List<PersonAccount> collection = qForm.getPeopleAccounts();
+    public void doCallbackTable2( UifFormBase form, String quickfinderId, Map<String, String> callbackContext ) {
+        QuickfinderForm qForm = (QuickfinderForm)form;
+        List<PersonAccount> collection = qForm.getPersonAccounts2();
+        conditionallyModAccountName(callbackContext, collection, "Yo");
+    }
 
-        if( callbackContext != null ) {
+    public void doCallbackTable3( UifFormBase form, String quickfinderId, Map<String, String> callbackContext ) {
+        QuickfinderForm qForm = (QuickfinderForm)form;
+        List<PersonAccount> collection = qForm.getPersonAccounts3();
+        conditionallyModAccountName(callbackContext, collection, "KaBoom");
+    }
+
+    public void doCallbackTable4( UifFormBase form, String quickfinderId, Map<String, String> callbackContext ) {
+        QuickfinderForm qForm = (QuickfinderForm)form;
+        List<PersonAccount> collection = qForm.getPersonAccounts4();
+        conditionallyModAccountName(callbackContext, collection, "Far Out");
+    }
+
+    public void doCallbackTable5( UifFormBase form, String quickfinderId, Map<String, String> callbackContext ) {
+        QuickfinderForm qForm = (QuickfinderForm)form;
+        List<PersonAccount> collection = qForm.getPersonAccounts5();
+        conditionallyModAccountName(callbackContext, collection, "Yee Haw");
+    }
+
+    private void conditionallyModAccountName(Map<String, String> callbackContext, List<PersonAccount> collection,
+            String newAccountName) {
+
+        if (callbackContext != null) {
             String lineIndexAsString = callbackContext
-                    .get( UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT_PROPERTY_LINE_INDEX );
+                    .get(UifConstants.PostMetadata.QUICKFINDER_CALLBACK_CONTEXT_PROPERTY_LINE_INDEX);
 
-            if( lineIndexAsString != null ) {
-                int lineIndex = Integer.parseInt( lineIndexAsString );
-                if( lineIndex >= 0 ) {
+            if (lineIndexAsString != null) {
+                int lineIndex = Integer.parseInt(lineIndexAsString);
+                if (lineIndex >= 0) {
                     PersonAccount personAccount = collection.get(lineIndex);
-                    personAccount.setAccountName("Foo Bar");
+                    personAccount.setAccountName(newAccountName);
                 }
             }
         }

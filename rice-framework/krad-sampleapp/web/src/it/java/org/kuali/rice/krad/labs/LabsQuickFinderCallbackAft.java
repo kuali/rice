@@ -39,18 +39,18 @@ public class LabsQuickFinderCallbackAft extends WebDriverLegacyITBase {
     }
 
     protected void testDemoQuickFinderCallback() throws Exception {
-    	waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table4']/div/table/tbody/tr/td[3]/div/div/div/button");
-    	testLookUpSearchReturn();
-    	waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table5']/div/table/tbody/tr/td[3]/div/div/div/button");
-    	testLookUpSearchReturn();
-    	waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table6']/div/table/tbody/tr/td[3]/div/div/div/button");
-    	testLookUpSearchReturn();
-    	waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table3']/table/tbody/tr/td/div/div/div/button");
-    	testLookUpSearchReturn();
-    	waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table']/div/table/tbody/tr/td[3]/div/div/div/button");
-    	testLookUpSearchReturn();
-    	waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table2']/div/table/tbody/tr/td[3]/div/div/div/button");
-    	testLookUpSearchReturn();
+        waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table5']/div/table/tbody/tr/td[3]/div/div/div/button");
+        testLookUpSearchReturn();
+        waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table4']/div/table/tbody/tr/td[3]/div/div/div/button");
+        testLookUpSearchReturn();
+        waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table3']/div/table/tbody/tr/td[3]/div/div/div/button");
+        testLookUpSearchReturn();
+        waitAndClickByXpath("//section[@id='Lab-QuickFinder-Grid1']/table/tbody/tr/td/div/div/div/button");
+        testLookUpSearchReturn();
+        waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table1']/div/table/tbody/tr/td[3]/div/div/div/button");
+        testLookUpSearchReturn();
+        waitAndClickByXpath("//section[@id='Lab-QuickFinder-Table2']/div/table/tbody/tr/td[3]/div/div/div/button");
+        testLookUpSearchReturn();
     }
     
     private void testLookUpSearchReturn() throws Exception {

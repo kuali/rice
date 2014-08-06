@@ -30,20 +30,20 @@
       <bean parent="Uif-Page">
         <property name="items">
           <list>
-            <ref bean="Lab-QuickFinder-Table"/>
+            <ref bean="Lab-QuickFinder-Table1"/>
             <ref bean="Lab-QuickFinder-Table2"/>
+            <ref bean="Lab-QuickFinder-Grid1"/>
             <ref bean="Lab-QuickFinder-Table3"/>
             <ref bean="Lab-QuickFinder-Table4"/>
             <ref bean="Lab-QuickFinder-Table5"/>
-            <ref bean="Lab-QuickFinder-Table6"/>
           </list>
         </property>
       </bean>
     </property>
   </bean>
 
-  <bean id="Lab-QuickFinder-Table" parent="Uif-TableCollectionSection" p:headerText="Personal Accounts"
-        p:propertyName="peopleAccounts" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount">
+  <bean id="Lab-QuickFinder-Table1" parent="Uif-TableCollectionSection" p:headerText="Personal Accounts"
+        p:propertyName="personAccounts1" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="name" p:label="Name"/>
@@ -55,8 +55,8 @@
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:accountNumber,name:accountName" p:lookupParameters="accountNumber:number"
-                  p:callbackMethodToCall="doCallback" p:viewName="TravelAccountLookupView"
-                    p:callbackContext="lineIndex:@{#index}">
+                  p:callbackMethodToCall="doCallbackTable1" p:viewName="TravelAccountLookupView"
+                  p:callbackContext="lineIndex:@{#index}">
             </bean>
           </property>
         </bean>
@@ -89,7 +89,7 @@
   </bean>
 
   <bean id="Lab-QuickFinder-Table2" parent="Uif-TableCollectionSection" p:headerText="Return By Script"
-        p:propertyName="peopleAccounts" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount"
+        p:propertyName="personAccounts2" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount"
         p:instructionalText="In this example, the lookup return should occur through script rather than refreshing the page.">
     <property name="items">
       <list>
@@ -102,7 +102,7 @@
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:accountNumber,name:accountName" p:lookupParameters="accountNumber:number"
-                  p:callbackMethodToCall="doCallback" p:viewName="TravelAccountLookupView" p:returnByScript="true"
+                  p:callbackMethodToCall="doCallbackTable2" p:viewName="TravelAccountLookupView" p:returnByScript="true"
                   p:callbackContext="lineIndex:@{#index}">
             </bean>
           </property>
@@ -112,7 +112,7 @@
     </property>
   </bean>
 
-  <bean id="Lab-QuickFinder-Table3" parent="Uif-GridSection" p:headerText="References to Refresh"
+  <bean id="Lab-QuickFinder-Grid1" parent="Uif-GridSection" p:headerText="References to Refresh"
         p:instructionalText="Change either one of the quickfinder fields to see the fields refresh.">
     <property name="items">
       <list>
@@ -148,9 +148,9 @@
     </property>
   </bean>
 
-  <bean id="Lab-QuickFinder-Table4" parent="Uif-TableCollectionSection" p:headerText="Additional Lookup Parameters"
+  <bean id="Lab-QuickFinder-Table3" parent="Uif-TableCollectionSection" p:headerText="Additional Lookup Parameters"
         p:instructionalText="This example uses additional lookup parameters."
-        p:propertyName="peopleAccounts" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount">
+        p:propertyName="personAccounts3" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="name" p:label="Name"/>
@@ -162,7 +162,7 @@
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:accountNumber,name:accountName" p:lookupParameters="accountNumber:number"
-                  p:callbackMethodToCall="doCallback" p:viewName="TravelAccountLookupView" p:additionalLookupParameters="accountName:Travel Account 1"
+                  p:callbackMethodToCall="doCallbackTable3" p:viewName="TravelAccountLookupView" p:additionalLookupParameters="accountName:Travel Account 1"
                   p:callbackContext="lineIndex:@{#index}">
             </bean>
           </property>
@@ -172,9 +172,9 @@
     </property>
   </bean>
 
-  <bean id="Lab-QuickFinder-Table5" parent="Uif-TableCollectionSection" p:headerText="Auto Search"
+  <bean id="Lab-QuickFinder-Table4" parent="Uif-TableCollectionSection" p:headerText="Auto Search"
         p:instructionalText="This example uses auto search, so the search will be executed as soon as the lookup window opens."
-        p:propertyName="peopleAccounts" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount">
+        p:propertyName="personAccounts4" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="name" p:label="Name"/>
@@ -186,7 +186,7 @@
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:accountNumber,name:accountName" p:lookupParameters="accountNumber:number"
-                  p:callbackMethodToCall="doCallback" p:viewName="TravelAccountLookupView" p:autoSearch="true"
+                  p:callbackMethodToCall="doCallbackTable4" p:viewName="TravelAccountLookupView" p:autoSearch="true"
                   p:callbackContext="lineIndex:@{#index}">
             </bean>
           </property>
@@ -196,9 +196,9 @@
     </property>
   </bean>
 
-  <bean id="Lab-QuickFinder-Table6" parent="Uif-TableCollectionSection" p:headerText="Render Lookup Criteria"
+  <bean id="Lab-QuickFinder-Table5" parent="Uif-TableCollectionSection" p:headerText="Render Lookup Criteria"
         p:instructionalText="This example enables the lookup criteria on the lookup form."
-        p:propertyName="peopleAccounts" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount">
+        p:propertyName="personAccounts5" p:collectionObjectClass="org.kuali.rice.krad.labs.quickfinder.PersonAccount">
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="name" p:label="Name"/>
@@ -210,7 +210,7 @@
           <property name="quickfinder">
             <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                   p:fieldConversions="number:accountNumber,name:accountName" p:lookupParameters="accountNumber:number"
-                  p:callbackMethodToCall="doCallback" p:viewName="TravelAccountLookupView" p:renderLookupCriteria="true"
+                  p:callbackMethodToCall="doCallbackTable5" p:viewName="TravelAccountLookupView" p:renderLookupCriteria="true"
                   p:callbackContext="lineIndex:@{#index}">
             </bean>
           </property>

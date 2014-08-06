@@ -18,7 +18,6 @@ package org.kuali.rice.krad.labs.quickfinder;
 import org.kuali.rice.krad.labs.LabsRoleMember;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,11 @@ import java.util.List;
  */
 public class QuickfinderForm extends UifFormBase {
 
-    private List<PersonAccount> peopleAccounts;
+    private List<PersonAccount> personAccounts1;
+    private List<PersonAccount> personAccounts2;
+    private List<PersonAccount> personAccounts3;
+    private List<PersonAccount> personAccounts4;
+    private List<PersonAccount> personAccounts5;
 
     private String nameField;
     private String accountNumberField;
@@ -38,15 +41,14 @@ public class QuickfinderForm extends UifFormBase {
 
     public QuickfinderForm() {
         super();
-        peopleAccounts = new ArrayList<PersonAccount>();
-        peopleAccounts.add( new PersonAccount( "Abra" ) );
-        peopleAccounts.add( new PersonAccount( "Ca" ) );
-        peopleAccounts.add( new PersonAccount( "Dabra" ) );
+        personAccounts1 = cheapInit();
+        personAccounts2 = cheapInit();
+        personAccounts3 = cheapInit();
+        personAccounts4 = cheapInit();
+        personAccounts5 = cheapInit();
     }
 
-    public String getAccountNameField() {
-        return accountNameField;
-    }
+    public String getAccountNameField() { return accountNameField; }
 
     public void setAccountNameField(String accountNameField) {
         this.accountNameField = accountNameField;
@@ -68,15 +70,59 @@ public class QuickfinderForm extends UifFormBase {
         this.nameField = nameField;
     }
 
-    public List<PersonAccount> getPeopleAccounts() {
-        return peopleAccounts;
+    public LabsRoleMember getLabsRoleMember() {
+        return labsRoleMember;
     }
 
-    public void setPeopleAccounts(List<PersonAccount> peopleAccounts) {
-        this.peopleAccounts = peopleAccounts;
+    public void setLabsRoleMember(LabsRoleMember labsRoleMember) {
+        this.labsRoleMember = labsRoleMember;
     }
 
-    public LabsRoleMember getLabsRoleMember() { return labsRoleMember; }
+    public List<PersonAccount> getPersonAccounts1() {
+        return personAccounts1;
+    }
 
-    public void setLabsRoleMember(LabsRoleMember labsRoleMember) { this.labsRoleMember = labsRoleMember; }
+    public void setPersonAccounts1(List<PersonAccount> personAccounts1) {
+        this.personAccounts1 = personAccounts1;
+    }
+
+    public List<PersonAccount> getPersonAccounts2() {
+        return personAccounts2;
+    }
+
+    public void setPersonAccounts2(List<PersonAccount> personAccounts2) {
+        this.personAccounts2 = personAccounts2;
+    }
+
+    public List<PersonAccount> getPersonAccounts3() {
+        return personAccounts3;
+    }
+
+    public void setPersonAccounts3(List<PersonAccount> personAccounts3) {
+        this.personAccounts3 = personAccounts3;
+    }
+
+    public List<PersonAccount> getPersonAccounts4() {
+        return personAccounts4;
+    }
+
+    public void setPersonAccounts4(List<PersonAccount> personAccounts4) {
+        this.personAccounts4 = personAccounts4;
+    }
+
+    public List<PersonAccount> getPersonAccounts5() {
+        return personAccounts5;
+    }
+
+    public void setPersonAccounts5(List<PersonAccount> personAccounts5) {
+        this.personAccounts5 = personAccounts5;
+    }
+
+    private List<PersonAccount> cheapInit () {
+        List<PersonAccount> peopleAccountsToInit = new ArrayList<PersonAccount>();
+        peopleAccountsToInit.add(new PersonAccount("Abra"));
+        peopleAccountsToInit.add(new PersonAccount("Ca"));
+        peopleAccountsToInit.add(new PersonAccount("Dabra"));
+        return (peopleAccountsToInit);
+    }
 }

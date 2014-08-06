@@ -171,14 +171,26 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
         document.approve("");
 
+        // Some temp logging to look into KULRICE-12853.
+        LOG.info("isApprovalRequested Loop Starts") ;
+        boolean loopSuccess = false;
+        int loopPasses = 0;
+
         // Split1, Right, Innersplit, Right (user4)
-        for (int j=20; j >= 0; j--) {
+        for (int j=25; j >= 0; j--) {
+            loopPasses++;
             Thread.sleep(waitMilliSeconds);
             document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
             if (document.isApprovalRequested()) {
+                loopSuccess = true;
                 break;
             }
         }
+
+        // Some temp logging to look into KULRICE-12853.
+        LOG.info("isApprovalRequested Loop Finished") ;
+        LOG.info("loopSuccess: " + loopSuccess + ". Number of 5 second loop passes: " + loopPasses);
+
         assertTrue("user4 should have an approve request", document.isApprovalRequested());
         document.approve("");
 

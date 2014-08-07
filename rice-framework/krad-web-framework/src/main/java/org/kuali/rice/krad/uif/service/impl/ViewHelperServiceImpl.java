@@ -857,48 +857,49 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      */
     @Override
     public void refreshReference(Object parentObject, String referenceObjectName) {
+
         if (!(parentObject instanceof PersistableBusinessObjectBaseAdapter)) {
-            LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
-                    .getName() + ". Class not of type PersistableBusinessObject");
-            return;
+            KRADServiceLocator.getDataObjectService().wrap(parentObject).fetchRelationship(referenceObjectName);
         }
+        else {
+            //support legacy data objects
+            LegacyDataAdapter legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
+            DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
 
-        LegacyDataAdapter legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
-        DataDictionaryService dataDictionaryService = KRADServiceLocatorWeb.getDataDictionaryService();
+            if (legacyDataAdapter.hasReference(parentObject.getClass(), referenceObjectName) || legacyDataAdapter
+                    .hasCollection(parentObject.getClass(), referenceObjectName)) {
+                // refresh via database mapping
+                legacyDataAdapter.retrieveReferenceObject(parentObject, referenceObjectName);
+            } else if (dataDictionaryService.hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
+                // refresh via data dictionary mapping
+                Object referenceObject = KradDataServiceLocator.getDataObjectService().wrap(parentObject).getPropertyValue(
+                        referenceObjectName);
+                if (!(referenceObject instanceof PersistableBusinessObjectBaseAdapter)) {
+                    LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                            .getName() + ". Class not of type PersistableBusinessObject");
+                    return;
+                }
 
-        if (legacyDataAdapter.hasReference(parentObject.getClass(), referenceObjectName) || legacyDataAdapter
-                .hasCollection(parentObject.getClass(), referenceObjectName)) {
-            // refresh via database mapping
-            legacyDataAdapter.retrieveReferenceObject(parentObject, referenceObjectName);
-        } else if (dataDictionaryService.hasRelationship(parentObject.getClass().getName(), referenceObjectName)) {
-            // refresh via data dictionary mapping
-            Object referenceObject = KradDataServiceLocator.getDataObjectService().wrap(parentObject).getPropertyValue(
-                    referenceObjectName);
-            if (!(referenceObject instanceof PersistableBusinessObjectBaseAdapter)) {
-                LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
-                        .getName() + ". Class not of type PersistableBusinessObject");
-                return;
-            }
+                referenceObject = legacyDataAdapter.retrieve(referenceObject);
+                if (referenceObject == null) {
+                    LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
+                            .getName() + ".");
+                    return;
+                }
 
-            referenceObject = legacyDataAdapter.retrieve(referenceObject);
-            if (referenceObject == null) {
+                try {
+                    KRADUtils.setObjectProperty(parentObject, referenceObjectName, referenceObject);
+                } catch (Exception e) {
+                    LOG.error("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
+                            .getMessage());
+                    throw new RuntimeException(
+                            "Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
+                                    .getMessage());
+                }
+            } else {
                 LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
                         .getName() + ".");
-                return;
             }
-
-            try {
-                KRADUtils.setObjectProperty(parentObject, referenceObjectName, referenceObject);
-            } catch (Exception e) {
-                LOG.error("Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
-                        .getMessage());
-                throw new RuntimeException(
-                        "Unable to refresh persistable business object: " + referenceObjectName + "\n" + e
-                                .getMessage());
-            }
-        } else {
-            LOG.warn("Could not refresh reference " + referenceObjectName + " off class " + parentObject.getClass()
-                    .getName() + ".");
         }
     }
 

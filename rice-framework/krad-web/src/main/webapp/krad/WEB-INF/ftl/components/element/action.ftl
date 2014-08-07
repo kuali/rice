@@ -90,7 +90,8 @@
         <#-- build a button with or without an image -->
         <button id="${element.id}" ${krad.attrBuild(element)} ${tabindex!} ${disabled!} ${element.simpleDataAttributes}>
 
-            <#if element.actionImage?? && element.actionImage.render && imagePlacement?has_content>
+            <#if element.actionImage?? && element.actionImage.source?? &&
+                element.actionImage.render && imagePlacement?has_content>
                 <#if imagePlacement == 'TOP'>
                     <#local imageStyleClass="topActionImage"/>
                     <#local spanBeginTag="<span class=\"topBottomSpan\">"/>

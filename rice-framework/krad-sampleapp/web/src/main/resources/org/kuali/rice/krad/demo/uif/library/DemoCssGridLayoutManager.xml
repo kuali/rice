@@ -94,6 +94,27 @@
               <bean parent="Uif-InputField" p:propertyName="inputField10" p:label="Field 1"/>
               <bean parent="Uif-InputField" p:propertyName="inputField11" p:label="Field 2"/>
               <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 3"/>
+              <bean parent="Uif-InputField" p:label="Message Addon" p:propertyName="inputField19">
+                <property name="postInputCssClasses" value="input-group-addon"/>
+                <property name="postInputAddons">
+                  <list>
+                       <bean parent="Uif-Message" p:messageText=".00"/>
+                  </list>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Button Addon" p:propertyName="inputField20">
+                <property name="postInputAddons">
+                  <list>
+                       <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-search"/>
+                  </list>
+                </property>
+              </bean>
+              <!-- Demonstrating using a class to force a custom size at certain screen sizes for controls, see KRAD css -->
+              <bean parent="Uif-InputField" p:label="Custom Sized" p:propertyName="inputField21">
+                <property name="control" >
+                  <bean parent="Uif-TextControl" p:additionalCssClasses="xs-3em"/>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

@@ -22,8 +22,11 @@
 
 <#macro uif_text control field>
 
-    <#local attributes='size="${control.size!}"
-        class="${control.styleClassesAsString!}" ${control.simpleDataAttributes!} '/>
+    <#local attributes='class="${control.styleClassesAsString!}" ${control.simpleDataAttributes!} '/>
+
+    <#if control.size != 0>
+        <#local attributes='${attributes} size="${control.size!}"' />
+    </#if>
 
     <#if control.tabIndex != 0>
         <#local attributes='${attributes} tabindex="${control.tabIndex!}"' />

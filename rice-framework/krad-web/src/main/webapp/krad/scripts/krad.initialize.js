@@ -321,7 +321,11 @@ function initFieldHandlers() {
     jQuery("[data-role='Page']").on("focus", "a[href], area[href], input:not([disabled]), "
             + "select:not([disabled]), textarea:not([disabled]), button:not([disabled]), "
             + "iframe, object, embed, *[tabindex], *[contenteditable]",
-            function () {
+            function (event) {
+                if (event.target !== event.currentTarget) {
+                    return false;
+                }
+
                 var element = jQuery(this);
                 var buffer = 10;
                 var elementHeight = element.outerHeight();
@@ -350,7 +354,7 @@ function initFieldHandlers() {
                     }
                 }
 
-                return true;
+                return false;
             });
 
     jQuery(document).on("mouseenter",

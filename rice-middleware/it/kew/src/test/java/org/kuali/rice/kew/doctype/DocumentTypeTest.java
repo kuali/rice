@@ -25,6 +25,8 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.action.ActionTaken;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.NodeType;
@@ -155,6 +157,32 @@ public class DocumentTypeTest extends KEWTestCase {
         verifyDocumentTypeLinking();
     }
 
+    // Temporary logging for KULRICE-12853 investigation.
+    private void logExtraInfo (String message, WorkflowDocument document) {
+
+        LOG.info(" ");
+        LOG.info("*** " + message + ", docId: " + document.getDocumentId()
+            + ", Approval requested: " + document.isApprovalRequested()
+            + ", status: " + document.getStatus());
+
+        Set<String> nodeNames = document.getNodeNames();
+        for (String nodeName : nodeNames) {
+            LOG.info("*** Node name: " + nodeName);
+        }
+
+        List<ActionTaken> actionsTaken = document.getActionsTaken();
+        for (ActionTaken actionTaken : actionsTaken) {
+            LOG.info("*** Action taken. Id: " + actionTaken.getId()
+            + ", docId: " + actionTaken.getDocumentId()
+            + ", principalId: " + actionTaken.getPrincipalId()
+            + ", action: " + actionTaken.getActionTaken()
+            + ", date: " + actionTaken.getActionDate());
+        }
+
+        LOG.info(" ");
+    }
+
+    // Contains temporary logging for KULRICE-12853 investigation.
     @Test public void testNestedDuplicateNodeNameInRoutePath() throws Exception {
         int waitMilliSeconds = 5000;
         loadXmlFile("DocTypeConfig_nestedNodes.xml");
@@ -163,49 +191,72 @@ public class DocumentTypeTest extends KEWTestCase {
         document.setTitle("");
         document.route("");
 
+        logExtraInfo("user1 (after route)", document);
+
         // Split1, left (rkirkend --> user2)
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have an approve request; the first request", document.isApprovalRequested());
+
+        logExtraInfo("rkirkend before approve", document);
+
         document.approve("");
+
+        logExtraInfo("rkirkend after approve", document);
+
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
+
+        // se10
+        logExtraInfo("user2 before approve", document);
         document.approve("");
+        logExtraInfo("user2 after approve", document);
 
         // Some temp logging to look into KULRICE-12853.
         LOG.info("isApprovalRequested Loop Starts") ;
         boolean loopSuccess = false;
         int loopPasses = 0;
 
-        // Split1, Right, Innersplit, Right (user4)
-        for (int j=25; j >= 0; j--) {
+        for (int j=30; j >= 0; j--) {
             loopPasses++;
             Thread.sleep(waitMilliSeconds);
             document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user4"), document.getDocumentId());
+            logExtraInfo("user4 polling for isApprovalRequested", document);
             if (document.isApprovalRequested()) {
                 loopSuccess = true;
                 break;
             }
         }
 
-        // Some temp logging to look into KULRICE-12853.
         LOG.info("isApprovalRequested Loop Finished") ;
         LOG.info("loopSuccess: " + loopSuccess + ". Number of 5 second loop passes: " + loopPasses);
 
         assertTrue("user4 should have an approve request", document.isApprovalRequested());
+        logExtraInfo("user4 before approve", document);
         document.approve("");
+        logExtraInfo("user4 after approve", document);
 
         // Split1, Right, Innersplit, Left  (rkirkend --> user3)
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
         assertTrue("user3 should have an approve request; the first request", document.isApprovalRequested());
+
+        logExtraInfo("user3 before approve", document);
         document.approve("");
+        logExtraInfo("user3 after approve", document);
 
         // Split2, Left  (rkirkend --> user3)  NOTE - Split2, Right is a NoOp node
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
         assertTrue("rkirkend should have an approve request; the second request", document.isApprovalRequested());
+
+        logExtraInfo("rkirkend before approve", document);
         document.approve("");
+        logExtraInfo("rkirkend after approve", document);
+
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user3"), document.getDocumentId());
         assertTrue("user3 should have an approve request; the second request", document.isApprovalRequested());
+
+        logExtraInfo("user3 after approve", document);
         document.approve("");
+        logExtraInfo("user3 after approve", document);
     }
     /**
      * Verify that enroute documents are not affected if you edit their document type.

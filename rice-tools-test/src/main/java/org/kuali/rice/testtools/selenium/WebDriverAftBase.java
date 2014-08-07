@@ -1606,13 +1606,16 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected void waitForProgress(String altText, int timeout) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         for (int second = 0;; second++) {
-            Thread.sleep(1000);
+            Thread.sleep(1000); // sleep for a second first, give element time to exist
+
             if (second >= timeout) {
                 jiraAwareFail(TIMEOUT_MESSAGE + " still Loading after " + timeout);
             }
-            if (!isVisible(By.xpath("//img[@alt='" + altText + "']"))) {
+
+            if (!isElementPresentByXpath("//img[@alt='" + altText + "']") || !isVisible(By.xpath("//img[@alt='" + altText + "']"))) {
                 break;
             }
+
         }
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }

@@ -251,7 +251,7 @@ public class JiraIssueCreation {
     }
 
     protected JiraData parseJiraData(File inputFile) throws IOException {
-        String rawData = FileUtils.readFileToString(inputFile, null);
+        String rawData = FileUtils.readFileToString(inputFile, (String)null);
         JiraData jiraData = new JiraData();
         try {
             jiraData.aftSteps = rawData.substring(rawData.indexOf("AFT Step:"), rawData.indexOf("Abbreviated test name: "));

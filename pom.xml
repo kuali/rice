@@ -110,16 +110,16 @@
     <closure.version>v20130603</closure.version>
     <cglib.version>2.2.2</cglib.version>
     <commons-beanutils.version>1.8.3-kuali-4</commons-beanutils.version>
-    <commons-codec.version>1.6</commons-codec.version>
+    <commons-codec.version>1.9</commons-codec.version>
     <commons-collections.version>3.2.1</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
     <commons-fileupload.version>1.3.1</commons-fileupload.version>
-    <commons-io.version>2.1</commons-io.version>
+    <commons-io.version>2.4</commons-io.version>
     <commons-lang.version>2.6</commons-lang.version>
-    <commons-lang3.version>3.2.1</commons-lang3.version>
-    <commons-pool.version>1.5.7</commons-pool.version>
-    <commons-digester.version>2.0</commons-digester.version>
-    <commons-validator.version>1.3.1</commons-validator.version>
+    <commons-lang3.version>3.3.2</commons-lang3.version>
+    <commons-pool.version>1.6</commons-pool.version>
+    <commons-digester.version>2.1</commons-digester.version>
+    <commons-validator.version>1.4.0</commons-validator.version>
     <cxf.version>2.7.12</cxf.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
@@ -128,14 +128,15 @@
     <ehcache.version>2.6.9</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <freemarker.version>2.3.20-patch2</freemarker.version>
-    <jaxb-impl.version>2.2.6</jaxb-impl.version>
     <lesscss.version>1.3.3</lesscss.version>
-    <wro4j.version>1.7.0</wro4j.version>
     <glassfish-javax-json.version>1.0.1</glassfish-javax-json.version>
     <groovy.version>1.8.9</groovy.version>
     <guava.version>17.0</guava.version>
     <httpclient.version>4.3.4</httpclient.version>
-    <jpa.version>2.1.0</jpa.version>
+
+    <!-- Can't get rid of this dependency until the JAXB RI in our current JDK is >= this version -->
+    <jaxb-impl.version>2.2.6</jaxb-impl.version>
+
     <jackson.version>1.8.8</jackson.version>
     <javassist.version>3.15.0-GA</javassist.version>
     <javax.inject.version>1</javax.inject.version>
@@ -145,6 +146,7 @@
     <joda-time.version>2.4</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10-kuali-1</jotm.version>
+    <jpa.version>2.1.0</jpa.version>
     <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsr305.version>2.0.3</jsr305.version>
@@ -2542,9 +2544,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</connection>
-    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/trunk</url>
+    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/sandbox/rice-2.5-KULRICE-12563</connection>
+    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/sandbox/rice-2.5-KULRICE-12563</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/sandbox/rice-2.5-KULRICE-12563</url>
   </scm>
 
 </project>

@@ -945,11 +945,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected void jGrowl(String message) {
         WebDriverUtils.jGrowl(driver, jGrowlHeader, false, message);
         if (webDriverScreenshotHelper.screenshotSteps()) {
-            try {
-                screenshot();
-            } catch (IOException ioe) {
-                System.err.println("Exception taking screenshot " + ioe.getMessage());
-            }
+            screenshot();
         }
     }
 
@@ -960,11 +956,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected void jGrowlSticky(String message) {
         WebDriverUtils.jGrowl(driver, jGrowlHeader, true, message);
         if (webDriverScreenshotHelper.screenshotSteps()) {
-            try {
-                screenshot();
-            } catch (IOException ioe) {
-                System.err.println("Exception taking screenshot " + ioe.getMessage());
-            }
+            screenshot();
         }
     }
 
@@ -1015,8 +1007,13 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         // No-op for convenience
     }
 
-    protected void screenshot() throws IOException {
-        webDriverScreenshotHelper.screenshot(driver, this.getClass().getSimpleName(), testName.getMethodName(), determinePage());
+    protected void screenshot() {
+        try {
+            webDriverScreenshotHelper.screenshot(driver, this.getClass().getSimpleName(), testName.getMethodName(),
+                    determinePage());
+        } catch (Throwable t) {
+            System.out.println("Problem with screenshot " + t.getMessage());
+        }
     }
 
     protected void startSession(Method method) throws Exception {

@@ -54,6 +54,7 @@ public class DemoTravelAccountMaintenanceAdHocRecipientsPersonAft extends WebDri
 
         waitAndClickSaveByText();
         waitForProgressSaving();
+        checkForDocErrorKrad();
         waitForTextPresent("Document was successfully saved.");
 
         clearTextByName("document.adHocRoutePersons[0].id");

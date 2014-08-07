@@ -41,16 +41,6 @@ import java.util.Calendar;
 public class AutomatedFunctionalTestUtils {
 
     /**
-     * //div[@class='error']"
-     */
-    public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
-
-    /**
-     * //div[@class='msg-excol']
-     */
-    public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
-
-    /**
      * Calendar.getInstance().getTimeInMillis() + ""
      */
     public static final String DTS = Calendar.getInstance().getTimeInMillis() + "";
@@ -136,12 +126,6 @@ public class AutomatedFunctionalTestUtils {
      */
     public static final String DOC_FORM_KEY = "&docFormKey=";
     
-
-    public static String blanketApprovalCleanUpErrorText(String errorText) {
-        errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
-        return errorText;
-    }
-
     /**
      * Creates a 13 digit time stamp with two random characters appended for use with fields that require unique values.
      *

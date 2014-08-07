@@ -128,7 +128,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitForTextPresent("Delete"); // wait for ajax to finish adding ad hoc group
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        failOnErrorMessageItem();
+        checkForDocErrorKrad();
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
 
         //unlock record

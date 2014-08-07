@@ -146,6 +146,21 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     public static final String DATA_TABLE_TR_CSS = "div.dataTables_wrapper tbody tr";
 
     /**
+     * //div[@class='error']"
+     */
+    public static final String DIV_ERROR_LOCATOR = "//div[@class='error']";
+
+    /**
+     * //div[@class='error']"
+     */
+    public static final String DIV_ERROR_LOCATOR_KRAD = "//div[@class='alert alert-danger']/ul";
+
+    /**
+     * //div[@class='msg-excol']
+     */
+    public static final String DIV_EXCOL_LOCATOR = "//div[@class='msg-excol']";
+
+    /**
      * //div[@class='left-errmsg-tab']/div/div
      */
     public static final String DIV_LEFT_ERRMSG = "//div[@class='left-errmsg-tab']/div/div";
@@ -604,6 +619,11 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         checkForIncidentReport();
     }
 
+    public static String blanketApprovalCleanUpErrorText(String errorText) {
+        errorText = errorText.replace("* required field", "").replace("\n", " ").trim(); // bit of extra ui text we don't care about
+        return errorText;
+    }
+
     /**
      * Tests blanket approve action.
      * This method is used by several different tests which perform various types of blanket approvals.
@@ -653,19 +673,33 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         }
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     */
+    public void checkForDocErrorKrad() {
+        if (hasDocErrorKrad()) {
+            String errorText = extractErrorTextKrad();
+            jiraAwareFail(errorText);
+        }
+    }
+
     protected String extractErrorText() {
-        String errorText = driver.findElement(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).getText(); // don't highlight
-        errorText = AutomatedFunctionalTestUtils.blanketApprovalCleanUpErrorText(errorText);
-        if (driver.findElements(By.xpath(AutomatedFunctionalTestUtils.DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
-            errorText = AutomatedFunctionalTestUtils.blanketApprovalCleanUpErrorText(driver.findElement(
+        String errorText = driver.findElement(By.xpath(DIV_ERROR_LOCATOR)).getText(); // don't highlight
+        errorText = blanketApprovalCleanUpErrorText(errorText);
+        if (driver.findElements(By.xpath(DIV_EXCOL_LOCATOR)).size() > 0) { // not present if errors are at the bottom of the page (see left-errmsg below)
+            errorText = blanketApprovalCleanUpErrorText(driver.findElement(
                     // don't highlight
-                    By.xpath(AutomatedFunctionalTestUtils.DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
+                    By.xpath(DIV_EXCOL_LOCATOR)).getText()); // replacing errorText as DIV_EXCOL_LOCATOR includes the error count
         }
         if (driver.findElements(By.xpath(DIV_LEFT_ERRMSG)).size() > 0) {
-            errorText = errorText + AutomatedFunctionalTestUtils.blanketApprovalCleanUpErrorText(driver.findElement(
+            errorText = errorText + blanketApprovalCleanUpErrorText(driver.findElement(
                     By.xpath(DIV_LEFT_ERRMSG)).getText()); // don't highlight
         }
         return errorText;
+    }
+
+    protected String extractErrorTextKrad() {
+        return driver.findElement(By.xpath(DIV_ERROR_LOCATOR_KRAD)).getText(); // don't highlight
     }
 
     /**
@@ -673,9 +707,23 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
      * @return
      */
     public boolean hasDocError() {
-        if (driver.findElements(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).size() > 0) {
-            String errorText = driver.findElement(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).getText(); // don't highlight
+        if (driver.findElements(By.xpath(DIV_ERROR_LOCATOR)).size() > 0) {
+            String errorText = driver.findElement(By.xpath(DIV_ERROR_LOCATOR)).getText(); // don't highlight
             if (errorText != null && errorText.contains("error(s) found on page.")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @return
+     */
+    public boolean hasDocErrorKrad() {
+        if (driver.findElements(By.xpath(DIV_ERROR_LOCATOR_KRAD)).size() > 0) {
+            String errorText = driver.findElement(By.xpath(DIV_ERROR_LOCATOR_KRAD)).getText(); // don't highlight
+            if (errorText != null && !errorText.equals("")) {
                 return true;
             }
         }
@@ -688,8 +736,8 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
      * @return
      */
     public boolean hasDocError(String errorTextToMatch) {
-        if (driver.findElements(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).size() > 0) {
-            String errorText = driver.findElement(By.xpath(AutomatedFunctionalTestUtils.DIV_ERROR_LOCATOR)).getText(); // don't highlight
+        if (driver.findElements(By.xpath(DIV_ERROR_LOCATOR)).size() > 0) {
+            String errorText = driver.findElement(By.xpath(DIV_ERROR_LOCATOR)).getText(); // don't highlight
             if (errorText != null && errorText.contains("error(s) found on page.")) {
                 WebElement errorDiv = driver.findElement(By.xpath("//div[@class='left-errmsg']/div[2]/div")); // don't highlight
                 if (errorDiv != null) {

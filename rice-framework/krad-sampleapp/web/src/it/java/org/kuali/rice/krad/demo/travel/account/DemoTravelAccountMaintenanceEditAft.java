@@ -125,7 +125,9 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
 
         waitAndClickSaveByText();
         waitForProgressSaving();
+        checkForDocErrorKrad();
         waitForTextPresent("Document was successfully saved.");
+
         assertTextPresent("SAVED");
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
@@ -143,6 +145,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         //click on confirmation message
         waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
         acceptAlertIfPresent();
+        checkForDocErrorKrad();
         waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {
@@ -212,7 +215,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickBlanketApprove();
         jGrowl("Click OK");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
-        acceptAlert();
+        checkForDocErrorKrad();
 
         // Redirected to Home page after Blanket Approve https://jira.kuali.org/browse/KULRICE-13042
         waitAndClickDemoLink();

@@ -154,7 +154,6 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText("Add");
         waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent", "\"/><script>alert('!')</script>");
         waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
         waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", "\"/><script>alert('!')</script>");
         waitAndClickById("Uif-AdHocPersonCollection_add");

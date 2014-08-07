@@ -805,6 +805,10 @@ function _openPopover(popupTarget, contentId, popoverOptions, useCloseButton) {
 
     var clickName = "click." + popupTarget.attr('id');
     popupTarget.attr("data-popupContentId", popupContent.attr("id"));
+
+    // Make focusable by focus jquery call
+    popupContent.attr("tabindex", "-1");
+
     popupContent.after("<div id='" + contentId + "_popupPlaceholder' style='display:none'></div>");
     popupContent = popupContent.detach().show();
     popupContent.addClass("uif-popupContent-inner");
@@ -820,8 +824,9 @@ function _openPopover(popupTarget, contentId, popoverOptions, useCloseButton) {
 
         popoverData = initializeTooltip(popupTarget, popoverOptions, "uif-popupContent");
 
-        if (useCloseButton) {
-            var closeButton = jQuery('<div class="uif-popup-closebutton"/>');
+        if (useCloseButton && popupContent.find("> .close").length === 0) {
+            var closeButton = jQuery('<button type="button" class="close">'
+                    + '<span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>');
             closeButton.on(clickName, function () {
                 _hidePopover(popupTarget);
             });
@@ -830,10 +835,10 @@ function _openPopover(popupTarget, contentId, popoverOptions, useCloseButton) {
     }
 
     popoverData.options.content = popupContent;
-
     popupTarget.popover("show");
-
     popoverData.shown = true;
+
+    popupContent.focus();
 
     // close popup on any click outside current popup
     jQuery(document).on(clickName, function (e) {
@@ -849,6 +854,7 @@ function _openPopover(popupTarget, contentId, popoverOptions, useCloseButton) {
         jQuery("#" + contentId + "_popupPlaceholder").replaceWith(popupContent.hide());
         target.popover("hide");
         jQuery(document).off("click." + target.attr('id'));
+        target.focus();
     }
 }
 

@@ -88,6 +88,7 @@
     <file url="file://$PROJECT_DIR$/rice-middleware/ksb/client-impl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-middleware/ksb/server-impl" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-middleware/ksb/web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/rice-middleware/legacy-web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-middleware/location" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-middleware/location/api" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/rice-middleware/location/framework" charset="UTF-8" />

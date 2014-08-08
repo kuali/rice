@@ -49,7 +49,6 @@
           <property name="propertyName" value="collection1" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
-          <property name="renderAddLine" value="false" />
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
@@ -106,7 +105,7 @@
           <property name="headerText" value="Add With Dialog Top"/>
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
-          <property name="propertyName" value="collection1_2"/>
+          <property name="propertyName" value="collection1_4"/>
           <!-- addWithDialog flag -->
           <property name="addWithDialog" value="true"/>
           <property name="addWithDialogAction">
@@ -134,7 +133,7 @@
           <property name="headerText" value="Add With Dialog Top"/>
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
-          <property name="propertyName" value="collection1_2"/>
+          <property name="propertyName" value="collection1_5"/>
           <!-- addWithDialog flag -->
           <property name="addWithDialog" value="true"/>
           <property name="addWithDialogAction">
@@ -171,7 +170,7 @@
           <property name="headerText" value="Add Blank Line" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_4" />
+          <property name="propertyName" value="collection1_6" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <!-- renderAddBlankLineButton flag -->
@@ -194,7 +193,7 @@
         <!-- ex:Demo-CollectionAddLine-Example4 start-->
         <bean
                 parent="Uif-TableCollectionSection" p:headerText="Project Income"
-                p:propertyName="collection1"
+                p:propertyName="collection1_7"
                 p:collectionObjectClass="org.kuali.rice.krad.demo.uif.form.UITestObject"
                 p:addWithDialog="true" p:layoutManager.renderSequenceField="false">
           <property name="addWithDialogAction">
@@ -285,7 +284,7 @@
         <!-- ex:Demo-CollectionAddLine-Example5 start-->
         <bean
                 parent="Uif-TableCollectionSection" p:headerText="Project Income"
-                p:propertyName="collection1"
+                p:propertyName="collection1_8"
                 p:collectionObjectClass="org.kuali.rice.krad.demo.uif.form.UITestObject"
                 p:addWithDialog="false" p:layoutManager.renderSequenceField="false">
           <property name="items">

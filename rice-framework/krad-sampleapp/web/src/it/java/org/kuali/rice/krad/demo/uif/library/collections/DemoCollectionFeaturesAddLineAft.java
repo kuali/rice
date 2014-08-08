@@ -69,8 +69,8 @@ public class DemoCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
     protected void testCollectionFeaturesDefaultAddBlankLine() throws Exception {
         selectByName("exampleShown","Collection Add Blank Line");
         waitAndClickByXpath("//section[@id='Demo-CollectionAddLine-Example3']/section/div/button");
-        assertElementPresentByXpath("//input[@name='collection1_4[0].field1' and @value]");
-        assertElementPresentByXpath("//input[@name='collection1_4[0].field2' and @value]");
+        assertElementPresentByXpath("//input[@name='collection1_6[0].field1' and @value]");
+        assertElementPresentByXpath("//input[@name='collection1_6[0].field2' and @value]");
     }
     
     @Test

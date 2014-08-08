@@ -133,6 +133,7 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     protected void testTransactionalLookupSecurityAddHiddenConversionField() throws Exception {
         waitAndClickTravelerQuickfinder();
 
+        assertTrue("Url doesn't have CONVERSION_FIELDS ("  + CONVERSION_FIELDS + ")", StringUtils.indexOf(driver.getCurrentUrl(), CONVERSION_FIELDS) > -1);
         int splitPosition = StringUtils.indexOf(driver.getCurrentUrl(), CONVERSION_FIELDS) + CONVERSION_FIELDS.length();
         String before = StringUtils.substring(driver.getCurrentUrl(), 0, splitPosition);
         String after = StringUtils.substring(driver.getCurrentUrl(), splitPosition);

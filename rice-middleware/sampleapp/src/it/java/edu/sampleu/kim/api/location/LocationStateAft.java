@@ -20,10 +20,19 @@ import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LocationStateAft extends AdminTmplMthdAftNavBlanketAppBase {
+
+    public static final List<String> STATE_CODES = Arrays.asList(
+            new String[]{"AK", "AL", "AR", "AS", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "GU", "HI", "IA", "ID",
+                    "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MH", "MI", "MN", "MO", "MS", "MT", "NC", "ND",
+                    "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "PR", "PW", "RI", "SC", "SD", "TN",
+                    "TX", "UT", "VA", "VI", "VT", "WA", "WI", "WV", "WY"});
 
     /**
      * ITUtil.PORTAL + "?channelTitle=State&channelUrl=" 
@@ -57,6 +66,11 @@ public class LocationStateAft extends AdminTmplMthdAftNavBlanketAppBase {
     }
 
     private void inputDetails() throws InterruptedException {
+        // Make sure we don't use an existing state abbreviation
+        while (STATE_CODES.contains(getDescriptionUnique().substring(5, 7))) {
+            uniqueString = null;
+        }
+
         waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
         jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
         jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));

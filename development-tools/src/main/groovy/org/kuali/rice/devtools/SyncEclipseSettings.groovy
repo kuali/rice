@@ -6,7 +6,7 @@
 *
 * This should be executed relative to the root of the Rice project.  To do this, execute the following command:
 *
-* groovy config/ide/eclipse/SyncEclipseSettings.groovy
+* groovy development-tools/src/main/groovy/org/kuali/rice/devtools/SyncEclipseSettings.groovy
 */
 
 filesToCopy = [ 'development-tools/.settings/org.eclipse.jdt.ui.prefs', 'development-tools/.settings/org.eclipse.jdt.core.prefs' ]

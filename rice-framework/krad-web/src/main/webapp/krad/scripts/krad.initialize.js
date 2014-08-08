@@ -240,7 +240,7 @@ function initEnterKeyHandler() {
         var keycode = (event.keyCode ? event.keyCode : event.which);
 
         // check for enter key
-        if (keycode === 13 && jQuery(event.target).is("[data-role='Control']")) {
+        if (keycode === 13 && jQuery(event.target).is("[data-role='Control']") && !jQuery(event.target).is("textarea")) {
             event.preventDefault();
             return false;
         }

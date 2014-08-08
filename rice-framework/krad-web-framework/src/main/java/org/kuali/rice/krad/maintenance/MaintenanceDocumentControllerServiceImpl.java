@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.krad.maintenance;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.krad.bo.PersistableAttachment;
 import org.kuali.rice.krad.bo.PersistableAttachmentList;
@@ -44,6 +46,24 @@ import java.io.IOException;
 public class MaintenanceDocumentControllerServiceImpl extends DocumentControllerServiceImpl implements MaintenanceDocumentControllerService {
 
     private MaintenanceDocumentService maintenanceDocumentService;
+
+    /**
+     * Determines whether the document needs to be set to read only based on how it is being loaded.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public ModelAndView docHandler(DocumentFormBase form) throws WorkflowException {
+        ModelAndView modelAndView = super.docHandler(form);
+
+        String command = form.getCommand();
+
+        if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && (form.getDocId() != null)) {
+            form.getView().setReadOnly(Boolean.TRUE);
+        }
+
+        return modelAndView;
+    }
 
     /**
      * {@inheritDoc}

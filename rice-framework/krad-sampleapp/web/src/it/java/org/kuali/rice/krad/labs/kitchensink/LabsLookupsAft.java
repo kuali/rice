@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.krad.labs.kitchensink;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

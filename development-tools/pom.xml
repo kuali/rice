@@ -57,6 +57,10 @@
       <artifactId>javaparser</artifactId>
       <version>${javaparser.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+    </dependency>
   </dependencies>
 
   <dependencyManagement>

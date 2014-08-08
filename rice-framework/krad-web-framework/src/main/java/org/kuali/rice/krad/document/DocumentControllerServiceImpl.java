@@ -126,14 +126,15 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
 
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && (form.getDocId() != null)) {
             loadDocument(form);
+
             if (KewApiConstants.SUPERUSER_COMMAND.equals(command)) {
                 view.setSuperUserView(true);
-                view.setReadOnly(true);
             }
         } else if (KewApiConstants.INITIATE_COMMAND.equals(command)) {
             if (view != null) {
                 form.setApplyDefaultValues(true);
             }
+
             createDocument(form);
         } else {
             LOG.error("docHandler called with invalid parameters");

@@ -208,6 +208,7 @@
 
   <bean id="Uif-DocumentAdHocRecipientsSection" parent="Uif-Disclosure-VerticalBoxSection">
     <property name="headerText" value="Ad Hoc Recipients"/>
+    <property name="readOnly" value="@{!#actionFlags[#Constants.KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS]}"/>
     <property name="items">
       <list>
         <bean id="Uif-AdHocPersonCollection" parent="Uif-TableCollectionSubSection"

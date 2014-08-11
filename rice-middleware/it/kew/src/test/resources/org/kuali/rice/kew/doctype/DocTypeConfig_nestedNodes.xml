@@ -37,10 +37,10 @@
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
-			<name>TestDoubleNodeDocumentType</name>
-			<description>TestDoubleNodeDocumentType</description>
-			<label>TestDoubleNodeDocumentType</label>
-			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+  	  <name>TestNestedNodeDocumentType</name>
+			<description>TestNestedNodeDocumentType</description>
+			<label>TestNestedNodeDocumentType</label>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<superUserGroupName namespace="KR-WKFLW">${test.doctype.workgroup}</superUserGroupName>
 			<docHandler>${test.base.url}/_blank</docHandler>
             <helpDefinitionURL>/_help</helpDefinitionURL>
@@ -119,9 +119,9 @@
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
-			<documentType>TestDoubleNodeDocumentType</documentType>
+			<documentType>TestNestedNodeDocumentType</documentType>
 			<ruleTemplate>RuleTemplate1</ruleTemplate>
-			<description>RuleTemplate1 TestDoubleNodeDocumentType</description>
+			<description>RuleTemplate1 TestNestedNodeDocumentType</description>
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
@@ -132,9 +132,9 @@
 			</responsibilities>
 		</rule>
 		<rule>
-			<documentType>TestDoubleNodeDocumentType</documentType>
+			<documentType>TestNestedNodeDocumentType</documentType>
 			<ruleTemplate>RuleTemplate2</ruleTemplate>
-			<description>RuleTemplate2 TestDoubleNodeDocumentType</description>
+			<description>RuleTemplate2 TestNestedNodeDocumentType</description>
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
@@ -145,9 +145,9 @@
 			</responsibilities>
 		</rule>
     <rule>
-      <documentType>TestDoubleNodeDocumentType</documentType>
+      <documentType>TestNestedNodeDocumentType</documentType>
       <ruleTemplate>RuleTemplate3</ruleTemplate>
-      <description>RuleTemplate3 TestDoubleNodeDocumentType</description>
+      <description>RuleTemplate3 TestNestedNodeDocumentType</description>
       <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
@@ -158,9 +158,9 @@
       </responsibilities>
     </rule>
   <rule>
-    <documentType>TestDoubleNodeDocumentType</documentType>
+    <documentType>TestNestedNodeDocumentType</documentType>
     <ruleTemplate>RuleTemplate4</ruleTemplate>
-    <description>RuleTemplate4 TestDoubleNodeDocumentType</description>
+    <description>RuleTemplate4 TestNestedNodeDocumentType</description>
     <forceAction>true</forceAction>
     <responsibilities>
       <responsibility>

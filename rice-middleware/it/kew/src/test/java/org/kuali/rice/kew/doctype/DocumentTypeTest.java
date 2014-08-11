@@ -187,7 +187,7 @@ public class DocumentTypeTest extends KEWTestCase {
         int waitMilliSeconds = 5000;
         loadXmlFile("DocTypeConfig_nestedNodes.xml");
 
-        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestDoubleNodeDocumentType");
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestNestedNodeDocumentType");
         document.setTitle("");
         document.route("");
 

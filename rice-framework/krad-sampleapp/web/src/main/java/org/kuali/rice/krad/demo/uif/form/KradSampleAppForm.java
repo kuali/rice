@@ -97,6 +97,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private List<String> checkboxesField2;
     private List<String> checkboxesField3;
     private List<String> checkboxesField4;
+    private List<String> checkboxesField5;
 
     private List<String> multiSelectField1;
 
@@ -238,10 +239,10 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         getCollection1().add(new UITestObject("5", "5", "5", "5", "5", "5"));
         getCollection1().add(new UITestObject("5", "7", "3", "1", "9", "11"));
 
-        // populate checkboxesField1 to test bindToForm
-        this.checkboxesField1 = new ArrayList<>();
+        // populate checkboxesField5 to test bindToForm
+        this.checkboxesField5 = new ArrayList<>();
         for (UITestObject to : this.getCollection1()) {
-            this.checkboxesField1.add("check" + to.getField3());
+            this.checkboxesField5.add("check" + to.getField3());
         }
 
         collection1_2.addAll(collection1);
@@ -1121,6 +1122,14 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setCheckboxesField3(List<String> checkboxesField3) {
         this.checkboxesField3 = checkboxesField3;
+    }
+
+    public List<String> getCheckboxesField5() {
+        return checkboxesField5;
+    }
+
+    public void setCheckboxesField5(List<String> checkboxesField5) {
+        this.checkboxesField5 = checkboxesField5;
     }
 
     public List<String> getCheckboxesField4() {

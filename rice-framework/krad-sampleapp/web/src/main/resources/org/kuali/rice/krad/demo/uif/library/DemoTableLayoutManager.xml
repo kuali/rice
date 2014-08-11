@@ -463,7 +463,7 @@
           <property name="renderLineActions" value ="false"/>
           <property name="items">
             <list>
-              <bean parent="Uif-DataField" p:propertyName="checkboxesField1" p:label="checkboxesField1" p:bindingInfo.bindToForm="true"/>
+              <bean parent="Uif-DataField" p:propertyName="checkboxesField5" p:label="checkboxesField5" p:bindingInfo.bindToForm="true"/>
               <bean parent="Uif-DataField" p:propertyName="field1" p:label="field1"/>
               <bean parent="Uif-DataField" p:propertyName="field2" p:label="field2"/>
             </list>

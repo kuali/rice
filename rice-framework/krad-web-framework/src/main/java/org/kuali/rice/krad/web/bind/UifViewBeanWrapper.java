@@ -192,11 +192,20 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
      */
     @Override
     public Object getPropertyValue(String propertyName) throws BeansException {
+         return getPropertyValue(propertyName, false);
+    }
+
+    /**
+     * Returns the value for the given property growing nested paths depending on the parameter.
+     *
+     * @param propertyName name of the property to get value for
+     * @param autoGrowNestedPaths whether nested paths should be grown (initialized if null)
+     * @return value for property
+     */
+    protected Object getPropertyValue(String propertyName, boolean autoGrowNestedPaths) {
         registerEditorFromView(propertyName);
 
-        // set auto grow to false here because we don't want empty object created when only
-        // displaying data
-        setAutoGrowNestedPaths(false);
+        setAutoGrowNestedPaths(autoGrowNestedPaths);
 
         Object value = null;
         try {
@@ -238,7 +247,7 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         Object originalValue = null;
         if (bindingResult.isChangeTracking()) {
             try {
-                originalValue = getPropertyValue(pv.getName());
+                originalValue = getPropertyValue(pv.getName(), true);
             } catch (Exception e) {
                 // be failsafe here, if an exception happens here then we can't make any assumptions about whether
                 // the property value changed or not
@@ -290,7 +299,7 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         boolean originalValueSaved = true;
         Object originalValue = null;
         try {
-            originalValue = getPropertyValue(propertyName);
+            originalValue = getPropertyValue(propertyName, true);
         } catch (Exception e) {
             // be failsafe here, if an exception happens here then we can't make any assumptions about whether
             // the property value changed or not

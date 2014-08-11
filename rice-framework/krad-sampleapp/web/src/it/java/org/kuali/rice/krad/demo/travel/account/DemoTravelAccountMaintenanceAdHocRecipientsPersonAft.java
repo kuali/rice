@@ -60,6 +60,7 @@ public class DemoTravelAccountMaintenanceAdHocRecipientsPersonAft extends WebDri
         clearTextByName("document.adHocRoutePersons[0].id");
         waitAndTypeByName("document.adHocRoutePersons[0].id", "1");
         waitAndClickSaveByText();
+        waitForProgressSaving();
 
         waitForTextPresent("Invalid Ad Hoc Routing Person Network Id");
     }

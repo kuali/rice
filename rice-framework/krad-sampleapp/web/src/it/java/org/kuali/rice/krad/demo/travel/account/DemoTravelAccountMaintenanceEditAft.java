@@ -132,6 +132,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         waitAndClickButtonByText("Reload");
+        waitForProgressLoading();
         waitForTextPresent("Document was successfully reloaded.");
         assertTextPresent("FINAL");
     }

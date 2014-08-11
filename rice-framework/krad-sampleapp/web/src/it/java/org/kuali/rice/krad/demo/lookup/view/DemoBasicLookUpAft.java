@@ -92,6 +92,7 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     	waitAndTypeByName("document.newMaintainableObject.dataObject.name"," Edited");
     	waitAndClickButtonByExactText("Save");
         waitForProgressSaving();
+        checkForDocErrorKrad();
     	waitForTextPresent("Document was successfully saved.");
     }
    

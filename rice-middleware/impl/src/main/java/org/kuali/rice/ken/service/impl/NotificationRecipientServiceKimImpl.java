@@ -22,6 +22,7 @@ import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.util.List;
@@ -112,13 +113,17 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      */
     public boolean isUserRecipientValid(String principalName)
     {
+        Principal p = null;
         try {
-          return (KimApiServiceLocator.getIdentityService()
-                  .getPrincipalByPrincipalName(principalName) != null);
+        p = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
+            principalName);
         } catch (RiceIllegalArgumentException e) {
           LOG.warn("Recipient cannot be found: " + principalName);
-          return false;
         }
+        if (p != null) {
+          return true;
+        }
+        return false;
     }
 
 }

@@ -19,16 +19,20 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PBKey;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.kuali.rice.core.api.config.ConfigurationException;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.persistence.jdbc.dao.PlatformAwareDaoBaseJdbc;
-import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.ModuleConfiguration;
 import org.kuali.rice.krad.dao.SequenceAccessorDao;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiModuleService;
 import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.LegacyUtils;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
+
+import javax.sql.DataSource;
 
 /**
  * This class uses the KualiDBPlatform to get the next number from a given sequence.
@@ -51,26 +55,31 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
     	if (!LegacyUtils.useLegacy(clazz)) {
             throw new ConfigurationException("SequenceAccessorService should not be used with new data framework! Use "
                     + MaxValueIncrementerFactory.class.getName() + " instead.");
-        }
-    	else {
+        } else {
     		String dataSourceName = moduleConfig.getDataSourceName();
-    		if ( StringUtils.isEmpty(dataSourceName) ) {
-                // fall back to trying the DocumentHeader module service and data source name for OJB
-                moduleConfig = getKualiModuleService().getResponsibleModuleService(DocumentHeader.class).getModuleConfiguration();
-                dataSourceName = moduleConfig.getDataSourceName();
-            }
-            if (StringUtils.isEmpty(dataSourceName)) {
-                throw new ConfigurationException("dataSourceName is not set");
-            }
 
-    		PBKey key = new PBKey(dataSourceName);
-    		PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, false);
-    		if ( broker != null )
-    			return getDbPlatform().getNextValSQL(sequenceName, broker);
-    		else
-    			throw new ConfigurationException("PersistenceBroker is null");            			
+    		if (StringUtils.isEmpty(dataSourceName)) {
+                return nextAvailableSequenceNumber(sequenceName);
+            } else {
+                PBKey key = new PBKey(dataSourceName);
+                PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, false);
+
+                if (broker != null) {
+                    return getDbPlatform().getNextValSQL(sequenceName, broker);
+                } else {
+                    throw new ConfigurationException("PersistenceBroker is null");
+                }
+            }
         }
 	}
+
+    private Long nextAvailableSequenceNumber(String sequenceName) {
+        DataSource dataSource = (DataSource) ConfigContext.getCurrentContextConfig().getObject(KRADConstants.KRAD_APPLICATION_DATASOURCE);
+        if (dataSource == null) {
+            dataSource = KRADServiceLocator.getKradApplicationDataSource();
+        }
+        return Long.valueOf(MaxValueIncrementerFactory.getIncrementer(dataSource, sequenceName).nextLongValue());
+    }
 	
 	public Long getNextAvailableSequenceNumber(String sequenceName, 
 			Class clazz) {
@@ -85,8 +94,8 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
 			return nextAvailableSequenceNumber(sequenceName, clazz);
 		}
 		catch ( ConfigurationException e  ) {
-	    	// Use DocumentHeader to get the dataSourceName associated with KNS			
-			return nextAvailableSequenceNumber(sequenceName, DocumentHeader.class);			
+	    	// Use kradApplication.datasource to get the dataSource associated with KNS
+			return nextAvailableSequenceNumber(sequenceName);
 		}
 	}
 	
@@ -94,8 +103,8 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
      * @see org.kuali.rice.krad.dao.SequenceAccessorDao#getNextAvailableSequenceNumber(java.lang.String)
      */
     public Long getNextAvailableSequenceNumber(String sequenceName) {
-    	// Use DocumentHeader to get the dataSourceName associated with KNS
-    	return nextAvailableSequenceNumber(sequenceName, DocumentHeader.class);
+    	// Use kradApplication.datasource to get the dataSource associated with KNS
+    	return nextAvailableSequenceNumber(sequenceName);
     }
     
     private KualiModuleService getKualiModuleService() {

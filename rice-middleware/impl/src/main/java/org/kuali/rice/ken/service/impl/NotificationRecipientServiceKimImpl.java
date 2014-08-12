@@ -111,19 +111,20 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      *
      * @see org.kuali.rice.ken.service.NotificationRecipientService#isUserRecipientValid(java.lang.String)
      */
-    public boolean isUserRecipientValid(String principalName)
-    {
+    public boolean isUserRecipientValid(final String principalName) {
+      if (principalName != null && principalName.length() > 0) {
         Principal p = null;
         try {
-        p = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
-            principalName);
-        } catch (RiceIllegalArgumentException e) {
-          LOG.warn("Recipient cannot be found: " + principalName);
+          p = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
+              principalName);
+        } catch (org.kuali.rice.core.api.exception.RiceIllegalArgumentException e) {
+          LOG.info("Recipient cannot be found: " + principalName);
         }
         if (p != null) {
           return true;
         }
-        return false;
+      }
+      return false;
     }
 
 }

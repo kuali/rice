@@ -45,7 +45,7 @@
         <!-- ex:Demo-InlineEdit-Example1 start-->
         <bean parent="Uif-InputField" p:label="Inline Edit Field" p:instructionalText="Instructions"
               p:constraintText="Constraint text" p:required="true"
-              p:propertyName="dataField3" p:inlineEdit="true"/>
+              p:propertyName="dataField6" p:inlineEdit="true"/>
         <!-- ex:Demo-InlineEdit-Example1 end-->
       </list>
     </property>
@@ -72,7 +72,7 @@
         <!-- ex:Demo-InlineEdit-Example3 start-->
         <bean parent="Uif-InputField" p:label="Inline Edit Textarea" p:instructionalText="Instructions"
               p:constraintText="Constraint text" p:required="true"
-              p:propertyName="dataField2" p:inlineEdit="true">
+              p:propertyName="dataField5" p:inlineEdit="true">
         <property name="control">
             <bean parent="Uif-TextAreaControl"/>
           </property>
@@ -87,7 +87,7 @@
     <property name="items">
       <list>
         <!-- ex:Demo-InlineEdit-Example4 start-->
-        <bean parent="Uif-InputField" p:propertyName="dataField4" p:width="auto" p:label="Inline Edit Select"
+        <bean parent="Uif-InputField" p:propertyName="dataField7" p:width="auto" p:label="Inline Edit Select"
               p:instructionalText="Instructions"
               p:constraintText="Constraint text" p:required="true" p:inlineEdit="true">
         <property name="control">
@@ -119,17 +119,17 @@
               <!-- ex:Demo-InlineEdit-Example5 start-->
               <bean parent="Uif-InputField" p:inlineEdit="true" p:required="true"
                       >
-              <property name="propertyName" value="dataField5"/>
+              <property name="propertyName" value="dataField8"/>
                 <property name="label" value="Field 1"/>
                 <property name="helpSummary" value="Standard KRAD 'helpSummary' property"/>
               </bean>
               <bean parent="Uif-InputField" p:inlineEdit="true" p:required="true"
                       >
-              <property name="propertyName" value="dataField6"/>
+              <property name="propertyName" value="dataField9"/>
                 <property name="label" value="Field 2"/>
               </bean>
               <bean parent="Uif-InputField">
-                <property name="propertyName" value="dataField7"/>
+                <property name="propertyName" value="dataField10"/>
                 <property name="label" value="Field 3"/>
                 <property name="required" value="true"/>
               </bean>
@@ -158,8 +158,8 @@
               <bean parent="Uif-InputField" p:label="Inline Edit Field"
                     p:instructionalText="Instructions: To abandon changes to the field, press the esc key."
                     p:constraintText="Constraint text" p:required="true"
-                    p:propertyName="dataField8" p:inlineEdit="true"/>
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="dataField9"/>
+                    p:propertyName="dataField11" p:inlineEdit="true"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="dataField12"/>
               <!-- ex:Demo-InlineEdit-Example6 end-->
             </list>
           </property>

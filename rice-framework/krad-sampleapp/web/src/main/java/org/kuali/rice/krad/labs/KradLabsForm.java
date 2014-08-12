@@ -87,14 +87,15 @@ public class KradLabsForm extends UifFormBase {
 
     //DataField
     private String dataField1 = "1001";
-    private String dataField2 = "My Book Title";
+    private String dataField2 = "";
     private String dataField3 = "My Book Title";
-    private String dataField4 = "Option 2";
-    private String dataField5 = "Some text";
-    private String dataField6 = "Book Title";
-    private String dataField7 = "My Book Title";
-    private String dataField8 = "My Other Book Title";
+    private String dataField4 = "My Book Title";
+    private String dataField5 = "Option 2";
+    private String dataField6 = "Some text";
+    private String dataField7 = "Book Title";
+    private String dataField8 = "My Book Title";
     private String dataField9 = "My Other Book Title";
+    private String dataField10 = "My Other Book Title";
 
     //MessageField
     private String messageField1;

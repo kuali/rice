@@ -111,14 +111,17 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     //DataField
     private String dataField1 = "1001";
-    private String dataField2 = "Book Title";
+    private String dataField2;
     private String dataField3 = "My Book Title";
-    private String dataField4 = "Option 3";
-    private String dataField5 = "My Second Book Title";
-    private String dataField6 = "Book Author";
-    private String dataField7 = "Book Category";
-    private String dataField8 = "My Third Book Title";
-    private String dataField9 = "A Book Title";
+    private String dataField4;
+    private String dataField5 = "Book Title";
+    private String dataField6 = "My Book Title";
+    private String dataField7 = "Option 3";
+    private String dataField8 = "My Second Book Title";
+    private String dataField9 = "Book Author";
+    private String dataField10 = "Book Category";
+    private String dataField11 = "My Third Book Title";
+    private String dataField12 = "A Book Title";
 
     //MessageField
     private String messageField1;
@@ -598,6 +601,30 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setDataField9(String dataField9) {
         this.dataField9 = dataField9;
+    }
+
+    public String getDataField10() {
+        return dataField10;
+    }
+
+    public void setDataField10(String dataField10) {
+        this.dataField10 = dataField10;
+    }
+
+    public String getDataField11() {
+        return dataField11;
+    }
+
+    public void setDataField11(String dataField11) {
+        this.dataField11 = dataField11;
+    }
+
+    public String getDataField12() {
+        return dataField12;
+    }
+
+    public void setDataField12(String dataField12) {
+        this.dataField12 = dataField12;
     }
 
     public String getInputField1() {

@@ -60,6 +60,8 @@ public class LabsValidationAft extends LabsKitchenSinkBase {
     	fireMouseOverEventByName("field10");
     	assertTextPresent("  Value must be greater than 2");
     	waitAndTypeByName("field10","51");
+        //need to change focus for error message to change
+        waitAndTypeByName("field9","");
     	fireMouseOverEventByName("field10");
     	assertTextPresent("  Value cannot be greater than 50");
     	

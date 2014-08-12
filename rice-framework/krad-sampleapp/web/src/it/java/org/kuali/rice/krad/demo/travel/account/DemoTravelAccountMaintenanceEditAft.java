@@ -133,6 +133,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickConfirmationOk();
         waitAndClickButtonByText("Reload");
         waitForProgressLoading();
+        checkForDocErrorKrad();
         waitForTextPresent("Document was successfully reloaded.");
         assertTextPresent("FINAL");
     }
@@ -216,6 +217,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickBlanketApprove();
         jGrowl("Click OK");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
+        acceptAlert();
         checkForDocErrorKrad();
 
         // Redirected to Home page after Blanket Approve https://jira.kuali.org/browse/KULRICE-13042

@@ -762,11 +762,11 @@ public class WebDriverUtils {
     public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message) {
         stepMessage(message);
         if (jGrowlEnabled) {
+            String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
             try {
-                String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
                 ((JavascriptExecutor) driver).executeScript(javascript);
             } catch (Throwable t) {
-                jGrowlException(t);
+                jGrowlException(t, javascript);
             }
         }
     }
@@ -778,8 +778,9 @@ public class WebDriverUtils {
      *
      * @param throwable message and stack trace to print and if configured fail with
      */
-    public static void jGrowlException(Throwable throwable) {
-        String failMessage = throwable.getMessage() + "\n" + ExceptionUtils.getStackTrace(throwable);
+    public static void jGrowlException(Throwable throwable, String jGrowlJavascript) {
+        String failMessage = jGrowlJavascript + " failed with " + throwable.getMessage() + "\n"
+                + ExceptionUtils.getStackTrace(throwable);
         System.out.println("jGrowl failure " + failMessage);
         if (JGROWL_ERROR_FAILURE) {
             SeleneseTestBase.fail(failMessage); // SeleneseTestBase fail okay here as jGrowl failures are not Jira worthy yet

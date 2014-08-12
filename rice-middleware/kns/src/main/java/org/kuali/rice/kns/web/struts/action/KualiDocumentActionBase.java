@@ -1072,8 +1072,11 @@ public class KualiDocumentActionBase extends KualiAction {
                         return forward;
                     }
 
-                    document = getDocumentService().saveDocument(document);
-                    docForm.setDocument(document);
+                    docForm.getDocument().getDocumentHeader().getWorkflowDocument().refresh();
+                    if (!docForm.getDocument().getDocumentHeader().getWorkflowDocument().isApproved()) {
+                        document = getDocumentService().saveDocument(document);
+                        docForm.setDocument(document);
+                    }
                 }
                 // else go to close logic below
             }
@@ -2189,8 +2192,7 @@ public class KualiDocumentActionBase extends KualiAction {
                                                         final KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
                                                         documentForm.populate(request);
                                                         documentForm.getDocument().getDocumentHeader().getWorkflowDocument().refresh();
-                                                        if (documentForm.getDocument().getDocumentHeader().getWorkflowDocument().isProcessed()
-                                                            || documentForm.getDocument().getDocumentHeader().getWorkflowDocument().isFinal()
+                                                        if (documentForm.getDocument().getDocumentHeader().getWorkflowDocument().isApproved()
                                                             || documentForm.getDocument().getDocumentHeader().getWorkflowDocument().isCanceled()) {
                                                             documentForm.getDocumentActions().remove(KRADConstants.KUALI_ACTION_CAN_SAVE);
                                                         }

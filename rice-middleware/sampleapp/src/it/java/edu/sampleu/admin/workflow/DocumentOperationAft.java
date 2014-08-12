@@ -43,13 +43,25 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Document Operation");
     }
 
-    protected void testDocumentOperation() throws Exception { 
+    protected void testDocumentOperation() throws Exception {
         selectFrameIframePortlet();
-        waitAndTypeByName("documentId","2381");
-        waitAndClickByName("methodToCall.getDocument");
-        waitForElementPresentByXpath("//input[@src='images/buttonsmall_save.gif']");
-        assertTextPresent(new String[] {"Document Actions", "Queue Document", "Queue Action Invocation", "Document ID:",
-                "2443", "Route Node Instance ID:", "2443"});
+
+        DocumentTypeAft test = new DocumentTypeAft();
+        test.setTestMethodName("DocumentOperationAft." + testMethodName);
+        test.setUpSetUp();
+        test.setDriver(getDriver()); // Use this tests WebDriver as the tests own has not been setup
+        open(getBaseUrlString() + test.getBookmarkUrl());
+        String docId=test.testDocumentType();
+
+        open(getBaseUrlString() + getBookmarkUrl());
+        selectFrameIframePortlet();
+
+        if(docId !=null || docId.length()!=0){
+            waitAndTypeByName("documentId", docId);
+            waitAndClickByName("methodToCall.getDocument");
+            waitForElementPresentByXpath("//input[@src='images/buttonsmall_save.gif']");
+            assertTextPresent(new String[] {"Document Actions", "Queue Document", "Queue Action Invocation", "Document ID:"});
+        }
     }
 
     @Test

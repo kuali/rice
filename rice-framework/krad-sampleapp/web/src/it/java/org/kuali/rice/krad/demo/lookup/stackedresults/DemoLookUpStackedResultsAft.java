@@ -64,12 +64,22 @@ public class DemoLookUpStackedResultsAft extends ViewDemoAftBase {
         waitForElementPresentByXpath("//a[contains(text(), 'a1')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
+        waitForElementPresentByXpath("//table[@class='table table-condensed table-bordered uif-gridLayout uif-table-fixed']/tbody/tr/td/div/span/a[contains(text(),'a1')]");
         assertTextPresent(new String[]{"Travel Account Number: Required"});
         waitAndClickButtonByText(CLEAR_VALUES);
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "");
         waitAndTypeByName(LOOKUP_CRITERIA_DATE, "234");
+        fireMouseOverEventByName(LOOKUP_CRITERIA_NUMBER_NAME);
+        waitForElementPresentByXpath("//div[@class='popover top in uif-tooltip-error-cs']");
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "");
+        fireMouseOverEventByName(LOOKUP_CRITERIA_DATE);
+        waitForElementPresentByXpath("//div[@class='popover top in uif-tooltip-error-cs']");
         waitAndClickButtonByText(SEARCH);
         assertTextPresent(new String[]{
-            "Date Created: Must be a date in the following format(s): MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, yyyy-MM-dd"});
+            "Date Created: Must be a date in the following format(s): MM/dd/yy, MM/dd/yyyy, MM-dd-yy, MM-dd-yyyy, yyyy-MM-dd","This page has 2 errors","Travel Account Number: Required"});
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a1");
+        waitAndTypeByName(LOOKUP_CRITERIA_DATE, "08/23/2012");
+        waitAndClickButtonByText(SEARCH);
     }
 
     @Test

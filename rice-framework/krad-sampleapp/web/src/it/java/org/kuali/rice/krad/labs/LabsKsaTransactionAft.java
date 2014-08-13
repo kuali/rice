@@ -41,12 +41,14 @@ public class LabsKsaTransactionAft extends WebDriverLegacyITBase {
     protected void testKsaTransaction() throws InterruptedException {
     	waitAndTypeByName("testField","a");
     	assertTextPresent("Charges");
-        jGrowl("Click Delete");
+        jGrowl("Click Delete and Quickly click expansion");
         waitAndClickById("rollupList1_del_line0");
-    	assertTextPresent("Deleting Line");
     	waitAndClickByXpath("//img[@class='actionImage leftActionImage uif-image']");
+        checkForIncidentReport(); // there is a history of getting freemarker exceptions here that don't prevent the test from continuing    	assertTextPresent("Deleting Line");
+        jGrowl("Click Delete");
         waitAndClickById("rollupList1_detLink_line1");
-    	//Currently throwing Freemarker error so furthur test cannot be processed.
+        checkForIncidentReport(); // there is a history of getting freemarker exceptions here that don't prevent the test from continuing    	assertTextPresent("Deleting Line");
+        waitForTextPresent("You have deleted an item from Roll-Up");
     }
 
     @Test

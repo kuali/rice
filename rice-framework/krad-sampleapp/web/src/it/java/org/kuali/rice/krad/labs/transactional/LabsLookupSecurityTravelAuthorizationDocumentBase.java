@@ -16,7 +16,10 @@
 package org.kuali.rice.krad.labs.transactional;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
@@ -28,6 +31,8 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
      * /kr-krad/approval?methodToCall=docHandler&command=initiate&docTypeName=TravelAuthorization&viewName=LabsLookupSecurityTravelAuthorization
      */
     public static final String BOOKMARK_URL = "/kr-krad/approval?methodToCall=docHandler&command=initiate&docTypeName=TravelAuthorization&viewName=LabsLookupSecurityTravelAuthorization";
+
+    public static final String FRAME_URL = "/kr-krad/lookup?conversionFields=";
 
     private static final String PHONE_NUMBER_NAME = "document.travelerDetail.phoneNumber";
     private static final String PHONE_NUMBER_DECRYPTED = "8005551212";
@@ -85,16 +90,19 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     protected void testTransactionalLookupSecurityAddDataDictionaryConversionField() throws Exception {
         waitAndClickTravelerQuickfinder();
 
+        final String xpathExpression = "//iframe[contains(@src,'" + FRAME_URL + "')]";
+        driver.switchTo().frame(driver.findElement(By.xpath(xpathExpression)));
+
         String newUrl = StringUtils.replace(driver.getCurrentUrl(), PHONE_NUMBER_NAME, EMAIL_ADDRESS_NAME);
+        jGrowl("Opening -> "+newUrl);
         open(newUrl);
         waitForPageToLoad();
 
         waitAndClickSearch3();
         waitAndClickReturnValue();
 
-        assertElementPresentByName(EMAIL_ADDRESS_NAME);
-        WebElement element = findElement(By.name(EMAIL_ADDRESS_NAME));
-        String emailAddress = element.getAttribute("value");
+        final String xpathExpression2 = "//div[contains(@data-label,'Email Address')]";
+        String emailAddress = waitAndGetAttribute(By.xpath(xpathExpression2),"value");
 
         assertTrue("Non-secure field emailAddress was not empty", StringUtils.isBlank(emailAddress));
         assertTextNotPresent(PHONE_NUMBER_DECRYPTED);
@@ -109,16 +117,19 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     protected void testTransactionalLookupSecurityAddUifConversionField() throws Exception {
         waitAndClickTravelerQuickfinder();
 
+        final String xpathExpression = "//iframe[contains(@src,'" + FRAME_URL + "')]";
+        driver.switchTo().frame(driver.findElement(By.xpath(xpathExpression)));
+
         String newUrl = StringUtils.replace(driver.getCurrentUrl(), CUSTOMER_NUMBER_NAME, EMAIL_ADDRESS_NAME);
+        jGrowl("Opening -> "+newUrl);
         open(newUrl);
         waitForPageToLoad();
 
         waitAndClickSearch3();
         waitAndClickReturnValue();
 
-        assertElementPresentByName(EMAIL_ADDRESS_NAME);
-        WebElement element = findElement(By.name(EMAIL_ADDRESS_NAME));
-        String emailAddress = element.getAttribute("value");
+        final String xpathExpression2 = "//div[contains(@data-label,'Email Address')]";
+        String emailAddress = waitAndGetAttribute(By.xpath(xpathExpression2),"value");
 
         assertTrue("Non-secure field emailAddress was not empty", StringUtils.isBlank(emailAddress));
         assertTextNotPresent(CUSTOMER_NUMBER_DECRYPTED);
@@ -133,20 +144,25 @@ public class LabsLookupSecurityTravelAuthorizationDocumentBase extends LabsTrans
     protected void testTransactionalLookupSecurityAddHiddenConversionField() throws Exception {
         waitAndClickTravelerQuickfinder();
 
-        assertTrue("Url doesn't have CONVERSION_FIELDS ("  + CONVERSION_FIELDS + ")", StringUtils.indexOf(driver.getCurrentUrl(), CONVERSION_FIELDS) > -1);
-        int splitPosition = StringUtils.indexOf(driver.getCurrentUrl(), CONVERSION_FIELDS) + CONVERSION_FIELDS.length();
-        String before = StringUtils.substring(driver.getCurrentUrl(), 0, splitPosition);
-        String after = StringUtils.substring(driver.getCurrentUrl(), splitPosition);
+        final String xpathExpression = "//iframe[contains(@src,'" + FRAME_URL + "')]";
+        driver.switchTo().frame(driver.findElement(By.xpath(xpathExpression)));
+
+        final String currentUrl = driver.getCurrentUrl();
+
+        assertTrue("Url doesn't have CONVERSION_FIELDS (" + CONVERSION_FIELDS + ")", StringUtils.indexOf(currentUrl, CONVERSION_FIELDS) > -1);
+        int splitPosition = StringUtils.indexOf(currentUrl, CONVERSION_FIELDS) + CONVERSION_FIELDS.length();
+        String before = StringUtils.substring(currentUrl, 0, splitPosition);
+        String after = StringUtils.substring(currentUrl, splitPosition);
         String newUrl = before + ERRANT_CONVERSION_FIELD + after;
+        jGrowl("Opening -> "+newUrl);
         open(newUrl);
         waitForPageToLoad();
 
         waitAndClickSearch3();
         waitAndClickReturnValue();
 
-        assertElementPresentByName(EMAIL_ADDRESS_NAME);
-        WebElement element = findElement(By.name(EMAIL_ADDRESS_NAME));
-        String emailAddress = element.getAttribute("value");
+        final String xpathExpression2 = "//div[contains(@data-label,'Email Address')]";
+        String emailAddress = waitAndGetAttribute(By.xpath(xpathExpression2),"value");
 
         assertTrue("Non-secure field emailAddress was not empty", StringUtils.isBlank(emailAddress));
     }

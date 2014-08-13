@@ -2164,14 +2164,14 @@
       </para>
       <programlisting linenumbering="numbered">
         &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection"
-        p:propertyName="test1Object.test2List"
-        p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
-        &lt;property name="lineActions"&gt;
-        &lt;list&gt;
-        &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;copyLine&quot; p:actionLabel=&quot;copy&quot;/&gt;
-        &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;deleteLine&quot; p:actionLabel=&quot;delete&quot;/&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
+          p:propertyName="test1Object.test2List"
+          p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
+          &lt;property name="lineActions"&gt;
+            &lt;list&gt;
+              &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;copyLine&quot; p:actionLabel=&quot;copy&quot;/&gt;
+              &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;deleteLine&quot; p:actionLabel=&quot;delete&quot;/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
         &lt;/bean&gt;
       </programlisting>
       <para>Notice we have chosen to use the secondary small button styling. This is the
@@ -2179,6 +2179,21 @@
         used. Furthermore, any action component may be used, including the action links or
         images.
       </para>
+      <para>There may be a need to have the delete line action appear for a line only if the line is newly
+        added or in some other situation. Here is an example of how this could be done.
+      </para>
+      <programlisting linenumbering="numbered">
+        &lt;bean parent="Uif-Disclosure-TableCollectionSection" p:title="My First Collection"
+          p:propertyName="collection1_5"
+          p:collectionObjectClass="org.kuali.rice.krad.demo.uif.form.UITestObject"&gt;
+          &lt;property name="lineActions"&gt;
+            &lt;list&gt;
+              &lt;bean parent=&quot;Uif-DeleteLineAction&quot; p:render=&quot;@{isAddedCollectionItem(#line)}&quot;/&gt;
+              &lt;bean parent=&quot;Uif-SaveLineAction&quot;/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+        &lt;/bean&gt;
+      </programlisting>
       <para>Similar to the group items, the set of line action components will be created for each
         collection item present in the model. This means our view could end up with several action
         buttons with labels 'copy' and 'delete', that all call server methods 'copyLine' and
@@ -2199,19 +2214,19 @@
       </para>
       <programlisting linenumbering="numbered">
         &lt;bean parent="Uif-CollectionGroupBase" p:title="My First Collection"
-        p:propertyName="test1Object.test2List"
-        p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
-        &lt;property name="addLineActions"&gt;
-        &lt;list&gt;
-        &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;addLine&quot; p:actionLabel=&quot;add&quot;/&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
-        &lt;property name="lineActions"&gt;
-        &lt;list&gt;
-        &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;copyLine&quot; p:actionLabel=&quot;copy&quot;/&gt;
-        &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;deleteLine&quot; p:actionLabel=&quot;delete&quot;/&gt;
-        &lt;/list&gt;
-        &lt;/property&gt;
+          p:propertyName="test1Object.test2List"
+          p:collectionObjectClass="edu.myedu.sample.Test2Object"&gt;
+          &lt;property name="addLineActions"&gt;
+            &lt;list&gt;
+              &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;addLine&quot; p:actionLabel=&quot;add&quot;/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+          &lt;property name="lineActions"&gt;
+            &lt;list&gt;
+              &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;copyLine&quot; p:actionLabel=&quot;copy&quot;/&gt;
+              &lt;bean parent=&quot;Uif-SecondaryActionButton-Small&quot; p:methodToCall=&quot;deleteLine&quot; p:actionLabel=&quot;delete&quot;/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
         &lt;/bean&gt;
       </programlisting>
       <para>The configuration is the same as the lineActions property, the only difference being we

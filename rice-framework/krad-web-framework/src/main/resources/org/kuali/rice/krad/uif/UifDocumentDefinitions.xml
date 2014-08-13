@@ -353,7 +353,7 @@
     </property>
   </bean>
 
-  <bean id="Uif-DocumentPageFooter" parent="Uif-FooterBase">
+  <bean id="Uif-DocumentPageFooter" parent="Uif-FooterBase" p:render="@{!#view.superUserView}" >
     <property name="items">
       <list>
         <bean parent="Uif-CancelAction" p:confirmationPromptText="Are you sure you want to cancel?"

@@ -67,8 +67,10 @@ public class LocationStateAft extends AdminTmplMthdAftNavBlanketAppBase {
 
     private void inputDetails() throws InterruptedException {
         // Make sure we don't use an existing state abbreviation
-        while (STATE_CODES.contains(getDescriptionUnique().substring(5, 7))) {
+        getDescriptionUnique(); // trigger creating of uniqueString
+        while (STATE_CODES.contains(uniqueString.substring(5, 7))) {
             uniqueString = null;
+            getDescriptionUnique(); // trigger creating of uniqueString
         }
 
         waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());

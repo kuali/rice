@@ -16,9 +16,17 @@
 
 package org.kuali.rice.core.data;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-
 import org.kuali.rice.core.test.CORETestCase;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.component.Component;
@@ -34,16 +42,8 @@ import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.coreservice.impl.parameter.ParameterTypeBo;
 import org.kuali.rice.coreservice.impl.style.StyleBo;
-import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.test.BaselineTestCase;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests to confirm JPA mapping for the Core Service module data objects
@@ -52,6 +52,7 @@ public class CoreServiceJpaDataTest extends CORETestCase {
     public static final String DERIVED_COMPONENT_SET_ID = "DD:TSTKR";
 
     public static final String NAMESPACE = "KR-TST";
+    public static final String NAMESPACE_PREFIX = "KR-";
     public static final String STYLE_ID = "1234";
     public static final String STYLE_NAME = "TestCSS";
 
@@ -155,16 +156,26 @@ public class CoreServiceJpaDataTest extends CORETestCase {
     }
 
     @Test
-    public void testNamespaceServiceImpl() throws Exception{
+    public void testNamespaceServiceImpl_FindAllNamespaces() throws Exception{
+        setupNameSpaceBoDataObjectAndSave();
+
+        List<Namespace> namespaceList = CoreServiceApiServiceLocator.getNamespaceService().
+                                            findAllNamespaces();
+        assertNotNull("findAllNamespaces returned null", namespaceList);
+        assertTrue( "findAllNamespaces did not return enough rows: " + namespaceList, namespaceList.size() >= 2 );
+    }
+
+    @Test
+    public void testNamespaceServiceImpl_getNamespace() throws Exception{
         setupNameSpaceBoDataObjectAndSave();
 
         Namespace namespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(NAMESPACE);
-        assertTrue("getNamespace retrieved after save",namespace != null &&
-                        StringUtils.equals(namespace.getCode(),NAMESPACE));
-        List<Namespace> namespaceList = CoreServiceApiServiceLocator.getNamespaceService().
-                                            findAllNamespaces();
-        assertTrue("findAllNamespaces retrieved after save",namespaceList != null &&
-                namespaceList.size() > 0);
+
+        assertNotNull("getNamespace returned null", namespace);
+        assertEquals("getNamespace retrieved wrong namespace: " + namespace,NAMESPACE,namespace.getCode());
+
+        namespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(NAMESPACE_PREFIX+"*");
+        assertNull("getNamespace should have returned null for a search criteria of " + NAMESPACE_PREFIX + "*", namespace);
     }
 
     @Test

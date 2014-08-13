@@ -15,8 +15,13 @@
  */
 package org.kuali.rice.coreservice.impl.namespace;
 
+import static java.util.Collections.singletonMap;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.coreservice.api.namespace.Namespace;
@@ -24,13 +29,6 @@ import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-
-import static java.util.Collections.singletonMap;
 
 public class NamespaceServiceImpl implements NamespaceService {
     private DataObjectService dataObjectService;
@@ -45,8 +43,7 @@ public class NamespaceServiceImpl implements NamespaceService {
 
     @Override
     public List<Namespace> findAllNamespaces() {
-        QueryResults<NamespaceBo> namespaceBos = dataObjectService.findMatching(
-                    NamespaceBo.class,QueryByCriteria.Builder.andAttributes(new HashMap<String, String>()).build());
+        QueryResults<NamespaceBo> namespaceBos = dataObjectService.findAll(NamespaceBo.class);
         List<Namespace> namespaces = new ArrayList<Namespace>();
         if(namespaceBos != null){
             for (NamespaceBo bo : namespaceBos.getResults()) {

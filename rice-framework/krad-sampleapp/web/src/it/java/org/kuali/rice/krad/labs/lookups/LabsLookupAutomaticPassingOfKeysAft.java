@@ -62,6 +62,6 @@ public class LabsLookupAutomaticPassingOfKeysAft extends LabsLookupBase {
     		   {"a14","I","Sub Account Eye"},
     		   {"a14","J","Sub Account J"},
        };
-       assertTextPresent(results);
+        assertTextPresentInResultPages(results);
     }
 }

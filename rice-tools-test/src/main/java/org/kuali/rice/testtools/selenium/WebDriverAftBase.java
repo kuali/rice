@@ -214,6 +214,37 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         }
     }
 
+    protected void assertTextPresentInResultPages(String[][] texts) throws Exception {
+        boolean[] founds = new boolean[texts.length];
+        boolean allFound = false;
+
+        waitForElementPresentById("uLookupResults_layout_next");
+
+        while (!allFound) {
+
+            for (int i = 0; i < founds.length; i++) {
+                if (!founds[i]) {
+                    for (int j = 0; j < texts.length; j++) {
+                        founds[i] = isTextPresent(texts[i]);
+                    }
+                }
+            }
+
+            allFound = true; // assume we found them all, verify that assumption in the for loop
+            for (int i = 0; i < founds.length; i++) {
+                if (!founds[i]) {
+                    allFound = false;
+                }
+            }
+
+            if (!allFound) {
+                assertTrue("Didn't find expected results in result pages for " + this.getClass().getSimpleName(), isNextLinkEnabled());
+                waitAndClickByLinkText("Next");
+            }
+        }
+    }
+
+
     protected void assertEmptyInputByName(String name) throws InterruptedException {
         assertTrue(name + " not empty for " + this.getClass().getSimpleName(), waitForElementPresentByName(name)
                 .getAttribute("value").equals(""));
@@ -940,6 +971,16 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected Boolean isTextPresent(String text) {
         return WebDriverUtils.isTextPresent(driver, driver.getPageSource(), text);
+    }
+
+    protected Boolean isTextPresent(String[] texts) {
+        String pageSource = driver.getPageSource();
+        for (String text: texts) {
+            if (!WebDriverUtils.isTextPresent(driver, pageSource, text)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected void jGrowl(String message) {

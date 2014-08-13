@@ -57,7 +57,6 @@ public class SequenceAccessorServiceTest extends KRADTestCase {
     @Test
     public void testExceptionForBothKradDataAndOjb_NotInLegacyContext() {
         try {
-            // using DocumentType because it's (currently) mapped in both OJB
             KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(ARBITRARY_SEQUENCE, OjbAndJpa.class);
             fail( "Using Legacy SequenceAccessorService in non-Legacy Context - should have failed." );
         } catch ( ConfigurationException ex ) {

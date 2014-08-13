@@ -41,9 +41,7 @@ import javax.sql.DataSource;
 public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements SequenceAccessorDao {
 	private KualiModuleService kualiModuleService;
 
-	private Long nextAvailableSequenceNumber(String sequenceName,
-			Class clazz) {
-		
+	private Long nextAvailableSequenceNumber(String sequenceName, Class clazz) {
         ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
         if ( moduleService == null )
         	throw new ConfigurationException("moduleService is null");
@@ -51,24 +49,19 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         ModuleConfiguration moduleConfig = moduleService.getModuleConfiguration();
         if ( moduleConfig == null )
         	throw new ConfigurationException("moduleConfiguration is null");
-        
-    	if (!LegacyUtils.useLegacy(clazz)) {
-            throw new ConfigurationException("SequenceAccessorService should not be used with new data framework! Use "
-                    + MaxValueIncrementerFactory.class.getName() + " instead.");
+
+        String dataSourceName = moduleConfig.getDataSourceName();
+
+        if (StringUtils.isEmpty(dataSourceName)) {
+            return nextAvailableSequenceNumber(sequenceName);
         } else {
-    		String dataSourceName = moduleConfig.getDataSourceName();
+            PBKey key = new PBKey(dataSourceName);
+            PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, false);
 
-    		if (StringUtils.isEmpty(dataSourceName)) {
-                return nextAvailableSequenceNumber(sequenceName);
+            if (broker != null) {
+                return getDbPlatform().getNextValSQL(sequenceName, broker);
             } else {
-                PBKey key = new PBKey(dataSourceName);
-                PersistenceBroker broker = OjbFactoryUtils.getPersistenceBroker(key, false);
-
-                if (broker != null) {
-                    return getDbPlatform().getNextValSQL(sequenceName, broker);
-                } else {
-                    throw new ConfigurationException("PersistenceBroker is null");
-                }
+                throw new ConfigurationException("PersistenceBroker is null");
             }
         }
 	}
@@ -81,9 +74,12 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         return Long.valueOf(MaxValueIncrementerFactory.getIncrementer(dataSource, sequenceName).nextLongValue());
     }
 	
-	public Long getNextAvailableSequenceNumber(String sequenceName, 
-			Class clazz) {
-		
+	public Long getNextAvailableSequenceNumber(String sequenceName, Class clazz) {
+        if (!LegacyUtils.useLegacy(clazz)) {
+            throw new ConfigurationException("SequenceAccessorService should not be used with new data framework! Use "
+                    + MaxValueIncrementerFactory.class.getName() + " instead.");
+        }
+
 		// There are situations where a module hasn't been configured with
 		// a dataSource.  In these cases, this method would have previously
 		// thrown an error.  Instead, we've opted to factor out the code,

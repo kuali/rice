@@ -76,7 +76,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         }
     }
 
-    protected void testTravelAccountCreateDocument() throws Exception {
+    protected void travelAccountCreateDocument() throws Exception {
         waitForDocIdKrad();
         waitAndTypeByName(DESCRIPTION_FIELD,"Travel Company Super User Test");
         String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
@@ -98,10 +98,12 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
 
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
+        waitForProgressLoading();
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }
 
     protected void testTravelAccountSuperUserApprove() throws Exception {
+        travelAccountCreateDocument();
         waitAndClickByLinkText("Super User Actions");
         waitAndTypeByName("document.superUserAnnotation","Reason for approval");
         waitAndClickButtonByText(APPROVE);
@@ -110,6 +112,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountSuperUserDisapprove() throws Exception {
+        travelAccountCreateDocument();
         waitAndClickByLinkText("Super User Actions");
         waitAndTypeByName("document.superUserAnnotation","Reason For disapproval");
         waitAndClickButtonByText(DISAPPROVE);
@@ -118,6 +121,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountSuperUserTakeActions() throws Exception {
+        travelAccountCreateDocument();
         waitAndClickByLinkText("Super User Actions");
         waitAndTypeByName("document.superUserAnnotation","Reason For Taking Action for user1");
 
@@ -146,6 +150,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountSuperUserErrors() throws Exception {
+        travelAccountCreateDocument();
         waitAndClickByLinkText("Super User Actions");
 
         // Submitted document throws an error when a checkbox is selected and the Approve button is pressed
@@ -190,6 +195,8 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountSuperUserTabNotAppear() throws Exception {
+        travelAccountCreateDocument();
+
         // Super User tab does not show up when regular user routes the document
         assertTextNotPresent("Super User Actions");
         reloadAndCheckDocStatus("ENROUTE");
@@ -203,70 +210,60 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
 
     @Test
     public void testDemoTravelCompanySuperUserApproveBookmark() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserApprove();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserApproveNav() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserApprove();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserDisapproveBookmark() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserDisapprove();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserDisapproveNav() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserDisapprove();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserTakeActionsBookmark() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserTakeActions();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserTakeActionsNav() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserTakeActions();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserErrorsBookmark() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserErrors();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserErrorsNav() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserErrors();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserTabNotAppearBookmark() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserTabNotAppear();
         passed();
     }
 
     @Test
     public void testDemoTravelCompanySuperUserTabNotAppearNav() throws Exception {
-        testTravelAccountCreateDocument();
         testTravelAccountSuperUserTabNotAppear();
         passed();
     }

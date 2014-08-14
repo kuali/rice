@@ -263,26 +263,12 @@ public class WebDriverUtils {
     /**
      * Setup the WebDriver test, login, and load the given web page
      *
-     * @param username
-     * @param url
-     * @return driver
-     * @throws Exception
-     */
-    public static WebDriver setUp(String username, String url) throws Exception {
-        return setUp(username, url, null, null);
-    }
-
-    /**
-     * Setup the WebDriver test, login, and load the given web page
-     *
-     * @param username
-     * @param url
      * @param className
      * @param testName
      * @return driver
      * @throws Exception
      */
-    public static WebDriver setUp(String username, String url, String className, String testName) throws Exception {
+    public static WebDriver setUp(String className, String testName) throws Exception {
         if ("true".equals(System.getProperty(REMOTE_JGROWL_ENABLED, "false"))) {
             jGrowlEnabled = true;
         }
@@ -309,21 +295,6 @@ public class WebDriverUtils {
             driver = saucelabs.getDriver();
         }
 
-        driver.manage().timeouts().implicitlyWait(SETUP_URL_LOAD_WAIT_SECONDS, TimeUnit.SECONDS);
-
-        if (!System.getProperty(SauceLabsWebDriverHelper.SAUCE_BROWSER_PROPERTY,"ff").equals("opera")) {
-            driver.manage().window().maximize();
-//            driver.manage().window().setSize(new Dimension(800,600));
-        }
-
-        // TODO Got into the situation where the first url doesn't expect server, but all others do.  Readdress once
-        // the NavIT WDIT conversion has been completed.
-        if (!url.startsWith("http")) {
-            url = getBaseUrlString() + url;
-        }
-
-        driver.get(url);
-        driver.manage().timeouts().implicitlyWait(configuredImplicityWait(), TimeUnit.SECONDS);
         return driver;
     }
 
@@ -785,6 +756,20 @@ public class WebDriverUtils {
         if (JGROWL_ERROR_FAILURE) {
             SeleneseTestBase.fail(failMessage); // SeleneseTestBase fail okay here as jGrowl failures are not Jira worthy yet
         }
+    }
+
+    public static void openTestUrl(WebDriver driver, String testUrl) {
+        driver.manage().timeouts().implicitlyWait(WebDriverUtils.SETUP_URL_LOAD_WAIT_SECONDS, TimeUnit.SECONDS);
+
+        driver.get(testUrl);
+        if (!System.getProperty(SauceLabsWebDriverHelper.SAUCE_BROWSER_PROPERTY,"ff").equals("opera")) {
+            driver.manage().window().maximize();
+            //            driver.manage().window().setSize(new Dimension(800,600));
+        }
+
+        WebDriverUtils.jGrowl(driver, "Open URL", false, "Open " + testUrl);
+
+        driver.manage().timeouts().implicitlyWait(WebDriverUtils.configuredImplicityWait(), TimeUnit.SECONDS);
     }
 
     /**

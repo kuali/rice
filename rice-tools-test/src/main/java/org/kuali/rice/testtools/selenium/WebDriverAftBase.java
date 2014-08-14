@@ -59,6 +59,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
      */
     public static final String DATA_TABLE_TH_CSS = "div.dataTables_wrapper thead th";
 
+    // make WebDriver static for one browser
     protected WebDriver driver;
 
     protected String jGrowlHeader;
@@ -139,6 +140,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected void alertDismiss() {
         WebDriverUtils.alertDismiss(driver);
     }
+
+// one browser
+//    private static boolean loggedIn = false;
 
     protected boolean areAllMultiValueSelectsChecked() throws InterruptedException {
         acceptAlertIfPresent();
@@ -501,6 +505,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         chromeDriverService = WebDriverUtils.chromeDriverCreateCheck();
         if (chromeDriverService != null)
             chromeDriverService.start();
+
+// one browser
+//        driver = WebDriverUtils.setUp("getClass().getSimpleName()", "testMethodName");
+
     }
 
     protected void closeAndQuitWebDriver() {
@@ -1013,13 +1021,13 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
      */
     public void login(WebDriver driver, String userName, JiraAwareFailable failable) throws InterruptedException {
         if ("true".equalsIgnoreCase(System.getProperty(WebDriverUtils.REMOTE_AUTOLOGIN_PROPERTY, "true"))) {
-        driver.findElement(By.name("login_user")).clear();
-        driver.findElement(By.name("login_user")).sendKeys(userName);
-        driver.findElement(By.id("Rice-LoginButton")).click();
-        Thread.sleep(1000);
-        String contents = driver.getPageSource();
-        AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
-        AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Login",
+            driver.findElement(By.name("login_user")).clear();
+            driver.findElement(By.name("login_user")).sendKeys(userName);
+            driver.findElement(By.id("Rice-LoginButton")).click();
+            Thread.sleep(1000);
+            String contents = driver.getPageSource();
+            AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Login",
                 "Login failure", failable);
         }
     }
@@ -1030,6 +1038,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         //            String logoutUrl = getBaseUrlString() + "/kr-krad/login?methodToCall=logout";
         //            jGrowl("Logging out with " + logoutUrl);
         //            open(logoutUrl);
+
+        // NOT really logging out, but going to the login page so tests can be run in one browser
+        //driver.get(getBaseUrlString() + "/kr-login/login?viewId=DummyLoginView&returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart");
     }
 
     protected String multiValueResultCount() throws InterruptedException {
@@ -1150,6 +1161,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             t.printStackTrace();
         }
 
+        // comment out finally block for one browser
         finally {
             try {
                 closeAndQuitWebDriver();
@@ -1173,13 +1185,22 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         try { // Don't throw any exception from this methods, exceptions in Before annotations really mess up maven, surefire, or failsafe
             setUpSetUp();
 
-            String testUrl = getTestUrl();
+            driver = WebDriverUtils.setUp(getClass().getSimpleName(), testMethodName); // one browser comment this out
 
-            driver = WebDriverUtils.setUp(getUserName(), testUrl, getClass().getSimpleName(), testMethodName);
+            String testUrl = getTestUrl();
+            // TODO Got into the situation where the first url doesn't expect server, but all others do.  Readdress once
+            // the NavIT WDIT conversion has been completed.
+            if (!testUrl.startsWith("http")) {
+                testUrl = getBaseUrlString() + testUrl;
+            }
+            WebDriverUtils.openTestUrl(driver, testUrl);
+
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 
-            WebDriverUtils.jGrowl(driver, "Open URL", false, "Open " + testUrl);
-            login(driver, getUserName(), this);
+//            if (!loggedIn) { // one browser
+                login(driver, getUserName(), this);
+//                loggedIn = true;
+//            }
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
 

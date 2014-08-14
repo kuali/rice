@@ -97,7 +97,10 @@ public abstract class WebDriverITBase {
      */
     @Before
     public void setUp() throws Exception {
-        driver = WebDriverUtils.setUp(getUserName(), WebDriverUtils.getBaseUrlString() + "/" + getTestUrl());
+        driver = WebDriverUtils.setUp(this.getClass().getSimpleName(), "DeprecatedWebDriverItBaseTest");
+
+        WebDriverUtils.openTestUrl(driver, WebDriverUtils.getBaseUrlString() + "/" + getTestUrl());
+
         login(driver, getUserName(), new JiraAwareFailable() {
             @Override
             public void fail(String message) {

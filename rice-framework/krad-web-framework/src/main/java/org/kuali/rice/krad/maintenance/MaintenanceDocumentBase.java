@@ -781,7 +781,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     /**
      * The following populateAttachment methods are no longer needed for KRAD but are still used and overridden in
-     * org.kuali.rice.kns.document.MaintenanceDocumentBase.  Once the KNS version of MaintenanceDocumentBase in gone
+     * org.kuali.rice.kns.document.MaintenanceDocumentBase.  Once the KNS version of MaintenanceDocumentBase is gone
      * these methods can be removed along with any calling code.
      */
     public void populateAttachmentForBO() { }

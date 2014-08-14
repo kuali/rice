@@ -47,10 +47,9 @@ public class LabsDefaultRuleEventAndBusinessRuleAft extends WebDriverLegacyITBas
          waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
          waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
          waitAndClickByName("document.newMaintainableObject.dataObject.accountTypeCode");
-         waitAndClickButtonByExactText("Save");
-         waitForProgressSaving();
-         checkForDocErrorKrad();
-         waitForTextPresent("Document was successfully saved.");
+
+         saveSuccessfully();
+
          waitAndClickSubmitByText();
          waitAndClickConfirmationOk();
          failOnErrorMessageItem();

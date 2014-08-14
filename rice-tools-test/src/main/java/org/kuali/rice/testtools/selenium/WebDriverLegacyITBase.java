@@ -863,6 +863,13 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         return !isElementPresentByName("document.affiliations[0].dflt");
     }
 
+    protected void saveSuccessfully() throws InterruptedException {
+        waitAndClickSaveByText();
+        waitForProgressSaving();
+        checkForDocErrorKrad();
+        waitForTextPresent("Document was successfully saved.");
+    }
+
     protected void selectFrameIframePortlet() {
         selectFrame(IFRAMEPORTLET_NAME);
     }

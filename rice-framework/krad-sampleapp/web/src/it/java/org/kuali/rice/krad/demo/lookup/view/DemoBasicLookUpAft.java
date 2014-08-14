@@ -90,10 +90,8 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     	waitAndTypeByName("document.documentHeader.documentDescription","Edited Description");
     	getTextByXpath("//div[@data-label='Travel Account Name']");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.name"," Edited");
-    	waitAndClickButtonByExactText("Save");
-        waitForProgressSaving();
-        checkForDocErrorKrad();
-    	waitForTextPresent("Document was successfully saved.");
+
+        saveSuccessfully();
     }
    
     @Test

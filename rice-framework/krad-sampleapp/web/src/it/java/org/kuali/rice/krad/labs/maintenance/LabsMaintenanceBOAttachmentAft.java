@@ -79,14 +79,21 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     protected void testMaintenanceBOAttachmentCollection() throws Exception {
     	waitAndClickByLinkText("Sample BO Attachment Collection");
     	waitAndTypeByName("document.documentHeader.documentDescription","Test fo BO Attachment");
-    	String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-    	waitAndTypeByXpath("//div[@data-label='ID']/input",random);
     	fileUploadSetUp();
-    	fileIngesterCollection();
-    	waitAndClickButtonByExactText("Add");
-    	waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
+        if(fileUploadList!=null && fileUploadList.size()>0) {
+            for (File file : fileUploadList) {
+                String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+                waitAndTypeByXpath("//div[@data-label='ID']/input",random);
+                String path = file.getAbsolutePath().toString();
+                driver.findElement(By.xpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']")).sendKeys(path);
+                System.out.println("In for " + path);
+                waitAndClickButtonByExactText("Add");
+                waitForTextPresent("Adding Line...");
+            }
+        }
+        waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
     	waitAndClickBlanketApprove();
-    	waitForElementPresentByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']//button[contains(text(),'OK')]");
+        waitAndClickConfirmationOk();
     }
     
     private void fileUploadSetUp() throws Exception {
@@ -119,7 +126,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     
     protected void setUpResourceDir(String resourceDir) {
         try {
-            setUpFiles("src/test/resources/" + resourceDir);
+            setUpFiles("rice-framework/krad-sampleapp/web/src/test/resources/" + resourceDir);
             System.out.println("Try for setUpResourceDir");
         } catch (Exception e) {
             System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-framework/krad-sampleapp/web attempt to load as resource.");
@@ -195,7 +202,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     }
     
     /**
-     * Performs Ingesting files to fileupload component and asserts succesful ingestion.
+     * Performs Ingesting files to fileupload component and asserts successful ingestion.
      *
      */
     private void fileIngester() throws Exception {
@@ -205,22 +212,6 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
 	        for (File file : fileUploadList) {
 	            String path = file.getAbsolutePath().toString();
 	            driver.findElement(By.name("document.newMaintainableObject.dataObject.attachmentFile")).sendKeys(path);
-	            System.out.println("In for -------");
-	        }
-        }
-    }
-    
-    /**
-     * Performs Ingesting files to fileupload component and asserts succesful ingestion.
-     *
-     */
-    private void fileIngesterCollection() throws Exception {
-    	System.out.println("In for fileIngester");
-        if(fileUploadList!=null && fileUploadList.size()>0)
-        {
-	        for (File file : fileUploadList) {
-	            String path = file.getAbsolutePath().toString();
-	            driver.findElement(By.xpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']")).sendKeys(path);
 	            System.out.println("In for -------");
 	        }
         }

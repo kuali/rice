@@ -88,6 +88,26 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         waitAndClickById("Uif-AdHocPersonCollection_add");
         waitForElementPresentByXpath(
                 "//div[@data-parent=\"Uif-AdHocPersonCollection\"]/div/span[contains(text(), 'user1']");
+        waitAndClickByLinkText("Ad Hoc Recipients");
+
+        waitAndClickSubmitByText();
+        waitAndClickConfirmationOk();
+        waitForProgressLoading();
+        waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
+    }
+
+    protected void travelAccountCreateDocumentWith2Adhoc() throws Exception {
+        waitForDocIdKrad();
+        waitAndTypeByName(DESCRIPTION_FIELD,"Travel Company Super User Test");
+        String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        waitAndTypeByName(COMPANY_NAME_FIELD, "Company Name " + randomCode);
+
+        waitAndClickByLinkText("Ad Hoc Recipients");
+        waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", "user1");
+        jGrowl("Click Add button");
+        waitAndClickById("Uif-AdHocPersonCollection_add");
+        waitForElementPresentByXpath(
+                "//div[@data-parent=\"Uif-AdHocPersonCollection\"]/div/span[contains(text(), 'user1']");
 
         waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", "user2");
         jGrowl("Click Add button");
@@ -121,7 +141,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
     }
 
     protected void testTravelAccountSuperUserTakeActions() throws Exception {
-        travelAccountCreateDocument();
+        travelAccountCreateDocumentWith2Adhoc();
         waitAndClickByLinkText("Super User Actions");
         waitAndTypeByName("document.superUserAnnotation","Reason For Taking Action for user1");
 
@@ -133,6 +153,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
 
         checkByName("selectedCollectionLines['document.actionRequests']");
         waitAndClickButtonByText(TAKE_SELECTED_ACTIONS);
+        waitForProgressLoading();
         waitForTextPresent("Action request");
         waitForTextPresent("was superuser approved in Document");
 
@@ -204,6 +225,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
 
     private void reloadAndCheckDocStatus(String docStatus) throws Exception {
         waitAndClickButtonByText("Reload");
+        waitForProgressLoading();
         waitForTextPresent("Document was successfully reloaded.");
         assertTextPresent(docStatus);
     }

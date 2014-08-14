@@ -40,7 +40,7 @@
         PARM_NM="DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE"
         PARM_TYP_CD="CONFG" VAL="MM/dd/yyyy" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-NS" OBJ_ID="0023596D6C6F7726E0506E0AC31D61A9"
+        NMSPC_CD="KR-NS" OBJ_ID="009BBCA6A7301086E0506E0AC31D69AB"
         PARM_DESC_TXT="Used as the default country code when relating records that do not have a country code to records that do have a country code, e.g. validating a zip code where the country is not collected."
         PARM_NM="DEFAULT_COUNTRY" PARM_TYP_CD="CONFG" VAL="US" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="All" EVAL_OPRTR_CD="A"
@@ -167,7 +167,7 @@
         PARM_NM="DEFAULT_HELP_URL" PARM_TYP_CD="HELP"
         VAL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#lookup" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="Lookup" EVAL_OPRTR_CD="A"
-        NMSPC_CD="KR-KRAD" OBJ_ID="0023596D6C647726E0506E0AC31D61A9"
+        NMSPC_CD="KR-KRAD" OBJ_ID="009BBCA6A7251086E0506E0AC31D69AB"
         PARM_DESC_TXT="Maximum number of rows that will be displayed on a look-up results screen."
         PARM_NM="MULTIPLE_VALUE_RESULTS_LIMIT" PARM_TYP_CD="CONFG"
         VAL="100" VER_NBR="1"/>
@@ -262,7 +262,7 @@
         PARM_NM="STATUS_CHECK_INTERVAL" PARM_TYP_CD="CONFG" VAL="30000" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="KUALI" CMPNT_CD="TravelAccount"
         EVAL_OPRTR_CD="A" NMSPC_CD="KR-KRAD"
-        OBJ_ID="002359CA870003CEE0506E0AC31D61C1"
+        OBJ_ID="009BBD1A602F490DE0506E0AC31D69C3"
         PARM_DESC_TXT="Default Help URL" PARM_NM="DEFAULT_HELP_URL"
         PARM_TYP_CD="CONFG" VAL="http://www.kuali.org" VER_NBR="1"/>
     <KRCR_PARM_T APPL_ID="TRAVEL" CMPNT_CD="TestComponent"

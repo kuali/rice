@@ -200,7 +200,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         waitForTextPresent("Annotation: Please provide an annotation to continue taking these actions on the document");
 
         //Set value in annotation field
-        waitAndTypeByName("document.superUserAnnotation", "Reason for approval");
+        waitAndTypeByName("document.superUserAnnotation", "Reason for disapproval");
 
         // Submitted document throws an error when a checkbox is selected and the user presses the Disapprove button
         checkByName("selectedCollectionLines['document.actionRequests']");
@@ -211,8 +211,9 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         uncheckByName("selectedCollectionLines['document.actionRequests']");
 
         // Go ahead and approve the document
-        waitAndClickButtonByText(APPROVE);
-        reloadAndCheckDocStatus("FINAL");
+        waitAndClickButtonByText(DISAPPROVE);
+        waitForProgressLoading();
+        reloadAndCheckDocStatus("DISAPPROVED");
     }
 
     protected void testTravelAccountSuperUserTabNotAppear() throws Exception {

@@ -54,41 +54,53 @@
     </property>
   </bean>
 
-  <bean id="Demo-InlineEdit-Example2" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit Text Field via Ajax"
+  <bean id="Demo-InlineEdit-Example2" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit Text Field w Complex Markup"
         p:instructionalText="Instructions: To edit inline, click the data field. To abandon changes to the field, press the esc key.">
     <property name="items">
       <list>
         <!-- ex:Demo-InlineEdit-Example2 start-->
-        <bean parent="Uif-InputField" p:label="Inline Edit Field Ajax" p:required="true"
-              p:propertyName="dataField1" p:ajaxInlineEdit="true"/>
+        <bean parent="Uif-InputField" p:label="Inline Edit Field" p:required="true"
+              p:propertyName="dataField6" p:inlineEdit="true" p:instructionalText="Instructional text..." p:constraintText="Constraint text..."/>
         <!-- ex:Demo-InlineEdit-Example2 end-->
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-InlineEdit-Example3" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit Textarea"
+  <bean id="Demo-InlineEdit-Example3" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit Text Field via Ajax"
+        p:instructionalText="Instructions: To edit inline, click the data field. To abandon changes to the field, press the esc key.">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-InlineEdit-Example3 start-->
+        <bean parent="Uif-InputField" p:label="Inline Edit Field Ajax" p:required="true"
+              p:propertyName="dataField1" p:ajaxInlineEdit="true"/>
+        <!-- ex:Demo-InlineEdit-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-InlineEdit-Example4" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit Textarea"
         p:instructionalText="Instructions: To edit inline, click the data field. To abandon changes to the field,
         press the esc key.">
     <property name="items">
       <list>
-        <!-- ex:Demo-InlineEdit-Example3 start-->
+        <!-- ex:Demo-InlineEdit-Example4 start-->
         <bean parent="Uif-InputField" p:label="Inline Edit Textarea" p:required="true"
               p:propertyName="dataField5" p:inlineEdit="true">
         <property name="control">
             <bean parent="Uif-TextAreaControl"/>
           </property>
         </bean>
-        <!-- ex:Demo-InlineEdit-Example3 end-->
+        <!-- ex:Demo-InlineEdit-Example4 end-->
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-InlineEdit-Example4" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit Select"
+  <bean id="Demo-InlineEdit-Example5" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit Select"
         p:instructionalText="Instructions: To edit inline, click the dashed data field.
         To abandon changes to the field, press the esc key.">
     <property name="items">
       <list>
-        <!-- ex:Demo-InlineEdit-Example4 start-->
+        <!-- ex:Demo-InlineEdit-Example5 start-->
         <bean parent="Uif-InputField" p:propertyName="dataField7" p:width="auto" p:label="Inline Edit Select"
               p:required="true" p:inlineEdit="true">
         <property name="control">
@@ -98,12 +110,12 @@
             <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"/>
           </property>
         </bean>
-        <!-- ex:Demo-InlineEdit-Example4 end-->
+        <!-- ex:Demo-InlineEdit-Example5 end-->
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-InlineEdit-Example5" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit in Popover widget"
+  <bean id="Demo-InlineEdit-Example6" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit in Popover widget"
         p:instructionalText="Instructions: To edit inline, click the dashed data field. To abandon changes to the field,
         press the esc key.">
     <property name="items">
@@ -119,7 +131,7 @@
           <property name="hidden" value="true"/>
           <property name="items">
             <list>
-              <!-- ex:Demo-InlineEdit-Example5 start-->
+              <!-- ex:Demo-InlineEdit-Example6 start-->
               <bean parent="Uif-InputField" p:inlineEdit="true" p:required="true"
                       >
               <property name="propertyName" value="dataField8"/>
@@ -141,26 +153,6 @@
                 <property name="actionLabel" value="Button"/>
                 <property name="actionScript" value="alert('You clicked a button!');"/>
               </bean>
-              <!-- ex:Demo-InlineEdit-Example5 end-->
-            </list>
-          </property>
-        </bean>
-      </list>
-    </property>
-  </bean>
-
-  <bean id="Demo-InlineEdit-Example6" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit in Disclosure widget">
-    <property name="items">
-      <list>
-        <bean parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Default Closed Section">
-          <!-- disclosure will be closed -->
-          <property name="disclosure.defaultOpen" value="false"/>
-          <property name="items">
-            <list>
-              <!-- ex:Demo-InlineEdit-Example6 start-->
-              <bean parent="Uif-InputField" p:label="Inline Edit Field" p:required="true"
-                    p:propertyName="dataField11" p:inlineEdit="true"/>
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="dataField12"/>
               <!-- ex:Demo-InlineEdit-Example6 end-->
             </list>
           </property>
@@ -169,7 +161,27 @@
     </property>
   </bean>
 
-  <bean id="Demo-InlineEdit-Example7" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:headerText="Inline Edit in Table Collection">
+  <bean id="Demo-InlineEdit-Example7" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit in Disclosure widget">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Disclosure-VerticalBoxSection" p:headerText="Default Closed Section">
+          <!-- disclosure will be closed -->
+          <property name="disclosure.defaultOpen" value="false"/>
+          <property name="items">
+            <list>
+              <!-- ex:Demo-InlineEdit-Example7 start-->
+              <bean parent="Uif-InputField" p:label="Inline Edit Field" p:required="true"
+                    p:propertyName="dataField11" p:inlineEdit="true"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="dataField12"/>
+              <!-- ex:Demo-InlineEdit-Example7 end-->
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-InlineEdit-Example8" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:headerText="Inline Edit in Table Collection">
     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
     <property name="propertyName" value="collection1"/>
     <property name="layoutManager.sequencePropertyName" value="field1"/>
@@ -180,7 +192,7 @@
     <property name="layoutManager.richTable.render" value="true"/>
     <property name="items">
       <list>
-        <!-- ex:Demo-InlineEdit-Example7 start-->
+        <!-- ex:Demo-InlineEdit-Example8 start-->
         <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" p:label="Field 1" p:inlineEdit="@{!#isAddLine}"/>
         <bean parent="Uif-InputField" p:propertyName="field2" p:required="false" p:label="Field 2" p:constraintText="Requires Field 1 be filled out" p:inlineEdit="@{!#isAddLine}">
           <property name="dependencyConstraints">
@@ -199,28 +211,28 @@
         </bean>
         <bean parent="Uif-DataField" p:propertyName="stringList"  p:label="Read-only Sublist"
               p:readOnlyDisplayReplacement="@{#emptyList(#lp.stringList)?'None Available':''}"/>
-        <!-- ex:Demo-InlineEdit-Example7 end-->
-      </list>
-
-    </property>
-  </bean>
-
-  <bean id="Demo-InlineEdit-Example8" parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="Inline Edit in a 1 Label Column CSS Grid">
-    <property name="items">
-      <list>
-        <!-- ex:Demo-InlineEdit-Example8 start-->
-        <bean parent="Uif-InputField" p:propertyName="inputField10" p:label="Field 1" p:inlineEdit="true" />
-        <bean parent="Uif-InputField" p:propertyName="inputField11" p:label="Field 2" p:inlineEdit="true"/>
-        <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 3" p:inlineEdit="true"/>
         <!-- ex:Demo-InlineEdit-Example8 end-->
       </list>
+
     </property>
   </bean>
 
-  <bean id="Demo-InlineEdit-Example9" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit in Dialog Group">
+  <bean id="Demo-InlineEdit-Example9" parent="Uif-CssGridSection-1FieldLabelColumn" p:headerText="Inline Edit in a 1 Label Column CSS Grid">
     <property name="items">
       <list>
         <!-- ex:Demo-InlineEdit-Example9 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField10" p:label="Field 1" p:inlineEdit="true" />
+        <bean parent="Uif-InputField" p:propertyName="inputField11" p:label="Field 2" p:inlineEdit="true"/>
+        <bean parent="Uif-InputField" p:propertyName="inputField12" p:label="Field 3" p:inlineEdit="true"/>
+        <!-- ex:Demo-InlineEdit-Example9 end-->
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Demo-InlineEdit-Example10" parent="Uif-VerticalBoxSection" p:headerText="Inline Edit in Dialog Group">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-InlineEdit-Example10 start-->
         <bean parent="Uif-ActionLink" p:actionLabel="Show Dialog"
               p:actionScript="showDialog('Demo-DialogGroup-ShowDialog1');"/>
         <bean id="Demo-DialogGroup-ShowDialog1" parent="Uif-DialogGroup" p:headerText="Complete Information"
@@ -241,7 +253,7 @@
             </list>
           </property>
         </bean>
-        <!-- ex:Demo-InlineEdit-Example9 end-->
+        <!-- ex:Demo-InlineEdit-Example10 end-->
       </list>
     </property>
   </bean>

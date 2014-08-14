@@ -92,8 +92,15 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
             }
         }
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
-    	waitAndClickBlanketApprove();
+        waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
+
+        waitAndClickButtonByText("Reload");
+        waitForProgressLoading();
+        waitForTextPresent("Document was successfully reloaded.");
+        assertTextPresent("FINAL");
+
+        waitAndClickButtonByExactText("download attachment");
     }
     
     private void fileUploadSetUp() throws Exception {
@@ -126,7 +133,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     
     protected void setUpResourceDir(String resourceDir) {
         try {
-            setUpFiles("rice-framework/krad-sampleapp/web/src/test/resources/" + resourceDir);
+            setUpFiles("src/test/resources/" + resourceDir);
             System.out.println("Try for setUpResourceDir");
         } catch (Exception e) {
             System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-framework/krad-sampleapp/web attempt to load as resource.");

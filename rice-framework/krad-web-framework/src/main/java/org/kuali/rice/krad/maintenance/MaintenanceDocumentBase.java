@@ -767,39 +767,39 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * refreshReferenceObject is not returning null and the proxy cannot be materialized. So, this method exists to
      * properly handle the proxied attachment BO.  This is a hack and should be removed post JPA migration.
      */
+    @Deprecated
     protected void refreshAttachment() {
         if (attachment == null) {
             KradDataServiceLocator.getDataObjectService().wrap(this).fetchRelationship("attachment");
         }
     }
 
+    @Deprecated
     protected void refreshAttachmentList() {
         if (attachments == null) {
             KradDataServiceLocator.getDataObjectService().wrap(this).fetchRelationship("attachments");
         }
     }
 
-    /**
-     * The following populateAttachment methods are no longer needed for KRAD but are still used and overridden in
-     * org.kuali.rice.kns.document.MaintenanceDocumentBase.  Once the KNS version of MaintenanceDocumentBase is gone
-     * these methods can be removed along with any calling code.
-     */
+    @Deprecated
     public void populateAttachmentForBO() { }
 
+    @Deprecated
     public void populateDocumentAttachment() { }
 
+    @Deprecated
     public void populateAttachmentListForBO() { }
 
+    @Deprecated
     public void populateAttachmentBeforeSave() { }
 
+    @Deprecated
     public void populateDocumentAttachmentList() { }
 
+    @Deprecated
     public void populateBoAttachmentListBeforeSave() { }
 
-    /**
-     * The following deleteDocumentAttachment methods are no longer needed for KRAD but are still used for KNS
-     * documents. For KRAD documents, attachment is null and attachments is empty so the code is not executed.
-     */
+    @Deprecated
     public void deleteDocumentAttachment() {
         if ( attachment != null ) {
             KRADServiceLocatorWeb.getLegacyDataAdapter().delete(attachment);
@@ -807,6 +807,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
     }
 
+    @Deprecated
     public void deleteDocumentAttachmentList() {
         if (CollectionUtils.isNotEmpty(attachments)) {
             for (MultiDocumentAttachment attachment : attachments) {

@@ -1650,7 +1650,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             Thread.sleep(1000); // sleep for a second first, give element time to exist
 
             if (second >= timeout) {
-                jiraAwareFail(TIMEOUT_MESSAGE + " still Loading after " + timeout);
+                jiraAwareFail(TIMEOUT_MESSAGE + " still Loading after " + timeout + " seconds.");
             }
 
             if (!isElementPresentByXpath("//img[@alt='" + altText + "']") || !isVisible(By.xpath("//img[@alt='" + altText + "']"))) {
@@ -1665,12 +1665,24 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         waitForProgress("Adding Line...");
     }
 
+    protected void waitForProgressAddingLine(int secondsToWait) throws InterruptedException {
+        waitForProgress("Adding Line...", secondsToWait);
+    }
+
     protected void waitForProgressLoading() throws InterruptedException {
         waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 4);
     }
 
+    protected void waitForProgressLoading(int secondsToWait) throws InterruptedException {
+        waitForProgress("Loading...", secondsToWait);
+    }
+
     protected void waitForProgressSaving() throws InterruptedException {
         waitForProgress("Saving...", WebDriverUtils.configuredImplicityWait() * 4);
+    }
+
+    protected void waitForProgressSaving(int secondsToWait) throws InterruptedException {
+        waitForProgress("Saving...", secondsToWait);
     }
 
     protected void waitForTextPresent(String text) throws InterruptedException {

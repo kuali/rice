@@ -263,7 +263,7 @@ public class ThemeJsFilesProcessor extends ThemeFilesProcessor {
 
             CompilerOptions options = new CompilerOptions();
             CompilationLevel.WHITESPACE_ONLY.setOptionsForCompilationLevel(options);
-            options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT5);
+            options.setLanguageIn(CompilerOptions.LanguageMode.ECMASCRIPT6);
             options.setExtraAnnotationNames(ignoredAnnotations());
 
             SourceFile input = SourceFile.fromInputStream(mergedFile.getName(), in);

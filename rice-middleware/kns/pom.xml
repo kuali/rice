@@ -120,6 +120,13 @@
       <groupId>org.kuali.db.ojb</groupId>
       <artifactId>db-ojb</artifactId>
     </dependency>
+
+    <!-- ojb depends on this indirectly now that our xerces version has been bumped to >= 2.11.0 -->
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.springmodules</groupId>
       <artifactId>spring-modules-ojb</artifactId>

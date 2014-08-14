@@ -161,10 +161,6 @@
           <groupId>commons-logging</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>jaxb-impl</artifactId>
-          <groupId>javax.xml</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>stax-api</artifactId>
           <groupId>javax.xml.stream</groupId>
         </exclusion>

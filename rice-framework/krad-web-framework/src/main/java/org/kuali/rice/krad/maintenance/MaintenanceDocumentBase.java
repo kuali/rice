@@ -398,18 +398,20 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         boolean ignoreMissingFields = false;
         String classAndDocTypeNames = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.Config.IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE);
         if (!StringUtils.isEmpty(classAndDocTypeNames)) {
-            String classNameOnXML = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + "><", ">");
+            String classNameOnXML = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + "><",
+                    ">");
             String classNamesNoSpaces = removeSpacesAround(classAndDocTypeNames);
-            List<String> classAndDocTypeNamesList = Arrays.asList(org.apache.commons.lang.StringUtils.split(classNamesNoSpaces, ","));
+            List<String> classAndDocTypeNamesList = Arrays.asList(org.apache.commons.lang.StringUtils.split(
+                    classNamesNoSpaces, ","));
             String originalDocTypeId = getDocumentHeader().getWorkflowDocument().getDocumentTypeId();
             DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(originalDocTypeId);
 
             while (docType != null && !ignoreMissingFields) {
-                for(String classNameOrDocTypeName : classAndDocTypeNamesList){
-                    if (docType.getName().equalsIgnoreCase(classNameOrDocTypeName) ||
-                        classNameOnXML.equalsIgnoreCase(classNameOrDocTypeName)) {
-                            ignoreMissingFields = true;
-                            break;
+                for (String classNameOrDocTypeName : classAndDocTypeNamesList) {
+                    if (docType.getName().equalsIgnoreCase(classNameOrDocTypeName) || classNameOnXML.equalsIgnoreCase(
+                            classNameOrDocTypeName)) {
+                        ignoreMissingFields = true;
+                        break;
                     }
                 }
                 if (!StringUtils.isEmpty(docType.getParentId())) {
@@ -766,54 +768,25 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * properly handle the proxied attachment BO.  This is a hack and should be removed post JPA migration.
      */
     protected void refreshAttachment() {
-        if ( attachment == null ) {
+        if (attachment == null) {
             KradDataServiceLocator.getDataObjectService().wrap(this).fetchRelationship("attachment");
         }
     }
 
     protected void refreshAttachmentList() {
-        if ( attachments == null ) {
+        if (attachments == null) {
             KradDataServiceLocator.getDataObjectService().wrap(this).fetchRelationship("attachments");
         }
     }
 
-    public void populateAttachmentForBO() {
-        // TODO: need to convert this from using struts form file
+    /**
+     * The following populateAttachment methods are no longer needed for KRAD but are still used and overridden in
+     * org.kuali.rice.kns.document.MaintenanceDocumentBase.  Once the KNS version of MaintenanceDocumentBase in gone
+     * these methods can be removed along with any calling code.
+     */
+    public void populateAttachmentForBO() { }
 
-    }
-
-    public void populateDocumentAttachment() {
-        // TODO: need to convert this from using struts form file
-        //        refreshAttachment();
-        //
-        //        if (fileAttachment != null && StringUtils.isNotEmpty(fileAttachment.getFileName())) {
-        //            //Populate DocumentAttachment BO
-        //            if (attachment == null) {
-        //                attachment = new DocumentAttachment();
-        //            }
-        //
-        //            byte[] fileContents;
-        //            try {
-        //                fileContents = fileAttachment.getFileData();
-        //                if (fileContents.length > 0) {
-        //                    attachment.setFileName(fileAttachment.getFileName());
-        //                    attachment.setContentType(fileAttachment.getContentType());
-        //                    attachment.setAttachmentContent(fileAttachment.getFileData());
-        //                    attachment.setDocumentNumber(getDocumentNumber());
-        //                }
-        //            } catch (FileNotFoundException e) {
-        //                LOG.error("Error while populating the Document Attachment", e);
-        //                throw new RuntimeException("Could not populate DocumentAttachment object", e);
-        //            } catch (IOException e) {
-        //                LOG.error("Error while populating the Document Attachment", e);
-        //                throw new RuntimeException("Could not populate DocumentAttachment object", e);
-        //            }
-        //        }
-        ////        else if(attachment != null) {
-        ////            //Attachment has been deleted - Need to delete the Attachment Reference Object
-        ////            deleteAttachment();
-        ////        }
-    }
+    public void populateDocumentAttachment() { }
 
     public void populateAttachmentListForBO() { }
 
@@ -823,6 +796,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
     public void populateBoAttachmentListBeforeSave() { }
 
+    /**
+     * The following deleteDocumentAttachment methods are no longer needed for KRAD but are still used for KNS
+     * documents. For KRAD documents, attachment is null and attachments is empty so the code is not executed.
+     */
     public void deleteDocumentAttachment() {
         if ( attachment != null ) {
             KRADServiceLocatorWeb.getLegacyDataAdapter().delete(attachment);

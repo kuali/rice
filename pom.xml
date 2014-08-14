@@ -2544,9 +2544,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/sandbox/rice-2.5-KULRICE-12563</connection>
-    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/sandbox/rice-2.5-KULRICE-12563</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/sandbox/rice-2.5-KULRICE-12563</url>
+    <connection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</connection>
+    <developerConnection>scm:${project.scm.vendor}:https://svn.kuali.org/repos/rice/trunk</developerConnection>
+    <url>https://svn.kuali.org/repos/rice/trunk</url>
   </scm>
 
 </project>

@@ -92,7 +92,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
 
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        waitForProgressLoading();
+        waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 8);
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }
 

@@ -26,7 +26,6 @@ import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionTaken;
-import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.NodeType;
@@ -35,6 +34,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.KewExportDataSet;
 import org.kuali.rice.kew.framework.postprocessor.PostProcessor;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
+import org.kuali.rice.kew.server.TestSplitNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
@@ -185,6 +185,21 @@ public class DocumentTypeTest extends KEWTestCase {
     // Contains temporary logging for KULRICE-12853 investigation.
     @Test public void testNestedDuplicateNodeNameInRoutePath() throws Exception {
         int waitMilliSeconds = 5000;
+
+        boolean leftBranch = TestSplitNode.isLeftBranch();
+        boolean rightBranch = TestSplitNode.isRightBranch();
+        LOG.info("*** TestSplitNode.leftBranch: " + leftBranch);
+        if (!leftBranch) {
+            LOG.info("*** Set TestSplitNode.leftBranch to true");
+            TestSplitNode.setLeftBranch(true);
+        }
+
+        LOG.info("*** TestSplitNode.rightBranch: " + rightBranch);
+        if (!rightBranch) {
+            LOG.info("*** Set TestSplitNode.rightBranch to true");
+            TestSplitNode.setRightBranch(true);
+        }
+
         loadXmlFile("DocTypeConfig_nestedNodes.xml");
 
         WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("user1"), "TestNestedNodeDocumentType");
@@ -198,15 +213,12 @@ public class DocumentTypeTest extends KEWTestCase {
         assertTrue("rkirkend should have an approve request; the first request", document.isApprovalRequested());
 
         logExtraInfo("rkirkend before approve", document);
-
         document.approve("");
-
         logExtraInfo("rkirkend after approve", document);
 
         document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("user2"), document.getDocumentId());
         assertTrue("user2 should have an approve request", document.isApprovalRequested());
 
-        // se10
         logExtraInfo("user2 before approve", document);
         document.approve("");
         logExtraInfo("user2 after approve", document);
@@ -231,6 +243,7 @@ public class DocumentTypeTest extends KEWTestCase {
         LOG.info("*** loopSuccess: " + loopSuccess + ". Number of 5 second loop passes: " + loopPasses);
 
         assertTrue("user4 should have an approve request", document.isApprovalRequested());
+
         logExtraInfo("user4 before approve", document);
         document.approve("");
         logExtraInfo("user4 after approve", document);

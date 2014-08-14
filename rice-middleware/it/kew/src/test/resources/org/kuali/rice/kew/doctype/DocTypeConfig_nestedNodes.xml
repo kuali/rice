@@ -19,20 +19,20 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate allowOverwrite="true">
-			<name>RuleTemplate1</name>
-			<description>RuleTemplate1</description>
+			<name>Rule_rkirkend</name>
+			<description>Rule_rkirkend</description>
 		</ruleTemplate>
     <ruleTemplate allowOverwrite="true">
-      <name>RuleTemplate2</name>
-      <description>RuleTemplate2</description>
+      <name>Rule_user2</name>
+      <description>Rule_user2</description>
     </ruleTemplate>
     <ruleTemplate allowOverwrite="true">
-      <name>RuleTemplate3</name>
-      <description>RuleTemplate3</description>
+      <name>Rule_user3</name>
+      <description>Rule_user3</description>
     </ruleTemplate>
     <ruleTemplate allowOverwrite="true">
-      <name>RuleTemplate4</name>
-      <description>RuleTemplate4</description>
+      <name>Rule_user4</name>
+      <description>Rule_user4</description>
     </ruleTemplate>
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
@@ -51,17 +51,17 @@
 					<start name="AdHoc" nextNode="Split1" />
 					<split name="Split1" nextNode="Split2">
 						<branch name="Left">
-							<requests name="RuleTemplate1" nextNode="RuleTemplate2" />
-              <requests name="RuleTemplate2" nextNode="Join" />
+							<requests name="Node_rkirkend" nextNode="Node_user2" />
+              <requests name="Node_user2" nextNode="Join" />
 						</branch>
 						<branch name="Right">
               <split name="InnerSplit" nextNode="Join">
                 <branch name="Left">
-                  <requests name="RuleTemplate1" nextNode="RuleTemplate3" />
-                  <requests name="RuleTemplate3" nextNode="JoinInner" />
+                  <requests name="Node_rkirkend" nextNode="Node_user3" />
+                  <requests name="Node_user3" nextNode="JoinInner" />
                 </branch>
                 <branch name="Right">
-                  <simple name="RuleTemplate4" nextNode="JoinInner" />
+                  <simple name="Node_user4" nextNode="JoinInner" />
                 </branch>
                 <join name="JoinInner" />
               </split>
@@ -70,8 +70,8 @@
 					</split>
 					<split name="Split2">
 						<branch name="Left">
-							<requests name="RuleTemplate1" nextNode="RuleTemplate3" />
-              <requests name="RuleTemplate3" nextNode="Join" />
+							<requests name="Node_rkirkend" nextNode="Node_user3" />
+              <requests name="Node_user3" nextNode="Join" />
 						</branch>
 						<branch name="Right">
 							<simple name="NoOp1" nextNode="Join" />
@@ -84,21 +84,21 @@
 				<start name="AdHoc">
 					<activationType>P</activationType>
 				</start>
-				<requests name="RuleTemplate1">
+				<requests name="Node_rkirkend">
 					<activationType>S</activationType>
-					<ruleTemplate>RuleTemplate1</ruleTemplate>
+					<ruleTemplate>Rule_rkirkend</ruleTemplate>
 				</requests>
-        <requests name="RuleTemplate2">
+        <requests name="Node_user2">
           <activationType>S</activationType>
-          <ruleTemplate>RuleTemplate2</ruleTemplate>
+          <ruleTemplate>Rule_user2</ruleTemplate>
         </requests>
-        <requests name="RuleTemplate3">
+        <requests name="Node_user3">
           <activationType>S</activationType>
-          <ruleTemplate>RuleTemplate3</ruleTemplate>
+          <ruleTemplate>Rule_user3</ruleTemplate>
         </requests>
-        <requests name="RuleTemplate4">
+        <requests name="Node_user4">
           <activationType>S</activationType>
-          <ruleTemplate>RuleTemplate4</ruleTemplate>
+          <ruleTemplate>Rule_user4</ruleTemplate>
         </requests>
         <split name="InnerSplit">
           <type>org.kuali.rice.kew.engine.node.SimpleSplitNode</type>
@@ -120,8 +120,8 @@
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
 			<documentType>TestNestedNodeDocumentType</documentType>
-			<ruleTemplate>RuleTemplate1</ruleTemplate>
-			<description>RuleTemplate1 TestNestedNodeDocumentType</description>
+			<ruleTemplate>Rule_rkirkend</ruleTemplate>
+			<description>Rule_rkirkend TestNestedNodeDocumentType</description>
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
@@ -133,8 +133,8 @@
 		</rule>
 		<rule>
 			<documentType>TestNestedNodeDocumentType</documentType>
-			<ruleTemplate>RuleTemplate2</ruleTemplate>
-			<description>RuleTemplate2 TestNestedNodeDocumentType</description>
+			<ruleTemplate>Rule_user2</ruleTemplate>
+			<description>Rule_user2 TestNestedNodeDocumentType</description>
 			<forceAction>true</forceAction>
 			<responsibilities>
 				<responsibility>
@@ -146,8 +146,8 @@
 		</rule>
     <rule>
       <documentType>TestNestedNodeDocumentType</documentType>
-      <ruleTemplate>RuleTemplate3</ruleTemplate>
-      <description>RuleTemplate3 TestNestedNodeDocumentType</description>
+      <ruleTemplate>Rule_user3</ruleTemplate>
+      <description>Rule_user3 TestNestedNodeDocumentType</description>
       <forceAction>true</forceAction>
       <responsibilities>
         <responsibility>
@@ -159,8 +159,8 @@
     </rule>
   <rule>
     <documentType>TestNestedNodeDocumentType</documentType>
-    <ruleTemplate>RuleTemplate4</ruleTemplate>
-    <description>RuleTemplate4 TestNestedNodeDocumentType</description>
+    <ruleTemplate>Rule_user4</ruleTemplate>
+    <description>Rule_user4 TestNestedNodeDocumentType</description>
     <forceAction>true</forceAction>
     <responsibilities>
       <responsibility>

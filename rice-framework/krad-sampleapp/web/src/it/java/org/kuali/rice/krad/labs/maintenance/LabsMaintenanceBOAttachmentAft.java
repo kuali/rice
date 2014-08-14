@@ -75,32 +75,28 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
 		waitAndClickConfirmationOk();
     	waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
     }
-    
+
     protected void testMaintenanceBOAttachmentCollection() throws Exception {
-    	waitAndClickByLinkText("Sample BO Attachment Collection");
-    	waitAndTypeByName("document.documentHeader.documentDescription","Test fo BO Attachment");
-    	fileUploadSetUp();
-        if(fileUploadList!=null && fileUploadList.size()>0) {
+        waitAndClickByLinkText("Sample BO Attachment Collection");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Test fo BO Attachment");
+        fileUploadSetUp();
+        if (fileUploadList != null && fileUploadList.size() > 0) {
             for (File file : fileUploadList) {
                 String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-                waitAndTypeByXpath("//div[@data-label='ID']/input",random);
+                waitAndTypeByXpath("//div[@data-label='ID']/input", random);
                 String path = file.getAbsolutePath().toString();
-                driver.findElement(By.xpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']")).sendKeys(path);
+                driver.findElement(By.xpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']"))
+                        .sendKeys(path);
                 System.out.println("In for " + path);
                 waitAndClickButtonByExactText("Add");
                 waitForTextPresent("Adding Line...");
             }
         }
+
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-
-        waitAndClickButtonByText("Reload");
-        waitForProgressLoading();
-        waitForTextPresent("Document was successfully reloaded.");
-        assertTextPresent("FINAL");
-
-        waitAndClickButtonByExactText("download attachment");
+        waitAndClickBlanketApprove();
+        waitAndClickConfirmBlanketApproveOk();
     }
     
     private void fileUploadSetUp() throws Exception {

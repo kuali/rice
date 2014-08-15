@@ -34,7 +34,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Base class for Selenium Jenkins Json saving
+ * Base class for Selenium Jenkins Json saving.  Originally created to work with ci.rice.kuali.org which
+ * required login in order to see results (and I couldn't get various command line tools to work with CAS).
+ * ci.kuail.org doesn't require login, so using wget or such might be a better solution as it doesn't require a browser
+ * being opened.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

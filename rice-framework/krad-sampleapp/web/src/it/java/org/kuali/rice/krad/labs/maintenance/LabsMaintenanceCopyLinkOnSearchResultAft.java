@@ -55,6 +55,7 @@ public class LabsMaintenanceCopyLinkOnSearchResultAft extends LabsMaintenanceBas
         waitForTextPresent("Document was successfully submitted.");
         open(getBaseUrlString()+BOOKMARK_URL);
         waitAndClickByLinkText("Travel Company Maintenance Sample - Copy from Search Result");
+        waitAndTypeByName("lookupCriteria[travelCompanyId]", newCompanyId);
         waitAndClickSearchByText();
         waitForTextPresent(newCompanyId);
     }

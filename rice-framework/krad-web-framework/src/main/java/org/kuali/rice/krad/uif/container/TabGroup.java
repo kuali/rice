@@ -22,6 +22,7 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.widget.Tabs;
@@ -40,6 +41,10 @@ public class TabGroup extends GroupBase {
     private static final long serialVersionUID = 3L;
 
     private Tabs tabsWidget;
+
+    // Required by ClientSideState annotation though not used by class
+    @ClientSideState(variableName = "activeTab")
+    private String defaultActiveTabId;
 
     public TabGroup() {
         super();
@@ -85,4 +90,23 @@ public class TabGroup extends GroupBase {
         this.tabsWidget = tabsWidget;
     }
 
+    /**
+     * Convenience accessor for the Tabs widget class defaultActiveTabId property; this is the active tab of the
+     * tab group when rendered.
+     *
+     * @see org.kuali.rice.krad.uif.widget.Tabs#getDefaultActiveTabId()
+     *
+     * @return the default active tab of this tab group
+     */
+    @BeanTagAttribute
+    public String getDefaultActiveTabId() {
+        return tabsWidget.getDefaultActiveTabId();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.TabGroup#getDefaultActiveTabId()
+     */
+    public void setDefaultActiveTabId(String defaultActiveTabId) {
+        this.getTabsWidget().setDefaultActiveTabId(defaultActiveTabId);
+    }
 }

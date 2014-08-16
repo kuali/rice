@@ -148,6 +148,8 @@ jQuery(document).ready(function () {
     // disclosure handler setup
     setupDisclosureHandler();
 
+    setupTabShownHandler();
+
     setupHelperTextHandler();
 
     // setup document level handling of drag and drop for files
@@ -776,6 +778,19 @@ function setupDisclosureHandler() {
                     }
                 }
             });
+}
+
+/**
+ * Sets up a handler that will be invoked when any TabGroup's tab is shown.
+ *
+ * <p>This handler saves the component state of the active tab.</p>
+ */
+function setupTabShownHandler() {
+    jQuery(document).on("shown.bs.tab", "[data-type='Uif-TabGroup']", function(event) {
+        var tabGroupId = jQuery(event.currentTarget).attr("id");
+        var tabId = jQuery(event.target).attr("id").replace("_tab", "");
+        setComponentState(tabGroupId, "activeTab", tabId);
+    });
 }
 
 /**

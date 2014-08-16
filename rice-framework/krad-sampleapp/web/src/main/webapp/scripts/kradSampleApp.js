@@ -147,16 +147,7 @@ function handleTabSwap(control) {
     if (tabValue != undefined && tabValue != "") {
         var tabIndex = parseInt(tabValue);
         if (tabIndex) {
-            jQuery("input#Demo-CurrentExampleIndex_control").val(tabIndex);
-
-            //main source code viewer
-            var source = jQuery("#demo-exhibitSource > pre:eq(" + tabIndex + ")");
-            if (source != null && source.length) {
-                jQuery("#ComponentLibrary-MainCodeViewer > div > pre").replaceWith(jQuery(source)[0].outerHTML);
-            }
-
-            showAdditionalSource(tabIndex);
-            updateHtmlViewer();
+            jQuery("#ComponentLibrary-TabGroup_tabList li:eq(" + tabIndex + ") a").tab('show');
         }
         else {
             var tabDom = tab[0];

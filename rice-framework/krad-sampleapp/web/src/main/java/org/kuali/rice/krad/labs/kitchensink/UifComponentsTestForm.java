@@ -385,9 +385,11 @@ public class UifComponentsTestForm extends UifFormBase {
         for (int i = 0; i < 100; i++) {
             UITestObject newObj = new UITestObject(RandomStringUtils.randomAlphanumeric(6), RandomStringUtils.randomAlphanumeric(6),
                                 "a" + i%10, RandomStringUtils.randomNumeric(1));
+
             if(i%2 == 0){
                 newObj.setBfield(true);
             }
+
             list6.add(newObj);
         }
 

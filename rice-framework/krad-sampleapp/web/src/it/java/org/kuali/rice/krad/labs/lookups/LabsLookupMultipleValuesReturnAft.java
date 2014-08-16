@@ -57,13 +57,29 @@ public class LabsLookupMultipleValuesReturnAft extends LabsLookupBase {
         waitAndClickSearch3();
         assertResultCount("6");
         waitAndClickByXpath("//input[@type='checkbox' and @value='CAT:Travel Account 10:a10']");
-        waitAndClickByXpath("//input[@type='checkbox' and @value='EAT:Travel Account 11:a11']");
-        waitAndClickButtonByText("return selected");
-        waitForTextPresent("CAT");
-        waitForTextPresent("Travel Account 10");
-        waitForTextPresent("a10");
-        waitForTextPresent("EAT");
-        waitForTextPresent("Travel Account 11");
-        waitForTextPresent("a11");
+
+        // EAT in DB
+        if (isElementPresentByXpath("//input[@type='checkbox' and @value='EAT:Travel Account 11:a11']")) {
+            waitAndClickByXpath("//input[@type='checkbox' and @value='EAT:Travel Account 11:a11']");
+            waitAndClickButtonByText("return selected");
+            waitForTextPresent("CAT");
+            waitForTextPresent("Travel Account 10");
+            waitForTextPresent("a10");
+            waitForTextPresent("EAT");
+            waitForTextPresent("Travel Account 11");
+            waitForTextPresent("a11");
+        }
+
+        // is sometimes IAT, being changed in another test?
+        if (isElementPresentByXpath("//input[@type='checkbox' and @value='IAT:Travel Account 11:a11']")) {
+            waitAndClickByXpath("//input[@type='checkbox' and @value='IAT:Travel Account 11:a11']");
+            waitAndClickButtonByText("return selected");
+            waitForTextPresent("CAT");
+            waitForTextPresent("Travel Account 10");
+            waitForTextPresent("a10");
+            waitForTextPresent("IAT");
+            waitForTextPresent("Travel Account 11");
+            waitForTextPresent("a11");
+        }
     }
 }

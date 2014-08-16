@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -151,13 +152,11 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     }
 
     private void testTravelAccountLookUpDocumentLocking() throws Exception {
-
-        String documentId = "";
-
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("edit");
     	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
+        String documentId = getText(By.xpath("//div[@data-label='Document Number']"));
     	waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndClickAdHocPersonAdd();
     	gotoLightBox();
@@ -172,7 +171,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        waitForProgressLoading();
+        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
 
     	if(waitForIsTextPresent("Document was successfully submitted.")) {
 

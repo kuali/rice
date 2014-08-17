@@ -74,7 +74,7 @@ public class LocationCountryAft extends AdminTmplMthdAftNavBlanketAppBase {
     protected void createNewEnterDetails() throws InterruptedException {
         // Make sure we don't use an existing country abbreviation
         getDescriptionUnique(); // trigger creating of uniqueString
-        while (COUNTRY_CODES.contains(uniqueString.substring(5, 7))) {
+        while (COUNTRY_CODES.contains(uniqueString.substring(5, 7).toUpperCase())) {
             uniqueString = null;
             getDescriptionUnique(); // trigger creating of uniqueString
         }

@@ -226,11 +226,13 @@ public class DemoGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase {
     @Test
     public void testGeneralFeaturesRichMessagesActionCustomBookmark() throws Exception {
         testGeneralFeaturesRichMessagesActionCustom();
+        passed();
     }
 
     @Test
     public void testGeneralFeaturesRichMessagesActionCustomNav() throws Exception {
         testGeneralFeaturesRichMessagesActionCustom();
+        passed();
     }
 
     private void testRichMessages() throws Exception {

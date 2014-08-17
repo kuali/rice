@@ -71,6 +71,7 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
      */
     private void clickAndTabByName(String name) throws InterruptedException {
         waitAndClickByName(name);
+        jGrowl("Press Tab key");
         driver.switchTo().activeElement().sendKeys(Keys.TAB); // update to call typeTab() in 2.5+
     }
 

@@ -68,7 +68,7 @@ public class LocationStateAft extends AdminTmplMthdAftNavBlanketAppBase {
     private void inputDetails() throws InterruptedException {
         // Make sure we don't use an existing state abbreviation
         getDescriptionUnique(); // trigger creating of uniqueString
-        while (STATE_CODES.contains(uniqueString.substring(5, 7))) {
+        while (STATE_CODES.contains(uniqueString.substring(5, 7).toUpperCase())) {
             uniqueString = null;
             getDescriptionUnique(); // trigger creating of uniqueString
         }

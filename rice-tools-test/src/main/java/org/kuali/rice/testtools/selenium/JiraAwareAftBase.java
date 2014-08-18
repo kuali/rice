@@ -594,8 +594,9 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected void jiraAwareWaitAndClick(By by, String message, JiraAwareFailable failable) throws InterruptedException {
         try {
             jiraAwareWaitFor(by, message, failable);
-            WebElement element = findElement(by);
+            findElement(by).click();
             // possible future code of outputting clicked components in a more generic way, but need to look into duplicates, don't delete
+//            WebElement element = findElement(by);
 //            String jgrowl = element.getAttribute("name");
 //            if (jgrowl == null || "".equals(jgrowl)) {
 //                jgrowl = element.getAttribute("id");
@@ -604,7 +605,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 //                jgrowl = by.toString();
 //            }
 //            WebDriverUtils.jGrowl(getDriver(), "Click " + jgrowl, false, "Click " + jgrowl);
-            element.click();
+//            element.click();
         } catch (Throwable t) {
             failable.jiraAwareFail(by.toString(), message, t);
         }

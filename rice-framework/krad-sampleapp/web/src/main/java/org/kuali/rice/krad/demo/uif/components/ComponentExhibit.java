@@ -67,7 +67,7 @@ public class ComponentExhibit extends ContentElementBase {
                 currentIndice = Integer.parseInt(kradSampleAppForm.getCurrentExampleIndex());
             }
             String id =  demoGroups.get(currentIndice).getId();
-            tabGroup.getTabsWidget().setDefaultActiveTabId(id);
+            tabGroup.setDefaultActiveTabId(id);
         }
 
         //source code viewer setup

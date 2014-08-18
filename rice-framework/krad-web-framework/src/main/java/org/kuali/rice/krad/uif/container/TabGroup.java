@@ -18,6 +18,8 @@ package org.kuali.rice.krad.uif.container;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.parse.BeanTags;
@@ -57,6 +59,10 @@ public class TabGroup extends GroupBase {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
         this.addDataAttribute(UifConstants.DataAttributes.TYPE, "Uif-TabGroup");
+
+        if (StringUtils.isBlank(defaultActiveTabId) && CollectionUtils.isNotEmpty(this.getItems())) {
+            defaultActiveTabId = this.getItems().get(0).getId();
+        }
     }
 
     /**
@@ -91,22 +97,19 @@ public class TabGroup extends GroupBase {
     }
 
     /**
-     * Convenience accessor for the Tabs widget class defaultActiveTabId property; this is the active tab of the
-     * tab group when rendered.
-     *
-     * @see org.kuali.rice.krad.uif.widget.Tabs#getDefaultActiveTabId()
+     * Id of the active tab of the tab group when rendered.
      *
      * @return the default active tab of this tab group
      */
     @BeanTagAttribute
     public String getDefaultActiveTabId() {
-        return tabsWidget.getDefaultActiveTabId();
+        return defaultActiveTabId;
     }
 
     /**
      * @see org.kuali.rice.krad.uif.container.TabGroup#getDefaultActiveTabId()
      */
     public void setDefaultActiveTabId(String defaultActiveTabId) {
-        this.getTabsWidget().setDefaultActiveTabId(defaultActiveTabId);
+        this.defaultActiveTabId = defaultActiveTabId;
     }
 }

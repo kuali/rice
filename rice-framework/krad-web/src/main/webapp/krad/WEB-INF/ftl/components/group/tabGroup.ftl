@@ -23,7 +23,7 @@
     <#local tabPanes>
         <div class="${group.tabsWidget.tabContentClass}">
             <#list group.items as item>
-                <#if group.tabsWidget.defaultActiveTabId?has_content && group.tabsWidget.defaultActiveTabId == item.id>
+                <#if group.defaultActiveTabId?has_content && group.defaultActiveTabId == item.id>
                     <div id="${item.id}_tabPanel" class="tab-pane active"
                          role="tabpanel" aria-hidden="false" tabindex="0"
                          aria-labelledby="${item.id}_tab" data-tabwrapperfor="${item.id}" data-type="TabWrapper" >
@@ -46,7 +46,7 @@
         <!-- Nav tabs -->
         <ul id="${group.id}_tabList" class="${group.tabsWidget.tabNavClass}" role="tablist">
             <#list group.items as item>
-                <#if group.tabsWidget.defaultActiveTabId?has_content && group.tabsWidget.defaultActiveTabId == item.id>
+                <#if group.defaultActiveTabId?has_content && group.defaultActiveTabId == item.id>
                     <li data-tabfor="${item.id}" class="active" role="presentation">
                         <a id="${item.id}_tab" href="#${item.id}_tabPanel" role="tab" tabindex="0"
                            aria-controls="${item.id}_tabPanel" aria-expanded="true"

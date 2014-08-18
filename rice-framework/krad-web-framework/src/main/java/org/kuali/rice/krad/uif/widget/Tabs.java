@@ -39,9 +39,6 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 public class Tabs extends WidgetBase {
     private static final long serialVersionUID = 2L;
 
-    @ClientSideState(variableName = "activeTab")
-    private String defaultActiveTabId;
-
     private String tabContentClass;
     private String tabNavClass;
 
@@ -66,12 +63,6 @@ public class Tabs extends WidgetBase {
             throw new RuntimeException("Parent for tabs widget should be tab group, not " + parent.getClass());
         }
 
-        TabGroup tabGroup = (TabGroup) parent;
-
-        if (StringUtils.isBlank(defaultActiveTabId) && CollectionUtils.isNotEmpty(tabGroup.getItems())) {
-            defaultActiveTabId = tabGroup.getItems().get(0).getId();
-        }
-
         if (position.equals(UifConstants.Position.LEFT) || position.equals(UifConstants.Position.RIGHT)) {
             tabNavClass = tabNavClass + " col-sm-3";
             tabContentClass = tabContentClass + " col-sm-9";
@@ -84,26 +75,6 @@ public class Tabs extends WidgetBase {
         } else if (position.equals(UifConstants.Position.BOTTOM)) {
             ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_BOTTOM);
         }
-    }
-
-    /**
-     * Id for the group within the tab group that should be active (shown first), by default the first
-     * group is active
-     *
-     * @return id for the group within the tab group that should be initially active
-     */
-    @BeanTagAttribute
-    public String getDefaultActiveTabId() {
-        return defaultActiveTabId;
-    }
-
-    /**
-     * Setter for the active group id
-     *
-     * @param defaultActiveTabId
-     */
-    public void setDefaultActiveTabId(String defaultActiveTabId) {
-        this.defaultActiveTabId = defaultActiveTabId;
     }
 
     /**

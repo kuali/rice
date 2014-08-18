@@ -146,7 +146,7 @@
               <bean parent="Lab-ClientSideState-TabGroup3" p:id="Lab-ClientSideState-TabGroup3"/>
             </list>
           </property>
-          <property name="tabsWidget.defaultActiveTabId" value="Lab-ClientSideState-TabGroup2"/>
+          <property name="defaultActiveTabId" value="Lab-ClientSideState-TabGroup2"/>
         </bean>
 
         <bean parent="Uif-Disclosure-TableCollectionSection" p:headerText="Collection State">

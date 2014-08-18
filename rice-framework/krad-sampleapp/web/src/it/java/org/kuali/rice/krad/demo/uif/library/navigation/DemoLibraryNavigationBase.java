@@ -26,6 +26,7 @@ public abstract class DemoLibraryNavigationBase extends DemoLibraryBase {
     protected void assertNavigationView(String linkText, String supportTitleText) throws Exception {
         waitAndClickByLinkText(linkText);
         waitForElementPresentByClassName("uif-viewHeader-supportTitle", "DemoLibraryNavigationBase");
+        waitForProgressLoading();
         assertTrue("DemoLibraryNavigationBase", getTextByClassName("uif-viewHeader-supportTitle").contains(supportTitleText));
     }
 

@@ -21,7 +21,7 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabsDialogWithExplainationReadOnlyAft extends WebDriverLegacyITBase {
+public class LabsDialogWithExplanationReadOnlyAft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/labs?viewId=Lab-DialogReadOnly
@@ -34,27 +34,32 @@ public class LabsDialogWithExplainationReadOnlyAft extends WebDriverLegacyITBase
     }
 
     @Override
+    public String getUserName() {
+        return "guest";
+    }
+
+    @Override
     protected void navigate() throws Exception {
     	waitAndClickByLinkText("Dialog with Explanation in ReadOnly mode");
     }
 
-    protected void testDemoDialogWithExplainationReadOnly() throws InterruptedException {
+    protected void testDemoDialogWithExplanationReadOnly() throws InterruptedException {
     	waitAndClickByXpath("//button[@data-confirmdialogid='Lab-DialogEx']");
     	waitForElementPresentByXpath("//div[@class='uif-dialogExplanation uif-hasError']/textarea");
     	waitAndClickButtonByExactText("Cancel");
     	waitAndClickByXpath("//button[@data-confirmdialogid='Lab-DialogExReadOnly']");
-    	//Read Only Explaination is also having textarea. This functionality is not working properly.
+    	//Read Only Explanation is also having textarea. This functionality is not working properly.
     }
 
     @Test
-    public void testDemoDialogWithExplainationReadOnlyBookmark() throws Exception {
-    	testDemoDialogWithExplainationReadOnly();
+    public void testDemoDialogWithExplanationReadOnlyBookmark() throws Exception {
+    	testDemoDialogWithExplanationReadOnly();
         passed();
     }
 
     @Test
-    public void testDemoDialogWithExplainationReadOnlyNav() throws Exception {
-    	testDemoDialogWithExplainationReadOnly();
+    public void testDemoDialogWithExplanationReadOnlyNav() throws Exception {
+    	testDemoDialogWithExplanationReadOnly();
         passed();
     }
 }

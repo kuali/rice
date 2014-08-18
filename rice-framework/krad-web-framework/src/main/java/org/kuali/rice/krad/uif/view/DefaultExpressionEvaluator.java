@@ -230,7 +230,6 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
      * @return the cleaned up expressiom
      */
     private String cleanUpExpression(String exp) {
-
         exp = exp.trim();
         if (exp.startsWith("@{")) {
             exp = StringUtils.removeStart(exp, "@{");
@@ -262,7 +261,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
      *
      * @param exp the expression to evaluate known server variables and methods
      * @param context the expression evaluation context
-     * @return map of key that are the original expression/variable, and the replacement value
+     * @return map of keys that are the original expression/variable, and the replacement value
      */
     private Map<String, String> evaluateServerSideVariables(String exp, Map<String, Object> context) {
         Map<String, String> serverEvaluations = new HashMap<String, String>();

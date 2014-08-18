@@ -1674,7 +1674,12 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
                 jiraAwareFail(TIMEOUT_MESSAGE + " still Loading after " + timeout + " seconds.");
             }
 
-            if (!isElementPresentByXpath("//img[@alt='" + altText + "']") || !isVisible(By.xpath("//img[@alt='" + altText + "']"))) {
+            try {
+                if (!isElementPresentByXpath("//img[@alt='" + altText + "']") || !isVisible(By.xpath("//img[@alt='" + altText + "']"))) {
+                    break;
+                }
+            } catch (Exception e) {
+                // assume timing with img going away and continue with test
                 break;
             }
 

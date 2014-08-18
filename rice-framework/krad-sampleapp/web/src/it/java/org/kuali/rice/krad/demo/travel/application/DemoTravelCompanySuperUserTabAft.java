@@ -118,7 +118,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
 
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        waitForProgressLoading();
+        waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 8);
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }
 
@@ -127,6 +127,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Super User Actions");
         waitAndTypeByName("document.superUserAnnotation","Reason for approval");
         waitAndClickButtonByText(APPROVE);
+        waitForProgressLoading();
         waitForTextPresent("was superuser approved.");
         reloadAndCheckDocStatus("FINAL");
     }

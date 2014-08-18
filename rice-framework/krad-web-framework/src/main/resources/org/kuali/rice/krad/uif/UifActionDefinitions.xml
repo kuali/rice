@@ -69,7 +69,7 @@
 
   <bean id="Uif-SaveLineAction" parent="Uif-SecondaryActionButton-Mini" p:methodToCall="saveLine" p:actionLabel="Save"
         p:render="@{#collectionGroup.renderSaveLineActions}" p:disabled="@{!isAddedCollectionItem(#line)}"
-        p:performClientSideValidation="true" p:id="@{#collectionGroup.id}_save"
+        p:performClientSideValidation="true" p:id="@{#collectionGroup.id}_save" p:loadingMessageText="Saving Line..."
         p:onClickScript="writeCurrentPageToSession(this);">
     <property name="cssClasses">
       <list>

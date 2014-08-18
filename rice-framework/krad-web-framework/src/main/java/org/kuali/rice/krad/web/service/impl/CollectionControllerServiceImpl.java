@@ -19,12 +19,14 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.service.CollectionControllerService;
 import org.kuali.rice.krad.web.service.ModelAndViewService;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * Default implementation of the collection controller service.
@@ -81,8 +83,8 @@ public class CollectionControllerServiceImpl implements CollectionControllerServ
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                ViewLifecycle.getHelper().processCollectionSaveLine(form, parameters.selectedCollectionId,
-                        parameters.selectedCollectionPath, parameters.selectedLineIndex);
+                final ViewHelperService viewHelperService = ViewLifecycle.getHelper();
+                viewHelperService.processCollectionSaveLine(form, parameters);
             }
         };
 
@@ -155,10 +157,12 @@ public class CollectionControllerServiceImpl implements CollectionControllerServ
     /**
      * Helper class for maintaining collection action parameters for a request.
      */
-    protected static class CollectionActionParameters {
-        private String selectedCollectionPath;
-        private String selectedCollectionId;
-        private int selectedLineIndex;
+    public static class CollectionActionParameters {
+
+        private final Map<String, String[]> parameters;
+        private final String selectedCollectionPath;
+        private final String selectedCollectionId;
+        private final int selectedLineIndex;
 
         /**
          * Constructs a new CollectionActionParameters pulling the action parameter values from the give form.
@@ -187,6 +191,25 @@ public class CollectionControllerServiceImpl implements CollectionControllerServ
             if (requireIndexParam && (selectedLineIndex == -1)) {
                 throw new RuntimeException("Selected line index was not set for collection action");
             }
+
+            HttpServletRequest formRequest = form.getRequest();
+            parameters = formRequest.getParameterMap();
+        }
+
+        public Map<String, String[]> getParameters() {
+            return parameters;
+        }
+
+        public String getSelectedCollectionPath() {
+            return selectedCollectionPath;
+        }
+
+        public String getSelectedCollectionId() {
+            return selectedCollectionId;
+        }
+
+        public int getSelectedLineIndex() {
+            return selectedLineIndex;
         }
     }
 }

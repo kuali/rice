@@ -24,9 +24,9 @@ import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Inquiry;
+import org.kuali.rice.krad.web.service.impl.CollectionControllerServiceImpl.CollectionActionParameters;
 
 /**
  * Provides customization methods at various points of the view lifecycle.
@@ -211,11 +211,9 @@ public interface ViewHelperService {
      * default but creates hook for client applications to add additional logic like persisting data.
      *
      * @param model Top level object containing the view data including the collection and new line
-     * @param collectionId the id of the collection being added to
-     * @param collectionPath the path to the collection being modified
-     * @param selectedLineIndex The index within the collection of the line to save.
+     * @param parameters the parameters for save line request
      */
-    void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex);
+    void processCollectionSaveLine(ViewModel model, CollectionActionParameters parameters);
 
     /**
      * Invoked when the delete line action is chosen for a collection. The

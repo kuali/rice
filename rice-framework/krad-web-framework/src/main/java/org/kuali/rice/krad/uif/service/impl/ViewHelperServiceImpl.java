@@ -17,6 +17,7 @@ package org.kuali.rice.krad.uif.service.impl;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,11 +56,11 @@ import org.kuali.rice.krad.uif.component.PropertyReplacer;
 import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
-import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.layout.LayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.util.BooleanMap;
@@ -82,6 +83,7 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.service.impl.CollectionControllerServiceImpl.CollectionActionParameters;
 import org.springframework.beans.PropertyAccessorUtils;
 
 import com.google.common.collect.Sets;
@@ -273,10 +275,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param collectionId the id of the collection being added to
      * @param collectionPath the path to the collection being modified
      */
-    public void processAndAddLineObject(ViewModel viewModel, Object newLine, String collectionId,
-            String collectionPath) {
-        String addLinePlacement = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId,
-                UifConstants.PostMetadata.ADD_LINE_PLACEMENT);
+    public void processAndAddLineObject(ViewModel viewModel, Object newLine, String collectionId, String collectionPath) {
+        String addLinePlacement = (String) viewModel.getViewPostMetadata().getComponentPostData(collectionId, UifConstants.PostMetadata.ADD_LINE_PLACEMENT);
 
         // get the collection instance for adding the new line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
@@ -302,7 +302,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             processAfterAddLine(viewModel, newLine, collectionId, collectionPath, isValidLine);
         }
     }
-
     /**
      * {@inheritDoc}
      */
@@ -341,29 +340,74 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * {@inheritDoc}
      */
     @Override
-    public void processCollectionSaveLine(ViewModel model, String collectionId, String collectionPath,
-            int selectedLineIndex) {
-        // get the collection instance for adding the new line
-        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
-        if (collection == null) {
-            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
-        }
+    public void processCollectionSaveLine(ViewModel model, CollectionActionParameters parameterData) {
+        String collectionId = parameterData.getSelectedCollectionId();
+        String collectionPath = parameterData.getSelectedCollectionPath();
+        int selectedLineIndex = parameterData.getSelectedLineIndex();
 
-        // TODO: look into other ways of identifying a line so we can deal with
-        // unordered collections
-        if (collection instanceof List) {
-            Object saveLine = ((List<Object>) collection).get(selectedLineIndex);
+        Map<String, String[]> parameters = parameterData.getParameters();
+        final ViewPostMetadata viewPostMetadata = model.getViewPostMetadata();
+        BindingInfo addLineBindingInfo = (BindingInfo) viewPostMetadata.getComponentPostData(collectionId, UifConstants.PostMetadata.BINDING_INFO);
+        List<Object> collection = ObjectPropertyUtils.getPropertyValue(model, addLineBindingInfo.getBindingPath());
 
-            processBeforeSaveLine(model, saveLine, collectionId, collectionPath);
+        Object saveLine = extractNewValuesAndAssign(collectionPath, selectedLineIndex, parameters, collection);
 
-            ((UifFormBase) model).getAddedCollectionItems().remove(saveLine);
-
+        processBeforeSaveLine(model, saveLine, collectionId, collectionPath);
+        boolean isValidLine = performAddLineValidation(model, saveLine, collectionId, collectionPath);
+        if (isValidLine) {
+            collection.set(selectedLineIndex, saveLine);
+            KRADServiceLocatorWeb.getLegacyDataAdapter().refreshAllNonUpdatingReferences(saveLine);
             processAfterSaveLine(model, saveLine, collectionId, collectionPath);
-
-        } else {
-            logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
         }
+    }
 
+    /**
+     * Gets the current object from the collection and assigns the new values to it.
+     *
+     * @param collectionPath the path to the collection being modified
+     * @param selectedLineIndex The index within the collection of the line to save.
+     * @param parameters the path to the collection being modified
+     * @param collection the collection of the lines of data
+     * @return true if the action is allowed and the line should be removed, false if the line should not be removed
+     */
+    private Object extractNewValuesAndAssign(String collectionPath, int selectedLineIndex, Map<String, String[]> parameters, List<Object> collection) {
+        String[] fieldList = new String[]{"field1", "field2", "field3", "field4", "field5", "field6"};
+        Object saveLine = collection.get(selectedLineIndex);
+        for(String field : fieldList){
+            String index = String.format("%s[%s].%s", collectionPath, selectedLineIndex, field);
+            String fieldValue = extractSingleValue(parameters.get(index));
+            setValue(saveLine, field, fieldValue);
+        }
+        return saveLine;
+    }
+
+    /**
+     * Set the private field of an object to a particular value using reflection
+     *
+     * @param object object the object to set
+     * @param fieldName the name of the field in the object to set
+     * @param value the value of the field in the object to set
+     */
+    private void setValue(Object object, String fieldName, Object value){
+        try {
+            Class<?> clazz = object.getClass();
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch(Exception e){
+            LOG.error("Unable to access private variable "+fieldName+" in object " + object.getClass()+". " + e.getMessage());
+        }
+    }
+
+    /**
+     * Extract a single value form an array of strings
+     *
+     * @param data the array of strings
+     */
+    private String extractSingleValue(String[] data){
+        if (data == null) return null;
+        if (data.length < 1) return null;
+        return data[0];
     }
 
     /**

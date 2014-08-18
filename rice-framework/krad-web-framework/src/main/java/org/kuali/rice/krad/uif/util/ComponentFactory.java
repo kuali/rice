@@ -147,6 +147,7 @@ public class ComponentFactory {
     public static final String NAVIGATION_GROUP = "Uif-NavigationGroupBase";
     public static final String TREE_GROUP = "Uif-TreeSection";
     public static final String LINK_GROUP = "Uif-LinkGroup";
+    public static final String DIALOG_GROUP = "Uif-DialogGroup";
     public static final String COLLECTION_GROUP = "Uif-StackedCollectionSection";
     public static final String COLLECTION_WITH_DISCLOSURE_GROUP = "Uif-Disclosure-StackedCollectionSection";
     public static final String COLLECTION_GROUP_TABLE_LAYOUT = "Uif-TableCollectionSection";
@@ -171,6 +172,9 @@ public class ComponentFactory {
     public static final String ADD_BLANK_LINE_ACTION = "Uif-AddBlankLineAction";
     public static final String ADD_WITH_DIALOG_ACTION = "Uif-AddWithDialogAction";
     public static final String ADD_LINE_DIALOG = "Uif-AddLineDialog";
+    public static final String EDIT_LINE_DIALOG = "Uif-EditLineDialog";
+    public static final String EDIT_LINE_IN_DIALOG_ACTION = "Uif-EditLineInDialogAction";
+    public static final String EDIT_LINE_IN_DIALOG_SAVE_ACTION = "Uif-EditLineInDialogSaveAction";
 
     public static final String SESSION_TIMEOUT_WARNING_DIALOG = "Uif-SessionTimeoutWarning-DialogGroup";
     public static final String SESSION_TIMEOUT_DIALOG = "Uif-SessionTimeout-DialogGroup";

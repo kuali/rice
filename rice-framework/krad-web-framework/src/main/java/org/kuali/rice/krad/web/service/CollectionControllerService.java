@@ -42,6 +42,14 @@ public interface CollectionControllerService {
     ModelAndView addBlankLine(UifFormBase form);
 
     /**
+     * Invoked by the edit line action to edit the edit line instance to the model collection.
+     *
+     * @param form form instance containing the model data
+     * @return ModelAndView instance for rendering the view
+     */
+    ModelAndView editLine(UifFormBase form);
+
+    /**
      * Invoked by the save line action to save an item within the model collection.
      *
      * @param form form instance containing the model data

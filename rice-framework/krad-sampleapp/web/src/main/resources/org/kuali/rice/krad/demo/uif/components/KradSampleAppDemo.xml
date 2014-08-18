@@ -571,6 +571,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionAddLineView"/>
         <bean parent="Uif-Link" p:linkText="Delete Line"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionDeleteLineView"/>
+        <bean parent="Uif-Link" p:linkText="Edit Line"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-CollectionEditLineView"/>
         <bean parent="Uif-Link" p:linkText="Column Calculations"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableLayoutTotalingView"/>
         <bean parent="Uif-Link" p:linkText="Inactive Filter"

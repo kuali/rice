@@ -132,6 +132,7 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionAddLineResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionDeleteLineResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionSelectLineResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionEditLineResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCollectionActionPlacementResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoRichMessagesResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoDisableResources</value>

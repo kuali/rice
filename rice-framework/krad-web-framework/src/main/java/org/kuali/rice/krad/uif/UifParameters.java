@@ -66,6 +66,7 @@ public class UifParameters {
 	public static final String SELECTED_COLLECTION_PATH = "selectedCollectionPath";
     public static final String SELECTED_COLLECTION_ID = "selectedCollectionId";
 	public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
+    public static final String LINE_INDEX = "lineIndex";
     public static final String SELECTED_LINE_VALUES = "selectedLineValues";
     public static final String MULIT_VALUE_RETURN_FILEDS = "multiValueReturnFields";
     public static final String SESSION_ID = "sessionId";

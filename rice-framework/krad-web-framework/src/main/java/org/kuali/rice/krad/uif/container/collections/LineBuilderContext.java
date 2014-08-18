@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.krad.uif.container.collections;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.view.ViewModel;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,6 +49,7 @@ public class LineBuilderContext implements Serializable {
     private List<? extends Component> lineActions;
     private List<Field> lineFields;
     private List<FieldGroup> subCollectionFields;
+    private List<DialogGroup> lineDialogs;
 
     /**
      * Empty constructor.
@@ -76,6 +78,31 @@ public class LineBuilderContext implements Serializable {
         this.model = model;
         this.collectionGroup = collectionGroup;
         this.lineActions = lineActions;
+        this.lineDialogs = Collections.emptyList();
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param lineIndex index of line
+     * @param currentLine object containing the line data
+     * @param bindingPath path to the line in the model
+     * @param bindToForm indicates if the line fields bind to the form (not the default object path)
+     * @param model object containing the views data
+     * @param collectionGroup collection group instance the line is being built for
+     * @param lineActions list of components for the lines action column
+     * @param lineDialogs list of dialogs configured on the line
+     */
+    public LineBuilderContext(int lineIndex, Object currentLine, String bindingPath, boolean bindToForm, ViewModel model,
+            CollectionGroup collectionGroup, List<? extends Component> lineActions, List<DialogGroup> lineDialogs) {
+        this.lineIndex = lineIndex;
+        this.currentLine = currentLine;
+        this.bindingPath = bindingPath;
+        this.bindToForm = bindToForm;
+        this.model = model;
+        this.collectionGroup = collectionGroup;
+        this.lineActions = lineActions;
+        this.lineDialogs = lineDialogs;
     }
 
     /**
@@ -260,5 +287,21 @@ public class LineBuilderContext implements Serializable {
      */
     public void setSubCollectionFields(List<FieldGroup> subCollectionFields) {
         this.subCollectionFields = subCollectionFields;
+    }
+
+    /**
+     * List of dialog groups that make up the lines dialogs.
+     *
+     * @return list of field instances.
+     */
+    public List<DialogGroup> getLineDialogs() {
+        return lineDialogs;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.collections.LineBuilderContext#getDialogGroups()
+     */
+    public void setLineDialogs(List<DialogGroup> dialogGroups) {
+        this.lineDialogs = dialogGroups;
     }
 }

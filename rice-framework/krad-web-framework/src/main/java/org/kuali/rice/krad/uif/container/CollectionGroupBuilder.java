@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -35,6 +28,7 @@ import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
+import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ContextUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -45,6 +39,13 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Builds out the {@link org.kuali.rice.krad.uif.field.Field} instances for a collection group with a
@@ -190,7 +191,20 @@ public class CollectionGroupBuilder implements Serializable {
             String bindingPathPrefix =
                     collectionGroup.getBindingInfo().getBindingPrefixForNested() + "[" + indexedElement.index + "]";
 
-            List<? extends Component> lineActions = initializeLineActions(collectionGroup.getLineActions(), view, model,
+            // initialize the line dialogs, like edit line dialog
+            initializeLineDialogs(collectionGroup, indexedElement.index, currentLine);
+
+            List<Component> actionComponents = new ArrayList<>(ComponentUtils.copy(collectionGroup.getLineActions()));
+
+            // if it is edit with dialog, then add the edit line action to the group's line actions
+            if(collectionGroup.isEditWithDialog()) {
+                Action editLineActionForDialog = setupEditLineActionForDialog(collectionGroup,
+                        UifConstants.IdSuffixes.LINE + Integer.toString(indexedElement.index), actionComponents.size());
+                actionComponents.add(editLineActionForDialog);
+            }
+
+            // initialize the line actions
+            List<? extends Component> lineActions = initializeLineActions(actionComponents, view, model,
                     collectionGroup, currentLine, indexedElement.index);
 
             LineBuilderContext lineBuilderContext = new LineBuilderContext(indexedElement.index, currentLine,
@@ -198,6 +212,66 @@ public class CollectionGroupBuilder implements Serializable {
 
             getCollectionGroupLineBuilder(lineBuilderContext).buildLine();
         }
+    }
+
+    /**
+     * Helper method to initialize the edit line dialog and add it to the line dialogs for the group.
+     *
+     * @param collectionGroup the collection group to initialize the line dialogs for
+     * @param lineIndex the current line index
+     * @param currentLine the data object bound to the current line
+     */
+    private void initializeLineDialogs(CollectionGroup collectionGroup, int lineIndex, Object currentLine) {
+
+        if(!collectionGroup.isEditWithDialog()) {
+            return;
+        }
+
+        // if this is an edit line, set up the edit line dialog and add it to the list of dialogs
+        DialogGroup dialogGroup = setupEditLineDialog(collectionGroup, lineIndex, currentLine);
+
+        // add the edit line dialog to the list of line dialogs for the group
+        if(collectionGroup.getLineDialogs() == null || collectionGroup.getLineDialogs().isEmpty()) {
+            collectionGroup.setLineDialogs((new ArrayList<DialogGroup>()));
+        }
+        collectionGroup.getLineDialogs().add(dialogGroup);
+    }
+
+    /**
+     * Helper method to create and setup the edit line dialog for the indexed line.
+     *
+     * @param group the collection group to create line dialogs for
+     * @param lineIndex the current line index
+     * @param currentLine the data object bound to the current line
+     * @return
+     */
+    private DialogGroup setupEditLineDialog(CollectionGroup group, int lineIndex, Object currentLine) {
+        String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
+
+        // use the edit line dialog prototype to initialilze the edit line dialog
+        DialogGroup editLineDialog = ComponentUtils.copy(group.getEditLineDialogPrototype());
+        editLineDialog.setId(ComponentFactory.EDIT_LINE_DIALOG + "_" + group.getId() + lineSuffix);
+
+        // use the edit line dialog's save action prototype to initialilze the edit line dialog's save action
+        Component editLineInDialogSaveAction = ComponentUtils.copy(group.getEditInDialogSaveActionPrototype());
+        editLineInDialogSaveAction.setId(editLineDialog.getId() + "_" +
+                    ComponentFactory.EDIT_LINE_IN_DIALOG_SAVE_ACTION + Integer.toString(lineIndex));
+
+        // add the created save action to the dialog's footer items
+        List<Component> actionComponents = ViewLifecycleUtils.getElementsOfTypeDeep(
+                editLineDialog.getFooter().getItems(), Component.class);
+        actionComponents.add(0, editLineInDialogSaveAction); // add it as the first button
+        editLineDialog.getFooter().setItems(actionComponents);
+
+        // initialize the dialog actions
+        List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionComponents, Action.class);
+        group.getCollectionGroupBuilder().initializeActions(actions, group, lineIndex);
+        editLineDialog.getFooter().setItems(actionComponents);
+
+        // update the context of the dialog for the current line
+        ContextUtils.updateContextForLine(editLineDialog, group, currentLine, lineIndex, lineSuffix);
+
+        return editLineDialog;
     }
 
     /**
@@ -282,7 +356,7 @@ public class CollectionGroupBuilder implements Serializable {
      */
     protected List<? extends Component> initializeLineActions(List<? extends Component> lineActions, View view,
             Object model, CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
-        List<? extends Component> actionComponents = ComponentUtils.copy(lineActions);
+        List<Component> actionComponents = new ArrayList<Component>(ComponentUtils.copy(lineActions));
 
         for (Component actionComponent : actionComponents) {
             view.getViewHelperService().setElementContext(actionComponent, collectionGroup);
@@ -303,6 +377,28 @@ public class CollectionGroupBuilder implements Serializable {
         initializeActions(actions, collectionGroup, lineIndex);
 
         return actionComponents;
+    }
+
+    /**
+     * Helper method to setup the edit line action to show the dialog
+     *
+     * @param collectionGroup the collection group the line belongs to
+     * @param lineSuffix the line index of the current line
+     * @param actionIndex the action index used in the id
+     * @return the line action for edit line in dialog
+     */
+    private Action setupEditLineActionForDialog(CollectionGroup collectionGroup, String lineSuffix, int actionIndex) {
+
+        Action action = ComponentUtils.copy(collectionGroup.getEditWithDialogActionPrototype());
+
+        action.setId(ComponentFactory.EDIT_LINE_IN_DIALOG_ACTION + "_" + collectionGroup.getId() +
+                    lineSuffix + UifConstants.IdSuffixes.ACTION + actionIndex);
+
+        String actionScript = UifConstants.JsFunctions.SHOW_DIALOG + "('" + ComponentFactory.EDIT_LINE_DIALOG +
+                "_" + collectionGroup.getId() + lineSuffix + "');";
+        action.setActionScript(actionScript);
+
+        return action;
     }
 
     /**
@@ -329,12 +425,17 @@ public class CollectionGroupBuilder implements Serializable {
                         UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.SELECTED_LINE_INDEX + "']",
                         UifConstants.EL_PLACEHOLDER_PREFIX + "'" + Integer.toString(lineIndex) +
                                 "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
+                action.getPropertyExpressions().put(
+                        UifPropertyPaths.ACTION_PARAMETERS + "['" + UifParameters.LINE_INDEX + "']",
+                        UifConstants.EL_PLACEHOLDER_PREFIX + "'" + Integer.toString(lineIndex) +
+                                "'" + UifConstants.EL_PLACEHOLDER_SUFFIX);
             } else {
                 action.addActionParameter(UifParameters.SELECTED_COLLECTION_PATH,
                         collectionGroup.getBindingInfo().getBindingPath());
                 action.addActionParameter(UifParameters.SELECTED_COLLECTION_ID,
                                         collectionGroup.getId());
                 action.addActionParameter(UifParameters.SELECTED_LINE_INDEX, Integer.toString(lineIndex));
+                action.addActionParameter(UifParameters.LINE_INDEX, Integer.toString(lineIndex));
             }
 
             if (StringUtils.isBlank(action.getRefreshId()) && StringUtils.isBlank(action.getRefreshPropertyName())) {

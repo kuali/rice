@@ -77,6 +77,25 @@ public class CollectionControllerServiceImpl implements CollectionControllerServ
      * {@inheritDoc}
      */
     @Override
+    public ModelAndView editLine(final UifFormBase form) {
+        final CollectionActionParameters parameters = new CollectionActionParameters(form, true);
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final ViewHelperService viewHelperService = ViewLifecycle.getHelper();
+                viewHelperService.processCollectionEditLine(form, parameters.selectedCollectionId,
+                        parameters.selectedCollectionPath, parameters.selectedLineIndex);
+            }
+        };
+
+        return performHelperLifecycle(form, runnable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ModelAndView saveLine(final UifFormBase form) {
         final CollectionActionParameters parameters = new CollectionActionParameters(form, true);
 

@@ -58,6 +58,27 @@
     </property>
   </bean>
 
+  <!-- Edit button for the collection lines -->
+  <bean id="Uif-EditLineInDialogAction" parent="EditLineInDialogAction-parentBean"
+        p:render="@{#collectionGroup.editWithDialog}"/>
+        <!--p:preSubmitCall="validateEditLine(@{#collectionGroup.id});"/>-->
+        <!--p:actionScript="showDialog('Uif-EditLineDialog_@{#collectionGroup.id}@{#lineSuffix}');"-->
+  <bean id="EditLineInDialogAction-parentBean" abstract="true" parent="Uif-SecondaryActionButton-Mini" p:actionLabel="Edit in Dialog">
+    <property name="actionParameters">
+      <map>
+        <entry key="lineIndex" value="@{#index}"/>
+      </map>
+    </property>
+  </bean>
+
+  <!-- Edit button for the edit line dialog -->
+  <bean id="Uif-EditLineInDialogSaveAction" parent="Uif-SecondaryActionButton" p:actionLabel="Save Changes"
+        p:methodToCall="editLine" p:actionEvent="editLine" p:loadingMessageText="Editing Line..."
+        p:focusOnIdAfterSubmit="LINE_FIRST"
+        p:defaultEnterKeyAction="true" p:dialogDismissOption="REQUEST"
+        p:onClickScript="writeCurrentPageToSession(this);" p:fieldsToSend="#Uif-EditLineDialog_@{#collectionGroup.id}_line@{#index}">
+  </bean>
+
   <bean id="Uif-DeleteLineAction" parent="Uif-SecondaryActionButton-Mini" p:methodToCall="deleteLine"
         p:actionLabel="Delete"
         p:onMouseOverScript="deleteLineMouseOver(this, 'uif-collectionDeleteHighlight');"

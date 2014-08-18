@@ -129,6 +129,28 @@ public class KradSampleAppController extends UifControllerBase {
     }
 
     /**
+     * Add a message and refresh the group
+     *
+     * @param form
+     * @param result
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=customEditLine")
+    public ModelAndView customEditLine(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+        KradSampleAppForm kradSampleAppForm = (KradSampleAppForm) form;
+        List<UITestObject> testObjects = kradSampleAppForm.getCollection1();
+        int index = 1;
+        for(UITestObject testObject : testObjects) {
+            testObject.setField1("Custom Edit Line " + Integer.toString(index));
+            index++;
+        }
+        return getModelAndView(form);
+    }
+
+    /**
      * Refreshes the group
      *
      * @param form

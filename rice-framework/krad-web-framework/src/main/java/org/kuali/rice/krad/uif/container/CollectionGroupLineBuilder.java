@@ -28,6 +28,7 @@ import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -49,6 +50,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +64,7 @@ public class CollectionGroupLineBuilder implements Serializable {
     private static final long serialVersionUID = 981187437246864378L;
 
     private LineBuilderContext lineBuilderContext;
+    private List<Field> unauthorizedFields = new ArrayList<Field>();
 
     public CollectionGroupLineBuilder(LineBuilderContext lineBuilderContext) {
         this.lineBuilderContext = lineBuilderContext;
@@ -81,8 +84,27 @@ public class CollectionGroupLineBuilder implements Serializable {
         boolean hasSubCollections = (lineBuilderContext.getSubCollectionFields() != null) &&
                 (!lineBuilderContext.getSubCollectionFields().isEmpty());
 
-        // invoke layout manager to build the complete line
+        // invoke layout manager and setup edit line dialog to build the complete line
         if (hasLineFields || hasSubCollections) {
+            // setup the edit dialog if its not an add line
+            if(!lineBuilderContext.isAddLine()) {
+                setupEditLineDetails();
+            }
+
+            // add the lineDialogs to the lineActions
+            List<Component> actions = new ArrayList<Component>();
+            actions.addAll(lineBuilderContext.getLineActions());
+            List<DialogGroup> dialogGroups = lineBuilderContext.getCollectionGroup().getLineDialogs();
+            if (Boolean.TRUE.equals(lineBuilderContext.getCollectionGroup().getReadOnly())) {
+                for (DialogGroup group : dialogGroups) {
+                    group.setReadOnly(true);
+                }
+            }
+            actions.addAll(dialogGroups);
+            lineBuilderContext.setLineActions(actions);
+            lineBuilderContext.getCollectionGroup().getLineDialogs().clear();
+
+            // invoke the layout manager
             lineBuilderContext.getLayoutManager().buildLine(lineBuilderContext);
         }
 
@@ -185,7 +207,7 @@ public class CollectionGroupLineBuilder implements Serializable {
             if (item instanceof RemoteFieldsHolder) {
                 List<InputField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(group);
                 processedItems.addAll(translatedFields);
-            } else {
+            } else if(item instanceof Field) {
                 processedItems.add((Field) item);
             }
         }
@@ -395,7 +417,8 @@ public class CollectionGroupLineBuilder implements Serializable {
         }
 
         if (canEditLine && !lineBuilderContext.isAddLine()) {
-            canEditLine = checkEditLineAuthorizationAndPresentationLogic();
+            canEditLine = checkEditLineAuthorizationAndPresentationLogic(lineBuilderContext.getCollectionGroup(),
+                    lineBuilderContext.getModel(), lineBuilderContext.getCurrentLine());
         }
 
         if (!canEditLine) {
@@ -411,19 +434,18 @@ public class CollectionGroupLineBuilder implements Serializable {
      *
      * @return true if the user can edit the line, false if not
      */
-    protected boolean checkEditLineAuthorizationAndPresentationLogic() {
+    protected boolean checkEditLineAuthorizationAndPresentationLogic(CollectionGroup collectionGroup,
+            ViewModel model, Object currentLine) {
         ViewPresentationController presentationController = ViewLifecycle.getView().getPresentationController();
         ViewAuthorizer authorizer = ViewLifecycle.getView().getAuthorizer();
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
-        CollectionGroup collectionGroup = lineBuilderContext.getCollectionGroup();
-
-        boolean canEditLine = authorizer.canEditLine(ViewLifecycle.getView(), lineBuilderContext.getModel(),
-                collectionGroup, collectionGroup.getPropertyName(), lineBuilderContext.getCurrentLine(), user);
+        boolean canEditLine = authorizer.canEditLine(ViewLifecycle.getView(), model,
+                collectionGroup, collectionGroup.getPropertyName(), currentLine, user);
         if (canEditLine) {
-            canEditLine = presentationController.canEditLine(ViewLifecycle.getView(), lineBuilderContext.getModel(),
-                    collectionGroup, collectionGroup.getPropertyName(), lineBuilderContext.getCurrentLine());
+            canEditLine = presentationController.canEditLine(ViewLifecycle.getView(), model,
+                    collectionGroup, collectionGroup.getPropertyName(), currentLine);
         }
 
         return canEditLine;
@@ -675,6 +697,157 @@ public class CollectionGroupLineBuilder implements Serializable {
 
         lineBuilderContext.getCollectionGroup().addDataAttribute(UifConstants.DataAttributes.ADD_CONTROLS,
                 selector.replaceFirst(",", ""));
+    }
+
+    /**
+     * Setup edit line dialog group with the line fields
+     *
+     * <p>The items for a dialog are created from line fields and added if not provided by the user, but
+     * if they are then each item is processed.</p>
+     */
+    protected void setupEditLineDetails() {
+        CollectionGroup group = lineBuilderContext.getCollectionGroup();
+
+        if(!group.isEditWithDialog()) {
+            return;
+        }
+
+        for(DialogGroup lineDialog : group.getLineDialogs()) {
+            String dialogId = lineDialog.getId();
+
+            // if there are no custom user items or if there are no items, then use the line fields as items
+            if (lineDialog.getItems() == null || lineDialog.getItems().isEmpty() || !group.isCustomEditLineDialog()) {
+                List<Field> lineFields = lineBuilderContext.getLineFields();
+
+                // process and set items
+                lineDialog.setItems(processDialogFieldsFromLineFields(lineFields, dialogId));
+
+                // process the sub-collection items
+                List<Component> items = new ArrayList<Component>(lineDialog.getItems());
+                items.addAll(processDialogSubFieldsFromLineSubFields(lineDialog));
+                lineDialog.setItems(items);
+
+            } else { // user provided dialog items
+                List<Field> dialogFields = ViewLifecycleUtils.getElementsOfTypeDeep(lineDialog.getItems(), Field.class);
+
+                // for every user provided dialog item, find its corresponding line field and set the binding info
+                for(Field dialogField : dialogFields) {
+                    if(dialogField instanceof DataField) {
+                        DataField dataField = (DataField) dialogField;
+                        DataField lineField = findItemInLineFields(dataField);
+
+                        if(lineField != null) {
+                            dataField.setBindingInfo(lineField.getBindingInfo());
+
+                            // set the line field to read-only
+                            lineField.setReadOnly(true);
+                        } else {
+                            // update the binding info on the custom field
+                            dataField.getBindingInfo().setBindByNamePrefix(lineBuilderContext.getBindingPath());
+                            dataField.getBindingInfo().setCollectionPath(group.getBindingInfo().getBindingName());
+                        }
+                    }
+                }
+            }
+
+            // check the edit line authorization of the fields
+            List<Field> fields = ViewLifecycleUtils.getElementsOfTypeDeep(lineDialog.getItems(), Field.class);
+            boolean canEditLine = checkEditLineAuthorization(fields);
+
+            // if the line is not editable then remove the edit line dialog line action
+            if(!canEditLine) {
+                List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(lineBuilderContext.getLineActions(),
+                        Action.class);
+                Iterator<Action> actionsIterator = actions.iterator();
+                while (actionsIterator.hasNext()) {
+                    Action action = actionsIterator.next();
+                    if (action.getId().startsWith(ComponentFactory.EDIT_LINE_IN_DIALOG_ACTION + "_" +
+                        group.getId())) {
+                        actionsIterator.remove();
+                        break;
+                    }
+                }
+                lineBuilderContext.setLineActions(actions);
+            }
+        }
+    }
+
+    /**
+     * Helper method to build sub-collection fields for the given dialog using the line's sub-collection fields
+     *
+     * @param lineDialog the line dialog to build the sub-collection for
+     * @return the list of created sub-collection fields
+     */
+    private List<FieldGroup> processDialogSubFieldsFromLineSubFields(DialogGroup lineDialog) {
+        // process the subcollections
+        List<FieldGroup> subCollectionFields = lineBuilderContext.getSubCollectionFields();
+        List<FieldGroup> newSubCollectionFields = new ArrayList<FieldGroup>();
+        int fieldIndex = lineDialog.getItems().size();
+        int subIndex = 0;
+
+        for(FieldGroup subCollectionFieldGroup : subCollectionFields) {
+            CollectionGroup subCollectionGroup = (CollectionGroup) subCollectionFieldGroup.getGroup();
+
+            // make a copy of the sub-group for the dialog
+            FieldGroup newSubCollectionFieldGroup = ComponentUtils.copy(subCollectionFieldGroup);
+            newSubCollectionFieldGroup.setId(lineDialog.getId() +
+                    UifConstants.IdSuffixes.FIELDSET + Integer.toString(fieldIndex));
+            CollectionGroup newSubCollectionGroup = ComponentUtils.copy(subCollectionGroup);
+            newSubCollectionGroup.setId(newSubCollectionFieldGroup.getId() + UifConstants.IdSuffixes.SUB +
+                    Integer.toString(subIndex));
+            newSubCollectionFieldGroup.setGroup(newSubCollectionGroup);
+            newSubCollectionFields.add(newSubCollectionFieldGroup);
+            fieldIndex++;
+            subIndex++;
+        }
+
+        return newSubCollectionFields;
+    }
+
+    /**
+     * Helper method that builds line dialog fields from the line fields
+     *
+     * @param lineFields the fields in the component
+     * @param prefix the prefix to use in the id for the new fields
+     * @return the list of created fields
+     */
+    private List<Field> processDialogFieldsFromLineFields(List<Field> lineFields, String prefix) {
+        List<Field> newLineFields = new ArrayList<Field>();
+
+        // for each line field create and add a corresponding dialog field
+        int fieldIndex = 0;
+        for(Field lineField : lineFields) {
+            if(!(lineField instanceof FieldGroup)) {
+                Field newLineField = ComponentUtils.copy(lineField);
+                newLineField.setId(prefix + UifConstants.IdSuffixes.FIELDSET + Integer.toString(fieldIndex));
+                newLineFields.add(newLineField);
+                fieldIndex++;
+
+                // set the line field to read-only
+                lineField.setReadOnly(true);
+            }
+        }
+        return newLineFields;
+    }
+
+    /**
+     * Helper method that gets a line item that corresponds to the given field
+     *
+     * <p>In this case, the corresponding line item for a field is one where the field's property names
+     * are the same.</p>
+     *
+     * @param dataItem the data field to get the line item for
+     * @return
+     */
+    private DataField findItemInLineFields(DataField dataItem) {
+            for(Field field : lineBuilderContext.getLineFields()) {
+                if(field instanceof DataField) {
+                    if (dataItem.getPropertyName().equals(((DataField) field).getPropertyName())) {
+                        return (DataField) field;
+                    }
+                }
+            }
+        return null;
     }
 
     /**

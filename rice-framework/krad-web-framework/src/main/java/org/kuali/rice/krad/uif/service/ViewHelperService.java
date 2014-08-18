@@ -128,6 +128,26 @@ public interface ViewHelperService {
             boolean isValidLine);
 
     /**
+     * Hook for service overrides to process the edit collection line before it is validated
+     *
+     * @param model object instance that contain's the views data
+     * @param lineObject the line instance to be processed
+     * @param collectionId the id of the collection being edited from
+     * @param collectionPath the path to the collection being modified
+     */
+    void processBeforeEditLine(ViewModel model, Object lineObject, String collectionId, String collectionPath);
+
+    /**
+     * Hook for service overrides to process the edit collection line after it has been validated
+     *
+     * @param model object instance that contains the views data
+     * @param lineObject the line instance to be processed
+     * @param collectionId the id of the collection being edited from
+     * @param collectionPath the path to the collection being modified
+     */
+    void processAfterEditLine(ViewModel model, Object lineObject, String collectionId, String collectionPath);
+
+    /**
      * Hook for service overrides to process the save collection line before it is validated
      *
      * @param model object instance that contain's the views data
@@ -205,6 +225,17 @@ public interface ViewHelperService {
      * @param collectionPath the path to the collection being modified
      */
     void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath);
+
+    /**
+     * Invoked when the edit line action is chosen for a collection. This method only does server side validation by
+     * default but creates hook for client applications to add additional logic like persisting data.
+     *
+     * @param model Top level object containing the view data including the collection and new line
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
+     * @param selectedLineIndex The index within the collection of the line to edit.
+     */
+    void processCollectionEditLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex);
 
     /**
      * Invoked when the save line action is chosen for a collection. This method only does server side validation by

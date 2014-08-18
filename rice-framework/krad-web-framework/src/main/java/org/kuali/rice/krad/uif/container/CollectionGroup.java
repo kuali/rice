@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.List;
-
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -26,6 +24,8 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
+
+import java.util.List;
 
 /**
  * Interface representing an editable collection within a view. 
@@ -729,5 +729,80 @@ public interface CollectionGroup extends Group, DataBinding {
      * @see org.kuali.rice.krad.uif.component.Component#completeValidation
      */
     void completeValidation(ValidationTrace tracer);
+
+    /**
+     * Indicates that an edit action should be rendered and that the edit group be displayed in a model dialog.
+     *
+     * @return boolean true if edit should be through model dialog, false if not
+     */
+    public boolean isEditWithDialog();
+
+    /**
+     * @see CollectionGroup#isEditWithDialog()
+     */
+    public void setEditWithDialog(boolean editWithDialog);
+
+    /**
+     * Indicates that a custom edit line dialog is provided by the user.
+     *
+     * @return boolean true if custom edit line dialog
+     */
+    public boolean isCustomEditLineDialog();
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.CollectionGroup#isCustomEditLineDialog()
+     */
+    public void setCustomEditLineDialog(boolean customEditLineDialog);
+
+    /**
+     * Dialog group prototype to use to create the edit line dialog when {@link CollectionGroup#isEditWithDialog()}
+     * is true.
+     *
+     * <p>If not specified a default prototype edit line dialog will be created with the items from the collection.</p>
+     *
+     * @return dialog group prototype for edit line
+     */
+    public DialogGroup getEditLineDialogPrototype();
+
+    /**
+     * @see CollectionGroup#getEditLineDialogPrototype()
+     */
+    public void setEditLineDialogPrototype(DialogGroup editLineDialogPrototype);
+
+    /**
+     * The {@link Action} that will be displayed that will open the edit line group in a dialog.
+     *
+     * @return Action
+     */
+    public Action getEditWithDialogActionPrototype();
+
+    /**
+     * @see CollectionGroup#getEditWithDialogActionPrototype()
+     */
+    public void setEditWithDialogActionPrototype(Action editWithDialogActionPrototype);
+
+    /**
+     * The {@link Action} that will be displayed within the edit line group in a dialog.
+     *
+     * @return Action
+     */
+    public Action getEditInDialogSaveActionPrototype();
+
+    /**
+     * @see CollectionGroup#getEditInDialogSaveActionPrototype()
+     */
+    public void setEditInDialogSaveActionPrototype(Action editInDialogSaveActionPrototype);
+
+    /**
+     * List of dialog groups that are configured for a line in the collection.
+     *
+     * @return list of dialog group instances
+     */
+    public List<DialogGroup> getLineDialogs();
+
+    /**
+     * @see CollectionGroup#getLineDialogs()
+     */
+    public void setLineDialogs(List<DialogGroup> dialogGroups);
 
 }

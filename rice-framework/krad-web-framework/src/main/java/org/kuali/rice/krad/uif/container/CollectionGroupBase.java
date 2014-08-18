@@ -167,6 +167,15 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
     private boolean renderSaveLineActions;
 
+    // edit line properties
+    private boolean editWithDialog;
+    private boolean customEditLineDialog;
+    private DialogGroup editLineDialogPrototype;
+    private Action editWithDialogActionPrototype;
+    private Action editInDialogSaveActionPrototype;
+
+    private List<DialogGroup> lineDialogs;
+
     private boolean addWithDialog;
     private Action addWithDialogAction;
     private DialogGroup addLineDialog;
@@ -194,6 +203,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         addLineItems = Collections.emptyList();
         addLineActions = Collections.emptyList();
         subCollections = Collections.emptyList();
+        lineDialogs = Collections.emptyList();
     }
 
     /**
@@ -239,6 +249,31 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             // if the add dialog group had items then use them
             if (!addLineDialog.getItems().isEmpty()) {
                 addLineItems = addLineDialog.getItems();
+            }
+        }
+
+        // if its a edit line in dialog, then set the edit line dialog and edit line action if not supplied
+        if(editWithDialog) {
+
+            // initialize edit line dialog prototype if not set
+            if(editLineDialogPrototype == null) {
+                editLineDialogPrototype = (DialogGroup) ComponentUtils.copy(ComponentFactory.
+                        getNewComponentInstance(ComponentFactory.EDIT_LINE_DIALOG));
+            } else if(editLineDialogPrototype.getItems() != null && !editLineDialogPrototype.getItems().isEmpty()) {
+                // set custom dialog flag
+                customEditLineDialog = true;
+            }
+
+            // initialize the edit line action prototype if not set
+            if(editWithDialogActionPrototype == null) {
+                editWithDialogActionPrototype = (Action) ComponentUtils.copy(ComponentFactory.
+                        getNewComponentInstance(ComponentFactory.EDIT_LINE_IN_DIALOG_ACTION));
+            }
+
+            // initialize the edit line dialog's save action prototype
+            if(editInDialogSaveActionPrototype == null) {
+                editInDialogSaveActionPrototype = ComponentUtils.copy((Action) ComponentFactory.
+                        getNewComponentInstance(ComponentFactory.EDIT_LINE_IN_DIALOG_SAVE_ACTION));
             }
         }
 
@@ -1375,4 +1410,102 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         super.completeValidation(tracer.getCopy());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public boolean isEditWithDialog() {
+        return editWithDialog;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setEditWithDialog(boolean editWithDialog) {
+        this.editWithDialog = editWithDialog;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public boolean isCustomEditLineDialog() {
+        return customEditLineDialog;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCustomEditLineDialog(boolean customEditLineDialog) {
+        this.customEditLineDialog = customEditLineDialog;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public DialogGroup getEditLineDialogPrototype() {
+        return editLineDialogPrototype;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setEditLineDialogPrototype(DialogGroup editLineDialogPrototype) {
+        this.editLineDialogPrototype = editLineDialogPrototype;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public Action getEditWithDialogActionPrototype() {
+        return editWithDialogActionPrototype;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setEditWithDialogActionPrototype(Action editWithDialogActionPrototype) {
+        this.editWithDialogActionPrototype = editWithDialogActionPrototype;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public Action getEditInDialogSaveActionPrototype() {
+        return editInDialogSaveActionPrototype;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setEditInDialogSaveActionPrototype(Action editInDialogSaveActionPrototype) {
+        this.editInDialogSaveActionPrototype = editInDialogSaveActionPrototype;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<DialogGroup> getLineDialogs() {
+        return lineDialogs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLineDialogs(List<DialogGroup> dialogGroups) {
+        this.lineDialogs = dialogGroups;
+    }
 }

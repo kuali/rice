@@ -15,22 +15,7 @@
  */
 package org.kuali.rice.krad.uif.service.impl;
 
-import java.io.Serializable;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
-import java.util.Set;
-
+import com.google.common.collect.Sets;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -86,7 +71,21 @@ import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.service.impl.CollectionControllerServiceImpl.CollectionActionParameters;
 import org.springframework.beans.PropertyAccessorUtils;
 
-import com.google.common.collect.Sets;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Default Implementation of {@code ViewHelperService}
@@ -214,6 +213,22 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     /**
      * {@inheritDoc}
      */
+    @Override
+    public void processBeforeEditLine(ViewModel model, Object lineObject, String collectionId, String collectionPath) {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processAfterEditLine(ViewModel model, Object lineObject, String collectionId, String collectionPath) {
+
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     @Override
     public void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath) {
@@ -302,6 +317,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             processAfterAddLine(viewModel, newLine, collectionId, collectionPath, isValidLine);
         }
     }
+
     /**
      * {@inheritDoc}
      */
@@ -334,6 +350,35 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         } else {
             logAndThrowRuntime("Only List collection implementations are supported for the delete by index method");
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processCollectionEditLine(ViewModel model, String collectionId, String collectionPath,
+            int selectedLineIndex) {
+        // get the collection instance for editing the line
+        Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
+        if (collection == null) {
+            logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
+        }
+
+        // TODO: look into other ways of identifying a line so we can deal with
+        // unordered collections
+        if (collection instanceof List) {
+            Object editLine = ((List<Object>) collection).get(selectedLineIndex);
+
+            processBeforeEditLine(model, editLine, collectionId, collectionPath);
+
+            ((UifFormBase) model).getAddedCollectionItems().remove(editLine);
+
+            processAfterEditLine(model, editLine, collectionId, collectionPath);
+
+        } else {
+            logAndThrowRuntime("Only List collection implementations are supported for the edit by index method");
+        }
+
     }
 
     /**

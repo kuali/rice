@@ -218,6 +218,14 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * @see org.kuali.rice.krad.web.service.CollectionControllerService#editLine(org.kuali.rice.krad.web.form.UifFormBase)
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=editLine")
+    public ModelAndView editLine(UifFormBase form) {
+        return getCollectionControllerService().editLine(form);
+    }
+
+    /**
      * @see org.kuali.rice.krad.web.service.CollectionControllerService#saveLine(org.kuali.rice.krad.web.form.UifFormBase)
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=saveLine")

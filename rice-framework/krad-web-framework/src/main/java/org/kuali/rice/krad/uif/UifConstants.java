@@ -190,6 +190,7 @@ public class UifConstants {
     public static class ActionEvents {
         public static final String ADD_LINE = "addLine";
         public static final String ADD_BLANK_LINE = "addBlankLine";
+        public static final String EDIT_LINE = "editLine";
     }
 
     public static class LayoutComponentOptions {
@@ -214,6 +215,9 @@ public class UifConstants {
         public static final String CONSTRAINT = "_constraint";
         public static final String DETAIL_LINK = "_detLink";
         public static final String DETAIL_GROUP = "_detGroup";
+        public static final String DIALOG_GROUP = "_dialogGroup";
+        public static final String EDIT_DETAIL_BUTTON = "_editDetButton";
+        public static final String EDIT_DETAIL_GROUP = "_editDetGroup";
         public static final String DIRECT_INQUIRY = "_directinquiry";
         public static final String DISCLOSURE_CONTENT = "_disclosureContent";
         public static final String ERRORS = "_errors";
@@ -501,10 +505,12 @@ public class UifConstants {
         public static final String LABEL_FOR = "label_for";
         public static final String CONTROL_FOR = "control_for";
         public static final String ADD_CONTROLS = "add_controls";
+        public static final String EDIT_CONTROLS = "edit_controls";
         public static final String HEADER_FOR = "header_for";
         public static final String STICKY = "sticky";
         public static final String STICKY_FOOTER = "sticky_footer";
         public static final String DETAILS_DEFAULT_OPEN = "details_default_open";
+        public static final String RENDER_DETAILS_EDIT = "render_details_edit";
         public static final String TAB_FOR = "tabfor";
         public static final String CHECKED = "checked";
         public static final String ENTER_KEY = "enter_key";

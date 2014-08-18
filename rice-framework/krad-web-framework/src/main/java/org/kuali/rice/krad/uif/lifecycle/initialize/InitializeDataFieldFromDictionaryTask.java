@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle.initialize;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.DataDictionaryService;
@@ -31,6 +28,9 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Performs initialization on data fields based on attributes found in the data dictionary.
@@ -92,7 +92,12 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
 
                 String bindByNamePrefix = fieldBindingInfo.getBindByNamePrefix();
                 if (StringUtils.isNotBlank(bindByNamePrefix)) {
-                    propertyPathBuilder.append(bindByNamePrefix).append('.');
+
+                    // fix for both collectionPath and bindByNamePrefix being set,
+                    // wherein the bindByNamePrefix contains the collectionPath
+                    if(!bindByNamePrefix.startsWith(collectionPath)) {
+                        propertyPathBuilder.append(bindByNamePrefix).append('.');
+                    }
                 }
 
                 propertyPathBuilder.append(fieldBindingInfo.getBindingName());
@@ -182,7 +187,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
             dictionaryModelClass = ObjectPropertyUtils.getPropertyType(ViewLifecycle.getModel(), dictionaryEntryPrefix);
         }
 
-        return dictionaryModelClass == null ? null : dictionaryModelClass.getSimpleName();
+        return dictionaryModelClass == null ? null : dictionaryModelClass.getName();
     }
 
     /**

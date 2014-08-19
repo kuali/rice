@@ -530,6 +530,15 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      */
     protected void jiraAwareFail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
         passed = false;
+
+        if (contents == null) {
+            contents = getDriver().getPageSource();
+        }
+
+        if (message == null) {
+            message = "";
+        }
+
         if (!contents.startsWith("\nIncident report") && !message.startsWith("\nIncident report")) {
             String errorMessage = AutomatedFunctionalTestUtils.incidentReportMessage(getDriver().getPageSource(), "", message);
             if (errorMessage != null) {
@@ -537,6 +546,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
                 JiraAwareFailureUtils.fail(errorMessage, message, throwable, failable);
             }
         }
+
         JiraAwareFailureUtils.fail(contents, message, throwable, failable);
     }
 

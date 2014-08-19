@@ -1144,7 +1144,11 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         try {
 
             if (!isPassed()) {
-                System.out.println("Last AFT URL: " + driver.getCurrentUrl());
+                try { // if saucelabs has timed out getCurrentUrl throws an exception
+                    System.out.println("Last AFT URL: " + driver.getCurrentUrl());
+                } catch (Throwable t) {
+                    System.out.println("Unable to determine LAST AFT URL due to " + t.getMessage());
+                }
             }
 
             if ((!isPassed() && webDriverScreenshotHelper.screenshotOnFailure()) || webDriverScreenshotHelper.screenshotSteps()) {

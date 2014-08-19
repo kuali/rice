@@ -46,8 +46,8 @@ import java.util.Map;
  * An example:
  * <pre>{@code
  * -Dremote.public.url=env14.rice.kuali.org -Dremote.driver.saucelabs -Dsaucelabs.user=YOUR-SAUCELABS-USER
- * -Dsaucelabs.key=YOUR-SAUCELABS-KEY -Dsaucelabs.browser.version=22 -Dsaucelabs.platform=linux -Dsaucelabs.browser=ff
- * -Dremote.public.user=admin -Drice.version=42222
+ * -Dsaucelabs.key=YOUR-SAUCELABS-KEY -Dsaucelabs.browser.version=31 -Dsaucelabs.platform=Linux -Dsaucelabs.browser=ff
+ * -Dremote.public.user=admin -Drice.version=48058
  * }</pre>
  * </p><p>
  * To make use of SauceLabsWebDriverHelper, call its {@see #setUp} with the Test Class and Test Name and retrieve the configured
@@ -309,7 +309,7 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
 
         capabilities.setCapability("platform", System.getProperty(SAUCE_PLATFORM_PROPERTY, Platform.UNIX.toString()).replaceAll("_", " "));
         capabilities.setCapability("idle-timeout", Integer.parseInt(System.getProperty(SAUCE_IDLE_TIMEOUT_SECONDS_PROPERTY, "180")));
-        capabilities.setCapability("max-duration", Integer.parseInt(System.getProperty(SAUCE_MAX_DURATION_SECONDS_PROPERTY, "480")));
+        capabilities.setCapability("max-duration", Integer.parseInt(System.getProperty(SAUCE_MAX_DURATION_SECONDS_PROPERTY, "600")));
         capabilities.setCapability("name",  className + "." + testName + "-" + AutomatedFunctionalTestUtils.DTS);
         capabilities.setCapability("disable-popup-handler", System.getProperty(SAUCE_POPUP_PROPERTY, "false"));
         capabilities.setCapability("public", System.getProperty(SAUCE_SHARE_PROPERTY, "public restricted"));

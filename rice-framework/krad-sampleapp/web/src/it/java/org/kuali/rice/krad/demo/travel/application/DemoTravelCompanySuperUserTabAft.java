@@ -69,7 +69,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
     @Override
     public String getUserName() {
         if ((testName.getMethodName().equals("testDemoTravelCompanySuperUserTabNotAppearBookmark"))||
-            (testName    .getMethodName().equals("testDemoTravelCompanySuperUserTabNotAppearNav"))) {
+            (testName.getMethodName().equals("testDemoTravelCompanySuperUserTabNotAppearNav"))) {
             return "testUser2";
         } else {
             return super.getUserName();

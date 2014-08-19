@@ -76,7 +76,7 @@ if [ -z "$9" ]
 then
     export REPORT_ALL="false"
 else
-    export REPORT_ALL="$8"
+    export REPORT_ALL="$9"
 fi
 
 

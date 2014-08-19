@@ -621,7 +621,7 @@ public class ActionItemBase implements ActionItemContract, Serializable {
         Map<DocumentTypePolicy, String> policies = documentType.getPolicies();
         for (DocumentTypePolicy policy : policies.keySet()) {
             if (policy.getCode().equals(DocumentTypePolicy.DOC_SEARCH_TARGET.getCode())) {
-                return policies.get(DocumentTypePolicy.DOC_SEARCH_TARGET);
+                return policies.get(DocumentTypePolicy.DOC_SEARCH_TARGET).toLowerCase();
             }
         }
         return null;

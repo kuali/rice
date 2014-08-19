@@ -180,21 +180,6 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         }
 
         @Override
-        @SuppressWarnings("unchecked")
-        public <T> T get(Object key, Class<T> type) {
-            ValueWrapper wrappedValue = cache.get(key);
-            if (wrappedValue == null || wrappedValue.get() == null) {
-                return null;
-            }
-
-            if (type != null && !type.isInstance(wrappedValue.get())) {
-                throw new IllegalStateException("Cached value is not of required type [" + type.getName() + "]: " + (wrappedValue.get()));
-            }
-
-            return (T) wrappedValue.get();
-        }
-
-        @Override
         public void put(Object key, Object value) {
             final String sKey = coerceStr(key);
             cache.put(sKey, value);
@@ -388,8 +373,6 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         @Override public Object getNativeCache()  { return inner; }
 
         @Override public ValueWrapper get(Object key)  { return null; }
-
-        @Override public <T> T get(Object o, Class<T> tClass) { return null; }
 
         @Override public void put(Object key, Object value) { }
 

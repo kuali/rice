@@ -2235,6 +2235,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     protected void testServerInfoIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Info Messages')]");
         waitIsVisibleByXpath("//div[@data-messages_for='Demo-ValidationLayout-SectionsPage']");
+        waitForProgressLoading();
         assertTrue(isVisibleByXpath("//div[@data-messages_for='Demo-ValidationLayout-SectionsPage']"));
         assertTrue(isElementPresent(
                 "div[data-messages_for=\"Demo-ValidationLayout-SectionsPage\"] .uif-infoMessageItem"));

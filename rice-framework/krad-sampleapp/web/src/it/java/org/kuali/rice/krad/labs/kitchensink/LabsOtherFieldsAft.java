@@ -159,6 +159,7 @@ public class LabsOtherFieldsAft extends LabsKitchenSinkBase {
     private void testAttributeSecurity() throws InterruptedException { //Attribute Security
         boolean fullMaskPassed = false;
         String fullMaskedError = "";
+        waitForProgressLoading();
         waitForTextPresent("*********"); // The Input Fields page use SecretInfo555 as a data key, so wait to make sure the Other Fields page has loaded
         if (isTextPresent("SecretInfo555")) {
             fullMaskedError = "SecretInfo555 not masked!";

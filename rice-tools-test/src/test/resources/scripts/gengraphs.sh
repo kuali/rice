@@ -121,4 +121,21 @@ then
 fi
 
 
+if [ "$REPORT_ALL" = "true" ]
+then
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesOverTime.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesOverTime --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesDistribution.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesDistribution --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesPercentiles.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesPercentiles --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ThroughputOverTime.png --input-jtl ${TESTNAME}.jtl --plugin-type ThroughputOverTime --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}BytesThroughputOverTime.png --input-jtl ${TESTNAME}.jtl --plugin-type BytesThroughputOverTime --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}HitsPerSecond.png --input-jtl ${TESTNAME}.jtl --plugin-type HitsPerSecond --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}TransactionsPerSecond.png --input-jtl ${TESTNAME}.jtl --plugin-type TransactionsPerSecond --width 800 --height 600
+#   ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ThroughputVsThreads.png --input-jtl ${TESTNAME}.jtl --plugin-type ThroughputVsThreads --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}TimesVsThreads.png --input-jtl ${TESTNAME}.jtl --plugin-type TimesVsThreads --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ThreadsStateOverTime.png --input-jtl ${TESTNAME}.jtl --plugin-type ThreadsStateOverTime --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}PerfMon.png --input-jtl ${TESTNAME}.jtl --plugin-type PerfMon --width 800 --height 600
+#   ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}PageDataExtractorOverTime.png --input-jtl${TESTNAME}.jtl --plugin-type PageDataExtractorOverTime --width 800 --height 600
+   ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}LatenciesOverTime.png --input-jtl ${TESTNAME}.jtl --plugin-type LatenciesOverTime --width 800 --height 600
+   ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseCodesPerSecond.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseCodesPerSecond --width 800 --height 600
+fi
 

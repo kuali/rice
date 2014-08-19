@@ -2603,3 +2603,27 @@ function getGroupHeaderElement(groupId) {
     // get the header element
     return headerWrapper.find("#" + wrapperId + "_header");
 }
+
+/**
+ * Focus the control and place the cursor at the end of the content (when applicable).
+ *
+ * @param $control the control to be focused
+ */
+function focusEnd($control) {
+    var control = $control[0];
+    if (control != null && control.value.length != 0 && $control.is(":text,textarea")) {
+        if (control.createTextRange) {
+            var FieldRange = control.createTextRange();
+            FieldRange.moveStart('character', control.value.length);
+            FieldRange.collapse();
+            FieldRange.select();
+        } else if (control.selectionStart || control.selectionStart == '0') {
+            var elemLen = control.value.length;
+            control.selectionStart = elemLen;
+            control.selectionEnd = elemLen;
+            control.focus();
+        }
+    } else {
+        $control.focus();
+    }
+}

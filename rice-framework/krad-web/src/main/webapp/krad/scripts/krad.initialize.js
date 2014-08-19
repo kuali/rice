@@ -325,7 +325,7 @@ function initFieldHandlers() {
             + "iframe, object, embed, *[tabindex], *[contenteditable]",
             function (event) {
                 if (event.target !== event.currentTarget) {
-                    return false;
+                    return true;
                 }
 
                 var element = jQuery(this);
@@ -356,7 +356,7 @@ function initFieldHandlers() {
                     }
                 }
 
-                return false;
+                return true;
             });
 
     jQuery(document).on("mouseenter",

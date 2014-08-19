@@ -49,7 +49,7 @@ function showInlineEdit($viewButton) {
 
     // Focus on the control if somehow the editDiv is visible already after an ajax retrieval
     if ($editDiv.is(":visible")) {
-        $control.focus();
+        focusEnd($control);
         return;
     }
 
@@ -102,7 +102,6 @@ function showInlineEdit($viewButton) {
     // Show the edit state
     $control.removeAttr("readonly");
     $editDiv.show();
-    $control.focus();
 
     // Check to see if the buttons exist, if they don't create and append them (must happen here to correctly
     // position them)
@@ -111,8 +110,10 @@ function showInlineEdit($viewButton) {
         $editButtonDiv = _createInlineEditButtons($control, $editDiv, saveEditFunc, cancelEditFunc);
     }
 
+    focusEnd($control);
+
     // Setup key handlers for inline edit
-    _setupInlineEditKeyHandlers($control, cancelEditFunc);
+    _setupInlineEditKeyHandlers($control, cancelEditFunc, saveEditFunc);
 }
 
 /**
@@ -168,7 +169,7 @@ function _cancelEdit($control, $editDiv, $viewButton) {
     }
 
     if (!valid) {
-        $control.focus();
+        focusEnd($control);
         return false;
     }
 
@@ -226,14 +227,20 @@ function _createInlineEditButtons($control, $editDiv, saveEditFunc, cancelEditFu
  * @param $control the control element
  * @param cancelEditFunc the cancel function to call to cancel
  */
-function _setupInlineEditKeyHandlers($control, cancelEditFunc) {
+function _setupInlineEditKeyHandlers($control, cancelEditFunc, saveEditFunc) {
     $control.on("keydown." + kradVariables.INLINE_EDIT.INLINE_EDIT_NAMESPACE,function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
 
-        // check for escape key
+        // Check for escape key
         if (keycode === 27) {
             cancelEditFunc(event);
-            return;
+            return false;
+        }
+        // Check for enter key
+        else if (keycode === 13 && !($control.is("textarea"))) {
+            event.preventDefault();
+            saveEditFunc(event);
+            return false;
         }
 
     });

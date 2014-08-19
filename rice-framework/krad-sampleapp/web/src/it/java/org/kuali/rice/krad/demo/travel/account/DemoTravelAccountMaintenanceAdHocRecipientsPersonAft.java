@@ -58,8 +58,7 @@ public class DemoTravelAccountMaintenanceAdHocRecipientsPersonAft extends WebDri
         waitAndTypeByName("document.adHocRoutePersons[0].id", "1");
         waitAndClickSaveByText();
         waitForProgressSaving();
-        checkForDocErrorKrad();
-
+        //checkForDocErrorKrad();
         waitForTextPresent("Invalid Ad Hoc Routing Person Network Id");
     }
 

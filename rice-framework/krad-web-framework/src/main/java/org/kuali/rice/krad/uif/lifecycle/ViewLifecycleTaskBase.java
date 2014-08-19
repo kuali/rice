@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.krad.uif.component.ReferenceCopy;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,6 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
 
     private final Class<T> elementType;
 
-    @ReferenceCopy
     private LifecycleElementState elementState;
 
     /**
@@ -117,14 +115,6 @@ public abstract class ViewLifecycleTaskBase<T> implements ViewLifecycleTask<T> {
     @Override
     public Class<T> getElementType() {
         return this.elementType;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ViewLifecycleTaskBase<T> clone() throws CloneNotSupportedException {
-        return (ViewLifecycleTaskBase<T>) super.clone();
     }
 
     /**

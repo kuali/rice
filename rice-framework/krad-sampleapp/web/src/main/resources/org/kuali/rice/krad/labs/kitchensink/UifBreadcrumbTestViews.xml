@@ -37,7 +37,7 @@
         <bean parent="Uif-Message" p:messageText="Test View for breadcrumbs - parentViewUrl set"/>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest2" parent="Uif-FormView">
@@ -58,7 +58,7 @@
               p:messageText="Test View for breadcrumbs - no label for parentLocation parentViewLabel"/>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest3" parent="Uif-FormView">
@@ -76,7 +76,7 @@
         <bean parent="Uif-Message" p:messageText="Test View for breadcrumbs - home"/>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest4" parent="Uif-FormView">
@@ -102,7 +102,7 @@
               p:messageText="Test View for breadcrumbs - testing parent page with parentPageLabel set"/>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest5" parent="Uif-FormView">
@@ -131,7 +131,7 @@
         </bean>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest6" parent="Uif-FormView">
@@ -156,7 +156,7 @@
               p:messageText="Test View for breadcrumbs - testing parent page with parentPageLabel NOT set"/>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest7" parent="Uif-FormView">
@@ -185,7 +185,7 @@
         </bean>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest8" parent="Uif-FormView">
@@ -211,7 +211,7 @@
                 title is using expressions."/>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest9" parent="Uif-FormView">
@@ -240,7 +240,7 @@
         </bean>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
   <bean id="UifBreadcrumbTest10" parent="Uif-FormView">
@@ -261,7 +261,7 @@
               p:messageText="Test View for breadcrumbs - testing a bigger view."/>
       </list>
     </property>
-    <property name="formClass" value="edu.sampleu.demo.kitchensink.UifComponentsTestForm"/>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
 
 </beans>

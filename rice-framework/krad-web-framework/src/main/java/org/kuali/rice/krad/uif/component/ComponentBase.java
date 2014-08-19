@@ -345,13 +345,19 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * The following updates are done here:
      *
      * <ul>
-     * <li>tooltip is removed if content is null</li>
+     * <li>Invoke performInitialize on component modifiers</li>
      * </ul>
      *
      * {@inheritDoc}
      */
     @Override
-    public void performInitialization(Object model) {}
+    public void performInitialization(Object model) {
+        if (this.componentModifiers != null) {
+            for (ComponentModifier modifier : this.componentModifiers) {
+                modifier.performInitialization(model, this);
+            }
+        }
+    }
 
     /**
      * The following updates are done here:
@@ -382,7 +388,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     }
 
     /**
-     * No-op impelemtnation.  Override for custom behavior in subclasses.
+     * No-op implementation.  Override for custom behavior in subclasses.
      *
      * {@inheritDoc}
      */

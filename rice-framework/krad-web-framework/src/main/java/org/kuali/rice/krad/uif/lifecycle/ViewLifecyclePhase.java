@@ -17,7 +17,6 @@ package org.kuali.rice.krad.uif.lifecycle;
 
 import java.util.List;
 
-import org.kuali.rice.krad.datadictionary.Copyable;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle.LifecycleEvent;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
@@ -30,7 +29,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ViewLifecyclePhase extends Copyable, LifecycleElementState, Runnable {
+public interface ViewLifecyclePhase extends LifecycleElementState, Runnable {
 
     /**
      * Prepares a phase for use after being recycled (state cleared).

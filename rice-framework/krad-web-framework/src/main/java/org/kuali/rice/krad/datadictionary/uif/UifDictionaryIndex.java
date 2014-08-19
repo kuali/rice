@@ -24,25 +24,20 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.CopyUtils;
-import org.kuali.rice.krad.uif.util.ProcessLogger;
-import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
-import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 /**
- * Indexes {@code View} bean entries for retrieval
+ * Indexes {@code View} bean entries for retrieval.
  *
  * <p>
  * This is used to retrieve a {@code View} instance by its unique id.
@@ -65,9 +60,6 @@ public class UifDictionaryIndex implements Runnable {
     // view entries indexed by type
     private Map<String, ViewTypeDictionaryIndex> viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
 
-    // Cache to hold previously-built view definitions
-    protected Map<String,View> viewCache = new HashMap<String, View>(VIEW_CACHE_SIZE);
-
     public UifDictionaryIndex(DefaultListableBeanFactory ddBeans) {
         this.ddBeans = ddBeans;
     }
@@ -78,13 +70,10 @@ public class UifDictionaryIndex implements Runnable {
     }
 
     /**
-     * Retrieves the View instance with the given id
+     * Retrieves the View instance with the given id.
      *
-     * <p>
-     * First an attempt is made to get a cached view (if one exists). If found it is pulled from
-     * the cache and cloned to preserve the integrity of the cache.  If not already cached, one is built
-     * by Spring from the bean factory and then cloned.
-     * </p>
+     * <p>Invokes {@link UifDictionaryIndex#getImmutableViewById(java.lang.String)} to get the view singleton
+     * from spring then returns a copy.</p>
      *
      * @param viewId the unique id for the view
      * @return View instance with the given id
@@ -93,76 +82,22 @@ public class UifDictionaryIndex implements Runnable {
     public View getViewById(final String viewId) {
         View view = getImmutableViewById(viewId);
 
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug("Pulled view " + viewId + " from Cache.  Cloning..." );
-        }
-        
-        View viewCopy = CopyUtils.copy(view);
-        ProcessLogger.trace("view-copy:"+viewId);
-        return viewCopy;
+        return CopyUtils.copy(view);
     }
 
     /**
-     * Gets a view instance from the pool or factory but does not replace the view, meant for view readonly
-     * access (not running the lifecycle but just checking configuration)
+     * Retrieves the view singleton from spring that has the given id.
      *
      * @param viewId the unique id for the view
      * @return View instance with the given id
      */
     public View getImmutableViewById(String viewId) {
-        ProcessLogger.trace("view:" + viewId);
-
-        View cachedView = viewCache.get(viewId);
-        if (cachedView != null) {
-            ProcessLogger.trace("view:cache-hit");
-        } else {
-
-            ProcessLogger.trace("view:cache-miss");
-
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("View " + viewId + " not in cache - creating and storing to cache");
-            }
-
-            final String beanName = viewBeanEntriesById.get(viewId);
-            if (StringUtils.isBlank(beanName)) {
-                throw new DataDictionaryException("Unable to find View with id: " + viewId);
-            }
-
-            ProcessLogger.trace("view:init:" + viewId);
-            View view = ddBeans.getBean(beanName, View.class);
-            ProcessLogger.trace("view:getBean");
-
-            if (UifConstants.ViewStatus.CREATED.equals(view.getViewStatus())) {
-                try {
-                    ViewLifecycle.preProcess(view);
-
-                    ProcessLogger.trace("view:preProcess");
-                } catch (IllegalStateException ex) {
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("preProcess not run due to an IllegalStateException.  "
-                                + "Exception message: " + ex.getMessage());
-                    }
-                }
-            }
-
-            boolean inDevMode = ConfigContext.getCurrentContextConfig().getBooleanProperty(
-                    KRADConstants.ConfigParameters.KRAD_DEV_MODE);
-
-            if (!inDevMode) {
-                synchronized (viewCache) {
-                    viewCache.put(viewId, view);
-                }
-                ProcessLogger.trace("view:cached");
-            } else if (LOG.isDebugEnabled()) {
-                LOG.debug("DEV MODE - View " + viewId + " will not be cached");
-                ProcessLogger.trace("view:dev-mode");
-            }
-
-            cachedView = view;
+        String beanName = viewBeanEntriesById.get(viewId);
+        if (StringUtils.isBlank(beanName)) {
+            throw new DataDictionaryException("Unable to find View with id: " + viewId);
         }
 
-        ProcessLogger.trace("view-immutable:" + viewId);
-        return cachedView;
+        return ddBeans.getBean(beanName, View.class);
     }
 
     /**

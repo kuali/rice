@@ -32,7 +32,7 @@ public class PrepareForCacheTask extends ViewLifecycleTaskBase<LifecycleElement>
     /**
      * Creates an instance based on element state.
      */
-    protected PrepareForCacheTask() {
+    public PrepareForCacheTask() {
         super(LifecycleElement.class);
     }
 

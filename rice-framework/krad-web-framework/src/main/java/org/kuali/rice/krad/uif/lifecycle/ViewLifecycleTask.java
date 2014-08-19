@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import org.kuali.rice.krad.datadictionary.Copyable;
-
 /**
  * Represents a discrete task within the view lifecycle. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @param <T> top level lifecycle element type this task applies to
  */
-public interface ViewLifecycleTask<T> extends Copyable, Runnable {
+public interface ViewLifecycleTask<T> extends Runnable {
     
     /**
      * Gets the top level lifecycle element type that this task applies to.

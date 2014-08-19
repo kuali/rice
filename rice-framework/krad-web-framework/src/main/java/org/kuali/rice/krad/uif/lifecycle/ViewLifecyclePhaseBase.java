@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -33,6 +32,7 @@ import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
+import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -572,7 +572,8 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
                         predecessor.notifyCompleted();
                     }
 
-                    LifecyclePhaseFactory.recycle(this);
+                    recycle();
+                    RecycleUtils.recycle(getViewPhase(), this, ViewLifecyclePhase.class);
                 }
             } else {
                 trace("notify");
@@ -688,24 +689,6 @@ public abstract class ViewLifecyclePhaseBase implements ViewLifecyclePhase {
         if (!pendingSuccessors.remove(parentPath)) {
             throw new IllegalStateException("Not a pending successor: " + parentPath);
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ViewLifecyclePhaseBase clone() throws CloneNotSupportedException {
-        ViewLifecyclePhaseBase copy = (ViewLifecyclePhaseBase) super.clone();
-
-        for (ViewLifecycleTask<?> task : copy.tasks) {
-            task.setElementState(copy);
-        }
-
-        for (ViewLifecycleTask<?> task : copy.skipLifecycleTasks) {
-            task.setElementState(copy);
-        }
-
-        return copy;
     }
 
     /**

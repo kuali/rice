@@ -25,9 +25,10 @@ import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 
 /**
- * View lifecycle task to run component modifiers based on the lifecycle phase. 
- * 
+ * View lifecycle task to run component modifiers based on the lifecycle phase.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see org.kuali.rice.krad.uif.modifier.ComponentModifier
  */
 public class RunComponentModifiersTask extends ViewLifecycleTaskBase<Component> {
 
@@ -38,21 +39,16 @@ public class RunComponentModifiersTask extends ViewLifecycleTaskBase<Component> 
         super(Component.class);
     }
 
-     /**
-      * Runs any configured <code>ComponentModifiers</code> for the given component that match the
-      * given run phase and who run condition evaluation succeeds
-      * 
-      * <p>
-      * If called during the initialize phase, the performInitialization method will be invoked on
-      * the <code>ComponentModifier</code> before running
-      * </p>
-      * 
+    /**
+     * Runs any configured Component Modifiers for the given component that match the
+     * given run phase and who run condition evaluation succeeds.
+     *
      * {@inheritDoc}
      */
     @Override
     protected void performLifecycleTask() {
         Component component = (Component) getElementState().getElement();
-        
+
         List<ComponentModifier> componentModifiers = component.getComponentModifiers();
         if (componentModifiers == null) {
             return;
@@ -61,30 +57,28 @@ public class RunComponentModifiersTask extends ViewLifecycleTaskBase<Component> 
         Object model = ViewLifecycle.getModel();
         String runPhase = getElementState().getViewPhase();
         for (ComponentModifier modifier : component.getComponentModifiers()) {
-            // if run phase is initialize, invoke initialize method on modifier first
-            if (StringUtils.equals(runPhase, UifConstants.ViewPhases.INITIALIZE)) {
-                modifier.performInitialization(model, component);
+            if (!StringUtils.equals(modifier.getRunPhase(), runPhase)) {
+                continue;
             }
 
-            // check run phase matches
-            if (StringUtils.equals(modifier.getRunPhase(), runPhase)) {
-                // check condition (if set) evaluates to true
-                boolean runModifier = true;
-                if (StringUtils.isNotBlank(modifier.getRunCondition())) {
-                    Map<String, Object> context = new HashMap<String, Object>();
+            boolean runCondition = true;
+            if (StringUtils.isNotBlank(modifier.getRunCondition())) {
+                Map<String, Object> context = new HashMap<String, Object>();
+                context.putAll(component.getContext());
+
+                if (context.isEmpty()) {
+                    context.putAll(ViewLifecycle.getView().getContext());
                     context.put(UifConstants.ContextVariableNames.COMPONENT, component);
-                    context.put(UifConstants.ContextVariableNames.VIEW, ViewLifecycle.getView());
-
-                    String conditionEvaluation = ViewLifecycle.getExpressionEvaluator()
-                            .evaluateExpressionTemplate(context, modifier.getRunCondition());
-                    runModifier = Boolean.parseBoolean(conditionEvaluation);
                 }
 
-                if (runModifier) {
-                    modifier.performModification(model, component);
-                }
+                String conditionEvaluation = ViewLifecycle.getExpressionEvaluator().evaluateExpressionTemplate(context,
+                        modifier.getRunCondition());
+                runCondition = Boolean.parseBoolean(conditionEvaluation);
+            }
+
+            if (runCondition) {
+                modifier.performModification(model, component);
             }
         }
     }
-
 }

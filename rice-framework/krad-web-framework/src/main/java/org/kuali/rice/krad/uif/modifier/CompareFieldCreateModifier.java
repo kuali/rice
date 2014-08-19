@@ -77,8 +77,6 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
     }
 
     /**
-     * Calls <code>ViewHelperService</code> to initialize the header field prototype
-     *
      * {@inheritDoc}
      */
     @Override

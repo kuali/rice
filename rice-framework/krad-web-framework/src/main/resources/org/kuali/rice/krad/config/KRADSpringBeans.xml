@@ -550,6 +550,8 @@
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
 
+  <bean id="viewLifecyclePhaseBuilder" class="org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBuilderBase"/>
+
   <bean id="uifDefaultingService" class="org.kuali.rice.krad.uif.service.impl.UifDefaultingServiceImpl">
     <property name="dataDictionaryService" ref="dataDictionaryService"/>
     <property name="dataObjectService" ref="dataObjectService" />
@@ -696,8 +698,6 @@
         p:legacyDataAdapter-ref="legacyDataAdapter" />
 
   <bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
-  
-  <bean id="viewLifecyclePhaseBuilder" class="org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhaseBuilderBase" />
 
   <import resource="KRADSpringBeans-data.xml"/>
   <import resource="KRADSpringBeans-jpa.xml"/>

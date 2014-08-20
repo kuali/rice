@@ -10,34 +10,40 @@
     border: none;
     .dropdown {
       .dropdown-menu.uif-cssGridGroup {
-        white-space: nowrap;
-        min-width: 10px;
-        min-width: 600px;
+        //white-space: nowrap;
+        min-width: 700px;
         white-space: normal;
         padding-bottom: 20px;
+        padding-right: 20px;
+        padding-left: 20px;
+        background-color: #f5f5f5;
         h3 {
           border-bottom-width: 1px;
           border-bottom-style: solid;
           border-bottom-color: #ccc;
           margin-bottom: 12px;
           padding-bottom: 12px;
-          font-size: 1.1em;
+          color:@state-info-text;
+          font-size: 18px;
         }
         h4 {
-          font-size: 12px;
+          font-size:13px;
           font-weight: normal;
+          color: #AFAFAF;
+          font-family: inherit;
         }
         ul {
-          font-size: 12px;
-          list-style: disc;
-          padding-left: 20px;
+          font-size: 13px;
+          list-style:none;
+          margin-bottom: 20px;
           li {
+            list-style: none;
             a {
-              color: @link_blue;
+              color:#000;
             }
             a:hover {
-              background: #FFF;
-              text-decoration: underline;
+              background:#f5f5f5;
+              text-decoration:underline;
             }
           }
         }
@@ -45,7 +51,7 @@
     }
     .dropdown:first-child {
       .dropdown-menu {
-        right: -200px;
+        //right: -200px;
       }
     }
     a:focus {
@@ -74,7 +80,7 @@
                 clear: both;
                 font-weight: normal;
                 color: @link_blue;
-                white-space: nowrap;
+                //white-space: nowrap;
               }
             }
           }

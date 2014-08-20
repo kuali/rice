@@ -52,6 +52,7 @@ public class DemoCollectionFeaturesDeleteLineAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//input[@name='collection1_5[0].field2' and @value='55']");
         assertElementPresentByXpath("//button[contains(text(),'Delete')]");
         waitAndClickButtonByText("Delete");
+        waitForProgress("Deleting Line...");
         waitForTextPresent("You have deleted an item from Delete line action on newly added lines.");
         if(isElementPresentByXpath("//button[contains(text(),'Delete')]")) {
             fail("Delete button should not be present.");

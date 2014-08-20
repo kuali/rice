@@ -851,7 +851,8 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         return null;
     }
 
-    protected void gotoLightBox() {
+    protected void gotoLightBox() throws InterruptedException {
+        waitForElementPresent(By.cssSelector(".uif-lookupDialog-iframe"));
         driver.switchTo().frame(driver.findElement(By.cssSelector(".uif-lookupDialog-iframe")));
     }
 
@@ -1081,8 +1082,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected void select(By by, String selectText) throws InterruptedException {
         //        checkForIncidentReport(by.toString(), "trying to select text " + selectText); // I think a report will now be picked-up by the jiraAwareFail
         WebElement select1 = findElement(by);
+        WebDriverUtils.highlightElement(driver, select1);
         String name = select1.getAttribute("name");
-        WebDriverUtils.jGrowl(getDriver(), "Select " + selectText, false, "Select " + selectText + " from " + name);
+        jGrowl("Select " + selectText + " from " + name);
         List<WebElement> options = select1.findElements(By.tagName("option"));
 
         for (WebElement option : options) {

@@ -46,7 +46,7 @@ public class DemoCollectionFeaturesRowDetailsAft extends WebDriverLegacyITBase {
         fail("Row Details Present");
       }
       waitAndClickButtonByText("Open/Close Row Details");
-      assertElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section1']/div/table/tbody/tr[@class='detailsRow']");
+      waitForElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section1']/div/table/tbody/tr[@class='detailsRow']");
       waitAndClickButtonByText("Open/Close Row Details");
       if(isElementPresentByXpath("//div[@id='Demo-TableLayoutDetails-Section1']/div/table/tbody/tr[@class='detailsRow']")) {
         fail("Row Details Present");

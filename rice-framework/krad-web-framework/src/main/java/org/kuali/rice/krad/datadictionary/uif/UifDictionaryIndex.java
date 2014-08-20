@@ -29,6 +29,7 @@ import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
@@ -97,7 +98,17 @@ public class UifDictionaryIndex implements Runnable {
             throw new DataDictionaryException("Unable to find View with id: " + viewId);
         }
 
-        return ddBeans.getBean(beanName, View.class);
+        View view = ddBeans.getBean(beanName, View.class);
+
+        if (UifConstants.ViewStatus.CREATED.equals(view.getViewStatus())) {
+            try {
+                ViewLifecycle.preProcess(view);
+            } catch (IllegalStateException ex) {
+                throw new RuntimeException("Failing during pre-process phase", ex);
+            }
+        }
+
+        return view;
     }
 
     /**

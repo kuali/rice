@@ -39,24 +39,13 @@
         <#local headerOpenTag="<${element.headerLevel} id=\"${element.id?replace(\"_headerWrapper\", \"\")}_header\" ${style!} ${styleClass!}>"/>
         <#local headerCloseTag="</${element.headerLevel}>"/>
     </#if>
-<#--
-    <#local stickyDataAttribute=""/>
-    <#if element.sticky>
-        <#local stickyDataAttribute="data-sticky='true'"/>
-    </#if>-->
-
-    <#-- Only render wrapper when upper and lower group content exist -->
-<#--    <#if element.upperGroup?has_content || element.lowerGroup?has_content>
-        <#local renderContentAs="div"/>
-        <header class="${view.contentContainerClassesAsString} uif-viewHeader-contentWrapper" ${stickyDataAttribute}>
-        &lt;#&ndash; upper group &ndash;&gt;
-        <@krad.template component=element.upperGroup/>
-    </#if>-->
 
         <#-- Main header content -->
         <@krad.wrap renderAs="header" component=element>
 
             <#if element.headerLevel?has_content && element.headerText?has_content && element.headerText != '&nbsp;'>
+
+                <@krad.template component=element.upperGroup/>
 
                 <#if element.rightGroup?has_content && element.rightGroup.render && element.upperGroup?has_content
                     && element.upperGroup.render>

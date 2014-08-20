@@ -142,6 +142,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private List<UITestObject> collection4 = new ArrayList<UITestObject>();
     private List<UITestObject> collection5 = new ArrayList<UITestObject>();
     private List<UITestObject> collection6 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection7 = new ArrayList<UITestObject>();
 
     private List<UIInactivatableTestObject> inactivatableCollection = new ArrayList<UIInactivatableTestObject>();
 
@@ -301,6 +302,14 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         collection6.add(new UITestObject("1", "2", "3", "4"));
         collection6.add(new UITestObject("5", "6", "7", "8"));
         collection6.add(new UITestObject("9", "10", "11", "12"));
+
+        collection7.add(new UITestObject("A", "B", "C", "D"));
+        collection7.get(0).getSubList().add(new UITestObject("A", "B", "C", "D"));
+        collection7.get(0).getSubList().add(new UITestObject("1", "2", "3", "7"));
+        collection7.get(0).getSubList().add(new UITestObject("W", "X", "Y", "Z"));
+        collection7.add(new UITestObject("1", "2", "3", "7"));
+        collection7.get(1).getSubList().add(new UITestObject("a", "b", "C", "D"));
+        collection7.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
 
         inactivatableCollection.add(new UIInactivatableTestObject("A", "100", "200", "300", true));
         inactivatableCollection.add(new UIInactivatableTestObject("B", "100", "200", "300", true));
@@ -1021,6 +1030,14 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setCollection6(List<UITestObject> collection6) {
         this.collection6 = collection6;
+    }
+
+    public List<UITestObject> getCollection7() {
+        return collection7;
+    }
+
+    public void setCollection7(List<UITestObject> collection7) {
+        this.collection7 = collection7;
     }
 
     public List<UIInactivatableTestObject> getInactivatableCollection() {

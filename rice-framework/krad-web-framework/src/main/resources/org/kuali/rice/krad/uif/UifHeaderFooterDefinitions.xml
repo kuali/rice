@@ -117,11 +117,6 @@
     </property>
     <property name="libraryCssClasses">
       <list>
-        <value>uif-viewHeader-contentWrapper</value>
-      </list>
-    </property>
-    <property name="cssClasses">
-      <list>
         <value>uif-viewHeader</value>
       </list>
     </property>

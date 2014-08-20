@@ -117,7 +117,7 @@ h6.uif-headerText {
 }
 .uif-header.uif-subSectionHeader[data-header_for="CollectionGroup_AdHocWorkgroup"] .uif-headerText { margin-top:-10px;}
 
-.uif-viewHeader-contentWrapper{
+.uif-viewHeader{
     background: url(../../images/kns/masthead1.png);
 }
 

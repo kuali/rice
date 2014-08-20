@@ -197,7 +197,7 @@ ul.uif-readOnlyStringList li {
     padding: 0;
 }
 
-.uif-viewHeader-contentWrapper {
+.uif-viewHeader {
     width: 100%;
     background-color: white;
     z-index: 3;

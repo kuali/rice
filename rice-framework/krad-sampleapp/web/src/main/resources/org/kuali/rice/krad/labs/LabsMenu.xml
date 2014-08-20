@@ -44,10 +44,74 @@
                     <bean parent="Uif-VerticalBoxGroup" p:additionalCssClasses="panel-body">
                       <property name="items">
                         <list>
+                          <bean parent="Uif-Link" p:linkText="Action List" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/kew/actionList?methodToCall=start&amp;viewId=UifActionListView"/>
+                          <bean parent="Uif-Link" p:linkText="Bootstrap Icons" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ActionIconMenu"/>
+                          <bean parent="Uif-Link" p:linkText="Bootstrap Multi-select Plugin" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Labs-BootstrapMultiSelect"/>
                           <bean parent="Uif-Link" p:linkText="Client Side State Test View" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ClientSideState"/>
+                          <bean parent="Uif-Link" p:linkText="Collection Add Line: Non-updateable Refreshes" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineNonUpdateableRefreshes"/>
+                          <bean parent="Uif-Link" p:linkText="Collection Add Line: Using Property Editor" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineWithPropertyEditor"/>
+                          <bean parent="Uif-Link" p:linkText="Configuration" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsConfigurationView"/>
+                          <bean parent="Uif-Link" p:linkText="Custom Rule Event and Document Event Method Invocation" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/ruleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+                          <bean parent="Uif-Link" p:linkText="Default Rule Event and Business Rule" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/defaultRuleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+                          <bean parent="Uif-Link" p:linkText="Dialog with Explanation in ReadOnly mode" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DialogReadOnly"/>
+                          <bean parent="Uif-Link" p:linkText="Encryption Utility" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/encryption?viewId=Lab-Encryption"/>
                           <bean parent="Uif-Link" p:linkText="File Upload View" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/fileUploads?viewId=Lab-FileUploads"/>
+                          <bean parent="Uif-Link" p:linkText="HTML head link tags" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-HeadLink-Tags"/>
+                          <bean parent="Uif-Link" p:linkText="Iframe - Action List" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ActionListView"/>
+                          <bean parent="Uif-Link" p:linkText="Iframe - Doc Search" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DocSearchView"/>
+                          <bean parent="Uif-Link" p:linkText="JSON Template Example" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?methodToCall=jsonExample"/>
+                          <bean parent="Uif-Link" p:linkText="KC Proposal" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsProposal"/>
+                          <bean parent="Uif-Link" p:linkText="KC Proposal - Fixed" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsProposal2"/>
+                          <bean parent="Uif-Link" p:linkText="KC Templates" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=LabsKCTemplateMenu"/>
+                          <bean parent="Uif-Link" p:linkText="KS Admin Registration" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/ksworkshop?viewId=KS-AdminRegistration"/>
+                          <bean parent="Uif-Link" p:linkText="KS Admin Registration - No Css" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/ksworkshop?viewId=KS-AdminRegistration-NoCss"/>
+                          <bean parent="Uif-Link" p:linkText="Meta tags" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Meta-Tags"/>
+                          <bean parent="Uif-Link" p:linkText="MultiFile Upload - Basic" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload1"/>
+                          <bean parent="Uif-Link" p:linkText="MultiFile Upload - Multiple Uses on One Page" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload2"/>
+                          <bean parent="Uif-Link" p:linkText="Native Autocomplete Field Disabled" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Lab-NativeAutocomplete-DisableField"/>
+                          <bean parent="Uif-Link" p:linkText="Native Autocomplete Form Disabled" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Lab-NativeAutocomplete-DisableForm"/>
+                          <bean parent="Uif-Link" p:linkText="Page Form Post URL" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-PageForm"/>
+                          <bean parent="Uif-Link" p:linkText="Parameter Updater" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/parameter?viewId=LabsParameterView"/>
+                          <bean parent="Uif-Link" p:linkText="Progress Bars" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ProgressBar"/>
+                          <bean parent="Uif-Link" p:linkText="QuickFinder Callback" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/quickfinder?viewId=Lab-QuickFinderCallback"/>
+                          <bean parent="Uif-Link" p:linkText="QuickFinder Layout" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-QuickFinderLayout"/>
+                          <bean parent="Uif-Link" p:linkText="Refresh" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-Refresh"/>
+                          <bean parent="Uif-Link" p:linkText="Schema" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/mock?viewId=LabsSchema"/>
+                          <bean parent="Uif-Link" p:linkText="Session Policy Missing Form" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm"/>
                           <bean parent="Uif-Link" p:linkText="Session Policy Redirect Home" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-RedirectHome"/>
                           <bean parent="Uif-Link" p:linkText="Session Policy Redirect URL View" p:target="_self"
@@ -56,76 +120,16 @@
                                 p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-TimeoutView"/>
                           <bean parent="Uif-Link" p:linkText="Session Policy Timeout Warning" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-TimeoutWarning&amp;methodToCall=setSessionTimeout"/>
-                          <bean parent="Uif-Link" p:linkText="Encryption Utility" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/encryption?viewId=Lab-Encryption"/>
-                          <bean parent="Uif-Link" p:linkText="Session Policy Missing Form" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/sessionPolicy?viewId=Lab-SessionPolicy-MissingForm"/>
-                          <bean parent="Uif-Link" p:linkText="Native Autocomplete Form Disabled" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Lab-NativeAutocomplete-DisableForm"/>
-                          <bean parent="Uif-Link" p:linkText="Native Autocomplete Field Disabled" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=Lab-NativeAutocomplete-DisableField"/>
-                          <bean parent="Uif-Link" p:linkText="JSON Template Example" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?methodToCall=jsonExample"/>
-                          <bean parent="Uif-Link" p:linkText="Parameter Updater" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/parameter?viewId=LabsParameterView"/>
+                          <bean parent="Uif-Link" p:linkText="Stacked Collection Section w/ AddBlankLine and upload" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-Stacked-Upload-AddBlankLine"/>
+                          <bean parent="Uif-Link" p:linkText="Sub-collection Add Line" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-AddLineTest"/>
+                          <bean parent="Uif-Link" p:linkText="Table Collection Edit Details" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-TableCollectionEditDetails"/>
                           <bean parent="Uif-Link" p:linkText="View Fluid Container" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFluid"/>
                           <bean parent="Uif-Link" p:linkText="View Fixed Container" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFixed"/>
-                          <bean parent="Uif-Link" p:linkText="Bootstrap Icons" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ActionIconMenu"/>
-                          <bean parent="Uif-Link" p:linkText="KC Proposal" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsProposal"/>
-                          <bean parent="Uif-Link" p:linkText="KC Proposal - Fixed" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/uicomponents?viewId=LabsProposal2"/>
-                          <bean parent="Uif-Link" p:linkText="KC Templates" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=LabsKCTemplateMenu"/>
-                          <bean parent="Uif-Link" p:linkText="Page Form Post URL" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-PageForm"/>
-                          <bean parent="Uif-Link" p:linkText="Html head link tags" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-HeadLink-Tags"/>
-                          <bean parent="Uif-Link" p:linkText="Meta tags" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-Meta-Tags"/>
-                          <bean parent="Uif-Link" p:linkText="Refresh" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-Refresh"/>
-                          <bean parent="Uif-Link" p:linkText="QuickFinder Layout" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Lab-QuickFinderLayout"/>
-                          <bean parent="Uif-Link" p:linkText="Progress Bars" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ProgressBar"/>
-                          <bean parent="Uif-Link" p:linkText="Stacked Collection Section w/ AddBlankLine and upload" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-LayoutTest-Stacked-Upload-AddBlankLine"/>
-                          <bean parent="Uif-Link" p:linkText="Bootstrap multi-select plugin" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Labs-BootstrapMultiSelect"/>
-                          <bean parent="Uif-Link" p:linkText="Dialog with Explanation in ReadOnly mode" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DialogReadOnly"/>
-                          <bean parent="Uif-Link" p:linkText="QuickFinder Callback" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/quickfinder?viewId=Lab-QuickFinderCallback"/>
-                          <bean parent="Uif-Link" p:linkText="Default Rule Event and Business Rule" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/defaultRuleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-                          <bean parent="Uif-Link" p:linkText="Custom Rule Event and Document Event Method Invocation" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/ruleEvent?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
-                          <bean parent="Uif-Link" p:linkText="Collection Add Line: Non-updateable Refreshes" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineNonUpdateableRefreshes"/>
-                          <bean parent="Uif-Link" p:linkText="Collection Add Line: Using Property Editor" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/travelAccountCollection?viewId=Lab-CollectionAddLineWithPropertyEditor"/>
-                          <bean parent="Uif-Link" p:linkText="MultiFile Upload Basic 1" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload1"/>
-                          <bean parent="Uif-Link" p:linkText="MultiFile Upload - Multiple Uses on One Page" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-MultiFileUpload2"/>
-                          <bean parent="Uif-Link" p:linkText="Schema" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/mock?viewId=LabsSchema"/>
-                          <bean parent="Uif-Link" p:linkText="Sub-collection Add Line" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-AddLineTest"/>
-                          <bean parent="Uif-Link" p:linkText="ActionList" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/kew/actionList?methodToCall=start&amp;viewId=UifActionListView"/>
-                          <bean parent="Uif-Link" p:linkText="KS Admin Registration" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/ksworkshop?viewId=KS-AdminRegistration"/>
-                          <bean parent="Uif-Link" p:linkText="KS Admin Registration - No Css" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/ksworkshop?viewId=KS-AdminRegistration-NoCss"/>
-                          <bean parent="Uif-Link" p:linkText="Configuration" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsConfigurationView"/>
-                          <bean parent="Uif-Link" p:linkText="Table Collection Edit Details" p:target="_self"
-                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-TableCollectionEditDetails"/>
                         </list>
                       </property>
                     </bean>
@@ -237,11 +241,9 @@
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-LightTable"/>
                           <bean parent="Uif-Link" p:linkText="Course Search Basic Table" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-BasicTableCollection"/>
-                          <bean parent="Uif-Link" p:linkText="Course Search Rich Table Server Side Paging"
-                                p:target="_self"
+                          <bean parent="Uif-Link" p:linkText="Course Search Rich Table Server Side Paging" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-RichTable-ServerSidePaging"/>
-                          <bean parent="Uif-Link" p:linkText="Course Search Rich Table Without Server Side Paging"
-                                p:target="_self"
+                          <bean parent="Uif-Link" p:linkText="Course Search Rich Table Without Server Side Paging" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/kitchensinkperformance?viewId=Demo-Performance-RichTable-NoServerSidePaging"/>
                         </list>
                       </property>

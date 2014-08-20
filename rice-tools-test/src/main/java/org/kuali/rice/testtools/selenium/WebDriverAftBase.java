@@ -16,6 +16,7 @@
 package org.kuali.rice.testtools.selenium;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -38,6 +39,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -106,6 +108,8 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             "div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span";
 
 
+//    protected String oneBrowser = null;
+
     protected String sessionId = null;
 
     protected String testMethodName;
@@ -141,8 +145,25 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         WebDriverUtils.alertDismiss(driver);
     }
 
-// one browser
-//    private static boolean loggedIn = false;
+    @AfterClass
+    public static void afterClass() {
+        // one browser
+//        if (driver != null) {
+//            try {
+//                driver.close();
+//            } catch (NoSuchWindowException nswe) {
+//                System.out.println("NoSuchWindowException closing WebDriver " + nswe.getMessage());
+//            } finally {
+//                if (driver != null) {
+//                    driver.quit();
+//                }
+//            }
+//        }
+
+        if (chromeDriverService != null) {
+            chromeDriverService.stop();
+        }
+    }
 
     protected boolean areAllMultiValueSelectsChecked() throws InterruptedException {
         acceptAlertIfPresent();
@@ -488,6 +509,23 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         driver.close();
     }
 
+    protected void closeAllOtherWindows(String handleToKeep) {
+        Set<String> set = driver.getWindowHandles();
+
+        set.remove(handleToKeep);
+
+        Iterator iter = set.iterator();
+        String handle = "";
+        while (iter.hasNext()) {
+            handle = (String)iter.next();
+            driver.switchTo().window(handle);
+            driver.close();
+        }
+
+        driver.switchTo().window(handleToKeep);
+    }
+
+
     protected void colapseExpandByXpath(String clickLocator, String visibleLocator) throws InterruptedException {
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
@@ -503,8 +541,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     @BeforeClass
     public static void chromeDriverService() throws Exception {
         chromeDriverService = WebDriverUtils.chromeDriverCreateCheck();
-        if (chromeDriverService != null)
+        if (chromeDriverService != null) {
             chromeDriverService.start();
+        }
 
 // one browser
 //        driver = WebDriverUtils.setUp("getClass().getSimpleName()", "testMethodName");
@@ -1039,9 +1078,6 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         //            String logoutUrl = getBaseUrlString() + "/kr-krad/login?methodToCall=logout";
         //            jGrowl("Logging out with " + logoutUrl);
         //            open(logoutUrl);
-
-        // NOT really logging out, but going to the login page so tests can be run in one browser
-        //driver.get(getBaseUrlString() + "/kr-login/login?viewId=DummyLoginView&returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart");
     }
 
     protected String multiValueResultCount() throws InterruptedException {
@@ -1167,6 +1203,13 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             t.printStackTrace();
         }
 
+        // going to the login page and closing other windows so tests can be run in one browser
+//        acceptAlertIfPresent();
+//        closeAllOtherWindows(oneBrowser);
+//        driver.get(getBaseUrlString()
+//                + "/kr-login/login?viewId=DummyLoginView&returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart");
+//        acceptAlertIfPresent();
+
         // comment out finally block for one browser
         finally {
             try {
@@ -1201,11 +1244,14 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             }
             WebDriverUtils.openTestUrl(driver, testUrl);
 
+//            oneBrowser = driver.getWindowHandle(); // one browser other windows will be closed
+//            System.out.println("One Browser handle " + oneBrowser);
+//            closeAllOtherWindows(oneBrowser); // close all others than one browser
+
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 
-//            if (!loggedIn) { // one browser
+//            if (isVisible(By.name("login_user"))) { // one browser
                 login(driver, getUserName(), this);
-//                loggedIn = true;
 //            }
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.

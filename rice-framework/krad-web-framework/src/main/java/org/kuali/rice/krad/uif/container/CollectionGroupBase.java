@@ -402,10 +402,17 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             sessionPage = "last";
         }
 
+        String dialogId = addLineDialog.getId();
+        if (StringUtils.isNotBlank(this.getContainerIdSuffix())) {
+            dialogId = dialogId + this.getContainerIdSuffix();
+        }
+
         String actionScript = UifConstants.JsFunctions.WRITE_CURRENT_PAGE_TO_SESSION + "(this, '" + sessionPage + "');";
+
         actionScript = ScriptUtils.appendScript(addWithDialogAction.getActionScript(), actionScript);
         actionScript = ScriptUtils.appendScript(actionScript, ScriptUtils.buildFunctionCall(
-                UifConstants.JsFunctions.SHOW_DIALOG, addLineDialog.getId()));
+                UifConstants.JsFunctions.SHOW_DIALOG, dialogId));
+
         addWithDialogAction.setActionScript(actionScript);
     }
 

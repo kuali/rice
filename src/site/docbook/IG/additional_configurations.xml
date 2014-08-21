@@ -643,7 +643,7 @@ cp -p rice-config.xml rice-config-prd2.xml</programlisting></para>
 	&lt;param name="keystore.password">kualirice&lt;/param>
 
 
-	&lt;!-- Dummy Login Filter - use if you don't want to go through CAS -->
+	&lt;!-- Dummy Login Filter - for development use without having to set up CAS or equiv. -->
 	&lt;param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter&lt;/param>
 	&lt;param name="filtermapping.login.1">/*&lt;/param>
 

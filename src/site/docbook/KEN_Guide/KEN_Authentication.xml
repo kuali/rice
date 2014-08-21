@@ -31,7 +31,6 @@
             >String</emphasis> specifying the login of the user making this request, or
             <emphasis role="italic">null</emphasis>
         </para>
-        <para>The generic KEN release comes configured with CAS.</para>
     </section>
     <section>
         <title>Web Services</title>

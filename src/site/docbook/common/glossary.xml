@@ -433,8 +433,8 @@
             <glossdef>
                 <para><link xlink:href="http://www.jasig.org/cas"/> - An open source authentication
                     framework. Kuali Rice provides support for integrating with CAS as an
-                    authentication provider (among other authentication solutions) and also provides
-                    an implementation of a CAS server that integrates with Kuali Identity
+                    authentication provider (among other authentication solutions), and Kuali also
+                    provides an implementation of a CAS server that integrates with Kuali Identity
                     Management.</para>
             </glossdef>
         </glossentry>

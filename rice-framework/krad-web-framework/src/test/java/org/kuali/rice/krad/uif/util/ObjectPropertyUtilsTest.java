@@ -23,6 +23,9 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditorSupport;
 import java.io.Serializable;
@@ -40,6 +43,8 @@ import java.util.Map;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiPercent;
@@ -62,6 +67,7 @@ import org.kuali.rice.krad.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.kuali.rice.krad.web.bind.UifConfigurableWebBindingInitializer;
 import org.kuali.rice.krad.web.bind.UifServletRequestDataBinder;
@@ -731,16 +737,6 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
     // Classes used by testGetterInInterfaceOrSuperHasWiderType to check covariant return types on JDK6
 
-    // Holds a concrete superclass of KualiPercent
-    public interface KualiDecimalHolder {
-        KualiDecimal getDecimal();
-    }
-
-    // Holds an interface that is implemented by Integer
-    public interface ComparableHolder {
-        Comparable<?> getComparable();
-    }
-
     // Holds an abstract class that is extended by Integer
     public interface NumberHolder {
         Number getNumber();
@@ -776,6 +772,11 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
 
     }
 
+    // Holds an interface that is implemented by Integer
+    public interface ComparableHolder {
+        Comparable<?> getComparable();
+    }
+
     public class ComparableHolderImpl implements ComparableHolder {
         @Override
         public Integer getComparable() {
@@ -783,11 +784,24 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         }
     }
 
+    // Holds a concrete superclass of KualiPercent
+    public interface KualiDecimalHolder {
+        KualiDecimal getDecimal();
+    }
+
     public class KualiPercentHolder implements KualiDecimalHolder {
         @Override
         public KualiPercent getDecimal() {
             return new KualiPercent(1d);
         }
+    }
+
+    public class Base {
+        public Number getValue() { return null; }
+    }
+
+    public class Int extends Base {
+        public Integer getValue() { return Integer.valueOf(1); }
     }
 
     /**
@@ -806,26 +820,83 @@ public class ObjectPropertyUtilsTest extends ProcessLoggingUnitTest {
         Method readMethod = null;
 
         readMethod = ObjectPropertyUtils.getReadMethod(ComparableHolderImpl.class, "comparable");
+        //System.out.println(readMethod.getReturnType());
         assertEquals(Integer.class, readMethod.getReturnType());
 
         readMethod = ObjectPropertyUtils.getReadMethod(NumberedImplOne.class, "number");
+        //System.out.println(readMethod.getReturnType());
         assertEquals(Integer.class, readMethod.getReturnType());
 
         readMethod = ObjectPropertyUtils.getReadMethod(ConcreteNarrowedNumberHolder.class, "number");
+        //System.out.println(readMethod.getReturnType());
         assertEquals(Integer.class, readMethod.getReturnType());
 
         readMethod = ObjectPropertyUtils.getReadMethod(ConcreteNarrowedNumberHolderSub.class, "number");
+        //System.out.println(readMethod.getReturnType());
         assertEquals(Integer.class, readMethod.getReturnType());
 
         // This case is *not* covered by our workaround, and would fail w/ JDK 6 on Linux if enabled.
         // The interface has a concrete superclass, which will be returned in JDK6 on Linux where the
         // Method order returned by reflection on a class is different, and the Introspector isn't smart
         // enough to ask which Method return type is more specific.
-        readMethod = ObjectPropertyUtils.getReadMethod(KualiPercentHolder.class, "decimal");
+        for (int i = 0; i < 1; ++i) {
+            readMethod = ObjectPropertyUtils.getReadMethod(KualiPercentHolder.class, "decimal");
+            //System.out.println(readMethod.getReturnType());
+            //System.out.println(readMethod.getReturnType() == KualiDecimal.class);
+        }
 
         if (readMethod.getReturnType() == KualiDecimal.class) {
             LOG.info("I bet you're using JDK6 on Linux");
         }
+
+        //System.out.println("==============================================");
+        //System.out.println("ObjectPropertyUtils.getReadMethod(Base.class, \"value\")");
+        readMethod = ObjectPropertyUtils.getReadMethod(Base.class, "value");
+        //System.out.println(readMethod.getReturnType());
+        assertEquals(Number.class, readMethod.getReturnType());
+
+        //System.out.println("==============================================");
+        //System.out.println("ObjectPropertyUtils.getReadMethod(Int.class, \"value\")");
+        readMethod = ObjectPropertyUtils.getReadMethod(Int.class, "value");
+        //System.out.println(readMethod.getReturnType());
+        assertEquals(Integer.class, readMethod.getReturnType());
+
+        //        System.out.println("==============================================");
+        //        try {
+        //            // lookup bean info for given class
+        //            BeanInfo info = Introspector.getBeanInfo(Int.class);
+        //            if (info != null) {
+        //                // get list of descriptors and iterate to validate each property
+        //                PropertyDescriptor[] descriptors = info.getPropertyDescriptors();
+        //                for (int i = 0; i < descriptors.length; i++) {
+        //                    System.out.println("--------------------------");
+        //                    PropertyDescriptor descriptor = descriptors [i];
+        //                    System.out.println(descriptor.getName());
+        //
+        //                    // check if read method is bridge and lookup real method
+        //                    readMethod = descriptor.getReadMethod();
+        //                    System.out.println(readMethod.getReturnType());
+        //                    System.out.println("readMethod.isBridge()=>" + readMethod.isBridge());
+        //                    if (readMethod != null && readMethod.isBridge()) {
+        //                        Method method = Int.class.getMethod(readMethod.getName(), readMethod.getParameterTypes());
+        //                        System.out.println(method.getReturnType());
+        //
+        //                        // if method found, update read method
+        //                        // which also updates property type
+        //                        if (method != null) {
+        //                            descriptor.setReadMethod(method);
+        //
+        //                            // TODO: lookup write method with same type in case the write
+        //                            // method is the bridge method
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        } catch (IntrospectionException e) {
+        //            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        //        } catch (NoSuchMethodException e) {
+        //            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        //        }
 
         // Other cases to test if we have to refine this functionality:
         // * similar to the ConcreteNarrowedNumberHolder,

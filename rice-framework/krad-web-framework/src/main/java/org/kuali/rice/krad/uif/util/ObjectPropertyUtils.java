@@ -63,9 +63,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 public final class ObjectPropertyUtils {
     private static final Logger LOG = Logger.getLogger(ObjectPropertyUtils.class);
 
-    // enables a work-around that attempts to correct a platform difference
-    private static final boolean isJdk6 = System.getProperty("java.version").startsWith("1.6.");
-
     /**
      * Internal metadata cache.
      * 
@@ -106,8 +103,7 @@ public final class ObjectPropertyUtils {
         if (propertyDescriptor != null) {
             return propertyDescriptor;
         } else {
-            throw new IllegalArgumentException("Property " + propertyName
-                    + " not found for bean " + beanClass);
+            throw new IllegalArgumentException("Property " + propertyName + " not found for bean " + beanClass);
         }
     }
 
@@ -235,8 +231,7 @@ public final class ObjectPropertyUtils {
      * @param propertyType The return type of the read method on the property.
      * @return list of property names
      */
-    public static Set<String> getReadablePropertyNamesByType(
-            Object bean, Class<?> propertyType) {
+    public static Set<String> getReadablePropertyNamesByType(Object bean, Class<?> propertyType) {
         return getReadablePropertyNamesByType(bean.getClass(), propertyType);
     }
 
@@ -247,8 +242,7 @@ public final class ObjectPropertyUtils {
      * @param propertyType The return type of the read method on the property.
      * @return list of property names
      */
-    public static Set<String> getReadablePropertyNamesByType(
-            Class<?> beanClass, Class<?> propertyType) {
+    public static Set<String> getReadablePropertyNamesByType(Class<?> beanClass, Class<?> propertyType) {
         return getMetadata(beanClass).getReadablePropertyNamesByType(propertyType);
     }
 
@@ -259,8 +253,8 @@ public final class ObjectPropertyUtils {
      * @param annotationType The type of an annotation on the return type.
      * @return list of property names
      */
-    public static Set<String> getReadablePropertyNamesByAnnotationType(
-            Object bean, Class<? extends Annotation> annotationType) {
+    public static Set<String> getReadablePropertyNamesByAnnotationType(Object bean,
+            Class<? extends Annotation> annotationType) {
         return getReadablePropertyNamesByAnnotationType(bean.getClass(), annotationType);
     }
 
@@ -283,8 +277,7 @@ public final class ObjectPropertyUtils {
      * @param collectionType The type of elements in a collection or array.
      * @return list of property names
      */
-    public static Set<String> getReadablePropertyNamesByCollectionType(
-            Object bean, Class<?> collectionType) {
+    public static Set<String> getReadablePropertyNamesByCollectionType(Object bean, Class<?> collectionType) {
         return getReadablePropertyNamesByCollectionType(bean.getClass(), collectionType);
     }
 
@@ -305,8 +298,7 @@ public final class ObjectPropertyUtils {
      * @param collectionType The type of elements in a collection or array.
      * @return list of property names
      */
-    public static Set<String> getReadablePropertyNamesByCollectionType(
-            Class<?> beanClass, Class<?> collectionType) {
+    public static Set<String> getReadablePropertyNamesByCollectionType(Class<?> beanClass, Class<?> collectionType) {
         return getMetadata(beanClass).getReadablePropertyNamesByCollectionType(collectionType);
     }
 
@@ -387,22 +379,16 @@ public final class ObjectPropertyUtils {
     public static Class<?> getPrimitiveType(Class<?> type) {
         if (Byte.class.equals(type)) {
             return Byte.TYPE;
-
         } else if (Short.class.equals(type)) {
             return Short.TYPE;
-
         } else if (Integer.class.equals(type)) {
             return Integer.TYPE;
-
         } else if (Long.class.equals(type)) {
             return Long.TYPE;
-
         } else if (Boolean.class.equals(type)) {
             return Boolean.TYPE;
-
         } else if (Float.class.equals(type)) {
             return Float.TYPE;
-
         } else if (Double.class.equals(type)) {
             return Double.TYPE;
         }
@@ -955,8 +941,7 @@ public final class ObjectPropertyUtils {
                     + Character.toUpperCase(propertyName.charAt(0))
                     + propertyName.substring(1));
             
-            if (readMethod.getReturnType() == Boolean.class
-                    || readMethod.getReturnType() == Boolean.TYPE) {
+            if (readMethod.getReturnType() == Boolean.class || readMethod.getReturnType() == Boolean.TYPE) {
                 return readMethod;
             }
         } catch (SecurityException e) {
@@ -1035,8 +1020,7 @@ public final class ObjectPropertyUtils {
          * @param annotationType The type of an annotation on the return type.
          * @return list of property names
          */
-        private Set<String> getReadablePropertyNamesByAnnotationType(
-                Class<? extends Annotation> annotationType) {
+        private Set<String> getReadablePropertyNamesByAnnotationType(Class<? extends Annotation> annotationType) {
             Set<String> propertyNames = readablePropertyNamesByAnnotationType.get(annotationType);
             if (propertyNames != null) {
                 return propertyNames;
@@ -1076,8 +1060,7 @@ public final class ObjectPropertyUtils {
                 }
                 
                 Class<?> propertyClass = readMethod.getReturnType();
-                if (propertyClass.isArray() &&
-                        collectionType.isAssignableFrom(propertyClass.getComponentType())) {
+                if (propertyClass.isArray() && collectionType.isAssignableFrom(propertyClass.getComponentType())) {
                     propertyNames.add(readMethodEntry.getKey());
                     continue;
                 }
@@ -1148,8 +1131,7 @@ public final class ObjectPropertyUtils {
             try {
                 beanInfo = Introspector.getBeanInfo(beanClass);
             } catch (IntrospectionException e) {
-                LOG.warn(
-                        "Bean Info not found for bean " + beanClass, e);
+                LOG.warn("Bean Info not found for bean " + beanClass, e);
                 beanInfo = null;
             }
 
@@ -1158,8 +1140,7 @@ public final class ObjectPropertyUtils {
             Map<String, Method> mutableWriteMethodMap = new LinkedHashMap<String, Method>();
 
             if (beanInfo != null) {
-                for (PropertyDescriptor propertyDescriptor : beanInfo
-                        .getPropertyDescriptors()) {
+                for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
                     String propertyName = propertyDescriptor.getName();
 
                     mutablePropertyDescriptorMap.put(propertyName, propertyDescriptor);
@@ -1168,8 +1149,8 @@ public final class ObjectPropertyUtils {
                         readMethod = getReadMethodByName(beanClass, propertyName);
                     }
 
-                    // working around a JDK6 Introspector bug WRT covariance, see KULRICE-12334
-                    if (isJdk6) {
+                    // checking for bridge methods http://www.znetdevelopment.com/blogs/2012/04/11/java-bean-introspector-and-covariantgeneric-returns/
+                    if (readMethod != null && readMethod.isBridge()) {
                         readMethod = getCorrectedReadMethod(beanClass, readMethod);
                     }
 
@@ -1181,8 +1162,6 @@ public final class ObjectPropertyUtils {
                     mutableWriteMethodMap.put(propertyName, writeMethod);
                 }
             }
-
-
 
             propertyDescriptors = Collections.unmodifiableMap(mutablePropertyDescriptorMap);
             readMethods = Collections.unmodifiableMap(mutableReadMethodMap);
@@ -1202,8 +1181,9 @@ public final class ObjectPropertyUtils {
          * @return the corrected read Method
          */
         private Method getCorrectedReadMethod(Class<?> beanClass, Method readMethod) {
-            if (readMethod != null && !readMethod.getReturnType().isPrimitive() &&
-                    isAbstractClassOrInterface(readMethod.getReturnType())) {
+            if (readMethod != null
+                    && !readMethod.getReturnType().isPrimitive()
+                    && isAbstractClassOrInterface(readMethod.getReturnType())) {
 
                 Method implReadMethod = null;
 
@@ -1214,7 +1194,7 @@ public final class ObjectPropertyUtils {
                 }
 
                 if (implReadMethod != null && isSubClass(implReadMethod.getReturnType(), readMethod.getReturnType())) {
-                        return implReadMethod;
+                    return implReadMethod;
                 }
             }
 
@@ -1229,8 +1209,7 @@ public final class ObjectPropertyUtils {
         // we assume non-null args
         private boolean isSubClass(Class<?> childClassCandidate, Class<?> parentClassCandidate) {
             // if A != B and A >= B then A > B
-            return parentClassCandidate != childClassCandidate &&
-                    parentClassCandidate.isAssignableFrom(childClassCandidate);
+            return parentClassCandidate != childClassCandidate && parentClassCandidate.isAssignableFrom(childClassCandidate);
         }
     }
 }

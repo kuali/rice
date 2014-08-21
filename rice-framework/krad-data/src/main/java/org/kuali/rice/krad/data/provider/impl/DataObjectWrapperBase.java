@@ -15,12 +15,24 @@
  */
 package org.kuali.rice.krad.data.provider.impl;
 
-import com.google.common.collect.Sets;
+import java.beans.PropertyDescriptor;
+import java.beans.PropertyEditor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.MaterializeOption;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectCollection;
@@ -42,16 +54,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 
-import java.beans.PropertyDescriptor;
-import java.beans.PropertyEditor;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.google.common.collect.Sets;
 
 /**
  * The base implementation of {@link DataObjectWrapper}.
@@ -801,13 +804,124 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
     }
 
     /**
-     * Links foreign keys non-recursively using the relationship with the given name on the wrapped data object.
-     *
-     * @param wrapped the wrapped object to link.
-     * @param relationship the relationship on the wrapped data object for which to link foreign keys.
-     * @param relationshipValue the value of the relationship.
-     * @param onlyLinkReadOnly indicates whether or not only read-only foreign keys should be linked.
-     */
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void materializeReferencedObjects(MaterializeOption... options) {
+		materializeReferencedObjectsToDepth(1, options);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void materializeReferencedObjectsToDepth(int maxDepth, MaterializeOption... options) {
+		boolean setInvalidRefsToNull = ArrayUtils.contains(options, MaterializeOption.NULL_INVALID_REFS);
+		Collection<MetadataChild> matchingChildRelationships = getChildrenMatchingOptions(options);
+
+		for (MetadataChild child : matchingChildRelationships) {
+			fetchRelationship(child, true, setInvalidRefsToNull);
+			// No need to look at children if we will not be recursing
+			if (maxDepth > 1) {
+				Object childValue = getPropertyValue(child.getName());
+				if (childValue != null) {
+					if (!(childValue instanceof Collection)) {
+						DataObjectWrapper<Object> childWrapper = dataObjectService.wrap(childValue);
+						// we can not proceed if the child object has no metadata
+						if (childWrapper.getMetadata() != null) {
+							childWrapper.materializeReferencedObjectsToDepth(maxDepth - 1, options);
+						}
+					} else { // Collection objects
+						// we must retrieve the list and materialize each one of them
+						for (Object collectionElement : (Collection<?>) childValue) {
+							DataObjectWrapper<Object> childWrapper = dataObjectService.wrap(collectionElement);
+							// we can not proceed if the child object has no metadata
+							if (childWrapper.getMetadata() != null) {
+								childWrapper.materializeReferencedObjectsToDepth(maxDepth - 1, options);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * This method retrieves the {@link MetadataChild} objects ({@link DataObjectRelationship} or
+	 * {@link DataObjectCollection}) which match the given {@link MaterializeOption} options.
+	 * 
+	 * It utilizes the known information in the {@link DataObjectMetadata} and compares the flags there with the options
+	 * given.
+	 * 
+	 * If no options are given, this method will return all {@link DataObjectRelationship} and
+	 * {@link DataObjectCollection} objects which are not updatable (not {@link MetadataChild#isSavedWithParent()}) and
+	 * are lazily loaded ({@link MetadataChild#isLoadedDynamicallyUponUse()}).
+	 * 
+	 * @param options
+	 *            An optional list of {@link MaterializeOption} objects to alter the default behavior.
+	 * @return A non-null collection of {@link MetadataChild} objects matching the given parameters.
+	 */
+	public Collection<MetadataChild> getChildrenMatchingOptions(MaterializeOption... options) {
+		Collection<MetadataChild> matchingChildren = new ArrayList<>();
+		boolean materializeUpdatable = ArrayUtils.contains(options, MaterializeOption.UPDATE_UPDATABLE_REFS);
+		boolean rematerializeEagerRefs = ArrayUtils.contains(options, MaterializeOption.INCLUDE_EAGER_REFS);
+		// we include relationships IF it's explicitly specified *OR* neither was specified
+		boolean includeRelationships = ArrayUtils.contains(options, MaterializeOption.REFERENCES)
+				|| !ArrayUtils.contains(options, MaterializeOption.COLLECTIONS);
+		boolean includeCollections = ArrayUtils.contains(options, MaterializeOption.COLLECTIONS)
+				|| !ArrayUtils.contains(options, MaterializeOption.REFERENCES);
+
+		if (includeRelationships) {
+			for (DataObjectRelationship rel : metadata.getRelationships()) {
+				// avoiding lots of nesting and combined logic by filtering out each invalid combination
+
+				// updatable reference
+				if (rel.isSavedWithParent() && !materializeUpdatable) {
+					continue;
+				}
+
+				// eagerly loaded reference
+				if (rel.isLoadedAtParentLoadTime() && !rematerializeEagerRefs) {
+					continue;
+				}
+
+				matchingChildren.add(rel);
+			}
+		}
+
+		if (includeCollections) {
+			for (DataObjectCollection rel : metadata.getCollections()) {
+				// avoiding lots of nesting and combined logic by filtering out each invalid combination
+
+				// updatable reference
+				if (rel.isSavedWithParent() && !materializeUpdatable) {
+					continue;
+				}
+
+				// eagerly loaded reference
+				if (rel.isLoadedAtParentLoadTime() && !rematerializeEagerRefs) {
+					continue;
+				}
+
+				matchingChildren.add(rel);
+			}
+		}
+
+		return matchingChildren;
+	}
+
+	/**
+	 * Links foreign keys non-recursively using the relationship with the given name on the wrapped data object.
+	 * 
+	 * @param wrapped
+	 *            the wrapped object to link.
+	 * @param relationship
+	 *            the relationship on the wrapped data object for which to link foreign keys.
+	 * @param relationshipValue
+	 *            the value of the relationship.
+	 * @param onlyLinkReadOnly
+	 *            indicates whether or not only read-only foreign keys should be linked.
+	 */
     protected void linkForeignKeysInternal(DataObjectWrapper<?> wrapped, MetadataChild relationship,
             Object relationshipValue, boolean onlyLinkReadOnly) {
         if (!relationship.getAttributeRelationships().isEmpty()) {

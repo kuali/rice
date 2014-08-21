@@ -32,6 +32,7 @@ import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
+import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.exception.ClassNotPersistableException;
 import org.kuali.rice.krad.maintenance.MaintenanceUtils;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -39,6 +40,7 @@ import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.service.PersistenceStructureService;
 
 import javax.persistence.EntityNotFoundException;
+
 import java.beans.PropertyDescriptor;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -696,7 +698,10 @@ public final class ObjectUtils {
      * @throws IllegalAccessException
      * @throws InvocationTargetException
      * @throws NoSuchMethodException
+     * 
+     * @deprecated Replaced by {@link DataObjectWrapper#materializeReferencedObjects(org.kuali.rice.krad.data.MaterializeOption...)}
      */
+    @Deprecated
     public static void materializeUpdateableCollections(
             Object bo) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         if (isNotNull(bo)) {
@@ -1005,7 +1010,10 @@ public final class ObjectUtils {
      * @param depth int Value 0-5 indicating how deep to recurse the materialization. If a zero (0) is passed in, then
      * no work will
      * be done.
+     * 
+     * @deprecated Replaced by {@link DataObjectWrapper#materializeReferencedObjectsToDepth(int, org.kuali.rice.krad.data.MaterializeOption...)}
      */
+    @Deprecated
     public static void materializeSubObjectsToDepth(PersistableBusinessObject bo, int depth) {
         if (bo == null) {
             throw new IllegalArgumentException("The bo passed in was null.");
@@ -1093,7 +1101,10 @@ public final class ObjectUtils {
      *
      * @param bo A valid, populated BusinessObject containing (possibly) proxied sub-objects. This object will be
      * modified in place.
+     * 
+     * @deprecated Replaced by {@link DataObjectWrapper#materializeReferencedObjectsToDepth(int, org.kuali.rice.krad.data.MaterializeOption...)}
      */
+    @Deprecated
     public static void materializeAllSubObjects(PersistableBusinessObject bo) {
         materializeSubObjectsToDepth(bo, 3);
     }

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.krad.data;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.dao.DataAccessException;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Wraps a data object and it's associated metadata. Provides additional utility methods to access portions of the data
@@ -275,4 +275,45 @@ public interface DataObjectWrapper<T> extends BeanWrapper {
      */
     void fetchRelationship(String relationshipName, boolean useForeignKeyAttribute, boolean nullifyDanglingRelationship);
 
+	/**
+	 * Fetches and populates referenced objects within the wrapped object. See {@link #fetchRelationship(String)} for
+	 * details on how the relationships will be fetched.
+	 * 
+	 * By default, this method will go through and instantiate all lazy-loaded, non-persisted-with-parent reference
+	 * objects and collections on the master object. See {@link MaterializeOption} for the available options.
+	 * 
+	 * This method does <b>not</b> recurse into child objects. For that, use the
+	 * {@link #materializeReferencedObjectsToDepth(int, MaterializeOption...)} method.
+	 * 
+	 * @see #fetchRelationship(String)
+	 * @see MaterializeOption
+	 * 
+	 * @param options
+	 *            An optional list of {@link MaterializeOption} objects which may adjust the behavior of this method.
+	 * 
+	 * @throws DataAccessException
+	 *             if there is a data access problem when attempting to refresh the relationship
+	 */
+	void materializeReferencedObjects(MaterializeOption... options);
+
+	/**
+	 * Fetches and populates referenced objects within the wrapped object. See {@link #fetchRelationship(String)} for
+	 * details on how the relationships will be fetched.
+	 * 
+	 * By default, this method will go through and instantiate all lazy-loaded, non-persisted-with-parent reference
+	 * objects and collections on the master object. See {@link MaterializeOption} for the available options.
+	 * 
+	 * @see #fetchRelationship(String)
+	 * @see MaterializeOption
+	 * 
+	 * @param maxDepth
+	 *            The number of levels of child objects to refresh. A value of 1 will only materialize the child object
+	 *            on the wrapped object.
+	 * @param options
+	 *            An optional list of {@link MaterializeOption} objects which may adjust the behavior of this method.
+	 * 
+	 * @throws DataAccessException
+	 *             if there is a data access problem when attempting to refresh the relationship
+	 */
+	void materializeReferencedObjectsToDepth(int maxDepth, MaterializeOption... options);
 }

@@ -16,13 +16,12 @@
 package edu.sampleu.travel;
 
 import org.kuali.rice.krad.document.TransactionalDocumentControllerBase;
-import org.kuali.rice.krad.web.form.DialogResponse;
-import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * Controller for the {@link edu.sampleu.travel.dataobject.TravelAuthorizationDocument}.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
@@ -34,22 +33,4 @@ public class TravelAuthorizationController extends TransactionalDocumentControll
         return new TravelAuthorizationForm();
     }
 
-    /**
-     * Showcase the dialog feature by confirming with the user that he really wants to route the document.
-     */
-    @Override
-    public ModelAndView route(DocumentFormBase form) {
-        String dialog = "TravelAuthorization-RouteConfirmationDialog";
-        DialogResponse routeConfirmDialog = form.getDialogResponse(dialog);
-        if (routeConfirmDialog == null) {
-            return showDialog(dialog, true, form);
-        }
-
-        boolean dialogAnswer = routeConfirmDialog.getResponseAsBoolean();
-        if (dialogAnswer) {
-            return super.route(form);
-        }
-
-        return getModelAndView(form);
-    }
 }

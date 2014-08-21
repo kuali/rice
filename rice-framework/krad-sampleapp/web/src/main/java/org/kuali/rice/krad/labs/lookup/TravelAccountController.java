@@ -34,7 +34,7 @@ public class TravelAccountController extends MaintenanceDocumentController {
      */
     @Override
     public ModelAndView route(DocumentFormBase form) {
-        String dialog = "TravelAuthorization-RouteConfirmationDialog";
+        String dialog = "TravelAccount-RouteConfirmationDialog";
         DialogResponse routeConfirmDialog = form.getDialogResponse(dialog);
         if (routeConfirmDialog == null) {
             return showDialog(dialog, true, form);

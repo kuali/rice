@@ -48,8 +48,7 @@ public class DemoWidgetsGrowlAft extends DemoLibraryBase {
         //create growl
         waitAndClickButtonByText("Growl");
 
-        //give it a second to display
-        Thread.sleep(1000);
+        waitForProgressLoading();
 
         // get growl text
         String growlText = findElement(By.className("jGrowl-message")).getText();

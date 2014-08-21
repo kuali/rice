@@ -55,9 +55,6 @@ public class DemoClientResponsivenessInlineEditingAft extends WebDriverLegacyITB
 //    	testClientResponsivenessInlineEditTextFieldWithComplexMarkUp();   Need to fix this from developement side
     	testClientResponsivenessInlineEditTextFieldViaAjax();
     	testClientResponsivenessInlineEditTextArea();
-    	testClientResponsivenessInlineEditSelect();
-    	testClientResponsivenessInlineEditPopoverWidget();
-    	testClientResponsivenessInlineEditDisclosureWidget();
     	testClientResponsivenessInlineEditTableCollection();
     	testClientResponsivenessInlineEditLabelColumnCollectionGrid();
     }
@@ -241,5 +238,35 @@ public class DemoClientResponsivenessInlineEditingAft extends WebDriverLegacyITB
     public void testClientResponsivenessComponentRefreshNav() throws Exception {
         testClientResponsivenessInlineEditing();
         passed();
+    }
+
+    @Test
+    public void testClientResponsivenessInlineEditDisclosureWidgetBookmark() throws Exception {
+        testClientResponsivenessInlineEditDisclosureWidget();
+    }
+
+    @Test
+    public void testClientResponsivenessInlineEditDisclosureWidgetNav() throws Exception {
+        testClientResponsivenessInlineEditDisclosureWidget();
+    }
+
+    @Test
+    public void testClientResponsivenessInlineEditSelectBookmark() throws Exception {
+        testClientResponsivenessInlineEditSelect();
+    }
+
+    @Test
+    public void testClientResponsivenessInlineEditSelectNav() throws Exception {
+        testClientResponsivenessInlineEditSelect();
+    }
+
+    @Test
+    public void testClientResponsivenessInlineEditPopoverWidgetBookmark() throws Exception {
+        testClientResponsivenessInlineEditPopoverWidget();
+    }
+
+    @Test
+    public void testClientResponsivenessInlineEditPopoverWidgetNav() throws Exception {
+        testClientResponsivenessInlineEditPopoverWidget();
     }
 }

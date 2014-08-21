@@ -55,7 +55,7 @@ public class LabsMultiFileUploadBasic1Aft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickByLinkText("MultiFile Upload Basic 1");
+    	waitAndClickByLinkText("MultiFile Upload - Basic");
     }
 
     protected void testMultiFileUploadBasic1() throws Exception {

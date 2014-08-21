@@ -45,34 +45,62 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
 
     protected void testClientResponsivenessAjaxFieldQuery() throws Exception {
     	waitAndClickByLinkText("Ajax Field Query");
-    	waitForElementPresentByXpath("//input[@name='inputField3' and @value='a1']");
-        clickAndTabByName("inputField3");
+        waitForElementPresentByXpath("//input[@name='inputField3' and @value='a1']");
+        clearTypeAndTabByName("inputField3", "a1");
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(2000);
+            if (isTextPresent("Travel Account 1")) {
+                break;
+            } else {
+                clearTypeAndTabByName("inputField3", "a1");            }
+        }
         assertTextPresent(new String[] {"Travel Account 1", "fred"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethod() throws Exception {
         waitAndClickByLinkText("Ajax Field Query Custom Method");
-    	waitForElementPresentByXpath("//input[@name='inputField6' and @value='a2']");
-        clickAndTabByName("inputField6");
+        waitForElementPresentByXpath("//input[@name='inputField6' and @value='a2']");
+        clearTypeAndTabByName("inputField6", "a2");
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(2000);
+            if (isTextPresent("Travel Account 2")) {
+                break;
+            } else {
+                clearTypeAndTabByName("inputField6", "a2");
+            }
+        }
         assertTextPresent(new String[] {"Travel Account 2", "fran"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethodAndService() throws Exception {
         waitAndClickByLinkText("Ajax Field Query Custom Method and Service");
     	waitForElementPresentByXpath("//input[@name='inputField9' and @value='a3']");
-        clickAndTabByName("inputField9");
+        clearTypeAndTabByName("inputField9", "a3");
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(2000);
+            if (isTextPresent("Travel Account 3")) {
+                break;
+            } else {
+                clearTypeAndTabByName("inputField9", "a3");
+            }
+        }
         assertTextPresent(new String[]{"Travel Account 3", "frank"});
     }
 
     /**
-     * focus, blur seem real flaky on xvfb, maybe click and tab will be better
+     * focus, blur seem real flaky on xvfb, maybe clear, enter value, and tab will be better
+     *
      * @param name
+     * @param value
+     *
      * @throws InterruptedException
      */
-    private void clickAndTabByName(String name) throws InterruptedException {
-        waitAndClickByName(name);
+    private void clearTypeAndTabByName(String name, String value) throws InterruptedException {
+        clearTextByName(name);
+        waitAndTypeByName(name, value);
+        assertTextPresent(value);
         jGrowl("Press Tab key");
-        driver.switchTo().activeElement().sendKeys(Keys.TAB); // update to call typeTab() in 2.5+
+        driver.switchTo().activeElement().sendKeys(Keys.TAB); // update to call typeTab() in 2.5
     }
 
     @Test

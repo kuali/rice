@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
- * Old rice sampleapp AFT code.  New KRAD sampleapp AFT code should go in WebDriverAftBase (or maybe KradAftBase in the future).
+ * Old rice sampleapp AFT code.  New KRAD AFT code should go in WebDriverAftBase (or maybe KradAftBase in the future).
  * </p>
  * <p>
  * Originally used to upgrade UpgradedSeleniumITBase (Selenium 1.0) tests to WebDriver (Selenium 2.0).  Now there is

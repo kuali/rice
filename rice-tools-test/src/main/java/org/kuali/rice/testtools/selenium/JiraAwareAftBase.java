@@ -28,6 +28,7 @@ import java.util.List;
  * <p>
  * Jira Aware Automated Functional Test Base.
  * </p><p>
+ *     <img src="https://wiki.kuali.org/download/attachments/330268881/JiraAwareFailure.png"/>
  * <ul>
  *     <li>{@see JiraAwareWebDriverUtils}</li>
  *     <li>{@see JiraAwareFailable}</li>

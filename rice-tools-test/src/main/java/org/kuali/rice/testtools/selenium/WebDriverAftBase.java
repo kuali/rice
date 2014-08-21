@@ -48,7 +48,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Ideally the AFT code here should be generic for KRAD AFT testing and not specific to KRAD sampleapp testing.  The idea
  * being that code in this class should be generic enough to be useful to other projects using and testing KRAD without having
- * to pull in code to specific to the KRAD sampleapp.
+ * to pull in code to specific to the KRAD sampleapp.  KRAD sampleapp specific code should go in WebDriverLegacyITBase.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -574,7 +574,6 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void determineJgrowlHeader() {
         jGrowlHeader = getClass().getSimpleName() + "." + testMethodName;
-        System.out.println(jGrowlHeader + " sessionId is " + sessionId);
     }
 
     protected String determinePage() {
@@ -1249,6 +1248,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 //            closeAllOtherWindows(oneBrowser); // close all others than one browser
 
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
+            System.out.println(jGrowlHeader + " sessionId is " + sessionId);
 
 //            if (isVisible(By.name("login_user"))) { // one browser
                 login(driver, getUserName(), this);

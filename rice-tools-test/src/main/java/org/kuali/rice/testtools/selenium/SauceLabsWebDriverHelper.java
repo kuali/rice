@@ -320,6 +320,8 @@ public class SauceLabsWebDriverHelper implements SauceOnDemandSessionIdProvider 
                 new URL("http://" + authentication.getUsername() + ":" + authentication.getAccessKey() + "@ondemand.saucelabs.com:80/wd/hub"),
                 capabilities);
         this.sessionId = ((RemoteWebDriver)driver).getSessionId().toString();
+
+        System.out.println("SauceLabs job can be viewed at https://saucelabs.com/jobs/" + this.sessionId);
     }
 
     private void downloadResults(String className, String testName) {

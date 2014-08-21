@@ -137,6 +137,8 @@ public class KradLabsForm extends UifFormBase {
     private List<FileMeta> files = new ArrayList<FileMeta>();
     private List<FileWithDetails> files2 = new ArrayList<FileWithDetails>();
 
+    private String backdoorId;
+
     public KradLabsForm() {
         super();
 
@@ -974,6 +976,14 @@ public class KradLabsForm extends UifFormBase {
         this.files2 = files2;
     }
 
+    public String getBackdoorId() {
+        return backdoorId;
+    }
+
+    public void setBackdoorId(String backdoorId) {
+        this.backdoorId = backdoorId;
+    }
+
     public List<FileMetaBlob> getFiles(String propertyPath) {
         System.out.println("KradLabsForm, get files => " + propertyPath);
         List<FileMetaBlob> returnObjects = new ArrayList<FileMetaBlob>();
@@ -983,6 +993,7 @@ public class KradLabsForm extends UifFormBase {
         fakeFile.setName(propertyPath + "_fakeName1.png");
         fakeFile.setSize(5000000L);
         fakeFile.setDateUploaded(new Date());
+
         returnObjects.add(fakeFile);
 
         fakeFile = new FileMetaBlob();

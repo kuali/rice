@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.omg.CORBA.Request;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
@@ -55,7 +56,7 @@ import java.util.Set;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UifViewBeanWrapper extends BeanWrapperImpl {
+public class UifViewBeanWrapper extends UifBeanWrapper {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifViewBeanWrapper.class);
 
     // this stores all properties this wrapper has already checked
@@ -71,6 +72,49 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         this.processedProperties = new HashSet<String>();
     }
 
+//    /**
+//     * {@inheritDoc}
+//     */
+//    @Override
+//    public Class<?> getPropertyType(String propertyName) throws BeansException {
+//        try {
+//            PropertyDescriptor pd = getPropertyDescriptorInternal(propertyName);
+//            if (pd != null) {
+//                return pd.getPropertyType();
+//            }
+//
+//            // Maybe an indexed/mapped property...
+//            Object value = super.getPropertyValue(propertyName);
+//            if (value != null) {
+//                return value.getClass();
+//            }
+//
+//            // Check to see if there is a custom editor,
+//            // which might give an indication on the desired target type.
+//            Class<?> editorType = guessPropertyTypeFromEditors(propertyName);
+//            if (editorType != null) {
+//                return editorType;
+//            }
+//        } catch (InvalidPropertyException ex) {
+//            // Consider as not determinable.
+//        }
+//
+//        return null;
+//    }
+
+
+    /**
+     * Override to register property editors from the view before the value is retrieved.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object getPropertyValue(String propertyName, boolean autoGrowNestedPaths) {
+        registerEditorFromView(propertyName);
+
+        return super.getPropertyValue(propertyName, autoGrowNestedPaths);
+    }
+
     /**
      * Attempts to find a corresponding data field for the given property name in the current view or previous view,
      * then if the field has a property editor configured it is registered with the property editor registry to use
@@ -78,14 +122,14 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
      *
      * @param propertyName name of the property to find field and editor for
      */
-    private void registerEditorFromView(String propertyName) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Attempting to find property editor for property '" + propertyName + "'");
-        }
-
+    protected void registerEditorFromView(String propertyName) {
         // check if we already processed this property for this BeanWrapper instance
         if (processedProperties.contains(propertyName)) {
             return;
+        }
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Attempting to find property editor for property '" + propertyName + "'");
         }
 
         ViewPostMetadata viewPostMetadata = ((ViewModel) getWrappedInstance()).getViewPostMetadata();
@@ -99,126 +143,6 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         }
 
         processedProperties.add(propertyName);
-    }
-
-    /**
-     * Finds a property editor for the given propert name, checking for a custom registered editor and editors
-     * by type.
-     *
-     * @param propertyName name of the property to get editor for
-     * @return property editor instance
-     */
-    protected PropertyEditor findEditorForPropertyName(String propertyName) {
-        Class<?> clazz = getPropertyType(propertyName);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Attempting retrieval of property editor using class '"
-                    + clazz
-                    + "' and property path '"
-                    + propertyName
-                    + "'");
-        }
-
-        PropertyEditor editor = findCustomEditor(clazz, propertyName);
-        if (editor == null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("No custom property editor found using class '"
-                        + clazz
-                        + "' and property path '"
-                        + propertyName
-                        + "'. Attempting to find default property editor class.");
-            }
-            editor = getDefaultEditor(clazz);
-        }
-
-        return editor;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Class<?> getPropertyType(String propertyName) throws BeansException {
-        try {
-            PropertyDescriptor pd = getPropertyDescriptorInternal(propertyName);
-            if (pd != null) {
-                return pd.getPropertyType();
-            }
-
-            // Maybe an indexed/mapped property...
-            Object value = super.getPropertyValue(propertyName);
-            if (value != null) {
-                return value.getClass();
-            }
-
-            // Check to see if there is a custom editor,
-            // which might give an indication on the desired target type.
-            Class<?> editorType = guessPropertyTypeFromEditors(propertyName);
-            if (editorType != null) {
-                return editorType;
-            }
-        } catch (InvalidPropertyException ex) {
-            // Consider as not determinable.
-        }
-
-        return null;
-    }
-
-    /**
-     * Overridden to copy property editor registration to the new bean wrapper.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    protected BeanWrapperImpl getBeanWrapperForPropertyPath(String propertyPath) {
-        BeanWrapperImpl beanWrapper = super.getBeanWrapperForPropertyPath(propertyPath);
-
-        PropertyTokenHolder tokens = getPropertyNameTokens(propertyPath);
-        String canonicalName = tokens.canonicalName;
-
-        int pos = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(canonicalName);
-        if (pos != -1) {
-            canonicalName = canonicalName.substring(0, pos);
-        }
-
-        copyCustomEditorsTo(beanWrapper, canonicalName);
-
-        return beanWrapper;
-    }
-
-    /**
-     * Overridden to register any property editor for the property before the value is pulled.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getPropertyValue(String propertyName) throws BeansException {
-         return getPropertyValue(propertyName, false);
-    }
-
-    /**
-     * Returns the value for the given property growing nested paths depending on the parameter.
-     *
-     * @param propertyName name of the property to get value for
-     * @param autoGrowNestedPaths whether nested paths should be grown (initialized if null)
-     * @return value for property
-     */
-    protected Object getPropertyValue(String propertyName, boolean autoGrowNestedPaths) {
-        registerEditorFromView(propertyName);
-
-        setAutoGrowNestedPaths(autoGrowNestedPaths);
-
-        Object value = null;
-        try {
-            value = super.getPropertyValue(propertyName);
-        } catch (NullValueInNestedPathException e) {
-            // swallow null values in path and return null as the value
-        } catch (InvalidPropertyException e1) {
-            if (!(e1.getRootCause() instanceof NullValueInNestedPathException)) {
-                throw e1;
-            }
-        }
-
-        return value;
     }
 
     /**
@@ -254,10 +178,6 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
                 originalValueSaved = false;
             }
         }
-
-        // since auto grows is explicity turned off for get, we need to turn it on for set (so our objects
-        // will grow if necessary for user entered data)
-        setAutoGrowNestedPaths(true);
 
         // set the actual property value
         super.setPropertyValue(pv);
@@ -305,8 +225,6 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
             // the property value changed or not
             originalValueSaved = false;
         }
-
-        setAutoGrowNestedPaths(true);
 
         // set the actual property value
         super.setPropertyValue(propertyName, value);
@@ -544,8 +462,7 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         try {
             beanWrapper = getBeanWrapperForPropertyPath(propertyPath);
         } catch (NotReadablePropertyException | NullValueInNestedPathException e) {
-            LOG.debug("Bean wrapper was not found for "
-                    + propertyPath
+            LOG.debug("Bean wrapper was not found for " + propertyPath
                     + ", but since it cannot be accessed it will not be set as secure.", e);
             return false;
         }
@@ -559,6 +476,32 @@ public class UifViewBeanWrapper extends BeanWrapperImpl {
         }
 
         return false;
+    }
+
+    /**
+     * Overridden to copy property editor registration to the new bean wrapper.
+     *
+     * <p>This is necessary because spring only copies over the editors when a new bean wrapper is
+     * created. The wrapper is then cached and use for subsequent calls. But the get calls could bring in
+     * new custom editors we need to copy.</p>
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    protected BeanWrapperImpl getBeanWrapperForPropertyPath(String propertyPath) {
+        BeanWrapperImpl beanWrapper = super.getBeanWrapperForPropertyPath(propertyPath);
+
+        PropertyTokenHolder tokens = getPropertyNameTokens(propertyPath);
+        String canonicalName = tokens.canonicalName;
+
+        int pos = PropertyAccessorUtils.getFirstNestedPropertySeparatorIndex(canonicalName);
+        if (pos != -1) {
+            canonicalName = canonicalName.substring(0, pos);
+        }
+
+        copyCustomEditorsTo(beanWrapper, canonicalName);
+
+        return beanWrapper;
     }
 
     /**

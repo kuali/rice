@@ -51,7 +51,8 @@ public class LabsMaintenanceCopyLinkOnSearchResultAft extends LabsMaintenanceBas
         }
         waitAndTypeByName("document.documentHeader.documentDescription","copy testing");
         waitAndClickSubmitByText();
-        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
+        waitAndClickConfirmationOk();
+        waitForProgressLoading();
         waitForTextPresent("Document was successfully submitted.");
         open(getBaseUrlString()+BOOKMARK_URL);
         waitAndClickByLinkText("Travel Company Maintenance Sample - Copy from Search Result");

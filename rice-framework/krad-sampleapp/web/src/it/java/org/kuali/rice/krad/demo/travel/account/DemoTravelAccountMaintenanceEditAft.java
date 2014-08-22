@@ -144,6 +144,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         //click on confirmation message
         waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
         acceptAlertIfPresent();
+        waitForProgressLoading();
         checkForDocErrorKrad();
         waitAndClickDemoLink();
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");

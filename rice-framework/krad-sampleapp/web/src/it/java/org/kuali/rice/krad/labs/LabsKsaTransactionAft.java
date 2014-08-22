@@ -17,6 +17,7 @@ package org.kuali.rice.krad.labs;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.Keys;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -39,16 +40,30 @@ public class LabsKsaTransactionAft extends WebDriverLegacyITBase {
     }
 
     protected void testKsaTransaction() throws InterruptedException {
-    	waitAndTypeByName("testField","a");
-    	assertTextPresent("Charges");
-        jGrowl("Click Delete and Quickly click expansion");
+        jGrowl("Expanding First row");
+        waitAndClickById("rollupList1_detLink_line0");
+        waitForTextPresent("Transactions");
+
+        jGrowl("Clicking Delete");
         waitAndClickById("rollupList1_del_line0");
-    	waitAndClickByXpath("//img[@class='actionImage leftActionImage uif-image']");
-        checkForIncidentReport(); // there is a history of getting freemarker exceptions here that don't prevent the test from continuing    	assertTextPresent("Deleting Line");
-        jGrowl("Click Delete");
-        waitAndClickById("rollupList1_detLink_line1");
-        checkForIncidentReport(); // there is a history of getting freemarker exceptions here that don't prevent the test from continuing    	assertTextPresent("Deleting Line");
         waitForTextPresent("You have deleted an item from Roll-Up");
+
+        waitAndTypeByName("testField", "a");
+        typeTab();
+        waitForTextNotPresent("You have deleted an item from Roll-Up");
+        
+    	//waitAndTypeByName("testField","a");
+    	//assertTextPresent("Charges");
+        //jGrowl("Click Delete");
+        //waitAndClickById("rollupList1_del_line0");
+        //waitForTextPresent("You have deleted an item from Roll-Up");
+        //jGrowl("Expand first row");
+    	//waitAndClickByXpath("//img[@class='actionImage leftActionImage uif-image']");
+        //checkForIncidentReport(); // there is a history of getting freemarker exceptions here that don't prevent the test from continuing    	assertTextPresent("Deleting Line");
+        //jGrowl("Click Delete");
+        //waitAndClickById("rollupList1_detLink_line1");
+        //checkForIncidentReport(); // there is a history of getting freemarker exceptions here that don't prevent the test from continuing    	assertTextPresent("Deleting Line");
+        //waitForTextPresent("You have deleted an item from Roll-Up");
     }
 
     @Test

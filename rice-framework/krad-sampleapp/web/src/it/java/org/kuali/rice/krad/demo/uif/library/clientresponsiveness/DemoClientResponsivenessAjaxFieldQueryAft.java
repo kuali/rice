@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -44,63 +43,71 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     }
 
     protected void testClientResponsivenessAjaxFieldQuery() throws Exception {
-    	waitAndClickByLinkText("Ajax Field Query");
+        String testWindow = driver.getWindowHandle();
+        waitAndClickByLinkText("Ajax Field Query");
         waitForElementPresentByXpath("//input[@name='inputField3' and @value='a1']");
         clearTypeAndTabByName("inputField3", "a1");
-        for (int i = 0; i < 10; i++) {
-            Thread.sleep(2000);
-            if (isTextPresent("Travel Account 1")) {
-                break;
-            } else {
-                clearTypeAndTabByName("inputField3", "a1");            }
-        }
+        checkIfFocusSussessful("inputField3", "a1", "Travel Account 1", testWindow);
         assertTextPresent(new String[] {"Travel Account 1", "fred"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethod() throws Exception {
+        String testWindow = driver.getWindowHandle();
         waitAndClickByLinkText("Ajax Field Query Custom Method");
         waitForElementPresentByXpath("//input[@name='inputField6' and @value='a2']");
         clearTypeAndTabByName("inputField6", "a2");
-        for (int i = 0; i < 10; i++) {
-            Thread.sleep(2000);
-            if (isTextPresent("Travel Account 2")) {
-                break;
-            } else {
-                clearTypeAndTabByName("inputField6", "a2");
-            }
-        }
+        checkIfFocusSussessful("inputField6", "a2", "Travel Account 2", testWindow);
         assertTextPresent(new String[] {"Travel Account 2", "fran"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethodAndService() throws Exception {
+        String testWindow = driver.getWindowHandle();
         waitAndClickByLinkText("Ajax Field Query Custom Method and Service");
     	waitForElementPresentByXpath("//input[@name='inputField9' and @value='a3']");
         clearTypeAndTabByName("inputField9", "a3");
-        for (int i = 0; i < 10; i++) {
-            Thread.sleep(2000);
-            if (isTextPresent("Travel Account 3")) {
-                break;
-            } else {
-                clearTypeAndTabByName("inputField9", "a3");
-            }
-        }
+        checkIfFocusSussessful("inputField9", "a3", "Travel Account 3", testWindow);
         assertTextPresent(new String[]{"Travel Account 3", "frank"});
     }
 
     /**
      * focus, blur seem real flaky on xvfb, maybe clear, enter value, and tab will be better
      *
-     * @param name
-     * @param value
+     * @param fieldName name of the field that needs to be focused on.
+     * @param fieldValue value to be placed in field
      *
      * @throws InterruptedException
      */
-    private void clearTypeAndTabByName(String name, String value) throws InterruptedException {
-        clearTextByName(name);
-        waitAndTypeByName(name, value);
-        assertTextPresent(value);
+    private void clearTypeAndTabByName(String fieldName, String fieldValue) throws InterruptedException {
+        clearTextByName(fieldName);
+        waitAndTypeByName(fieldName, fieldValue);
+        assertTextPresent(fieldValue);
         jGrowl("Press Tab key");
         driver.switchTo().activeElement().sendKeys(Keys.TAB); // update to call typeTab() in 2.5
+    }
+
+    /**
+     * If the expected message did not appear it means that the field did not gain focus so there was no tab off of the
+     * field.  This will attempt to regain focus of the page and try again.
+     *
+     * @param fieldName name of the field that needs to be focused on.
+     * @param fieldValue value to be placed in field
+     * @param expectedMessage message that should be present on the screen after tabbing out of the field
+     * @param testWindow
+     *
+     * @throws InterruptedException
+     */
+    private void checkIfFocusSussessful(String fieldName, String fieldValue, String expectedMessage,
+            String testWindow) throws InterruptedException {
+        for (int i = 0; i < 5; i++) {
+            Thread.sleep(3000);
+            if (isTextPresent(expectedMessage)) {
+                break;
+            } else {
+                jGrowl("Focus failed - Focusing back on the test window before trying to enter text again.");
+                driver.switchTo().window(testWindow);
+                clearTypeAndTabByName(fieldName, fieldValue);
+            }
+        }
     }
 
     @Test

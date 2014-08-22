@@ -1133,6 +1133,15 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSubmit();
+        int attempts = 0;
+        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
+                ++attempts <= 3) {
+            uniqueString = null; // make sure try a new one
+            jGrowl("record with the same primary key already exists");
+            createNewEnterDetails();
+            waitAndClickSubmit();
+        }
+
         checkForDocError();
         waitForElementVisibleBy(By.xpath(DOC_SUBMIT_SUCCESS_MSG_XPATH));
         assertDocSearch(docId, "FINAL");

@@ -88,9 +88,9 @@ echo "Params: RESPONSE_TIME:$REPORT_RESPONSE_TIME , THROUGHPUT:$REPORT_THROUGHPU
 # http://code.google.com/p/jmeter-plugins/wiki/JMeterPluginsCMD
 if [ "$REPORT_RESPONSE_TIME" = "true" ]
 then
-    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesOverTime.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesOverTime --width 800 --height 600
-    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesDistribution.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesDistribution --width 800 --height 600
-    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesPercentiles.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesPercentiles --width 800 --height 600
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesOverTime.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesOverTime --width 800 --height 600 --prevent-outliers yes
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesDistribution.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesDistribution --width 800 --height 600 --prevent-outliers yes
+    ${JMETER_PATH}/lib/ext/JMeterPluginsCMD.sh --generate-png ${TESTNAME}ResponseTimesPercentiles.png --input-jtl ${TESTNAME}.jtl --plugin-type ResponseTimesPercentiles --width 800 --height 600 --prevent-outliers yes
 fi
 
 if [ "$REPORT_THROUGHPUT" = "true" ]

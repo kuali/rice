@@ -104,7 +104,10 @@ public class UifDictionaryIndex implements Runnable {
             try {
                 ViewLifecycle.preProcess(view);
             } catch (IllegalStateException ex) {
-                throw new RuntimeException("Failing during pre-process phase", ex);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("preProcess not run due to an IllegalStateException. Exception message: "
+                            + ex.getMessage());
+                }
             }
         }
 

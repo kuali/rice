@@ -868,4 +868,8 @@ public interface RoleService {
     @WebResult(name = "isDynamicRoleMembership")
     @Cacheable(value= Role.Cache.NAME, key="'{isDynamicRoleMembership}' + 'roleId=' + #p0")
     boolean isDynamicRoleMembership(@WebParam(name = "roleId") String roleId) throws RiceIllegalArgumentException;
+
+    // Added a method which notifies the RoleTypeService for the role which the member belongs to that the member was removed
+    @WebMethod(operationName = "notifyOnMemberRemoval")
+    void notifyOnMemberRemoval(@WebParam(name = "member") RoleMember member);
 }

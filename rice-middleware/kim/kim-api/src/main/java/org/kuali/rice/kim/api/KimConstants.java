@@ -157,6 +157,8 @@ public final class KimConstants {
         public static final String EDIT_LINE_FIELD = "Edit Line Field";
         public static final String VIEW_LINE_FIELD = "View Line Field";
         public static final String PERFORM_LINE_ACTION = "Perform Line Action";
+        // KULRICE-12281: Turn off the ability to export results from the person lookup
+		public static final String VIEW_RESULTS_EXPORT_ACTION = "Export Records";
 
 		private PermissionTemplateNames() {
 			throw new UnsupportedOperationException("do not call");

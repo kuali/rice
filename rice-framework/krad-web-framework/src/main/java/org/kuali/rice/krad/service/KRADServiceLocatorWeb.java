@@ -57,6 +57,9 @@ public class KRADServiceLocatorWeb {
     public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
     public static final String EXCEPTION_INCIDENT_REPORT_SERVICE = "kradExceptionIncidentService";
     public static final String FEEDBACK_REPORT_SERVICE = "kradFeedbackService";
+    /* KULRICE-12304: Added a new locator for the new MaintainableXMLConversionService */
+    public static final String MAINTAINABLE_XML_CONVERSION_SERVICE = "kradMaintainableXMLConversionService";
+
     public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
     public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
     public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
@@ -110,6 +113,10 @@ public class KRADServiceLocatorWeb {
 
     public static final KualiFeedbackService getKualiFeedbackService() {
         return getService(FEEDBACK_REPORT_SERVICE);
+    }
+    /* KULRICE-12304:Added a new locator for the new MaintainableXMLConversionService */
+    public static final MaintainableXMLConversionService getMaintainableXMLConversionService() {
+        return getService(MAINTAINABLE_XML_CONVERSION_SERVICE);
     }
 
     public static DataDictionaryService getDataDictionaryService() {

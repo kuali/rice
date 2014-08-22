@@ -50,13 +50,37 @@
 				<kul:help lookupBusinessObjectClassName="${KualiForm.lookupable.businessObjectClass.name}" altText="lookup help" />
 			</c:otherwise>
 		</c:choose></h1>
-	</div>
-	</c:if>
-	
-	<c:if test="${KualiForm.renderSearchButtons}">
-	  <kul:enterKey methodToCall="search" />
-	</c:if>  
+      <%--KULRICE-12287
+        * Reorganized the header so that items are included in the header bar
+        * so they aren't positioned absolutely anymore
+        --%>
+    <c:if test="${KualiForm.renderSearchButtons}">
+      <kul:enterKey methodToCall="search" />
+    </c:if>
+    <kul:backdoor />
 
+    <c:if test="${KualiForm.headerBarEnabled}">
+      <c:if test="${KualiForm.supplementalActionsEnabled==true}" >
+        <div class="lookupcreatenew" title="Supplemental Search Actions" style="padding: 3px 30px 3px 300px;">
+            ${KualiForm.lookupable.supplementalMenuBar} &nbsp;
+          <c:set var="extraField" value="${KualiForm.lookupable.extraField}"/>
+          <c:if test="${not empty extraField}">
+            <%--has to be a dropdown script for now--%>
+            <c:if test="${extraField.fieldType eq extraField.DROPDOWN_SCRIPT}">
+              ${kfunc:registerEditableProperty(KualiForm, extraField.propertyName)}
+              <select id='${extraField.propertyName}' name='${extraField.propertyName}' onchange="${extraField.script}" style="">
+                <kul:fieldSelectValues field="${extraField}"/>
+              </select>&nbsp;
+              <kul:fieldShowIcons isReadOnly="${true}" field="${extraField}" addHighlighting="${true}" />
+            </c:if>
+          </c:if>
+        </div>
+      </c:if>
+    </c:if>
+    <br style="clear: both;" />
+
+  </div>
+	</c:if>
 	<html-el:hidden name="KualiForm" property="backLocation" />
 	<html-el:hidden name="KualiForm" property="formKey" />
 	<html-el:hidden name="KualiForm" property="lookupableImplServiceName" />
@@ -80,29 +104,6 @@
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonSource" />
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonParams" />
 	</c:forEach>
-		<c:if test="${KualiForm.supplementalActionsEnabled==true}" >
-		<div class="lookupcreatenew" title="Supplemental Search Actions" style="padding: 3px 30px 3px 300px;">
-			${KualiForm.lookupable.supplementalMenuBar} &nbsp;
-			<c:set var="extraField" value="${KualiForm.lookupable.extraField}"/>
-			<c:if test="${not empty extraField}">
-				<%--has to be a dropdown script for now--%>
-				<c:if test="${extraField.fieldType eq extraField.DROPDOWN_SCRIPT}">
-
-                            	${kfunc:registerEditableProperty(KualiForm, extraField.propertyName)}
-                                <select id='${extraField.propertyName}' name='${extraField.propertyName}'
-                                        onchange="${extraField.script}" style="">
-                                    <kul:fieldSelectValues field="${extraField}"/>
-                                </select>
-
-						&nbsp;
-
-							<kul:fieldShowIcons isReadOnly="${true}" field="${extraField}" addHighlighting="${true}" />
-
-				</c:if>
-			</c:if>
-		</div>
-	</c:if>
-	
 	<div class="right">
 		<div class="excol">
 		* required field

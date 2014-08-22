@@ -25,6 +25,31 @@
       <description>Test Rule Validation Attribute</description>
       <type>RuleValidationAttribute</type>
     </ruleAttribute>
+    <ruleAttribute>
+      <name>Testing.Attribute</name>
+      <className>org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute</className>
+      <label>Testing Rule Attribute</label>
+      <description>Testing Rule Attribute</description>
+      <type>RuleXmlAttribute</type>
+      <routingConfig>
+        <fieldDef name="org_cd" title="Organization Code" workflowType="ALL">
+          <display>
+            <type>text</type>
+          </display>
+          <validation required="true"/>
+          <fieldEvaluation>
+            <xpathexpression>
+              //organization/contentOrganizationCode = wf:ruledata('org_cd') or //contentReq/contentOrg = wf:ruledata('org_cd')
+            </xpathexpression>
+          </fieldEvaluation>
+        </fieldDef>
+        <xmlDocumentContent>
+          <organization>
+            <contentOrganizationCode>%org_cd%</contentOrganizationCode>
+          </organization>
+        </xmlDocumentContent>
+      </routingConfig>
+    </ruleAttribute>
   </ruleAttributes>
   <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
     <ruleTemplate>
@@ -37,6 +62,16 @@
         </attribute>
         <attribute>
           <name>TestRuleValidationAttribute</name>
+          <required>true</required>
+        </attribute>
+      </attributes>
+    </ruleTemplate>
+    <ruleTemplate>
+      <name>Testing.Template</name>
+      <description>Testing Rule Template</description>
+      <attributes>
+        <attribute>
+          <name>Testing.Attribute</name>
           <required>true</required>
         </attribute>
       </attributes>

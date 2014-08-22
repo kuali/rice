@@ -275,6 +275,7 @@ public class ActionListController extends UifControllerBase{
     * @return ModelAndView - uses standard KRAD getModelAndView()
     */
     @Override
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=start")
     public ModelAndView start(UifFormBase form) {
         ActionListForm actionListForm = (ActionListForm)form;
@@ -762,6 +763,7 @@ public class ActionListController extends UifControllerBase{
      * @param response - http response
      * @return start() - forwards to start method to refresh action list
      */
+    @MethodAccessible
     @RequestMapping(params = "methodToCall=helpDeskActionListLogin")
     public ModelAndView helpDeskActionListLogin(UifFormBase form){
         ActionListForm actionListForm = (ActionListForm) form;

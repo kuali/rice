@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.AndPredicate;
 import org.kuali.rice.core.api.criteria.CompositePredicate;
@@ -48,11 +42,19 @@ import org.kuali.rice.core.api.criteria.OrPredicate;
 import org.kuali.rice.core.api.criteria.OrderByField;
 import org.kuali.rice.core.api.criteria.OrderDirection;
 import org.kuali.rice.core.api.criteria.Predicate;
+import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.PropertyPathPredicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
 import org.kuali.rice.core.api.criteria.SubQueryPredicate;
 import org.kuali.rice.krad.data.jpa.NativeJpaQueryTranslator.TranslationContext;
+
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Base {@link QueryTranslator} implementation.
@@ -61,6 +63,8 @@ import org.kuali.rice.krad.data.jpa.NativeJpaQueryTranslator.TranslationContext;
  */
 @SuppressWarnings("rawtypes")
 abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
+
+    public static final int MULTI_VALUE_CHUNK_SIZE = 1000;
 
     /**
      * Creates a criteria from the given type.
@@ -73,7 +77,7 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 	/**
 	 * Creates a new criteria parsing context from the given type for an inner subquery. The parent context is stored to
 	 * allow references between the inner and outer queries.
-	 * 
+	 *
 	 * @param queryClazz
 	 *            the type of the query.
 	 * @param parentContext
@@ -222,7 +226,7 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 
 	/**
 	 * Adds an EXISTS clause to the criteria.
-	 * 
+	 *
 	 * @param criteria
 	 *            the criteria to add to.
 	 * @param subQueryType
@@ -285,7 +289,7 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 
 		/**
 		 * Creates an exception for if the {@link Predicate} is not recognized.
-		 * 
+		 *
 		 * @param predicate
 		 *            the {@link Predicate} in error.
 		 */
@@ -397,22 +401,59 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
      * @param parent the parent criteria to add to.
      */
     protected void addMultiValuePredicate(MultiValuedPredicate p, C parent) {
-        final String pp = p.getPropertyPath();
-        if (p instanceof InPredicate) {
-            final Set<?> values = getVals(p.getValues());
-            addIn(parent, pp, values);
-        } else if (p instanceof InIgnoreCasePredicate) {
-            final Set<String> values = toUpper(getValsUnsafe(((InIgnoreCasePredicate) p).getValues()));
-            addIn(parent, genUpperFunc(pp), values);
-        } else if (p instanceof NotInPredicate) {
-            final Set<?> values = getVals(p.getValues());
-            addNotIn(parent, pp, values);
-        } else if (p instanceof NotInIgnoreCasePredicate) {
-            final Set<String> values = toUpper(getValsUnsafe(((NotInIgnoreCasePredicate) p).getValues()));
-            addNotIn(parent, genUpperFunc(pp), values);
+        if(p.getValues().size() > MULTI_VALUE_CHUNK_SIZE) {
+            // This predicate is too large and needs to be split into multiple smaller predicates
+            splitMultiValuePredicate(p, parent);
         } else {
-            throw new UnsupportedPredicateException(p);
+            final String pp = p.getPropertyPath();
+            if (p instanceof InPredicate) {
+                final Set<?> predicateValues = getVals(p.getValues());
+                addIn(parent, pp, predicateValues);
+            } else if (p instanceof InIgnoreCasePredicate) {
+                final Set<String> predicateValues = toUpper(getValsUnsafe(((InIgnoreCasePredicate) p).getValues()));
+                addIn(parent, genUpperFunc(pp), predicateValues);
+            } else if (p instanceof NotInPredicate) {
+                final Set<?> predicateValues = getVals(p.getValues());
+                addNotIn(parent, pp, predicateValues);
+            } else if (p instanceof NotInIgnoreCasePredicate) {
+                final Set<String> predicateValues = toUpper(getValsUnsafe(((NotInIgnoreCasePredicate) p).getValues()));
+                addNotIn(parent, genUpperFunc(pp), predicateValues);
+            } else {
+                throw new UnsupportedPredicateException(p);
+            }
         }
+    }
+
+    /**
+     * This method takes in a multi-value predicate which has more values than
+     * can fit into a single SQL clause and splits them up into multiple
+     * clauses which are concatenated by an OR statement.
+     * @param p The predicate which needs to be split into smaller predicates
+     * @param parent The criteria to add the predicate to
+     */
+    private void splitMultiValuePredicate(MultiValuedPredicate p, C parent) {
+        final String pp = p.getPropertyPath();
+        int chunkCount = (int)Math.ceil(p.getValues().size() / (double)MULTI_VALUE_CHUNK_SIZE);
+        Predicate[] multiValuePredicateChunks = new Predicate[chunkCount];
+        Object[] values = p.getValues().toArray();
+        int start = 0;
+        for(int i = 0; i < chunkCount; i++) {
+            Object[] valueChunk = Arrays.copyOfRange(values, start, start + MULTI_VALUE_CHUNK_SIZE);
+            if (p instanceof InPredicate) {
+                multiValuePredicateChunks[i] = PredicateFactory.in(pp, valueChunk);
+            } else if (p instanceof InIgnoreCasePredicate) {
+                multiValuePredicateChunks[i] = PredicateFactory.inIgnoreCase(pp, (CharSequence[])valueChunk);
+            } else if (p instanceof NotInPredicate) {
+                multiValuePredicateChunks[i] = PredicateFactory.notIn(pp, valueChunk);
+            } else if (p instanceof NotInIgnoreCasePredicate) {
+                multiValuePredicateChunks[i] = PredicateFactory.notInIgnoreCase(pp, (CharSequence[])valueChunk);
+            } else {
+                throw new UnsupportedPredicateException(p);
+            }
+
+            start += MULTI_VALUE_CHUNK_SIZE;
+        }
+        addPredicate(PredicateFactory.or(multiValuePredicateChunks), parent);
     }
 
     /**
@@ -437,7 +478,7 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 
     /**
 	 * Adds a predicate representing a sub-query to the criteria.
-	 * 
+	 *
 	 * @param p the subquery predicate to add.
 	 * @param parent the parent criteria to add to.
 	 */
@@ -451,7 +492,7 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 
 	/**
 	 * Converts any {@link DateTime} values to {@link Timestamp}s.
-	 * 
+	 *
 	 * @param toConv the {@link CriteriaValue} to convert.
 	 * @param <U> the type of the {@link CriteriaValue}.
 	 * @return the {@link CriteriaValue} converted.

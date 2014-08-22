@@ -1024,8 +1024,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 equal(RECIPIENT_TYPE_CD, RecipientType.PRINCIPAL.getCode()),
                 equal(CURRENT_INDICATOR, Boolean.TRUE)
         );
-        int count = getDataObjectService().findMatching(ActionRequestValue.class, criteria.build()).getTotalRowCount();
-        if (count > 0) {
+        Integer count = getDataObjectService().findMatching(ActionRequestValue.class, criteria.build()).getTotalRowCount();
+        if (count != null && count > 0) {
             return true;
         }
         // TODO since we only store the workgroup id for workgroup requests, if the user is in a workgroup that has a request

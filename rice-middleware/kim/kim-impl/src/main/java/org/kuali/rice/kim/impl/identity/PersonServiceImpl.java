@@ -45,6 +45,7 @@ import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfoDefault;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
+import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -376,36 +377,90 @@ public class PersonServiceImpl implements PersonService {
 
             for ( EntityDefault e : qr.getResults() ) {
 			    // get to get all principals for the identity as well
-			    for ( Principal p : e.getPrincipals() ) {
-			    	people.add( convertEntityToPerson( e, p ) );
-			    }
+                if (e.getPrincipals().isEmpty()) {
+                    PrincipalBo principalBo = new PrincipalBo();
+                    principalBo.setActive(false);
+                    principalBo.setEntityId(e.getEntityId());
+                    principalBo.setPrincipalName("No Principal Name");
+                    // If the principal ID is not set, the person inquiry will not work
+                    principalBo.setPrincipalId(e.getEntityId());
+                    people.add( convertEntityToPerson( e, PrincipalBo.to(principalBo) ) );
+                } else {
+                    for ( Principal p : e.getPrincipals() ) {
+                        people.add( convertEntityToPerson( e, p ) );
+                    }
+                }
 		    }
         } else if (!qr.isMoreResultsAvailable() && entityCriteria.containsKey("principals.principalId")) {
-            if (!(entityCriteria.containsKey(KIMPropertyConstants.Person.ACTIVE)) || (criteria.get(KIMPropertyConstants.Person.ACTIVE).equals("N"))) {
-                String principalId =  entityCriteria.get("principals.principalId");
-                try {
-                    EntityDefault entityDefault = getIdentityService().getEntityDefaultByPrincipalId(principalId);
-                    for ( Principal p : entityDefault.getPrincipals() ) {
-                        if (!p.isActive()){
-                            people.add( convertEntityToPerson(entityDefault, p ) );
+            HashMap<String,String> newEntityCriteria = new HashMap<String,String>();
+            String principalID = entityCriteria.get("principals.principalId");
+            newEntityCriteria.put( KIMPropertyConstants.Person.ACTIVE, "Y" );
+            newEntityCriteria.put(KIMPropertyConstants.Entity.ID, principalID);
+
+            Predicate newPredicate = PredicateUtils.convertMapToPredicate(newEntityCriteria);
+            QueryByCriteria.Builder newQueryBuilder = QueryByCriteria.Builder.create();
+            newQueryBuilder.setMaxResults(1);
+            newQueryBuilder.setCountFlag(CountFlag.INCLUDE);
+            newQueryBuilder.setPredicates(newPredicate);
+            EntityDefaultQueryResults newQr = getIdentityService().findEntityDefaults( newQueryBuilder.build() );
+            String activeCriteria = entityCriteria.get(KIMPropertyConstants.Entity.ACTIVE);
+            if (activeCriteria != null && activeCriteria.equalsIgnoreCase(KRADConstants.YES_INDICATOR_VALUE)) {
+                if (newQr.getResults().size() > 0) {
+                    for ( EntityDefault e : newQr.getResults() ) {
+                        if (e.getPrincipals().isEmpty()) {
+                            PrincipalBo principalBo = new PrincipalBo();
+                            principalBo.setActive(false);
+                            principalBo.setEntityId(e.getEntityId());
+                            principalBo.setPrincipalName("No Principal Name");
+                            // if the principal ID is not set, the person inquiry will not work
+                            principalBo.setPrincipalId(e.getEntityId());
+                            people.add( convertEntityToPerson( e, PrincipalBo.to(principalBo) ) );
                         }
                     }
-                } catch ( Exception e ) {
-                    LOG.info( "A principal Id of " + principalId + " dose not exist in the system");
+                }
+            } else if (!(entityCriteria.containsKey(KIMPropertyConstants.Person.ACTIVE)) || (criteria.get(KIMPropertyConstants.Person.ACTIVE).equals("N"))) {
+                if (newQr.getResults().isEmpty()) {
+
+                    String principalId =  entityCriteria.get("principals.principalId");
+                    try {
+                        EntityDefault entityDefault = getIdentityService().getEntityDefaultByPrincipalId(principalId);
+                        for ( Principal p : entityDefault.getPrincipals() ) {
+                            if (!p.isActive()){
+                                people.add( convertEntityToPerson(entityDefault, p ) );
+                            }
+                        }
+                    } catch ( Exception e ) {
+                        LOG.info( "A principal Id of " + principalId + " dose not exist in the system");
+                    }
                 }
             }
         } else if (!qr.isMoreResultsAvailable() &&  entityCriteria.containsKey("principals.principalName")) {
             if (!(entityCriteria.containsKey(KIMPropertyConstants.Person.ACTIVE)) || (criteria.get(KIMPropertyConstants.Person.ACTIVE).equals("N"))) {
-                String principalNm =  entityCriteria.get("principals.principalName");
-                try {
-                    EntityDefault entityDefault = getIdentityService().getEntityDefaultByPrincipalName(principalNm);
-                    for ( Principal p : entityDefault.getPrincipals() ) {
-                        if (!p.isActive()){
-                            people.add( convertEntityToPerson(entityDefault, p ) );
+
+                HashMap<String,String> newEntityCriteria = new HashMap<String,String>();
+                String principalName = entityCriteria.get("principals.principalName");
+                newEntityCriteria.put( KIMPropertyConstants.Person.ACTIVE, KRADConstants.YES_INDICATOR_VALUE );
+                newEntityCriteria.put("principals.principalName", principalName);
+
+                Predicate newPredicate = PredicateUtils.convertMapToPredicate(newEntityCriteria);
+                QueryByCriteria.Builder newQueryBuilder = QueryByCriteria.Builder.create();
+                newQueryBuilder.setMaxResults(1);
+                newQueryBuilder.setCountFlag(CountFlag.INCLUDE);
+                newQueryBuilder.setPredicates(newPredicate);
+                EntityDefaultQueryResults newQr = getIdentityService().findEntityDefaults( newQueryBuilder.build() );
+
+                if (newQr.getResults().isEmpty()) {
+                    String principalNm =  entityCriteria.get("principals.principalName");
+                    try {
+                        EntityDefault entityDefault = getIdentityService().getEntityDefaultByPrincipalName(principalNm);
+                        for ( Principal p : entityDefault.getPrincipals() ) {
+                            if (!p.isActive()){
+                                people.add( convertEntityToPerson(entityDefault, p ) );
+                            }
                         }
+                    } catch ( Exception e ) {
+                        LOG.info( "A principal name of " + principalNm + " dose not exist in the system");
                     }
-                } catch ( Exception e ) {
-                    LOG.info( "A principal name of " + principalNm + " dose not exist in the system");
                 }
             }
         }
@@ -433,14 +488,11 @@ public class PersonServiceImpl implements PersonService {
         if ( criteria != null ) {
 			for ( String key : criteria.keySet() ) {
 			    //check active radio button
-	            if(key.equals(KIMPropertyConstants.Person.ACTIVE)) {
-	                newCriteria.put(criteriaConversion.get(KIMPropertyConstants.Person.ACTIVE), criteria.get(KIMPropertyConstants.Person.ACTIVE));
-	            } else {
-	                // The following if statement enables the "both" button to work correctly.
-	                if (!(criteria.containsKey(KIMPropertyConstants.Person.ACTIVE))) {
-	                    newCriteria.remove( KIMPropertyConstants.Person.ACTIVE );
-	                }
+	            // The following if statement enables the "both" button to work correctly.
+	            if (!(criteria.containsKey(KIMPropertyConstants.Person.ACTIVE))) {
+	                newCriteria.remove( KIMPropertyConstants.Person.ACTIVE );
 	            }
+
 
 				// if no value was passed, skip the entry in the Map
 				if ( StringUtils.isEmpty( criteria.get(key) ) ) {
@@ -529,6 +581,12 @@ public class PersonServiceImpl implements PersonService {
 			if ( employeeIdCriteria ) {
 				newCriteria.put( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX + "active", "Y" );
 				newCriteria.put( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX + "primary", "Y" );
+                //KULRICE-12405: There is no reason to verify the person is a system or person when searching by only empl ID.
+                // Do not check the KRIM_ENTITY_ENT_TYP_T table if the employeeId is the only criteria passed in.
+                if (criteria.size() == 1) {
+                    newCriteria.remove("entityTypeContactInfos.active");
+                    newCriteria.remove("entityTypeContactInfos.entityTypeCode");
+                }
 			}
 			if ( affiliationCriteria ) {
 				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "active", "Y" );
@@ -539,7 +597,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
 		if ( LOG.isDebugEnabled() ) {
-			LOG.debug( "Converted: " + newCriteria );
+			LOG.debug("Converted: " + newCriteria);
 		}
 		return newCriteria;
 	}

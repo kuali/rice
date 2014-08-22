@@ -87,6 +87,7 @@ public class UifExportController extends UifControllerBase {
     /**
      * Generates exportable table data as CSV based on the rich table selected.
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_CSV,
             produces = {"text/csv"})
     @ResponseBody
@@ -100,6 +101,7 @@ public class UifExportController extends UifControllerBase {
     /**
      * Generates exportable table data in xsl based on the rich table selected.
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XLS,
             produces = {"application/vnd.ms-excel"})
     @ResponseBody
@@ -113,6 +115,7 @@ public class UifExportController extends UifControllerBase {
     /**
      * Generates exportable table data based on the rich table selected.
      */
+    @MethodAccessible
     @RequestMapping(method = RequestMethod.GET, params = "methodToCall=" + UifConstants.MethodToCallNames.TABLE_XML,
             produces = {"application/xml"})
     @ResponseBody

@@ -51,27 +51,28 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This service provides operations to query for principal and identity data.
- * 
+ *
  * <p>A principal represents an identity that can authenticate.  In essence, a principal can be
  * thought of as an "account" or as an identity's authentication credentials.  A principal has
  * an id which is used to uniquely identify it.  It also has a name which represents the
  * principal's username and is typically what is entered when authenticating.  All principals
  * are associated with one and only one identity.
- * 
+ *
  * <p>An identity represents a person or system.  Additionally, other "types" of entities can
  * be defined in KIM.  Information like name, phone number, etc. is associated with an identity.
  * It is the representation of a concrete person or system.  While an identity will typically
  * have a single principal associated with it, it is possible for an identity to have more than
  * one principal or even no principals at all (in the case where the identity does not actually
  * authenticate).
- * 
- * <p>This service also provides operations for querying various pieces of reference data, such as 
+ *
+ * <p>This service also provides operations for querying various pieces of reference data, such as
  * address types, affiliation types, phone types, etc.
  *
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -101,7 +102,7 @@ public interface IdentityService {
     @WebResult(name = "results")
 	EntityQueryResults findEntities(@WebParam(name = "query") QueryByCriteria query)  throws RiceIllegalArgumentException;
 
-	
+
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.Entity} from an id.
      *
@@ -209,8 +210,8 @@ public interface IdentityService {
     Entity inactivateEntity(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
 
-    
-    
+
+
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} from an id.
      * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains
@@ -264,7 +265,7 @@ public interface IdentityService {
     @WebResult(name = "entityDefault")
     @Cacheable(value= EntityDefault.Cache.NAME, key="'principalName=' + #p0")
 	EntityDefault getEntityDefaultByPrincipalName(@WebParam(name = "principalName") String principalName)  throws RiceIllegalArgumentException;
-    
+
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} from an employeeId.
      * {@link org.kuali.rice.kim.api.identity.entity.EntityDefault} is a condensed version of {@link org.kuali.rice.kim.api.identity.entity.Entity} that contains
@@ -282,7 +283,7 @@ public interface IdentityService {
     @WebResult(name = "entityDefault")
     @Cacheable(value= EntityDefault.Cache.NAME, key="'employeeId=' + #p0")
     EntityDefault getEntityDefaultByEmployeeId(@WebParam(name = "employeeId") String employeeId)  throws RiceIllegalArgumentException;
-    
+
 
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.principal.Principal} from an principalId.
@@ -704,11 +705,11 @@ public interface IdentityService {
     @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityAffiliation inactivateAffiliation(@WebParam(name = "id") String id)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
-    
+
     /**
      * This returns the display name information for the given principal
      * without loading the full person object.
-     * 
+     *
      * @param principalId The principal ID to find the name information for
      * @return The default name information for the principal
      */
@@ -716,6 +717,29 @@ public interface IdentityService {
     @WebResult(name="entityNamePrincipalName")
     @Cacheable(value = EntityNamePrincipalName.Cache.NAME, key = "'principalId=' + #p0")
     public EntityNamePrincipalName getDefaultNamesForPrincipalId(@WebParam(name = "principalId") String principalId);
+
+    /**
+     * This returns the display name information for the given principals without loading the full person object.
+     *
+     * @param principalIds A list of principal IDs to find the name information for
+     * @return A Map which is keyed by principal ID and the value is the default
+     *         name for that principal.  If an active, default name cannot be
+     *         found for a principal in the list it will be in the map with a null value.
+     */
+    @WebMethod(operationName="getDefaultNamesForPrincipalIds")
+    @WebResult(name="entityNamePrincipalNames")
+    public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(@WebParam(name = "principalIds") List<String> principalIds);
+
+    /**
+     * Returns the privacy preferences for the given principal id or null if the principal id is not valid.  Note method
+     *   converts list to a <code>HashSet</code> to ensure no duplicate look ups occur.
+     * @param principalId the principal id
+     * @return The privacy preferences for the given principal id, or null if the principal id is invalid.
+     */
+    @WebMethod(operationName="getPrivacyPreferencesForPrincipalId")
+    @WebResult(name="entityPrivacyPreferences")
+    @Cacheable(value = EntityPrivacyPreferences.Cache.NAME, key = "'principalId=' + #p0")
+    public EntityPrivacyPreferences getPrivacyPreferencesForPrincipalId(@WebParam(name = "principalId")String principalId);
 
     /**
      * This will create a {@link org.kuali.rice.kim.api.identity.name.EntityName} exactly like the name passed in.
@@ -839,7 +863,7 @@ public interface IdentityService {
     @CacheEvict(value={Entity.Cache.NAME, EntityDefault.Cache.NAME}, allEntries = true)
     EntityBioDemographics updateBioDemographics(@WebParam(name = "bioDemographics") EntityBioDemographics bioDemographics)
         throws RiceIllegalArgumentException, RiceIllegalStateException;
-    
+
     /**
      * Gets a {@link org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences} for a given id.
      *
@@ -1217,7 +1241,7 @@ public interface IdentityService {
     @WebResult(name = "types")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{ExternalIdentifierType}", key="'all'")
     List<EntityExternalIdentifierType> findAllExternalIdendtifierTypes();
-    
+
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityName type code.
      *
@@ -1244,7 +1268,7 @@ public interface IdentityService {
     @WebResult(name = "types")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{NameType}", key="'all'")
     List<CodedAttribute> findAllNameTypes();
-    
+
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityPhone type code.
      *
@@ -1271,7 +1295,7 @@ public interface IdentityService {
     @WebResult(name = "types")
     @Cacheable(value= CodedAttribute.Cache.NAME + "{PhoneType}", key="'all'")
     List<CodedAttribute> findAllPhoneTypes();
-    
+
     /**
      * Gets the {@link org.kuali.rice.kim.api.identity.CodedAttribute} for a given EntityEmail type code.
      *

@@ -51,7 +51,8 @@
   -->
 
   <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.impl.identity.IdentityServiceImpl"
-        p:dataObjectService-ref="dataObjectService"/>
+        p:dataObjectService-ref="dataObjectService"
+        p:identityServiceDao-ref="kimIdentityServiceDao"/>
 
   <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl"
         p:dataObjectService-ref="dataObjectService"
@@ -59,8 +60,8 @@
         p:transactionManager-ref="transactionManager"/>
 
   <bean id="kimIdentityService" class="org.kuali.rice.kim.impl.identity.IdentityCurrentAndArchivedServiceImpl">
-    <constructor-arg ref="kimIdentityArchiveService"/>
     <constructor-arg ref="kimIdentityDelegateService"/>
+    <constructor-arg ref="kimIdentityArchiveService"/>
   </bean>
 
   <!--
@@ -239,6 +240,21 @@
         <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGroupDocument.xml</value>
         <value>classpath:org/kuali/rice/kim/impl/responsibility/ReviewResponsibility.xml</value>
         <value>classpath:org/kuali/rice/kim/document/datadictionary/IdentityManagementGenericPermissionMaintenanceDocument.xml</value>
+
+        <value>classpath:org/kuali/rice/kim/impl/identity/address/AddressTypeLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/affiliation/AffiliationTypeLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/citizenship/CitizenshipStatusLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/email/EmailTypeLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/entity/EntityTypeLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/external/ExternalIdentifierTypeLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/name/NameTypeLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/phone/PhoneTypeLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/type/KimTypeLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/employment/EmploymentStatusInquiryView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/employment/EmploymentStatusLookupView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/employment/EmploymentTypeInquiryView.xml</value>
+        <value>classpath:org/kuali/rice/kim/impl/identity/employment/EmploymentTypeLookupView.xml</value>
+
       </list>
     </property>
     <property name="packagePrefixes">

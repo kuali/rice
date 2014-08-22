@@ -305,6 +305,28 @@ public interface WorkflowDocumentService {
         throws RiceIllegalArgumentException;
 
     /**
+     * Executes a search for workflow documents using the given criteria and as the principal with the given id.  Since
+     * documents can define security which permits access to view certain search results, the given principal id will
+     * be used when evaluating which documents should be filtered from the results because of lack of access.
+     *
+     * @param principalId the id of the principal to execute the search as, if this value is non-null then security
+     * filtering will be executed against the results, if it is null then no filtering will be performed
+     * @param criteria the criteria to use when executing the search
+     * @param boolean to represent whether the document search details should be saved to the users preferences
+     *
+     * @return the results of the search, this will never be null but may contain an empty list of results
+     *
+     * @throws RiceIllegalArgumentException if the given criteria is null
+     */
+    @WebMethod(operationName = "documentSearchSaveable")
+    @WebResult(name = "documentSearchResults")
+    DocumentSearchResults documentSearchSaveable(
+            @WebParam(name = "principalId") String principalId,
+            @WebParam(name = "criteria") DocumentSearchCriteria criteria,
+            @WebParam(name = "saveSearch") boolean saveSearch)
+            throws RiceIllegalArgumentException;
+
+    /**
      * Gets a list of all {@link RouteNodeInstance} for a {@link Document} with the given documentId
      *
      * @param documentId the unique id of a Document

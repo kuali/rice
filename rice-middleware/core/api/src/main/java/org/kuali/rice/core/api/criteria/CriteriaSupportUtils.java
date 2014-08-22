@@ -183,6 +183,8 @@ final class CriteriaSupportUtils {
             return new CriteriaKualiDecimalValue((KualiDecimal)object);
         } else if (object instanceof PropertyPath) {
             return new CriteriaPropertyPathValue((PropertyPath)object);
+        } else if (object instanceof CriteriaValue) {
+            return (CriteriaValue<?>)object;
         }
 		throw new IllegalArgumentException("Failed to translate the given object to a CriteriaValue: " + object);
 	}

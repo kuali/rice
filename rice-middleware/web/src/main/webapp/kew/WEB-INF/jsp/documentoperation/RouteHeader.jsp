@@ -171,8 +171,13 @@
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Application Doc ID:</td>
 	  	    <td width="66%" class="datacell"><html-el:text property="routeHeader.appDocId"/></td>
-	  	  </tr> 	  
-	  	  <tr>
+	  	  </tr>
+        <!-- KULRICE-12353:  Added ability to change application document status from document operation screen -->
+        <tr>
+          <td width="33%" align="right" class="thnormal">Application Doc Status:</td>
+          <td width="66%" class="datacell"><html-el:text property="routeHeader.appDocStatus"/></td>
+        </tr>
+        <tr>
 	  	    <td width="33%" align="right" class="thnormal">Doc Content:</td>
 	  	    <td width="66%" class="datacell"><html-el:textarea cols="120" rows="5" property="routeHeader.docContent"/></td>
 	  	  </tr>

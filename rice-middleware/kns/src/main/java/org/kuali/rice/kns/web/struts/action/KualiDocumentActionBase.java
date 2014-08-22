@@ -1498,7 +1498,10 @@ public class KualiDocumentActionBase extends KualiAction {
                 }
             }
 
-
+            // Added some logic which saves the document after a BO note is added to the document
+		    if(!documentHeader.getWorkflowDocument().isInitiated() && document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(tmpNote.getNoteTypeCode())) {
+                getDocumentService().saveDocument(document);
+            }
             // reset the new note back to an empty one
             kualiDocumentFormBase.setNewNote(new Note());
         }
@@ -1555,12 +1558,14 @@ public class KualiDocumentActionBase extends KualiAction {
             }
             getAttachmentService().deleteAttachmentContents(attachment);
         }
-        // delete the note if the document is already saved
-        if (!document.getDocumentHeader().getWorkflowDocument().isInitiated()) {
-            getNoteService().deleteNote(note);
-        }
-        document.removeNote(note);
+        // Removed the if check so it no longer checks if the document is initiated before deleting the BO's note per KULRICE- 12327
+        getNoteService().deleteNote(note);
 
+        document.removeNote(note);
+        if(!document.getDocumentHeader().getWorkflowDocument().isInitiated() && document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(note.getNoteTypeCode())) {
+            // If this is a maintenance document and we're deleting a BO note then try to save the document so the note is removed from the content
+            getDocumentService().saveDocument(document);
+        }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

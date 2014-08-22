@@ -31,12 +31,12 @@ import org.kuali.rice.core.api.mo.common.Coded;
 @XmlType(name = "DocumentTypePolicyType")
 @XmlEnum
 public enum DocumentTypePolicy implements Coded {
-    
+
 	/**
      * FIXME: needs docs
      */
     @XmlEnumValue(Codes.DISAPPROVE) DISAPPROVE(Codes.DISAPPROVE),
-    
+
     /**
      * This policy determines whether to use the internal KEW Super User document handler URL when opening a document from
      * super user search. If set to false the client must implement a custom super user screen to be used when the doc
@@ -48,12 +48,12 @@ public enum DocumentTypePolicy implements Coded {
     /**
      * determines how to handle the situation where the user has initiated an action but there is not a corresponding pending request. This policy has a default of true.
      * If set to false an exception should be thrown from ApproveAction, CompleteAction, AcknowledgeAction
-     * and ClearFYIAction classes when there does not exist a corresponding pending request for the user who is submitting the action. 
+     * and ClearFYIAction classes when there does not exist a corresponding pending request for the user who is submitting the action.
      * When set to false, this will result in one of the users getting an error message if 2 users attempt to submit the same action
-     * at the same time (this can happen in workgroup situtations). 
+     * at the same time (this can happen in workgroup situtations).
      */
     @XmlEnumValue(Codes.ALLOW_UNREQUESTED_ACTION) ALLOW_UNREQUESTED_ACTION(Codes.ALLOW_UNREQUESTED_ACTION),
-    
+
     /**
      * determines whether a document will go processed without any approval requests.  If
      * a document has this policy set to false and doesn't generate and approval requests the document will
@@ -62,27 +62,27 @@ public enum DocumentTypePolicy implements Coded {
      * document type defaults to true
      */
     @XmlEnumValue(Codes.DEFAULT_APPROVE) DEFAULT_APPROVE(Codes.DEFAULT_APPROVE),
-    
+
     /**
      * determines if the user that initiated a document must 'route' the document when it is
      * in the initiated state.  Defaults to true.
      */
     @XmlEnumValue(Codes.INITIATOR_MUST_ROUTE) INITIATOR_MUST_ROUTE(Codes.INITIATOR_MUST_ROUTE),
-    
+
     /**
      * determines if the user that initiated a document must 'route' the document when it is
      * in the initiated state.  Defaults to true.
      */
     @XmlEnumValue(Codes.INITIATOR_MUST_SAVE) INITIATOR_MUST_SAVE(Codes.INITIATOR_MUST_SAVE),
-    
+
     @XmlEnumValue(Codes.INITIATOR_MUST_CANCEL) INITIATOR_MUST_CANCEL(Codes.INITIATOR_MUST_CANCEL),
-    
+
     @XmlEnumValue(Codes.INITIATOR_MUST_BLANKET_APPROVE) INITIATOR_MUST_BLANKET_APPROVE(Codes.INITIATOR_MUST_BLANKET_APPROVE),
 
     /**
      * determines whether the document can be brought into a simulated route from the route log.  A
      * simulation of where the document would end up if it where routed to completion now.  Defaults to false.
-     * 
+     *
      * determines if route log will show the look into the future link
      */
     @XmlEnumValue(Codes.LOOK_FUTURE) LOOK_FUTURE(Codes.LOOK_FUTURE),
@@ -92,15 +92,15 @@ public enum DocumentTypePolicy implements Coded {
     @XmlEnumValue(Codes.SUPPORTS_QUICK_INITIATE) SUPPORTS_QUICK_INITIATE(Codes.SUPPORTS_QUICK_INITIATE),
 
     @XmlEnumValue(Codes.NOTIFY_ON_SAVE) NOTIFY_ON_SAVE(Codes.NOTIFY_ON_SAVE),
-    
+
     /**
-     * The Document Status Policy determines whether the KEW Route Status or the Application Document Status (or both) 
+     * The Document Status Policy determines whether the KEW Route Status or the Application Document Status (or both)
      * are to be used for a specific document type.
      */
     @XmlEnumValue(Codes.DOCUMENT_STATUS_POLICY) DOCUMENT_STATUS_POLICY(Codes.DOCUMENT_STATUS_POLICY),
 
     /**
-     * This document type policy allows us to configure if the "Perform Post Processor Logic" for the super user action on action requests is displayed.  
+     * This document type policy allows us to configure if the "Perform Post Processor Logic" for the super user action on action requests is displayed.
      * KULRICE-3584
      */
     @XmlEnumValue(Codes.ALLOW_SU_POSTPROCESSOR_OVERRIDE) ALLOW_SU_POSTPROCESSOR_OVERRIDE(Codes.ALLOW_SU_POSTPROCESSOR_OVERRIDE),
@@ -160,7 +160,9 @@ public enum DocumentTypePolicy implements Coded {
      * @since 2.5.0
      * @see https://jira.kuali.org/browse/KULRICE-12542
      */
-    @XmlEnumValue(Codes.DOC_SEARCH_TARGET) DOC_SEARCH_TARGET(Codes.DOC_SEARCH_TARGET);
+    @XmlEnumValue(Codes.DOC_SEARCH_TARGET) DOC_SEARCH_TARGET(Codes.DOC_SEARCH_TARGET),
+
+    @XmlEnumValue(Codes.SUPPRESS_ACKNOWLEDGEMENTS_ON_DISAPPROVE) SUPPRESS_ACKNOWLEDGEMENTS_ON_DISAPPROVE(Codes.SUPPRESS_ACKNOWLEDGEMENTS_ON_DISAPPROVE);
 
     private final String code;
 
@@ -185,7 +187,7 @@ public enum DocumentTypePolicy implements Coded {
 
         throw new IllegalArgumentException("Failed to locate the DocumentTypePolicy with the given code: " + code);
     }
-        
+
     private static final class Codes {
         private static final String DISAPPROVE = "DISAPPROVE";
         private static final String USE_KEW_SUPERUSER_DOCHANDLER = "USE_KEW_SUPERUSER_DOCHANDLER";
@@ -202,7 +204,7 @@ public enum DocumentTypePolicy implements Coded {
         private static final String DOCUMENT_STATUS_POLICY = "DOCUMENT_STATUS_POLICY";
         private static final String ALLOW_SU_POSTPROCESSOR_OVERRIDE = "ALLOW_SU_POSTPROCESSOR_OVERRIDE";
         private static final String FAIL_ON_INACTIVE_GROUP = "FAIL_ON_INACTIVE_GROUP";
-        private static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";       
+        private static final String REGENERATE_ACTION_REQUESTS_ON_CHANGE = "REGENERATE_ACTION_REQUESTS_ON_CHANGE";
         private static final String ENROUTE_ERROR_SUPPRESSION = "ENROUTE_ERROR_SUPPRESSION";
         private static final String NOTIFY_PENDING_ON_RETURN = "NOTIFY_PENDING_ON_RETURN";
         private static final String NOTIFY_COMPLETED_ON_RETURN = "NOTIFY_COMPLETED_ON_RETURN";
@@ -212,6 +214,7 @@ public enum DocumentTypePolicy implements Coded {
         private static final String ALLOW_SU_FINAL_APPROVAL = "ALLOW_SU_FINAL_APPROVAL";
         private static final String SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION = "SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION";
         private static final String DOC_SEARCH_TARGET = "DOC_SEARCH_TARGET";
+        private static final String SUPPRESS_ACKNOWLEDGEMENTS_ON_DISAPPROVE = "SUPPRESS_ACKNOWLEDGEMENTS_ON_DISAPPROVE";
     }
-    
+
 }

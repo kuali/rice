@@ -42,6 +42,17 @@ public interface DocumentSearchService {
     DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria);
 
     /**
+     * This method performs a standard document search for the given criteria.
+     *
+     * @param principalId the id of the principal who is executing the search, this may be null to indicate the
+     * search could be executed by an arbitrary user
+     * @param criteria criteria to use to search documents
+     * @param boolean to indicate if search criteria should be saved to the users preferences
+     * @return the results of the search, will never return null
+     */
+    DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria, boolean saveSearch);
+
+    /**
      * Returns a saved search criteria, either explicitly named by the user, or saved automatically as a recent search
      * @param principalId the user principal id
      * @param key the user option key under which the criteria is saved

@@ -27,13 +27,16 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,6 +60,7 @@ import java.util.Map;
     DocumentUpdate.Elements.APPLICATION_DOCUMENT_ID,
     DocumentUpdate.Elements.APPLICATION_DOCUMENT_STATUS,
     DocumentUpdate.Elements.VARIABLES,
+    DocumentUpdate.Elements.DIRTY_FIELDS,
     CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentUpdate extends AbstractDataTransferObject {
@@ -76,6 +80,10 @@ public final class DocumentUpdate extends AbstractDataTransferObject {
     @XmlJavaTypeAdapter(MapStringStringAdapter.class)
     private final Map<String, String> variables;
 
+    @XmlElementWrapper(name = Elements.DIRTY_FIELDS, required = false)
+    @XmlElement(name = "field", required = false)
+    private final List<String> dirtyFields;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -85,6 +93,7 @@ public final class DocumentUpdate extends AbstractDataTransferObject {
         this.applicationDocumentId = null;
         this.applicationDocumentStatus = null;
         this.variables = null;
+        this.dirtyFields = new ArrayList<String>();
     }
 
     private DocumentUpdate(Builder builder) {
@@ -92,6 +101,7 @@ public final class DocumentUpdate extends AbstractDataTransferObject {
         this.applicationDocumentId = builder.getApplicationDocumentId();
         this.applicationDocumentStatus = builder.getApplicationDocumentStatus();
         this.variables = builder.getVariables();
+        this.dirtyFields = builder.getDirtyFields();
     }
 
     public String getTitle() {
@@ -112,7 +122,9 @@ public final class DocumentUpdate extends AbstractDataTransferObject {
         }
         return Collections.unmodifiableMap(variables);
     }
-
+    public List<String> getDirtyFields() {
+        return dirtyFields;
+    }
     /**
      * A builder which can be used to construct {@link DocumentUpdate} instances.
      */
@@ -124,7 +136,7 @@ public final class DocumentUpdate extends AbstractDataTransferObject {
         private String applicationDocumentId;
         private String applicationDocumentStatus;
         private Map<String, String> variables;
-
+        private List<String> dirtyFields;
 
         private Builder() {
             this.title = "";
@@ -207,6 +219,21 @@ public final class DocumentUpdate extends AbstractDataTransferObject {
             variables.put(name, value);
         }
 
+        public List<String> getDirtyFields() {
+            return dirtyFields;
+        }
+
+        public void setDirtyFields(List<String> dirtyFields) {
+            this.dirtyFields = dirtyFields;
+        }
+
+        public void addDirtyField(String field) {
+            if(this.getDirtyFields() == null) {
+                this.setDirtyFields(new ArrayList<String>());
+            }
+            this.getDirtyFields().add(field);
+        }
+
     }
 
     /**
@@ -225,5 +252,6 @@ public final class DocumentUpdate extends AbstractDataTransferObject {
         final static String APPLICATION_DOCUMENT_ID = "applicationDocumentId";
         final static String APPLICATION_DOCUMENT_STATUS = "applicationDocumentStatus";
         final static String VARIABLES = "variables";
+        final static String DIRTY_FIELDS = "dirtyFields";
     }
 }

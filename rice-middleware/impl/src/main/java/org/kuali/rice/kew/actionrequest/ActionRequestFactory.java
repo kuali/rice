@@ -438,36 +438,48 @@ public class ActionRequestFactory {
 			if (responsibility.getPrincipalId() != null) {
 				roleResponsibilityRecipient.setTarget(new KimPrincipalRecipient(responsibility.getPrincipalId()));
 			} else if (responsibility.getGroupId() != null) {
-				roleResponsibilityRecipient.setTarget(new KimGroupRecipient(responsibility.getGroupId()));
+                Group group = getGroupService().getGroup(responsibility.getGroupId());
+                if(group != null){
+                    if(!group.isActive() && !document.getDocumentType().getFailOnInactiveGroup().getPolicyValue()){
+                        roleResponsibilityRecipient.setTarget(null);
+                    }else if(getGroupService().getMemberPrincipalIds(group.getId()).isEmpty()){
+                        roleResponsibilityRecipient.setTarget(null);
+                    }else {
+                        roleResponsibilityRecipient.setTarget(new KimGroupRecipient(group));
+                    }
+                } else {
+                    throw new IllegalArgumentException("Attempted to create a KimGroupRecipient with a null Group!");
+                }
 			} else {
 				throw new RiceRuntimeException("Failed to identify a group or principal on the given ResponsibilityResolutionInfo:" + responsibility);
 			}
-			String annotationStr = annotation.toString();
-			ActionRequestValue request = createActionRequest(
-			        responsibility.getActionTypeCode(), 
-			        responsibility.getPriorityNumber(), roleResponsibilityRecipient,
-			        responsibility.getParallelRoutingGroupingCode(), // description
-			        responsibility.getResponsibilityId(), 
-			        responsibility.isForceAction(), 
-			        // If not nested in a parent action request, ensure that the request
-			        // is first approve so delegations of this request do not require 
-			        // ALL_APPROVE as well
-			        (responsibilities.size() == 1)?ActionRequestPolicy.FIRST.getCode():approvePolicy, 
-			        null, // ruleId
-			        annotationStr);
-			// if there is only a single request, don't create the nesting structure
-			if ( responsibilities.size() > 1 ) {
-				request.setParentActionRequest(requestGraph);
-				requestGraph.getChildrenRequests().add(request);
-				if ( !uniqueChildAnnotations.contains(annotationStr) ) {
-					parentAnnotation.append( annotationStr ).append( " -- " );
-					uniqueChildAnnotations.add(annotationStr);
-				}
-			} else {
-				requestGraphs.add(request);
-			}
-            generateKimRoleDelegationRequests(responsibility.getDelegates(), request);
-
+            if(roleResponsibilityRecipient.getTarget() != null){
+                String annotationStr = annotation.toString();
+                ActionRequestValue request = createActionRequest(
+                        responsibility.getActionTypeCode(),
+                        responsibility.getPriorityNumber(), roleResponsibilityRecipient,
+                        responsibility.getParallelRoutingGroupingCode(), // description
+                        responsibility.getResponsibilityId(),
+                        responsibility.isForceAction(),
+                        // If not nested in a parent action request, ensure that the request
+                        // is first approve so delegations of this request do not require
+                        // ALL_APPROVE as well
+                        (responsibilities.size() == 1)?ActionRequestPolicy.FIRST.getCode():approvePolicy,
+                        null, // ruleId
+                        annotationStr);
+                // if there is only a single request, don't create the nesting structure
+                if ( responsibilities.size() > 1 ) {
+                    request.setParentActionRequest(requestGraph);
+                    requestGraph.getChildrenRequests().add(request);
+                    if ( !uniqueChildAnnotations.contains(annotationStr) ) {
+                        parentAnnotation.append( annotationStr ).append( " -- " );
+                        uniqueChildAnnotations.add(annotationStr);
+                    }
+                } else {
+                    requestGraphs.add(request);
+                }
+                generateKimRoleDelegationRequests(responsibility.getDelegates(), request);
+            }
 	    }
     	if ( responsibilities.size() > 1 ) {
 	    	requestGraph.setAnnotation( StringUtils.chomp( parentAnnotation.toString(), " -- " ) );

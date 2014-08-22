@@ -19,6 +19,7 @@ import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
@@ -54,6 +55,7 @@ import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpa;
 import org.kuali.rice.kew.routeheader.dao.impl.DocumentRouteHeaderDAOJpa;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
@@ -286,7 +288,12 @@ public class DocumentRouteHeaderValue extends DataObjectBase implements Document
     }
 
     public String getInitiatorDisplayName() {
-        return KEWServiceLocator.getIdentityHelperService().getPerson(getInitiatorWorkflowId()).getName();
+        try {
+            Person person = KEWServiceLocator.getIdentityHelperService().getPerson(getInitiatorWorkflowId());
+            return person.getName();
+        } catch (RiceIllegalArgumentException e) {
+            return getInitiatorWorkflowId();
+        }
     }
 
     public String getRoutedByDisplayName() {
@@ -823,11 +830,24 @@ public class DocumentRouteHeaderValue extends DataObjectBase implements Document
             setAppDocId(documentUpdate.getApplicationDocumentId());
             setDateModified(new Timestamp(System.currentTimeMillis()));
             updateAppDocStatus(documentUpdate.getApplicationDocumentStatus());
+            List<String> dirtyFields = documentUpdate.getDirtyFields();
+            LOG.debug("Applying document update for document " + this.getDocumentId() + " dirtyFields = " + dirtyFields);
+            if(dirtyFields == null || dirtyFields.contains("title")) {
+                setDocTitle(updateDocTitle);
+            }
+            if(dirtyFields == null || dirtyFields.contains("applicationDocumentId")) {
+                setAppDocId(documentUpdate.getApplicationDocumentId());
+            }
+            setDateModified(new Timestamp(System.currentTimeMillis()));
+            if(dirtyFields == null || dirtyFields.contains("applicationDocumentStatus")) {
+                updateAppDocStatus(documentUpdate.getApplicationDocumentStatus());
+            }
 
             Map<String, String> variables = documentUpdate.getVariables();
             for (String variableName : variables.keySet()) {
                 setVariable(variableName, variables.get(variableName));
             }
+
         }
     }
 

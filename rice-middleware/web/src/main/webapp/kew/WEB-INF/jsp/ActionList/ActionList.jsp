@@ -93,73 +93,75 @@
 	<%-- Since we are using the external paging and sorting features of the display tag now, if a new sortable column is added, remember to add it to the
        ActionItemComparator in the ActionListAction as well --%>
 	<div class="headerarea-small" id="headerarea-small">
-	<div style="float:left"><h1><c:out value="Action List" /></h1></div><br />
-    <div style="clear:both">
-	<div style="float:right">
-	  <div style="float:left; width:75px">
-		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-preferences.gif" property="methodToCall.viewPreferences" styleClass="tinybutton" alt="preferences" title="preferences" />
+    <%--KULRICE-12287: Changed the location of the backdoor to put it in the header bar and
+    * corrected the display of the items in the header when the testing
+    * banner is displayed
+    --%>
+    <div style="float:left"><h1><c:out value="Action List" /></h1><kul:backdoor /></div><br />
+    <div style="float:right">
+      <div style="float:left; width:75px">
+        <html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-preferences.gif" property="methodToCall.viewPreferences" styleClass="tinybutton" alt="preferences" title="preferences" />
       </div>
       <div style="float:left; width:52px">
-		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-refresh.gif" property="methodToCall.refresh" styleClass="tinybutton" alt="refresh" title="refresh" />
+        <html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-refresh.gif" property="methodToCall.start" styleClass="tinybutton" alt="refresh" title="refresh" />
       </div>
       <div style="float:left; width:39px">
-		<html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-filter.gif" property="methodToCall.viewFilter" styleClass="tinybutton" alt="filter" title="filter" />
+        <html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-filter.gif" property="methodToCall.viewFilter" styleClass="tinybutton" alt="filter" title="filter" />
       </div>
 
-        <!-- Delegator selection list -->
+      <!-- Delegator selection list -->
 
-		<c:if test="${! empty ActionListForm.delegators}">
-			<html-el:hidden property="oldDelegationId" value="${ActionListForm.delegationId}" />
-			<div style="float:left; width:226px; position: relative; top: -.5em;">
-	            <html-el:select property="delegationId" onchange="document.forms[0].methodToCall.value='start';if(document.forms[0].primaryDelegateId){document.forms[0].primaryDelegateId.value='${Constants.PRIMARY_DELEGATION_DEFAULT}';}document.forms[0].submit();">
-	              <html-el:option value="${Constants.DELEGATION_DEFAULT}"><c:out value="${Constants.DELEGATION_DEFAULT}" /></html-el:option>
-	              <html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_SECONDARY_DELEGATIONS}" /></html-el:option>
-				  <c:forEach var="delegator" items="${ActionListForm.delegators}">
-					<html-el:option value="${delegator.recipientId}"><c:out value="${delegator.displayName}" /></html-el:option>
-				  </c:forEach>
-	            </html-el:select>
-    		</div>
-		</c:if>
-
-		<!-- Primary Delegate selection list -->
-		<c:if test="${! empty ActionListForm.primaryDelegates}">
-			<html-el:hidden property="oldPrimaryDelegateId" value="${ActionListForm.primaryDelegateId}" />
-			<div style="float:left; width:226px; position: relative; top: -.5em;">
-				<html-el:select property="primaryDelegateId" onchange="document.forms[0].methodToCall.value='start';if(document.forms[0].delegationId){document.forms[0].delegationId.value='${Constants.DELEGATION_DEFAULT}';}document.forms[0].submit();">
-					<html-el:option value="${Constants.PRIMARY_DELEGATION_DEFAULT}"><c:out value="${Constants.PRIMARY_DELEGATION_DEFAULT}" /></html-el:option>
-					<html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_PRIMARY_DELEGATES}" /></html-el:option>
-					<c:forEach var="primaryDelegate" items="${ActionListForm.primaryDelegates}">
-						<html-el:option value="${primaryDelegate.recipientId}"><c:out value="${primaryDelegate.displayName}" /></html-el:option>
-					</c:forEach>
-				</html-el:select>
-			</div>
-		</c:if>
-		<c:if test="${UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME] != null && UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME].filterOn}">
-		<div style="float:left; width:70px">
-	   <a
-         href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
-         src="${ConfigProperties.kr.url}/images/tinybutton-clearfilter.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
-         border="0" /></a>
+      <c:if test="${! empty ActionListForm.delegators}">
+        <html-el:hidden property="oldDelegationId" value="${ActionListForm.delegationId}" />
+        <div style="float:left; width:226px; position: relative; top: -.5em;">
+          <html-el:select property="delegationId" onchange="document.forms[0].methodToCall.value='start';if(document.forms[0].primaryDelegateId){document.forms[0].primaryDelegateId.value='${Constants.PRIMARY_DELEGATION_DEFAULT}';}document.forms[0].submit();">
+            <html-el:option value="${Constants.DELEGATION_DEFAULT}"><c:out value="${Constants.DELEGATION_DEFAULT}" /></html-el:option>
+            <html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_SECONDARY_DELEGATIONS}" /></html-el:option>
+            <c:forEach var="delegator" items="${ActionListForm.delegators}">
+              <html-el:option value="${delegator.recipientId}"><c:out value="${delegator.displayName}" /></html-el:option>
+            </c:forEach>
+          </html-el:select>
         </div>
-		</c:if>
+      </c:if>
 
-         <c:if test="${helpDeskActionList != null}">
-         	<!--<p> Testing is this shows up on the screen </p> -->
-            <div style="float:left">
-			<html-el:text property="helpDeskActionListUserName" size="12" style="position: relative; top: -.35em;" />&nbsp;
-            </div>
-            <div style="float:left">
-            <html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" styleClass="tinybutton" />
-            </div>
-			<c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] != null}">
-				<a href="
+      <!-- Primary Delegate selection list -->
+      <c:if test="${! empty ActionListForm.primaryDelegates}">
+        <html-el:hidden property="oldPrimaryDelegateId" value="${ActionListForm.primaryDelegateId}" />
+        <div style="float:left; width:226px; position: relative; top: -.5em;">
+          <html-el:select property="primaryDelegateId" onchange="document.forms[0].methodToCall.value='start';if(document.forms[0].delegationId){document.forms[0].delegationId.value='${Constants.DELEGATION_DEFAULT}';}document.forms[0].submit();">
+            <html-el:option value="${Constants.PRIMARY_DELEGATION_DEFAULT}"><c:out value="${Constants.PRIMARY_DELEGATION_DEFAULT}" /></html-el:option>
+            <html-el:option value="${Constants.ALL_CODE}"><c:out value="${Constants.ALL_PRIMARY_DELEGATES}" /></html-el:option>
+            <c:forEach var="primaryDelegate" items="${ActionListForm.primaryDelegates}">
+              <html-el:option value="${primaryDelegate.recipientId}"><c:out value="${primaryDelegate.displayName}" /></html-el:option>
+            </c:forEach>
+          </html-el:select>
+        </div>
+      </c:if>
+      <c:if test="${UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME] != null && UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME].filterOn}">
+        <div style="float:left; width:70px">
+          <a
+                  href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
+                  src="${ConfigProperties.kr.url}/images/tinybutton-clearfilter.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
+                  border="0" /></a>
+        </div>
+      </c:if>
+
+      <c:if test="${helpDeskActionList != null}">
+        <!--<p> Testing is this shows up on the screen </p> -->
+        <div style="float:left">
+          <html-el:text property="helpDeskActionListUserName" size="12" style="position: relative; top: -.35em;" />&nbsp;
+        </div>
+        <div style="float:left">
+          <html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" styleClass="tinybutton" />
+        </div>
+        <c:if test="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] != null}">
+          <a href="
 					<c:url value="ActionList.do">
 						<c:param name="methodToCall" value="clearHelpDeskActionListUser" />
 					</c:url>">Clear <c:out value="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME].name}"/>'s List</a>
-			</c:if>&nbsp;&nbsp;
-		</c:if>
+        </c:if>&nbsp;&nbsp;
+      </c:if>
 
-    </div>
     </div>
 	</div>
 

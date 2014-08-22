@@ -33,8 +33,6 @@ import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 public class BusinessObjectEntry extends DataObjectEntry {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectEntry.class);
 
-    protected Class<? extends BusinessObject> baseBusinessObjectClass;
-
     public void setBusinessObjectClass(Class<? extends BusinessObject> businessObjectClass) {
         super.setDataObjectClass(businessObjectClass);
 
@@ -60,12 +58,12 @@ public class BusinessObjectEntry extends DataObjectEntry {
      */
 
     public void setBaseBusinessObjectClass(Class<? extends BusinessObject> baseBusinessObjectClass) {
-        this.baseBusinessObjectClass = baseBusinessObjectClass;
+        super.setBaseDataObjectClass(baseBusinessObjectClass);
     }
 
     @BeanTagAttribute(name = "baseBusinessObjectClass")
     public Class<? extends BusinessObject> getBaseBusinessObjectClass() {
-        return baseBusinessObjectClass;
+        return (Class<? extends BusinessObject>) super.getBaseDataObjectClass();
     }
 
     /**

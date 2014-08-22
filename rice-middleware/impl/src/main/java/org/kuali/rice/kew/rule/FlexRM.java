@@ -221,21 +221,7 @@ public class FlexRM {
 	}
 
 	public ResponsibleParty resolveResponsibilityId(String responsibilityId) {
-		if (responsibilityId == null) {
-			throw new IllegalArgumentException("A null responsibilityId was passed to resolve responsibility!");
-		}
-		RuleResponsibility resp = getRuleService().getRuleResponsibility(responsibilityId);
-		ResponsibleParty responsibleParty = new ResponsibleParty();
-		if (resp!=null && resp.isUsingRole()) {
-			responsibleParty.setRoleName(resp.getResolvedRoleName());
-		} else if (resp!=null && resp.isUsingPrincipal()) {
-			responsibleParty.setPrincipalId(resp.getPrincipalId());
-		} else if (resp!=null && resp.isUsingGroup()) {
-			responsibleParty.setGroupId(resp.getGroupId());
-		} else {
-			throw new RiceRuntimeException("Failed to resolve responsibility from responsibility ID " + responsibilityId + ".  Responsibility was an invalid type: " + resp);
-		}
-		return responsibleParty;
+		return null;
 	}
 
 	private void makeActionRequests(ActionRequestFactory arFactory, RouteContext context, org.kuali.rice.kew.api.rule.Rule rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation)

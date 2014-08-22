@@ -398,7 +398,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="documentId"/>
         <bean parent="FieldDefinition" p:attributeName="documentTypeLabel"/>
-        <bean parent="FieldDefinition" p:attributeName="title"/>
+        <bean parent="FieldDefinition" p:attributeName="title" p:maxLength="256"/>
         <bean parent="FieldDefinition" p:attributeName="statusLabel"/>
         <bean parent="FieldDefinition" p:attributeName="initiatorDisplayName" />
         <bean parent="FieldDefinition" p:attributeName="dateCreated"/>

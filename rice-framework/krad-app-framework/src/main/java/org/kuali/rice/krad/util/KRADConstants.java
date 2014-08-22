@@ -112,7 +112,6 @@ public final class KRADConstants {
         public static final String RULE_SERVICE_DETAIL_TYPE = "RuleBaseValues";
         public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
         public static final String WORKGROUP_DETAIL_TYPE = "Notification";
-
         private DetailTypes() {
             throw new UnsupportedOperationException("do not call");
         }
@@ -670,6 +669,8 @@ public final class KRADConstants {
     public static class Lookup {
         public static final String TITLE_RETURN_URL_PREPENDTEXT_PROPERTY = "title.return.url.value.prependtext";
         public static final String TITLE_ACTION_URL_PREPENDTEXT_PROPERTY = "title.action.url.value.prependtext";
+        //KULRICE-12281:Turn off the ability to export results from the person lookup
+        public static final String VIEW_RESULTS_EXPORT_OPTION = "d-16544-e";
     }
 
     public static final class MessageParsing {

@@ -520,5 +520,7 @@
   <param name="kew.ehcache.config.location" override="false">classpath:org/kuali/rice/kew/impl/config/kew.ehcache.xml</param>
 
   <param name="config.location">classpath:META-INF/framework-config-defaults.xml</param>
+  <!-- KULRICE-12304: -->
+  <param name="maintainable.conversion.rule.file" override="false">/org/kuali/rice/krad/config/MaintainableXMLUpgradeRules.xml</param>
 
 </config>

@@ -33,7 +33,8 @@ import java.util.Set;
 @Deprecated
 public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase
 		implements TransactionalDocumentAuthorizer {
-	public final Set<String> getEditModes(Document document, Person user,
+	//KULRICE-12362: Removed final modifier at request of KFS
+    public Set<String> getEditModes(Document document, Person user,
 			Set<String> editModes) {
 		Set<String> unauthorizedEditModes = new HashSet<String>();
 		for (String editMode : editModes) {

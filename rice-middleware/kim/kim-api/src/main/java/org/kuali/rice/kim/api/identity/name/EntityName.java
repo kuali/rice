@@ -487,7 +487,21 @@ public final class EntityName extends AbstractDataTransferObject
         @Override
         public String getCompositeNameUnmasked() {
         	if(this.compositeName == null) {
-        		setCompositeName((getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName())).trim());
+                //KULRICE-12360: Display name formatting issue when middle or first name missing
+                String lastNameTemp = "";
+                String firstNameTemp= "";
+
+                if (StringUtils.isNotBlank(getLastName())) {
+                    lastNameTemp = getLastName();
+                }
+                if (StringUtils.isNotBlank(getFirstName())) {
+                    firstNameTemp = getFirstName();
+                }
+                if (StringUtils.isNotBlank(lastNameTemp) && StringUtils.isNotBlank(firstNameTemp)) {
+                    lastNameTemp = lastNameTemp + ", ";
+                }
+
+                setCompositeName(lastNameTemp + firstNameTemp + (getMiddleName()==null?"":" " + getMiddleName()));
         	}
             return this.compositeName;
         }

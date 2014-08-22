@@ -257,15 +257,21 @@ public class DocumentSearchCriteriaBo implements BusinessObject {
         return KimApiServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
     }
 
+    /**
+     * Gets the initiators display name, if the  principal is not found the the initiator principal id is returned.
+     * @return The principal composite name if it exists, otherwise the initiator principal id
+     */
     public String getInitiatorDisplayName() {
-        if (initiatorPrincipalId != null) {
+
+        if (StringUtils.isNotBlank(initiatorPrincipalId)) {
             EntityNamePrincipalName entityNamePrincipalName = KimApiServiceLocator.getIdentityService().getDefaultNamesForPrincipalId(initiatorPrincipalId);
             if (entityNamePrincipalName != null){
                 EntityName entityName = entityNamePrincipalName.getDefaultName();
-                return entityName == null ? null : entityName.getCompositeName();
+                return entityName == null ? initiatorPrincipalId : entityName.getCompositeName();
             }
         }
-        return null;
+
+        return initiatorPrincipalId;
     }
 
     public Person getApproverPerson() {
@@ -329,6 +335,13 @@ public class DocumentSearchCriteriaBo implements BusinessObject {
         dateCreated = new Timestamp(document.getDateCreated().getMillis());
     }
 
+    /**
+     * Returns the principal name for the given principal id, if the principal is not found then the principal id is
+     *  returned.
+     * @param principalId the unique identifier for the principal
+     * @return the principal name for the given principal id, if the principal is not found then the principal id is
+     *  returned.
+     */
     private String principalIdToName(String principalId) {
         if (StringUtils.isNotBlank(principalId)) {
             Principal principal =  KimApiServiceLocator.getIdentityService().getPrincipal(principalId);
@@ -336,7 +349,7 @@ public class DocumentSearchCriteriaBo implements BusinessObject {
                 return principal.getPrincipalName();
             }
         }
-        return null;
+        return principalId;
     }
 
 }

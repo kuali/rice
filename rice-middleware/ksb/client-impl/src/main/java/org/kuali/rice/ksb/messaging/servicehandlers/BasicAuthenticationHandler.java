@@ -56,10 +56,9 @@ public class BasicAuthenticationHandler implements CallbackHandler {
     public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
         if (callbacks[0] != null && callbacks[0] instanceof WSPasswordCallback) {
             WSPasswordCallback pc = (WSPasswordCallback) callbacks[0];
-            if (!KSBServiceLocator.getBasicAuthenticationService().checkServiceAuthentication(this.serviceNameSpaceURI,
-                    this.localServiceName, pc.getIdentifier(), pc.getPassword())) {
-                throw new RiceRuntimeException("Invalid username or password");
-            }
+            String password = KSBServiceLocator.getBasicAuthenticationService().getPasswordForService(this.serviceNameSpaceURI,
+                    this.localServiceName, pc.getIdentifier());
+            pc.setPassword(password);
         }
     }
 }

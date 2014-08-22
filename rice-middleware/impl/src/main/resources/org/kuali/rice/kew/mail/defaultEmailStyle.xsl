@@ -36,7 +36,7 @@
         <xsl:variable name="docHandlerUrl" select="actionItem/actionItem/docHandlerURL"/>
         <email>
             <subject>Action List Reminder <xsl:value-of select="actionItem/customSubject"/></subject>
-            <body>Your Action List has an eDoc(electronic document) that needs your attention: 
+            <body>Your Action List has an eDoc(electronic document) that needs your attention:
 
 Document ID:&tab;<xsl:value-of select="actionItem/actionItem/documentId"/>
 Initiator:&tab;&tab;<xsl:value-of select="actionItem/docInitiatorDisplayName"/>
@@ -44,7 +44,7 @@ Type:&tab;&tab;Add/Modify <xsl:value-of select="actionItem/documentType/name"/>
 Title:&tab;&tab;<xsl:value-of select="actionItem/actionItem/docTitle"/>
 
 
-To respond to this eDoc: 
+To respond to this eDoc:
 &tab;Go to <xsl:value-of select="$docHandlerUrl"/><xsl:choose>
   <xsl:when test="contains($docHandlerUrl, '?')">&amp;</xsl:when>
   <xsl:otherwise>?</xsl:otherwise>
@@ -53,7 +53,9 @@ To respond to this eDoc:
 &tab;Or you may access the eDoc from your Action List:
               &tab;Go to <xsl:value-of select="@actionListUrl"/>, and then click on the numeric Document ID: <xsl:value-of select="actionItem/actionItem/documentId"/> in the first column of the List.
 
-
+To view the route log of this document:
+&tab;Go to <xsl:value-of select="@routeLogUrl"/>
+<xsl:value-of select="actionItem/actionItem/documentId"/>
 
               To change how these email notifications are sent(daily, weekly or none):
 &tab;Go to <xsl:value-of select="@preferencesUrl"/>
@@ -77,7 +79,7 @@ Action Item sent to <xsl:value-of select="actionItem/actionItemPrincipalName"/>
     <xsl:template match="dailyReminder">
         <email>
             <subject>Action List Reminder</subject>
-            <body>Your Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention: 
+            <body>Your Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention:
 <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html
      this clever little expression ensures that we only match the FIRST node
      for which there is a name-to-nodeset mapping.  More specifically, we want
@@ -96,12 +98,12 @@ Action Item sent to <xsl:value-of select="actionItem/actionItemPrincipalName"/>
 <xsl:text>&tab;</xsl:text><xsl:value-of select="count(key('doctypes-by-name', docName))"/><xsl:text>&tab;</xsl:text><xsl:value-of select="docName"/><xsl:text>&n;</xsl:text>
 </xsl:for-each>
 
-To respond to each of these eDocs: 
+To respond to each of these eDocs:
 &tab;Go to <xsl:value-of select="@actionListUrl"/>, and then click on its numeric Document ID in the first column of the List.
 
 
 
-To change how these email notifications are sent (immediately, weekly or none): 
+To change how these email notifications are sent (immediately, weekly or none):
 &tab;Go to <xsl:value-of select="@preferencesUrl"/>
 
 
@@ -112,11 +114,11 @@ For additional help, email <![CDATA[<mailto:]]><xsl:value-of select="@applicatio
 </body>
         </email>
     </xsl:template>
-    
+
     <xsl:template match="weeklyReminder">
         <email>
             <subject>Action List Reminder</subject>
-            <body>Your Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention: 
+            <body>Your Action List has <xsl:value-of select="count(summarizedActionItem)"/> eDocs(electronic documents) that need your attention:
 <!-- "Muenchian" method of grouping: http://www.jenitennison.com/xslt/grouping/muenchian.html
      this clever little expression ensures that we only match the FIRST node
      for which there is a name-to-nodeset mapping.  More specifically, we want
@@ -135,12 +137,12 @@ For additional help, email <![CDATA[<mailto:]]><xsl:value-of select="@applicatio
 <xsl:text>&tab;</xsl:text><xsl:value-of select="count(key('doctypes-by-name', docName))"/><xsl:text>&tab;</xsl:text><xsl:value-of select="docName"/><xsl:text>&n;</xsl:text>
 </xsl:for-each>
 
-To respond to each of these eDocs: 
+To respond to each of these eDocs:
 &tab;Go to <xsl:value-of select="@actionListUrl"/>, and then click on its numeric Document ID in the first column of the List.
 
 
 
-To change how these email notifications are sent (immediately, daily or none): 
+To change how these email notifications are sent (immediately, daily or none):
 &tab;Go to <xsl:value-of select="@preferencesUrl"/>
 
 
@@ -172,10 +174,10 @@ Document type: <xsl:value-of select="documentType"/>
 Document id: <xsl:value-of select="documentId"/>
 
 Category: <xsl:value-of select="category"/>
-Comments: 
+Comments:
 <xsl:value-of select="comments"/>
 
-Exception: 
+Exception:
 <xsl:value-of select="exception"/>
             </body>
         </email>

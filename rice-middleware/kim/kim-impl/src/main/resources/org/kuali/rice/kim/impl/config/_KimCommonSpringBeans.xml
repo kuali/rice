@@ -69,10 +69,11 @@
         abstract="true"
         p:serviceBus-ref="rice.kim.import.serviceBus"/>
 
+  <!-- Changing priority of this kimService bean (used as the parent of all kim services) from 3 to 15 -->
   <bean id="kimService" class="org.kuali.rice.ksb.api.bus.support.SoapServiceDefinition" abstract="true"
     p:serviceNameSpaceURI-ref="rice.kim.serviceNamespace"
     p:jaxWsService="true"
-    p:priority="3"
+    p:priority="15"
     p:retryAttempts="0"
     p:busSecurity="${kim.soapExposedService.jaxws.security}"
     p:serviceVersion="${rice.version}"

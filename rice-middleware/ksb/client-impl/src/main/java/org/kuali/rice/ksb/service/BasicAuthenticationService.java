@@ -59,5 +59,16 @@ public interface BasicAuthenticationService {
      */
     public boolean checkServiceAuthentication(String serviceNameSpaceURI, QName serviceName, String username,
             String password);
-
+    /**
+     * Gets the password for the given serviceNameSpaceURI, serviceName, username
+     *
+     * @param serviceNameSpaceURI the serviceNameSpaceURI of the service
+     * @param serviceName the serviceName of the service
+     * @param username the username for the service
+     * @return the password if the service is found
+     */
+    public String getPasswordForService(String serviceNameSpaceURI, QName serviceName, String username);
+    /**
+     * End IU Customization
+     */
 }

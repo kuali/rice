@@ -877,6 +877,7 @@ public final class KewApiConstants {
 
 	public static final String EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME = "Resolve Exception";
 
+    public static final String APP_DOC_ID_PARAMETER = "appDocId";
 	// Permission Details
 
 	public static final String DOCUMENT_TYPE_NAME_DETAIL = "documentTypeName";
@@ -931,6 +932,8 @@ public final class KewApiConstants {
     public static final String RULE_CACHE_REQUEUE_DELAY = "RULE_CACHE_REQUEUE_DELAY";
     public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIL_NOTIFICATION_TEST_ADDRESS";
     public static final String SECURE_ATTACHMENTS_PARAM = "SECURED_ATTACHMENT_SERVLET";
+
+    public static final String OUTBOX_ITEM_LIMIT = "OUTBOX_ITEM_LIMIT";
 
     //System parameter value comparisons
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "Y";

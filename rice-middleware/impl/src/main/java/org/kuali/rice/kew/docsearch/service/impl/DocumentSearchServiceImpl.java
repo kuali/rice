@@ -166,9 +166,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     @Override
-	public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria) {
-		DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
-		DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByNameCaseInsensitive(criteria.getDocumentTypeName());
+    public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria) {
+        return lookupDocuments(principalId, criteria, false);//Default saveSearch to false from any interaction with this particular API
+    }
+
+
+    @Override
+    public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria, boolean saveSearch) {
+        DocumentSearchGenerator docSearchGenerator = getStandardDocumentSearchGenerator();
+        DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByNameCaseInsensitive(criteria.getDocumentTypeName());
         DocumentSearchCriteria.Builder criteriaBuilder = DocumentSearchCriteria.Builder.create(criteria);
         validateDocumentSearchCriteria(docSearchGenerator, criteriaBuilder);
         DocumentSearchCriteria builtCriteria = applyCriteriaCustomizations(documentType, criteriaBuilder.build());
@@ -188,7 +194,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<RemotableAttributeField> searchFields = determineSearchFields(documentType);
         DocumentSearchResults.Builder searchResults = docSearchDao.findDocuments(docSearchGenerator, builtCriteria, criteriaModified, searchFields);
         if (documentType != null) {
-             // Pass in the principalId as part of searchCriteria to result customizers
+            // Pass in the principalId as part of searchCriteria to result customizers
             //TODO: The right way  to do this should have been to update the API for document customizer
 
             DocumentSearchCriteria.Builder docSearchUserIdCriteriaBuilder = DocumentSearchCriteria.Builder.create(builtCriteria);
@@ -231,9 +237,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 searchResults.setSearchResults(Collections.<DocumentSearchResult.Builder>emptyList());
             }
         }
-        saveSearch(principalId, builtCriteria);
+        if(saveSearch){
+            saveSearch(principalId, builtCriteria);
+        }
         return searchResults.build();
-	}
+    }
+
 
     protected void applyResultCustomization(DocumentSearchResult.Builder result, DocumentSearchResultValue value) {
         Map<String, List<DocumentAttribute.AbstractBuilder<?>>> customizedAttributeMap =

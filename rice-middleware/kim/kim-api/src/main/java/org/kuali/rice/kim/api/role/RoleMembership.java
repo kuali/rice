@@ -20,11 +20,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.mo.ModelObjectComplete;
+import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -56,6 +58,8 @@ import java.util.Map;
         RoleMembership.Elements.ROLE_SORTING_CODE,
         RoleMembership.Elements.QUALIFIER,
         RoleMembership.Elements.DELEGATES,
+        CoreConstants.CommonElements.ACTIVE_FROM_DATE,
+        CoreConstants.CommonElements.ACTIVE_TO_DATE,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public class RoleMembership extends AbstractDataTransferObject implements RoleMembershipContract {
@@ -87,6 +91,14 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
     @XmlElement(name=Elements.DELEGATE, required = false)
     private final List<DelegateType> delegates;
 
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    @XmlElement(name = CoreConstants.CommonElements.ACTIVE_FROM_DATE, required = false)
+    private final DateTime activeFromDate;
+
+    @XmlJavaTypeAdapter(DateTimeAdapter.class)
+    @XmlElement(name = CoreConstants.CommonElements.ACTIVE_TO_DATE, required = false)
+    private final DateTime activeToDate;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -104,6 +116,10 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         roleSortingCode = null;
         qualifier = null;
         delegates = null;
+        /* Added the active from and to dates to this object
+    	 */
+        activeFromDate = null;
+        activeToDate = null;
     }
 
     private RoleMembership(Builder b) {
@@ -121,6 +137,9 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
                 delegates.add(delegateBuilder.build());
             }
         }
+        activeFromDate = b.getActiveFromDate();
+        activeToDate = b.getActiveToDate();
+
     }
 
     @Override
@@ -163,6 +182,14 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         return Collections.unmodifiableList(delegates);
     }
 
+    public DateTime getActiveFromDate() {
+        return activeFromDate;
+    }
+
+    public DateTime getActiveToDate() {
+        return activeToDate;
+    }
+
 
     public static final class Builder implements ModelBuilder, RoleMembershipContract, ModelObjectComplete {
         private String roleId;
@@ -173,6 +200,8 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
         private String roleSortingCode;
         private Map<String, String> qualifier;
         private List<DelegateType.Builder> delegates;
+        private DateTime activeFromDate;
+        private DateTime activeToDate;
 
         private Builder(String roleId, String memberId, MemberType type) {
             setRoleId(roleId);
@@ -186,6 +215,17 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
             Builder b = new Builder(roleId, memberId, memberType);
             b.setId(id);
             b.setQualifier(qualifier);
+            return b;
+        }
+
+        public static Builder create(String roleId, String id, String memberId, MemberType memberType,
+                Map<String, String> qualifier, DateTime activeFromDate,
+                DateTime activeToDate) {
+            Builder b = new Builder(roleId, memberId, memberType);
+            b.setId(id);
+            b.setQualifier(qualifier);
+            b.setActiveFromDate(activeFromDate);
+            b.setActiveToDate(activeToDate);
             return b;
         }
 
@@ -237,6 +277,22 @@ public class RoleMembership extends AbstractDataTransferObject implements RoleMe
 
         public void setDelegates(List<DelegateType.Builder> delegates) {
             this.delegates = delegates;
+        }
+
+        public DateTime getActiveFromDate() {
+            return activeFromDate;
+        }
+
+        public void setActiveFromDate(DateTime activeFromDate) {
+            this.activeFromDate = activeFromDate;
+        }
+
+        public DateTime getActiveToDate() {
+            return activeToDate;
+        }
+
+        public void setActiveToDate(DateTime activeToDate) {
+            this.activeToDate = activeToDate;
         }
 
         @Override

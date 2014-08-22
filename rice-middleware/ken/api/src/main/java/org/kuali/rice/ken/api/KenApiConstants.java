@@ -38,6 +38,8 @@ public final class KenApiConstants {
          */
         public static final String KEN_NAMESPACE_2_0 = KEN_NAMESPACE_PREFIX + "/" + CoreConstants.Versions.VERSION_2_0;
 
+        public static final String CODE = "KR-NTFCN";
+
         private Namespaces() {
             throw new UnsupportedOperationException("do not call");
         }
@@ -56,6 +58,29 @@ public final class KenApiConstants {
         public static final String FAILURE = "Failure";
 
         private RESPONSE_STATUSES() {
+            throw new UnsupportedOperationException("do not call");
+        }
+    }
+
+    public static final class KIMTypes {
+        public static final class Channel {
+            public static final String CHANNEL_ID = "Channel ID";
+
+            private Channel() {
+                throw new UnsupportedOperationException("do not call");
+            }
+        }
+
+        private KIMTypes() {
+            throw new UnsupportedOperationException("do not call");
+        }
+    }
+
+    public static final class Permissions {
+
+        public static final String VIEW_NOTIFICATION = "View Notification";
+
+        private Permissions() {
             throw new UnsupportedOperationException("do not call");
         }
     }

@@ -301,4 +301,6 @@
 		class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
 		<property name="serviceName" value="rice.ksb.scheduler" />
 	</bean>
+
+  <bean id="channelPermissionTypeService" class="org.kuali.rice.ken.kim.ChannelPermissionTypeService" />
 </beans>

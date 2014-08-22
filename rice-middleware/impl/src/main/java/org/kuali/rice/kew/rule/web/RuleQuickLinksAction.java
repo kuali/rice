@@ -171,11 +171,12 @@ public class RuleQuickLinksAction extends KewKualiAction {
 						flattenedNodes.add( new RouteNodeForDisplay( routeNode ) );
 					}
 				}
-                Collections.sort(flattenedNodes,new Comparator() {
+                //KULRICE-12357: Reverting change so that only document types are in alpha order
+                /*Collections.sort(flattenedNodes,new Comparator() {
                     public int compare(Object o1, Object o2) {
                         return ( ((RouteNode)o1).getRouteNodeName().compareTo(((RouteNode)o2).getRouteNodeName()));
                     }
-                });
+                });*/
 				for ( Iterator<DocumentType> iter = documentType.getChildrenDocTypes().iterator(); iter.hasNext(); ) {
 					childrenDocumentTypes.add( new DocumentTypeQuickLinksStructure( iter.next() ) );
 				}

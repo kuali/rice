@@ -116,7 +116,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         criteria = loadCriteria(fieldValues);
         searchResults = null;
         try {
-            searchResults = KEWServiceLocator.getDocumentSearchService().lookupDocuments(GlobalVariables.getUserSession().getPrincipalId(), criteria);
+            //KULRICE-12307: Document search API saves searches to user's saved document searches
+            searchResults = KEWServiceLocator.getDocumentSearchService().lookupDocuments(GlobalVariables.getUserSession().getPrincipalId(), criteria, true);
             if (searchResults.isCriteriaModified()) {
                 criteria = searchResults.getCriteria();
             }
@@ -471,7 +472,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(propertyName)) {
             return generateRouteLogUrl(criteriaBo.getDocumentId());
         } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR_DISPLAY_NAME.equals(propertyName)) {
-            return generateInitiatorUrl(criteriaBo.getInitiatorPerson());
+            return generateInitiatorUrl(criteriaBo.getInitiatorPrincipalId());
         }
         return super.getInquiryUrl(bo, propertyName);
     }
@@ -536,9 +537,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         return link;
     }
 
-    protected HtmlData.AnchorHtmlData generateInitiatorUrl(Person person) {
+    protected HtmlData.AnchorHtmlData generateInitiatorUrl(String principalId) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
-        if ( person == null || StringUtils.isBlank(person.getPrincipalId()) ) {
+        if (StringUtils.isBlank(principalId) ) {
             return link;
         }
         if (isRouteLogPopup()) {
@@ -547,9 +548,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         else {
             link.setTarget("_self");
         }
-        link.setDisplayText("Initiator Inquiry for User with ID:" + person.getPrincipalId());
+        link.setDisplayText("Initiator Inquiry for User with ID:" + principalId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KIM_URL) + "/" +
-            "identityManagementPersonInquiry.do?principalId=" + person.getPrincipalId();
+                "identityManagementPersonInquiry.do?principalId=" + principalId;
         link.setHref(url);
         return link;
     }

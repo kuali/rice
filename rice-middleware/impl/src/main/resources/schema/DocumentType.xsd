@@ -141,7 +141,7 @@
       		</documentation>
       	</annotation>
       </element>
-      
+
       <element name="blanketApproveWorkgroupName" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
@@ -166,7 +166,7 @@
       		</documentation>
       	</annotation>
       </element>
-      
+
       <element name="reportingWorkgroupName" type="c:ShortStringType" minOccurs="0">
       	<annotation>
       		<documentation>
@@ -316,7 +316,7 @@
     <attribute name="overwriteMode" use="optional">
         <annotation>
             <documentation>
-             Sets the overwrite mode (default is false). If overwrite mode is turned on a user may ingest only fields they 
+             Sets the overwrite mode (default is false). If overwrite mode is turned on a user may ingest only fields they
              wish to change on an existing document type
             </documentation>
         </annotation>
@@ -494,7 +494,7 @@
       <enumeration value="DEFAULT_APPROVE"/>
       <enumeration value="default_approve"/>
       <enumeration value="ALLOW_UNREQUESTED_ACTION"/>
-      <enumeration value="allow_unrequested_action" /> 
+      <enumeration value="allow_unrequested_action" />
       <enumeration value="INITIATOR_MUST_ROUTE"/>
       <enumeration value="initiator_must_route"/>
       <enumeration value="INITIATOR_MUST_SAVE"/>
@@ -518,7 +518,7 @@
       <enumeration value="ALLOW_SU_POSTPROCESSOR_OVERRIDE"/>
       <enumeration value="allow_su_postprocessor_override"/>
       <enumeration value="enroute_error_suppression"/>
-      <enumeration value="ENROUTE_ERROR_SUPPRESSION"/>   
+      <enumeration value="ENROUTE_ERROR_SUPPRESSION"/>
       <enumeration value="FAIL_ON_INACTIVE_GROUP"/>
       <enumeration value="fail_on_inactive_group"/>
       <enumeration value="REGENERATE_ACTION_REQUESTS_ON_CHANGE"/>
@@ -539,6 +539,8 @@
       <enumeration value="suppress_immediate_emails_on_su_action"/>
       <enumeration value="DOC_SEARCH_TARGET"/>
       <enumeration value="doc_search_target"/>
+      <enumeration value="SUPPRESS_ACKNOWLEDGEMENTS_ON_DISAPPROVE"/>
+      <enumeration value="suppress_acknowledgements_on_disapprove"/>
     </restriction>
   </simpleType>
 
@@ -801,7 +803,7 @@ Definitions are applied to the names in the routeNodes section.
               		</documentation>
               	</annotation>
               </element>
-              
+
               <element name="process" type="dt:PathNodeType">
         		<annotation>
         			<documentation>
@@ -1127,7 +1129,7 @@ Definitions are applied to the names in the routeNodes section.
       <enumeration value="UUID"/>
     </restriction>
   </simpleType>
-  
+
   <complexType name="PermissionType">
       <choice minOccurs="0" maxOccurs="unbounded">
         <element name="permissionDetail" type="dt:PermissionAttributeType" />
@@ -1160,9 +1162,9 @@ Definitions are applied to the names in the routeNodes section.
 		    </annotation>
 		  </attribute>
 	 </extension>
-	</simpleContent>	 
+	</simpleContent>
   </complexType>
- 
+
   <simpleType name="ActionRequestedType">
     <restriction base="string">
       <!-- acknowledge -->

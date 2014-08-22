@@ -19,6 +19,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 
@@ -262,4 +263,8 @@ public interface RoleTypeService extends KimTypeService {
     @WebMethod(operationName="shouldvalidateQualifiersForMemberType")
     @WebResult(name="validateQualifiers")
     boolean shouldValidateQualifiersForMemberType(@WebParam(name="memberType") MemberType memberType);
+
+    // Added a hook which is called whenever a member is removed from a role.
+    @WebMethod(operationName="roleMemberRemoved")
+    void roleMemberRemoved(@WebParam(name="member") RoleMember member);
 }

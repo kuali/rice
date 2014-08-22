@@ -66,6 +66,21 @@ public class BasicAuthenticationServiceImpl implements BasicAuthenticationServic
         return false;
     }
 
+    public String getPasswordForService(String serviceNameSpaceURI, QName serviceName, String username) {
+        List<BasicAuthenticationCredentials> credentialsList = serviceCredentialsMap.get(serviceName);
+        if (credentialsList != null) {
+            synchronized (credentialsList) {
+                for (BasicAuthenticationCredentials credentials : credentialsList) {
+                    if (StringUtils.equals(username, credentials.getUsername()) && StringUtils.equals(
+                            serviceNameSpaceURI, credentials.getServiceNameSpaceURI())) {
+                        return credentials.getPassword();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public BasicAuthenticationConnectionCredentials getConnectionCredentials(String serviceNameSpaceURI,
             String serviceName) {
         return connectionCredentialsMap.get(new QName(serviceNameSpaceURI, serviceName));

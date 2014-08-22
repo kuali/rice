@@ -35,10 +35,12 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -325,6 +327,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         e.setAttribute("applicationEmailAddress", getApplicationEmailAddress());
         e.setAttribute("actionListUrl", getActionListUrl());
         e.setAttribute("preferencesUrl", getPreferencesUrl());
+        e.setAttribute("routeLogUrl", getRouteLogUrl());
     }
 
     /**
@@ -408,6 +411,10 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
                 addDocumentHeaderXML(doc, header, root, "doc");
                 addObjectXML(doc, header.getInitiatorPrincipal(), root, "docInitiator");
                 addTextElement(doc, root, "docInitiatorDisplayName", header.getInitiatorDisplayName());
+                if (ObjectUtils.isNotNull(actionItem.getGroupId())) {
+                    Group group = KimApiServiceLocator.getGroupService().getGroup(actionItem.getGroupId());
+                    addTextElement(doc, root, "groupName", group.getName());
+                }
                 addObjectXML(doc, header.getDocumentType(), root, "documentType");
 
                 node.appendChild(root);

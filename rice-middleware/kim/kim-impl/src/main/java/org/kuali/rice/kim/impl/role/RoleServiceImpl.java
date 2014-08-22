@@ -428,7 +428,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             roleMemberBo.getId(),
                             roleMemberBo.getMemberId(),
                             roleMemberBo.getType(),
-                            roleMemberBo.getAttributes()).build();
+                            roleMemberBo.getAttributes(),
+                            roleMemberBo.getActiveFromDate(),
+                            roleMemberBo.getActiveToDate()).build();
 
                     las.add(mi);
                 } else {
@@ -515,7 +517,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                             roleMemberBo.getId(),
                             roleMemberBo.getMemberId(),
                             roleMemberBo.getType(),
-                            roleMemberBo.getAttributes()).build();
+                            roleMemberBo.getAttributes(),
+                            roleMemberBo.getActiveFromDate(),
+                            roleMemberBo.getActiveToDate()).build();
 
                     las.add(mi);
                 } else {
@@ -662,7 +666,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getId(),
                     roleMemberBo.getMemberId(),
                     roleMemberBo.getType(),
-                    roleMemberBo.getAttributes()).build();
+                    roleMemberBo.getAttributes(),
+                    roleMemberBo.getActiveFromDate(),
+                    roleMemberBo.getActiveToDate()).build();
             roleMemberships.add(roleMembeship);
         }
         return Collections.unmodifiableList(roleMemberships);
@@ -686,7 +692,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     bo.getId(),
                     bo.getMemberId(),
                     bo.getType(),
-                    bo.getAttributes());
+                    bo.getAttributes(),
+                    bo.getActiveFromDate(),
+                    bo.getActiveToDate());
             ims.add(roleMembership);
         }
 
@@ -802,7 +810,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getId(),
                     roleMemberBo.getMemberId(),
                     roleMemberBo.getType(),
-                    roleMemberBo.getAttributes()).build();
+                    roleMemberBo.getAttributes(),
+                    roleMemberBo.getActiveFromDate(),
+                    roleMemberBo.getActiveToDate()).build();
 
             // if the qualification check does not need to be made, just add the result
             if ((qualification == null || qualification.isEmpty())) {
@@ -898,6 +908,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         RoleMembership.Builder builder = RoleMembership.Builder.create(rm);
                         builder.setRoleId(roleId);
                         builder.setId("*");
+                        builder.setActiveFromDate(rm.getActiveFromDate());
+                        builder.setActiveToDate(rm.getActiveToDate());
                         results.add(builder.build());
                     }
                 }
@@ -974,15 +986,21 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected List<RoleMembership.Builder> applyDelegationsToRoleMembers(List<RoleMembership> roleMemberships,
             Collection<DelegateTypeBo> delegations, Map<String, String> qualification) {
         MultiValueMap<String, String> roleIdToRoleMembershipIds = new LinkedMultiValueMap<String, String>();
-        Map<String, RoleMembership.Builder> roleMembershipIdToBuilder = new HashMap<String, RoleMembership.Builder>();
+        /* Modified the roleMembershipIdToBuilders map to be multi-valued so
+         * role members that have multiple nested members (e.g. roles/groups)
+         * will properly resolve the delegations
+         */
+        MultiValueMap<String, RoleMembership.Builder> roleMembershipIdToBuilders = new LinkedMultiValueMap<String, RoleMembership.Builder>();
         List<RoleMembership.Builder> roleMembershipBuilders = new ArrayList<RoleMembership.Builder>();
         // to make our algorithm less painful, let's do some indexing and load the given list of RoleMemberships into
         // builders
         for (RoleMembership roleMembership : roleMemberships) {
             roleIdToRoleMembershipIds.add(roleMembership.getRoleId(), roleMembership.getId());
             RoleMembership.Builder builder = RoleMembership.Builder.create(roleMembership);
+            builder.setActiveFromDate(roleMembership.getActiveFromDate());
+            builder.setActiveToDate(roleMembership.getActiveToDate());
             roleMembershipBuilders.add(builder);
-            roleMembershipIdToBuilder.put(roleMembership.getId(), builder);
+            roleMembershipIdToBuilders.add(roleMembership.getId(), builder);
         }
         for (DelegateTypeBo delegation : delegations) {
             // determine the candidate role memberships where this delegation can be mapped
@@ -998,14 +1016,16 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         if (StringUtils.isBlank(delegationMember.getRoleMemberId())) {
                             RoleTypeService roleTypeService = getRoleTypeService(delegation.getRoleId());
                             for (String roleMembershipId : candidateRoleMembershipIds) {
-                                RoleMembership.Builder roleMembershipBuilder = roleMembershipIdToBuilder.get(roleMembershipId);
-                                if (roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification(roleMembershipBuilder.getQualifier(), delegationMember.getQualifier())) {
-                                    linkDelegateToRoleMembership(delegation, delegateMemberBuilder, roleMembershipBuilder);
+                                for(RoleMembership.Builder roleMembershipBuilder : roleMembershipIdToBuilders.get(roleMembershipId)) {
+                                    if (roleTypeService == null || roleTypeService.doesRoleQualifierMatchQualification(roleMembershipBuilder.getQualifier(), delegationMember.getQualifier())) {
+                                        linkDelegateToRoleMembership(delegation, delegateMemberBuilder, roleMembershipBuilder);
+                                    }
                                 }
                             }
                         } else if (candidateRoleMembershipIds.contains(delegationMember.getRoleMemberId())) {
-                            RoleMembership.Builder roleMembershipBuilder = roleMembershipIdToBuilder.get(delegationMember.getRoleMemberId());
-                            linkDelegateToRoleMembership(delegation, delegateMemberBuilder, roleMembershipBuilder);
+                            for(RoleMembership.Builder roleMembershipBuilder : roleMembershipIdToBuilders.get(delegationMember.getRoleMemberId())) {
+                                linkDelegateToRoleMembership(delegation, delegateMemberBuilder, roleMembershipBuilder);
+                            }
                         }
                     }
                 }
@@ -1568,7 +1588,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                         roleMember.getId(),
                         roleMember.getMemberId(),
                         roleMember.getType(),
-                        roleMember.getAttributes()).build();
+                        roleMember.getAttributes(),
+                        roleMember.getActiveFromDate(),
+                        roleMember.getActiveToDate()).build();
                 roleMemberships.add(roleMembership);
             }
         }
@@ -1587,7 +1609,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleMemberBo.getId(),
                     roleMemberBo.getMemberId(),
                     roleMemberBo.getType(),
-                    roleMemberBo.getAttributes()).build();
+                    roleMemberBo.getAttributes(),
+                    roleMemberBo.getActiveFromDate(),
+                    roleMemberBo.getActiveToDate()).build();
 
             // if the role type service is null, assume that all qualifiers match
             if (getRoleTypeService(roleMemberBo.getRoleId()) == null) {
@@ -1658,6 +1682,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             // store the role ID, so we know where this member actually came from
             rmBuilder.setRoleId(rm.getRoleId());
             rmBuilder.setEmbeddedRoleId(rm.getMemberId());
+            rmBuilder.setActiveFromDate(rm.getActiveFromDate());
+            rmBuilder.setActiveToDate(rm.getActiveToDate());
             returnRoleMembers.add(rmBuilder.build());
         }
         return returnRoleMembers;

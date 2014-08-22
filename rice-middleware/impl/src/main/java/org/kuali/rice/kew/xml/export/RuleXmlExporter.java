@@ -180,7 +180,8 @@ public class RuleXmlExporter implements XmlExporter {
             Element responsibilitiesElement = renderer.renderElement(parent, RESPONSIBILITIES);
             for (RuleResponsibilityBo ruleResponsibility : responsibilities) {
                 Element respElement = renderer.renderElement(responsibilitiesElement, RESPONSIBILITY);
-                renderer.renderTextElement(respElement, RESPONSIBILITY_ID, "" + ruleResponsibility.getResponsibilityId());
+              //KULRICE-12282: commenting out the responsibility Id from the exported xml.
+               // renderer.renderTextElement(respElement, RESPONSIBILITY_ID, "" + ruleResponsibility.getResponsibilityId());
                 if (ruleResponsibility.isUsingPrincipal()) {
 				    renderer.renderTextElement(respElement, PRINCIPAL_NAME, ruleResponsibility.getPrincipal().getPrincipalName());
 				} else if (ruleResponsibility.isUsingGroup()) {

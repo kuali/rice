@@ -164,6 +164,9 @@
     </property>
   </bean>
 
+  <!--KULRICE-12304: Wired up the new MaintainableXMLConversionService  -->
+
+  <bean id="kradMaintainableXMLConversionService" class="org.kuali.rice.krad.service.impl.MaintainableXMLConversionServiceImpl" />
   <bean id="xmlObjectSerializerService" class="org.kuali.rice.krad.service.impl.XmlObjectSerializerServiceImpl"
         p:legacyDataAdapter-ref="legacyDataAdapter"/>
 

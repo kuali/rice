@@ -17,12 +17,15 @@ package org.kuali.rice.kew.rule;
 
 import org.junit.Test;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
-import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
+import org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableHelperServiceImpl;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttributeBo;
+import org.kuali.rice.kew.rule.bo.RuleTemplateBo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -81,11 +84,28 @@ public class RuleTemplateAttributeTest extends KEWTestCase {
                 assertTrue("TestRuleAttribute is a workflow attribute.", isWorkflowAttribute);
             } else if (index == 1) {
                 // should be the TestRuleValidationAttribute so should be null
-                assertEquals("Should be TestRuleValidationAttribute", TestRuleValidationAttribute.class, attribute.getClass());
+                assertEquals("Should be TestRuleValidationAttribute", TestRuleValidationAttribute.class,
+                        attribute.getClass());
                 assertFalse("TestRuleValidationAttribute is not a workflow attribute", isWorkflowAttribute);
             }
             index++;
         }
     }
 
+    /**
+     * Ensure that Rule Template Attributes that should generate a field on the lookup form do so.
+     */
+    @Test
+    public void testAdditionalAttributes() {
+        RuleTemplateBo template = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName("Testing.Template");
+        RuleBaseValuesLookupableHelperServiceImpl lookupableHelperService = new RuleBaseValuesLookupableHelperServiceImpl();
+        lookupableHelperService.setBusinessObjectClass(template.getClass());
+        // Get the default rows before processing the template's attributes through the lookupable helper service.
+        int rowCountBefore = lookupableHelperService.getRows().size();
+        Map<String, String> fields = new HashMap<String, String>();
+        fields.put("ruleTemplate.name", template.getName());
+        lookupableHelperService.checkForAdditionalFields(fields);
+        int rowCountAfter = lookupableHelperService.getRows().size();
+        assertNotEquals(rowCountBefore, rowCountAfter);
+    }
 }

@@ -33,6 +33,9 @@ public class QuartzConfigPropertiesFactoryBean extends AbstractFactoryBean {
     private static final String QUARTZ_PREFIX = "ksb.org.quartz";
     private static final String QUARTZ_IS_CLUSTERED = QUARTZ_PREFIX + ".jobStore.isClustered";
     private static final String QUARTZ_TABLE_PREFIX = QUARTZ_PREFIX + ".jobStore.tablePrefix";
+
+    // Added another configuration parameter which should be ignored when the "useQuartzDatabase" configuration parameter is false
+    private static final String QUARTZ_DRIVER_DELEGATE_CLASS = QUARTZ_PREFIX + ".jobStore.driverDelegateClass";
     
     @Override
     protected Object createInstance() throws Exception {
@@ -58,7 +61,7 @@ public class QuartzConfigPropertiesFactoryBean extends AbstractFactoryBean {
      */
     protected boolean propertyShouldBeFiltered(boolean useQuartzDatabase, String propertyName) {
     	if (!useQuartzDatabase) {
-    		if (propertyName.startsWith(QUARTZ_TABLE_PREFIX) || propertyName.startsWith(QUARTZ_IS_CLUSTERED)) {
+    		if (propertyName.startsWith(QUARTZ_TABLE_PREFIX) || propertyName.startsWith(QUARTZ_IS_CLUSTERED) || propertyName.startsWith(QUARTZ_DRIVER_DELEGATE_CLASS)) {
     			return true;
     		}
     	}

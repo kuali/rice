@@ -354,6 +354,20 @@ public class KualiLookupAction extends KualiAction {
         if (lookupForm.isSearchUsingOnlyPrimaryKeyValues()) {
             lookupForm.setPrimaryKeyFieldLabels(lookupForm.getLookupable().getPrimaryKeyFieldLabels());
         }
+        // KULRICE-12281- Turn off the ability to export results from  certain lookups
+    	 if(StringUtils.isNotBlank(request.getParameter(KRADConstants.Lookup.VIEW_RESULTS_EXPORT_OPTION))) {
+            String componentName = Class.forName(lookupForm.getBusinessObjectClassName()).getSimpleName();
+            String principalId = GlobalVariables.getUserSession().getPrincipalId();
+            String principalUserName = GlobalVariables.getUserSession().getPrincipalName();
+            Map<String, String> permissionDetails = new HashMap<String,String>();
+            permissionDetails.put(KRADConstants.COMPONENT_NAME, componentName);
+            boolean isAuthorized = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(
+                    principalId,KRADConstants.KNS_NAMESPACE,KimConstants.PermissionTemplateNames.VIEW_RESULTS_EXPORT_ACTION,
+                    permissionDetails,new HashMap<String,String>());
+            if(!isAuthorized){
+                throw new AuthorizationException(principalUserName, "Exporting the Lookup Results", componentName);
+            }
+         }
         request.setAttribute(KRADConstants.SEARCH_LIST_REQUEST_KEY, request.getParameter(KRADConstants.SEARCH_LIST_REQUEST_KEY));
         request.setAttribute("reqSearchResults", GlobalVariables.getUserSession().retrieveObject(request.getParameter(
                 KRADConstants.SEARCH_LIST_REQUEST_KEY)));

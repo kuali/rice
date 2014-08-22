@@ -25,6 +25,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
+import org.kuali.rice.coreservice.api.namespace.Namespace;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.identity.IdentityService;
@@ -85,7 +87,28 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 
         return valid;
     }
-    
+
+    //Added method to validate existence of a group namespace on a submitted IdentityManagementGroupDocument
+    protected boolean validGroupNamespace(IdentityManagementGroupDocument document){
+        boolean rulePassed = true;
+        String namespacePassed = document.getGroupNamespace();
+        if(StringUtils.isNotBlank(namespacePassed)){
+            rulePassed = true;
+            Namespace matchedNamespace = CoreServiceApiServiceLocator.getNamespaceService().getNamespace(namespacePassed);
+            if(matchedNamespace == null){
+                rulePassed = false;
+            }
+        }else{
+            rulePassed = false;
+        }
+        if(!rulePassed){
+            GlobalVariables.getMessageMap().putError("document.groupNamespace",
+                    RiceKeyConstants.ERROR_REQUIRED,
+                    new String[] {"Group Namespace"});
+        }
+        return rulePassed;
+    }
+
 	protected boolean validAssignGroup(IdentityManagementGroupDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();

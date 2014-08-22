@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -46,29 +47,31 @@ import org.kuali.rice.kim.api.identity.visa.EntityVisa;
 
 import javax.jws.WebParam;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This IdentityService implementation is largely just a knee-jerk delegator, except for
  * getters returning {@link EntityDefault} in which case the IdentityArchiveService
  * will be invoked if the inner IndentityService impl returns null.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	private final IdentityArchiveService identityArchiveService;
 	private final IdentityService innerIdentityService;
-	
+
 	/**
 	 * This constructs a IdentityCurrentAndArchivedServiceImpl, injecting the
 	 * needed services.
 	 */
-	public IdentityCurrentAndArchivedServiceImpl(IdentityService innerIdentityService, 
+	public IdentityCurrentAndArchivedServiceImpl(IdentityService innerIdentityService,
 			IdentityArchiveService identityArchiveService) {
 		this.innerIdentityService = innerIdentityService;
 		this.identityArchiveService = identityArchiveService;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getAddressType(java.lang.String)
 	 */
@@ -94,7 +97,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 
     /**
 	 * @see org.kuali.rice.kim.api.identity.IdentityService#getCitizenshipStatus(java.lang.String)
-	 */       
+	 */
     @Override
 	public CodedAttribute getCitizenshipStatus(String code) {
 		return CodedAttribute.Builder.create(getInnerIdentityService().getCitizenshipStatus(code)).build();
@@ -117,7 +120,21 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
                 }
                 nameBuilder.setDefaultName(EntityName.Builder.create(defaultEntity.getName()));
                 if (StringUtils.isBlank(defaultEntity.getName().getCompositeName())) {
-                    String formattedName = (defaultEntity.getName().getLastName() + ", " + defaultEntity.getName().getFirstName() + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName())).trim();
+                    //KULRICE-12360: The code below will account for null, an empty string, or spaces in the database for first and last name.
+                    String lastNameTemp = "";
+                    String firstNameTemp= "";
+
+                    if (StringUtils.isNotBlank(defaultEntity.getName().getLastName())) {
+                        lastNameTemp = defaultEntity.getName().getLastName();
+                    }
+                    if (StringUtils.isNotBlank(defaultEntity.getName().getFirstName())) {
+                        firstNameTemp = defaultEntity.getName().getFirstName();
+                    }
+                    if (StringUtils.isNotBlank(lastNameTemp) && StringUtils.isNotBlank(firstNameTemp)) {
+                        lastNameTemp = lastNameTemp + ", ";
+                    }
+
+                    String formattedName = (lastNameTemp + firstNameTemp + (defaultEntity.getName().getMiddleName()==null?"":" " + defaultEntity.getName().getMiddleName())).trim();
                     nameBuilder.getDefaultName().setCompositeName(formattedName);
                 }
                 return nameBuilder.build();
@@ -125,6 +142,29 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
         }
 		return name;
 	}
+
+    @Override
+    public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
+        // First fetch all of the names we can from the identity service
+        Map<String, EntityNamePrincipalName> defaultNames = getInnerIdentityService().getDefaultNamesForPrincipalIds(principalIds);
+        if(defaultNames != null && defaultNames.size() != principalIds.size()) {
+            // Next calculate the principal IDs we're missing a name for
+            Collection<String> missingPrincipalIds = CollectionUtils.subtract(principalIds, defaultNames.keySet());
+            // Then use the getDefaultNamesForPrincipalId for each of them to fetch their name from the archive
+            for(String principalId : missingPrincipalIds) {
+                defaultNames.put(principalId, getDefaultNamesForPrincipalId(principalId));
+            }
+        }
+        return defaultNames;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityPrivacyPreferences getPrivacyPreferencesForPrincipalId(String principalId) {
+        return getInnerIdentityService().getPrivacyPreferencesForPrincipalId(principalId);
+    }
 
     @Override
     public EntityName addNameToEntity(EntityName name) {
@@ -294,7 +334,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	public Entity getEntityByPrincipalName(String principalName) {
 		return getInnerIdentityService().getEntityByPrincipalName(principalName);
 	}
-    
+
     @Override
 	public Entity getEntityByEmployeeId(String employeeId) {
 		return getInnerIdentityService().getEntityByEmployeeId(employeeId);
@@ -623,7 +663,7 @@ public class IdentityCurrentAndArchivedServiceImpl implements IdentityService {
 	private IdentityService getInnerIdentityService() {
 		return innerIdentityService;
 	}
-	
+
 	private IdentityArchiveService getIdentityArchiveService() {
 		return identityArchiveService;
 	}

@@ -71,9 +71,13 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     @Override
     public boolean routeLogAuthorized(String principalId, DocumentRouteHeaderValue routeHeader,
             SecuritySession securitySession) {
-        List<Document> documents = Collections.singletonList(DocumentRouteHeaderValue.to(routeHeader));
-        Set<String> authorizationResults = checkAuthorizations(principalId, securitySession, documents);
-        return authorizationResults.contains(routeHeader.getDocumentId());
+        Document document = DocumentRouteHeaderValue.to(routeHeader);
+        if(document != null) {
+            Set<String> authorizationResults = checkAuthorizations(principalId, securitySession, Collections.singletonList(document));
+            return authorizationResults.contains(routeHeader.getDocumentId());
+        } else {
+            return false;
+        }
     }
 
     @Override

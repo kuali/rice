@@ -50,6 +50,7 @@ import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.group.GroupContract;
 import org.kuali.rice.kim.api.group.GroupMember;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.identity.IdentityService;
@@ -65,11 +66,13 @@ import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.phone.EntityPhoneContract;
 import org.kuali.rice.kim.api.identity.principal.Principal;
+import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
 import org.kuali.rice.kim.api.permission.PermissionService;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleContract;
 import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -544,6 +547,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                 }
             }
         }
+        Collections.sort(docGroups, new Comparator<PersonDocumentGroup>() {
+            @Override
+            public int compare(PersonDocumentGroup o1, PersonDocumentGroup o2) {
+                return o1.getGroupId().compareTo(o2.getGroupId());
+            }
+        });
         identityManagementPersonDocument.setGroups(docGroups);
     }
 
@@ -1798,18 +1807,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         }
 
         // pull in all the names for the principals for later use
-        List<EntityDefault> principals = getIdentityService().findEntityDefaults( QueryByCriteria.Builder.fromPredicates(
-                PredicateFactory.in("principals." + KIMPropertyConstants.Person.PRINCIPAL_ID, roleMemberPrincipalIds)
-                , PredicateFactory.equal("principals." + KRADPropertyConstants.ACTIVE, Boolean.TRUE)
-                , PredicateFactory.equal(KRADPropertyConstants.ACTIVE, Boolean.TRUE)
-                )).getResults();
-        Map<String, EntityDefault> principalIdToEntityMap = new HashMap<String,EntityDefault>( principals.size() );
-        for ( EntityDefault entity : principals ) {
-            // yes, I'm missing null checks, but since I searched on principal ID - there needs to be
-            // at least one record
-            principalIdToEntityMap.put( entity.getPrincipals().get(0).getPrincipalId(), entity );
+        Map<String, EntityDefault> principalIdToEntityMap = new HashMap<String,EntityDefault>();
+        /*KULRICE-12538: If roleMemberPrincipalIds is empty, skip populating list of pricipals*/
+        if(!roleMemberPrincipalIds.isEmpty()){
+            List<EntityDefault> principals = getIdentityService().findEntityDefaults( QueryByCriteria.Builder.fromPredicates(
+                    PredicateFactory.in("principals." + KIMPropertyConstants.Person.PRINCIPAL_ID, roleMemberPrincipalIds)
+                    , PredicateFactory.equal("principals." + KRADPropertyConstants.ACTIVE, Boolean.TRUE)
+                    , PredicateFactory.equal(KRADPropertyConstants.ACTIVE, Boolean.TRUE)
+                    )).getResults();
+            principalIdToEntityMap = new HashMap<String,EntityDefault>( principals.size() );
+            for ( EntityDefault entity : principals ) {
+                // yes, I'm missing null checks, but since I searched on principal ID - there needs to be
+                // at least one record
+                principalIdToEntityMap.put( entity.getPrincipals().get(0).getPrincipalId(), entity );
+            }
         }
-
         // pull in all the group members of this role
         Map<String, Group> roleGroupMembers = findGroupsForRole(identityManagementRoleDocument.getRoleId());
 
@@ -1967,10 +1979,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	if ( member == null ) {
     	    return "";
     	}
+        /* KULRICE-12537: Cast the GroupBo member to GroupContract and RoleBo member to RoleContract to avoid ClassCastException*/
         if(MemberType.GROUP.equals(memberType)){
-            return ((Group)member).getNamespaceCode();
+            return ((GroupContract)member).getNamespaceCode();
         } else if(MemberType.ROLE.equals(memberType)){
-            return ((Role)member).getNamespaceCode();
+            return ((RoleContract)member).getNamespaceCode();
         }
         return "";
 	}
@@ -1997,22 +2010,25 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     @Override
     public String getMemberName(MemberType memberType, Object member){
+        /*KULRICE-12539: Cast member object to PrincipalContract instead of Principal*/
         if(MemberType.PRINCIPAL.equals(memberType)){
-            return ((Principal)member).getPrincipalName();
-        } else if(MemberType.GROUP.equals(memberType)){
-            return ((Group)member).getName();
+            return ((PrincipalContract)member).getPrincipalName();
+        } /* KULRICE-12537: Cast the GroupBo member to GroupContract and RoleBo member to RoleContract to avoid ClassCastException*/
+        else if(MemberType.GROUP.equals(memberType)){
+            return ((GroupContract)member).getName();
         } else if(MemberType.ROLE.equals(memberType)){
-        	return ((Role)member).getName();
+        	return ((RoleContract)member).getName();
         }
         return "";
     }
 
     @Override
     public String getMemberNamespaceCode(MemberType memberType, Object member){
+         /* KULRICE-12537: Cast the GroupBo member to GroupContract and RoleBo member to RoleContract to avoid ClassCastException*/
         if(MemberType.GROUP.equals(memberType)){
-        	return ((Group)member).getNamespaceCode();
+        	return ((GroupContract)member).getNamespaceCode();
         } else if(MemberType.ROLE.equals(memberType)){
-        	return ((Role)member).getNamespaceCode();
+        	return ((RoleContract)member).getNamespaceCode();
         }
         return "";
     }
@@ -2402,6 +2418,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                     roleMember.setActiveToDateValue(documentRoleMember.getActiveToDate());
                     isNewRoleMember = false;
                     updateRoleMemberResponsibilityActions( documentRoleMember.getRoleRspActions(), roleMember.getRoleRspActions() );
+                    //KULRICE:1157-Added a call to notifyOnMemberRemoval to handle when a role member is inactivated from the role maintenance doc
+                    if(roleMember.isActive() && !documentRoleMember.isActive()){
+                        getRoleService().notifyOnMemberRemoval(RoleMemberBo.to(roleMember));
+                    }
                     break;
                 }
             }
@@ -2553,9 +2573,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 */
 	protected KimAttributeField getAttributeDefinition(String kimTypId, String attrDefnId) {
 		final KimType type = getKimTypeInfoService().getKimType(kimTypId);
-		if (type != null) {
-			final KimTypeService typeService = GlobalResourceLoader.<KimTypeService>getService(QName.valueOf(type.getServiceName()));
-			if (typeService != null) {
+		if (type != null && StringUtils.isNotBlank(type.getServiceName())) {
+            final KimTypeService typeService = (KimTypeService) KimImplServiceLocator.getBean(type.getServiceName());
+            if (typeService != null) {
 				final KimTypeAttribute attributeInfo = type.getAttributeDefinitionById(attrDefnId);
 				if (attributeInfo != null) {
 					final List<KimAttributeField> attributeMap = typeService.getAttributeDefinitions(type.getId());
@@ -2724,7 +2744,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementGroupDocument.setActive(groupInfo.isActive());
 		identityManagementGroupDocument.setGroupNamespace(groupInfo.getNamespaceCode());
 
-        List<GroupMember> members = new ArrayList<GroupMember>(getGroupService().getMembersOfGroup(groupInfo.getId()));
+        List<GroupMember> members = new ArrayList(KimApiServiceLocator.getGroupService().getCurrentAndFutureMembers(groupInfo.getId()));
         identityManagementGroupDocument.setMembers(loadGroupMembers(identityManagementGroupDocument, members));
 
 
@@ -2756,7 +2776,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMember.setActiveFromDate(member.getActiveFromDate() == null ? null : new Timestamp(member.getActiveFromDate().getMillis()));
 				pndMember.setActiveToDate(member.getActiveToDate() == null ? null : new Timestamp(member.getActiveToDate().getMillis()));
 				//pndMember.setActive(member.isActive());
-				if(pndMember.isActive()){
+                //KULRICE-12285: isActive will returns true only if the members are currently active.
+				//if(pndMember.isActive()){
 					pndMember.setGroupMemberId(member.getMemberId());
 					pndMember.setGroupId(member.getGroupId());
 					pndMember.setMemberId(member.getMemberId());
@@ -2765,7 +2786,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setMemberTypeCode(member.getType().getCode());
 					pndMember.setEdit(true);
 					pndMembers.add(pndMember);
-				}
+				//}
 			}
 		}
 		Collections.sort(pndMembers, groupMemberNameComparator);

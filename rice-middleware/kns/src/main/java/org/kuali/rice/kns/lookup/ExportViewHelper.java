@@ -19,12 +19,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.directwebremoting.util.WriterOutputStream;
 import org.displaytag.model.Row;
 import org.displaytag.model.TableModel;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.util.KNSGlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -32,6 +35,7 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.Exporter;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.exception.ExportNotSupportedException;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -108,5 +112,21 @@ public class ExportViewHelper {
 	public boolean attemptCustomExport(Writer writer, String exportFormat) throws IOException {
 		return attemptCustomExport(new WriterOutputStream(writer), exportFormat);
 	}
+
+    // KULRICE-12281: Turn off the ability to export results from the certain lookups
+    public void checkPermission() throws AuthorizationException {
+        boolean isAuthorized = false;
+        String componentName = businessObjectEntry.getBusinessObjectClass().getName();
+        String nameSpaceCode = "KR-NS";
+        String templateName =  "Export Records";
+        String principalId = GlobalVariables.getUserSession().getPrincipalId();
+        String principalUserName = GlobalVariables.getUserSession().getPrincipalName();
+        Map<String, String> permissionDetails = new HashMap<String,String>();
+        permissionDetails.put("componentName", componentName);
+        isAuthorized = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(principalId,nameSpaceCode,templateName,permissionDetails,new HashMap<String,String>());
+        if(!isAuthorized){
+            throw new AuthorizationException(principalUserName, "Exporting the LookUp Results", componentName);
+        }
+    }
 	
 }

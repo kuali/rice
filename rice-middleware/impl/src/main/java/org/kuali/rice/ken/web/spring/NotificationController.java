@@ -24,7 +24,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.ken.api.KenApiConstants;
 import org.kuali.rice.ken.bo.NotificationBo;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationRecipientBo;
@@ -35,8 +37,11 @@ import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 
@@ -216,7 +221,21 @@ public class NotificationController extends MultiActionController {
     public ModelAndView displayNotificationDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String view = "NotificationDetail"; // default to full view
 
-        String principalNm = request.getRemoteUser();
+        UserSession userSession = KRADUtils.getUserSessionFromRequest(request);
+        String principalId = "";
+        if(userSession != null) {
+            principalId = userSession.getPrincipalId();
+            if(StringUtils.isBlank(principalId)) {
+                String principalName = request.getRemoteUser();
+                Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalName);
+                if(principal != null) {
+                    principalId = principal.getPrincipalId();
+                } else {
+                    throw new RuntimeException("There is no principal for principalName " + principalName);
+                }
+            }
+        }
+
         String command = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.COMMAND);
         String standaloneWindow = request.getParameter(NotificationConstants.NOTIFICATION_CONTROLLER_CONSTANTS.STANDALONE_WINDOW);
 
@@ -236,12 +255,23 @@ public class NotificationController extends MultiActionController {
             // we want all messages from the action list in line
             command = NotificationConstants.NOTIFICATION_DETAIL_VIEWS.INLINE;
         }
-        
-        Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(principalNm);
-        if (principal != null) {
-        	actionable = (principal.getPrincipalId()).equals(messageDelivery.getUserRecipientId()) && NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED.equals(messageDelivery.getMessageDeliveryStatus());
-        } else {
-            throw new RuntimeException("There is no principal for principalNm " + principalNm);
+
+        actionable = (principalId).equals(messageDelivery.getUserRecipientId()) && NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED.equals(messageDelivery.getMessageDeliveryStatus());
+
+        String documentId = request.getParameter(KewApiConstants.DOCUMENT_ID_PARAMETER);
+        if(StringUtils.isNotBlank(documentId)) {
+            boolean authorized = KewApiServiceLocator.getWorkflowDocumentActionsService().isUserInRouteLog(documentId, principalId, false);
+            LOG.debug("User in route log = " + authorized);
+            if(!authorized) {
+                Map<String, String> permissionDetails = new HashMap<String, String>();
+                permissionDetails.put(KenApiConstants.KIMTypes.Channel.CHANNEL_ID, notification.getChannel().getId().toString());
+                Map<String, String> qualification = new HashMap<String, String>();
+                authorized = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(principalId, KenApiConstants.Namespaces.CODE, KenApiConstants.Permissions.VIEW_NOTIFICATION, permissionDetails, qualification);
+                LOG.debug("User has 'View Notification' permission = " + authorized);
+                if(!authorized) {
+                    return new ModelAndView("NotAuthorized");
+                }
+            }
         }
         
         List<NotificationSenderBo> senders = notification.getSenders();

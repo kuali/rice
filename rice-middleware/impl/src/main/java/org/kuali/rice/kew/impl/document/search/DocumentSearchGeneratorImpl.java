@@ -143,6 +143,9 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
             String tableAlias = "EXT" + tableIndex;
             RemotableAttributeField searchField = getSearchFieldByName(documentAttributeName, searchFields);
+            if(searchField == null) {
+            	continue;
+            }
             String tableName = DocumentSearchInternalUtils.getAttributeTableName(searchField);
             boolean caseSensitive = DocumentSearchInternalUtils.isLookupCaseSensitive(searchField);
 
@@ -191,7 +194,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
                 return searchField;
             }
         }
-        throw new IllegalStateException("Failed to locate a RemotableAttributeField for fieldName=" + fieldName);
+        return null;
     }
 
     public QueryComponent generateSearchableAttributeSql(String tableName, String documentAttributeName, String whereSqlStarter,int tableIndex) {
@@ -301,10 +304,13 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
         String documentTypeName = rs.getString("DOC_TYP_NM");
         org.kuali.rice.kew.api.doctype.DocumentType documentType =
                 getApiDocumentTypeService().getDocumentTypeByName(documentTypeName);
+
+        String documentTypeId = "unavailable";
         if (documentType == null) {
-            throw new IllegalStateException("Failed to locate a document type with the given name: " + documentTypeName);
+            LOG.warn("Failed to locate a document type with the given name: " + documentTypeName);
+        } else {
+            documentTypeId = documentType.getId();
         }
-        String documentTypeId = documentType.getId();
 
         Document.Builder documentBuilder = Document.Builder.create(documentId, initiatorPrincipalId, documentTypeName, documentTypeId);
         DocumentSearchResult.Builder resultBuilder = DocumentSearchResult.Builder.create(documentBuilder);

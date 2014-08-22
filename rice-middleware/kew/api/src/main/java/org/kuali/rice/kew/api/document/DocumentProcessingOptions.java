@@ -27,12 +27,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
+//KULRICE-12283: Added two new properties to the propOrder
 @XmlRootElement(name = DocumentProcessingOptions.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = DocumentProcessingOptions.Constants.TYPE_NAME, propOrder = {
         DocumentProcessingOptions.Elements.RUN_POST_PROCESSOR,
         DocumentProcessingOptions.Elements.INDEX_SEARCH_ATTRIBUTES,
         DocumentProcessingOptions.Elements.SEND_NOTIFICATIONS,
+        DocumentProcessingOptions.Elements.DEACTIVATE_ACKNOWLEDGEMENTS,
+        DocumentProcessingOptions.Elements.DEACTIVATE_FYIS,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class DocumentProcessingOptions extends AbstractDataTransferObject {
@@ -46,18 +49,32 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
     @XmlElement(name = Elements.SEND_NOTIFICATIONS, required = true)
     private final boolean sendNotifications;
 
+    //KULRICE-12283: Added two new flags to indicate if acknowledgements and FYIs should be deactivated when blanket approval occurs
+    @XmlElement(name = Elements.DEACTIVATE_ACKNOWLEDGEMENTS, required = true)
+    private final boolean deactivateAcknowledgements;
+
+    @XmlElement(name = Elements.DEACTIVATE_FYIS, required = true)
+    private final boolean deactivateFYIs;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
+    //KULRICE-12283 Added a new constructor and create methods to include two new properties
     private DocumentProcessingOptions() {
-        this(true, true, true);
+        this(true, true, true, false, false);
     }
 
     private DocumentProcessingOptions(boolean runPostProcessor, boolean indexSearchAttributes, boolean sendNotifications) {
+        this(runPostProcessor, indexSearchAttributes, sendNotifications, false, false);
+    }
+
+    private DocumentProcessingOptions(boolean runPostProcessor, boolean indexSearchAttributes, boolean sendNotifications, boolean deactivateAcknowledgements, boolean deactivateFYIs) {
         this.runPostProcessor = runPostProcessor;
         this.indexSearchAttributes = indexSearchAttributes;
         this.sendNotifications = sendNotifications;
+        this.deactivateAcknowledgements = deactivateAcknowledgements;
+        this.deactivateFYIs = deactivateFYIs;
     }
 
     public static DocumentProcessingOptions create(boolean runPostProcessor, boolean indexSearchAttributes) {
@@ -66,6 +83,10 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
 
     public static DocumentProcessingOptions create(boolean runPostProcessor, boolean indexSearchAttributes, boolean sendNotifications) {
         return new DocumentProcessingOptions(runPostProcessor, indexSearchAttributes, sendNotifications);
+    }
+
+    public static DocumentProcessingOptions create(boolean runPostProcessor, boolean indexSearchAttributes, boolean sendNotifications, boolean deactivateAcknowledgements, boolean deactivateFYIs) {
+        return new DocumentProcessingOptions(runPostProcessor, indexSearchAttributes, sendNotifications, deactivateAcknowledgements, deactivateFYIs);
     }
 
     public static DocumentProcessingOptions createDefault() {
@@ -84,6 +105,15 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
         return sendNotifications;
     }
 
+    //KULRICE-12283:Added getters for two new properties
+    public boolean isDeactivateAcknowledgements() {
+        return deactivateAcknowledgements;
+    }
+
+    public boolean isDeactivateFYIs() {
+        return deactivateFYIs;
+    }
+
     /**
      * Defines some internal constants used on this class.
      */
@@ -99,6 +129,9 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
         final static String RUN_POST_PROCESSOR = "runPostProcessor";
         final static String INDEX_SEARCH_ATTRIBUTES = "indexSearchAttributes";
         final static String SEND_NOTIFICATIONS = "sendNotifications";
+        //KULRICE-12283:Constants for two new properties
+        final static String DEACTIVATE_ACKNOWLEDGEMENTS = "deactivateAcknowledgements";
+        final static String DEACTIVATE_FYIS = "deactivateFYIs";
     }
     
 }

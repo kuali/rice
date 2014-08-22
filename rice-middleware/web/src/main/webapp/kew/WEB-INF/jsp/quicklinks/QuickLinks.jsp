@@ -22,6 +22,8 @@
 <link href="${ConfigProperties.kr.url}/css/kuali.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<%-- KULRICE-12287: Added the new tag which displays a banner when in the testing environments--%>
+<kul:testBanner />
 <html-el:form method="post" action="/QuickLinks.do">
 <html-el:hidden property="methodToCall"/>
 <div class="tab-container" align="center">

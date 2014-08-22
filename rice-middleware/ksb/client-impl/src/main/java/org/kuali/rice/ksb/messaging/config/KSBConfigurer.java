@@ -46,6 +46,7 @@ import org.springframework.core.Ordered;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import javax.xml.ws.WebServiceException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -243,11 +244,20 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
     @Override
     protected void doAdditionalModuleStartLogic() throws Exception {
         // this allows us to become aware of remote services, in case the application needs to use any of them during startup
-        LOG.info("Synchronizing remote services with service bus after KSB startup...");
-        long startTime = System.currentTimeMillis();
-        KsbApiServiceLocator.getServiceBus().synchronizeRemoteServices();
-        long endTime = System.currentTimeMillis();
-        LOG.info("...total time to synchronize remote services with service bus after KSB startup: " + (endTime - startTime));
+        /* Wrapped this call in a try/catch block to handle when the web
+		 * service call fails so the KSB module will continue starting even
+		 * if the remote service registry is not available.
+		 */
+        try {
+            // this allows us to become aware of remote services, in case the application needs to use any of them during startup
+            LOG.info("Synchronizing remote services with service bus after KSB startup...");
+            long startTime = System.currentTimeMillis();
+            KsbApiServiceLocator.getServiceBus().synchronizeRemoteServices();
+            long endTime = System.currentTimeMillis();
+            LOG.info("...total time to synchronize remote services with service bus after KSB startup: " + (endTime - startTime));
+        } catch (WebServiceException e) {
+            LOG.error("Caught web service exception synchronizing service bus while configuring KSB", e);
+        }
     }
 
     @Override
@@ -268,7 +278,11 @@ public class KSBConfigurer extends ModuleConfigurer implements SmartApplicationL
      */
     private void requeueMessages() {
         LOG.info("Refreshing Service Registry to export services to the bus.");
-        KsbApiServiceLocator.getServiceBus().synchronizeLocalServices();
+        try {
+            KsbApiServiceLocator.getServiceBus().synchronizeLocalServices();
+        }catch (WebServiceException e) {
+            LOG.error("Caught web service exception while starting the KSB Configurer", e);
+        }
 
         //automatically requeue documents sitting with status of 'R'
         MessageFetcher messageFetcher = new MessageFetcher((Integer) null);

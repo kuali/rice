@@ -38,6 +38,7 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
 
     protected String name;
     protected Class<?> dataObjectClass;
+    protected Class<?> baseDataObjectClass;
 
     protected String titleAttribute;
     protected String objectLabel;
@@ -112,6 +113,21 @@ public class DataObjectEntry extends DataDictionaryEntryBase implements MustOccu
      */
     public void setDataObjectClass(Class<?> dataObjectClass) {
         this.dataObjectClass = dataObjectClass;
+    }
+
+    /**
+     * The baseDataObjectClass is an optional parameter for specifying a base class
+     * for the dataObjectClass, allowing the data dictionary to index by the base class
+     * in addition to the current class.
+     */
+
+    public void setBaseDataObjectClass(Class<?> baseDataObjectClass) {
+        this.baseDataObjectClass = baseDataObjectClass;
+    }
+
+    @BeanTagAttribute(name = "baseDataObjectClass")
+    public Class<?> getBaseDataObjectClass() {
+        return baseDataObjectClass;
     }
 
     /**

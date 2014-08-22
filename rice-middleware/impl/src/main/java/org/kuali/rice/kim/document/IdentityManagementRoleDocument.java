@@ -111,10 +111,10 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     private List<RoleDocumentDelegation> delegations = new AutoPopulatingList<RoleDocumentDelegation>(RoleDocumentDelegation.class);
 
     @Transient
-    protected List<KimDocumentRoleMember> searchResultMembers = new AutoPopulatingList<KimDocumentRoleMember>(KimDocumentRoleMember.class);
+    protected List<KimDocumentRoleMember> searchResultMembers = new ArrayList<KimDocumentRoleMember>();
 
     @Transient
-    protected List<KimDocumentRoleMember> members = new AutoPopulatingList<KimDocumentRoleMember>(KimDocumentRoleMember.class);
+    protected List<KimDocumentRoleMember> members = new ArrayList<KimDocumentRoleMember>();
 
     @Transient
     private transient ResponsibilityService responsibilityService;
@@ -571,6 +571,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
                 }
                 for (KimDocumentRoleQualifier qualifier : member.getQualifiers()) {
                     qualifier.setDocumentNumber(getDocumentNumber());
+                    qualifier.setRoleMemberId(member.getRoleMemberId());
                     qualifier.setKimTypId(getKimType().getId());
                 }
                 for (KimDocumentRoleResponsibilityAction roleRespAction : member.getRoleRspActions()) {

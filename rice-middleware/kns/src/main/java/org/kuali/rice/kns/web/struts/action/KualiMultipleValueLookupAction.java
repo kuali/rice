@@ -387,8 +387,23 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         multipleValueLookupForm.jumpToPage(multipleValueLookupForm.getSwitchToPageNumber(), resultTable.size(), maxRowsPerPage);
 
         multipleValueLookupForm.setColumnToSortIndex(Integer.parseInt(multipleValueLookupForm.getPreviouslySortedColumnIndex()));
-        multipleValueLookupForm.setCompositeObjectIdMap(LookupUtils.generateCompositeSelectedObjectIds(multipleValueLookupForm.getPreviouslySelectedObjectIdSet(),
-                multipleValueLookupForm.getDisplayedObjectIdSet(), multipleValueLookupForm.getSelectedObjectIdSet()));
+        Map<String, String> selectedIds = LookupUtils.generateCompositeSelectedObjectIds(multipleValueLookupForm.getPreviouslySelectedObjectIdSet(),
+                multipleValueLookupForm.getDisplayedObjectIdSet(), multipleValueLookupForm.getSelectedObjectIdSet());
+
+        multipleValueLookupForm.setCompositeObjectIdMap(selectedIds);
+
+        // Check the boxes that are selected on the page
+        for (ResultRow row : resultTable) {
+            String objId = row.getObjectId();
+            for (Map.Entry<String, String> entry : selectedIds.entrySet()) {
+                String selectedId = entry.getValue();
+                if (objId.equalsIgnoreCase(selectedId)) {
+                    HtmlData.InputHtmlData returnUrl = (HtmlData.InputHtmlData) row.getReturnUrlHtmlData();
+                    returnUrl.setChecked(HtmlData.InputHtmlData.CHECKBOX_CHECKED_VALUE);
+                    row.setReturnUrl(returnUrl.constructCompleteHtmlTag());
+                }
+            }
+        }
         return resultTable;
     }
 

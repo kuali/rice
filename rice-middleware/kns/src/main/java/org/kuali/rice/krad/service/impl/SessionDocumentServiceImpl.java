@@ -207,8 +207,9 @@ public class SessionDocumentServiceImpl implements SessionDocumentService {
                 encryptContent = documentEntry.isEncryptDocumentDataInPersistentSessionStorage();
             }
 
-            if (encryptContent) {
-                formAsBytes = getEncryptionService().encryptBytes(formAsBytes);
+            EncryptionService encryptionService = getEncryptionService();
+            if (encryptContent && encryptionService.isEnabled()) {
+                formAsBytes = encryptionService.encryptBytes(formAsBytes);
             }
 
             // check if a record is already there in the database

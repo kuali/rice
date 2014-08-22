@@ -21,7 +21,9 @@ import java.util.Map;
 
 import org.kuali.rice.core.framework.impex.xml.XmlExporter;
 import org.kuali.rice.core.framework.impex.xml.XmlLoader;
+import org.kuali.rice.kew.api.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleDelegationBo;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * A service providing data access for {@link org.kuali.rice.kew.rule.RuleDelegationBo}s.
@@ -42,6 +44,9 @@ public interface RuleDelegationService extends XmlLoader, XmlExporter {
     /**
      * Returns a List of all RuleDelegations with "current" Rules for the given
      * responsibility id.
-     */
+     * KULRICE-12368:Added the caching annotation to this method so it would use not refetch
+     * the same information repeatedly
+    */
+    @Cacheable(value= RuleDelegation.Cache.NAME, key="'responsibilityId=' + #p0")
     public List<RuleDelegationBo> findByResponsibilityId(String responsibilityId);
 }

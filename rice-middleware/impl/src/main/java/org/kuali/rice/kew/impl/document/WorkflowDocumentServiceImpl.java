@@ -159,6 +159,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     }
 
     @Override
+    public DocumentSearchResults documentSearchSaveable(String principalId, DocumentSearchCriteria criteria, boolean saveSearch) {
+        if (criteria == null) {
+            throw new RiceIllegalArgumentException("criteria was null");
+        }
+        return KEWServiceLocator.getDocumentSearchService().lookupDocuments(principalId, criteria, saveSearch);
+    }
+
+    @Override
     public List<String> getSearchableAttributeStringValuesByKey(String documentId, String key) {
         if (StringUtils.isEmpty(documentId)) {
             throw new RiceIllegalArgumentException("documentId was blank or null");

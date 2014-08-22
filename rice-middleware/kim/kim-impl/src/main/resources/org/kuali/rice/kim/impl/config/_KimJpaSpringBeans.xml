@@ -65,7 +65,13 @@
 
 	<import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" />
 
+  <alias name="sharedEntityManager" alias="rice.kim.entityManager"/>
+
 	<bean id="kimRoleDao" class="org.kuali.rice.kim.impl.role.RoleDaoJdbc" lazy-init="true">
 	    <property name="dataSource" ref="kimDataSource"/>
 	</bean>
+
+  <bean id="kimIdentityServiceDao" class="org.kuali.rice.kim.impl.identity.IdentityServiceDaoJpa" lazy-init="true">
+    <property name="entityManager" ref="rice.kim.entityManager" />
+  </bean>
 </beans>

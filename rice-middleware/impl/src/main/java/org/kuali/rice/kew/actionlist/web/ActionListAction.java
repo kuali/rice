@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -579,10 +580,11 @@ public class ActionListAction extends KualiAction {
         LOG.info("Beginning processing of Action List Customizations (total: " + actionList.size() + " Action Items)");
         long start = System.currentTimeMillis();
 
-        Map<String, ActionItemCustomization>  customizationMap =
-                getActionListCustomizationMediator().getActionListCustomizations(
-                        getUserSession().getPrincipalId(), convertToApiActionItems(actionList)
-                );
+        Map<String, ActionItemCustomization>  customizationMap = new HashMap<String, ActionItemCustomization>();
+        if (!StringUtils.equalsIgnoreCase("true", form.getViewOutbox())) {
+            customizationMap = getActionListCustomizationMediator().getActionListCustomizations(
+                    getUserSession().getPrincipalId(), convertToApiActionItems(actionList));
+        }
 
         long end = System.currentTimeMillis();
         LOG.info("Finished processing of Action List Customizations (total time: " + (end - start) + " ms)");
@@ -613,7 +615,7 @@ public class ActionListAction extends KualiAction {
                         }
                     }
 
-                    if (customActions.size() > 1) {
+                    if (customActions.size() > 1 && !StringUtils.equalsIgnoreCase("true", form.getViewOutbox())) {
                         actionItem.setCustomActions(customActions);
                         haveCustomActions = true;
                     }

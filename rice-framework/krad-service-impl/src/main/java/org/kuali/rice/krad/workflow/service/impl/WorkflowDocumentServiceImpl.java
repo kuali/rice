@@ -322,8 +322,10 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                     currentNodes.add(node.getName());
                 }
             }
-            // for now just pick a node and go with it...
-            currentNode = currentNodes.iterator().next();
+            if (!currentNodes.isEmpty()) {
+                // for now just pick a node and go with it...
+                currentNode = currentNodes.iterator().next();
+            }
 
             List<AdHocRoutePerson> adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
             List<AdHocRouteWorkgroup> adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();

@@ -193,7 +193,8 @@ public class BlanketApproveAction extends ActionTakenEvent {
             markDocumentEnroute(getRouteHeader());
 
         }
-        OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, nodeNames, actionTaken, processingOptions.isSendNotifications(), processingOptions.isRunPostProcessor());
+        //KULRICE-12283 Modified this code to pass along parameters which configures if acks and FYIs are deactivated during the blanket approval
+        OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, nodeNames, actionTaken, processingOptions.isSendNotifications(), processingOptions.isRunPostProcessor(), processingOptions.isDeactivateAcknowledgements(), processingOptions.isDeactivateFYIs());
         BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
         blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);
    

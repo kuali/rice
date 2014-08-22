@@ -32,4 +32,14 @@
     <property name="exportIf" value="sendNotificationService.expose"/>
   </bean>
 
+  <bean id="rice.ken.channelPermissionTypeService.exporter" parent="kenServiceExporter">
+    <property name="serviceDefinition">
+      <bean parent="kenService"
+            p:service-ref="channelPermissionTypeService"
+            p:localServiceName="channelPermissionTypeService"
+            p:serviceInterface="org.kuali.rice.kim.framework.permission.PermissionTypeService"/>
+    </property>
+    <property name="exportIf" value="channelPermissionTypeService.expose"/>
+  </bean>
+
 </beans>

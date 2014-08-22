@@ -209,9 +209,6 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
                     bean.getClass() + "'");
         }
 
-        // Remove any subscript from the final name value
-        name = getResolver().getProperty(name);
-
         // Treat WrapDynaBean as special case - may be a read-only property
         // (see Jira issue# BEANUTILS-61)
         if (bean instanceof WrapDynaBean) {
@@ -351,7 +348,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
     // end Kuali Foundation modification
 
 
-    // begin Kuali Foundation modification 
+    // begin Kuali Foundation modification
     /**
      * begin Kuali Foundation modification
      * Set the value of the (possibly nested) property of the specified name, for the specified bean, with no type conversions.
@@ -503,7 +500,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
                 bean = propBean;
                 name = name.substring(delim + 1);
             }
-    
+
             // Remove any subscript from the final name value
             int left = name.indexOf(PropertyUtils.INDEXED_DELIM);
             if (left >= 0) {
@@ -513,22 +510,22 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             if (left >= 0) {
                 name = name.substring(0, left);
             }
-    
+
             // Look up and return this property from our cache
             // creating and adding it to the cache if not found.
             if ((bean == null) || (name == null)) {
                 return (null);
             }
-    
+
             PropertyDescriptor descriptors[] = getPropertyDescriptors(bean);
             if (descriptors != null) {
-    
+
                 for (int i = 0; i < descriptors.length; i++) {
                     if (name.equals(descriptors[i].getName()))
                         return (descriptors[i]);
                 }
             }
-    
+
             PropertyDescriptor result = null;
             FastHashMap mappedDescriptors = getMappedPropertyDescriptors(bean);
             if (mappedDescriptors == null) {
@@ -547,7 +544,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
                     mappedDescriptors.put(name, result);
                 }
             }
-    
+
             return result;
         } catch ( RuntimeException ex ) {
             LOG.error( "Unable to get property descriptor for " + bean.getClass().getName() + " . " + name
@@ -655,34 +652,34 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             LOG.debug("setSimpleProperty: Invoking method " + writeMethod
                       + " with value " + value + " (class " + valueClassName + ")");
         }
-        
-        
+
+
         invokeMethod(writeMethod, bean, values);
 
     }
-    
+
     /** This just catches and wraps IllegalArgumentException. */
     private Object invokeMethod(
-                        Method method, 
-                        Object bean, 
-                        Object[] values) 
+                        Method method,
+                        Object bean,
+                        Object[] values)
                             throws
                                 IllegalAccessException,
                                 InvocationTargetException {
         try {
-            
+
             return method.invoke(bean, values);
-        
+
         } catch (IllegalArgumentException e) {
-            
+
             LOG.error("Method invocation failed.", e);
             throw new IllegalArgumentException(
-                "Cannot invoke " + method.getDeclaringClass().getName() + "." 
+                "Cannot invoke " + method.getDeclaringClass().getName() + "."
                 + method.getName() + " - " + e.getMessage());
-            
+
         }
     }
-    
+
     public Class getPropertyType(Object bean, String name)
             throws IllegalAccessException, InvocationTargetException,
             NoSuchMethodException {

@@ -38,6 +38,9 @@ public class OrchestrationConfig {
     private final Set<String> destinationNodeNames;
     private final ActionTakenValue cause;
     private final boolean runPostProcessorLogic;
+    //KULRICE-12283: Added two new flags to indicate if acknowledgements and FYIs should be deactivated
+    private final boolean deactivateAcknowledgements;
+    private final boolean deactivateFYIs;
     
     public OrchestrationConfig(EngineCapability capability) {
         this(capability, Collections.<String>emptySet(), null, true, true);
@@ -50,15 +53,22 @@ public class OrchestrationConfig {
     public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause) {
         this(capability, destinationNodeNames, cause, true, true);
     }
-    
+
+    //KULRICE-12283: Added new constructors which set up the two new properties
     public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause, boolean sendNotifications, boolean doRunPostProcessorLogic) {
+        this(capability, destinationNodeNames, cause, sendNotifications, doRunPostProcessorLogic, false, false);
+    }
+
+    public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause, boolean sendNotifications, boolean doRunPostProcessorLogic, boolean deactivateAcknowledgements, boolean deactivateFYIs) {
         this.capability = capability;
         this.destinationNodeNames = Collections.unmodifiableSet(new HashSet<String>(destinationNodeNames));
         this.cause = cause;
         this.sendNotifications = sendNotifications;
         this.runPostProcessorLogic = doRunPostProcessorLogic;
+        this.deactivateAcknowledgements = deactivateAcknowledgements;
+        this.deactivateFYIs = deactivateFYIs;
     }
-    
+
     public Set<String> getDestinationNodeNames() {
         return destinationNodeNames;
     }
@@ -84,6 +94,15 @@ public class OrchestrationConfig {
      */
     public EngineCapability getCapability() {
         return this.capability;
-    }    
+    }
+
+    //KULRICE-12283: Added getters for two new properties
+    public boolean isDeactivateAcknowledgements() {
+        return deactivateAcknowledgements;
+    }
+
+    public boolean isDeactivateFYIs() {
+        return deactivateFYIs;
+    }
     
 }

@@ -46,6 +46,20 @@
     </property>
   </bean>
 
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+      <list>
+        <idref bean="matchAllTxInterceptor" />
+      </list>
+    </property>
+    <property name="beanNames">
+      <list>
+        <idref local="kimCacheDistributionQueue" />
+        <idref local="kimDistributedCacheManager" />
+      </list>
+    </property>
+  </bean>
+
   <!-- Still using OJB for some of the KNS-based UI's in KIM -->
   <import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
   <bean id="kewOjbConfigurer"

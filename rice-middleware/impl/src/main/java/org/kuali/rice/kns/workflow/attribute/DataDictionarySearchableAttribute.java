@@ -18,6 +18,8 @@ package org.kuali.rice.kns.workflow.attribute;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
@@ -77,6 +79,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     private static final long serialVersionUID = 173059488280366451L;
 	private static final Logger LOG = Logger.getLogger(DataDictionarySearchableAttribute.class);
     public static final String DATA_TYPE_BOOLEAN = "boolean";
+    public static final String KEW_RUN_MODE_PROPERTY = "kew.mode";
 
     @Override
     public String generateSearchContent(ExtensionDefinition extensionDefinition,
@@ -221,7 +224,10 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             DocumentSearchCriteria documentSearchCriteria) {
         List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();
         DictionaryValidationService validationService = KNSServiceLocator.getKNSDictionaryValidationService();
-
+        RunMode kewRunMode = RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY));
+        if (kewRunMode != RunMode.LOCAL) {
+            GlobalVariables.getMessageMap().clearErrorMessages();
+        }
         // validate the document attribute values
         Map<String, List<String>> documentAttributeValues = documentSearchCriteria.getDocumentAttributeValues();
         for (String key : documentAttributeValues.keySet()) {

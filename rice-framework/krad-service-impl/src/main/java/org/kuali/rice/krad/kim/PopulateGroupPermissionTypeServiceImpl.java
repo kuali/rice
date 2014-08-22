@@ -66,7 +66,7 @@ public class PopulateGroupPermissionTypeServiceImpl extends NamespaceWildcardAll
                 PermissionBo bo = PermissionBo.from(kpi);
                 String kimTypeName = bo.getDetails().get(KimConstants.AttributeConstants.KIM_TYPE_NAME);
                 String namespaceCode = bo.getDetails().get(KimConstants.AttributeConstants.NAMESPACE_CODE);
-                if (StringUtils.equals(requestedKimTypeName, kimTypeName) &&
+                if (StringUtils.equals(requestedKimTypeName, kimTypeName) && StringUtils.isNotBlank(namespaceCode) && StringUtils.isNotBlank(requestedNamespaceCode) &&
                     requestedNamespaceCode.matches(namespaceCode.replaceAll("\\*", ".*"))) {
                         exactMatchingPermissions.add(kpi);
                 } else if (StringUtils.isEmpty(kimTypeName)) {

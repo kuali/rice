@@ -46,11 +46,13 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemBase;
 import org.kuali.rice.kew.actionitem.OutboxItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
+import org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOJpaImpl;
 import org.kuali.rice.kew.actionlist.dao.impl.ActionListPriorityComparator;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -70,6 +72,9 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * Default implementation of the {@link ActionListService}.
@@ -79,6 +84,7 @@ import org.kuali.rice.krad.data.DataObjectService;
 public class ActionListServiceImpl implements ActionListService {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionListServiceImpl.class);
+    private static final Integer DEFAULT_OUTBOX_ITEM_LIMIT = Integer.valueOf(10000);
 
     protected DataObjectService dataObjectService;
     protected NotificationService notificationService;
@@ -499,6 +505,10 @@ public class ActionListServiceImpl implements ActionListService {
         this.actionListDAO = actionListDAO;
     }
 
+    public ActionListDAO getActionListDAO() {
+        return actionListDAO;
+    }
+
     @Override
     public void deleteActionItemNoOutbox(ActionItem actionItem) {
         deleteActionItem(actionItem, false, false);
@@ -635,20 +645,56 @@ public class ActionListServiceImpl implements ActionListService {
         return actionListDAO.getCount(principalId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Object> getMaxActionItemDateAssignedAndCountForUser(String principalId) {
-        return actionListDAO.getMaxActionItemDateAssignedAndCountForUser(principalId);
+        // KULRICE-12318 IU contribution, not sure if this is still needed with the JPA implementation
+        // as no result should cause a no result exception, going to add it to make sure.
+        List<Object> verifiedList = new ArrayList<Object>();
+        List<Object> maxDateAndUserCount =  getActionListDAO().getMaxActionItemDateAssignedAndCountForUser(principalId);
+
+        verifiedList.add(0, verifyMaxActionItemDateAssigned(maxDateAndUserCount));
+        verifiedList.add(1, verifyCountForUser(maxDateAndUserCount));
+
+        return verifiedList;
     }
 
     /**
-     *
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kew.actionlist.service.ActionListService#getOutbox(java.lang.String, org.kuali.rice.kew.actionlist.ActionListFilter)
+     * Ensures the max action item date assigned is a valid {@link Timestamp} otherwise the current time stamp is
+     *  returned
+     * @param maxDateAndUserCount the list containing the max action item date assigned
+     * @return the max action item date assigned, or the current time stamp if one is not found
+     */
+    private Object verifyMaxActionItemDateAssigned(List<Object> maxDateAndUserCount) {
+        if (maxDateAndUserCount != null && maxDateAndUserCount.size() > 0 &&
+                maxDateAndUserCount.get(0) != null && (maxDateAndUserCount.get(0) instanceof Timestamp)) {
+
+            return maxDateAndUserCount.get(0);
+        } else {
+            return new Timestamp(new Date().getTime());
+        }
+    }
+
+    /**
+     * Ensures the user count is valid, otherwise zero is returned.
+     * @param maxDateAndUserCount the list containing the user count
+     * @return the user count, or zero if the user count is not found
+     */
+    private Object verifyCountForUser(List<Object> maxDateAndUserCount) {
+        if (maxDateAndUserCount != null && maxDateAndUserCount.size() > 1 && maxDateAndUserCount.get(1) == null) {
+            return maxDateAndUserCount.get(1);
+        } else {
+            return Long.valueOf(0);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public Collection<OutboxItem> getOutbox(String principalId, ActionListFilter filter) {
-        boolean filterOn = false;
         List<String> filteredByItems = new ArrayList<String>();
 
         List<Predicate> crit = handleActionItemCriteria(principalId, filter, filteredByItems);
@@ -656,21 +702,42 @@ public class ActionListServiceImpl implements ActionListService {
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("running query to get outbox list for criteria " + crit);
         }
-        QueryByCriteria query = QueryByCriteria.Builder.fromPredicates(crit);
-        QueryResults<OutboxItem> results = dataObjectService.findMatching(OutboxItem.class, query);
+        QueryByCriteria.Builder query = QueryByCriteria.Builder.create(QueryByCriteria.Builder.fromPredicates(crit));
+        query.setMaxResults(getOutboxItemLimit());
+        QueryResults<OutboxItem> results = dataObjectService.findMatching(OutboxItem.class, query.build());
         if ( LOG.isDebugEnabled() ) {
             LOG.debug("found " + results.getResults().size() + " outbox items for user " + principalId);
         }
 
-        if ( !filteredByItems.isEmpty() ) {
-            filterOn = true;
+        if ( filteredByItems.isEmpty() ) {
+            filter.setFilterOn(false);
+        } else {
+            filter.setFilterOn(true);
         }
         filter.setFilterLegend(StringUtils.join(filteredByItems, ", "));
-        filter.setFilterOn(filterOn);
 
         return results.getResults();
     }
 
+    /**
+     * Retrieves the outbox item limit from the parameter service, if the parameter is not found a default is returned.
+     * @return the outbox item limit.
+     */
+    private Integer getOutboxItemLimit() {
+        String fetchSizeParam =
+            CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE,
+                KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KewApiConstants.OUTBOX_ITEM_LIMIT);
+
+        if(StringUtils.isNotBlank(fetchSizeParam)) {
+            return Integer.parseInt(fetchSizeParam);
+        } else {
+            return DEFAULT_OUTBOX_ITEM_LIMIT;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<OutboxItem> getOutboxItemsByDocumentType(String documentTypeName) {
         QueryResults<OutboxItem> results = dataObjectService.findMatching(OutboxItem.class,
@@ -680,9 +747,7 @@ public class ActionListServiceImpl implements ActionListService {
     }
 
     /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.kew.actionlist.service.ActionListService#removeOutboxItems(String, java.util.List)
+     * {@inheritDoc}
      */
     @Override
     public void removeOutboxItems(String principalId, List<String> outboxItems) {

@@ -287,7 +287,7 @@ public interface ServiceRegistry {
 	@XmlElementWrapper(name = "serviceEndpoints", required = false)
 	@XmlElement(name = "serviceEndpoint", required = false)
 	List<ServiceEndpoint> removeServiceEndpoints(@WebParam(name = "serviceId") List<String> serviceIds) throws RiceIllegalArgumentException;
-	
+	//Added a throws declaration so it properly bubbles up RiceIllegalArgumentExceptions
 	/**
 	 * Performs a single atomic operation of removing and publishing a set of
 	 * services in the registry.  This operation is useful in situations where
@@ -321,7 +321,7 @@ public interface ServiceRegistry {
 	@WebResult(name = "removeAndPublishResult")
 	@XmlElement(name = "removeAndPublishResult", required = true)
 	RemoveAndPublishResult removeAndPublish(@WebParam(name = "removeServiceId") List<String> removeServiceIds,
-			@WebParam(name = "publishServiceEndpoint") List<ServiceEndpoint> publishServiceEndpoints);
+			@WebParam(name = "publishServiceEndpoint") List<ServiceEndpoint> publishServiceEndpoints)throws RiceIllegalArgumentException;;
 	
 	/**
 	 * Updates the status for the service with the given id to the given

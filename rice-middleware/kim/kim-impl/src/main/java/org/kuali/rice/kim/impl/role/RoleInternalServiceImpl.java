@@ -67,8 +67,11 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembersForRoleIds(roleIds, null, null);
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
             roleMemberBo.setActiveToDateValue(yesterday);
+            // Notify the role type service that the member was removed
+            notifyOnMemberRemoval(RoleMemberBo.to(roleMemberBo));
             getDataObjectService().save(roleMemberBo);
         }
+
     }
 
     private void inactivateRoleDelegations(List<String> roleIds, Timestamp yesterday) {
@@ -86,6 +89,8 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
         List<RoleMemberBo> roleMemberBoList = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds, null);
         for (RoleMemberBo roleMemberBo : roleMemberBoList) {
             roleMemberBo.setActiveToDateValue(yesterday);
+            // Notify the role type service that the member was removed
+            notifyOnMemberRemoval(RoleMemberBo.to(roleMemberBo));
             getDataObjectService().save(roleMemberBo);
         }
     }
@@ -116,6 +121,8 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
         for (RoleMemberBo roleMemberBo : roleMembers) {
             roleMemberBo.setActiveToDateValue(yesterday);
             roleIds.add(roleMemberBo.getRoleId()); // add to the set of IDs
+            // Notify the role type service that the member was removed
+            notifyOnMemberRemoval(RoleMemberBo.to(roleMemberBo));
             getDataObjectService().save(roleMemberBo);
         }
     }
@@ -124,6 +131,8 @@ public class RoleInternalServiceImpl extends RoleServiceBase implements RoleInte
         List<RoleMemberBo> roleMemberBosOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds, null);
         for (RoleMemberBo roleMemberBo : roleMemberBosOfGroupType) {
             roleMemberBo.setActiveToDateValue(yesterday);
+            // Notify the role type service that the member was removed
+            notifyOnMemberRemoval(RoleMemberBo.to(roleMemberBo));
             getDataObjectService().save(roleMemberBo);
         }
     }

@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.kuali.rice.kew.api.util.CodeTranslator;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * A bean for the web-tier when represents the recipient of an Ad Hoc request.
@@ -71,8 +72,12 @@ public class AppSpecificRouteRecipient implements Serializable {
     }
 
     public String getActionRequestedValue(){
-        actionRequestCds.clear();
-        actionRequestCds.putAll(CodeTranslator.arLabels);
+        if (ObjectUtils.isNull(actionRequestCds)) {
+            actionRequestCds = CodeTranslator.arLabels;
+        } else {
+            actionRequestCds.clear();
+            actionRequestCds.putAll(CodeTranslator.arLabels);
+        }
         if(getActionRequested() != null && !getActionRequested().trim().equals("")){
             return (String) actionRequestCds.get(getActionRequested());
         }

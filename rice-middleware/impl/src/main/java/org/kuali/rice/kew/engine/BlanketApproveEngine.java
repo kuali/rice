@@ -74,7 +74,8 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             }
             DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId, true);
             if (!document.isRoutable()) {
-                LOG.debug("Document not routable so returning with doing no action");
+                //KULRICE-12283: Modified this message so it appears at a WARN level so we get better feedback if this action is skipped
+                LOG.warn("Document not routable so returning with doing no action");
                 return;
             }
             List<RouteNodeInstance> activeNodeInstances = new ArrayList<RouteNodeInstance>();
@@ -241,6 +242,13 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             if (request.isApproveOrCompleteRequest()) {
                 requestsToNotify.add(getActionRequestService().deactivateRequest(actionTaken, request));
+            }
+            //KULRICE-12283: Added logic to deactivate acks or FYIs if a config option is provided.  This will mainly be used when a document is moved.
+            if(request.isAcknowledgeRequest() && config.isDeactivateAcknowledgements()) {
+                getActionRequestService().deactivateRequest(actionTaken, request);
+            }
+            if(request.isFYIRequest() && config.isDeactivateFYIs()) {
+                getActionRequestService().deactivateRequest(actionTaken, request);
             }
         }
         if (notifyContext != null && !requestsToNotify.isEmpty()) {

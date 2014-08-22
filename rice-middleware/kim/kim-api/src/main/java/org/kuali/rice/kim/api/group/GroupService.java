@@ -662,4 +662,12 @@ public interface GroupService {
     @WebResult(name = "members")
     List<GroupMember> getMembersWithDate(List<String> groupIds,
             @XmlJavaTypeAdapter(value = DateTimeAdapter.class) @WebParam(name="asOfDate") DateTime asOfDate) throws RiceIllegalArgumentException;
+
+    /**
+    *  Returns the list of group members who are currently active and futureActive .
+    * @param groupId Id of the Group object to get the members from
+    * @return list of group members
+    */
+    @WebMethod(operationName ="getCurrentAndFutureMembers")
+    List<GroupMember> getCurrentAndFutureMembers(@WebParam(name="groupId")String groupId);
 }

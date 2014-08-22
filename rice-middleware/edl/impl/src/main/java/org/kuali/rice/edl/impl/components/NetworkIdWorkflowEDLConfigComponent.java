@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.edl.impl.components;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.edl.impl.EDLXmlUtils;
 import org.kuali.rice.edl.impl.RequestParser;
 import org.kuali.rice.kim.api.identity.principal.Principal;
@@ -51,12 +52,12 @@ public class NetworkIdWorkflowEDLConfigComponent extends SimpleWorkflowEDLConfig
 	public String getErrorMessage(Element originalConfigElement, RequestParser requestParser, MatchingParam param) {
         if (!getEdlContext().getUserAction().isValidatableAction()) {
             return null;
-        } else if (param.getParamValue().length() == 0 && required == true) {
-			//empty and required so send error
-			return ("Network ID is a required field");
-		} else if (param.getParamValue().length() == 0 && required == false) { 
-			//empty but not required then just return 
-			return null;			
+        } else if (StringUtils.isBlank(param.getParamValue()) && required ) {
+            // empty or whitespaces and required so send error
+            return ("Network ID is a required field");
+        } else if (StringUtils.isBlank(param.getParamValue()) && !required ) {
+            // empty or whitespaces and not required so ignore
+            return null;
 		} else {
 			//not blank validate as normal whether required or not
 			Principal principal = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(param.getParamValue());

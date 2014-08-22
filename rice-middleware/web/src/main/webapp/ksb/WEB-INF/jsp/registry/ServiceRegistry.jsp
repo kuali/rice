@@ -21,6 +21,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%--KULRICE-12287:Included the kul taglib to let us use the testBanner tag on this page --%>
+<%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
 
 <html-el:html>
 <head>
@@ -29,13 +31,16 @@
    .highlightrow {}
    tr.highlightrow:hover, tr.over td { background-color: #66FFFF; }
 </style>
+<%--KULRICE-12287: Added the kuali.css to this page for the testBanner styling --%>
+<link href="css/kuali.css" rel="stylesheet" type="text/css">
 <link href="css/screen.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="scripts/en-common.js"></script>
 <script language="JavaScript" src="scripts/messagequeue-common.js"></script>
 </head>
 
 <body bgcolor="#ffffff" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
-
+<%-- KULRICE-12287: Added the new tag which displays a banner when in the testing environments --%>
+<kul:testBanner />
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
   <tr>
     <td width="15%"><img src="images/wf-logo.gif" alt="Workflow" width=150 height=21 hspace=5 vspace=5></td>

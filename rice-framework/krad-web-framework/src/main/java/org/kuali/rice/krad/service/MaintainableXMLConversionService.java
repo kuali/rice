@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2006-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.documentoperation.web;
 
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+package org.kuali.rice.krad.service;
 
-public class DocumentContentOperationForm extends KualiForm {
 
-	private static final long serialVersionUID = 4087704636454964035L;
+public interface MaintainableXMLConversionService {
 
-	private String documentId;
-	private String key;
-	
-	public String getDocumentId() {
-		return documentId;
-	}
-	public void setDocumentId(String documentId) {
-		this.documentId = documentId;
-	}
-	public String getKey() {
-		return key;
-	}
-	public void setKey(String key) {
-		this.key = key;
-	}
+    public String transformMaintainableXML(String xml);
 }
+

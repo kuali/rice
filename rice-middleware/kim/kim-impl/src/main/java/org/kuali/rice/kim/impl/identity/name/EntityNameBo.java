@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kim.impl.identity.name;
 
+import org.kuali.rice.kim.api.identity.name.EntityName;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+
 import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,14 +26,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-import org.kuali.rice.kim.api.identity.name.EntityName;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 @Entity
 @Cacheable(false)
 @Table(name = "KRIM_ENTITY_NM_T")
+@NamedQuery(name="EntityNameBo.findDefaultNamesForPrincipalIds",
+        query="SELECT NEW org.kuali.rice.kim.impl.identity.IdentityServiceDaoJpa.NameHolder(en, p.principalId, p.principalName, pp.suppressName) FROM EntityNameBo en, PrincipalBo p LEFT JOIN EntityPrivacyPreferencesBo pp ON pp.entityId = p.entityId WHERE en.active = true AND en.defaultValue = true AND en.entityId = p.entityId AND p.principalId IN :principalIds"
+)
 public class EntityNameBo extends EntityNameBase {
 
     private static final long serialVersionUID = -1449221117942310530L;

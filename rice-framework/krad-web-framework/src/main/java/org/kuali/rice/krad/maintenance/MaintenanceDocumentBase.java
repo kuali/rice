@@ -79,6 +79,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.thoughtworks.xstream.core.BaseException;
+
 /**
  * Document class for all maintenance documents which wraps the maintenance object in
  * a <code>Maintainable</code> that is also used for various callbacks
@@ -282,12 +284,20 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         // then populate those instances
         if (!StringUtils.isEmpty(xmlDocumentContents)) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            /* KULRICE-12304:
+            * Modified this block to fetch the document type and use that
+            * document type to fetch the maintainable class from the document
+            * dictionary service.  This was necessary since the maintainable
+            * class which is persisted in the document content XML may be out
+            * of date if it changes across version updates.
+            */
             try {
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document xmlDocument = builder.parse(new InputSource(new StringReader(xmlDocumentContents)));
-                String clazz = xmlDocument.getDocumentElement().getAttribute(MAINTAINABLE_IMPL_CLASS);
+                String documentTypeName = KewApiServiceLocator.getWorkflowDocumentService().getDocument(this.getDocumentNumber()).getDocumentTypeName();
+                Class<? extends Maintainable> maintainableClass = getDocumentDictionaryService().getMaintainableClass(documentTypeName);
                 if (isOldMaintainableInDocument(xmlDocument)) {
-                    oldMaintainableObject = (Maintainable) Class.forName(clazz).newInstance();
+                    oldMaintainableObject = (Maintainable) maintainableClass.newInstance();
                     Object dataObject = getDataObjectFromXML(OLD_MAINTAINABLE_TAG_NAME);
 
                     String oldMaintenanceAction = getMaintenanceAction(xmlDocument, OLD_MAINTAINABLE_TAG_NAME);
@@ -296,7 +306,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                     oldMaintainableObject.setDataObject(dataObject);
                     oldMaintainableObject.setDataObjectClass(dataObject.getClass());
                 }
-                newMaintainableObject = (Maintainable) Class.forName(clazz).newInstance();
+                newMaintainableObject = (Maintainable) maintainableClass.newInstance();
                 Object bo = getDataObjectFromXML(NEW_MAINTAINABLE_TAG_NAME);
                 newMaintainableObject.setDataObject(bo);
                 newMaintainableObject.setDataObjectClass(bo.getClass());
@@ -321,9 +331,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 LOG.error("Error while parsing document contents", e);
                 throw new RuntimeException("Could not load document contents from xml", e);
             } catch (IllegalAccessException e) {
-                LOG.error("Error while parsing document contents", e);
-                throw new RuntimeException("Could not load document contents from xml", e);
-            } catch (ClassNotFoundException e) {
                 LOG.error("Error while parsing document contents", e);
                 throw new RuntimeException("Could not load document contents from xml", e);
             }
@@ -394,38 +401,41 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     protected Object getDataObjectFromXML(String maintainableTagName) {
         String maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">",
                 "</" + maintainableTagName + ">");
+        /*KULRICE-12304*/
+        try {
+            boolean ignoreMissingFields = false;
+            String classAndDocTypeNames = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.Config.IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE);
+            if (!StringUtils.isEmpty(classAndDocTypeNames)) {
+                String classNameOnXML = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + "><", ">");
+                String classNamesNoSpaces = removeSpacesAround(classAndDocTypeNames);
+                List<String> classAndDocTypeNamesList = Arrays.asList(org.apache.commons.lang.StringUtils.split(classNamesNoSpaces, ","));
+                String originalDocTypeId = getDocumentHeader().getWorkflowDocument().getDocumentTypeId();
+                DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(originalDocTypeId);
 
-        boolean ignoreMissingFields = false;
-        String classAndDocTypeNames = ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.Config.IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE);
-        if (!StringUtils.isEmpty(classAndDocTypeNames)) {
-            String classNameOnXML = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + "><",
-                    ">");
-            String classNamesNoSpaces = removeSpacesAround(classAndDocTypeNames);
-            List<String> classAndDocTypeNamesList = Arrays.asList(org.apache.commons.lang.StringUtils.split(
-                    classNamesNoSpaces, ","));
-            String originalDocTypeId = getDocumentHeader().getWorkflowDocument().getDocumentTypeId();
-            DocumentType docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(originalDocTypeId);
-
-            while (docType != null && !ignoreMissingFields) {
-                for (String classNameOrDocTypeName : classAndDocTypeNamesList) {
-                    if (docType.getName().equalsIgnoreCase(classNameOrDocTypeName) || classNameOnXML.equalsIgnoreCase(
-                            classNameOrDocTypeName)) {
-                        ignoreMissingFields = true;
-                        break;
+                while (docType != null && !ignoreMissingFields) {
+                    for(String classNameOrDocTypeName : classAndDocTypeNamesList){
+                        if (docType.getName().equalsIgnoreCase(classNameOrDocTypeName) ||
+                                classNameOnXML.equalsIgnoreCase(classNameOrDocTypeName)) {
+                            ignoreMissingFields = true;
+                            break;
+                        }
+                    }
+                    if (!StringUtils.isEmpty(docType.getParentId())) {
+                        docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(docType.getParentId());
+                    } else {
+                        docType = null;
                     }
                 }
-                if (!StringUtils.isEmpty(docType.getParentId())) {
-                    docType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeById(docType.getParentId());
-                } else {
-                    docType = null;
-                }
             }
-        }
-        if (!ignoreMissingFields) {
-            return KRADServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
-        } else {
-            return KRADServiceLocator.getXmlObjectSerializerIgnoreMissingFieldsService().fromXml(maintXml);
-        }
+            if (!ignoreMissingFields) {
+                return KRADServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
+            } else {
+                return KRADServiceLocator.getXmlObjectSerializerIgnoreMissingFieldsService().fromXml(maintXml);
+            }
+        }catch (BaseException e) {
+            String convertedXml = KRADServiceLocatorWeb.getMaintainableXMLConversionService().transformMaintainableXML(maintXml);
+            return KRADServiceLocator.getXmlObjectSerializerService().fromXml(convertedXml);
+        }/*KULRICE-12304*/
     }
 
     /**

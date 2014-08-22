@@ -108,10 +108,10 @@ public class DataDictionaryComponentPublisherServiceImpl implements DataDictiona
     }
 
     protected Component deriveComponentFromDataObjectEntry(DataObjectEntry dataObjectEntry) {
-    	// feature regression from KNS - Data objects do not have a "base business object class"
-    	if ( dataObjectEntry instanceof BusinessObjectEntry && ((BusinessObjectEntry)dataObjectEntry).getBaseBusinessObjectClass() != null ) {
-    		return deriveComponentFromClass(((BusinessObjectEntry)dataObjectEntry).getBaseBusinessObjectClass());
-    	}
+        if (dataObjectEntry.getBaseDataObjectClass() != null) {
+            return deriveComponentFromClass(dataObjectEntry.getBaseDataObjectClass());
+        }
+
     	return deriveComponentFromClass(dataObjectEntry.getDataObjectClass());
     }
 

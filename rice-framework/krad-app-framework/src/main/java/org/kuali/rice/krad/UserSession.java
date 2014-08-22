@@ -173,6 +173,16 @@ public class UserSession implements Serializable {
     public boolean isProductionEnvironment() {
         return ConfigContext.getCurrentContextConfig().isProductionEnvironment();
     }
+    //KULRICE-12287:Add a banner to Rice screens to show which environment you are in
+    public String getCurrentEnvironment() {
+        return ConfigContext.getCurrentContextConfig().getEnvironment();
+    }
+
+    public boolean isDisplayTestBanner() {
+        boolean isProd = this.isProductionEnvironment();
+        boolean isBannerEnabled = ConfigContext.getCurrentContextConfig().getBooleanProperty("test.banner.enabled", false);
+        return !isProd && isBannerEnabled;
+    }
 
     /**
      * clear the backdoor user

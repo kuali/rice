@@ -20,6 +20,7 @@ import org.apache.log4j.MDC;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+import org.kuali.rice.kew.api.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.exception.WorkflowException;
@@ -142,13 +143,15 @@ public class DisapproveAction extends ActionTakenEvent {
         getActionRequestService().deactivateRequests(actionTaken, actionRequests);
         notifyActionTaken(actionTaken);
 
-        LOG.debug("Sending Acknowledgements to all previous approvers/completers");
-   	 	// Generate the notification requests in the first node we find that the current user has an approve request
-        RouteNodeInstance notificationNodeInstance = null;
-//        if (actionRequests.size() > 0) { //I don't see why this matters let me know if it does rk
-        	notificationNodeInstance = ((ActionRequestValue)actionRequests.get(0)).getNodeInstance();
-//        }
-        generateAcknowledgementsToPreviousActionTakers(notificationNodeInstance);
+        if(!isPolicySet(getRouteHeader().getDocumentType(), DocumentTypePolicy.SUPPRESS_ACKNOWLEDGEMENTS_ON_DISAPPROVE)){
+            LOG.debug("Sending Acknowledgements to all previous approvers/completers");
+            // Generate the notification requests in the first node we find that the current user has an approve request
+            RouteNodeInstance notificationNodeInstance = null;
+            //        	if (actionRequests.size() > 0) { //I don't see why this matters let me know if it does rk
+            notificationNodeInstance = ((ActionRequestValue)actionRequests.get(0)).getNodeInstance();
+            //        	}
+            generateAcknowledgementsToPreviousActionTakers(notificationNodeInstance);
+        }
 
         LOG.debug("Disapproving document");
         try {

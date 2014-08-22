@@ -51,6 +51,7 @@ import java.util.Map;
 public class AbstractRuleLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
     private List<Row> rows = new ArrayList<Row>();
+    private List<Row> additionalFieldRows = new ArrayList<Row>();
     protected static final String GROUP_REVIEWER_PROPERTY_NAME = "groupReviewer";
     protected static final String GROUP_REVIEWER_NAME_PROPERTY_NAME = "groupReviewerName";
     protected static final String GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME = "groupReviewerNamespace";
@@ -64,7 +65,7 @@ public class AbstractRuleLookupableHelperServiceImpl extends KualiLookupableHelp
 
     protected boolean checkForAdditionalFields(Map<String, String> fieldValues, String ruleTemplateNameParam) {
         if (StringUtils.isNotBlank(ruleTemplateNameParam)) {
-            rows = new ArrayList<Row>();
+            additionalFieldRows = new ArrayList<Row>();
             RuleTemplate ruleTemplate = KewApiServiceLocator.getRuleService().getRuleTemplateByName(ruleTemplateNameParam);
             for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes()) {
                 if (!RuleAttribute.isWorkflowAttribute(ruleTemplateAttribute.getRuleAttribute().getType())) {
@@ -86,7 +87,7 @@ public class AbstractRuleLookupableHelperServiceImpl extends KualiLookupableHelp
 
         }
 
-        rows.clear();
+        additionalFieldRows.clear();
 
         return false;
     }
@@ -110,7 +111,7 @@ public class AbstractRuleLookupableHelperServiceImpl extends KualiLookupableHelp
 
             if (setAndAddValuesToRow) {
                 row.setFields(fields);
-                rows.add(row);
+                additionalFieldRows.add(row);
             }
         }
     }
@@ -122,6 +123,7 @@ public class AbstractRuleLookupableHelperServiceImpl extends KualiLookupableHelp
         }
         List<Row> returnRows = new ArrayList<Row>();
         returnRows.addAll(rows);
+        returnRows.addAll(additionalFieldRows);
 
         return returnRows;
     }

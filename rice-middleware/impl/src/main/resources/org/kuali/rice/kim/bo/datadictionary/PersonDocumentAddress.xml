@@ -39,7 +39,10 @@
   </bean>
 
   <bean id="DocAddress-line2" parent="DocAddress-line2-parentBean"/>
-  <bean id="DocAddress-line2-parentBean" parent="AttributeDefinition" abstract="true" p:name="line2" p:forceUppercase="true" p:label="Line 2" p:shortLabel="Line 2" p:maxLength="50" p:required="false">
+  <!-- Modified the length of the address fields to allow them to be up to 128
+    - characters long to match the size of the krim_entity_addr_t table.
+    -->
+  <bean id="DocAddress-line2-parentBean" parent="AttributeDefinition" abstract="true" p:name="line2" p:forceUppercase="true" p:label="Line 2" p:shortLabel="Line 2" p:maxLength="128" p:required="false">
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
@@ -49,7 +52,10 @@
   </bean>
 
   <bean id="DocAddress-line3" parent="DocAddress-line3-parentBean"/>
-  <bean id="DocAddress-line3-parentBean" parent="AttributeDefinition" abstract="true" p:name="line3" p:forceUppercase="true" p:label="Line 3" p:shortLabel="Line 3" p:maxLength="50" p:required="false">
+  <!-- Modified the length of the address fields to allow them to be up to 128
+    - characters long to match the size of the krim_entity_addr_t table.
+    -->
+  <bean id="DocAddress-line3-parentBean" parent="AttributeDefinition" abstract="true" p:name="line3" p:forceUppercase="true" p:label="Line 3" p:shortLabel="Line 3" p:maxLength="128" p:required="false">
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
@@ -73,7 +79,10 @@
   </bean>
     
   <bean id="DocAddress-line1" parent="DocAddress-line1-parentBean"/>
-  <bean id="DocAddress-line1-parentBean" parent="AttributeDefinition" abstract="true" p:name="line1" p:forceUppercase="true" p:label="Line 1" p:shortLabel="Line 1" p:maxLength="50" p:required="false">
+  <!-- Modified the length of the address fields to allow them to be up to 128
+    - characters long to match the size of the krim_entity_addr_t table.
+    -->
+  <bean id="DocAddress-line1-parentBean" parent="AttributeDefinition" abstract="true" p:name="line1" p:forceUppercase="true" p:label="Line 1" p:shortLabel="Line 1" p:maxLength="128" p:required="false">
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.exception;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -247,12 +248,19 @@ public class ExceptionIncident implements KualiExceptionIncident {
             String lm=String.format("ENTRY");
             LOG.trace(lm);
         }
-
+        //KULRICE-12280: Adding server info to the message of the report
+        java.net.InetAddress addr = null;
+        try {
+            addr = java.net.InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            LOG.warn("Unable to get the localHost to inclue in exeception incident", e);
+        }
         String documentId=properties.get(DOCUMENT_ID);
         String userEmail=properties.get(USER_EMAIL);
         String uuid=properties.get(UUID);
         String description=properties.get(DESCRIPTION);
         String component=properties.get(COMPONENT_NAME);
+        String serverInfo = addr.toString();
         String exceptionMessage=properties.get(EXCEPTION_MESSAGE);
         String stackTrace=properties.get(STACK_TRACE);
         String format="Document Id: %s%n"+
@@ -260,6 +268,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
                       "Person User Identifier: %s%n"+
                       "User Input: %s%n"+
                       "component: %s%n"+
+                      "Server Info: %s%n"+
                       "errorMessage: %s%n"+
                       "%s%n";
         String message=String.format(format,
@@ -268,6 +277,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
                 (uuid==null)?"":uuid,
                 (description==null)?"":description,
                 (component==null)?"":component,
+                (serverInfo==null)?"":serverInfo,
                 (exceptionMessage==null)?"":exceptionMessage,
                 (stackTrace==null)?"":stackTrace);
 
@@ -328,7 +338,8 @@ public class ExceptionIncident implements KualiExceptionIncident {
         if (exception instanceof KualiException) {
             displayMessage=exception.getMessage();
         } else {
-            displayMessage=GENERIC_SYSTEM_ERROR_MESSAGE;
+            //KULRICE:12361-Added a more detailed message on exception incidents
+            displayMessage=GENERIC_SYSTEM_ERROR_MESSAGE + "<br> Error Details: " + exception.getMessage();
         }
 
         if (LOG.isTraceEnabled()) {

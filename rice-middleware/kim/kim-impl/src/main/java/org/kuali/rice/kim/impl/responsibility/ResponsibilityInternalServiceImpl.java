@@ -32,6 +32,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
@@ -80,6 +81,9 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
     	// need to set end date to inactivate, not delete
         roleMember.setActiveToDateValue(dateTimeService.getCurrentTimestamp());
     	roleMember = dataObjectService.save( roleMember, PersistenceOption.FLUSH );
+
+        // Notify the RoleTypeService for this role that the member was removed
+        KimApiServiceLocator.getRoleService().notifyOnMemberRemoval(RoleMemberBo.to(roleMember));
 
     	//need to find what responsibilities changed so we can notify interested clients.  Like workflow.
     	// the new member has been added

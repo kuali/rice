@@ -18,6 +18,7 @@ package org.kuali.rice.coreservice.web.parameter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.coreservice.impl.component.DerivedComponentBo;
 import org.kuali.rice.coreservice.impl.parameter.ParameterBo;
 import org.kuali.rice.kim.api.KimConstants;
@@ -86,11 +87,12 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
             Pattern pattern = Pattern.compile(componentNameFieldValue, Pattern.CASE_INSENSITIVE);
 
             Iterator<ParameterBo> resultsIter = results.iterator();
+            //Adding a null check to handle the case where a component isn't found better
             while (resultsIter.hasNext()) {
                 ParameterBo result = resultsIter.next();
-                if ((result.getComponent() == null ) ||
-                    (!pattern.matcher(result.getComponent().getName()).matches())) {
-                        resultsIter.remove();
+                ComponentBo component = result.getComponent();
+                if (component != null && !pattern.matcher(component.getName()).matches()) {
+                    resultsIter.remove();
                 }
             }
         }

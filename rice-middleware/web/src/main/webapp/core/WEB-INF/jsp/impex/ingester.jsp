@@ -17,7 +17,9 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ page session="false" %>
+<%--* KULRICE-12294, removed this line in order to establish the User session
+  --%>
+<%-- <%@ page session="false" %> --%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 
@@ -147,5 +149,19 @@
 	</table>
 
 </div>
-
+<%--* Ingester alert
+  --%>
+  <c:if test="${!empty UserSession && UserSession.productionEnvironment}">
+    <script type="text/javascript">
+      jQuery(function() {
+        alert('<bean:message key="ingester.alert.initial" />');
+        jQuery('#kualiForm').submit(function() {
+          var bool = confirm('<bean:message key="ingester.alert.onsubmit" />');
+          excludeSubmitRestriction = !bool;
+          return bool;
+        });
+        excludeSubmitRestriction = true;
+      });
+    </script>
+  </c:if>
 </kul:page>

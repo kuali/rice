@@ -18,6 +18,7 @@ package org.kuali.rice.kew.xml.export;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.BranchPrototype;
@@ -95,6 +96,7 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
         assertEquals(oldDocType.getActualApplicationId(), newDocType.getActualApplicationId());
         assertRoutePath(oldDocType, newDocType);
         assertPolicies(oldDocType, newDocType);
+        assertValidApplicationStatuses(oldDocType, newDocType);
     }
 
     /**
@@ -181,6 +183,23 @@ public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {
                 }
             }
             assertTrue("Could not locate policy by name " + oldPolicy.getPolicyName(), foundPolicy);
+        }
+    }
+
+    private void assertValidApplicationStatuses(DocumentType oldDocType, DocumentType newDocType) {
+        assertEquals(oldDocType.getValidApplicationStatuses().size(), newDocType.getValidApplicationStatuses().size());
+        for (Iterator iterator = oldDocType.getValidApplicationStatuses().iterator(); iterator.hasNext();) {
+            ApplicationDocumentStatus oldApplicationDocumentStatus = (ApplicationDocumentStatus) iterator.next();
+            boolean foundStatus = false;
+            for (Iterator iterator2 = newDocType.getValidApplicationStatuses().iterator(); iterator2.hasNext();) {
+                ApplicationDocumentStatus newApplicationDocumentStatus = (ApplicationDocumentStatus) iterator2.next();
+                if (oldApplicationDocumentStatus.getStatusName().equals(newApplicationDocumentStatus.getStatusName())) {
+                    foundStatus = true;
+                    break;
+                }
+            }
+            assertTrue("Could not locate validApplicationStatus by status name " +
+                    oldApplicationDocumentStatus.getStatusName(), foundStatus);
         }
     }
 

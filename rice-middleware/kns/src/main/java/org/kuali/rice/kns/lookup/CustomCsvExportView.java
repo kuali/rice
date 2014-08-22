@@ -47,6 +47,8 @@ public class CustomCsvExportView extends CsvView {
 	@Override
 	public void doExport(Writer writer) throws IOException, JspException {
 		if (!helper.attemptCustomExport(writer, KRADConstants.CSV_FORMAT)) {
+            // KULRICE-12281: Turn off the ability to export results from the certain lookups
+            helper.checkPermission();
 			super.doExport(writer);
 		}
 	}

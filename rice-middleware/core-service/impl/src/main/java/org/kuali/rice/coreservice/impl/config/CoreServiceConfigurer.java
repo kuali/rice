@@ -16,7 +16,10 @@
 package org.kuali.rice.coreservice.impl.config;
 
 import org.kuali.rice.core.api.config.module.RunMode;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.framework.config.module.ModuleConfigurer;
+
+import javax.sql.DataSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +42,10 @@ import java.util.List;
 public class CoreServiceConfigurer extends ModuleConfigurer {
 
     private static final String MODULE_NAME = "coreservice";
+    // Added a datasource property so users can override which datasource the CoreService module uses
+    public static final String CORESERVICE_DATASOURCE_OBJ = "coreService.datasource";
+
+    private DataSource dataSource;
 
     public CoreServiceConfigurer() {
         super(MODULE_NAME);
@@ -55,6 +62,26 @@ public class CoreServiceConfigurer extends ModuleConfigurer {
             springFileLocations.add(getDefaultConfigPackagePath() + "CoreServiceLocalSpringBeans.xml");
         }
         return springFileLocations;
+    }
+
+    @Override
+    protected void addAdditonalToConfig() {
+        super.addAdditonalToConfig();
+        configureDataSource();
+    }
+
+    private void configureDataSource() {
+        if (getDataSource() != null) {
+            ConfigContext.getCurrentContextConfig().putObject(CORESERVICE_DATASOURCE_OBJ, getDataSource());
+        }
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
 }

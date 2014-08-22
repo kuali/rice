@@ -19,14 +19,20 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoaderTestUtils;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.document.Document;
+import org.kuali.rice.kew.api.document.WorkflowDocumentService;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
 import org.kuali.rice.krad.data.provider.annotation.Serialized;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
+import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import javax.persistence.Transient;
 import java.io.Serializable;
@@ -47,7 +53,8 @@ public class MaintenanceDocumentSerializationTest {
     static final TestKradDataObj dataObject = new TestKradDataObj("dataObject", child, child, child, child, child, child);
     static final XmlObjectSerializerServiceImpl xmlObjectSerializerServiceImpl = new XmlObjectSerializerServiceImpl();
     static LegacyDataAdapter mockLegacyDataAdapter;
-
+    static WorkflowDocumentService mockWorkflowDocumentService;
+    static DocumentDictionaryService mockDocumentDictionaryService;
     /**
      * Wire up services and mocks, and plunk them the GRL as needed to get the maintenance document serialization
      * functionality up and working.
@@ -56,6 +63,8 @@ public class MaintenanceDocumentSerializationTest {
     public static void setupServices() {
         // create a mock LegacyDataAdapter that will answer all the questions it is asked appropriately
         mockLegacyDataAdapter = mock(LegacyDataAdapter.class);
+        mockWorkflowDocumentService = mock(WorkflowDocumentService.class);
+        mockDocumentDictionaryService = mock(DocumentDictionaryService.class);
         when(mockLegacyDataAdapter.areNotesSupported(any(Class.class))).thenReturn(Boolean.FALSE);
         when(mockLegacyDataAdapter.isProxied(anyObject())).thenReturn(Boolean.FALSE);
 
@@ -68,7 +77,18 @@ public class MaintenanceDocumentSerializationTest {
         // put needed mock and hand wired services into the GRL
         GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocatorWeb.LEGACY_DATA_ADAPTER, mockLegacyDataAdapter);
         GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocator.KRAD_SERIALIZER_SERVICE, dataObjectSerializerService);
-        GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocator.XML_OBJECT_SERIALIZER_SERVICE, xmlObjectSerializerServiceImpl);
+        GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocator.XML_OBJECT_SERIALIZER_SERVICE,
+                xmlObjectSerializerServiceImpl);
+        GlobalResourceLoaderTestUtils.addMockService(KewApiServiceLocator.WORKFLOW_DOCUMENT_SERVICE,
+                mockWorkflowDocumentService);
+        GlobalResourceLoaderTestUtils.addMockService(KRADServiceLocatorWeb.DOCUMENT_DICTIONARY_SERVICE, mockDocumentDictionaryService);
+        when(mockWorkflowDocumentService.getDocument(anyString())).thenReturn(Document.Builder.create("1","1","1","1").build());
+        when(mockDocumentDictionaryService.getMaintainableClass(anyString())).thenAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                return MaintainableImpl.class;
+            }
+        });
     }
 
     /**
@@ -81,9 +101,7 @@ public class MaintenanceDocumentSerializationTest {
         MaintainableImpl maintainable = new MaintainableImpl();
         maintainable.setLegacyDataAdapter(mockLegacyDataAdapter);
         maintainable.setDataObject(dataObject);
-
         MaintenanceDocumentBase kradMaintenanceDoc = new MaintenanceDocumentBase();
-
         // use our maintenance doc to serialize / deserialize the data object
         kradMaintenanceDoc.setNewMaintainableObject(maintainable);
         kradMaintenanceDoc.populateXmlDocumentContentsFromMaintainables();

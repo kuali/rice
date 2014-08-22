@@ -289,7 +289,8 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, Initi
 
 						// order is important in this conditional so that elements aren't dequeued and then ignored
 						while (entitiesToInsert.size() < getMaxWriteQueueSize() && null != (entity = writeQueue.poll())) {
-							if (deduper.add(entity.getEntityId())) {
+                            //Added an if condition to check whether an entity has a principal
+                            if (entity.getPrincipals().size() > 0 && deduper.add(entity.getEntityId())) {
 								entitiesToInsert.add(entity);
 							}
 						}

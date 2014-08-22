@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kim.impl.identity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.jws.WebParam;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
@@ -83,9 +75,16 @@ import org.kuali.rice.kim.impl.identity.visa.EntityVisaBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.krad.data.DataObjectService;
 
+import javax.jws.WebParam;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Base implementation of the identity (identity) service.  This version assumes the KimEntity
- * and related data is located within the KIM database. 
+ * and related data is located within the KIM database.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -95,6 +94,8 @@ public class IdentityServiceImpl implements IdentityService {
     protected static final String UNAVAILABLE = "Unavailable";
 
     protected DataObjectService dataObjectService;
+
+    protected IdentityServiceDao identityServiceDao;
 
     @Override
     public Entity getEntity(String entityId) throws RiceIllegalArgumentException {
@@ -1564,6 +1565,32 @@ public class IdentityServiceImpl implements IdentityService {
     }
 
     @Override
+    public Map<String, EntityNamePrincipalName> getDefaultNamesForPrincipalIds(List<String> principalIds) {
+        return getIdentityServiceDao().getDefaultNamesByPrincipalIds(principalIds);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EntityPrivacyPreferences getPrivacyPreferencesForPrincipalId(String principalId) {
+        PrincipalBo principal = dataObjectService.find(PrincipalBo.class, principalId);
+
+        if (principal != null) {
+            EntityPrivacyPreferencesBo privacyPrefs =
+                    dataObjectService.find(EntityPrivacyPreferencesBo.class, principal.getEntityId());
+
+            if (privacyPrefs != null) {
+                return EntityPrivacyPreferencesBo.to(privacyPrefs);
+            }
+
+            return EntityPrivacyPreferences.Builder.create(principal.getEntityId()).build();
+        }
+
+        return null;
+    }
+
+    @Override
     public EntityName addNameToEntity(EntityName name) throws RiceIllegalArgumentException, RiceIllegalStateException {
         incomingParamCheck(name, "name");
 
@@ -1765,5 +1792,13 @@ public class IdentityServiceImpl implements IdentityService {
 
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
+    }
+
+    public IdentityServiceDao getIdentityServiceDao() {
+        return identityServiceDao;
+    }
+
+    public void setIdentityServiceDao(IdentityServiceDao identityServiceDao) {
+        this.identityServiceDao = identityServiceDao;
     }
 }

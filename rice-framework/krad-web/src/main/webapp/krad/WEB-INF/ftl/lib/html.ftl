@@ -108,8 +108,8 @@
 </head>
 
 <body id="Uif-Application" style="display:none;">
+    <@krad.testBanner/>
     <#nested/>
-
     <#list view.theme.scriptFiles as javascriptFile>
         <#if javascriptFile?starts_with('http')>
             <script type="text/javascript" src="${javascriptFile}"></script>
@@ -146,5 +146,4 @@
 </body>
 
 </html>
-
 </#macro>

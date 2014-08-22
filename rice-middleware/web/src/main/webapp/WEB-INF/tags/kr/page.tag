@@ -136,6 +136,10 @@ jQuery(function(){
     </c:otherwise>
   </c:choose>
 </head>
+<%--KULRICE-12287:Added a new tag for displaying a banner in the testing environments which
+  * reminds users that it is a non-production environment
+  --%>
+<kul:testBanner />
 <c:choose>
 	<c:when test="${lookup}" >
 		<body onload="placeFocus();
@@ -146,9 +150,11 @@ jQuery(function(){
 		</c:if>
 		">
     <div id="Uif-Application">
-		<kul:backdoor />
-
-			<c:if
+    <%--KULRICE-12287:* Modified where the backdoor information is displayed on each page
+		  * so it will be included in the header bar instead of being
+		  * absolutely positioned
+		  --%>
+		<c:if
 				test="${! empty headerMenuBar and !_isInquiry and KualiForm.showMaintenanceLinks}">
 				<div class="lookupcreatenew">
 					${headerMenuBar}
@@ -179,7 +185,10 @@ jQuery(function(){
 		<body onload="if ( !restoreScrollPosition() ) { ${anchorScript} }"
 			onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">
     <div id="Uif-Application">
-			<kul:backdoor />
+			<%--KULRICE-12287:Modified where the backdoor information is displayed on each page
+		  * so it will be included in the header bar instead of being
+		  * absolutely positioned
+		  --%>
 			${headerMenuBar}
 	</c:otherwise>
 </c:choose>
@@ -214,6 +223,11 @@ jQuery(function(){
 			<c:if test="${!empty defaultMethodToCall}">
 				<kul:enterKey methodToCall="${defaultMethodToCall}" />
 			</c:if>
+    <%--KULRICE-12287: Modified where the backdoor information is displayed on each page
+		      * so it will be included in the header bar instead of being
+		      * absolutely positioned
+		      --%>
+    <kul:backdoor />
 	</c:otherwise>
 </c:choose>
 

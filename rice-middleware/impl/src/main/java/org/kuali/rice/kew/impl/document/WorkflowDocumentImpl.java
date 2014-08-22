@@ -1101,6 +1101,7 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         protected void setApplicationDocumentId(String applicationDocumentId) {
             builder.setApplicationDocumentId(applicationDocumentId);
             dirty = true;
+            addDirtyField("applicationDocumentId");
         }
 
         protected String getTitle() {
@@ -1110,6 +1111,8 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         protected void setTitle(String title) {
             builder.setTitle(title);
             dirty = true;
+            addDirtyField("title");
+
         }
 
         protected String getApplicationDocumentStatus() {
@@ -1119,11 +1122,13 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         protected void setApplicationDocumentStatus(String applicationDocumentStatus) {
             builder.setApplicationDocumentStatus(applicationDocumentStatus);
             dirty = true;
+            addDirtyField("applicationDocumentStatus");
         }
 
         protected void setVariable(String name, String value) {
             builder.setVariable(name, value);
             dirty = true;
+            addDirtyField("var[" + name + "]");
         }
 
         protected String getVariableValue(String name) {
@@ -1132,6 +1137,10 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
 
         boolean isDirty() {
             return dirty;
+        }
+
+        void addDirtyField(String field) {
+            builder.addDirtyField(field);
         }
 
     }

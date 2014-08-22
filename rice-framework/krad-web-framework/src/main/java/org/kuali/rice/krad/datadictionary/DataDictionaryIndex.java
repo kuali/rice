@@ -99,6 +99,11 @@ public class DataDictionaryIndex implements Runnable {
             objectEntries.put(entry.getDataObjectClass().getName(), entry);
             objectEntries.put(entry.getDataObjectClass().getSimpleName(), entry);
 
+            if (entry.getBaseDataObjectClass() != null) {
+                objectEntries.put(entry.getBaseDataObjectClass().getName(), entry);
+                objectEntries.put(entry.getBaseDataObjectClass().getSimpleName(), entry);
+            }
+
             // keep a separate map of BO entries for now
             if (entry instanceof BusinessObjectEntry) {
                 BusinessObjectEntry boEntry = (BusinessObjectEntry) entry;
@@ -107,9 +112,9 @@ public class DataDictionaryIndex implements Runnable {
                 businessObjectEntries.put(boEntry.getBusinessObjectClass().getSimpleName(), boEntry);
 
                 // If a "base" class is defined for the entry, index the entry by that class as well.
-                if (boEntry.getBaseBusinessObjectClass() != null) {
-                    businessObjectEntries.put(boEntry.getBaseBusinessObjectClass().getName(), boEntry);
-                    businessObjectEntries.put(boEntry.getBaseBusinessObjectClass().getSimpleName(), boEntry);
+                if (boEntry.getBaseDataObjectClass() != null) {
+                    businessObjectEntries.put(boEntry.getBaseDataObjectClass().getName(), boEntry);
+                    businessObjectEntries.put(boEntry.getBaseDataObjectClass().getSimpleName(), boEntry);
                 }
             }
 

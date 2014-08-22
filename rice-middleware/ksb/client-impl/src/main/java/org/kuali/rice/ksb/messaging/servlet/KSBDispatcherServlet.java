@@ -175,11 +175,19 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 	 */
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (isSecure(request)) {
-			super.service(new SignatureVerifyingRequestWrapper(request), new SignatureSigningResponseWrapper(response));
-		} else {
-			super.service(request, response);
-		}
+        /* KULRICE-12366:Added some logging of the total time spent making a service call
+	     */
+        long startTime = System.currentTimeMillis();
+        try {
+            if (isSecure(request)) {
+                super.service(new SignatureVerifyingRequestWrapper(request), new SignatureSigningResponseWrapper(response));
+            } else {
+                super.service(request, response);
+            }
+        }finally {
+            long endTime = System.currentTimeMillis();
+            LOG.info("Service call took " + (endTime - startTime) + "ms");
+        }
 	}
 
     @Override

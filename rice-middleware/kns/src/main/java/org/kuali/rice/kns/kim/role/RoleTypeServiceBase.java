@@ -20,6 +20,7 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.role.RoleMember;
 import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.framework.common.delegate.DelegationTypeService;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
@@ -270,5 +271,10 @@ public class RoleTypeServiceBase extends DataDictionaryTypeServiceBase implement
     @Override
     public boolean shouldValidateQualifiersForMemberType(MemberType memberType) {
         return false;
+    }
+
+    @Override
+    public void roleMemberRemoved(RoleMember member) {
+        // Default implementation does nothing when a member is removed from a role
     }
 }

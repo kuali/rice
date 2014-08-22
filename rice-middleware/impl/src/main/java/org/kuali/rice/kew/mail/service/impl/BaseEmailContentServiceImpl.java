@@ -90,4 +90,9 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     protected String getPreferencesUrl() {
         return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.WORKFLOW_URL_KEY) + "/" + "Preferences.do";
     }
+
+    //KULRICE-12359 - add route log to Action List Reminder email
+    protected String getRouteLogUrl() {
+        return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.WORKFLOW_URL_KEY) + "/" + "RouteLog.do?documentId=";
+    }
 }

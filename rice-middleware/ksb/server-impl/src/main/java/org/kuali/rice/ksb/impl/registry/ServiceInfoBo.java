@@ -200,14 +200,14 @@ public class ServiceInfoBo implements ServiceInfoContract, Serializable {
 		return ServiceEndpointStatus.fromCode(getStatusCode());
 	}
 
-	static ServiceInfo to(ServiceInfoBo bo) {
+	public static ServiceInfo to(ServiceInfoBo bo) {
 		if (bo == null) {
 			return null;
 		}
 		return ServiceInfo.Builder.create(bo).build();
 	}
 	
-	static ServiceInfoBo from(ServiceInfo im) {
+	public static ServiceInfoBo from(ServiceInfo im) {
 		if (im == null) {
 			return null;
 		}

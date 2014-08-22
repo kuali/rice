@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.routing.web;
 
+import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -66,6 +67,9 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
                 docHandler += "&";
             }
             docHandler += KewApiConstants.DOCUMENT_ID_PARAMETER + "=" + docHandlerForm.getDocId();
+            if (StringUtils.isNotBlank(routeHeader.getAppDocId())) {
+                docHandler += "&" + KewApiConstants.APP_DOC_ID_PARAMETER + "=" + URLEncoder.encode(routeHeader.getAppDocId(), "UTF-8");
+            }
         } else if (request.getParameter(KewApiConstants.DOCTYPE_PARAMETER) != null) {
             DocumentTypeService documentTypeService = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
             DocumentType documentType = documentTypeService.findByName(docHandlerForm.getDocTypeName());

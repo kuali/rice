@@ -941,4 +941,18 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
             throw new RiceIllegalArgumentException(name + " was blank");
         }
     }
+
+    /**
+     * Returns the list of group members who are currently active and futureActive .
+     * @param groupId
+     * @return
+     */
+    public List<GroupMember> getCurrentAndFutureMembers(String groupId){
+        List<GroupMemberBo> groupMembersBos = getActiveGroupMembers(groupId, null, null);
+        List<GroupMember> groupMembers = new ArrayList<GroupMember>();
+        for (GroupMemberBo groupBo : groupMembersBos) {
+            groupMembers.add(GroupMemberBo.to(groupBo));
+        }
+        return Collections.unmodifiableList(groupMembers);
+    }
 }

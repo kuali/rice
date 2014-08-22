@@ -33,10 +33,17 @@ import org.kuali.rice.coreservice.impl.component.ComponentBo;
 import org.kuali.rice.coreservice.impl.component.DerivedComponentBo;
 import org.kuali.rice.coreservice.impl.namespace.NamespaceBo;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.krad.data.jpa.DisableVersioning;
+import org.kuali.rice.krad.data.jpa.RemoveMapping;
+import org.kuali.rice.krad.data.jpa.RemoveMappings;
 
 @IdClass(ParameterId.class)
 @Entity
 @Table(name = "KRCR_PARM_T")
+@DisableVersioning
+@RemoveMappings({
+        @RemoveMapping(name = "versionNumber")
+})
 public class ParameterBo extends PersistableBusinessObjectBase implements ParameterEbo {
 
     private static final long serialVersionUID = 1L;

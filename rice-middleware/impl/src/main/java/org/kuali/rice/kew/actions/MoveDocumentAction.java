@@ -109,6 +109,11 @@ public class MoveDocumentAction extends ActionTakenEvent {
             throw new InvalidActionTakenException(errorMessage);
         }
 
+        //KULRICE-12283:Modified the logic so this action moves the document to enroute status before attempting to move it to another node if it is initialized or saved
+        if (getRouteHeader().isStateInitiated() || getRouteHeader().isStateSaved()) {
+            markDocumentEnroute(getRouteHeader());
+            getRouteHeader().setRoutedByUserWorkflowId(getPrincipal().getPrincipalId());
+        }
             RouteNodeInstance startNodeInstance = determineStartNode(activeNodes, movePoint);
 
             LOG.debug("Record the move action");
@@ -128,7 +133,8 @@ public class MoveDocumentAction extends ActionTakenEvent {
                         routeHeader.getDocumentId(), applicationId);
                 org.kuali.rice.kew.api.document.OrchestrationConfig orchestrationConfig =
                     org.kuali.rice.kew.api.document.OrchestrationConfig.create(actionTaken.getActionTakenId(), targetNodeNames);
-                DocumentProcessingOptions options = DocumentProcessingOptions.create(true, shouldIndex, false);
+                //KULRICE-12283: Modified this to pass along two new flags to indicate that acks and FYIs should be deactivated with the move
+                DocumentProcessingOptions options = DocumentProcessingOptions.create(true, shouldIndex, false, true, true);
                 orchestrationQueue.orchestrateDocument(routeHeader.getDocumentId(), getPrincipal().getPrincipalId(), orchestrationConfig, options);
             } else {
                 String targetNodeName = determineReturnNodeName(startNodeInstance, movePoint);
@@ -200,5 +206,12 @@ public class MoveDocumentAction extends ActionTakenEvent {
     private String displayMovePoint(MovePoint movePoint) {
         return "fromNode="+movePoint.getStartNodeName()+", stepsToMove="+movePoint.getStepsToMove();
     }
-
+    //KULRICE-12283: Copied a method from the BlanketApproveAction which moves a document to enroute status so we can perform a move on it
+    protected void markDocumentEnroute(DocumentRouteHeaderValue routeHeader) throws InvalidActionTakenException {
+        String oldStatus = routeHeader.getDocRouteStatus();
+        routeHeader.markDocumentEnroute();
+        String newStatus = routeHeader.getDocRouteStatus();
+        notifyStatusChange(newStatus, oldStatus);
+        KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
+    }
 }

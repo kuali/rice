@@ -63,6 +63,10 @@
 			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
 			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
 			<active>true</active>
+      <validApplicationStatuses>
+        <status>Cancelled</status>
+        <status>In Process</status>
+      </validApplicationStatuses>
 			<policies>
 				<policy>
 					<name>DEFAULT_APPROVE</name>

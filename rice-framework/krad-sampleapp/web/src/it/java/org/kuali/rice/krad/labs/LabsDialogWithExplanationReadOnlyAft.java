@@ -45,9 +45,17 @@ public class LabsDialogWithExplanationReadOnlyAft extends WebDriverLegacyITBase 
 
     protected void testDemoDialogWithExplanationReadOnly() throws InterruptedException {
     	waitAndClickByXpath("//button[@data-confirmdialogid='Lab-DialogEx']");
-    	waitForElementPresentByXpath("//div[@class='uif-dialogExplanation uif-hasError']/textarea");
-    	waitAndClickButtonByExactText("Cancel");
+    	waitAndTypeByXpath("//div[@data-parent='Lab-DialogEx']/textarea","");
+    	waitAndClickByXpath("//div[@data-parent='Lab-DialogEx']/button[contains(text(),'OK')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'Required')]");
+    	waitAndTypeByXpath("//div[@data-parent='Lab-DialogEx']/textarea","a");
+    	waitAndClickByXpath("//div[@data-parent='Lab-DialogEx']/button[contains(text(),'OK')]");
     	waitAndClickByXpath("//button[@data-confirmdialogid='Lab-DialogExReadOnly']");
+    	waitAndTypeByXpath("//div[@data-parent='Lab-DialogExReadOnly']/textarea","");
+    	waitAndClickByXpath("//div[@data-parent='Lab-DialogExReadOnly']/button[contains(text(),'OK')]");
+    	waitForElementPresentByXpath("//a[contains(text(),'Required')]");
+    	waitAndTypeByXpath("//div[@data-parent='Lab-DialogExReadOnly']/textarea","a");
+    	waitAndClickByXpath("//div[@data-parent='Lab-DialogExReadOnly']/button[contains(text(),'OK')]");
     	//Read Only Explanation is also having textarea. This functionality is not working properly.
     }
 

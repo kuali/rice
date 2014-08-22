@@ -15,6 +15,19 @@
  */
 package org.kuali.rice.krad.service.impl;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormatter;
@@ -26,6 +39,7 @@ import org.kuali.rice.core.api.criteria.GreaterThanOrEqualPredicate;
 import org.kuali.rice.core.api.criteria.GreaterThanPredicate;
 import org.kuali.rice.core.api.criteria.LessThanOrEqualPredicate;
 import org.kuali.rice.core.api.criteria.LessThanPredicate;
+import org.kuali.rice.core.api.criteria.LikeIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.LikePredicate;
 import org.kuali.rice.core.api.criteria.OrPredicate;
 import org.kuali.rice.core.api.criteria.Predicate;
@@ -45,16 +59,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 import org.springframework.format.datetime.joda.DateTimeFormatterFactory;
-
-import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests the functionality of the LookupCriteriaGeneratorImpl.
@@ -77,6 +81,12 @@ public class LookupCriteriaGeneratorImplTest {
     @Before
     public void setUp() throws Exception {
         when(dataDictionaryService.getDataDictionary()).thenReturn(dataDictionary);
+
+        // Make this property force upper-case so that the LIKE comparison generated from it will
+        // be converted to case sensitive.
+        when(dataDictionaryService.isAttributeDefined(TestClass.class, "prop2")).thenReturn(Boolean.TRUE);
+        when(dataDictionaryService.getAttributeForceUppercase(TestClass.class, "prop2")).thenReturn(Boolean.TRUE);
+
         when(dataObjectService.wrap(any(TestClass.class))).thenAnswer(new Answer<DataObjectWrapper<TestClass>>() {
             @Override
             public DataObjectWrapper<TestClass> answer(InvocationOnMock invocation) throws Throwable {
@@ -108,67 +118,70 @@ public class LookupCriteriaGeneratorImplTest {
         mapCriteria.put("prop3", "d");
 
         QueryByCriteria.Builder qbcBuilder = generator.generateCriteria(TestClass.class, mapCriteria, false);
-        assertNotNull(qbcBuilder);
+        assertNotNull("build should not have been null", qbcBuilder);
         QueryByCriteria qbc = qbcBuilder.build();
 
         // now walk the tree, it should come out as:
         // and(
         //   or(
-        //     like(prop1, "a"),
-        //     like(prop1, "b"),
+        //     likeIgnoreCase(prop1, "a"),
+        //     likeIgnoreCase(prop1, "b"),
         //   ),
         //   like(prop2, "c"),
-        //   like(prop3, "d")
+        //   likeIgnoreCase(prop3, "d")
         // )
 
         Predicate and = qbc.getPredicate();
-        assertTrue(and instanceof AndPredicate);
+        assertTrue("top level predicate type incorrect.  Was: " + and, and instanceof AndPredicate);
         Set<Predicate> predicates = ((AndPredicate) and).getPredicates();
 
-        assertEquals(3, predicates.size());
+        assertEquals("Wrong number of top-level predicates", 3, predicates.size());
 
         boolean foundProp1 = false;
         boolean foundProp2 = false;
         boolean foundProp3 = false;
         for (Predicate predicate : predicates) {
             if (predicate instanceof LikePredicate) {
-                LikePredicate like = (LikePredicate)predicate;
+            	LikePredicate like = (LikePredicate)predicate;
                 if (like.getPropertyPath().equals("prop2")) {
-                    assertEquals("c", like.getValue().getValue());
+                    assertEquals("prop2 had wrong value", "c", like.getValue().getValue());
                     foundProp2 = true;
-                } else if (like.getPropertyPath().equals("prop3")) {
-                    assertEquals("d", like.getValue().getValue());
+                } else {
+                    fail("Invalid like predicate encountered: " + predicate);
+                }
+            } else if (predicate instanceof LikeIgnoreCasePredicate) {
+            	LikeIgnoreCasePredicate like = (LikeIgnoreCasePredicate)predicate;
+                if (like.getPropertyPath().equals("prop3")) {
+                    assertEquals("prop3 had wrong value", "d", like.getValue().getValue());
                     foundProp3 = true;
                 } else {
-                    fail("Invalid like predicate encountered.");
+                    fail("Invalid likeIgnoreCase predicate encountered: " + predicate);
                 }
             } else if (predicate instanceof OrPredicate) {
                 foundProp1 = true;
                 // under the or predicate we should have 2 likes, one for each component of the OR
                 OrPredicate orPredicate = (OrPredicate)predicate;
-                assertEquals(2, orPredicate.getPredicates().size());
+                assertEquals("wrong number of predicates in the internal OR predicate",2, orPredicate.getPredicates().size());
                 for (Predicate orSubPredicate : orPredicate.getPredicates()) {
-                    if (orSubPredicate instanceof LikePredicate) {
-                        LikePredicate likeInternal = (LikePredicate)orSubPredicate;
+                    if (orSubPredicate instanceof LikeIgnoreCasePredicate) {
+                        LikeIgnoreCasePredicate likeInternal = (LikeIgnoreCasePredicate)orSubPredicate;
                         if (likeInternal.getPropertyPath().equals("prop1")) {
-                            assertTrue("a".equals(likeInternal.getValue().getValue()) ||
+                            assertTrue("prop1 had wrong value", "a".equals(likeInternal.getValue().getValue()) ||
                                     "b".equals(likeInternal.getValue().getValue()));
                         } else {
-                            fail("Invalid predicate, does not have a propertypath of prop1");
+                            fail("Invalid predicate, does not have a propertypath of prop1:" + predicate);
                         }
                     } else {
-                        fail("Invalid predicate: " + orSubPredicate);
+                        fail("Unexpected predicate: " + orSubPredicate);
                     }
                 }
             } else {
-                fail("Invalid predicate: " + predicate);
+                fail("Unexpected predicate: " + predicate);
             }
         }
-        assertTrue(foundProp1);
-        assertTrue(foundProp2);
-        assertTrue(foundProp3);
-
-
+        assertTrue("prop1 predicate missing", foundProp1);
+        assertTrue("prop2 predicate missing", foundProp2);
+        assertTrue("prop3 predicate missing", foundProp3);
     }
 
     /**

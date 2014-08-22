@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.kuali.rice.core.api.CoreConstants;
-import org.w3c.dom.Element;
+import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -26,14 +25,19 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Collection;
+
+import org.kuali.rice.core.api.CoreConstants;
+import org.w3c.dom.Element;
 
 /**
  * An immutable predicate which represents a "like ignore case" statement which is
- * evaluated the {@link org.kuali.rice.core.api.criteria.CriteriaValue} of this predicate.
+ * evaluated the {@link CriteriaValue} of this predicate.  The criteria
+ * value for a like predicate should support wildcards using "*" for multiple
+ * values and "?" for a single value.
+ *
+ * @see org.kuali.rice.core.api.criteria.PredicateFactory for a convenient way to construct this class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * @see org.kuali.rice.core.api.criteria.PredicateFactory for a convenient way to construct this class.
  */
 @XmlRootElement(name = LikeIgnoreCasePredicate.Constants.ROOT_ELEMENT_NAME)
 @XmlAccessorType(XmlAccessType.NONE)
@@ -43,13 +47,15 @@ import java.util.Collection;
 })
 public class LikeIgnoreCasePredicate extends AbstractPredicate implements SingleValuedPredicate {
 
+    private static final long serialVersionUID = -5261694066743858594L;
+
     @XmlAttribute(name = CriteriaSupportUtils.PropertyConstants.PROPERTY_PATH)
     private final String propertyPath;
 
     @XmlElements(value = {
             @XmlElement(name = CriteriaStringValue.Constants.ROOT_ELEMENT_NAME, type = CriteriaStringValue.class,
                     required = true)})
-    private final CriteriaStringValue value;
+    private final CriteriaValue<?> value;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -69,10 +75,13 @@ public class LikeIgnoreCasePredicate extends AbstractPredicate implements Single
      *
      * @param propertyPath the property path for the predicate, must not be null or blank
      * @param value the value to evaluation the path against, must not be null.
+     *
      * @throws IllegalArgumentException if the propertyPath is null or blank
      * @throws IllegalArgumentException if the value is null
+     * @throws IllegalArgumentException if this predicate does not support the given type of {@link CriteriaValue}
      */
-    LikeIgnoreCasePredicate(String propertyPath, CriteriaStringValue value) {
+    LikeIgnoreCasePredicate(String propertyPath, CriteriaValue<?> value) {
+        CriteriaSupportUtils.validateValuedConstruction(getClass(), propertyPath, value);
         this.propertyPath = propertyPath;
         this.value = value;
     }
@@ -83,7 +92,7 @@ public class LikeIgnoreCasePredicate extends AbstractPredicate implements Single
     }
 
     @Override
-    public CriteriaStringValue getValue() {
+    public CriteriaValue<?> getValue() {
         return value;
     }
 

@@ -18,7 +18,10 @@ package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -43,30 +46,27 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     }
 
     protected void testClientResponsivenessAjaxFieldQuery() throws Exception {
-        String testWindow = driver.getWindowHandle();
         waitAndClickByLinkText("Ajax Field Query");
         waitForElementPresentByXpath("//input[@name='inputField3' and @value='a1']");
         clearTypeAndTabByName("inputField3", "a1");
-        checkIfFocusSussessful("inputField3", "a1", "Travel Account 1", testWindow);
+        checkIfFocusSuccessful("inputField3", "a1", "Travel Account 1");
         assertTextPresent(new String[] {"Travel Account 1", "fred"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethod() throws Exception {
-        String testWindow = driver.getWindowHandle();
         waitAndClickByLinkText("Ajax Field Query Custom Method");
         waitForElementPresentByXpath("//input[@name='inputField6' and @value='a2']");
         clearTypeAndTabByName("inputField6", "a2");
-        checkIfFocusSussessful("inputField6", "a2", "Travel Account 2", testWindow);
+        checkIfFocusSuccessful("inputField6", "a2", "Travel Account 2");
         assertTextPresent(new String[] {"Travel Account 2", "fran"});
     }
     
     protected void testClientResponsivenessAjaxFieldQueryCustomMethodAndService() throws Exception {
-        String testWindow = driver.getWindowHandle();
         waitAndClickByLinkText("Ajax Field Query Custom Method and Service");
     	waitForElementPresentByXpath("//input[@name='inputField9' and @value='a3']");
         clearTypeAndTabByName("inputField9", "a3");
-        checkIfFocusSussessful("inputField9", "a3", "Travel Account 3", testWindow);
-        assertTextPresent(new String[]{"Travel Account 3", "frank"});
+        checkIfFocusSuccessful("inputField9", "a3", "Travel Account 3");
+        assertTextPresent(new String[] {"Travel Account 3", "frank"});
     }
 
     /**
@@ -79,10 +79,10 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
      */
     private void clearTypeAndTabByName(String fieldName, String fieldValue) throws InterruptedException {
         clearTextByName(fieldName);
-        waitAndTypeByName(fieldName, fieldValue);
+        WebElement element = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.name(
+                fieldName), this.getClass().toString());
+        element.sendKeys("", fieldValue, Keys.TAB);
         assertTextPresent(fieldValue);
-        jGrowl("Press Tab key");
-        driver.switchTo().activeElement().sendKeys(Keys.TAB); // update to call typeTab() in 2.5
     }
 
     /**
@@ -92,19 +92,18 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
      * @param fieldName name of the field that needs to be focused on.
      * @param fieldValue value to be placed in field
      * @param expectedMessage message that should be present on the screen after tabbing out of the field
-     * @param testWindow
      *
      * @throws InterruptedException
      */
-    private void checkIfFocusSussessful(String fieldName, String fieldValue, String expectedMessage,
-            String testWindow) throws InterruptedException {
+    private void checkIfFocusSuccessful(String fieldName, String fieldValue, String expectedMessage)
+            throws InterruptedException {
         for (int i = 0; i < 5; i++) {
             Thread.sleep(3000);
             if (isTextPresent(expectedMessage)) {
                 break;
             } else {
                 jGrowl("Focus failed - Focusing back on the test window before trying to enter text again.");
-                driver.switchTo().window(testWindow);
+                driver.switchTo().window(driver.getWindowHandle());
                 clearTypeAndTabByName(fieldName, fieldValue);
             }
         }

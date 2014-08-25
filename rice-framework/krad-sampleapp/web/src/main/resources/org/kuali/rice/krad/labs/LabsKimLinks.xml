@@ -1,0 +1,571 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-KimLinks" parent="Uif-FormView">
+    <property name="headerText" value="KimLinks Demo"/>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <ref bean="Lab-UserLinkField-Section"/>
+            <ref bean="Lab-GroupLinkField-Section"/>
+            <ref bean="Lab-RoleLinkField-Section"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.labs.KradLabsForm"/>
+  </bean>
+
+  <bean id="Lab-UserLinkField-Section" parent="Uif-VerticalBoxSection" p:headerText="UserLinkField"
+        p:instructionalText="KimLink Instruction">
+    <property name="items">
+      <list>
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Section 1 PersonLinks">
+          <property name="items">
+            <list>
+              <!-- Show Inquiry built from principalId -->
+              <bean parent="Uif-HeaderFour" p:headerText="1 - Show Inquiry built fro principalId"/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="UserLinkField.principalId=dev1"
+                    p:principalId="dev1"/>
+
+              <!-- Show Inquiry built from principalName -->
+              <bean parent="Uif-HeaderFour" p:headerText="2 - Show Inquiry built fro principalName"/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="UserLinkField.principalName=dev2"
+                    p:principalName="dev2"/>
+
+              <!-- Show that principalId takes precedence over principalName And Disabled Link  -->
+              <bean parent="Uif-HeaderFour" p:headerText="3 - Show that principalId takes precedence over principalName And Disabled Link"/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="UserLinkField.principalId=eric by priority   disableLink=true"
+                    p:principalId="eric"
+                    p:principalName="dev2"
+                    p:linkDialogId="Demo-UserLinkField-CustomDialog"
+                    p:disableLink="true"/>
+
+              <!-- Show Normal Navigation (Suppress Lightbox  -->
+              <bean parent="Uif-HeaderFour" p:headerText="4 - Show Normal Navigation (Suppress Lightbox"/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="UserLinkField.principalId=fred"
+                    p:principalId="fred"
+                    p:openInDialog="false">
+                    <property name="additionalInquiryParameters">
+                      <map>
+                        <entry key="renderedInDialog" value="false"/>
+                      </map>
+                    </property>
+              </bean>
+
+              <!-- Show LinkText = search Key for records not found in Kim-->
+              <bean parent="Uif-HeaderFour" p:headerText="5 - Show LinkText = search Key for records not found in Kim"/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="UserLinkField.principalId=junk ( Id not in Kim tables )"
+                    p:principalId="junk"
+                    p:openInDialog="true"
+                    p:linkDialogId="Demo-UserLinkField-CustomDialog"/>
+
+              <!-- LinkText defaults to Label  -->
+              <bean parent="Uif-HeaderFour" p:headerText="6 - UserLinkField.principalId=blank (LinkText defaults to Label)"/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="Principal Id"
+                    p:principalId=""
+                    p:linkDialogId="Demo-UserLinkField-CustomDialog"/>
+
+              <!-- Show UserLinkField as an Addon to a InputField -->
+              <bean parent="Uif-HeaderFour" p:headerText="7 - Show UserLinkField as an Addon to a InputField"/>
+              <bean parent="Uif-InputField" p:label="UserLinkField Addon" p:propertyName="testPrincipalId1">
+                <property name="postInputCssClasses" value="input-group-addon"/>
+                <property name="postInputAddons">
+                  <list>
+                    <bean parent="Uif-UserLinkField"
+                          p:refreshWhenChangedPropertyNames="testPrincipalId1"
+                          p:principalId="@{testPrincipalId1}"
+                          p:linkDialogId="Demo-UserLinkField-CustomDialog"/>
+                  </list>
+                </property>
+              </bean>
+
+              <!-- Show that UserLink LinkText and Href can update as InputField Changes -->
+              <bean parent="Uif-HeaderFour" p:headerText="8 - Show that UserLink LinkText and Href can update as InputField Changes"/>
+              <bean parent="Uif-HorizontalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="UserLinkField Addon" p:propertyName="testPrincipalId2">
+                      <property name="quickfinder">
+                        <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
+                              p:fieldConversions="principalId:testPrincipalId2"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-UserLinkField"
+                          p:label="UserLinkField"
+                          p:refreshWhenChangedPropertyNames="testPrincipalId2"
+                          p:principalId="@{testPrincipalId2}"
+                          p:linkDialogId="Demo-UserLinkField-CustomDialog"/>
+                  </list>
+                </property>
+              </bean>
+
+              <!-- Show Label set to Inquiry Key and LinkText to User Name-->
+              <bean parent="Uif-HeaderFour" p:headerText="9 - Show Label set to Inquiry Key and LinkText to User Name"/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="@{testPrincipalId3}"
+                    p:labelLeft="true"
+                    p:principalId="@{testPrincipalId3}"
+                    p:linkDialogId="Demo-UserLinkField-CustomDialog"/>
+
+              <!-- Show Link as Icon -->
+              <bean parent="Uif-HeaderFour" p:headerText="10 - Show Link as Icon "/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="UserLinkField.principalId=dev1"
+                    p:principalId="dev1">
+                <property name="link">
+                  <bean parent="Uif-Link"
+                        p:openInDialog="true"
+                        p:linkIconPlacement="ICON_ONLY"
+                        p:iconClass="icon-user3"/>
+                </property>
+              </bean>
+
+              <!-- Show that the Link Icon can be Disabled -->
+              <bean parent="Uif-HeaderFour" p:headerText="11 - Show that the Link Icon can be Disabled"/>
+              <bean parent="Uif-UserLinkField"
+                    p:label="UserLinkField.principalId=dev1"
+                    p:principalId="dev1"
+                    p:disableLink="true">
+                <property name="link">
+                  <bean parent="Uif-Link"
+                        p:openInDialog="true"
+                        p:linkIconPlacement="ICON_ONLY"
+                        p:iconClass="icon-user3"/>
+                </property>
+              </bean>
+
+              <!-- Show the Link Icon as an Addon to an InputField -->
+              <bean parent="Uif-HeaderFour" p:headerText="12 - Show the Link Icon as an Addon to an InputField "/>
+              <bean parent="Uif-InputField" p:label="UserLinkField Addon"
+                              p:propertyName="testPrincipalId4">
+                <property name="postInputCssClasses" value="input-group-addon"/>
+                <property name="postInputAddons">
+                  <list>
+                    <bean parent="Uif-UserLinkField"
+                          p:refreshWhenChangedPropertyNames="testPrincipalId4"
+                          p:principalId="@{testPrincipalId4}"
+                          p:linkDialogId="Demo-UserLinkField-CustomDialog">
+                        <property name="link">
+                          <bean parent="Uif-Link"
+                                p:openInDialog="true"
+                                p:linkIconPlacement="ICON_ONLY"
+                                p:iconClass="icon-user3"/>
+                        </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
+            <!--End of VerticalBoxSection -->
+            </list>
+          </property>
+        </bean>
+
+      <!--End of beans for  Lab-UserLinkField-Section -->
+      </list>
+    </property>
+  </bean>
+
+
+  <!-- **************************************************************************************
+             GroupLinkField Demos
+   *************************************************************************************** -->
+  <bean id="Lab-GroupLinkField-Section" parent="Uif-VerticalBoxSection" p:headerText="GroupLinkField"
+        p:instructionalText="KimLink Instruction">
+    <property name="items">
+      <list>
+
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Section 2 GroupLinks">
+          <property name="items">
+            <list>
+              <!-- Show Inquiry built from groupId -->
+              <bean parent="Uif-HeaderFour" p:headerText="1 - Show Inquiry built from groupId"/>
+              <bean parent="Uif-GroupLinkField"
+                    p:label="groupId=2005"
+                    p:groupId="2005"/>
+
+              <!-- Show inquiry built from Group namespaceCode and name -->
+              <bean parent="Uif-HeaderFour" p:headerText="2 Show inquiry built from Group namespaceCode and name"/>
+              <bean parent="Uif-GroupLinkField"
+                    p:label="Group Name "
+                    p:groupNamespaceCode="KR-WKFLW"
+                    p:groupName="WorkflowAdmin"/>
+
+              <!-- Show NAMESPACE suppressed in LinkText -->
+              <bean parent="Uif-HeaderFour" p:headerText="3 - Show NAMESPACE suppressed in LinkText"/>
+              <bean parent="Uif-GroupLinkField"
+                    p:label="Group Name"
+                    p:namespaceInLinkText="false"
+                    p:groupNamespaceCode="KR-WKFLW"
+                    p:groupName="WorkflowAdmin"/>
+
+              <!-- Show Normal Navigation (Suppress Lightbox -->
+              <bean parent="Uif-HeaderFour" p:headerText="4 - Show Normal Navigation (Suppress Lightbox) "/>
+              <bean parent="Uif-GroupLinkField"
+                    p:label="Group Name"
+                    p:openInDialog="false"
+                    p:groupId="2005">
+                    <property name="additionalInquiryParameters">
+                      <map>
+                        <entry key="renderedInDialog" value="false"/>
+                      </map>
+                    </property>
+                    </bean>
+
+              <!-- Show Disabled Link -->
+              <bean parent="Uif-HeaderFour" p:headerText="5 - Show Disabled Link"/>
+              <bean parent="Uif-GroupLinkField"
+                    p:label="Group Name"
+                    p:groupNamespaceCode="KR-WKFLW"
+                    p:groupName="WorkflowAdmin"
+                    p:disableLink="true"
+                    p:linkDialogId="Demo-GroupLinkField-CustomDialog"/>
+
+              <!-- Show LinkText = search Key for records not found in Kim -->
+              <bean parent="Uif-HeaderFour" p:headerText="6 - Show LinkText = search Key for records not found in Kim"/>
+              <bean parent="Uif-GroupLinkField"
+                    p:label="groupId=junk"
+                    p:groupId="junk"
+                    p:linkDialogId="Demo-GroupLinkField-CustomDialog"/>
+
+              <!-- Show Link when NAMESPACECODE missing or blank -->
+              <bean parent="Uif-HeaderFour" p:headerText="7 - Show Link when NAMESPACECODE missing or blank"/>
+              <bean parent="Uif-GroupLinkField"
+                    p:label="Group Name"
+                    p:groupName="WorkflowAdmin"
+                    p:linkDialogId="Demo-GroupLinkField-CustomDialog"/>
+
+              <!-- Show Link when no default Label and all Keys blank -->
+              <bean parent="Uif-HeaderFour" p:headerText="8 - Show Link when no default Label and all Keys blank"/>
+              <bean parent="Uif-GroupLinkField"
+                    p:groupId=""
+                    p:groupNamespaceCode=""
+                    p:groupName=""/>
+
+              <!-- Show Label(Left) set to Inquiry Key and LinkText to Group Name-->
+              <bean parent="Uif-HeaderFour" p:headerText="9 - Show Label(Left) set to Inquiry Key and LinkText to Group Name"/>
+              <bean parent="Uif-GroupLinkField"
+                    p:label="@{testGroupId2}"
+                    p:labelLeft="true"
+                    p:groupId="@{testGroupId2}"
+                    p:linkDialogId="Demo-GroupLinkField-CustomDialog"/>
+
+              <!-- Show that Link as InputField Addon -->
+              <bean parent="Uif-HeaderFour" p:headerText="10 - Show that Link as InputField Addon"/>
+              <bean parent="Uif-InputField" p:label="groupId" p:propertyName="testGroupId1">
+                <property name="postInputCssClasses" value="input-group-addon"/>
+                <property name="postInputAddons">
+                  <list>
+                    <bean parent="Uif-GroupLinkField"
+                          p:refreshWhenChangedPropertyNames="testGroupId1"
+                          p:groupId="@{testGroupId1}"
+                          p:linkDialogId="Demo-GroupLinkField-CustomDialog"/>
+                  </list>
+                </property>
+              </bean>
+
+              <!-- Show Link update based on multiple fields (groupNamespaceCode and groupName) -->
+              <bean parent="Uif-HeaderFour" p:headerText="11 - Show Link update based on multiple fields (groupNamespaceCode and groupName)"/>
+              <bean parent="Uif-HorizontalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="NamespaceCode" p:propertyName="testGroupNamespaceCode1"/>
+                    <bean parent="Uif-InputField" p:label="GroupName" p:propertyName="testGroupName1">
+                      <property name="postInputCssClasses" value="input-group-addon"/>
+                      <property name="postInputAddons">
+                        <list>
+                          <bean parent="Uif-GroupLinkField"
+                                p:refreshWhenChangedPropertyNames="testGroupNamespaceCode1,testGroupName1"
+                                p:groupNamespaceCode="@{testGroupNamespaceCode1}"
+                                p:groupName="@{testGroupName1}"
+                                p:linkDialogId="Demo-GroupLinkField-CustomDialog"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
+              <!-- Show Link based on DataFields (groupNamespaceCode and groupName) -->
+              <bean parent="Uif-HeaderFour" p:headerText="12 - Show Link based on DataFields (groupNamespaceCode and groupName)"/>
+              <bean parent="Uif-HorizontalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-DataField" p:label="NamespaceCode" p:propertyName="testGroupNamespaceCode2"/>
+                    <bean parent="Uif-DataField" p:label="GroupName" p:propertyName="testGroupName2"/>
+                    <bean parent="Uif-GroupLinkField"
+                          p:label="Group Link"
+                          p:groupNamespaceCode="@{testGroupNamespaceCode2}"
+                          p:groupName="@{testGroupName2}"
+                          p:linkDialogId="Demo-GroupLinkField-CustomDialog"/>
+                  </list>
+                </property>
+              </bean>
+
+              <!-- Show that GroupLinkField LinkText and Href can update as InputField Changes -->
+              <bean parent="Uif-HeaderFour" p:headerText="13 - Show that LinkText and Href can update as InputField Changes"/>
+              <bean parent="Uif-HorizontalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="NamespaceCode" p:propertyName="testGroupNamespaceCode3"/>
+                    <bean parent="Uif-InputField" p:label="GroupName" p:propertyName="testGroupName3">
+                      <property name="quickfinder">
+                        <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.group.GroupBo"
+                              p:fieldConversions="namespaceCode:testGroupNamespaceCode3,name:testGroupName3"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-GroupLinkField"
+                          p:refreshWhenChangedPropertyNames="testGroupNamespaceCode3,testGroupName3"
+                          p:label="GroupLinkField"
+                          p:groupNamespaceCode="@{testGroupNamespaceCode3}"
+                          p:groupName="@{testGroupName3}"
+                          p:linkDialogId="Demo-GroupLinkField-CustomDialog"/>
+                  </list>
+                </property>
+              </bean>
+
+            <!--End of VerticalBoxSection -->
+            </list>
+          </property>
+        </bean>
+
+      <!--End of beans for  Lab-UserLinkField-Section -->
+      </list>
+    </property>
+  </bean>
+
+  <!-- **************************************************************************************
+             RoleLinkField Demos
+   *************************************************************************************** -->
+  <bean id="Lab-RoleLinkField-Section" parent="Uif-VerticalBoxSection" p:headerText="RoleLinkField"
+        p:instructionalText="KimLink Instruction">
+    <property name="items">
+      <list>
+        <bean parent="Uif-VerticalBoxSection" p:headerText="Section 3 RoleLinks">
+          <property name="items">
+            <list>
+              <!-- Show Inquiry built from roleId -->
+              <bean parent="Uif-HeaderFour" p:headerText="1 - Show Inquiry built from roleId "/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="roleId=67"
+                    p:roleId="67"/>
+
+              <!-- Show inquiry built from Role namespaceCode and name -->
+              <bean parent="Uif-HeaderFour" p:headerText="2 - Show inquiry built from Role namespaceCode and name"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="Role Name"
+                    p:roleNamespaceCode="KR-WKFLW"
+                    p:roleName="Router"/>
+
+              <!-- Show NAMESPACE suppressed in LinkText -->
+              <bean parent="Uif-HeaderFour" p:headerText="3 - Show NAMESPACE suppressed in LinkText"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="Role Name"
+                    p:namespaceInLinkText="false"
+                    p:roleNamespaceCode="KR-WKFLW"
+                    p:roleName="Router"/>
+
+              <!-- Show Normal Navigation (Suppress Lightbox -->
+              <bean parent="Uif-HeaderFour" p:headerText="4 - Show Normal Navigation (Suppress Lightbox) "/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="Role Name"
+                    p:openInDialog="false"
+                    p:roleId="67">
+                    <property name="additionalInquiryParameters">
+                      <map>
+                        <entry key="renderedInDialog" value="false"/>
+                      </map>
+                    </property>
+              </bean>
+
+              <!-- Show Disabled Link -->
+              <bean parent="Uif-HeaderFour" p:headerText="5 - Show Disabled Link"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="Role Name"
+                    p:roleNamespaceCode="KR-WKFLW"
+                    p:roleName="Router"
+                    p:disableLink="true"
+                    p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+
+              <!-- Show LinkText = search Key for records not found in Kim -->
+              <bean parent="Uif-HeaderFour" p:headerText="6 - Show LinkText = search Key for records not found in Kim"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="roleId=junk"
+                    p:roleId="junk"
+                    p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+
+              <!-- Show Link when NAMESPACECODE missing or blank -->
+              <bean parent="Uif-HeaderFour" p:headerText="7 - Show Link when NAMESPACECODE missing or blank"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="Role Name"
+                    p:roleName="Router"
+                    p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+
+              <!-- Show Link when ROLENAME missing or blank -->
+              <bean parent="Uif-HeaderFour" p:headerText="8 - Show Link when ROLENAME missing or blank"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="RoleLinkField.roleName= (KR-WKFLW) blank   (No RoleId or RoleName)"
+                    p:roleNamespaceCode="KR-WKFLW"
+                    p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+
+              <!-- Show Link with default LinkText and all Keys blank -->
+              <bean parent="Uif-HeaderFour" p:headerText="9 - Show Link with default LinkText and all Keys blank"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="Role Name"
+                    p:linkText="NO ROLE"
+                    p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+
+              <!-- Show Link when no default Label or LinkText and all Keys blank -->
+              <bean parent="Uif-HeaderFour" p:headerText="10 - Show Link when no default Label or LinkText and all Keys blank"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:roleId=""
+                    p:roleNamespaceCode=""
+                    p:roleName=""/>
+
+              <!-- Show Label(Left) set to Inquiry Key and LinkText to Role Name-->
+              <bean parent="Uif-HeaderFour" p:headerText="11 - Show Label(Left) set to Inquiry Key and LinkText to Role Name"/>
+              <bean parent="Uif-RoleLinkField"
+                    p:label="@{testRoleId2}"
+                    p:labelLeft="true"
+                    p:roleId="@{testRoleId2}"
+                    p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+
+              <!-- Show that Link as InputField Addon -->
+              <bean parent="Uif-HeaderFour" p:headerText="12 - Show that Link as InputField Addon"/>
+              <bean parent="Uif-HorizontalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="Role Id" p:propertyName="testRoleId1">
+                      <property name="postInputCssClasses" value="input-group-addon"/>
+                      <property name="postInputAddons">
+                        <list>
+                          <bean parent="Uif-RoleLinkField"
+                                p:refreshWhenChangedPropertyNames="testRoleId1"
+                                p:roleId="@{testRoleId1}"
+                                p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
+              <!-- Show Link update based on multiple fields (roleNamespaceCode and roleName) -->
+              <bean parent="Uif-HeaderFour" p:headerText="13 - Show Link update based on multiple fields (roleNamespaceCode and roleName)"/>
+              <bean parent="Uif-HorizontalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="NamespaceCode" p:propertyName="testRoleNamespaceCode1"/>
+                    <bean parent="Uif-InputField" p:label="RoleName" p:propertyName="testRoleName1">
+                      <property name="postInputCssClasses" value="input-group-addon"/>
+                      <property name="postInputAddons">
+                        <list>
+                          <bean parent="Uif-RoleLinkField"
+                                p:refreshWhenChangedPropertyNames="testRoleNamespaceCode1,testRoleName1"
+                                p:roleNamespaceCode="@{testRoleNamespaceCode1}"
+                                p:roleName="@{testRoleName1}"
+                                p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+
+              <!-- Show Link based on DataFields (roleNamespaceCode and roleName) -->
+              <bean parent="Uif-HeaderFour" p:headerText="14 - Show Link based on DataFields (roleNamespaceCode and roleName)"/>
+              <bean parent="Uif-HorizontalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-DataField" p:label="NamespaceCode" p:propertyName="testRoleNamespaceCode2" p:readOnly="true"/>
+                    <bean parent="Uif-DataField" p:label="RoleName" p:propertyName="testRoleName2" p:readOnly="true"/>
+                    <bean parent="Uif-RoleLinkField"
+                          p:label="RoleLinkField"
+                          p:roleNamespaceCode="@{testRoleNamespaceCode2}"
+                          p:roleName="@{testRoleName2}"
+                          p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+                  </list>
+                </property>
+              </bean>
+
+              <!-- Show that RoleLinkField LinkText and Href can update as InputField Changes -->
+              <bean parent="Uif-HeaderFour" p:headerText="15 - Show that RoleLinkField LinkText and Href can update as InputField Changes"/>
+              <bean parent="Uif-HorizontalBoxGroup">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:label="NamespaceCode" p:propertyName="testRoleNamespaceCode3"/>
+                    <bean parent="Uif-InputField" p:label="RoleName" p:propertyName="testRoleName3">
+                      <property name="quickfinder">
+                        <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.role.RoleBo"
+                              p:fieldConversions="namespaceCode:testRoleNamespaceCode3,name:testRoleName3"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-RoleLinkField"
+                          p:label="Role Link"
+                          p:roleNamespaceCode="@{testRoleNamespaceCode3}"
+                          p:roleName="@{testRoleName3}"
+                          p:linkDialogId="Demo-RoleLinkField-CustomDialog"/>
+                  </list>
+                </property>
+              </bean>
+
+            <!--End of VerticalBoxSection -->
+            </list>
+          </property>
+        </bean>
+
+        <!--End of beans for  Lab-RoleLinkField-Section -->
+      </list>
+    </property>
+  </bean>
+
+  <!-- **************************************************************************************
+             RoleLinkField Demos
+   *************************************************************************************** -->
+
+  <!-- Customized iframe dialog with a header and footer change -->
+  <bean id="Demo-UserLinkField-CustomDialog" parent="Uif-DialogGroup-Iframe">
+    <property name="headerText" value="UserLinkField"/>
+    <property name="footer.render" value="false"/>
+  </bean>
+
+  <!-- Customized iframe dialog with a header and footer change -->
+  <bean id="Demo-GroupLinkField-CustomDialog" parent="Uif-DialogGroup-Iframe">
+    <property name="headerText" value="GroupLinkField"/>
+    <property name="footer.render" value="false"/>
+  </bean>
+
+  <!-- Customized iframe dialog with a header and footer change -->
+  <bean id="Demo-RoleLinkField-CustomDialog" parent="Uif-DialogGroup-Iframe">
+    <property name="headerText" value="RoleLinkField"/>
+    <property name="footer.render" value="false"/>
+  </bean>
+
+</beans>

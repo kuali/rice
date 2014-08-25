@@ -1,0 +1,202 @@
+<!--
+  ~ Copyright 2005-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- GroupLinkField demo -->
+  <bean id="Demo-GroupLinkFieldView" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoGroupLinkField.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.GroupLinkField"/>
+    <property name="docBookAnchor" value="linkAndLinkField"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-GroupLinkField-Example1"/>
+        <ref bean="Demo-GroupLinkField-Example2"/>
+        <ref bean="Demo-GroupLinkField-Example3"/>
+        <ref bean="Demo-GroupLinkField-Example4"/>
+        <ref bean="Demo-GroupLinkField-Example5"/>
+        <ref bean="Demo-GroupLinkField-Example6"/>
+        <ref bean="Demo-GroupLinkField-Example7"/>
+        <ref bean="Demo-GroupLinkField-Example8"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Default -->
+  <bean id="Demo-GroupLinkField-Example1"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-GroupLinkField-Example1 start-->
+        <!-- Inquiry by groupId -->
+        <bean parent="Uif-GroupLinkField" p:groupId="@{testGroupId1}"/>
+        <!-- Inquiry by groupNamespaceCode and groupName-->
+        <bean parent="Uif-GroupLinkField" p:groupNamespaceCode="@{testGroupNamespaceCode2}" p:groupName="@{testGroupName2}"/>
+        <!-- ex:Demo-GroupLinkField-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- GroupLinkField with Label -->
+  <bean id="Demo-GroupLinkField-Example2"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-GroupLinkField-Example2 start-->
+        <!-- Inquiry by groupId -->
+        <bean parent="Uif-GroupLinkField" p:groupId="@{testGroupId1}" p:label="Group Link1"/>
+        <!-- Inquiry by groupNamespaceCode and groupName-->
+        <bean parent="Uif-GroupLinkField" p:groupNamespaceCode="@{testGroupNamespaceCode2}"
+              p:groupName="@{testGroupName2}" p:label="Group Link2"/>
+        <!-- ex:Demo-GroupLinkField-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- GroupLinkField with Link Disabled -->
+  <bean id="Demo-GroupLinkField-Example3"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-GroupLinkField-Example3 start-->
+        <!-- Inquiry by groupId -->
+        <bean parent="Uif-GroupLinkField" p:groupId="@{testGroupId1}" p:label="Group Link1" p:disableLink="true"/>
+        <!-- Inquiry by groupNamespaceCode and groupName-->
+        <bean parent="Uif-GroupLinkField" p:groupNamespaceCode="@{testGroupNamespaceCode2}"
+              p:groupName="@{testGroupName2}" p:disableLink="true" p:label="Group Link2"/>
+        <!-- ex:Demo-GroupLinkField-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Inquiry without Lightbox -->
+  <bean id="Demo-GroupLinkField-Example4"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-GroupLinkField-Example4 start-->
+        <!-- Inquiry by groupId -->
+        <bean parent="Uif-GroupLinkField" p:groupId="@{testGroupId1}" p:label="Group Link" p:openInDialog="false">
+          <property name="additionalInquiryParameters">
+            <map>
+              <entry key="renderedInDialog" value="false"/>
+            </map>
+          </property>
+        </bean>
+        <!-- ex:Demo-GroupLinkField-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- User Link refreshed by Field changes-->
+  <bean id="Demo-GroupLinkField-Example5"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="testGroupNamespaceCode3" p:label="NamespaceCode"/>
+        <bean parent="Uif-InputField" p:propertyName="testGroupName3" p:label="GroupName">
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.group.GroupBo"
+                  p:fieldConversions="namespaceCode:testGroupNamespaceCode3,name:testGroupName3"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-GroupLinkField-Example5 start-->
+        <!-- Inquiry by groupNamespaceCode and groupName-->
+        <bean parent="Uif-GroupLinkField" p:groupNamespaceCode="@{testGroupNamespaceCode3}"
+              p:groupName="@{testGroupName3}" p:label="Group Link"
+              p:refreshWhenChangedPropertyNames="testGroupNamespaceCode3,testGroupName3"/>
+        <!-- ex:Demo-GroupLinkField-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- User Link as Input Field Addon -->
+  <bean id="Demo-GroupLinkField-Example6"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-GroupLinkField-Example6 start-->
+        <bean parent="Uif-InputField" p:propertyName="testGroupNamespaceCode4" p:label="NamespaceCode"/>
+        <bean parent="Uif-InputField" p:propertyName="testGroupName4" p:label="GroupName">
+          <property name="postInputCssClasses" value="input-group-addon"/>
+          <property name="postInputAddons">
+            <list>
+              <!-- Inquiry by groupNamespaceCode and groupName-->
+              <bean parent="Uif-GroupLinkField"
+                    p:refreshWhenChangedPropertyNames="testGroupNamespaceCode4,testGroupName4"
+                    p:groupNamespaceCode="@{testGroupNamespaceCode4}" p:groupName="@{testGroupName4}"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-GroupLinkField-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- User Link as Icon -->
+  <bean id="Demo-GroupLinkField-Example7"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-GroupLinkField-Example7 start-->
+        <!-- Inquiry by groupId-->
+        <bean parent="Uif-GroupLinkField" p:groupId="@{testGroupId5}" p:label="Group Link1">
+          <property name="link">
+            <bean parent="Uif-Link" p:openInDialog="true" p:linkIconPlacement="ICON_ONLY" p:iconClass="icon-users"/>
+          </property>
+        </bean>
+        <!-- Inquiry by groupId-->
+        <bean parent="Uif-GroupLinkField" p:groupId="@{testGroupId5}" p:label="Group Link2" p:disableLink="true">
+          <property name="link">
+            <bean parent="Uif-Link" p:openInDialog="true" p:linkIconPlacement="ICON_ONLY" p:iconClass="icon-users"/>
+          </property>
+        </bean>
+
+        <bean parent="Uif-InputField" p:propertyName="testGroupNamespaceCode5" p:label="NamespaceCode"/>
+        <bean parent="Uif-InputField" p:propertyName="testGroupName5" p:label="GroupName">
+          <property name="postInputCssClasses" value="input-group-addon"/>
+          <property name="postInputAddons">
+            <list>
+              <!-- Inquiry by groupNamespaceCode and groupName-->
+              <bean parent="Uif-GroupLinkField"
+                    p:refreshWhenChangedPropertyNames="testGroupNamespaceCode5,testGroupName5"
+                    p:groupNamespaceCode="@{testGroupNamespaceCode5}" p:groupName="@{testGroupName5}">
+                  <property name="link">
+                    <bean parent="Uif-Link" p:openInDialog="true" p:linkIconPlacement="ICON_ONLY" p:iconClass="icon-users"/>
+                  </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-GroupLinkField-Example7 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- GroupLinkField with LinkText namespaceCode suppressed-->
+  <bean id="Demo-GroupLinkField-Example8"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-GroupLinkField-Example8 start-->
+        <!-- Inquiry by groupId with LinkText namespaceCode suppressed -->
+        <bean parent="Uif-GroupLinkField" p:groupId="@{testGroupId1}" p:label="Group Link1" p:namespaceInLinkText="false"/>
+        <!-- Inquiry by groupNamespaceCode and groupName with LinkText namespaceCode suppressed -->
+        <bean parent="Uif-GroupLinkField" p:groupNamespaceCode="@{testGroupNamespaceCode2}"
+              p:groupName="@{testGroupName2}" p:label="Group Link2" p:namespaceInLinkText="false"/>
+        <!-- ex:Demo-GroupLinkField-Example8 end-->
+      </list>
+    </property>
+  </bean>
+
+
+
+</beans>

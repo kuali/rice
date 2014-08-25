@@ -110,12 +110,24 @@ public class KimModuleService extends ModuleServiceBase {
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.ROLE_ID)){
 				Role role = getKimRoleService().getRole((String)fieldValues.get(KimConstants.PrimaryKeyConstants.ROLE_ID));
 				return (T) RoleBo.from(role);
-			}
+			} else if ( fieldValues.containsKey(KimConstants.UniqueKeyConstants.ROLE_NAME )
+                     && fieldValues.containsKey(KimConstants.UniqueKeyConstants.NAMESPACE_CODE ) ) {
+                    Role role = getKimRoleService().getRoleByNamespaceCodeAndName(
+                            (String)fieldValues.get(KimConstants.UniqueKeyConstants.NAMESPACE_CODE )
+                           ,(String)fieldValues.get(KimConstants.UniqueKeyConstants.ROLE_NAME ));
+                    return (T) RoleBo.from(role);
+            }
 		} else if(GroupContract.class.isAssignableFrom(businessObjectClass)){
 			if(fieldValues.containsKey(KimConstants.PrimaryKeyConstants.GROUP_ID)) {
                 Group group = getGroupService().getGroup((String)fieldValues.get(KimConstants.PrimaryKeyConstants.GROUP_ID));
 				return (T) GroupBo.from(group);
-			}
+			} else if ( fieldValues.containsKey( KimConstants.UniqueKeyConstants.GROUP_NAME )
+                    && fieldValues.containsKey(KimConstants.UniqueKeyConstants.NAMESPACE_CODE ) ) {
+                Group group = getGroupService().getGroupByNamespaceCodeAndName(
+                        (String)fieldValues.get(KimConstants.UniqueKeyConstants.NAMESPACE_CODE )
+                        ,(String)fieldValues.get(KimConstants.UniqueKeyConstants.GROUP_NAME ));
+                return (T) GroupBo.from(group);
+            }
 		} else if (EntityEmailTypeEbo.class.isAssignableFrom(businessObjectClass)) {
             if (fieldValues.containsKey(KimConstants.PrimaryKeyConstants.CODE)) {
                 CodedAttribute codedAttribute = getIdentityService()
@@ -377,10 +389,26 @@ public class KimModuleService extends ModuleServiceBase {
             ArrayList<List<String>> retList = new ArrayList<List<String>>();
             ArrayList<String> keyList = new ArrayList<String>();
 
-            keyList.add("principalName");
+            keyList.add( KimConstants.UniqueKeyConstants.PRINCIPAL_NAME);
             retList.add(keyList);
             return retList;
-        }else{
+        } else if ( RoleBo.class.isAssignableFrom( businessObjectInterfaceClass)) {
+            ArrayList<List<String>> retList = new ArrayList<List<String>>();
+            ArrayList<String> keyList = new ArrayList<String>();
+
+            keyList.add( KimConstants.UniqueKeyConstants.ROLE_NAME);
+            keyList.add( KimConstants.UniqueKeyConstants.NAMESPACE_CODE);
+            retList.add(keyList);
+            return retList;
+        } else if ( GroupBo.class.isAssignableFrom( businessObjectInterfaceClass) ) {
+            ArrayList<List<String>> retList = new ArrayList<List<String>>();
+            ArrayList<String> keyList = new ArrayList<String>();
+
+            keyList.add( KimConstants.UniqueKeyConstants.GROUP_NAME);
+            keyList.add( KimConstants.UniqueKeyConstants.NAMESPACE_CODE);
+            retList.add(keyList);
+            return retList;
+        } else {
             return null;
         }
 

@@ -460,6 +460,8 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-ActionFieldView"/>
         <bean parent="Uif-Link" p:linkText="Data Field"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-DataFieldView"/>
+        <bean parent="Uif-Link" p:linkText="Group Link Field"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-GroupLinkFieldView"/>
         <bean parent="Uif-Link" p:linkText="Input Field"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-InputFieldView"/>
         <bean parent="Uif-Link" p:linkText="Image Field"
@@ -468,6 +470,10 @@
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-LinkFieldView"/>
         <bean parent="Uif-Link" p:linkText="Message Field"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-MessageFieldView"/>
+        <bean parent="Uif-Link" p:linkText="Role Link Field"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-RoleLinkFieldView"/>
+        <bean parent="Uif-Link" p:linkText="User Link Field"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-UserLinkFieldView"/>
       </list>
     </property>
   </bean>

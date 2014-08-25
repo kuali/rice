@@ -65,6 +65,9 @@
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoImageFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoMessageFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoLinkFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoGroupLinkFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoRoleLinkFieldResources</value>
+        <value>org.kuali.rice.krad.demo.uif.library.resources.DemoUserLinkFieldResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoTextAreaControlResources</value>
         <value>org.kuali.rice.krad.demo.uif.library.resources.DemoCheckboxControlResources</value>

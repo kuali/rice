@@ -85,6 +85,47 @@ public class KradLabsForm extends UifFormBase {
 
     private String testGroupId;
 
+    private String testPrincipalId1 = "eric";
+    private String testPrincipalId2 = "erin";
+    private String testPrincipalId3= "test1";
+    private String testPrincipalId4= "edna";
+    private String testPrincipalName1 = "eric";
+    private String testPrincipalName2 = "erin";
+    private String testPrincipalName3 = "test1";
+    private String testPrincipalName4 = "edna";
+
+    private String testGroupId1 = "2005";
+    private String testGroupId2 = "2001";
+    private String testGroupId3 = "2000";
+    private String testGroupId4 = "2005";
+    private String testGroupId5 = "2005";
+    private String testGroupNamespaceCode1 = "KUALI";
+    private String testGroupNamespaceCode2 = "KUALI";
+    private String testGroupNamespaceCode3 = "KR-WKFLW";
+    private String testGroupNamespaceCode4 = "KUALI";
+    private String testGroupNamespaceCode5 = "KUALI";
+    private String testGroupName1 = "Group1";
+    private String testGroupName2 = "TestGroup1";
+    private String testGroupName3 = "NotificationAdmin";
+    private String testGroupName4 = "Group1";
+    private String testGroupName5 = "Group1";
+
+    private String testRoleId1 = "KRSAP10005";
+    private String testRoleId2 = "KR1000";
+    private String testRoleId3 = "67";
+    private String testRoleId4 = "KR1000";
+    private String testRoleId5 = "KR1000";
+    private String testRoleNamespaceCode1 = "KR-SAP";
+    private String testRoleNamespaceCode2 = "KUALI";
+    private String testRoleNamespaceCode3 = "KR-WKFLW";
+    private String testRoleNamespaceCode4 = "KUALI";
+    private String testRoleNamespaceCode5 = "KUALI";
+    private String testRoleName1 = "Travel Approver";
+    private String testRoleName2 = "GuestRole";
+    private String testRoleName3 = "Router";
+    private String testRoleName4 = "GuestRole";
+    private String testRoleName5 = "GuestRole";
+
     //DataField
     private String dataField1 = "1001";
     private String dataField2 = "";
@@ -681,6 +722,310 @@ public class KradLabsForm extends UifFormBase {
 
     public void setTestGroupId(String testGroupId) {
         this.testGroupId = testGroupId;
+    }
+
+    public String getTestPrincipalId1() {
+        return testPrincipalId1;
+    }
+
+    public void setTestPrincipalId1(String testPrincipalId1) {
+        this.testPrincipalId1 = testPrincipalId1;
+    }
+
+    public String getTestPrincipalId2() {
+        return testPrincipalId2;
+    }
+
+    public void setTestPrincipalId2(String testPrincipalId2) {
+        this.testPrincipalId2 = testPrincipalId2;
+    }
+
+    public String getTestPrincipalId3() {
+        return testPrincipalId3;
+    }
+
+    public void setTestPrincipalId3(String testPrincipalId3) {
+        this.testPrincipalId3 = testPrincipalId3;
+    }
+
+    public String getTestPrincipalId4() {
+        return testPrincipalId4;
+    }
+
+    public void setTestPrincipalId4(String testPrincipalId4) {
+        this.testPrincipalId4 = testPrincipalId4;
+    }
+
+    public String getTestPrincipalName1() {
+        return testPrincipalName1;
+    }
+
+    public void setTestPrincipalName1(String testPrincipalName1) {
+        this.testPrincipalName1 = testPrincipalName1;
+    }
+
+    public String getTestPrincipalName2() {
+        return testPrincipalName2;
+    }
+
+    public void setTestPrincipalName2(String testPrincipalName2) {
+        this.testPrincipalName2 = testPrincipalName2;
+    }
+
+    public String getTestPrincipalName3() {
+        return testPrincipalName3;
+    }
+
+    public void setTestPrincipalName3(String testPrincipalName3) {
+        this.testPrincipalName3 = testPrincipalName3;
+    }
+
+    public String getTestPrincipalName4() {
+        return testPrincipalName4;
+    }
+
+    public void setTestPrincipalName4(String testPrincipalName4) {
+        this.testPrincipalName4 = testPrincipalName4;
+    }
+
+    public String getTestGroupId1() {
+        return testGroupId1;
+    }
+
+    public void setTestGroupId1(String testGroupId1) {
+        this.testGroupId1 = testGroupId1;
+    }
+
+    public String getTestGroupId2() {
+        return testGroupId2;
+    }
+
+    public void setTestGroupId2(String testGroupId2) {
+        this.testGroupId2 = testGroupId2;
+    }
+
+    public String getTestGroupId3() {
+        return testGroupId3;
+    }
+
+    public void setTestGroupId3(String testGroupId3) {
+        this.testGroupId3 = testGroupId3;
+    }
+
+    public String getTestGroupId4() {
+        return testGroupId4;
+    }
+
+    public void setTestGroupId4(String testGroupId4) {
+        this.testGroupId4 = testGroupId4;
+    }
+
+    public String getTestGroupId5() {
+        return testGroupId5;
+    }
+
+    public void setTestGroupId5(String testGroupId5) {
+        this.testGroupId5 = testGroupId5;
+    }
+
+    public String getTestGroupNamespaceCode1() {
+        return testGroupNamespaceCode1;
+    }
+
+    public void setTestGroupNamespaceCode1(String testGroupNamespaceCode1) {
+        this.testGroupNamespaceCode1 = testGroupNamespaceCode1;
+    }
+
+    public String getTestGroupNamespaceCode2() {
+        return testGroupNamespaceCode2;
+    }
+
+    public void setTestGroupNamespaceCode2(String testGroupNamespaceCode2) {
+        this.testGroupNamespaceCode2 = testGroupNamespaceCode2;
+    }
+
+    public String getTestGroupNamespaceCode3() {
+        return testGroupNamespaceCode3;
+    }
+
+    public void setTestGroupNamespaceCode3(String testGroupNamespaceCode3) {
+        this.testGroupNamespaceCode3 = testGroupNamespaceCode3;
+    }
+
+    public String getTestGroupNamespaceCode4() {
+        return testGroupNamespaceCode4;
+    }
+
+    public void setTestGroupNamespaceCode4(String testGroupNamespaceCode4) {
+        this.testGroupNamespaceCode4 = testGroupNamespaceCode4;
+    }
+
+    public String getTestGroupNamespaceCode5() {
+        return testGroupNamespaceCode5;
+    }
+
+    public void setTestGroupNamespaceCode5(String testGroupNamespaceCode5) {
+        this.testGroupNamespaceCode5 = testGroupNamespaceCode5;
+    }
+
+    public String getTestGroupName1() {
+        return testGroupName1;
+    }
+
+    public void setTestGroupName1(String testGroupName1) {
+        this.testGroupName1 = testGroupName1;
+    }
+
+    public String getTestGroupName2() {
+        return testGroupName2;
+    }
+
+    public void setTestGroupName2(String testGroupName2) {
+        this.testGroupName2 = testGroupName2;
+    }
+
+    public String getTestGroupName3() {
+        return testGroupName3;
+    }
+
+    public void setTestGroupName3(String testGroupName3) {
+        this.testGroupName3 = testGroupName3;
+    }
+
+    public String getTestGroupName4() {
+        return testGroupName4;
+    }
+
+    public void setTestGroupName4(String testGroupName4) {
+        this.testGroupName4 = testGroupName4;
+    }
+
+    public String getTestGroupName5() {
+        return testGroupName5;
+    }
+
+    public void setTestGroupName5(String testGroupName5) {
+        this.testGroupName5 = testGroupName5;
+    }
+
+    public String getTestRoleId1() {
+        return testRoleId1;
+    }
+
+    public void setTestRoleId1(String testRoleId1) {
+        this.testRoleId1 = testRoleId1;
+    }
+
+    public String getTestRoleId2() {
+        return testRoleId2;
+    }
+
+    public void setTestRoleId2(String testRoleId2) {
+        this.testRoleId2 = testRoleId2;
+    }
+
+    public String getTestRoleId3() {
+        return testRoleId3;
+    }
+
+    public void setTestRoleId3(String testRoleId3) {
+        this.testRoleId3 = testRoleId3;
+    }
+
+    public String getTestRoleId4() {
+        return testRoleId4;
+    }
+
+    public void setTestRoleId4(String testRoleId4) {
+        this.testRoleId4 = testRoleId4;
+    }
+
+    public String getTestRoleId5() {
+        return testRoleId5;
+    }
+
+    public void setTestRoleId5(String testRoleId5) {
+        this.testRoleId5 = testRoleId5;
+    }
+
+    public String getTestRoleNamespaceCode1() {
+        return testRoleNamespaceCode1;
+    }
+
+    public void setTestRoleNamespaceCode1(String testRoleNamespaceCode1) {
+        this.testRoleNamespaceCode1 = testRoleNamespaceCode1;
+    }
+
+    public String getTestRoleNamespaceCode2() {
+        return testRoleNamespaceCode2;
+    }
+
+    public void setTestRoleNamespaceCode2(String testRoleNamespaceCode2) {
+        this.testRoleNamespaceCode2 = testRoleNamespaceCode2;
+    }
+
+    public String getTestRoleNamespaceCode3() {
+        return testRoleNamespaceCode3;
+    }
+
+    public void setTestRoleNamespaceCode3(String testRoleNamespaceCode3) {
+        this.testRoleNamespaceCode3 = testRoleNamespaceCode3;
+    }
+
+    public String getTestRoleNamespaceCode4() {
+        return testRoleNamespaceCode4;
+    }
+
+    public void setTestRoleNamespaceCode4(String testRoleNamespaceCode4) {
+        this.testRoleNamespaceCode4 = testRoleNamespaceCode4;
+    }
+
+    public String getTestRoleNamespaceCode5() {
+        return testRoleNamespaceCode5;
+    }
+
+    public void setTestRoleNamespaceCode5(String testRoleNamespaceCode5) {
+        this.testRoleNamespaceCode5 = testRoleNamespaceCode5;
+    }
+
+    public String getTestRoleName1() {
+        return testRoleName1;
+    }
+
+    public void setTestRoleName1(String testRoleName1) {
+        this.testRoleName1 = testRoleName1;
+    }
+
+    public String getTestRoleName2() {
+        return testRoleName2;
+    }
+
+    public void setTestRoleName2(String testRoleName2) {
+        this.testRoleName2 = testRoleName2;
+    }
+
+    public String getTestRoleName3() {
+        return testRoleName3;
+    }
+
+    public void setTestRoleName3(String testRoleName3) {
+        this.testRoleName3 = testRoleName3;
+    }
+
+    public String getTestRoleName4() {
+        return testRoleName4;
+    }
+
+    public void setTestRoleName4(String testRoleName4) {
+        this.testRoleName4 = testRoleName4;
+    }
+
+    public String getTestRoleName5() {
+        return testRoleName5;
+    }
+
+    public void setTestRoleName5(String testRoleName5) {
+        this.testRoleName5 = testRoleName5;
     }
 
     public List<UITestObject> getEmptyCollection() {

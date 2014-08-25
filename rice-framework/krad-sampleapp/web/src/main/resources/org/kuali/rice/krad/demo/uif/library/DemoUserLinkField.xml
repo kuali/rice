@@ -1,0 +1,174 @@
+<!--
+  ~ Copyright 2005-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <!-- UserLinkField demo -->
+  <bean id="Demo-UserLinkFieldView" parent="ComponentLibraryView">
+    <property name="xmlFilePath" value="/org/kuali/rice/krad/demo/uif/library/DemoUserLinkField.xml"/>
+    <property name="javaFullClassPath" value="org.kuali.rice.krad.uif.field.UserLinkField"/>
+    <property name="docBookAnchor" value="linkAndLinkField"/>
+    <property name="demoGroups">
+      <list>
+        <ref bean="Demo-UserLinkField-Example1"/>
+        <ref bean="Demo-UserLinkField-Example2"/>
+        <ref bean="Demo-UserLinkField-Example3"/>
+        <ref bean="Demo-UserLinkField-Example4"/>
+        <ref bean="Demo-UserLinkField-Example5"/>
+        <ref bean="Demo-UserLinkField-Example6"/>
+        <ref bean="Demo-UserLinkField-Example7"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- Default -->
+  <bean id="Demo-UserLinkField-Example1"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-UserLinkField-Example1 start-->
+        <!-- Inquiry by principalId -->
+        <bean parent="Uif-UserLinkField" p:principalId="@{testPrincipalId1}"/>
+        <!-- Inquiry by principalName -->
+        <bean parent="Uif-UserLinkField" p:principalName="@{testPrincipalName2}"/>
+        <!-- ex:Demo-UserLinkField-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- UserLinkField with Label -->
+  <bean id="Demo-UserLinkField-Example2"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-UserLinkField-Example2 start-->
+        <!-- Inquiry by principalId -->
+        <bean parent="Uif-UserLinkField" p:principalId="@{testPrincipalId1}" p:label="User Name"/>
+        <!-- ex:Demo-UserLinkField-Example2 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- UserLinkField with Link Disabled -->
+  <bean id="Demo-UserLinkField-Example3"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-UserLinkField-Example3 start-->
+        <!-- Inquiry by principalId and Disabled Link -->
+        <bean parent="Uif-UserLinkField" p:principalId="@{testPrincipalId1}" p:label="User Name" p:disableLink="true"/>
+        <!-- ex:Demo-UserLinkField-Example3 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Inquiry without Lightbox -->
+  <bean id="Demo-UserLinkField-Example4"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-UserLinkField-Example4 start-->
+        <!-- Inquiry by principalId -->
+        <bean parent="Uif-UserLinkField" p:principalId="@{testPrincipalId1}" p:label="User Name" p:openInDialog="false">
+          <property name="additionalInquiryParameters">
+            <map>
+              <entry key="renderedInDialog" value="false"/>
+            </map>
+          </property>
+        </bean>
+        <!-- ex:Demo-UserLinkField-Example4 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- User Link refreshed by Field changes-->
+  <bean id="Demo-UserLinkField-Example5"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:label="Principal Id" p:propertyName="testPrincipalId2">
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
+                  p:fieldConversions="principalId:testPrincipalId2"/>
+          </property>
+        </bean>
+        <!-- ex:Demo-UserLinkField-Example5 start-->
+        <!-- Inquiry by principalId -->
+        <bean parent="Uif-UserLinkField" p:refreshWhenChangedPropertyNames="testPrincipalId2"
+              p:principalId="@{testPrincipalId2}"/>
+        <!-- ex:Demo-UserLinkField-Example5 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- User Link as Input Field Addon -->
+  <bean id="Demo-UserLinkField-Example6"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-UserLinkField-Example6 start-->
+        <bean parent="Uif-InputField" p:label="Principal Id" p:propertyName="testPrincipalId3">
+          <property name="postInputCssClasses" value="input-group-addon"/>
+          <property name="postInputAddons">
+            <list>
+              <!-- Inquiry by principalId -->
+              <bean parent="Uif-UserLinkField" p:refreshWhenChangedPropertyNames="testPrincipalId3"
+                    p:principalId="@{testPrincipalId3}"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-UserLinkField-Example6 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- User Link as Icon -->
+  <bean id="Demo-UserLinkField-Example7"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-UserLinkField-Example7 start-->
+        <!-- Inquiry by principalId -->
+        <bean parent="Uif-UserLinkField" p:label="User Link" p:principalId="@{testPrincipalId1}">
+          <property name="link">
+            <bean parent="Uif-Link" p:openInDialog="true" p:linkIconPlacement="ICON_ONLY" p:iconClass="icon-user3"/>
+          </property>
+        </bean>
+
+        <!-- Inquiry by principalId and Disabled Icon Link-->
+        <bean parent="Uif-UserLinkField" p:label="Disabled User Link" p:principalId="@{testPrincipalId2}" p:disableLink="true">
+          <property name="link">
+            <bean parent="Uif-Link" p:openInDialog="true" p:linkIconPlacement="ICON_ONLY" p:iconClass="icon-user3"/>
+          </property>
+        </bean>
+
+        <!-- Show User Link Icon as Addon to Inputfield-->
+        <bean parent="Uif-InputField" p:label="Principal Id" p:propertyName="testPrincipalId4">
+          <property name="postInputCssClasses" value="input-group-addon"/>
+          <property name="postInputAddons">
+            <list>
+              <!-- Inquiry by principalId -->
+              <bean parent="Uif-UserLinkField" p:refreshWhenChangedPropertyNames="testPrincipalId4"
+                    p:principalId="@{testPrincipalId4}">
+                <property name="link">
+                  <bean parent="Uif-Link" p:openInDialog="true" p:linkIconPlacement="ICON_ONLY" p:iconClass="icon-user3"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-UserLinkField-Example7 end-->
+      </list>
+    </property>
+  </bean>
+
+
+</beans>

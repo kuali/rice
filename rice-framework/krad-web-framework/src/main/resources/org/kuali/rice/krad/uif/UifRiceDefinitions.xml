@@ -98,4 +98,71 @@
     </property>
   </bean>
 
+  <bean id="Uif-UserLinkField" parent="Uif-UserLinkField-parentBean"/>
+  <bean id="Uif-UserLinkField-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.field.UserLinkField">
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/kimLinkField.ftl"/>
+    <property name="templateName" value="uif_kimLinkField"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.identity.PersonImpl"/>
+    <property name="baseInquiryUrl" value="@{#ConfigProperties['krad.url']}/inquiry"/>
+    <property name="additionalInquiryParameters">
+      <map>
+        <entry key="flow" value="start"/>
+        <entry key="renderedInDialog" value="true"/>
+      </map>
+    </property>
+    <property name="principalId" value=""/>
+    <property name="principalName" value=""/>
+    <property name="disableLink" value="false"/>
+    <property name="link">
+      <bean parent="Uif-Link" p:openInDialog="true"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-GroupLinkField" parent="Uif-GroupLinkField-parentBean"/>
+  <bean id="Uif-GroupLinkField-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.field.GroupLinkField">
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/kimLinkField.ftl"/>
+    <property name="templateName" value="uif_kimLinkField"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.group.GroupBo"/>
+    <property name="baseInquiryUrl" value="@{#ConfigProperties['krad.url']}/inquiry"/>
+    <property name="additionalInquiryParameters">
+      <map>
+        <entry key="flow" value="start"/>
+        <entry key="renderedInDialog" value="true"/>
+      </map>
+    </property>
+    <property name="groupId" value=""/>
+    <property name="groupNamespaceCode" value=""/>
+    <property name="groupName" value=""/>
+    <property name="namespaceInLinkText" value="true"/>
+    <property name="disableLink" value="false"/>
+    <property name="link">
+      <bean parent="Uif-Link" p:openInDialog="true"/>
+    </property>
+  </bean>
+
+  <bean id="Uif-RoleLinkField" parent="Uif-RoleLinkField-parentBean"/>
+  <bean id="Uif-RoleLinkField-parentBean" abstract="true"
+        class="org.kuali.rice.krad.uif.field.RoleLinkField">
+    <property name="template" value="/krad/WEB-INF/ftl/components/field/kimLinkField.ftl"/>
+    <property name="templateName" value="uif_kimLinkField"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.kim.impl.role.RoleBo"/>
+    <property name="baseInquiryUrl" value="@{#ConfigProperties['krad.url']}/inquiry"/>
+    <property name="additionalInquiryParameters">
+      <map>
+        <entry key="flow" value="start"/>
+        <entry key="renderedInDialog" value="true"/>
+      </map>
+    </property>
+    <property name="roleId" value=""/>
+    <property name="roleNamespaceCode" value=""/>
+    <property name="roleName" value=""/>
+    <property name="namespaceInLinkText" value="true"/>
+    <property name="disableLink" value="false"/>
+    <property name="link">
+      <bean parent="Uif-Link" p:openInDialog="true"/>
+    </property>
+  </bean>
+
 </beans>

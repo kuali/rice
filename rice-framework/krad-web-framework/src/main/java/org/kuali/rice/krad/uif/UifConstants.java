@@ -623,4 +623,16 @@ public class UifConstants {
         public static final String MIN_SIZE = "minFileSize";
         public static final String MAX_SIZE = "maxFileSize";
     }
+
+    public static final class KimLink {
+        public static final String PRINCIPAL_ID = "principalId";
+        public static final String PRINCIPAL_NAME = "principalName";
+        public static final String ROLE_ID = "id";
+        public static final String ROLE_NAME = "name";
+        public static final String ROLE_NAMESPACE_CODE = "namespaceCode";
+        public static final String GROUP_ID = "id";
+        public static final String GROUP_NAME = "name";
+        public static final String GROUP_NAMESPACE_CODE = "namespaceCode";
+        public static final String BLANK_LINK = "&nbsp;";
+    }
 }

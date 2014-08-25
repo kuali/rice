@@ -42,7 +42,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="trv_att_sample")
-@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY,UifAutoCreateViewType.LOOKUP})
+@UifAutoCreateViews({UifAutoCreateViewType.LOOKUP})
 public class LabsTravelAttachment extends DataObjectBase implements PersistableAttachment, Serializable {
 
     @Id
@@ -97,6 +97,9 @@ public class LabsTravelAttachment extends DataObjectBase implements PersistableA
     @Label("Attachment File")
     @Description("File of the attachment")
     @SessionTransient
+    @UifDisplayHints({
+            @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_CRITERIA),
+            @UifDisplayHint(UifDisplayHintType.NO_LOOKUP_RESULT)})
     private transient MultipartFile attachmentFile;
 
     public String getId() {

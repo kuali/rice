@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2014 The Kuali Foundation
+/*
+ * Copyright 2006-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.labs.maintenance;
+package org.kuali.rice.krad.labs.inquiries;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
+import org.openqa.selenium.By;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,24 +37,16 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.junit.Test;
-import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverUtils;
-import org.openqa.selenium.By;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
+public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=KradMaintenanceSample-PageR4C2
+     * /kr-krad/kradsampleapp?viewId=KradInquirySample-PageR6C3
      */
-    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=KradMaintenanceSample-PageR4C2";
+    public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=KradInquirySample-PageR6C3";
     
-    // values set by default for repeatable testing; left as configurable for load tests
     protected List<File> fileUploadList;
 
     @Override
@@ -56,30 +55,47 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
     }
 
     @Override
-    public String getUserName() {
-        return "admin"; // must have blanket approve rights
-    }
-
-    @Override
     protected void navigate() throws Exception {
-    	navigateToMaintenance("Maintenance Sample - Data Object Attachment");
+    	navigateToInquiry("Inquiry - Data Object Attachments.");
     }
 
-    protected void testMaintenanceBOAttachment() throws Exception {
+    protected void testInquiryforDataObjectWithAttachment() throws Exception {
+        createDataObjectAttacmentDocument();
+        driver.navigate().back();
+        waitAndClickByLinkText("Travel Attachment Lookup");
+        waitAndClickButtonByText("Search");
+        waitAndClickLinkContainingText("attachment");
+        gotoLightBox();
+        waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
+        waitAndClickButtonByExactText("download attachment");
+    }
+
+    protected void testInquiryforDataObjectWithAttachmentCollection() throws Exception {
+        createDataObjectAttacmentCollectionDocument();
+        driver.navigate().back();
+        waitAndClickByLinkText("Travel Attachment Collection Lookup");
+        waitAndClickButtonByText("Search");
+        waitAndClickLinkContainingText("Num");
+        gotoLightBox();
+        waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
+        waitAndClickButtonByExactText("download attachment");
+    }
+
+    protected void createDataObjectAttacmentDocument() throws Exception {
         waitAndClickByLinkText("Create Travel Attachment");
         waitAndTypeByName("document.documentHeader.documentDescription","Test for Data Object Attachment");
         String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
         waitAndTypeByName("document.newMaintainableObject.dataObject.id","attachment" + random);
         waitAndTypeByName("document.newMaintainableObject.dataObject.travelAttachmentGroupNumber","123");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.description", "Desc for attachment" + random);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.description","Desc for attachment" + random);
         fileUploadSetUp();
         fileIngester();
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickButtonByText("Submit");
+        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
     }
 
-    protected void testMaintenanceBOAttachmentCollection() throws Exception {
+    protected void createDataObjectAttacmentCollectionDocument() throws Exception {
         waitAndClickByLinkText("Create Travel Attachment Collection");
         waitAndTypeByName("document.documentHeader.documentDescription", "Test for Data Object Attachment Collection");
         String randomGroup = StringUtils.substring(
@@ -102,13 +118,14 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
         }
 
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickButtonByText("Submit");
+        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
+        waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }
 
     private void fileUploadSetUp() throws Exception {
-        setUpResourceDir("general");
+    	setUpResourceDir("general");
     }
 
     protected void setUpResourceDir(String resourceDir) {
@@ -119,7 +136,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
             System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from "
                     + "Intellij make sure working directory is rice-framework/krad-sampleapp/web attempt "
                     + "to load as resource.");
-            // Example setUpFiles("rice-framework/krad-sampleapp/web/src/test/resources/" + resourceDir);
+                // Example setUpFiles("rice-framework/krad-sampleapp/web/src/test/resources/" + resourceDir);
             try {
                 setUpResourceFiles(resourceDir);
             } catch (Exception e1) {
@@ -144,6 +161,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
             fileUploadList.add(file);
             System.out.println("For for setUpResourceFiles");
         }
+
         Collections.sort(fileUploadList);
     }
 
@@ -199,38 +217,38 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
      *
      */
     private void fileIngester() throws Exception {
-        System.out.println("In for fileIngester");
+    	System.out.println("In for fileIngester");
         if(fileUploadList!=null && fileUploadList.size()>0)
         {
-            for (File file : fileUploadList) {
-                String path = file.getAbsolutePath().toString();
-                driver.findElement(By.name("document.newMaintainableObject.dataObject.attachmentFile")).sendKeys(path);
-                System.out.println("In for -------");
-            }
+	        for (File file : fileUploadList) {
+	            String path = file.getAbsolutePath().toString();
+	            driver.findElement(By.name("document.newMaintainableObject.dataObject.attachmentFile")).sendKeys(path);
+	            System.out.println("In for -------");
+	        }
         }
     }
 
     @Test
-    public void testMaintenanceBOAttachmentBookmark() throws Exception {
-        testMaintenanceBOAttachment();
+    public void testInquiryforDataObjectWithAttachmentBookmark() throws Exception {
+        testInquiryforDataObjectWithAttachment();
         passed();
     }
 
     @Test
-    public void testMaintenanceBOAttachmentNav() throws Exception {
-        testMaintenanceBOAttachment();
+    public void testInquiryforDataObjectWithAttachmentBookmarkNav() throws Exception {
+        testInquiryforDataObjectWithAttachment();
         passed();
     }
 
     @Test
-    public void testMaintenanceBOAttachmentCollectionBookmark() throws Exception {
-        testMaintenanceBOAttachmentCollection();
+    public void testInquiryforDataObjectWithAttachmentCollectionBookmark() throws Exception {
+        testInquiryforDataObjectWithAttachmentCollection();
         passed();
     }
 
     @Test
-    public void testMaintenanceBOAttachmentCollectionNav() throws Exception {
-        testMaintenanceBOAttachmentCollection();
+    public void testInquiryforDataObjectWithAttachmentCollectionBookmarkNav() throws Exception {
+        testInquiryforDataObjectWithAttachmentCollection();
         passed();
     }
 }

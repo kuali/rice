@@ -482,6 +482,10 @@ public final class KRADConstants {
     public static final String BO_ATTACHMENT_FILE_CONTENT_TYPE = "contentType";
     public static final String BO_ATTACHMENT_FILE_CONTENT_FIELD = "fileContentBOField";
 
+    public static final String DATA_OBJECT_ATTACHMENT_FILE_NAME = "fileName";
+    public static final String DATA_OBJECT_ATTACHMENT_FILE_CONTENT_TYPE = "contentType";
+    public static final String DATA_OBJECT_ATTACHMENT_FILE_CONTENT_FIELD = "fileContentDataObjectField";
+
     // specialized method 'delete' used only for PessimisticLocks currently
     public static final String DELETE_METHOD = "delete";
     public static final String START_METHOD = "start";

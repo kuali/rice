@@ -1596,6 +1596,48 @@
         </listitem>
       </itemizedlist>
     </section>
+    <section xml:id="IA">
+      <title>Attachments</title>
+      <para>The KNS provided a way to download an attachment from an Inquiry.  In KRAD, the data object must first be
+        set up as directed in
+        <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/KNS2KRAD_ConvGuide.html#MA"
+        >Maintenance Document Attachments</link>.  Once that is done, KRAD provides a way to display the attachments on
+        the Inquiry.  The following allows downloading an attachment via a button.
+<programlisting linenumbering="numbered">
+&lt;bean parent="Uif-VerticalFieldGroup" p:label="Attached File">
+  &lt;property name="items">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:labelRendered="false" p:propertyName="fileName"/>
+      &lt;bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadDataObjectAttachment"
+           p:ajaxSubmit="false" p:actionLabel="download attachment" p:title="download attachment"
+           p:disableBlocking="true"/>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+        To download a custom attachment, the fileName, contentType, and fileContentDataObjectField must be passed as
+        additional submit data when the button is selected.  Here is an example showing how that data could be passed.
+<programlisting linenumbering="numbered">
+&lt;bean parent="Uif-VerticalFieldGroup" p:label="Attached File">
+  &lt;property name="items">
+    &lt;list>
+      &lt;bean parent="Uif-DataField" p:labelRendered="false" p:propertyName="fileName"/>
+      &lt;bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadCustomDataObjectAttachment"
+           p:ajaxSubmit="false" p:actionLabel="download custom attachment"
+           p:title="download custom attachment" p:disableBlocking="true">
+        &lt;property name="additionalSubmitData">
+          &lt;map>
+            &lt;entry key="fileName" value="@{#dp.fileName}"/>
+            &lt;entry key="contentType" value="@{#dp.contentType}"/>
+            &lt;entry key="fileContentDataObjectField" value="attachmentContent"/>
+          &lt;/map>
+        &lt;/property>
+      &lt;/bean>
+    &lt;/list>
+  &lt;/property>
+&lt;/bean></programlisting>
+      </para>
+    </section>
     <section>
       <title>Other Inquiry Features</title>
       <para>

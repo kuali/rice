@@ -24,11 +24,12 @@
   <bean id="TravelAttachmentSample-parentBean" abstract="true" parent="DataObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.labs.LabsTravelAttachment"/>
     <property name="titleAttribute" value="id"/>
-    <property name="objectLabel" value="Test Object Label"/>
+    <property name="objectLabel" value="Travel Attachment"/>
 
     <property name="attributes">
       <list>
         <ref bean="TravelAttachmentSample-id"/>
+        <ref bean="TravelAttachmentSample-travelAttachmentGroupNumber"/>
         <ref bean="TravelAttachmentSample-description"/>
       </list>
     </property>
@@ -81,22 +82,68 @@
     <property name="summary" value=""/>
   </bean>
 
-  <!-- Business Object Inquiry Definition -->
+  <!-- Inquiry Definition -->
 
-  <bean id="TravelAttachmentSample-inquiryDefinition" parent="TravelAttachmentSample-inquiryDefinition-parentBean"/>
-  <bean id="TravelAttachmentSample-inquiryDefinition-parentBean" abstract="true" parent="Uif-InquiryView">
-    <property name="headerText" value="Sample Attachment Inquiry"/>
-    <property name="viewName" value="original"/>
+  <bean id="TravelAttachmentSample-inquiryDefinition" parent="Uif-InquiryView">
+    <property name="title" value="Travel Attachment Inquiry"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.labs.LabsTravelAttachment"/>
     <property name="items">
       <list>
-        <bean id="TravelAttachmentSampleMaint-InquiryView-General" parent="Uif-Disclosure-GridSection">
-          <property name="headerText" value="Travel Account Information"/>
+        <bean parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="Travel Attachment"/>
           <property name="items">
             <list>
               <bean parent="Uif-DataField" p:propertyName="id"/>
-              <bean parent="Uif-DataField" p:propertyName="id"/>
+              <bean parent="Uif-DataField" p:propertyName="travelAttachmentGroupNumber"/>
               <bean parent="Uif-DataField" p:propertyName="description"/>
+              <bean parent="Uif-VerticalFieldGroup" p:label="Attached File">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-DataField" p:labelRendered="false" p:propertyName="fileName"/>
+                    <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadDataObjectAttachment"
+                          p:ajaxSubmit="false" p:actionLabel="download attachment" p:title="download attachment"
+                          p:disableBlocking="true"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelAttachmentCustomSample-inquiryDefinition" parent="Uif-InquiryView">
+    <property name="title" value="Travel Attachment Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.krad.labs.LabsTravelAttachment"/>
+    <property name="viewName" value="customDataObject"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Disclosure-GridSection">
+          <property name="headerText" value="Travel Attachment"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="id"/>
+              <bean parent="Uif-DataField" p:propertyName="travelAttachmentGroupNumber"/>
+              <bean parent="Uif-DataField" p:propertyName="description"/>
+              <bean parent="Uif-VerticalFieldGroup" p:label="Attached File">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-DataField" p:labelRendered="false" p:propertyName="fileName"/>
+                    <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadCustomDataObjectAttachment"
+                          p:ajaxSubmit="false" p:actionLabel="download custom attachment"
+                          p:title="download custom attachment" p:disableBlocking="true">
+                        <property name="additionalSubmitData">
+                          <map>
+                            <entry key="fileName" value="@{#dp.fileName}"/>
+                            <entry key="contentType" value="@{#dp.contentType}"/>
+                            <entry key="fileContentDataObjectField" value="attachmentContent"/>
+                          </map>
+                        </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>

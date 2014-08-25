@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.krad.inquiry;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krad.bo.PersistableAttachment;
+import org.kuali.rice.krad.bo.PersistableAttachmentList;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -27,6 +31,10 @@ import org.kuali.rice.krad.web.service.impl.ControllerServiceImpl;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Properties;
 
 /**
@@ -35,7 +43,7 @@ import java.util.Properties;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InquiryControllerServiceImpl extends ControllerServiceImpl {
+public class InquiryControllerServiceImpl extends ControllerServiceImpl implements InquiryControllerService {
 
     /**
      * Determines if the inquiry request needs to be redirected based on the module service, if not retrieves
@@ -102,4 +110,93 @@ public class InquiryControllerServiceImpl extends ControllerServiceImpl {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void downloadDataObjectAttachment(InquiryForm form, HttpServletResponse response) {
+        Object dataObject = form.getDataObject();
+
+        if (dataObject instanceof PersistableAttachment) {
+            PersistableAttachment attachment = (PersistableAttachment) dataObject;
+            byte[] attachmentContent = attachment.getAttachmentContent();
+
+            addAttachmentToResponse(response, attachmentContent, attachment.getContentType(), attachment.getFileName());
+        } else if (dataObject instanceof PersistableAttachmentList) {
+            PersistableAttachmentList<PersistableAttachment> attachmentListBo =
+                    (PersistableAttachmentList<PersistableAttachment>) dataObject;
+            PersistableAttachment attachment = attachmentListBo.getAttachments().get(Integer.parseInt(
+                    form.getActionParamaterValue(UifParameters.SELECTED_LINE_INDEX)));
+            byte[] attachmentContent = attachment.getAttachmentContent();
+
+            addAttachmentToResponse(response, attachmentContent, attachment.getContentType(), attachment.getFileName());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void downloadCustomDataObjectAttachment(InquiryForm form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        String fileName = request.getParameter(KRADConstants.DATA_OBJECT_ATTACHMENT_FILE_NAME);
+        String contentType = request.getParameter(KRADConstants.DATA_OBJECT_ATTACHMENT_FILE_CONTENT_TYPE);
+        String fileContentDataObjField = request.getParameter(KRADConstants.DATA_OBJECT_ATTACHMENT_FILE_CONTENT_FIELD);
+
+        if (fileName == null) {
+            throw new RuntimeException("Request Parameter "
+                    + KRADConstants.DATA_OBJECT_ATTACHMENT_FILE_NAME + " must be provided");
+        }
+
+        if (contentType == null) {
+            throw new RuntimeException("Request Parameter "
+                    + KRADConstants.DATA_OBJECT_ATTACHMENT_FILE_CONTENT_TYPE + " must be provided");
+        }
+
+        if (fileContentDataObjField == null) {
+            throw new RuntimeException("Request Parameter "
+                    + KRADConstants.DATA_OBJECT_ATTACHMENT_FILE_CONTENT_FIELD + " must be provided");
+        }
+
+        checkViewAuthorization(form);
+
+        Object dataObject = form.getDataObject();
+
+        if (dataObject == null && GlobalVariables.getMessageMap().hasNoMessages()) {
+            throw new UnsupportedOperationException("The record you have inquired on does not exist.");
+        }
+
+        Method method = dataObject.getClass().getMethod("get" + StringUtils.capitalize(fileContentDataObjField));
+        byte[] attachmentContent = (byte[]) method.invoke(dataObject);
+
+        addAttachmentToResponse(response, attachmentContent, contentType, fileName);
+    }
+
+    /**
+     * Adds the header and content of an attachment to the response.
+     *
+     * @param response HttpServletResponse instance
+     * @param attachmentContent the attachment contents
+     * @param contentType the content type of the attachment
+     * @param fileName the file name of the attachment
+     * @throws RuntimeException if unable to retrieve the attachment contents.
+     */
+    private void addAttachmentToResponse(HttpServletResponse response, byte[] attachmentContent,
+            String contentType, String fileName) {
+        ByteArrayInputStream inputStream = null;
+        int attachmentContentLength;
+
+        if (attachmentContent != null) {
+            inputStream = new ByteArrayInputStream(attachmentContent);
+            attachmentContentLength = attachmentContent.length;
+        } else {
+            attachmentContentLength = 0;
+        }
+
+        try {
+            KRADUtils.addAttachmentToResponse(response, inputStream, contentType, fileName, attachmentContentLength);
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to retrieve attachment contents", e);
+        }
+    }
 }

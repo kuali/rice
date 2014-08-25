@@ -23,6 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Controller for inquiry views which handle initial requests for the inquiry and
@@ -40,6 +45,34 @@ public class InquiryController extends UifControllerBase {
     @Override
     protected InquiryForm createInitialForm() {
         return new InquiryForm();
+    }
+
+    /**
+     * @see org.kuali.rice.krad.inquiry.InquiryControllerService#downloadDataObjectAttachment(org.kuali.rice.krad.web.form.InquiryForm,
+     * javax.servlet.http.HttpServletResponse)
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=downloadDataObjectAttachment")
+    public ModelAndView downloadDataObjectAttachment(InquiryForm form, HttpServletResponse response) {
+        getControllerService().downloadDataObjectAttachment(form, response);
+
+        return null;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.inquiry.InquiryControllerService#downloadCustomDataObjectAttachment(org.kuali.rice.krad.web.form.InquiryForm,
+     * javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=downloadCustomDataObjectAttachment")
+    public ModelAndView downloadCustomDataObjectAttachment(InquiryForm form, HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        getControllerService().downloadCustomDataObjectAttachment(form, request, response);
+
+        return null;
+    }
+
+    @Override
+    protected InquiryControllerService getControllerService() {
+        return (InquiryControllerService) super.getControllerService();
     }
 
     @Override

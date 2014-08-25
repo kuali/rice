@@ -20,23 +20,21 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
-  <bean id="TravelAttachmentGroupSample" parent="TravelAttachmentSample-parentBean"/>
+  <bean id="TravelAttachmentGroupSample" parent="TravelAttachmentGroupSample-parentBean"/>
   <bean id="TravelAttachmentGroupSample-parentBean" abstract="true" parent="DataObjectEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.labs.LabsTravelAttachmentGroup"/>
-    <property name="titleAttribute" value="id"/>
-    <property name="objectLabel" value="Test Object Label"/>
-
+    <property name="objectLabel" value="Travel Attachment Group"/>
     <property name="attributes">
       <list>
-        <ref bean="TravelAttachmentSampleGroup-number"/>
-        <ref bean="TravelAttachmentSampleGroup-name"/>
+        <ref bean="TravelAttachmentGroupSample-number"/>
+        <ref bean="TravelAttachmentGroupSample-name"/>
       </list>
     </property>
   </bean>
 
   <!-- Attribute Definitions -->
-  <bean id="TravelAttachmentSampleGroup-number" parent="TravelAttachmentSampleGroup-number-parentBean"/>
-  <bean id="TravelAttachmentSampleGroup-number-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="TravelAttachmentGroupSample-number" parent="TravelAttachmentGroupSample-number-parentBean"/>
+  <bean id="TravelAttachmentGroupSample-number-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Travel Attachment Group Number"/>
     <property name="maxLength" value="10"/>
@@ -54,8 +52,8 @@
     <property name="required" value="true"/>
   </bean>
 
-  <bean id="TravelAttachmentSampleGroup-name" parent="TravelAttachmentSampleGroup-name-parentBean"/>
-  <bean id="TravelAttachmentSampleGroup-name-parentBean" abstract="true" parent="AttributeDefinition">
+  <bean id="TravelAttachmentGroupSample-name" parent="TravelAttachmentGroupSample-name-parentBean"/>
+  <bean id="TravelAttachmentGroupSample-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Attachment Group Name"/>
     <property name="maxLength" value="40"/>
@@ -71,50 +69,43 @@
     <property name="required" value="true"/>
   </bean>
 
-  <!-- Business Object Inquiry Definition -->
+  <!-- Inquiry Definition -->
 
-  <bean id="TravelAttachmentSampleGroup-inquiryDefinition" parent="TravelAttachmentSampleGroup-inquiryDefinition-parentBean"/>
-  <bean id="TravelAttachmentSampleGroup-inquiryDefinition-parentBean" abstract="true" parent="Uif-InquiryView">
+  <bean id="TravelAttachmentGroupSample-inquiryDefinition" parent="Uif-InquiryView">
     <property name="headerText" value="Sample Travel Attachment Group Inquiry"/>
-    <property name="viewName" value="original"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krad.labs.LabsTravelAttachmentGroup"/>
     <property name="items">
       <list>
-        <bean id="TravelAttachmentSampleGroup-InquiryView-General" parent="Uif-Disclosure-GridSection">
+        <bean parent="Uif-Disclosure-GridSection">
           <property name="headerText" value="Travel Attachment Group Information"/>
           <property name="items">
             <list>
               <bean parent="Uif-DataField" p:propertyName="number"/>
-              <bean parent="Uif-DataField" p:propertyName="name"/>
-              <bean parent="Uif-DataField" p:propertyName="attachment"/>
-              <bean parent="Uif-DataField" p:propertyName="attachmentName"/>
+              <bean parent="Uif-DataField" p:propertyName="name" />
             </list>
           </property>
         </bean>
-      </list>
-    </property>
-  </bean>
-
-  <!-- Business Object Lookup Definition -->
-
-  <bean id="TravelAttachmentSampleGroup-Lookup" parent="Uif-LookupView">
-    <property name="parentLocation">
-      <bean parent="Uif-RicePortalParentLocation"/>
-    </property>
-    <property name="viewName" value="LookupSampleView"/>
-    <property name="headerText" value="Lookup Sample"/>
-
-    <property name="dataObjectClassName" value="org.kuali.rice.krad.labs.LabsTravelAttachmentGroup"/>
-    <property name="criteriaFields">
-      <list>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/>
-        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
-      </list>
-    </property>
-    <property name="resultFields">
-      <list>
-        <bean parent="Uif-DataField" p:propertyName="number"/>
-        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-Disclosure-StackedCollectionSection">
+          <property name="headerText" value="Attachments"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.labs.LabsTravelAttachment"/>
+          <property name="propertyName" value="attachments"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField" p:propertyName="id"/>
+              <bean parent="Uif-DataField" p:propertyName="description"/>
+              <bean parent="Uif-VerticalFieldGroup" p:label="Attached File">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-DataField" p:labelRendered="false" p:propertyName="fileName"/>
+                    <bean parent="Uif-PrimaryActionButton-Small" p:methodToCall="downloadDataObjectAttachment"
+                         p:ajaxSubmit="false" p:actionLabel="download attachment" p:title="download attachment"
+                         p:disableBlocking="true"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

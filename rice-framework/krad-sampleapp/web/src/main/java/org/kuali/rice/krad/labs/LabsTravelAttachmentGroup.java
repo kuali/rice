@@ -58,7 +58,7 @@ import java.util.List;
 
 @Entity
 @Table(name="TRV_ATT_GRP_SAMPLE")
-@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY,UifAutoCreateViewType.LOOKUP})
+@UifAutoCreateViews({UifAutoCreateViewType.LOOKUP})
 public class LabsTravelAttachmentGroup extends DataObjectBase implements PersistableAttachmentList<LabsTravelAttachment>
         ,Serializable {
     private static final long serialVersionUID = -7739303391609395867L;

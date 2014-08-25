@@ -1055,7 +1055,9 @@ public final class KRADUtils {
         response.setHeader("Pragma", "public");
 
         // Copy the input stream to the response
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        if (inputStream != null) {
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+        }
     }
 
     /**

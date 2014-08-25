@@ -293,6 +293,32 @@
       </list>
     </property>
   </bean>
+  <bean id="KradInquirySample-PageR6C3" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR6C3-1" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Create Travel Attachment"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelAttachment"/>
+              <bean parent="Uif-Link" p:linkText="Create Travel Attachment Collection"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelAttachmentGroup"/>
+            </list>
+          </property>
+        </bean>
+        <bean id="KradInquirySampleItems-PageR6C3-2" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Travel Attachment Lookup"
+                    p:href="lookup?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelAttachment"/>
+              <bean parent="Uif-Link" p:linkText="Travel Attachment Collection Lookup"
+                    p:href="lookup?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelAttachmentGroup"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
   <bean id="KradInquirySample-PageR7C1" parent="KradSampleAppView">
     <property name="page.items">
       <list>

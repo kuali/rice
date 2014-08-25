@@ -48,7 +48,7 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     protected void testClientResponsivenessAjaxFieldQuery() throws Exception {
         waitAndClickByLinkText("Ajax Field Query");
         waitForElementPresentByXpath("//input[@name='inputField3' and @value='a1']");
-        clearTypeAndTabByName("inputField3", "a1");
+        clearTypeAndFocus("inputField3", "a1");
         checkIfFocusSuccessful("inputField3", "a1", "Travel Account 1");
         assertTextPresent(new String[] {"Travel Account 1", "fred"});
     }
@@ -56,7 +56,7 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     protected void testClientResponsivenessAjaxFieldQueryCustomMethod() throws Exception {
         waitAndClickByLinkText("Ajax Field Query Custom Method");
         waitForElementPresentByXpath("//input[@name='inputField6' and @value='a2']");
-        clearTypeAndTabByName("inputField6", "a2");
+        clearTypeAndFocus("inputField6", "a2");
         checkIfFocusSuccessful("inputField6", "a2", "Travel Account 2");
         assertTextPresent(new String[] {"Travel Account 2", "fran"});
     }
@@ -64,7 +64,7 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
     protected void testClientResponsivenessAjaxFieldQueryCustomMethodAndService() throws Exception {
         waitAndClickByLinkText("Ajax Field Query Custom Method and Service");
     	waitForElementPresentByXpath("//input[@name='inputField9' and @value='a3']");
-        clearTypeAndTabByName("inputField9", "a3");
+        clearTypeAndFocus("inputField9", "a3");
         checkIfFocusSuccessful("inputField9", "a3", "Travel Account 3");
         assertTextPresent(new String[] {"Travel Account 3", "frank"});
     }
@@ -77,11 +77,13 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
      *
      * @throws InterruptedException
      */
-    private void clearTypeAndTabByName(String fieldName, String fieldValue) throws InterruptedException {
+    private void clearTypeAndFocus(String fieldName, String fieldValue) throws InterruptedException {
         clearTextByName(fieldName);
         WebElement element = WebDriverUtils.waitFor(driver, WebDriverUtils.configuredImplicityWait(), By.name(
                 fieldName), this.getClass().toString());
-        element.sendKeys("", fieldValue, Keys.TAB);
+        element.sendKeys("", fieldValue);
+        fireEvent(fieldName, "focus");
+        fireEvent(fieldName, "blur");
         assertTextPresent(fieldValue);
     }
 
@@ -104,7 +106,7 @@ public class DemoClientResponsivenessAjaxFieldQueryAft extends WebDriverLegacyIT
             } else {
                 jGrowl("Focus failed - Focusing back on the test window before trying to enter text again.");
                 driver.switchTo().window(driver.getWindowHandle());
-                clearTypeAndTabByName(fieldName, fieldValue);
+                clearTypeAndFocus(fieldName, fieldValue);
             }
         }
     }

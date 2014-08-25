@@ -56,6 +56,15 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
          failOnErrorMessageItem();
          waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }
+    
+    protected void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec() throws InterruptedException {
+   	 	waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document");
+        String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
+        waitAndClickByXpath("//button[contains(text(),'Submit')]");
+        waitForTextPresent("Travel Account Type Code: Required");
+   }
 
     @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationBookmark() throws Exception {
@@ -66,6 +75,18 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
     @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationNav() throws Exception {
     	testDemoCustomRuleEventAndDocumentEventMethodInvocation();
+        passed();
+    }
+    
+    @Test
+    public void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeCheckBookmark() throws Exception {
+    	testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec();
+        passed();
+    }
+
+    @Test
+    public void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChecNav() throws Exception {
+    	testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec();
         passed();
     }
 }

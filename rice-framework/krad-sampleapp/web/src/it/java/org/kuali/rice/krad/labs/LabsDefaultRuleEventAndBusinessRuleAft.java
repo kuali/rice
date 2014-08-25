@@ -55,16 +55,37 @@ public class LabsDefaultRuleEventAndBusinessRuleAft extends WebDriverLegacyITBas
          failOnErrorMessageItem();
          waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }
+    
+    protected void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec() throws InterruptedException {
+   	 	waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document");
+        String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
+        waitAndClickByXpath("//button[contains(text(),'Submit')]");
+        waitForTextPresent("Travel Account Type Code: Required");
+   }
 
-    @Test
+//    @Test
     public void testDefaultRuleEventAndBusinessRuleBookmark() throws Exception {
     	testDefaultRuleEventAndBusinessRule();
         passed();
     }
 
-    @Test
+//    @Test
     public void testDefaultRuleEventAndBusinessRuleNav() throws Exception {
     	testDefaultRuleEventAndBusinessRule();
+        passed();
+    }
+    
+//    @Test
+    public void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeCheckBookmark() throws Exception {
+    	testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec();
+        passed();
+    }
+
+    @Test
+    public void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChecNav() throws Exception {
+    	testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec();
         passed();
     }
 }

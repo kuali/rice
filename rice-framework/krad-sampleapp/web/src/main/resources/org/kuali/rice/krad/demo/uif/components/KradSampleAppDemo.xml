@@ -20,10 +20,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
+  <!-- use custom template -->
   <bean id="Uif-GlobalApplicationHeader" parent="Uif-GlobalApplicationHeader-parentBean"
         p:template="/WEB-INF/ftl/kradSampleAppHeader.ftl" p:render="@{!renderedInDialog and !renderedInIframe}"
         p:templateName="demo_kradappheader"/>
 
+  <!-- use custom template -->
   <bean id="Uif-GlobalApplicationFooter" parent="Uif-GlobalApplicationFooter-parentBean"
         p:template="/WEB-INF/ftl/kradSampleAppFooter.ftl" p:render="@{!renderedInDialog and !renderedInIframe}"
         p:templateName="demo_kradappfooter"/>
@@ -47,7 +49,7 @@
     <property name="parentViewUrl.href" value="@{#ConfigProperties['application.url']}"/>
   </bean>
 
-  <!-- SampleAppView defaults -->
+  <!-- KradSampleAppView defaults -->
   <bean id="KradSampleAppView" parent="Uif-FormView">
     <property name="unifiedHeader" value="false"/>
     <property name="additionalCssFiles">
@@ -92,8 +94,7 @@
     <property name="formClass" value="org.kuali.rice.krad.demo.uif.form.KradSampleAppForm"/>
   </bean>
 
-  <!-- SampleApp Home -->
-
+  <!-- KradSampleAppHome -->
   <bean id="KradSampleAppHome" parent="KradSampleAppView">
     <property name="cssClasses">
       <list merge="true">
@@ -198,7 +199,6 @@
     <property name="items">
       <list>
         <bean id="KradSampleAppHome-testimonialsList" parent="Uif-ListGroup">
-
           <property name="items">
             <list>
               <bean id="KradSampleAppHome-Testimonial1" parent="Uif-Message">
@@ -224,8 +224,7 @@
     </property>
   </bean>
 
-  <!-- ComponentLibraryHome defs -->
-
+  <!-- ComponentLibraryHome defaults -->
   <bean id="ComponentLibraryHome" parent="KradSampleAppView">
     <property name="cssClasses">
       <list merge="true">
@@ -273,7 +272,6 @@
   </bean>
 
   <!-- ComponentLibraryView defaults -->
-
   <bean id="ComponentLibraryView" class="org.kuali.rice.krad.demo.uif.components.ComponentLibraryView"
         parent="KradSampleAppView">
     <property name="rootJavadocAddress" value="http://site.kuali.org/rice/latest/apidocs/"/>
@@ -718,8 +716,7 @@
     <property name="tabsWidget.position" value="RIGHT"/>
   </bean>
 
-  <!-- Demo page defs -->
-
+  <!-- KradSampleAppDemo defaults -->
   <bean id="KradSampleAppDemo" parent="KradSampleAppView">
     <property name="cssClasses">
       <list merge="true">
@@ -866,8 +863,7 @@
             <list merge="true">
               <!-- Allows demo to sneakily add to a hidden collection -->
               <bean parent="Uif-TableCollectionGroup" p:hidden="true">
-                <property name="collectionObjectClass"
-                          value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
+                <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
                 <property name="propertyName" value="travelAccounts"/>
                 <property name="collectionLookup">
                   <bean parent="Uif-QuickFinder" p:fieldConversions="number:number,name:name"/>
@@ -895,7 +891,6 @@
       </list>
     </property>
   </bean>
-
 
   <bean id="KradSampleAppDemo-Maintenance" parent="Uif-VerticalBoxSection">
     <property name="items">

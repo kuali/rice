@@ -22,7 +22,6 @@
         <div>
             <div class="demo-kradDescription">
                 <h2>About KRAD</h2>
-
                 <div class="demo-blurb">Kuali Rapid Application Development (KRAD) is a framework that eases the
                     development of enterprise web applications by providing reusable solutions and tooling that enables
                     developers to build in a rapid and agile fashion. KRAD is a complete framework for web developers
@@ -60,7 +59,6 @@
             </div>
             <a class="twitter-timeline" width="240" data-tweet-limit="2" data-chrome="nofooter noscrollbar transparent noheader" data-theme="dark" href="https://twitter.com/kuali" data-widget-id="359754571758837761">Tweets by @kuali</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
         </div>
     </div>
 </div>
@@ -76,7 +74,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 </#macro>

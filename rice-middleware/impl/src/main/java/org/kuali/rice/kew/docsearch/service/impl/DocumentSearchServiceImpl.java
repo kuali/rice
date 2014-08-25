@@ -29,7 +29,6 @@ import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
@@ -56,8 +55,8 @@ import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
@@ -167,7 +166,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     @Override
     public DocumentSearchResults lookupDocuments(String principalId, DocumentSearchCriteria criteria) {
-        return lookupDocuments(principalId, criteria, false);//Default saveSearch to false from any interaction with this particular API
+        return lookupDocuments(principalId, criteria, !StringUtils.isBlank(criteria.getSaveName()));//Default saveSearch to false from any interaction with this particular API unless a save name is provided
     }
 
 

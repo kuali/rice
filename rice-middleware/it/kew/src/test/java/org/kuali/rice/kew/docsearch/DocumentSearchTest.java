@@ -333,7 +333,7 @@ public class DocumentSearchTest extends KEWTestCase {
         criteria.setTitle("*IN");
         criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
         DocumentSearchCriteria c1 = criteria.build();
-        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), c1);
+        DocumentSearchResults results = docSearchService.lookupDocuments(user.getPrincipalId(), c1, true);
 
         Collection<UserOptions> allUserOptions_after = userOptionsService.findByWorkflowUser(user.getPrincipalId());
         List<UserOptions> namedSearches_after = userOptionsService.findByUserQualified(user.getPrincipalId(), "DocSearch.NamedSearch.%");
@@ -352,7 +352,7 @@ public class DocumentSearchTest extends KEWTestCase {
         criteria.setTitle("*IN-CFSG*");
         criteria.setDateCreatedFrom(DateTime.now().minus(Years.ONE)); // otherwise one is set for us
         DocumentSearchCriteria c2 = criteria.build();
-        results = docSearchService.lookupDocuments(user.getPrincipalId(), c2);
+        results = docSearchService.lookupDocuments(user.getPrincipalId(), c2, true);
 
         // still only 2 more user options
         assertEquals(allUserOptions_before.size() + 2, allUserOptions_after.size());

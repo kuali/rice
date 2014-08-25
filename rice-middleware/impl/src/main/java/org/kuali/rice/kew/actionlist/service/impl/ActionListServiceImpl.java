@@ -15,29 +15,6 @@
  */
 package org.kuali.rice.kew.actionlist.service.impl;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.between;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThanOrEqual;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.isNotNull;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.isNull;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThanOrEqual;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.like;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.notBetween;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.notEqual;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.notLike;
-import static org.kuali.rice.core.api.criteria.PredicateFactory.or;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -52,7 +29,6 @@ import org.kuali.rice.kew.actionitem.ActionItemBase;
 import org.kuali.rice.kew.actionitem.OutboxItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.dao.ActionListDAO;
-import org.kuali.rice.kew.actionlist.dao.impl.ActionListDAOJpaImpl;
 import org.kuali.rice.kew.actionlist.dao.impl.ActionListPriorityComparator;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -73,8 +49,18 @@ import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.util.KRADConstants;
-import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
 /**
  * Default implementation of the {@link ActionListService}.
@@ -683,7 +669,7 @@ public class ActionListServiceImpl implements ActionListService {
      * @return the user count, or zero if the user count is not found
      */
     private Object verifyCountForUser(List<Object> maxDateAndUserCount) {
-        if (maxDateAndUserCount != null && maxDateAndUserCount.size() > 1 && maxDateAndUserCount.get(1) == null) {
+        if (maxDateAndUserCount != null && maxDateAndUserCount.size() > 1 && maxDateAndUserCount.get(1) != null) {
             return maxDateAndUserCount.get(1);
         } else {
             return Long.valueOf(0);

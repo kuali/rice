@@ -29,23 +29,16 @@ import org.springframework.beans.PropertyValue;
  */
 public class UifBeanWrapper extends BeanWrapperImpl {
 
-    public UifBeanWrapper() {
-    }
-
-    public UifBeanWrapper(boolean registerDefaultEditors) {
-        super(registerDefaultEditors);
-    }
+    private BeanWrapperImpl rootBeanWrapper;
 
     public UifBeanWrapper(Object object) {
         super(object);
     }
 
-    public UifBeanWrapper(Class<?> clazz) {
-        super(clazz);
-    }
+    public UifBeanWrapper(Object object, String nestedPath, UifBeanWrapper superBw) {
+        super(object, nestedPath, superBw);
 
-    public UifBeanWrapper(Object object, String nestedPath, Object rootObject) {
-        super(object, nestedPath, rootObject);
+        setRootBeanWrapper(superBw.getRootBeanWrapper());
     }
 
     /**
@@ -114,5 +107,42 @@ public class UifBeanWrapper extends BeanWrapperImpl {
     @Override
     protected BeanWrapperImpl newNestedBeanWrapper(Object object, String nestedPath) {
         return new UifBeanWrapper(object, nestedPath, this);
+    }
+
+    /**
+     * Override to set auto grown on the nested bean wrapper to the setting of the root bean wrapper.
+     *
+     * <p>This is necessary because the nested bean wrapper could have been cached, and its auto-grow
+     * setting reflect an earler get or set call</p>
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    protected BeanWrapperImpl getBeanWrapperForPropertyPath(String propertyPath) {
+        if (this.rootBeanWrapper != null) {
+            setAutoGrowNestedPaths(this.rootBeanWrapper.isAutoGrowNestedPaths());
+        }
+
+        return super.getBeanWrapperForPropertyPath(propertyPath);
+    }
+
+    /**
+     * Bean wrapper for the root data object, used for setting auto grows on nested bean wrappers.
+     *
+     * @return bean wrapper impl for root data object
+     */
+    public BeanWrapperImpl getRootBeanWrapper() {
+        if (rootBeanWrapper == null) {
+            return this;
+        }
+
+        return rootBeanWrapper;
+    }
+
+    /**
+     * @see UifBeanWrapper#getRootBeanWrapper()
+     */
+    public void setRootBeanWrapper(BeanWrapperImpl rootBeanWrapper) {
+        this.rootBeanWrapper = rootBeanWrapper;
     }
 }

@@ -324,6 +324,13 @@ function isCalledWithinDialog() {
 function showDirectInquiry(url, paramMap, showInDialog, dialogId) {
     var parameterPairs = paramMap.split(",");
     var queryString = "";
+    var renderedInDialog = isCalledWithinDialog();
+
+    var flow = "start";
+    if (renderedInDialog) {
+        flow = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
+        dirtyFormState.skipDirtyChecks = true;
+    }
 
     for (i in parameterPairs) {
         var parameters = parameterPairs[i].split(":");
@@ -338,7 +345,7 @@ function showDirectInquiry(url, paramMap, showInDialog, dialogId) {
 
     if (showInDialog) {
         // Check if this is called within a light box
-        if (!getContext().find('.fancybox-inner', parent.document).length) {
+        if (!getContext().find('.fancybox-inner', parent.document).length && !renderedInDialog) {
 
             queryString = queryString + "&flow=start&renderedInDialog=true";
             url = url + queryString;
@@ -347,7 +354,7 @@ function showDirectInquiry(url, paramMap, showInDialog, dialogId) {
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&flow="
                     + jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val() + "&renderedInDialog=true";
-            window.open(url + queryString, "_self");
+           window.open(url + queryString, "_self");
         }
     } else {
         window.open(url + queryString, "_blank", "width=640, height=600, scrollbars=yes");

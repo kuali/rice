@@ -97,7 +97,7 @@ function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialo
             data['actionParameters[renderedInDialog]'] = true;
             data['actionParameters[returnByScript]'] = lookupReturnByScript;
             data['actionParameters[methodToCall]'] = "start";
-            data['actionParameters[flowKey]'] = "start";
+            data['actionParameters[flow]'] = "start";
             data['actionParameters[returnFormKey]'] = jQuery("#" + kradVariables.FORM_INFO_ID).children("input[name='formKey']").val();
 
             var lookupParameters = data['actionParameters[lookupParameters]'];
@@ -128,7 +128,7 @@ function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialo
             // add parameters for lightbox and do standard submit
             data['actionParameters[renderedInDialog]'] = 'true';
             data['actionParameters[returnTarget]'] = '_self';
-            data['actionParameters[flowKey]'] = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
+            data['actionParameters[flow]'] = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
 
             nonAjaxSubmitForm(data['methodToCall'], data);
         }

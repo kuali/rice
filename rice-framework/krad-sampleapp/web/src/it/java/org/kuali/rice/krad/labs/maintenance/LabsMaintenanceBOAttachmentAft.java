@@ -113,7 +113,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
 
     protected void setUpResourceDir(String resourceDir) {
         try {
-            setUpFiles("rice-framework/krad-sampleapp/web/src/test/resources/" + resourceDir);
+            setUpFiles("src/test/resources/" + resourceDir);
             System.out.println("Try for setUpResourceDir");
         } catch (Exception e) {
             System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from "

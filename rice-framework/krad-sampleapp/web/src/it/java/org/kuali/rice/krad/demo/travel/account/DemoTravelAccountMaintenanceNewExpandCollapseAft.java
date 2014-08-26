@@ -52,6 +52,20 @@ public class DemoTravelAccountMaintenanceNewExpandCollapseAft extends WebDriverL
         waitForElementPresentByXpath("//div[@style='overflow: hidden; display: block;']/div/ul/li/a[contains(text(),'Travel Account Name: Required')]");
         waitForElementPresentByXpath("//div[@style='overflow: hidden; display: block;']/div/ul/li/a[contains(text(),'Travel Account Type Code: Required')]");
     }
+    
+    protected void testTravelAccountMaintenanceNewExpandCollapse1() throws Exception {
+    	 waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document");
+         String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+         waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
+         waitAndTypeByName("document.newMaintainableObject.dataObject.name",randomCode);
+         waitAndClickByName("document.newMaintainableObject.dataObject.accountTypeCode");
+    	waitForElementPresentByXpath("//section[@class='uif-disclosure tableborders wrap uif-boxLayoutVerticalItem clearfix']/div[@style='display: none; overflow: hidden;']");
+    	waitAndClickByXpath("//section[@class='uif-disclosure tableborders wrap uif-boxLayoutVerticalItem clearfix']/header/h3/a");
+    	waitForElementPresentByXpath("//section[@class='uif-disclosure tableborders wrap uif-boxLayoutVerticalItem clearfix']/div[@style='display: block; overflow: hidden;']");
+    	waitAndClickButtonByExactText("Submit");
+    	waitAndClickConfirmationOk();
+    	waitForElementPresentByXpath("//section[@class='uif-disclosure tableborders wrap uif-boxLayoutVerticalItem clearfix']/header/h3/a[@data-open='true']");
+    }
 
     @Test
     public void testDemoTravelAccountMaintenanceNewExpandCollapseBookmark() throws Exception {
@@ -62,6 +76,18 @@ public class DemoTravelAccountMaintenanceNewExpandCollapseAft extends WebDriverL
     @Test
     public void testDemoTravelAccountMaintenanceNewExpandCollapseNav() throws Exception {
         testTravelAccountMaintenanceNewExpandCollapse();
+        passed();
+    }
+    
+    @Test
+    public void testDemoTravelAccountMaintenanceNewExpandCollapse1Bookmark() throws Exception {
+        testTravelAccountMaintenanceNewExpandCollapse1();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountMaintenanceNewExpandCollapse1Nav() throws Exception {
+        testTravelAccountMaintenanceNewExpandCollapse1();
         passed();
     }
 }

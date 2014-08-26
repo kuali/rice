@@ -143,9 +143,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
             String tableAlias = "EXT" + tableIndex;
             RemotableAttributeField searchField = getSearchFieldByName(documentAttributeName, searchFields);
-            if(searchField == null) {
-            	continue;
-            }
+
             String tableName = DocumentSearchInternalUtils.getAttributeTableName(searchField);
             boolean caseSensitive = DocumentSearchInternalUtils.isLookupCaseSensitive(searchField);
 
@@ -194,7 +192,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
                 return searchField;
             }
         }
-        return null;
+        throw new IllegalStateException("Failed to locate a RemotableAttributeField for fieldName=" + fieldName);
     }
 
     public QueryComponent generateSearchableAttributeSql(String tableName, String documentAttributeName, String whereSqlStarter,int tableIndex) {
@@ -390,7 +388,7 @@ public class DocumentSearchGeneratorImpl implements DocumentSearchGenerator {
 
         String sqlPrefix = "Select * from (";
         String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.CRTE_DT desc";
-        
+
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
         StringBuilder selectSQL = new StringBuilder("select DISTINCT("+ docHeaderTableAlias +".DOC_HDR_ID), "
                                                     + StringUtils.join(new String[] {

@@ -81,6 +81,9 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "peopleFlowMember", orphanRemoval = true)
     List<PeopleFlowDelegateBo> delegates = new ArrayList<PeopleFlowDelegateBo>();
 
+    @Column(name = "FRC_ACTN")
+    private boolean forceAction = true;
+
     // non-persisted
     @Transient
     private String memberName;
@@ -169,6 +172,14 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
 
     public void setDelegates(List<PeopleFlowDelegateBo> delegates) {
         this.delegates = delegates;
+    }
+
+    public boolean isForceAction() {
+        return forceAction;
+    }
+
+    public void setForceAction(boolean forceAction) {
+        this.forceAction = forceAction;
     }
 
     public Person getPerson() {
@@ -284,19 +295,26 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
         if (member == null) {
             return null;
         }
+
         PeopleFlowMemberBo memberBo = new PeopleFlowMemberBo();
         memberBo.setPeopleFlow(peopleFlow);
         memberBo.setMemberId(member.getMemberId());
         memberBo.setMemberType(member.getMemberType());
+
         if (member.getActionRequestPolicy() != null) {
             memberBo.setActionRequestPolicyCode(member.getActionRequestPolicy().getCode());
         }
+
         memberBo.setResponsibilityId(member.getResponsibilityId());
         memberBo.setPriority(member.getPriority());
         memberBo.setDelegates(new ArrayList<PeopleFlowDelegateBo>());
+
         for (PeopleFlowDelegate delegate : member.getDelegates()) {
             memberBo.getDelegates().add(PeopleFlowDelegateBo.from(delegate, memberBo));
         }
+
+        memberBo.setForceAction(member.isForceAction());
+
         return memberBo;
     }
 

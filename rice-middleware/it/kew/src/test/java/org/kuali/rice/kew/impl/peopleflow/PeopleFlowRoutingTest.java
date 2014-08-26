@@ -76,6 +76,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
     private static final String SINGLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "SinglePeopleFlow-PriorityParallel-Approve";
     private static final String MULTIPLE_PEOPLE_FLOW_PRIORITY_PARALLEL = "MultiplePeopleFlow-PriorityParallel";
     private static final String DELEGATE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE = "DelegatePeopleFlow-PriorityParallel-Approve";
+    private static final String RULESENGINE_PEOPLEFLOW_PRIORITYPARALLEL_APPROVE = "RulesEngine-PeopleFlow-PriorityParallel-Approve";
 
     private static final String ROLE_DELEGATE_PEOPLE_FLOW_JUST_KIM_DELEGATE = "RoleDelegatePeopleFlow-JustKimDelegate";
     private static final String ROLE_DELEGATE_PEOPLE_FLOW_PRIMARY_DELEGATE = "RoleDelegatePeopleFlow-PrimaryDelegate";
@@ -464,6 +465,123 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         document.approve("");
         document.switchPrincipal(ewestfal);
         document.approve("");
+        assertTrue(document.isFinal());
+    }
+
+    /**
+     * Test to verify that when forceAction=true for a PeopleFlow member, even if they've already approved this
+     * workflow, they still get an approval request.
+     *
+     * <p>Simple PeopleFlow with the same member at 2 stops - </p>
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> user1
+     * Priority 2:
+     *   -> user2
+     * Priority3:
+     *   -> user1 (forceAction = true)
+     *
+     * </pre>
+     */
+    @Test
+    public void test_SinglePeopleFlow_forceActionTrue() throws Exception {
+
+        PeopleFlowDefinition.Builder peopleFlowBuilder = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_2);
+        peopleFlowBuilder.addPrincipal(user1).setPriority(1);
+        peopleFlowBuilder.addPrincipal(user2).setPriority(2);
+        peopleFlowBuilder.addPrincipal(user1).setPriority(3);
+        PeopleFlowDefinition peopleFlow = peopleFlowService.createPeopleFlow(peopleFlowBuilder.build());
+
+        RulesEngineExecutorMock.setPeopleFlowId(peopleFlow.getId());
+
+        // now route a document to it
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, RULESENGINE_PEOPLEFLOW_PRIORITYPARALLEL_APPROVE);
+
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        assertApproveRequested(document, user1);
+        assertApproveNotRequested(document, user2, user3);
+
+        // approve as user1
+        document.switchPrincipal(user1);
+        document.approve("");
+        assertApproveRequested(document, user2);
+        assertApproveNotRequested(document, user1, user3);
+
+        document.switchPrincipal(user2);
+        document.approve("");
+        assertTrue(document.isEnroute());
+
+        // now user1 should have an approve request since forceAction is true
+        assertApproveRequested(document, user1);
+        assertApproveNotRequested(document, user2, user2);
+
+        // approve as user1
+        document.switchPrincipal(user1);
+        document.approve("");
+        assertTrue(document.isFinal());
+    }
+
+    /**
+     * Test to verify that when forceAction=false for a PeopleFlow member, if they've already approved this
+     * workflow previously, they won't get another approval request.
+     *
+     * <p>Simple PeopleFlow with the same member at 2 stops - </p>
+     *
+     * <pre>
+     *
+     * Priority 1:
+     *   -> user1
+     * Priority 2:
+     *   -> user2
+     * Priority3:
+     *   -> user1 (forceAction = false)
+     *
+     * </pre>
+     */
+    @Test
+    public void test_SinglePeopleFlow_forceActionFalse() throws Exception {
+
+        PeopleFlowDefinition.Builder peopleFlowBuilder = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, PEOPLE_FLOW_2);
+        PeopleFlowMember.Builder member1 = peopleFlowBuilder.addPrincipal(user1);
+        member1.setPriority(1);
+        member1.setForceAction(false);
+
+        PeopleFlowMember.Builder member2 = peopleFlowBuilder.addPrincipal(user2);
+        member2.setPriority(2);
+        member2.setForceAction(false);
+
+        PeopleFlowMember.Builder member3 = peopleFlowBuilder.addPrincipal(user1);
+        member3.setPriority(3);
+        member3.setForceAction(false);
+
+        PeopleFlowDefinition peopleFlow = peopleFlowService.createPeopleFlow(peopleFlowBuilder.build());
+
+        RulesEngineExecutorMock.setPeopleFlowId(peopleFlow.getId());
+
+        // now route a document to it
+        //        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, SINGLE_PEOPLE_FLOW_PRIORITY_PARALLEL_APPROVE);
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(user3, RULESENGINE_PEOPLEFLOW_PRIORITYPARALLEL_APPROVE);
+
+        document.route("");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        assertApproveRequested(document, user1);
+        assertApproveNotRequested(document, user2, user3);
+
+        // approve as user1
+        document.switchPrincipal(user1);
+        document.approve("");
+        assertApproveRequested(document, user2);
+        assertApproveNotRequested(document, user1, user3);
+
+        document.switchPrincipal(user2);
+        document.approve("");
+
+        // Since user1 already approved, and forceAction=false, the doc should go right to final
         assertTrue(document.isFinal());
     }
 

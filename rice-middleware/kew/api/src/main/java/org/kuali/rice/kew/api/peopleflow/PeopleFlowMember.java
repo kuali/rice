@@ -46,6 +46,7 @@ import java.util.List;
         PeopleFlowMember.Elements.RESPONSIBILITY_ID,
         PeopleFlowMember.Elements.PRIORITY,
         PeopleFlowMember.Elements.DELEGATES,
+        PeopleFlowMember.Elements.FORCE_ACTION,
         CoreConstants.CommonElements.FUTURE_ELEMENTS
 })
 public final class PeopleFlowMember extends AbstractDataTransferObject implements PeopleFlowMemberContract {
@@ -71,6 +72,9 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     @XmlElement(name = Elements.DELEGATE, required = false)
     private final List<PeopleFlowDelegate> delegates;
 
+    @XmlElement(name = Elements.FORCE_ACTION, required = false)
+    private boolean forceAction;
+
     @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
@@ -85,6 +89,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         this.responsibilityId = null;
         this.priority = STARTING_PRIORITY;
         this.delegates = null;
+        this.forceAction = true;
     }
 
     private PeopleFlowMember(Builder builder) {
@@ -94,6 +99,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         this.responsibilityId = builder.getResponsibilityId();
         this.priority = builder.getPriority();
         this.delegates = ModelObjectUtils.buildImmutableCopy(builder.getDelegates());
+        this.forceAction = builder.isForceAction();
     }
 
     @Override
@@ -126,6 +132,11 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         return this.delegates;
     }
 
+    @Override
+    public boolean isForceAction() {
+        return forceAction;
+    }
+
     /**
      * A builder which can be used to construct {@link PeopleFlowMember} instances.  Enforces the constraints of the
      * {@link PeopleFlowMemberContract}.
@@ -138,6 +149,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         private String responsibilityId;
         private int priority;
         private List<PeopleFlowDelegate.Builder> delegates;
+        private boolean forceAction = true;
 
         private Builder(String memberId, MemberType memberType) {
             setMemberId(memberId);
@@ -161,14 +173,19 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
             if (contract == null) {
                 throw new IllegalArgumentException("contract was null");
             }
+
             Builder builder = create(contract.getMemberId(), contract.getMemberType());
             builder.setActionRequestPolicy(contract.getActionRequestPolicy());
             builder.setPriority(contract.getPriority());
+
             if (CollectionUtils.isNotEmpty(contract.getDelegates())) {
                 for (PeopleFlowDelegateContract delegate : contract.getDelegates()) {
                     builder.getDelegates().add(PeopleFlowDelegate.Builder.create(delegate));
                 }
             }
+
+            builder.setForceAction(contract.isForceAction());
+
             return builder;
         }
 
@@ -205,6 +222,9 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         public List<PeopleFlowDelegate.Builder> getDelegates() {
             return delegates;
         }
+
+        @Override
+        public boolean isForceAction() { return forceAction; }
 
         public void setMemberId(String memberId) {
             if (StringUtils.isBlank(memberId)) {
@@ -243,6 +263,10 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         public void setDelegates(List<PeopleFlowDelegate.Builder> delegates) {
             this.delegates = delegates;
         }
+
+        public void setForceAction(boolean forceAction) {
+            this.forceAction = forceAction;
+        }
     }
 
     /**
@@ -264,6 +288,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         final static String PRIORITY = "priority";
         final static String DELEGATES = "delegates";
         final static String DELEGATE = "delegate";
+        final static String FORCE_ACTION = "forceAction";
     }
 
 }

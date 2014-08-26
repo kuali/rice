@@ -70,6 +70,8 @@ class SearchableAttributeValueTest {
      * tests default validation for SearchableAttributeFloatValue against some sample inputs
      */
     @Test void testFloatValueDefaultValidation() {
+        assertTrue(new SearchableAttributeFloatValue().isPassesDefaultValidation("12345"));
+        assertTrue(new SearchableAttributeFloatValue().isPassesDefaultValidation("-12345"));
         assertTrue(new SearchableAttributeFloatValue().isPassesDefaultValidation("12345.56"));
         assertTrue(new SearchableAttributeFloatValue().isPassesDefaultValidation("-12345.56"));
         assertTrue(new SearchableAttributeFloatValue().isPassesDefaultValidation("-0.56"));

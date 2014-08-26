@@ -99,6 +99,27 @@
     </documentType>
 
     <documentType>
+      <name>RulesEngine-PeopleFlow-PriorityParallel-Approve</name>
+      <label>RulesEngine-PeopleFlow-PriorityParallel-Approve</label>
+      <description>Calls a RulesEngineExecutor that returns a PeopleFlow</description>
+      <docHandler>none</docHandler>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" nextNode="rulesEngine" />
+          <requests name="rulesEngine"/>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc" />
+        <requests name="rulesEngine">
+          <activationType>R</activationType>
+          <rulesEngine executorClass="org.kuali.rice.kew.impl.peopleflow.RulesEngineExecutorMock" />
+        </requests>
+      </routeNodes>
+    </documentType>
+
+    <documentType>
       <name>MultiplePeopleFlow-PriorityParallel</name>
       <label>MultiplePeopleFlow-PriorityParallel</label>
       <description>Routes to three different people flows using priority-parallel activation.</description>
@@ -133,7 +154,7 @@
 
     <documentType>
       <name>DelegatePeopleFlow-PriorityParallel-Approve</name>
-      <label>MultiplePeopleFlow-PriorityParallel</label>
+      <label>DelegatePeopleFlow-PriorityParallel-Approve</label>
       <description>Routes to a simple people flow with delegates using priority-parallel activation.</description>
       <docHandler>none</docHandler>
       <routePaths>

@@ -34,6 +34,7 @@
         <ref bean="PeopleFlowMember-memberTypeCode"/>
         <ref bean="PeopleFlowMember-priority"/>
         <ref bean="PeopleFlowMember-actionRequestPolicyCode"/>
+        <ref bean="PeopleFlowMember-forceAction"/>
       </list>
     </property>
     <property name="relationships">
@@ -151,5 +152,18 @@
               value="For role members determines whether all members must take action or just the first"/>
   </bean>
 
+  <bean id="PeopleFlowMember-forceAction" parent="PeopleFlowMember-forceAction-parentBean"/>
+  <bean id="PeopleFlowMember-forceAction-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="forceAction"/>
+    <property name="label" value="Force Action"/>
+    <property name="shortLabel" value="Force Action"/>
+    <property name="controlField">
+      <bean parent="Uif-CheckboxControl"/>
+    </property>
+    <property name="summary"
+              value="Specifies whether requests for this member must be acted on even if they have already taken that action in the workflow."/>
+    <property name="description"
+              value="Specifies whether requests for this member must be acted on even if they have already taken that action in the workflow."/>
+  </bean>
 
 </beans>

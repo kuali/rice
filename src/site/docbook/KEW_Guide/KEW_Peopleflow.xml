@@ -92,7 +92,22 @@
             </figure>
         </para>
         <para> And below is a view of just the PeopleFlow Members section - expanded - after adding two
-            stops:</para>
+            stops.  There are some options that can be selected for each PeopleFlow Member:
+          <itemizedlist>
+          <listitem>
+            <para><emphasis role="bold">Force Action</emphasis> - All Member Types support the Force Action attribute,
+              which controls whether or not the requests for the member must be acted on even if they have already
+              taken the action in the workflow. </para>
+          </listitem>
+          <listitem>
+            <para><emphasis role="bold">All or First Action</emphasis> - The Role Member Type also supports the All or
+              First Action option.  If FIRST is selected, once a single principal with the selected Role approves, the
+              Role member approval is satisfied and the other principals  with that Role will not need to approve.  If
+              ALL is selected, then the approval request will not be considered satisfied until all the principals who
+              have the Role have approved. </para>
+          </listitem>
+          </itemizedlist>
+        </para>
         <para>
             <figure>
                 <title>PeopleFlow - Create New - with 2 stops added</title>

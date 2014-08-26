@@ -69,4 +69,12 @@ public interface PeopleFlowMemberContract {
      */
     List<? extends PeopleFlowDelegateContract> getDelegates();
 
+    /**
+     * Force Action specifies that the requests for this member must be acted on even if the member has already taken
+     * that action in the workflow.
+     *
+     * @return true if Force Action is specified
+     */
+    boolean isForceAction();
+
 }

@@ -86,9 +86,9 @@ import com.thoughtworks.xstream.core.BaseException;
  * a <code>Maintainable</code> that is also used for various callbacks
  *
  * <p>
- * The maintenance xml structure will be: <maintainableDocumentContents maintainableImplClass="className">
+ * The maintenance xml structure will be: {@code <maintainableDocumentContents maintainableImplClass="className">
  * <oldMaintainableObject>... </oldMaintainableObject> <newMaintainableObject>... </newMaintainableObject>
- * </maintainableDocumentContents> Maintenance Document
+ * </maintainableDocumentContents> Maintenance Document}
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)

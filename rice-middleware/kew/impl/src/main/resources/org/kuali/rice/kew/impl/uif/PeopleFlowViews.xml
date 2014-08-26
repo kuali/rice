@@ -158,6 +158,7 @@
         <bean parent="PeopleFlow-Member" p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="actionRequestPolicyCode" p:refreshWhenChangedPropertyNames="#lp.memberTypeCode"
               p:progressiveRender="#line.memberTypeCode eq 'R' " p:defaultValue="F"/>
+        <bean parent="Uif-InputField" p:propertyName="forceAction" p:defaultValue="true"/>
       </list>
     </property>
     <property name="subCollections">

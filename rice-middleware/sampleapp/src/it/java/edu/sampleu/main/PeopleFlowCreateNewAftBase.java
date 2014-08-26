@@ -71,7 +71,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
     }
 
     protected void testPeopleFlowBlanketApprove() throws Exception {
-        String docId = peopleFlowCreateNew();
+        PeopleFlowDocInfo docInfo = peopleFlowCreateNew();
 
         waitAndClickBlanketApprove();
         waitAndClickConfirmBlanketApproveOk();
@@ -88,16 +88,16 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
         findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
         Thread.sleep(5000);
-        jGrowl("Document Search is " + docId + " present?");
+        jGrowl("Document Search is " + docInfo.getDocId() + " present?");
         selectFrameIframePortlet();
-        waitAndTypeByName("documentId", docId);
+        waitAndTypeByName("documentId", docInfo.getDocId());
         jGrowl("Click search");
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         waitForTextPresent(DOC_STATUS_FINAL);
     }
 
     protected void testPeopleFlowCreateNew() throws Exception {
-        String docId = peopleFlowCreateNew();
+        PeopleFlowDocInfo docInfo = peopleFlowCreateNew();
 
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
@@ -111,18 +111,47 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
         findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
         Thread.sleep(5000);
-        jGrowl("Document Search is " + docId + " present?");
+        jGrowl("Document Search is " + docInfo.getDocId() + " present?");
         selectFrameIframePortlet();
-        waitAndTypeByName("documentId", docId);
+        waitAndTypeByName("documentId", docInfo.getDocId());
         jGrowl("Click search");
         findElement(By.cssSelector("td.infoline > input[name=\"methodToCall.search\"]")).click();
         waitForTextPresent(DOC_STATUS_FINAL);
+
+
+        jGrowl("Find our PeopleFlow by lookup");
+        driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
+        waitAndClick(By.linkText("Main Menu"));
+        Thread.sleep(3000);
+
+        waitAndClick(By.linkText("People Flow"));
+        waitForPageToLoad();
+        selectFrameIframePortlet();
+        waitAndTypeByName("lookupCriteria[name]", docInfo.getName());
+
+        jGrowl("Click search");
+        waitAndClickByXpath(SEARCH_XPATH_3);
+        waitForPageToLoad();
+        waitAndClickByLinkText("edit");
+        waitForPageToLoad();
+
+        jGrowl("verify the forceAction values for our two stops");
+        assertFalse(findElement(By.name("document.newMaintainableObject.dataObject.members[0].forceAction")).isSelected());
+        assertTrue(findElement(By.name("document.newMaintainableObject.dataObject.members[1].forceAction")).isSelected());
+
+
+        // TODO: handle graceful cancel from here
+//        findElement(By.id("ucancel")).click();
+//        // Say "Yes" to the modal dialog that follows
     }
 
-    private String peopleFlowCreateNew() throws InterruptedException {
+    private PeopleFlowDocInfo peopleFlowCreateNew() throws InterruptedException {
         selectFrameIframePortlet();
 
         waitAndClickByLinkText("Create New");
+        String peopleFlowNamespace = "KUALI - Kuali Systems";
+        String peopleFlowName = "Document Name" +
+                AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
 
         //Save docId
         waitForElementPresent("div[data-label='Document Number']");
@@ -132,24 +161,27 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
 
         findElement(By.name("document.documentHeader.documentDescription")).clear();
         waitAndTypeByName("document.documentHeader.documentDescription", "Description for Document");
-        waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", "KUALI - Kuali Systems");
+        waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", peopleFlowNamespace);
         findElement(By.name("document.newMaintainableObject.dataObject.name")).clear();
-        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name" +
-                AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars());
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", peopleFlowName);
 
         jGrowl("Add Member kr");
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "kr");
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].forceAction")).click();
         waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
         Thread.sleep(3000);
         checkForIncidentReport();
 
         jGrowl("Add Member admin");
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].priority")).clear();
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].priority", "2");
         findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName")).clear();
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "admin");
         waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
         Thread.sleep(3000);
-        return docId;
+
+        return new PeopleFlowDocInfo(docId, peopleFlowNamespace, peopleFlowName);
     }
 
     private void testPeopleFlowDuplicateEntry() throws Exception {
@@ -177,5 +209,44 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         waitForTextPresent("A PeopleFlow already exists with the name");
+    }
+
+    /**
+     * holds a few key pieces of info about a PeopleFlow document
+     */
+    public static class PeopleFlowDocInfo {
+        private final String docId;
+        private final String namespace;
+        private final String name;
+
+        /**
+         * Construct an object with information about a PeopleFlow document
+         */
+        public PeopleFlowDocInfo(String docId, String namespace, String name) {
+            this.docId = docId;
+            this.namespace = namespace;
+            this.name = name;
+        }
+
+        /**
+         * @return the document ID
+         */
+        public String getDocId() {
+            return docId;
+        }
+
+        /**
+         * @return the namespace of the PeopleFlow
+         */
+        public String getNamespace() {
+            return namespace;
+        }
+
+        /**
+         * @return the name of the PeopleFlow
+         */
+        public String getName() {
+            return name;
+        }
     }
 }

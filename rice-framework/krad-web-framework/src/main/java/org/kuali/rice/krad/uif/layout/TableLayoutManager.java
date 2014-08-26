@@ -77,6 +77,21 @@ public interface TableLayoutManager extends CollectionLayoutManager {
     void setSuppressLineWrapping(boolean suppressLineWrapping);
 
     /**
+     * Indicates whether the column text should be truncated when the table cell
+     * is to small to display the text without wrapping.
+     *
+     * <p>A tooltip is added to the table cell which displays the text before truncation.</p>
+     *
+     * @return true if the column should be truncated
+     */
+    Boolean isAutoTruncateColumns();
+
+    /**
+     * @see TableLayoutManager#isAutoTruncateColumns()
+     */
+    void setAutoTruncateColumns(Boolean autoTruncateColumns);
+
+    /**
      * Indicates whether alternating row styles should be applied.
      *
      * <p>Indicator to layout manager templates to apply alternating row styles.

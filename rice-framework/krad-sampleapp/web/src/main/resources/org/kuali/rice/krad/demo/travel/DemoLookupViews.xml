@@ -156,6 +156,7 @@
               p:hidden="@{#dp.lookupCriteria['number'] == 'a3'}"/>
       </list>
     </property>
+    <property name="resultsGroup.layoutManager.autoTruncateColumns" value="true"/>
     <property name="page.instructionalText">
       <value>
                 [b]*[/b] Enter the value &quot;a1&quot; into the [b]Travel Account Number[/b] criteria field to make
@@ -163,7 +164,10 @@
                 [b]*[/b] Enter the value &quot;a2&quot; into the [b]Travel Account Number[/b] criteria field to make
                 the [b]Date Created[/b] read only. [br/]
                 [b]*[/b] Enter the value &quot;a3&quot; into the [b]Travel Account Number[/b] criteria field to hide
-                the [b]Date Created[/b] criteria.
+                the [b]Date Created[/b] criteria. [br/]
+                [b]*[/b] Auto truncate is enabled on columns.  Shrink the colums by resizing the browser until the
+                result value doesn't fit into the column. A tooltip will be displayed when hovering over the truncated
+                text.
       </value>
     </property>
   </bean>

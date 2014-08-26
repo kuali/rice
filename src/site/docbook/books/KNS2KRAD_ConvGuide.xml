@@ -2123,6 +2123,21 @@
               </inlinemediaobject>
             </para>
           </listitem>
+          <listitem xml:id="LRF9">
+            <para>The <emphasis role="keyword">RESULTS_DEFAULT_MAX_COLUMN_LENGTH</emphasis> system property has been
+              retired in favor for the more responsive design which only truncates column content when needed. Setting
+              the <emphasis role="keyword">autoTruncateColumns</emphasis> property on the layout manager will cause the
+              text of column cells to truncate.  Hovering over the field will display a tooltip with the non-truncated
+              text.  By default autoTruncateColumns is disabled.  System wide default can be set via the
+              <emphasis role="keyword">AUTO_TRUNCATE_COLUMNS</emphasis> system property that either apply on all tables
+              or lookup results only.</para>
+            <para>If necessary a character count length can still be specified by overriding the UifControl p:size value.<inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+                </imageobject>
+              </inlinemediaobject>
+            </para>
+          </listitem>
         </itemizedlist>
       </para>
     </section>

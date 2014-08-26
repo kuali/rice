@@ -2627,3 +2627,41 @@ function focusEnd($control) {
         $control.focus();
     }
 }
+
+/**
+ * Create truncate tooltips on elements with the uif-truncate css class.  The tooltips
+ * will display the full text of the table cell when the displayed text in the table cell
+ * has been truncated.
+ */
+function createTruncateTooltips() {
+    jQuery('.uif-truncate').each(function() {
+        jQuery(this).on("mouseover", function () {
+            if ((jQuery('#' + this.id + '_control').text().trim()) && (this.offsetWidth < this.scrollWidth)) {
+                var tooltipElement = jQuery(this);
+                var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
+                if (!popoverData) {
+                    popoverData = initializeTooltip(tooltipElement);
+                }
+
+                if (!popoverData.shown) {
+                    popoverData.options.content = jQuery('#' + this.id + '_control').text();
+                    tooltipElement.popover("show");
+                    popoverData.shown = true;
+                }
+            }
+        });
+
+        jQuery(this).on("mouseout", function () {
+            if ((jQuery('#' + this.id + '_control').text().trim()) && (this.offsetWidth < this.scrollWidth)) {
+                var tooltipElement = jQuery(this);
+                var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
+
+                if (popoverData && popoverData.shown) {
+                    tooltipElement.popover("hide");
+                    popoverData.shown = false;
+                }
+            }
+        });
+
+    });
+}

@@ -97,6 +97,7 @@ public class CssConstants {
         public static final String BTN = "btn";
         public static final String BTN_DEFAULT = "btn-default";
         public static final String ICON_ONLY_BUTTON = "uif-iconOnly";
+        public static final String TRUNCATE = "uif-truncate";
     }
 
     public static class ProgressBar {

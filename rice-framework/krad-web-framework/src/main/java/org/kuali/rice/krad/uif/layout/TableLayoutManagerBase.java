@@ -25,6 +25,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
@@ -61,6 +62,7 @@ import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.RichTable;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
@@ -82,6 +84,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     private int numberOfColumns;
     private boolean suppressLineWrapping;
+    private Boolean autoTruncateColumns;
 
     private boolean applyAlternatingRowStyles;
     private boolean applyDefaultCellWidths;
@@ -205,6 +208,13 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         for (ColumnCalculationInfo cInfo : columnCalculations) {
             ViewLifecycle.getExpressionEvaluator().populatePropertyExpressionsFromGraph(cInfo, false);
         }
+
+        // autoTruncateColumns: use system wide configuration if not specified
+        if (isAutoTruncateColumns() == null) {
+            setAutoTruncateColumns(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+                    KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE,
+                    KRADConstants.SystemGroupParameterNames.AUTO_TRUNCATE_COLUMNS, false));
+        }
     }
 
     /**
@@ -234,7 +244,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         setNumberOfColumns(totalColumns);
 
         // Default equal cell widths class
-        if (this.isApplyDefaultCellWidths()){
+        if (this.isApplyDefaultCellWidths() || this.isAutoTruncateColumns()){
             this.addStyleClass("uif-table-fixed");
         }
 
@@ -543,6 +553,18 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
                     UifPropertyPaths.REQUIRED, true);
             expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
                     UifPropertyPaths.READ_ONLY, true);
+
+            if ((lineField instanceof DataField) && (this.isAutoTruncateColumns())) {
+                lineField.addStyleClass(CssConstants.Classes.TRUNCATE);
+            }
+        }
+
+        if (this.isAutoTruncateColumns()) {
+            String onReadyScript = collectionGroup.getOnDocumentReadyScript();
+            if (StringUtils.isBlank(onReadyScript)) {
+                onReadyScript = "";
+            }
+            collectionGroup.setOnDocumentReadyScript(onReadyScript + "createTruncateTooltips();");
         }
 
         // if first line for table set number of data columns
@@ -1195,6 +1217,23 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
     @Override
     public void setSuppressLineWrapping(boolean suppressLineWrapping) {
         this.suppressLineWrapping = suppressLineWrapping;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @BeanTagAttribute
+    public Boolean isAutoTruncateColumns() {
+        return autoTruncateColumns;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setAutoTruncateColumns(Boolean autoTruncateColumns) {
+        this.autoTruncateColumns = autoTruncateColumns;
     }
 
     /**

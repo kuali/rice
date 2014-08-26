@@ -23,11 +23,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.Inactivatable;
+import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBean;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
@@ -45,6 +45,7 @@ import org.kuali.rice.krad.uif.control.TextControl;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
+import org.kuali.rice.krad.uif.layout.TableLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
@@ -54,7 +55,6 @@ import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.FormView;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -213,6 +213,14 @@ public class LookupView extends FormView {
             Person user = GlobalVariables.getUserSession().getPerson();
             renderMaintenanceLinks = lookupAuthorizer.canInitiateMaintenanceDocument(getDataObjectClass().getName(),
                     user);
+        }
+
+        // autoTruncateColumns: use system wide lookup result configuration if not specified
+        TableLayoutManager resultsTableLayoutManager = (TableLayoutManager) this.getResultsGroup().getLayoutManager();
+        if (resultsTableLayoutManager.isAutoTruncateColumns() == null) {
+            resultsTableLayoutManager.setAutoTruncateColumns(CoreFrameworkServiceLocator.getParameterService()
+                    .getParameterValueAsBoolean(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE,
+                            KRADConstants.SystemGroupParameterNames.AUTO_TRUNCATE_COLUMNS, false));
         }
 
         convertLookupCriteriaFields(criteriaGroup);

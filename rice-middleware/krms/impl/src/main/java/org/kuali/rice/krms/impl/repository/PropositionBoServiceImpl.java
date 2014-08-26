@@ -37,7 +37,7 @@ import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigration
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public final class PropositionBoServiceImpl implements PropositionBoService {
+public class PropositionBoServiceImpl implements PropositionBoService {
 
     private DataObjectService dataObjectService;
 

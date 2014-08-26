@@ -28,7 +28,7 @@ import static org.mockito.Mockito.mock;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public final class TypeTypeRelationBoServiceImplGenTest {
+public class TypeTypeRelationBoServiceImplGenTest {
 
     TypeTypeRelationBoServiceImpl typeTypeRelationBoServiceImpl;
     TypeTypeRelation typeTypeRelation;

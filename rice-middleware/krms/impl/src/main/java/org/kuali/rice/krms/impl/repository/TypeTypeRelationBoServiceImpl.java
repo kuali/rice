@@ -36,8 +36,7 @@ import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigration
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public final class TypeTypeRelationBoServiceImpl
-    implements TypeTypeRelationBoService {
+public class TypeTypeRelationBoServiceImpl implements TypeTypeRelationBoService {
 
     private DataObjectService dataObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;

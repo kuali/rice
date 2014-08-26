@@ -32,7 +32,7 @@ import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigration
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public final class ContextBoServiceImpl implements ContextBoService {
+public class ContextBoServiceImpl implements ContextBoService {
 
     private DataObjectService dataObjectService;
 

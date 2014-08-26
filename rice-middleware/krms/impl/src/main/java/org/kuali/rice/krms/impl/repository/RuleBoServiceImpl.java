@@ -36,7 +36,7 @@ import java.util.Set;
 
 import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
 
-public final class RuleBoServiceImpl implements RuleBoService {
+public class RuleBoServiceImpl implements RuleBoService {
 
 	private DataObjectService dataObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;

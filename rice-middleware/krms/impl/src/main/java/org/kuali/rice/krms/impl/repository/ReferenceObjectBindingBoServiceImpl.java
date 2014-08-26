@@ -39,7 +39,7 @@ import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigration
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public final class ReferenceObjectBindingBoServiceImpl implements ReferenceObjectBindingBoService {
+public class ReferenceObjectBindingBoServiceImpl implements ReferenceObjectBindingBoService {
 
     private DataObjectService dataObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;

@@ -33,7 +33,7 @@ import static org.mockito.Mockito.mock;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public final class NaturalLanguageTemplateBoServiceImplGenTest {
+public class NaturalLanguageTemplateBoServiceImplGenTest {
 
     NaturalLanguageTemplateBoServiceImpl naturalLanguageTemplateBoServiceImpl;
     NaturalLanguageTemplate naturalLanguageTemplate;

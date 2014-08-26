@@ -44,7 +44,7 @@ import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigration
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public final class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemplateBoService {
+public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemplateBoService {
 
     private DataObjectService dataObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;

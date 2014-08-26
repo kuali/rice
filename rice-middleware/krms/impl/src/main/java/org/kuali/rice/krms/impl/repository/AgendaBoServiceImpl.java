@@ -50,7 +50,7 @@ import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigration
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public final class AgendaBoServiceImpl implements AgendaBoService {
+public class AgendaBoServiceImpl implements AgendaBoService {
 
     // TODO: deal with active flag
 

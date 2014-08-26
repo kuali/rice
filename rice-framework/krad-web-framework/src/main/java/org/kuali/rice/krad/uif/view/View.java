@@ -121,6 +121,7 @@ public class View extends ContainerBase {
     // application
     private Header applicationHeader;
     private Group applicationFooter;
+    private Group buildFooter;
     private String applicationTitleText;
 
     // sticky flags
@@ -732,6 +733,23 @@ public class View extends ContainerBase {
     public void setApplicationFooter(Group applicationFooter) {
         checkMutable(true);
         this.applicationFooter = applicationFooter;
+    }
+
+    /**
+     * Build footer for the application containing the view.
+     *
+     * @return build footer
+     */
+    @BeanTagAttribute
+    public Group getBuildFooter() {
+        return buildFooter;
+    }
+
+    /**
+     * @see View#getBuildFooter()
+     */
+    public void setBuildFooter(Group buildFooter) {
+        this.buildFooter = buildFooter;
     }
 
     /**

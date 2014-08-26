@@ -31,7 +31,6 @@
     display: none;
 }
 
-
 .ui-widget-content a {
     color: #1150b0/*{fcContent}*/;
 }
@@ -145,7 +144,6 @@
     min-height: 64px;
     background-position: left top;
     background-repeat: no-repeat;
-
 }
 
 .demo-sampleAppHome-sellingPoint#KradSampleAppHome-Point2 .uif-instructionalMessage {
@@ -386,9 +384,7 @@
 #ComponentLibrary-TabGroup_tabList .ui-widget-header { background: none}
 
 .ui-widget-header {
-
     background: #ffffff /*{bgColorHeader}*/ url("");
-
 }
 
 .demo-xLargeLibraryView > .uif-viewContentWrapper .uif-page{
@@ -450,10 +446,7 @@
     padding-top: 40px;
 }
 
-
-
 .demo-componentLibNav .ui-accordion-header {
-
     background-image: url("../images/sprite-navIcons.png"), url("../images/navDivider.png");
     background-position: left top;
     background-repeat: no-repeat, no-repeat;
@@ -688,18 +681,8 @@ div#ComponentLibraryHome-GeneralFeatures h3 {
 }
 
 #ComponentLibrary-TabGroup.demo-noTabs div[data-type="TabWrapper"] .uif-boxSection{
-
-width: 100%;
+    width: 100%;
 }
-
-
-
-
-
-
-
-
-
 
 /*********** Documentation tab *************************************************************/
 
@@ -819,42 +802,6 @@ a.demo-documentationLink {
 
 /*********** Application Footer *****************************************************/
 
-.demo-appFooter {
-    background: none repeat scroll 0 0 #000000;
-    color: #FFFFFF;
-    height: 74px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-}
-
-.demo-appFooter .demo-foundationInfo {
-    background-image: url("../images/logo-kuali.png");
-    background-position: 0 14px;
-    background-repeat: no-repeat;
-    padding-bottom: 22px;
-    padding-left: 40px;
-    padding-top: 22px;
-}
-
-.demo-appFooter .demo-poweredBy {
-    position: absolute;
-    right: 0;
-    top: 0;
-    color: #999999;
-    font-size: 14px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    text-align: center;
-}
-
-.demo-appFooter a {
-    color: #999999;
-}
-
-.demo-appFooter a:hover {
-    color: #FFFFFF;
-}
-
 .demo-thirdTier {
     background: #780126;
     background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzc4MDEyNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhMzAyMzQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
@@ -939,7 +886,6 @@ a.demo-documentationLink {
 .demo-tweets {
     width: 240px;
     float: left;
-
 }
 
 .tweet_text {
@@ -1139,5 +1085,3 @@ table.dataTable tr.demo-rowCondition {
     margin-right:5px;
     margin-left:5px;
 }
-
-

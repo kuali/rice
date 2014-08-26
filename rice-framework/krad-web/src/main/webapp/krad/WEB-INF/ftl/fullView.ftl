@@ -41,6 +41,7 @@
         <@krad.backdoor/>
     </#if>
 
+    <!-- APPLICATION FORM/CONTENT - VIEW -->
     <@krad.form render=view.renderForm postUrl="${KualiForm.formPostUrl}"
     onSubmitScript="${view.onSubmitScript!}" disableNativeAutocomplete=view.disableNativeAutocomplete>
         <@krad.template component=view/>
@@ -99,6 +100,10 @@
             </#if>
 
             <@krad.template component=view.applicationFooter/>
+
+            <#if view.buildFooter?? && view.buildFooter.render>
+                <@krad.template component=view.buildFooter/>
+            </#if>
 
             <#if view.stickyApplicationFooter>
                 </div>

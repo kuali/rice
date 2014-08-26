@@ -235,7 +235,6 @@ public class ExpressionFunctions {
             dataSource = KRADServiceLocator.getKradApplicationDataSource();
         }
         return Long.valueOf(MaxValueIncrementerFactory.getIncrementer(dataSource, sequenceName).nextLongValue());
-
     }
 
     /**
@@ -287,5 +286,14 @@ public class ExpressionFunctions {
         }
 
         return null;
+    }
+
+    /**
+     * Determines if running in a production environment.
+     *
+     * @return true if running in a production environment
+     */
+    public static boolean isProductionEnvironment() {
+        return ConfigContext.getCurrentContextConfig().isProductionEnvironment();
     }
 }

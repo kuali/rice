@@ -77,6 +77,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     private static Method hasPermTmpl;
     private static Method sequence;
     private static Method getDataObjectKey;
+    private static Method isProductionEnvironment;
 
     static {
         try {
@@ -100,6 +101,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
             sequence = ExpressionFunctions.class.getDeclaredMethod("sequence", new Class[] {String.class});
             getDataObjectKey = ExpressionFunctions.class.getDeclaredMethod("getDataObjectKey",
                     new Class[] {String.class});
+            isProductionEnvironment = ExpressionFunctions.class.getDeclaredMethod("isProductionEnvironment", null);
         } catch (NoSuchMethodException e) {
             LOG.error("Custom function for el expressions not found: " + e.getMessage());
             throw new RuntimeException("Custom function for el expressions not found: " + e.getMessage(), e);
@@ -647,6 +649,7 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         context.registerFunction("hasPermTmpl", hasPermTmpl);
         context.registerFunction("sequence", sequence);
         context.registerFunction("getDataObjectKey", getDataObjectKey);
+        context.registerFunction("isProductionEnvironment", isProductionEnvironment);
     }
 
     /**

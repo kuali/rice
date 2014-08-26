@@ -39,6 +39,7 @@
         class="org.kuali.rice.krad.uif.view.View" scope="singleton" parent="Uif-ComponentBase">
     <property name="applicationHeader" ref="Uif-GlobalApplicationHeader"/>
     <property name="applicationFooter" ref="Uif-GlobalApplicationFooter"/>
+    <property name="buildFooter" ref="Uif-BuildFooter"/>
     <property name="template" value="/krad/WEB-INF/ftl/components/view/view.ftl"/>
     <property name="templateName" value="uif_view"/>
     <property name="theme">

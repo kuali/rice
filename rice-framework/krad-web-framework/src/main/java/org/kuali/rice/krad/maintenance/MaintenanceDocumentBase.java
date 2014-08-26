@@ -873,7 +873,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
                 // that has not changed
             } else {
                 throw new ValidationException(
-                        "Unreported errors occured during business rule evaluation (rule developer needs to put meaningful error messages into global ErrorMap)");
+                        "Unreported errors occurred during business rule evaluation (rule developer needs to put meaningful error messages into global ErrorMap)");
             }
         }
 

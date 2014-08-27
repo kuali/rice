@@ -89,7 +89,7 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
 //        waitForElementVisibleBy(By.xpath("//label[contains(text(), 'No')]"), "").click();
 //        waitAndClick(By.xpath("//label[contains(text(), 'No')]"));
 //        waitAndClickButtonByText("submit");
-        waitAndClick(By.xpath("//button[contains(text(), 'Yes')]"));
+//        waitAndClick(By.xpath("//button[contains(text(), 'Yes')]"));
     	waitForTextPresent("Document was successfully");
     }
 

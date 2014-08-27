@@ -50,11 +50,11 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
     private final boolean sendNotifications;
 
     //KULRICE-12283: Added two new flags to indicate if acknowledgements and FYIs should be deactivated when blanket approval occurs
-    @XmlElement(name = Elements.DEACTIVATE_ACKNOWLEDGEMENTS, required = true)
-    private final boolean deactivateAcknowledgements;
+    @XmlElement(name = Elements.DEACTIVATE_ACKNOWLEDGEMENTS, required = false)
+    private final Boolean deactivateAcknowledgements;
 
-    @XmlElement(name = Elements.DEACTIVATE_FYIS, required = true)
-    private final boolean deactivateFYIs;
+    @XmlElement(name = Elements.DEACTIVATE_FYIS, required = false)
+    private final Boolean deactivateFYIs;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -133,5 +133,5 @@ public final class DocumentProcessingOptions extends AbstractDataTransferObject 
         final static String DEACTIVATE_ACKNOWLEDGEMENTS = "deactivateAcknowledgements";
         final static String DEACTIVATE_FYIS = "deactivateFYIs";
     }
-    
+
 }

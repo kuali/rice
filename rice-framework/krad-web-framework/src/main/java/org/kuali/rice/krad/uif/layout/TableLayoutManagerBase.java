@@ -244,7 +244,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         setNumberOfColumns(totalColumns);
 
         // Default equal cell widths class
-        if (this.isApplyDefaultCellWidths() || this.isAutoTruncateColumns()){
+        if (this.isApplyDefaultCellWidths() || Boolean.TRUE.equals(this.isAutoTruncateColumns())){
             this.addStyleClass("uif-table-fixed");
         }
 

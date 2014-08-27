@@ -165,7 +165,7 @@
                 the [b]Date Created[/b] read only. [br/]
                 [b]*[/b] Enter the value &quot;a3&quot; into the [b]Travel Account Number[/b] criteria field to hide
                 the [b]Date Created[/b] criteria. [br/]
-                [b]*[/b] Auto truncate is enabled on columns.  Shrink the colums by resizing the browser until the
+                [b]*[/b] Auto truncate is enabled on columns.  Shrink the columns by resizing the browser until the
                 result value doesn't fit into the column. A tooltip will be displayed when hovering over the truncated
                 text.
       </value>

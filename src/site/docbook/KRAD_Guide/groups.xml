@@ -3410,10 +3410,11 @@
       </section>
       <section>
         <title>Auto Truncate</title>
-        <para>For cells with display only text the autoTruncateColumns can be enabled.  When enabled, the content of the
+        <para>For cells with display only text automatic truncating can be enabled.  When enabled, the content of the
           cell is truncated instead of wrapped and a tooltip will be shown on hover over with the complete text of the
-          cell.  This feature can be enabled per table via the autoTruncateColumns property of the layout manager or
-          globally for all tables or all lookup results via the AUTO_TRUNCATE_COLUMNS system property.
+          cell.  This feature can be enabled per table via the <emphasis role="keyword">autoTruncateColumns</emphasis>
+          property of the layout manager or globally for all tables or all lookup results via the
+          <emphasis role="keyword">AUTO_TRUNCATE_COLUMNS</emphasis> system property.
         </para>
       </section>
       <section>

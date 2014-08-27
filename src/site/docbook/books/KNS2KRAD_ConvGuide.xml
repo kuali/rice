@@ -2123,7 +2123,7 @@
               </inlinemediaobject>
             </para>
           </listitem>
-          <listitem xml:id="LRF9">
+          <listitem xml:id="LRF10">
             <para>The <emphasis role="keyword">RESULTS_DEFAULT_MAX_COLUMN_LENGTH</emphasis> system property has been
               retired in favor for the more responsive design which only truncates column content when needed. Setting
               the <emphasis role="keyword">autoTruncateColumns</emphasis> property on the layout manager will cause the

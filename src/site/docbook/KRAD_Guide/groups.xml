@@ -3417,26 +3417,25 @@
           <emphasis role="keyword">AUTO_TRUNCATE_COLUMNS</emphasis> system property.
         </para>
       </section>
-      <section>
-        <title>Stacked Layout</title>
-        <para>Coming Soon!</para>
-        <!-- TODO: Add content here.
-                  -->
-        <figure>
-          <title>Stacked Layout Manager</title>
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="../images/KRAD_Guide/KRAD_Stacked_Layout_Manager.png"/>
-            </imageobject>
-          </mediaobject>
-        </figure>
-      </section>
-      <section>
-        <title>The List Template</title>
-        <para>Coming Soon!</para>
-        <!-- TODO: Add content here.
-                  -->
-      </section>
+    </section>
+    <section>
+      <title>Stacked Layout</title>
+      <para>Coming Soon!</para>
+      <!-- TODO: Add content here.
+                -->
+      <figure>
+        <title>Stacked Layout Manager</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/KRAD_Guide/KRAD_Stacked_Layout_Manager.png"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
+    <section>
+      <title>The List Template</title>
+      <para>Coming Soon!</para>
+      <!-- TODO: Add content here. -->
       <section role="NotInToc">
         <title>Recap</title>
         <itemizedlist>

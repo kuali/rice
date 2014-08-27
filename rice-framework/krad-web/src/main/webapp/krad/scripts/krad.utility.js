@@ -2636,7 +2636,8 @@ function focusEnd($control) {
 function createTruncateTooltips() {
     jQuery('.uif-truncate').each(function() {
         jQuery(this).on("mouseover", function () {
-            if ((jQuery('#' + this.id + '_control').text().trim()) && (this.offsetWidth < this.scrollWidth)) {
+            if ((jQuery('#' + this.id + '_control').text().trim())
+                    && (this.offsetWidth < document.getElementById(this.id + "_control").offsetWidth)) {
                 var tooltipElement = jQuery(this);
                 var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
                 if (!popoverData) {
@@ -2652,7 +2653,8 @@ function createTruncateTooltips() {
         });
 
         jQuery(this).on("mouseout", function () {
-            if ((jQuery('#' + this.id + '_control').text().trim()) && (this.offsetWidth < this.scrollWidth)) {
+            if ((jQuery('#' + this.id + '_control').text().trim())
+                    && (this.offsetWidth < document.getElementById(this.id + "_control").offsetWidth)) {
                 var tooltipElement = jQuery(this);
                 var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
 
@@ -2662,6 +2664,5 @@ function createTruncateTooltips() {
                 }
             }
         });
-
     });
 }

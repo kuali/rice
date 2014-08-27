@@ -608,7 +608,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertTrue(pageSource.contains("Actions"));
     }
 
-    private void blanketApproveAssert(String docId) throws InterruptedException {
+    protected void blanketApproveAssert(String docId) throws InterruptedException {
         checkForDocError();
         assertDocSearch(docId, DOC_STATUS_FINAL);
     }
@@ -1166,6 +1166,16 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSave();
+
+        int attempts = 0;
+        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
+                ++attempts <= 3) {
+            uniqueString = null; // make sure try a new one
+            jGrowl("record with the same primary key already exists");
+            createNewEnterDetails();
+            waitAndClickSave();
+        }
+
         checkForDocError();
         waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         waitAndClickSubmit();

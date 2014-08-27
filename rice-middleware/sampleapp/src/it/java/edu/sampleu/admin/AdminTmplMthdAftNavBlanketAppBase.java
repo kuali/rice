@@ -39,7 +39,25 @@ public abstract class AdminTmplMthdAftNavBlanketAppBase extends AdminTmplMthdAft
         String docId = verifyDocInitiated();
         assertBlanketApproveButtonsPresent();
         createNewLookupDetails();
-        blanketApproveTest(docId);
+
+        jGrowl("Click Blanket Approve");
+        waitAndClickByName(BLANKET_APPROVE_NAME,
+                "No blanket approve button does the user " + getUserName() + " have permission?");
+        Thread.sleep(2000);
+
+        int attempts = 0;
+        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
+                ++attempts <= 3) {
+            uniqueString = null; // make sure try a new one
+            jGrowl("record with the same primary key already exists");
+            createNewEnterDetails();
+            jGrowl("Click Blanket Approve");
+            waitAndClickByName(BLANKET_APPROVE_NAME,
+                    "No blanket approve button does the user " + getUserName() + " have permission?");
+        }
+
+        checkForIncidentReport();
+        blanketApproveAssert(docId);
         return docId;
     }
 

@@ -79,9 +79,11 @@ public class LocationCountryAft extends AdminTmplMthdAftNavBlanketAppBase {
             getDescriptionUnique(); // trigger creating of uniqueString
         }
 
-        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
-        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        waitForElementPresentByName("document.documentHeader.documentDescription");
+
+        jiraAwareClearAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
     }
 
     @Override

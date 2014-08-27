@@ -474,6 +474,23 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         return isVisible(By.xpath(locator));
     }
 
+    protected WebElement jiraAwareClearType(By by, String text) {
+        return jiraAwareClearAndType(by, text, this.getClass().toString().replace("class ", ""));
+    }
+
+    protected WebElement jiraAwareClearAndType(By by, String text, String failureMessage) {
+        findElement(by).clear();
+        return jiraAwareType(by, text, failureMessage);
+    }
+
+    protected WebElement jiraAwareClearAndTypeByName(String name, String text) {
+        return jiraAwareClearAndType(By.name(name), text, this.getClass().toString().replace("class ", ""));
+    }
+
+    protected WebElement jiraAwareClearAndTypeByName(String name, String text, String failureMessage) {
+        return jiraAwareClearAndType(By.name(name), text, failureMessage);
+    }
+
     /**
      * {@inheritDoc}
      * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtils#fail}.

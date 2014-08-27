@@ -53,14 +53,16 @@ public class LocationPostCodeAft extends AdminTmplMthdAftNavBlanketAppBase {
     protected void createNewEnterDetails() throws InterruptedException {
         inputDetails();
 
-        jiraAwareTypeByName("document.newMaintainableObject.countryCode", "US");
-        jiraAwareTypeByName("document.newMaintainableObject.stateCode", "IN");
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.countryCode", "US");
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.stateCode", "IN");
     }
 
     private void inputDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(7, 12));
-        jiraAwareTypeByName("document.newMaintainableObject.cityName", "name" + uniqueString);
+        waitForElementPresentByName("document.documentHeader.documentDescription");
+
+        jiraAwareClearAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.code", uniqueString.substring(7, 12));
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.cityName", "name" + uniqueString);
     }
 
     @Override

@@ -1119,6 +1119,16 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String docId = verifyDocInitiated();
         createNewEnterDetails();
         waitAndClickSave();
+
+        int attempts = 0;
+        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
+                ++attempts <= 3) {
+            uniqueString = null; // make sure try a new one
+            jGrowl("record with the same primary key already exists");
+            createNewEnterDetails();
+            waitAndClickSave();
+        }
+
         checkForDocError();
         waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
         assertDocSearch(docId, "SAVED");
@@ -1919,11 +1929,19 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         passed();
     }
 
+    /**
+     * Look at the Location*Aft classes for the current best practices on implementing this method
+     * @throws InterruptedException
+     */
     protected void createNewEnterDetails() throws InterruptedException {
         // overload to utilize
         fail("createNewEnterDetails must be implemented by test class");
     }
 
+    /**
+     * Look at the Location*Aft classes for the current best practices on implementing this method
+     * @throws InterruptedException
+     */
     protected void createNewLookupDetails() throws InterruptedException {
         // overload to utilize
         fail("createNewLookupDetails must be implemented by test class");

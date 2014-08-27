@@ -52,14 +52,17 @@ public class LocationCountyAft extends AdminTmplMthdAftNavBlanketAppBase {
     @Override
     protected void createNewEnterDetails() throws InterruptedException {
         inputDetails();
-        jiraAwareTypeByName("document.newMaintainableObject.countryCode", "US");
-        jiraAwareTypeByName("document.newMaintainableObject.stateCode", "IN");
+
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.countryCode", "US");
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.stateCode", "IN");
     }
 
     private void inputDetails() throws InterruptedException {
-        waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
-        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        waitForElementPresentByName("document.documentHeader.documentDescription");
+
+        jiraAwareClearAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
     }
 
     @Override

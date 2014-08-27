@@ -59,17 +59,10 @@ public class LocationCampusAft extends AdminTmplMthdAftNavBlanketAppBase {
     private void inputDetails() throws InterruptedException {
         waitForElementPresentByName("document.documentHeader.documentDescription");
 
-        clearTextByName("document.documentHeader.documentDescription");
-        jiraAwareTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
-
-        clearTextByName("document.newMaintainableObject.code");
-        jiraAwareTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
-
-        clearTextByName("document.newMaintainableObject.name");
-        jiraAwareTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
-
-        clearTextByName("document.newMaintainableObject.shortName");
-        jiraAwareTypeByName("document.newMaintainableObject.shortName", uniqueString);
+        jiraAwareClearAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.code", uniqueString.substring(5, 7));
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.name", "name" + uniqueString);
+        jiraAwareClearAndTypeByName("document.newMaintainableObject.shortName", uniqueString);
     }
 
     @Override

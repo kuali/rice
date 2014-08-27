@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.lookup.conditionalcriteria;
 import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -76,7 +77,7 @@ public class DemoLookUpConditionalCriteriaAft extends ViewDemoAftBase {
         assertFalse(isElementPresentByName(LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME));
 
         clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);
-        
+
         //Case 3 - Date field hide by number a3
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a3");
         fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "focus");
@@ -88,15 +89,41 @@ public class DemoLookUpConditionalCriteriaAft extends ViewDemoAftBase {
         assertTrue(isNotVisible(By.name(LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME)));
     }
 
+    protected void testAutoTruncateColumns() throws InterruptedException {
+        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a3");
+        waitAndClickSearch3();
+
+        // verify auto truncate is enabled
+        assertTrue(getElementByAttributeValue("id", "resultsName_line0").getAttribute("class").contains("uif-truncate"));
+
+        // verify text not truncated
+        assertEquals("Travel Account 3", getElementByAttributeValue("id", "resultsName_line0_control").getText());
+
+        // verify tooltip not present
+        fireMouseOverEventById("resultsName_line0_control");
+        assertTrue(waitForElementPresent("[class='popover top in']") == null);
+
+        driver.manage().window().setSize(new Dimension(560, 600));
+
+        // cannot verify that the text is truncated since DOM always returns the original
+        // text and not what's displayed :{
+
+        // verify tooltip present
+        fireMouseOverEventById("resultsName_line0_control");
+        waitForToolTipTextPresent("Travel Account 3");
+    }
+
     @Test
     public void testLookUpConditionalCriteriaBookmark() throws Exception {
         testLookUpConditionalCriteria();
+        testAutoTruncateColumns();
         passed();
     }
 
     @Test
     public void testLookUpConditionalCriteriaNav() throws Exception {
         testLookUpConditionalCriteria();
+        testAutoTruncateColumns();
         passed();
     }
 }

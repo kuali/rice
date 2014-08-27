@@ -39,7 +39,7 @@
     <property name="resultFields">
       <list>
         <bean parent="Uif-DataField" p:propertyName="number"/>
-        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="name" p:id="resultsName"/>
         <bean parent="Uif-DataField" p:propertyName="fiscalOfficer.principalName"/>
         <bean parent="Uif-DataField" p:propertyName="createDate"/>
       </list>

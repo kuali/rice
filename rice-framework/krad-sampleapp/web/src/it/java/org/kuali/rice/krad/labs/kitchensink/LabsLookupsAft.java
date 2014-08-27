@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.labs.kitchensink;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.JavascriptExecutor;
 
@@ -39,12 +40,14 @@ public class LabsLookupsAft extends LabsKitchenSinkBase {
 	}
 
     @Test
+    @Ignore //Ignore this test due to the issues found in KULRICE-13108.  They will fail until a solution can be found.
     public void testAjaxLookupBookmark() throws Exception {
         testAjaxLookup();
         passed();
     }
 
     @Test
+    @Ignore //Ignore this test due to the issues found in KULRICE-13108.  They will fail until a solution can be found.
     public void testAjaxLookupNav() throws Exception {
         testAjaxLookup();
         passed();

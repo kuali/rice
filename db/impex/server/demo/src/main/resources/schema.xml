@@ -953,6 +953,7 @@
         <column default="0" name="VER_NBR" required="true" size="8" type="DECIMAL"/>
         <column name="ACTN_RQST_PLCY_CD" size="1" type="VARCHAR"/>
         <column name="RSP_ID" required="true" size="40" type="VARCHAR"/>
+        <column default="1" name="FRC_ACTN" required="true" size="1" type="DECIMAL"/>
         <foreign-key foreignTable="KREW_PPL_FLW_T" name="KREW_PPL_FLW_MBR_FK1">
             <reference foreign="PPL_FLW_ID" local="PPL_FLW_ID"/>
         </foreign-key>

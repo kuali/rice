@@ -19,8 +19,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.data.DataType;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
@@ -29,10 +31,13 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
+import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.impl.repository.TermBo;
+import org.kuali.rice.krms.impl.repository.TermParameterBo;
 import org.kuali.rice.krms.impl.repository.TermResolverBo;
 import org.kuali.rice.krms.impl.repository.TermResolverParameterSpecificationBo;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,15 +56,14 @@ public class TermMaintainable extends MaintainableImpl {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TermMaintainable.class);
 
-
     public List<RemotableAttributeField> retrieveCustomAttributes(View view, Object model, Container container) {
-
         List<RemotableAttributeField> results = new ArrayList<RemotableAttributeField>();
-        String termSpecId = ((TermBo)((MaintenanceDocumentForm)model).getDocument().getNewMaintainableObject().getDataObject()).getSpecificationId();
+        String termSpecId =
+                ((TermBo) ((MaintenanceDocumentForm) model).getDocument().getNewMaintainableObject().getDataObject())
+                        .getSpecificationId();
 
         QueryResults<TermResolverBo> termResolvers = getDataObjectService().findMatching(TermResolverBo.class,
-                QueryByCriteria.Builder.forAttribute("outputId", termSpecId).build()
-        );
+                QueryByCriteria.Builder.forAttribute("outputId", termSpecId).build());
 
         TermResolverBo termResolver = null;
 
@@ -68,7 +72,8 @@ public class TermMaintainable extends MaintainableImpl {
         }
 
         if (termResolver != null && !CollectionUtils.isEmpty(termResolver.getParameterSpecifications())) {
-            List<TermResolverParameterSpecificationBo> params = new ArrayList<TermResolverParameterSpecificationBo>(termResolver.getParameterSpecifications());
+            List<TermResolverParameterSpecificationBo> params = new ArrayList<TermResolverParameterSpecificationBo>(
+                    termResolver.getParameterSpecifications());
 
             Collections.sort(params, new Comparator<TermResolverParameterSpecificationBo>() {
                 @Override
@@ -119,7 +124,6 @@ public class TermMaintainable extends MaintainableImpl {
 
     @Override
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
-
         TermBo termBo = (TermBo) super.retrieveObjectForEditOrCopy(document, dataObjectKeys);
         termBo.exportToParametersMap();
 
@@ -134,12 +138,9 @@ public class TermMaintainable extends MaintainableImpl {
      * {@inheritDoc}
      */
     @Override
-    public void processAfterNew(MaintenanceDocument document,
-            Map<String, String[]> requestParameters) {
-
+    public void processAfterNew(MaintenanceDocument document, Map<String, String[]> requestParameters) {
         super.processAfterNew(document, requestParameters);
         document.getDocumentHeader().setDocumentDescription("New Term Document");
-
     }
 
     /**
@@ -147,20 +148,35 @@ public class TermMaintainable extends MaintainableImpl {
      */
     @Override
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {
-
-
-        super.processAfterEdit(document,
-                requestParameters);
-
+        super.processAfterEdit(document, requestParameters);
         document.getDocumentHeader().setDocumentDescription("Edited Term Document");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void saveDataObject() {
+    public void prepareForSave() {
         TermBo term = (TermBo) getDataObject();
+        if (term.getId() == null) {
+            term.setId(MaxValueIncrementerFactory.getIncrementer(getDataSource(), TermBo.TERM_SEQ_NAME)
+                    .nextStringValue());
+        }
         term.importFromParametersMap();
 
-        super.saveDataObject();    //To change body of overridden methods use File | Settings | File Templates.
+        for (TermParameterBo param : term.getParameters()) {
+            param.setTerm(term);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processAfterRetrieve() {
+        super.processAfterRetrieve();
+        TermBo term = (TermBo) getDataObject();
+        term.exportToParametersMap();
     }
 
     @Override
@@ -173,5 +189,7 @@ public class TermMaintainable extends MaintainableImpl {
         super.processBeforeAddLine(model, addLine, collectionId, collectionPath);
     }
 
-
+    public static DataSource getDataSource() {
+        return (DataSource)GlobalResourceLoader.getService(KrmsConstants.KRMS_DATA_SOURCE);
+    }
 }

@@ -159,20 +159,23 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="specification.name" p:label="Name" p:readOnly="true">
+              <bean parent="Uif-InputField" p:propertyName="specification.name" p:label="Name" p:readOnly="true"
+                    p:refreshWhenChangedPropertyNames="document.newMaintainableObject.dataObject.specificationId">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="30"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="specification.type" p:label="Value Class" p:readOnly="true">
+              <bean parent="Uif-InputField" p:propertyName="specification.type" p:label="Value Class" p:readOnly="true"
+                    p:refreshWhenChangedPropertyNames="document.newMaintainableObject.dataObject.specificationId">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="30"/>
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="specification.description" p:label="Specification Description" p:readOnly="true">
-                <property name="control">
+              <bean parent="Uif-InputField" p:propertyName="specification.description" p:label="Specification Description" p:readOnly="true"
+                    p:refreshWhenChangedPropertyNames="document.newMaintainableObject.dataObject.specificationId">
+              <property name="control">
                   <bean parent="Uif-TextAreaControl" p:cols="80" p:rows="3"/>
                 </property>
               </bean>

@@ -24,6 +24,7 @@ import org.kuali.rice.core.api.CoreConstants;
 public final class KrmsConstants {
 
     public static final String KRMS_NAMESPACE = "KR-RULE";
+    public static final String KRMS_DATA_SOURCE = "krmsDataSource";
 
     /**
      * MAINTAIN_KRMS_AGENDA

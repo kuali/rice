@@ -149,6 +149,11 @@ public class TermBo implements TermDefinitionContract, Serializable {
         if (parameters == null) {
             parameters = new ArrayList<TermParameterBo>();
         } else {
+            if (parametersMap == null || parametersMap.isEmpty()) {
+                for (TermParameterBo param : parameters) {
+                    parametersMap.put(param.getName(), param.getValue());
+                }
+            }
             parameters.clear();
         }
 

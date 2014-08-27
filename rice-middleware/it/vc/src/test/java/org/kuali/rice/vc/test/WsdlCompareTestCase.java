@@ -269,7 +269,7 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
         }
 
         if (!breakages.isEmpty()) {
-            fail("https://jira.kuali.org/browse/KULRICE-9849\n" + buildBreakagesSummary(breakages));
+            fail(buildBreakagesSummary(breakages));
         }
     }
 

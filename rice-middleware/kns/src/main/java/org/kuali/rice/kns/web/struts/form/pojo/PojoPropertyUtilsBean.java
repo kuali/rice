@@ -209,6 +209,9 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
                     bean.getClass() + "'");
         }
 
+        // Remove any subscript from the final name value
+        name = getResolver().getProperty(name);
+
         // Treat WrapDynaBean as special case - may be a read-only property
         // (see Jira issue# BEANUTILS-61)
         if (bean instanceof WrapDynaBean) {

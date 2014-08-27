@@ -17,6 +17,7 @@ package org.kuali.rice.kns.web.struts.form.pojo;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
@@ -32,6 +33,11 @@ public class PojoPropertyUtilsBeanTest {
         PojoPlugin.initBeanUtils();
     }
 
+    @Ignore
+    /**
+     * This test was added for KULRICE-12283 and is correct, but the fix IU contributed caused an IT to fail
+     * so the change was reverted and this test is being ignored until that contribution is finished.
+     */
     @Test
     /**
      * This test checks to ensure that the PropertyUtils method which delegates

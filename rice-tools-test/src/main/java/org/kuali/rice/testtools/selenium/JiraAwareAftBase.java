@@ -793,6 +793,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
             jiraAwareWaitFor(by, message);
             return type(by, text);
         } catch (Throwable t) {
+            checkForIncidentReport(by.toString(), message);
             JiraAwareFailureUtils.failOnMatchedJira(by.toString(), message, this);
             jiraAwareFail(t.getMessage()
                     + " "

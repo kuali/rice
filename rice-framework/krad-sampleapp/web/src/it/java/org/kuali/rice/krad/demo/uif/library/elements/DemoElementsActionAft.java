@@ -63,7 +63,7 @@ public class DemoElementsActionAft extends DemoLibraryBase {
         assertTrue(driver.switchTo().alert().getText().contains("Pre submit call was invoked, returning true"));
         driver.switchTo().alert().accept();
 
-        waitAndClickByLinkText("Pre submit returning false Link");
+        waitAndClickLinkContainingText("Pre submit returning false Link");
         assertTrue(driver.switchTo().alert().getText().contains("Pre submit call was invoked, returning false"));
         driver.switchTo().alert().accept();
     }
@@ -186,13 +186,13 @@ public class DemoElementsActionAft extends DemoLibraryBase {
     }
     
     private void testAllActionTabs() throws Exception {
-        testActionDefault();
-        testActionSuccessCallback();
-        testActionValidation();
-        testActionImages();
-        testActionButton();
-        testActionStyleVarities();
-        testActionIcons();
+//        testActionDefault();
+//        testActionSuccessCallback();
+//        testActionValidation();
+//        testActionImages();
+//        testActionButton();
+//        testActionStyleVarities();
+//        testActionIcons();
         testActionPresubmit(); // last because it is failing https://jira.kuali.org/browse/KULRICE-10961 Library Action Presubmit Pre submit returning true Link redirects to Library Action Default
     }
 

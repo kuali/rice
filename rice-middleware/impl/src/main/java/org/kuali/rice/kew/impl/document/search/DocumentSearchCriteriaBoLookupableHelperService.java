@@ -527,14 +527,23 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         link.setDisplayText(documentId);
 
         if (isDocumentHandlerPopup()) {
-            link.setTarget("_blank");
+            org.kuali.rice.kew.doctype.DocumentTypePolicy policy = documentType.getDocSearchTarget();
+            if (policy.getPolicyStringValue() != null) {
+                //if (!policy.getPolicyStringValue().equals("_blank") && !policy.getPolicyStringValue().equals("_self") && !policy.getPolicyStringValue().equals("_parent") && !policy.getPolicyStringValue().equals("_top")) {
+                //throw new ValidationException("Invalid " + KewApiConstants.DOC_SEARCH_TARGET_POLICY + " value: " + policy.getPolicyStringValue());
+                //}
+                link.setTarget(policy.getPolicyStringValue().toLowerCase());
+            }
+            else {
+                link.setTarget("_blank");
+            }
         } else {
             org.kuali.rice.kew.doctype.DocumentTypePolicy policy = documentType.getDocSearchTarget();
             if (policy.getPolicyStringValue() != null) {
                 //if (!policy.getPolicyStringValue().equals("_blank") && !policy.getPolicyStringValue().equals("_self") && !policy.getPolicyStringValue().equals("_parent") && !policy.getPolicyStringValue().equals("_top")) {
                     //throw new ValidationException("Invalid " + KewApiConstants.DOC_SEARCH_TARGET_POLICY + " value: " + policy.getPolicyStringValue());
                 //}
-                link.setTarget(policy.getPolicyStringValue());
+                link.setTarget(policy.getPolicyStringValue().toLowerCase());
             }
             else {
                 link.setTarget("_self");

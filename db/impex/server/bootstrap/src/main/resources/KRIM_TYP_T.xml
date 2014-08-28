@@ -145,6 +145,6 @@
         OBJ_ID="CEA27F2DB2D93593E040F90A05B924DB"
         SRVC_NM="backdoorRestrictionPermissionTypeService" VER_NBR="1"/>
     <KRIM_TYP_T ACTV_IND="Y" KIM_TYP_ID="KR1002" NM="Channel"
-        NMSPC_CD="KR-NTFCN" OBJ_ID="01B412443336F07BE0506E0AC31D533C"
+        NMSPC_CD="KR-NTFCN" OBJ_ID="01B7BBEAACE69FD4E0506E0AC31D78ED"
         SRVC_NM="{http://rice.kuali.org/ken/v2_0}channelPermissionTypeService" VER_NBR="1"/>
 </dataset>

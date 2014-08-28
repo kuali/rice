@@ -180,8 +180,7 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
         return canDeleteNoteAttachment;
     }
 
-    public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, String authorUniversalIdentifier,
-            Person user) {
+    public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, Person user) {
         Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
         if (attachmentTypeCode != null) {
             additionalPermissionDetails.put(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE, attachmentTypeCode);
@@ -190,6 +189,12 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
         return isAuthorizedByTemplate(document, KRADConstants.KNS_NAMESPACE,
                 KimConstants.PermissionTemplateNames.VIEW_NOTE_ATTACHMENT, user.getPrincipalId(),
                 additionalPermissionDetails, null);
+    }
+
+    @Deprecated
+    public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, String authorUniversalIdentifier,
+            Person user) {
+        return canViewNoteAttachment(document, attachmentTypeCode, user);
     }
 
     public boolean canSendAdHocRequests(Document document, String actionRequestCd, Person user) {

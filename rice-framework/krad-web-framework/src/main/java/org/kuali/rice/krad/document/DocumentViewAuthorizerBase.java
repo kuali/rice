@@ -439,12 +439,20 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
      * {@inheritDoc}
      */
     @Override
-    public final boolean canViewNoteAttachment(Document document, String attachmentTypeCode,
-            String authorUniversalIdentifier, Person user) {
+    public final boolean canViewNoteAttachment(Document document, String attachmentTypeCode, Person user) {
         initializeDocumentAuthorizerIfNecessary(document);
 
-        return getDocumentAuthorizer().canViewNoteAttachment(document, attachmentTypeCode, authorUniversalIdentifier,
-                user);
+        return getDocumentAuthorizer().canViewNoteAttachment(document, attachmentTypeCode, user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Deprecated
+    public final boolean canViewNoteAttachment(Document document, String attachmentTypeCode,
+            String authorUniversalIdentifier, Person user) {
+        return canViewNoteAttachment(document, attachmentTypeCode, user);
     }
 
     /**

@@ -124,6 +124,9 @@ public interface DocumentAuthorizer extends DataObjectAuthorizer {
     public boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode,
             String authorUniversalIdentifier, Person user);
 
+    public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, Person user);
+
+    @Deprecated
     public boolean canViewNoteAttachment(Document document, String attachmentTypeCode, String authorUniversalIdentifier,
             Person user);
 

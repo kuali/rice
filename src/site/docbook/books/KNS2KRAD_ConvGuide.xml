@@ -3576,6 +3576,36 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
     <para>&lt;introduction here></para>
   </section>
   <section>
+    <title>Authorizer and Presentation Controller Conversion</title>
+    <para>
+      Some method signatures in the authorizers and presentation controllers were changed for consistency and to merge
+      behavior into one place.
+    </para>
+    <itemizedlist>
+      <listitem xml:id="APC1">
+        <para>
+          View Note / Attachment - In KNS this was accomplished with two separate methods:
+          <emphasis>DocumentAuthorizerBase.canViewNoteAttachment(Document document, String attachmentTypeCode, Person user)</emphasis>
+          and <emphasis>DocumentAuthorizerBase.canViewNoteAttachment(Document document, String attachmentTypeCode, String authorUniversalIdentifier, Person user)</emphasis>.
+          In KRAD the second method has been deprecated, so there is effectively one method that should be used:
+          <emphasis>DocumentAuthorizerBase.canViewNoteAttachment(Document document, String attachmentTypeCode, Person user)</emphasis>.
+          This was done because the <emphasis>authorUniversalIdentifier</emphasis> was not being used.
+        </para>
+      </listitem>
+      <listitem xml:id="APC2">
+        <para>Delete Note / Attachment - In KNS this was accomplished using the
+          <emphasis>DocumentAuthorizerBase.canDeleteNoteAttachment(Document document, String attachmentTypeCode, String createdBySelfOnly, Person user)</emphasis>.
+          In KRAD the method signature has changed to remove the <emphasis>createdBySelfOnly</emphasis> so that the
+          method is now
+          <emphasis>DocumentAuthorizerBase.canDeleteNoteAttachment(Document document, String attachmentTypeCode, Person user)</emphasis>.
+          This merged some extra logic being performed in the KNS to the authorizer so that it checks for both
+          conditions of <emphasis>createdBySelfOnly</emphasis> before returning the result.  The behavior is exactly the
+          same.
+        </para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section>
     <title>KIM Permission Conversion</title>
     <note>
       <para>Currently there is no conversion script to automatically convert or create new KRAD KIM

@@ -40,7 +40,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 /**
  * A node which generates {@link ActionRequestValue} objects from a
  * {@link RouteModule}.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RequestsNode extends RequestActivationNode {
@@ -132,17 +132,17 @@ public class RequestsNode extends RequestActivationNode {
     }
 
     /** Used by subclasses to replace the functioning of the process method.
-	 * 
+	 *
 	 * @return <b>true</b> if custom processing was performed and the base implementation
 	 * in {@link #process(RouteContext, RouteHelper)} should be skipped.
 	 */
 	protected boolean processCustom(RouteContext routeContext, RouteHelper routeHelper) throws Exception {
 		return false;
 	}
-	
+
 	/**
 	 * Verifies the state of the action requests when a final approval action is involved.
-	 * 
+	 *
 	 * Throws a RouteManagerException if actions were not generated correctly.
 	 */
 	protected void verifyFinalApprovalRequest( DocumentRouteHeaderValue document, List<ActionRequestValue> requests, RouteNodeInstance nodeInstance, RouteContext routeContext ) throws RouteManagerException {
@@ -185,6 +185,7 @@ public class RequestsNode extends RequestActivationNode {
 			RouteModule routeModule = getRouteModule( context );
 			List<ActionRequestValue> requests = routeModule.findActionRequests( context );
             // route module should only be returning root requests to us, but in case it doesn't...
+            requests = KEWServiceLocator.getActionRequestService().getRootRequests(requests);
             List<ActionRequestValue> uniqueRequests = new ArrayList<ActionRequestValue>();
             for ( ActionRequestValue actionRequest : requests ) {
                 boolean duplicateFound = false;

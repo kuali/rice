@@ -3857,6 +3857,21 @@
         <column name="SVC_DSCRPTR_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="DSCRPTR" required="true" type="CLOB"/>
     </table>
+    <table name="KRTST_COLL_CHLD_T">
+        <column name="PK_PROP" required="true" size="40" type="VARCHAR"/>
+        <column name="PRNT_KEY" required="true" size="40" type="VARCHAR"/>
+        <column name="CHAR_PROP" size="1" type="CHAR"/>
+        <column name="BOOL_PROP" size="1" type="VARCHAR"/>
+        <column name="SHORT_PROP" size="5" type="DECIMAL"/>
+        <column name="INT_PROP" size="10" type="DECIMAL"/>
+        <column name="LONG_PROP" size="20" type="DECIMAL"/>
+        <column name="FLOAT_PROP" scale="2" size="10" type="DECIMAL"/>
+        <column name="DOUBLE_PROP" scale="2" size="20" type="DECIMAL"/>
+    </table>
+    <table name="KRTST_COLL_PRNT_T">
+        <column name="PK_PROP" required="true" size="40" type="VARCHAR"/>
+        <column name="STR_PROP" size="20" type="VARCHAR"/>
+    </table>
     <table name="KRTST_CONF_COORD_T">
         <column name="ID" primaryKey="true" size="14" type="DECIMAL"/>
         <column name="NM" size="40" type="VARCHAR"/>

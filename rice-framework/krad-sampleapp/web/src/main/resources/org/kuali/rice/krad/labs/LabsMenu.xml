@@ -74,6 +74,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-ActionListView"/>
                           <bean parent="Uif-Link" p:linkText="Iframe - Doc Search" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-DocSearchView"/>
+                          <bean parent="Uif-Link" p:linkText="Iframe - Preferences" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-PreferencesView"/>
                           <bean parent="Uif-Link" p:linkText="JSON Template Example" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?methodToCall=jsonExample"/>
                           <bean parent="Uif-Link" p:linkText="KC Proposal" p:target="_self"

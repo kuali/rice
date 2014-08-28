@@ -59,10 +59,9 @@ public class DemoLookUpConditionalCriteriaAft extends ViewDemoAftBase {
     protected void testLookUpConditionalCriteria() throws InterruptedException {
         //Case 1 - Date field required by number a1
         waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a1");
-        fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "focus");
         fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "blur");
         waitAndClickSearch3();
-        assertTrue(isElementPresent(By.className("uif-requiredMessage")));
+        waitForElementPresentByClassName("uif-requiredMessage");
         assertTrue(isElementPresentByName(LOOKUP_CRITERIA_DATE_LOWER_BOUND_NAME));
         assertTrue(isElementPresentByName(LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME));
 
@@ -90,7 +89,8 @@ public class DemoLookUpConditionalCriteriaAft extends ViewDemoAftBase {
     }
 
     protected void testAutoTruncateColumns() throws InterruptedException {
-        waitAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a3");
+        waitForElementPresentByName(LOOKUP_CRITERIA_NUMBER_NAME);
+        jiraAwareClearAndTypeByName(LOOKUP_CRITERIA_NUMBER_NAME, "a3");
         waitAndClickSearch3();
 
         // verify auto truncate is enabled

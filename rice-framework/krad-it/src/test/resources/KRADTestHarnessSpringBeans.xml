@@ -245,6 +245,20 @@
     <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$PrimitiveLongFilterGeneratorChild</value>
     <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperLongFilterGeneratorParent</value>
     <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCoersionTest$WrapperLongFilterGeneratorChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$BooleanParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$BooleanChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$IntegerParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$IntegerChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$CharParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$CharChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$LongParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$LongChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$ShortParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$ShortChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$FloatParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$FloatChild</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$DoubleParent</value>
+    <value>org.kuali.rice.krad.data.jpa.FilterGeneratorCollectionsCoersionTest$DoubleChild</value>
   </util:list>
 
   <!-- Override the EntityManagerFactory -->

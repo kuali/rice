@@ -22,7 +22,7 @@ import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.uif.RemotableAttributeField;
 import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kns.datadictionary.validation.AttributeValidatingTypeServiceBase;
+import org.kuali.rice.krad.datadictionary.validation.AttributeValidatingTypeServiceBase;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;

@@ -28,7 +28,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package org.kuali.rice.kns.datadictionary.validation;
+package org.kuali.rice.krad.datadictionary.validation;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -42,18 +42,18 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.core.api.util.Truth;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.Formatter;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
+import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
 import org.kuali.rice.krad.service.DataDictionaryRemoteFieldService;
 import org.kuali.rice.krad.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
+import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.PropertyDescriptor;
 import java.text.MessageFormat;
@@ -119,7 +119,7 @@ public abstract class AttributeValidatingTypeServiceBase {
      * <p>This implementation calls {@link #getTypeAttributeDefinitions(String)} to retrieve module-agnostic 
      * representations.  It then iterates through the entry set of attributes, and calls 
      * {@link #validateNonDataDictionaryAttribute(org.kuali.rice.core.api.uif.RemotableAttributeField, String, String)} 
-     * or {@link #validateDataDictionaryAttribute(org.kuali.rice.kns.datadictionary.validation.AttributeValidatingTypeServiceBase.TypeAttributeDefinition, String, String)}
+     * or {@link #validateDataDictionaryAttribute(AttributeValidatingTypeServiceBase.TypeAttributeDefinition, String, String)}
      * as appropriate.  Lastly it calls {@link #validateReferencesExistAndActive(java.util.Map, java.util.Map, java.util.List)}.
      * </p>
      *
@@ -148,7 +148,7 @@ public abstract class AttributeValidatingTypeServiceBase {
             TypeAttributeDefinition typeAttributeDefinition = typeAttributeDefinitionMap.get(entry.getKey());
 
             final List<RemotableAttributeError> attributeErrors;
-            if (ObjectUtils.isNotNull(typeAttributeDefinition)) {
+            if (typeAttributeDefinition != null) {
                 if (typeAttributeDefinition.getComponentName() == null) {
                     attributeErrors = validateNonDataDictionaryAttribute(typeAttributeDefinition.getField(), entry.getKey(), entry.getValue());
                 } else {
@@ -212,7 +212,7 @@ public abstract class AttributeValidatingTypeServiceBase {
 		for ( String attributeName : attributes.keySet() ) {
 			TypeAttributeDefinition attr = typeAttributeDefinitionMap.get(attributeName);
 
-			if (ObjectUtils.isNotNull(attr) && StringUtils.isNotBlank(attr.getComponentName())) {
+			if ((attr != null) && StringUtils.isNotBlank(attr.getComponentName())) {
 				if (!componentClassInstances.containsKey(attr.getComponentName())) {
 					try {
 						Class<?> componentClass = Class.forName(attr.getComponentName());
@@ -235,9 +235,8 @@ public abstract class AttributeValidatingTypeServiceBase {
 			if (!RemotableAttributeError.containsAttribute(entry.getKey(), previousValidationErrors)) {
 				for (Object componentInstance : componentClassInstances.values()) {
 					try {
-						ObjectUtils.setObjectProperty(componentInstance, entry.getKey(), entry.getValue());
-					} catch (NoSuchMethodException e) {
-						// this is expected since not all attributes will be in all components
+                        DataObjectWrapper wrapper = KradDataServiceLocator.getDataObjectService().wrap(componentInstance);
+                        wrapper.setPropertyValues(Collections.singletonMap(entry.getKey(), entry.getValue()));
 					} catch (Exception e) {
 						LOG.error("Unable to set object property class: " + componentInstance.getClass().getName() + " property: " + entry.getKey(), e);
 					}
@@ -354,7 +353,8 @@ public abstract class AttributeValidatingTypeServiceBase {
         if (null != propertyDescriptor
                 && getDataDictionaryService().isAttributeDefined(componentName, propertyDescriptor.getName())) {
 
-            Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
+            DataObjectWrapper wrapper = KradDataServiceLocator.getDataObjectService().wrap(object);
+            Object value = wrapper.getPropertyValue(propertyDescriptor.getName());
             Class<?> propertyType = propertyDescriptor.getPropertyType();
 
             if (TypeUtils.isStringClass(propertyType)
@@ -433,7 +433,7 @@ public abstract class AttributeValidatingTypeServiceBase {
      * <p>Gets a {@link Formatter} appropriate for the data type of the given field.</p>
      * <p>This implementation returns null if {@link org.kuali.rice.core.api.uif.RemotableAttributeField#getDataType()} 
      * returns null.  Otherwise, it returns the result of calling {@link Formatter#getFormatter(Class)} on the
-     * {@link org.kuali.rice.core.api.uif.DataType}'s type</p>
+     * {@link org.kuali.rice.core.api.data.DataType}'s type</p>
      *
      * @param field the field for which to provide a {@link Formatter}.
      * @return an applicable {@link Formatter}, or null if one can't be found.
@@ -576,7 +576,7 @@ public abstract class AttributeValidatingTypeServiceBase {
      * {@link TypeAttributeDefinition}s componentName, gets a {@link PropertyDescriptor} for the attribute of the
      * component object, hydrates the attribute's value from it's String form, sets that value on the component object,
      * and then delegates to
-     * {@link #validatePrimitiveAttributeFromDescriptor(org.kuali.rice.kns.datadictionary.validation.AttributeValidatingTypeServiceBase.TypeAttributeDefinition, String, Object, java.beans.PropertyDescriptor)}.
+     * {@link #validatePrimitiveAttributeFromDescriptor(AttributeValidatingTypeServiceBase.TypeAttributeDefinition, String, Object, java.beans.PropertyDescriptor)}.
      * </p>
      *
      * @param typeAttributeDefinition
@@ -630,14 +630,11 @@ public abstract class AttributeValidatingTypeServiceBase {
     }
 
 
-    // lazy initialization holder class
-    private static class DictionaryValidationServiceHolder {
-        public static DictionaryValidationService dictionaryValidationService =
-                KNSServiceLocator.getKNSDictionaryValidationService();
-    }
-
 	protected DictionaryValidationService getDictionaryValidationService() {
-		return DictionaryValidationServiceHolder.dictionaryValidationService;
+        if (dictionaryValidationService == null) {
+            dictionaryValidationService = KRADServiceLocatorWeb.getDictionaryValidationService();
+        }
+        return dictionaryValidationService;
 	}
 
     // lazy initialization holder class

@@ -41,6 +41,7 @@
     <class>org.kuali.rice.krad.bo.Note</class>
     <class>org.kuali.rice.krad.bo.NoteType</class>
     <class>org.kuali.rice.krad.bo.SessionDocument</class>
+    <class>org.kuali.rice.krad.datadictionary.validation.AttributeValidatingTypeServiceBase</class>
     <class>org.kuali.rice.krad.document.authorization.PessimisticLock</class>
     <class>org.kuali.rice.krad.maintenance.MaintenanceLock</class>
     <class>org.kuali.rice.krad.messages.Message</class>

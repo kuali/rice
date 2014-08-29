@@ -119,6 +119,8 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
             String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID);
             roleDocumentForm.setRoleId(roleId);
         }
+        String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
+        setKimType(kimTypeId, roleDocumentForm);
 
         KualiTableRenderFormMetadata memberTableMetadata = roleDocumentForm.getMemberTableMetadata();
         if (roleDocumentForm.getRoleDocument()!=null && roleDocumentForm.getMemberRows() != null) {

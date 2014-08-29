@@ -435,21 +435,8 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
 
             result = expression.getValue(evaluationContext);
         } catch (Exception e) {
-            StringBuilder builder = new StringBuilder("Exception evaluating expression: ");
-            builder.append(expressionStr);
-
-            if (evaluationParameters != null) {
-                builder.append(" for the following context: ");
-                for (Map.Entry<String, Object> entry : evaluationParameters.entrySet()) {
-                    builder.append(System.lineSeparator());
-                    builder.append(entry.getKey());
-                    builder.append(": ");
-                    builder.append(entry.getValue());
-                }
-            }
-
-            LOG.error(builder.toString());
-            throw new RuntimeException(builder.toString(), e);
+            LOG.error("Exception evaluating expression: " + expressionStr);
+            throw new RuntimeException("Exception evaluating expression: " + expressionStr, e);
         }
 
         return result;

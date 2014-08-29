@@ -994,12 +994,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
-     * Determines if given data object has associated maintenance document that allows new or copy
-     * maintenance actions.
-     *
-     * @return boolean true if the maintenance new or copy action is allowed for the data object instance, false
-     * otherwise
+     * {@inheritDoc}
      */
+    @Override
     public boolean allowsMaintenanceNewOrCopyAction() {
         boolean allowsNewOrCopy = false;
 
@@ -1013,12 +1010,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
-     * Determines if given data object has associated maintenance document that allows edit maintenance
-     * actions.
-     *
-     * @param dataObject data object
-     * @return boolean true if the maintenance edit action is allowed for the data object instance, false otherwise
+     * {@inheritDoc}
      */
+    @Override
     public boolean allowsMaintenanceEditAction(Object dataObject) {
         boolean allowsEdit = false;
 
@@ -1032,12 +1026,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
     }
 
     /**
-     * Determines if given data object has associated maintenance document that allows delete maintenance
-     * actions.
-     *
-     * @param dataObject data object
-     * @return boolean true if the maintenance delete action is allowed for the data object instance, false otherwise
+     * {@inheritDoc}
      */
+    @Override
     public boolean allowsMaintenanceDeleteAction(Object dataObject) {
         boolean allowsMaintain = false;
 

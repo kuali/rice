@@ -99,4 +99,29 @@ public interface Lookupable extends ViewHelperService, java.io.Serializable {
      * @param model lookup form containing the model data
      */
      void buildMultiValueSelectField(InputField selectField, Object model);
+
+    /**
+     * Determines if given data object has associated maintenance document that allows new or copy maintenance actions.
+     *
+     * @return boolean true if the maintenance new or copy action is allowed for the data object instance, false
+     * otherwise
+     */
+    boolean allowsMaintenanceNewOrCopyAction();
+
+    /**
+     * Determines if given data object has associated maintenance document that allows edit maintenance actions.
+     *
+     * @param dataObject data object
+     * @return boolean true if the maintenance edit action is allowed for the data object instance, false otherwise
+     */
+    boolean allowsMaintenanceEditAction(Object dataObject);
+
+    /**
+     * Determines if given data object has associated maintenance document that allows delete maintenance actions.
+     *
+     * @param dataObject data object
+     * @return boolean true if the maintenance delete action is allowed for the data object instance, false otherwise
+     */
+    boolean allowsMaintenanceDeleteAction(Object dataObject);
+
 }

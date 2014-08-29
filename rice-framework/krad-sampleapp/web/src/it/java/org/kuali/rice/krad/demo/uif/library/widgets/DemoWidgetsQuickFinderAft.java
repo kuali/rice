@@ -43,8 +43,15 @@ public class DemoWidgetsQuickFinderAft extends DemoLibraryBase {
     protected void testWidgetsQuickFinderLookUp() throws Exception {
     	waitAndClickByXpath("//section[@id='Demo-QuickFinder-Example1']/div/div/div/button");
     	gotoLightBox();
+
+        /* test nested quickfinder - start */
+        waitAndClick(By.cssSelector("button[id$='_quickfinder_act']"));
     	waitAndClickButtonByExactText("Search");
     	waitAndClickByLinkText("return value");
+        /* test nested quickfinder - end */
+
+        waitAndClickButtonByExactText("Search");
+        waitAndClickByLinkText("return value");
     }
 
     protected void testWidgetDirectQuickFinderLookUpReturnByScript() throws Exception {	

@@ -24,7 +24,6 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.web.bind.RequestAccessible;
 
-
 /**
  * Base form for all <code>DocumentView</code> screens
  *
@@ -70,13 +69,12 @@ public class DocumentFormBase extends UifFormBase {
 		this.document = document;
 	}
 
-	public String getDocTypeName() {
-        if(this.docTypeName == null && !this.getDefaultDocumentTypeName().isEmpty())
-        {
+    public String getDocTypeName() {
+        if (this.docTypeName == null && !this.getDefaultDocumentTypeName().isEmpty()) {
             return this.getDefaultDocumentTypeName();
         }
-		return this.docTypeName;
-	}
+        return this.docTypeName;
+    }
 
 	public void setDocTypeName(String docTypeName) {
 		this.docTypeName = docTypeName;
@@ -161,6 +159,5 @@ public class DocumentFormBase extends UifFormBase {
 	public WorkflowDocument getWorkflowDocument() {
 		return getDocument().getDocumentHeader().getWorkflowDocument();
 	}
-
 
 }

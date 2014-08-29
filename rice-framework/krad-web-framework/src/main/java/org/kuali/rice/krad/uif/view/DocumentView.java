@@ -50,7 +50,6 @@ public class DocumentView extends FormView {
 	private boolean displayTopicFieldInNotes = false;
     private boolean superUserView = false;
 
-
     private Class<? extends KeyValuesFinder> attachmentTypesValuesFinderClass;
 
 	public DocumentView() {
@@ -250,6 +249,5 @@ public class DocumentView extends FormView {
         checkMutable(true);
         this.superUserView = superUserView;
     }
-
 
 }

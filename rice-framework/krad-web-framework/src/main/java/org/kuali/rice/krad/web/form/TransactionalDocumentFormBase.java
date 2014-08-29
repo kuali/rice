@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.web.form;
 
-//import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-//import org.kuali.rice.krad.uif.UifConstants.ViewType;
-
 import org.kuali.rice.krad.uif.UifConstants;
 
 /**

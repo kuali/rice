@@ -1396,28 +1396,12 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
             <para>In addition to the previous discussion of KEW configuration, there are a few other
                 aspects relevant to implementing KEW at your institution.</para>
             <section>
-
-                <!-- TODO: replace this material with something that is up to date and correct -->
-                <!--
-                <title>Bootstrap data</title>
+                <title>Bootstrap Data</title>
                 <para>Because the operation of parts of KEW is dependent on a set of Document Types
-                    and Attributes being available within the system, there is some bootstrap XML
-                    that you will want to import. The easiest way to do this is to import the files
-                    in the following locations using the XML Ingester:<itemizedlist>
-                        <listitem>
-                            <para>kns/src/main/config/xml/RiceSampleAppWorkflowBootstrap.xml </para>
-                        </listitem>
-                        <listitem>
-                            <para>kew/src/main/config/bootstrap/edlstyle.xml </para>
-                        </listitem>
-                        <listitem>
-                            <para>kew/src/main/config/bootstrap/widgets.xml </para>
-                        </listitem>
-                    </itemizedlist></para>
-                <para>These files include the following:<itemizedlist>
-                        <listitem>
-                            <para>Application constants: cluster-wide configuration settings </para>
-                        </listitem>
+                    being available within the system, there are some KEW XML files that are included
+                    in the bootstrap data. To ensure that KEW will work on initial startup, follow the
+                    installation guide fully to get both the KEW SQL and XML into the database. </para>
+                <para>The bootstrap data include the following KEW items:<itemizedlist>
                         <listitem>
                             <para>Core document types and rules: a few primordial document types and
                                 rules are required for the system to function </para>
@@ -1432,33 +1416,7 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
                                 by the default application constants </para>
                         </listitem>
                     </itemizedlist></para>
-                -->
-
-                <para>Application constants you may want to change:<itemizedlist>
-                        <listitem>
-                            <para>Config.Application.AdminUserList: this should be set to a
-                                space-delimited set of administrative user names </para>
-                        </listitem>
-                        <listitem>
-                            <para>Workflow.AdminWorkgroup: this should be set to an institutional
-                                admin workgroup; if the default KEW workgroup service is used, this
-                                can be left to the default, WorkflowAdmin </para>
-                        </listitem>
-                        <listitem>
-                            <para> Config.Mailer.FromAddress: this should be changed to an address
-                                specific to your institution, e.g. kew@your-university.edu </para>
-                        </listitem>
-                        <listitem>
-                            <para>HelpDeskActionList.helpDeskActionListName: set to an workgroup at
-                                your institution </para>
-                        </listitem>
-                        <listitem>
-                            <para>ApplicationContext: set to the context path of the KEW
-                                application, if it differs from the environment default, e.g.
-                                "en-prod" instead of "en-prd" </para>
-                        </listitem>
-                    </itemizedlist></para>
-                <para>In the core document types and rules config, you will need to change:<itemizedlist>
+                <para>In the core document types and rules config, you may desire to change or override:<itemizedlist>
                         <listitem>
                             <para>superUserWorkgroupName, blanketApproveWorkgroupName, and
                                 exceptionWorkgroup: should be set to the administrative group at
@@ -1466,10 +1424,10 @@ applicationEmailAddress="configured KEW email address" env="KEW environment stri
                                 this can be left as WorkgroupAdmin </para>
                         </listitem>
                         <listitem>
-                            <para>ensure all docHandler elements, if they specify a URL, specify:
-                                "${base.url}/en-dev/Workgroup.do?methodToCall=docHandler", and
-                                ensure that the base.url config parameter is specified in your
-                                configuration (as mentioned above) </para>
+                            <para>all docHandler elements: if they specify a URL, they should have
+                                a format similar to "${kr.url}/maintenance.do?methodToCall=docHandler" or
+                                "${kr.krad.url}/maintenance?methodToCall=docHandler", where the kr.url
+                                and kr.krad.url config parameter is specified in your configuration </para>
                         </listitem>
                     </itemizedlist></para>
             </section>

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.control;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.api.util.AbstractKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -81,14 +82,12 @@ public abstract class MultiValueControlBase extends ControlBase implements Multi
 
                 String key = option.getKey();
                 if (key.contains(UifConstants.EL_PLACEHOLDER_PREFIX)) {
-                    key = (String) ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(),
-                            key);
+                    key = ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(), key).toString();
                 }
 
                 String value = option.getValue();
                 if (value.contains(UifConstants.EL_PLACEHOLDER_PREFIX)) {
-                    value = (String) ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(),
-                            value);
+                    value = ViewLifecycle.getExpressionEvaluator().evaluateExpression(this.getContext(), value).toString();
                 }
 
                 message.setMessageText(value);

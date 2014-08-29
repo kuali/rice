@@ -42,10 +42,25 @@ public class DemoCollectionFeaturesSelectLineAft extends WebDriverLegacyITBase {
     }
 
     protected void testCollectionFeaturesSelectLine() throws Exception {
-    	waitAndClickByXpath("//input[@name='collection1[0].bfield']");
-    	waitAndClickByXpath("//input[@name='collection1[2].bfield']");
+        selectByName("exampleShown", "Line Selection");
+
+        waitAndClickByXpath("//input[@name='collection1[0].bfield']");
+        assertElementPresentByXpath("//input[@name='collection1[0].bfield' and @value='collection1[0]']");
+
+        waitAndClickByXpath("//input[@name='collection1[2].bfield']");
+        assertElementPresentByXpath("//input[@name='collection1[2].bfield' and @value='collection1[2]']");
     }
-    
+
+    protected void testCollectionFeaturesSelectLineExpressionVariable() throws Exception {
+        selectByName("exampleShown", "Line Selection with Expression Variable");
+
+        waitAndClickByXpath("//input[@name='collection2[0].bfield']");
+        assertElementPresentByXpath("//input[@name='collection2[0].bfield' and @value='0']");
+
+        waitAndClickByXpath("//input[@name='collection2[2].bfield']");
+        assertElementPresentByXpath("//input[@name='collection2[2].bfield' and @value='2']");
+    }
+
     @Test
     public void testCollectionFeaturesSelectLineBookmark() throws Exception {
         testCollectionFeaturesSelectLine();
@@ -53,8 +68,21 @@ public class DemoCollectionFeaturesSelectLineAft extends WebDriverLegacyITBase {
     }
 
     @Test
+    public void testCollectionFeaturesSelectLineExpressionVariableBookmark() throws Exception {
+        testCollectionFeaturesSelectLineExpressionVariable();
+        passed();
+    }
+
+    @Test
     public void testCollectionFeaturesSelectLineNav() throws Exception {
         testCollectionFeaturesSelectLine();
         passed();
-    }  
+    }
+
+    @Test
+    public void testCollectionFeaturesSelectLineExpressionVariableNav() throws Exception {
+        testCollectionFeaturesSelectLineExpressionVariable();
+        passed();
+    }
+
 }

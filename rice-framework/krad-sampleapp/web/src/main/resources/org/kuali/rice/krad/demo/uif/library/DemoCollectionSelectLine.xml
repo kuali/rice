@@ -29,6 +29,7 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionSelectLine-Example1"/>
+        <ref bean="Demo-CollectionSelectLine-Example2"/>
       </list>
     </property>
   </bean>
@@ -56,6 +57,42 @@
           </property>
         </bean>
         <!-- ex:Demo-CollectionSelectLine-Example1 end-->
+      </list>
+    </property>
+  </bean>
+
+  <!-- Select Line with radio button -->
+  <bean id="Demo-CollectionSelectLine-Example2"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionSelectLine-Example2 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection"	p:layoutManager.numberOfColumns="4">
+          <property name="headerText" value="Collection Select Line with Expression Variable" />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection2" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+          <property name="layoutManager.richTable.render" value="true" />
+          <!-- Set line selection -->
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Select" p:propertyName="bfield">
+                <property name="control">
+                  <bean parent="Uif-VerticalCheckboxesControl">
+                    <property name="options">
+                      <list>
+                        <bean parent="Uif-KeyLabelPair" p:key="@{#index}" p:value=""/>
+                      </list>
+                    </property>
+                  </bean>
+                </property>
+              </bean>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionSelectLine-Example2 end-->
       </list>
     </property>
   </bean>

@@ -216,11 +216,13 @@ public class LookupView extends FormView {
         }
 
         // autoTruncateColumns: use system wide lookup result configuration if not specified
-        TableLayoutManager resultsTableLayoutManager = (TableLayoutManager) this.getResultsGroup().getLayoutManager();
-        if (resultsTableLayoutManager.isAutoTruncateColumns() == null) {
-            resultsTableLayoutManager.setAutoTruncateColumns(CoreFrameworkServiceLocator.getParameterService()
-                    .getParameterValueAsBoolean(KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE,
-                            KRADConstants.SystemGroupParameterNames.AUTO_TRUNCATE_COLUMNS, false));
+        if (this.getResultsGroup().getLayoutManager() instanceof TableLayoutManager) {
+            TableLayoutManager resultsTableLayoutManager = (TableLayoutManager) this.getResultsGroup().getLayoutManager();
+            if (resultsTableLayoutManager.isAutoTruncateColumns() == null) {
+                resultsTableLayoutManager.setAutoTruncateColumns(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+                                KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE,
+                                KRADConstants.SystemGroupParameterNames.AUTO_TRUNCATE_COLUMNS, false));
+            }
         }
 
         convertLookupCriteriaFields(criteriaGroup);

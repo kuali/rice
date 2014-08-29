@@ -128,11 +128,12 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         assertTextPresent("SAVED");
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
+        waitForProgressLoading();
         waitAndClickButtonByText("Reload");
         waitForProgressLoading();
         checkForDocErrorKrad();
         waitForTextPresent("Document was successfully reloaded.");
-        assertTextPresent("ENROUTE");
+        assertTextPresent("FINAL");
     }
 
     protected void testTravelAccountMaintenanceEditBlanketApprove() throws Exception {

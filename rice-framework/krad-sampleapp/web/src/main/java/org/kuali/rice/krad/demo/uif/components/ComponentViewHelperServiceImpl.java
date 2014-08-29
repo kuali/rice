@@ -25,10 +25,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Implementation of {@link ComponentViewHelperService}.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ */
 public class ComponentViewHelperServiceImpl extends ViewHelperServiceImpl implements ComponentViewHelperService {
 
     private static final long serialVersionUID = -3952713360851782891L;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TravelAccount> retrieveTravelAccounts(String term) {
         List<TravelAccount> matchingAccounts = new ArrayList<TravelAccount>();
@@ -42,6 +50,9 @@ public class ComponentViewHelperServiceImpl extends ViewHelperServiceImpl implem
         return matchingAccounts;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TravelAccount> retrieveTravelAccountsBySubAcctAndTerm(String subAccount, String term) {
         List<TravelAccount> matchingAccounts = new ArrayList<TravelAccount>();
@@ -56,6 +67,9 @@ public class ComponentViewHelperServiceImpl extends ViewHelperServiceImpl implem
         return matchingAccounts;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<TravelAccount> retrieveTravelAccountsByName(String name) {
         List<TravelAccount> matchingAccounts = new ArrayList<TravelAccount>();

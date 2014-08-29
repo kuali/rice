@@ -20,13 +20,38 @@ import org.kuali.rice.krad.demo.travel.dataobject.TravelAccount;
 import java.util.List;
 
 /**
+ * Provides additional methods for retrieving {@link TravelAccount}s.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface ComponentViewHelperService {
 
+    /**
+     * Returns a list of {@link TravelAccount}s by {@code term}.
+     *
+     * @param term the {@link TravelAccount} number
+     *
+     * @return a list of {@link TravelAccount}s by {@code term}
+     */
     List<TravelAccount> retrieveTravelAccounts(String term);
 
+    /**
+     * Returns a list of {@link TravelAccount}s by {@code subAccount} and {@code term}.
+     *
+     * @param subAccount the {@link TravelAccount} identifier
+     * @param term the {@link TravelAccount} number
+     *
+     * @return a list of {@link TravelAccount}s by {@code subAccount} and {@code term}
+     */
     List<TravelAccount> retrieveTravelAccountsBySubAcctAndTerm(String subAccount, String term);
 
+    /**
+     * Returns a list of {@link TravelAccount}s by {@code name}.
+     *
+     * @param name the {@link TravelAccount} name
+     *
+     * @return a list of {@link TravelAccount}s by {@code name}
+     */
     List<TravelAccount> retrieveTravelAccountsByName(String name);
+
 }

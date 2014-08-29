@@ -53,12 +53,15 @@ public class AffiliationTypeAft extends WebDriverLegacyITBase {
     protected void testAffiliationType() throws Exception {
         selectFrameIframePortlet();
         waitAndClickSearchByText();
+        waitForProgressLoading();
         assertTextPresent(new String[][]{{"AFLT"}, {"FCLTY"}, {"STAFF"}});
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
         waitAndClickSearchByText();
         waitForTextNotPresent("AFLT");
+        waitForProgressLoading();
         waitAndTypeByName("lookupCriteria[code]","AFLT");
         waitAndClickSearchByText();
+        waitForProgressLoading();
         waitForTextNotPresent("FCLTY");
     }
 

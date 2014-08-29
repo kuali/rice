@@ -201,11 +201,13 @@
     <property name="items">
       <list>
         <bean parent="Uif-Image" p:source="@{#ConfigProperties['krad.externalizable.images.url']}logo-kuali.png" p:altText="Kuali Logo"/>
-        <bean parent="Uif-Message" p:messageText="ApplicationID: @{#ConfigProperties['application.id']}"/>
+        <bean parent="Uif-Message" p:messageText="Application ID: @{#ConfigProperties['application.id']}"/>
+        <bean parent="Uif-Message" p:messageText="Application Version: @{#ConfigProperties['application.version']}"/>
+        <bean parent="Uif-Message" p:messageText="@{#ConfigProperties['project.build.timestamp']}"/>
         <bean parent="Uif-Message" p:messageText="Environment: @{#ConfigProperties['environment']}"/>
-        <bean parent="Uif-Message" p:messageText="branch-release-tag"/>
+        <!--bean parent="Uif-Message" p:messageText="branch-release-tag"/>
         <bean parent="Uif-Message" p:messageText="(revision)"/>
-        <bean parent="Uif-Message" p:messageText="revision-date-time"/>
+        <bean parent="Uif-Message" p:messageText="revision-date-time"/-->
         <bean parent="Uif-Message" p:messageText="(@{#ConfigProperties['datasource.ojb.platform']})"/>
         <bean parent="Uif-Link" p:href="http://www.kuali.org" p:linkText="Send Feedback"/>
       </list>

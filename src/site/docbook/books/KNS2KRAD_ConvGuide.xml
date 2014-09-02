@@ -3763,7 +3763,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
       <section xml:id="IKP30">
         <title>Inquire Into Records</title>
         <para>Checks the user's ability to inquiry objects of that type. In KRAD the <emphasis
-            role="keyword">Open View</emphasis> permission is used in place of the KNS <emphasis
+            role="keyword">Open View</emphasis> permission is used in addition to the KNS <emphasis
             role="keyword">Inquire Into Records</emphasis> permission.</para>
         <para>The KRAD Can View permission uses different KIM entities than the KRAD Inquire Into
           Records permission. <itemizedlist>
@@ -3789,7 +3789,7 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
                 <itemizedlist>
                   <listitem>
                     <para>In KRAD <emphasis role="keyword">Open View</emphasis> permissions are used
-                      in place of the KNS <emphasis role="keyword">Inquire Into Records</emphasis>
+                      in addition to the KNS <emphasis role="keyword">Inquire Into Records</emphasis>
                       permissions to limit access to an inquiry view.</para>
                   </listitem>
                   <listitem>
@@ -3799,7 +3799,8 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
                         >namespaceCode</emphasis> and <emphasis role="keyword"
                         >componentName</emphasis> used by the KNS <emphasis role="keyword">Inquire
                         Into Records</emphasis> permissions to limit access to an inquiry
-                      view.</para>
+                      view.  These are used together in case the view needs to be restricted by
+                      namespace.</para>
                   </listitem>
                 </itemizedlist>
               </para>
@@ -3953,6 +3954,53 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
     <section>
       <title>Maintenance Permissions</title>
       <para/>
+    </section>
+    <section xml:id="TKP0">
+      <title>Transactional Permissions</title>
+      <section xml:id="TKP1">
+        <title>Use Transactional Document</title>
+        <para>The Use Transactional Document permission in the KNS has switched to the Use View
+          permission in KRAD.</para>
+        <para><emphasis role="bold">KNS Use Transactional Document template:</emphasis></para>
+        <para>
+          <inlinemediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_ConvGuide/KNS_UseTransactionalDocument_Permission.png"
+                         contentdepth="15"/>
+            </imageobject>
+          </inlinemediaobject>
+        </para>
+        <para><emphasis role="bold">KRAD Use View template:</emphasis></para>
+        <para>
+          <inlinemediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_ConvGuide/KRAD_UseView_Permission.png"
+                         contentdepth="15"/>
+            </imageobject>
+          </inlinemediaobject>
+        </para>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>In the KNS the <emphasis role="keyword">Use Transactional Document</emphasis>
+                permission template uses two qualifiers: <emphasis role="keyword">documentTypeName</emphasis>
+                and <emphasis role="keyword">editMode</emphasis>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>In KRAD the <emphasis role="keyword">Use View</emphasis> permission template
+                uses two qualifiers: <emphasis role="keyword">viewId</emphasis> and
+                <emphasis role="keyword">editMode</emphasis>.
+              </para>
+            </listitem>
+          </itemizedlist>
+          <inlinemediaobject>
+            <imageobject>
+              <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+            </imageobject>
+          </inlinemediaobject>
+        </para>
+      </section>
     </section>
   </section>
   <section xml:id="ojb_to_jpa">

@@ -15,22 +15,25 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.junit.Test;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
-import org.kuali.rice.krms.api.repository.proposition.PropositionType;
-import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
-import org.springframework.jdbc.support.incrementer.AbstractDataFieldMaxValueIncrementer;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
+import org.kuali.rice.krms.api.repository.proposition.PropositionType;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
+import org.kuali.rice.krms.test.KRMSTestCase;
+import org.springframework.jdbc.support.incrementer.AbstractDataFieldMaxValueIncrementer;
 
-public class AgendaBoTest {
+public class AgendaBoTest extends KRMSTestCase {
 
     public static final String TEST_PREFIX = "AgendaBoTest";
 

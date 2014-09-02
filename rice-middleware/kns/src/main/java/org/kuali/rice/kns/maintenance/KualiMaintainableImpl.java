@@ -18,6 +18,7 @@ package org.kuali.rice.kns.maintenance;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.security.GeneralSecurityException;
+import java.security.cert.LDAPCertStoreParameters;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -57,6 +58,8 @@ import org.kuali.rice.kns.web.ui.SectionBridge;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.MaterializeOption;
 import org.kuali.rice.krad.datadictionary.AttributeSecurity;
 import org.kuali.rice.krad.datadictionary.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
@@ -71,6 +74,8 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
+
+import com.sun.mail.imap.protocol.MODSEQ;
 
 /**
  * Base Maintainable class to hold things common to all maintainables.
@@ -614,8 +619,17 @@ public class KualiMaintainableImpl extends MaintainableImpl implements Maintaina
 	@Override
 	public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> parameters) {
 		try {
-			ObjectUtils.setObjectPropertyDeep(businessObject, KRADPropertyConstants.NEW_COLLECTION_RECORD,
-					boolean.class, true, 2);
+			// This was the only remaining use of this method, as the operation with the wrapper
+			// below is not necessarily safe to use in all situations, I am calling it here
+			// from within the document code where we know it's safe:
+			
+			KradDataServiceLocator.getDataObjectService().wrap(businessObject).materializeReferencedObjectsToDepth(2
+					, MaterializeOption.COLLECTIONS, MaterializeOption.UPDATE_UPDATABLE_REFS);
+			
+			KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectPropertyDeep(businessObject, KRADPropertyConstants.NEW_COLLECTION_RECORD,
+					boolean.class, true);
+//			ObjectUtils.setObjectPropertyDeep(businessObject, KRADPropertyConstants.NEW_COLLECTION_RECORD,
+//					boolean.class, true, 2);
 		} catch (Exception e) {
 			LOG.error("unable to set newCollectionRecord property: " + e.getMessage(), e);
 			throw new RuntimeException("unable to set newCollectionRecord property: " + e.getMessage(), e);

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.data.provider;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.PersistenceOption;
 
 /**
@@ -155,7 +156,7 @@ public interface PersistenceProvider extends Provider {
      *
      * @return a copy of the given data object
      */
-    <T> T copyInstance(T dataObject);
+	<T> T copyInstance(T dataObject, CopyOption... options);
 
     /**
      * Indicates whether or not this provider handles persistence for the given data object type.

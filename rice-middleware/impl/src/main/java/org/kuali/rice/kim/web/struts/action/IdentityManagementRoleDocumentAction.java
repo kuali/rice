@@ -34,7 +34,6 @@ import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -426,7 +425,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public ActionForward editMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleMember roleMemberToEdit = roleDocumentForm.getRoleDocument().getMembers().get(getLineToEdit(request));
-        KimDocumentRoleMember copiedMember = (KimDocumentRoleMember) SerializationUtils.deepCopy(roleMemberToEdit);
+        KimDocumentRoleMember copiedMember = KradDataServiceLocator.getDataObjectService().copyInstance(roleMemberToEdit);
         roleDocumentForm.getRoleDocument().getModifiedMembers().add(copiedMember);
         roleDocumentForm.getRoleDocument().getMembers().remove(roleMemberToEdit);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -435,7 +434,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public ActionForward editSearchResultsMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleMember roleMemberToEdit = roleDocumentForm.getRoleDocument().getSearchResultMembers().get(getLineToEdit(request));
-        KimDocumentRoleMember copiedMember = (KimDocumentRoleMember)SerializationUtils.deepCopy(roleMemberToEdit);
+        KimDocumentRoleMember copiedMember = KradDataServiceLocator.getDataObjectService().copyInstance(roleMemberToEdit);
         roleDocumentForm.getRoleDocument().getModifiedMembers().add(copiedMember);
         roleDocumentForm.getRoleDocument().getSearchResultMembers().remove(roleMemberToEdit);
         roleDocumentForm.getRoleDocument().getMembers().remove(roleMemberToEdit);

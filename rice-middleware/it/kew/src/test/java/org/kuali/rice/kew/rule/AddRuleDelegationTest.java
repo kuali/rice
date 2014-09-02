@@ -15,24 +15,28 @@
  */
 package org.kuali.rice.kew.rule;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+
 import mocks.MockDocumentRefreshQueueImpl;
-import org.apache.commons.lang.StringUtils;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.CopyOption;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests adding a delegation rule
@@ -48,7 +52,8 @@ public class AddRuleDelegationTest extends KEWTestCase {
 	private static final String RULE_TEMPLATE = "AddDelegationTest_RuleTemplate";
 	private static final String DELEGATION_TEMPLATE = "AddDelegationTest_DelegationTemplate";
 
-	protected void loadTestData() throws Exception {
+	@Override
+    protected void loadTestData() throws Exception {
 		loadXmlFile("AddRuleDelegationTestData.xml");
 	}
 
@@ -186,20 +191,12 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		assertTrue("Failed to find the reversioned delegate rule", foundReversionedDelegateRule);
 	}
 
-	private RuleDelegationBo saveNewVersion(RuleDelegationBo ruleDelegation) {
-		// clear out the keys
-        ruleDelegation = (RuleDelegationBo)SerializationUtils.deepCopy(ruleDelegation);
-		ruleDelegation.setRuleDelegationId(null);
-		ruleDelegation.setDelegateRuleId(null);
-        ruleDelegation.setObjectId(null);
+	@SuppressWarnings("deprecation")
+    private RuleDelegationBo saveNewVersion(RuleDelegationBo ruleDelegation) {
+        ruleDelegation = KradDataServiceLocator.getDataObjectService().copyInstance(ruleDelegation, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID);
+
         ruleDelegation.setVersionNumber(null);
 
-		for (RuleResponsibilityBo ruleResponsibility : ruleDelegation.getDelegationRule().getRuleResponsibilities()) {
-			ruleResponsibility.setRuleBaseValuesId(null);
-			ruleResponsibility.setResponsibilityId(null);
-			ruleResponsibility.setId(null);
-            ruleResponsibility.setObjectId(null);
-		}
 		return KEWServiceLocator.getRuleService().saveRuleDelegation(ruleDelegation, true);
 	}
 

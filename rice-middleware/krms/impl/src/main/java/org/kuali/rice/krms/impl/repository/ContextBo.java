@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextDefinition;
-import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,13 +32,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.CopyOption;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinitionContract;
 
 @Entity
 @Table(name = "KRMS_CNTXT_T")
@@ -97,15 +97,18 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
     public Map<String, String> getAttributes() {
         Map<String, String> attributes = new HashMap<String, String>();
 
-        if (attributeBos != null) for (ContextAttributeBo attr : attributeBos) {
-            ((HashMap<String, String>) attributes).put(attr.getAttributeDefinition().getName(), attr.getValue());
+        if (attributeBos != null) {
+            for (ContextAttributeBo attr : attributeBos) {
+                ((HashMap<String, String>) attributes).put(attr.getAttributeDefinition().getName(), attr.getValue());
+            }
         }
 
         return attributes;
     }
 
     public ContextBo copyContext(String additionalNameText) {
-        ContextBo copy = (ContextBo) SerializationUtils.deepCopy(this);
+        ContextBo copy = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
+        //ContextBo copy = (ContextBo) SerializationUtils.deepCopy(this);
 
         //
         // set all IDs to null
@@ -117,6 +120,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         copy.setAgendas(null);
         for (ContextAttributeBo attributeBo : copy.getAttributeBos()) {
             attributeBo.setId(null);
+            attributeBo.setVersionNumber(null);
         }
 
         if (!StringUtils.isEmpty(additionalNameText)) {
@@ -184,19 +188,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         return bo;
     }
 
-     /*
-    This is being done because there is a  major issue with lazy relationships, in ensuring that the relationship is
-    still available after the object has been detached, or serialized. For most JPA providers, after serialization
-    any lazy relationship that was not instantiated will be broken, and either throw an error when accessed,
-    or return null.
-     */
-
-    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
-        agendas.size();
-        attributeBos.size();
-        stream.defaultWriteObject();
-    }
-
+    @Override
     public String getId() {
         return id;
     }
@@ -205,6 +197,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -213,6 +206,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         this.name = name;
     }
 
+    @Override
     public String getNamespace() {
         return namespace;
     }
@@ -221,6 +215,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         this.namespace = namespace;
     }
 
+    @Override
     public String getTypeId() {
         return typeId;
     }
@@ -229,6 +224,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         this.typeId = typeId;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -241,6 +237,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         return active;
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
@@ -261,6 +258,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         this.attributeBos = attributeBos;
     }
 
+    @Override
     public Long getVersionNumber() {
         return versionNumber;
     }

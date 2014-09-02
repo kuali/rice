@@ -19,6 +19,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.GlobalBusinessObjectDetail;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.MaterializeOption;
 import org.kuali.rice.krad.maintenance.MaintenanceLock;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -116,7 +118,16 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         
         // property newCollectionRecord of PersistableObjectBase is not persisted, but is always true for globals
         try {
-            ObjectUtils.setObjectPropertyDeep(newBo, KRADPropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
+			// This was the only remaining use of this method, as the operation with the wrapper
+			// below is not necessarily safe to use in all situations, I am calling it here
+			// from within the document code where we know it's safe:
+			
+			KradDataServiceLocator.getDataObjectService().wrap(businessObject).materializeReferencedObjectsToDepth(2
+					, MaterializeOption.COLLECTIONS, MaterializeOption.UPDATE_UPDATABLE_REFS);
+			
+			KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectPropertyDeep(businessObject, KRADPropertyConstants.NEW_COLLECTION_RECORD,
+					boolean.class, true);
+            //ObjectUtils.setObjectPropertyDeep(newBo, KRADPropertyConstants.NEW_COLLECTION_RECORD, boolean.class, true, 2);
         }
         catch (Exception e) {
             LOG.error("unable to set newCollectionRecord property: " + e.getMessage());

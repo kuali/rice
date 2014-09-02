@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -24,15 +27,26 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.metamodel.ManagedType;
 
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.persistence.jpa.JpaEntityManager;
+import org.eclipse.persistence.sessions.CopyGroup;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.core.api.mo.common.GloballyUnique;
+import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.DataObjectWrapper;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.data.metadata.DataObjectCollection;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
+import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -330,14 +344,130 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
-    public <T> T copyInstance(final T dataObject) {
+	public <T> T copyInstance(final T dataObject, CopyOption... options) {
+		final CopyGroup copyGroup = new CopyGroup();
+		if (ArrayUtils.contains(options, CopyOption.RESET_PK_FIELDS)) {
+			copyGroup.setShouldResetPrimaryKey(true);
+		}
+		final boolean shouldResetVersionNumber = ArrayUtils.contains(options, CopyOption.RESET_VERSION_NUMBER);
+		if (shouldResetVersionNumber) {
+			copyGroup.setShouldResetVersion(true);
+		}
+		final boolean shouldResetObjectId = ArrayUtils.contains(options, CopyOption.RESET_VERSION_NUMBER);
         return doWithExceptionTranslation(new Callable<T>() {
-            @Override
+			@SuppressWarnings("unchecked")
+			@Override
             public T call() {
-                return (T) sharedEntityManager.unwrap(JpaEntityManager.class).getDatabaseSession().copy(dataObject);
+				T copiedObject = (T) sharedEntityManager.unwrap(JpaEntityManager.class).getDatabaseSession()
+						.copy(dataObject, copyGroup);
+				if (shouldResetObjectId) {
+					clearObjectIdOnUpdatableObjects(copiedObject, new HashSet<Object>());
+				}
+				// if (shouldResetVersionNumber) {
+				// clearVersionNumberOnUpdatableObjects(copiedObject, new HashSet<Object>());
+				// }
+				return copiedObject;
             }
         });
     }
+
+	/**
+	 * For the given data object, recurse through all updatable references and clear the object ID on the basis that
+	 * this is a unique column in each object's table.
+	 * 
+	 * @param dataObject
+	 *            The data object on which to clear the object ID from itself and all updatable child objects.
+	 * @param visitedObjects
+	 *            A set of objects built by the recursion process which will be checked to ensure that the code does not
+	 *            get into an infinite loop.
+	 */
+	protected void clearObjectIdOnUpdatableObjects(Object dataObject, Set<Object> visitedObjects) {
+		if (dataObject == null) {
+			return;
+		}
+		// avoid infinite loops
+		if (visitedObjects.contains(dataObject)) {
+			return;
+		}
+		visitedObjects.add(dataObject);
+		if (dataObject instanceof GloballyUnique) {
+			try {
+				PropertyUtils.setSimpleProperty(dataObject, CoreConstants.CommonElements.OBJECT_ID, null);
+			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+				// there may not be a setter or some other issue. In any case, we don't want to blow the method.
+				LOG.warn("Unable to clear the objectId from copyInstance on an object: " + dataObject, ex);
+			}
+		}
+		DataObjectWrapper<Object> wrapper = KradDataServiceLocator.getDataObjectService().wrap(dataObject);
+		if (wrapper.getMetadata() != null) {
+			for (DataObjectRelationship rel : wrapper.getMetadata().getRelationships()) {
+				if (rel.isSavedWithParent()) {
+					// recurse in
+					clearObjectIdOnUpdatableObjects(wrapper.getPropertyValue(rel.getName()), visitedObjects);
+				}
+			}
+			for (DataObjectCollection rel : wrapper.getMetadata().getCollections()) {
+				if (rel.isSavedWithParent()) {
+					Collection<?> collection = (Collection<?>) wrapper.getPropertyValue(rel.getName());
+					if (collection != null) {
+						for (Object element : collection) {
+							clearObjectIdOnUpdatableObjects(element, visitedObjects);
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	/**
+	 * For the given data object, recurse through all updatable references and clear the object ID on the basis that
+	 * this is a unique column in each object's table.
+	 * 
+	 * @param dataObject
+	 *            The data object on which to clear the object ID from itself and all updatable child objects.
+	 * @param visitedObjects
+	 *            A set of objects built by the recursion process which will be checked to ensure that the code does not
+	 *            get into an infinite loop.
+	 */
+	protected void clearVersionNumberOnUpdatableObjects(Object dataObject, Set<Object> visitedObjects) {
+		if (dataObject == null) {
+			return;
+		}
+		// avoid infinite loops
+		if (visitedObjects.contains(dataObject)) {
+			return;
+		}
+		visitedObjects.add(dataObject);
+		if (dataObject instanceof Versioned) {
+			try {
+				PropertyUtils.setSimpleProperty(dataObject, CoreConstants.CommonElements.VERSION_NUMBER, null);
+			} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+				// there may not be a setter or some other issue. In any case, we don't want to blow the method.
+				LOG.warn("Unable to clear the objectId from copyInstance on an object: " + dataObject, ex);
+			}
+		}
+		DataObjectWrapper<Object> wrapper = KradDataServiceLocator.getDataObjectService().wrap(dataObject);
+		if (wrapper.getMetadata() != null) {
+			for (DataObjectRelationship rel : wrapper.getMetadata().getRelationships()) {
+				if (rel.isSavedWithParent()) {
+					// recurse in
+					clearVersionNumberOnUpdatableObjects(wrapper.getPropertyValue(rel.getName()), visitedObjects);
+				}
+			}
+			for (DataObjectCollection rel : wrapper.getMetadata().getCollections()) {
+				if (rel.isSavedWithParent()) {
+					Collection<?> collection = (Collection<?>) wrapper.getPropertyValue(rel.getName());
+					if (collection != null) {
+						for (Object element : collection) {
+							clearVersionNumberOnUpdatableObjects(element, visitedObjects);
+						}
+					}
+				}
+			}
+
+		}
+	}
 
     /**
      * {@inheritDoc}

@@ -30,7 +30,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
@@ -54,6 +53,7 @@ import org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAu
 import org.kuali.rice.kim.framework.services.KimFrameworkServiceLocator;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
+import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.kim.impl.identity.principal.PrincipalBo;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -159,12 +159,12 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	protected boolean validDuplicatePrincipalName(IdentityManagementPersonDocument personDoc){
     	List<PrincipalBo> prncplImpls = KradDataServiceLocator.getDataObjectService().findMatching(
-    	        PrincipalBo.class, 
-    	        QueryByCriteria.Builder.forAttribute( KIMPropertyConstants.Principal.PRINCIPAL_NAME, 
+    	        PrincipalBo.class,
+    	        QueryByCriteria.Builder.forAttribute( KIMPropertyConstants.Principal.PRINCIPAL_NAME,
     	                personDoc.getPrincipalName()).build() ).getResults();
     	boolean rulePassed = true;
     	if( !prncplImpls.isEmpty() ){
-    		if(prncplImpls.size() == 1 
+    		if(prncplImpls.size() == 1
     		        && StringUtils.equals( prncplImpls.get(0).getPrincipalId(), personDoc.getPrincipalId()) ) {
     			rulePassed = true;
             } else {
@@ -283,11 +283,11 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
     		if (affiliation.getAffiliationType() != null && !affiliation.getAffiliationTypeCode().equals(affiliation.getAffiliationType().getCode())) {
-    			PersonDocumentAffiliation copiedAffiliation = (PersonDocumentAffiliation) SerializationUtils.deepCopy(
-                        affiliation);
-    			KradDataServiceLocator.getDataObjectService().wrap(copiedAffiliation).fetchRelationship("affiliationType");
-    			if (!copiedAffiliation.getAffiliationType().isEmploymentAffiliationType() && affiliation.getAffiliationType().isEmploymentAffiliationType() && !copiedAffiliation.getEmpInfos().isEmpty()) {
-		     		GlobalVariables.getMessageMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE,new String[] {affiliation.getAffiliationType().getName(), copiedAffiliation.getAffiliationType().getName()});
+    			EntityAffiliationTypeBo newAffiliationType = KradDataServiceLocator.getDataObjectService().find(EntityAffiliationTypeBo.class, affiliation.getAffiliationTypeCode());
+    			if (!newAffiliationType.isEmploymentAffiliationType()
+    			        && affiliation.getAffiliationType().isEmploymentAffiliationType()
+    			        && !affiliation.getEmpInfos().isEmpty()) {
+		     		GlobalVariables.getMessageMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_EMPLOYMENT_AFFILIATION_TYPE,new String[] {affiliation.getAffiliationType().getName(), newAffiliationType.getName()});
 		     		valid = false;
 	    		}
     		}
@@ -571,14 +571,17 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return valid;
 	}
 
+    @Override
     public boolean processAddGroup(AddGroupEvent addGroupEvent) {
         return getAddGroupRule().processAddGroup(addGroupEvent);
     }
 
+    @Override
     public boolean processAddRole(AddRoleEvent addRoleEvent) {
         return getAddRoleRule().processAddRole(addRoleEvent);
     }
 
+    @Override
     public boolean processAddPersonDelegationMember(AddPersonDelegationMemberEvent addPersonDelegationMemberEvent){
     	return getAddPersonDelegationMemberRule().processAddPersonDelegationMember(addPersonDelegationMemberEvent);
     }
@@ -691,7 +694,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		return addPersonDelegationMemberRule;
 	}
 
-	public boolean processAddPersonDocumentRoleQualifier(IdentityManagementPersonDocument document, PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
+	@Override
+    public boolean processAddPersonDocumentRoleQualifier(IdentityManagementPersonDocument document, PersonDocumentRole role, KimDocumentRoleMember kimDocumentRoleMember, int selectedRoleIdx) {
 		boolean dateValidationSuccess = validateActiveDate("document.roles[" + selectedRoleIdx + "].newRolePrncpl.activeFromDate", kimDocumentRoleMember.getActiveFromDate(), kimDocumentRoleMember.getActiveToDate());
 		String errorPath = "roles[" + selectedRoleIdx + "].newRolePrncpl";
 		List<RemotableAttributeError> validationErrors = new ArrayList<RemotableAttributeError>();

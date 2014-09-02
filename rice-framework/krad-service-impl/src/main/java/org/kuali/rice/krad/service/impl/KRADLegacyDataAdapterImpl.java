@@ -519,8 +519,10 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public void materializeAllSubObjects(Object object) {
-        // for now, do nothing if this is not a legacy object, we'll eliminate the concept of materializing
-        // sub objects in this fashion in the new data layer, will enter a jira to re-examine this
+        DataObjectWrapper<?> wrappedObject = dataObjectService.wrap(object);
+        
+        // Using 3 as that is what the KNS version of this method did
+        wrappedObject.materializeReferencedObjectsToDepth(3);
     }
 
     @Override
@@ -528,7 +530,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
      * Recursively calls getPropertyTypeChild if nested property to allow it to properly look it up
      */
     public Class<?> getPropertyType(Object object, String propertyName) {
-        DataObjectWrapper wrappedObject = dataObjectService.wrap(object);
+        DataObjectWrapper<?> wrappedObject = dataObjectService.wrap(object);
         if (PropertyAccessorUtils.isNestedOrIndexedProperty(propertyName)) {
             return wrappedObject.getPropertyTypeNullSafe(wrappedObject.getWrappedClass(), propertyName);
         }
@@ -542,7 +544,7 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
         DataObjectRelationship extensionRelationship = metadata.getRelationship("extension");
         if (extensionRelationship != null) {
             Class<?> extensionType = extensionRelationship.getRelatedType();
-            return (PersistableBusinessObjectExtension) extensionType.newInstance();
+            return extensionType.newInstance();
         }
         return null;
     }

@@ -863,6 +863,9 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 	 */
 	public Collection<MetadataChild> getChildrenMatchingOptions(MaterializeOption... options) {
 		Collection<MetadataChild> matchingChildren = new ArrayList<>();
+		if (metadata == null) {
+			return matchingChildren;
+		}
 		boolean materializeUpdatable = ArrayUtils.contains(options, MaterializeOption.UPDATE_UPDATABLE_REFS);
 		boolean rematerializeEagerRefs = ArrayUtils.contains(options, MaterializeOption.INCLUDE_EAGER_REFS);
 		// we include relationships IF it's explicitly specified *OR* neither was specified

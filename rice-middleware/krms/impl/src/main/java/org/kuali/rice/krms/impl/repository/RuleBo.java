@@ -15,6 +15,26 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.util.tree.Node;
@@ -34,27 +54,6 @@ import org.kuali.rice.krms.impl.ui.CompoundPropositionEditNode;
 import org.kuali.rice.krms.impl.ui.RuleTreeNode;
 import org.kuali.rice.krms.impl.ui.SimplePropositionEditNode;
 import org.kuali.rice.krms.impl.ui.SimplePropositionNode;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Entity
 @Table(name = "KRMS_RULE_T")
@@ -123,6 +122,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         attributeBos = new ArrayList<RuleAttributeBo>();
     }
 
+    @Override
     public PropositionBo getProposition() {
         return proposition;
     }
@@ -145,6 +145,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         }
     }
 
+    @Override
     public Map<String, String> getAttributes() {
         HashMap<String, String> attributes = new HashMap<String, String>();
 
@@ -233,14 +234,14 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
      * null:  use the proposition.editMode property to determine the node type
      */
     private void buildPropTree(Node sprout, PropositionBo prop, Boolean editMode) {
-        // Depending on the type of proposition (simple/compound), and the editMode,  
-        // Create a treeNode of the appropriate type for the node and attach it to the  
-        // sprout parameter passed in.  
-        // If the prop is a compound proposition, calls itself for each of the compoundComponents  
+        // Depending on the type of proposition (simple/compound), and the editMode,
+        // Create a treeNode of the appropriate type for the node and attach it to the
+        // sprout parameter passed in.
+        // If the prop is a compound proposition, calls itself for each of the compoundComponents
         if (prop != null) {
             if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())) {
-                // Simple Proposition  
-                // add a node for the description display with a child proposition node  
+                // Simple Proposition
+                // add a node for the description display with a child proposition node
                 Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
                 child.setNodeLabel(prop.getDescription());
 
@@ -258,12 +259,12 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
                 sprout.getChildren().add(child);
                 propositionSummaryBuffer.append(prop.getParameterDisplayString());
             } else if (PropositionType.COMPOUND.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())) {
-                // Compound Proposition  
+                // Compound Proposition
                 propositionSummaryBuffer.append(" ( ");
                 Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
                 aNode.setNodeLabel(prop.getDescription());
 
-                // editMode has description as an editable field  
+                // editMode has description as an editable field
                 if (prop.getEditMode()) {
                     aNode.setNodeLabel("");
                     aNode.setNodeType("ruleTreeNode compoundNode editNode");
@@ -284,13 +285,13 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
                     child.setCompoundSequenceNumber((compoundSequenceNumber = ++compoundSequenceNumber));
 
                     // start with 1
-                    // add an opcode node in between each of the children.  
+                    // add an opcode node in between each of the children.
                     if (!first) {
                         addOpCodeNode(aNode, prop);
                     }
 
                     first = false;
-                    // call to build the childs node  
+                    // call to build the childs node
                     buildPropTree(aNode, child, editMode);
                 }
 
@@ -372,9 +373,9 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
             actionBo.setRule(bo);
         }
 
-        // build the set of agenda attribute BOs  
+        // build the set of agenda attribute BOs
         List<RuleAttributeBo> attrs = new ArrayList<RuleAttributeBo>();
-        // for each converted pair, build an RuleAttributeBo and add it to the set  
+        // for each converted pair, build an RuleAttributeBo and add it to the set
         RuleAttributeBo attributeBo;
         for (Map.Entry<String, String> entry : im.getAttributes().entrySet()) {
             KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().getKrmsAttributeBo(entry.getKey(), im.getNamespace());
@@ -392,9 +393,9 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
     }
 
     public static RuleBo copyRule(RuleBo existing) {
-        // create a simple proposition Bo  
+        // create a simple proposition Bo
         RuleBo newRule = new RuleBo();
-        // copy simple fields  
+        // copy simple fields
         newRule.setId(ruleIdIncrementer.getNewId());
         newRule.setNamespace(existing.getNamespace());
         newRule.setDescription(existing.getDescription());
@@ -421,8 +422,8 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         RuleBo copiedRule = RuleBo.copyRule(this);
 
         // Rule names cannot be the same, the error for being the same name is not displayed to the user, and the document is
-        // said to have been successfully submitted.  
-        //        copiedRule.setName(rule.getName());  
+        // said to have been successfully submitted.
+        //        copiedRule.setName(rule.getName());
         copiedRule.setName(newRuleName);
 
         return copiedRule;
@@ -477,19 +478,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         return newActionList;
     }
 
-    /*
-     * This is being done because there is a  major issue with lazy relationships, in ensuring that the relationship is
- 	 * still available after the object has been detached, or serialized. For most JPA providers, after serialization
- 	 * any lazy relationship that was not instantiated will be broken, and either throw an error when accessed,
- 	 * or return null.
- 	 */
-    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
-        if (proposition != null) {
-            proposition.getId();
-        }
-        stream.defaultWriteObject();
-    }
-
+    @Override
     public String getId() {
         return id;
     }
@@ -498,6 +487,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         this.id = id;
     }
 
+    @Override
     public String getNamespace() {
         return namespace;
     }
@@ -506,6 +496,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         this.namespace = namespace;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -514,6 +505,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         this.description = description;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -522,10 +514,12 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         this.name = name;
     }
 
+    @Override
     public String getTypeId() {
         return typeId;
     }
 
+    @Override
     public String getPropId() {
         if (proposition != null) {
             return proposition.getId();
@@ -538,6 +532,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         return active;
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
@@ -546,6 +541,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         this.active = active;
     }
 
+    @Override
     public Long getVersionNumber() {
         return versionNumber;
     }
@@ -554,6 +550,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         this.versionNumber = versionNumber;
     }
 
+    @Override
     public List<ActionBo> getActions() {
         return actions;
     }

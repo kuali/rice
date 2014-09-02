@@ -98,6 +98,7 @@ import com.thoughtworks.xstream.core.BaseException;
         @UniqueConstraint(name="KRNS_MAINT_DOC_TC0",columnNames="OBJ_ID")
 })
 public class MaintenanceDocumentBase extends DocumentBase implements MaintenanceDocument, SessionDocument {
+    protected static final int SUB_OBJECT_MATERIALIZATION_DEPTH = 3;
     private static final long serialVersionUID = -505085142412593305L;
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentBase.class);
 
@@ -501,6 +502,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             Object oldBo = oldMaintainableObject.getDataObject();
 
             // hack to resolve XStream not dealing well with Proxies
+            //KradDataServiceLocator.getDataObjectService().wrap(oldBo).materializeReferencedObjectsToDepth(SUB_OBJECT_MATERIALIZATION_DEPTH);
             KRADServiceLocatorWeb.getLegacyDataAdapter().materializeAllSubObjects(oldBo);
 
             docContentBuffer.append(getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
@@ -516,8 +518,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         Object newBo = newMaintainableObject.getDataObject();
 
+        //KradDataServiceLocator.getDataObjectService().wrap(newBo).materializeReferencedObjectsToDepth(SUB_OBJECT_MATERIALIZATION_DEPTH);
         KRADServiceLocatorWeb.getLegacyDataAdapter().materializeAllSubObjects(newBo);
-
+        
         docContentBuffer.append(getBusinessObjectSerializerService().serializeBusinessObjectToXml(newBo));
 
         // add the maintainable's maintenanceAction

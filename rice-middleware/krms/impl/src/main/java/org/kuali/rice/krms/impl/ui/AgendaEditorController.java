@@ -15,20 +15,29 @@
  */
 package org.kuali.rice.krms.impl.ui;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.core.api.uif.RemotableAttributeError;
 import org.kuali.rice.core.api.util.KeyValue;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.core.api.util.tree.Node;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentController;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.maintenance.MaintenanceDocumentController;
 import org.kuali.rice.krad.web.form.DocumentFormBase;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
@@ -68,14 +77,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Controller for the Test UI Page
@@ -193,8 +194,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             agendaItem.setRule(rule);
             agendaEditor.setAgendaItemLine(agendaItem);
         } else {
-            // TODO: Add a copy not the reference
-            agendaEditor.setAgendaItemLine((AgendaItemBo) SerializationUtils.deepCopy(agendaItem));
+            agendaEditor.setAgendaItemLine(KradDataServiceLocator.getDataObjectService().copyInstance(agendaItem));
         }
 
 
@@ -426,8 +426,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 }
 
                 // recurse
-                if (!CollectionUtils.isEmpty(compoundComponents)) for (PropositionBo childProp : compoundComponents) {
-                    result &= validateProposition(childProp, namespace);
+                if (!CollectionUtils.isEmpty(compoundComponents)) {
+                    for (PropositionBo childProp : compoundComponents) {
+                        result &= validateProposition(childProp, namespace);
+                    }
                 }
             }
         }
@@ -443,8 +445,8 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @return true if the proposition is considered valid
      */
     private boolean validateSimpleProposition(PropositionBo proposition, String namespace) {
-        boolean result = true; 
-        
+        boolean result = true;
+
         String propConstant = null;
         if (proposition.getParameters().get(1) != null) {
             propConstant = proposition.getParameters().get(1).getValue();
@@ -569,7 +571,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 List<String> parameterNames = new ArrayList<String>(termResolverDefinition.getParameterNames());
                 Collections.sort(parameterNames);
                 for (String parameterName : parameterNames) {
-                    if (!proposition.getTermParameters().containsKey(parameterName) || 
+                    if (!proposition.getTermParameters().containsKey(parameterName) ||
                             StringUtils.isBlank(proposition.getTermParameters().get(parameterName))) {
                         GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                                 "error.rule.proposition.simple.missingTermParameter", proposition.getDescription());
@@ -697,13 +699,15 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      */
     private AgendaItemInstanceChildAccessor getLastChildsAlwaysAccessor(AgendaItemInstanceChildAccessor instanceAccessor) {
         AgendaItemBo next = instanceAccessor.getChild();
-        if (next == null) return instanceAccessor;
+        if (next == null) {
+            return instanceAccessor;
+        }
         while (next.getAlways() != null) { next = next.getAlways(); };
         return new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.always, next);
     }
 
     /**
-     * @return the accessor to the child with the given agendaItemId under the given parent.  This method will search both When TRUE and 
+     * @return the accessor to the child with the given agendaItemId under the given parent.  This method will search both When TRUE and
      * When FALSE sibling groups.  If the instance with the given id is not found, null is returned.
      * @see AgendaItemChildAccessor for nomenclature explanation
      */
@@ -713,18 +717,22 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         for (AgendaItemChildAccessor levelOrderChildAccessor : AgendaItemChildAccessor.children) {
 
             AgendaItemBo next = levelOrderChildAccessor.getChild(parent);
-            
+
             // if the first item matches, return the accessor from the parent
-            if (next != null && agendaItemId.equals(next.getId())) return new AgendaItemInstanceChildAccessor(levelOrderChildAccessor, parent);
+            if (next != null && agendaItemId.equals(next.getId())) {
+                return new AgendaItemInstanceChildAccessor(levelOrderChildAccessor, parent);
+            }
 
             // otherwise walk the children
             while (next != null && next.getAlwaysId() != null) {
-                if (next.getAlwaysId().equals(agendaItemId)) return new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.always, next);
+                if (next.getAlwaysId().equals(agendaItemId)) {
+                    return new AgendaItemInstanceChildAccessor(AgendaItemChildAccessor.always, next);
+                }
                 // move down
                 next = next.getAlways();
             }
         }
-        
+
         return null;
     }
 
@@ -1069,31 +1077,38 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * @see AgendaItemChildAccessor for nomenclature explanation
      */
     private boolean isSiblings(AgendaItemBo cousin1, AgendaItemBo cousin2) {
-        if (cousin1.equals(cousin2)) return true; // this is a bit abusive
-        
+        if (cousin1.equals(cousin2))
+         {
+            return true; // this is a bit abusive
+        }
+
         // can you walk to c1 from ALWAYS links of c2?
         AgendaItemBo candidate = cousin2;
         while (null != (candidate = candidate.getAlways())) {
-            if (candidate.equals(cousin1)) return true;
+            if (candidate.equals(cousin1)) {
+                return true;
+            }
         }
         // can you walk to c2 from ALWAYS links of c1?
         candidate = cousin1;
         while (null != (candidate = candidate.getAlways())) {
-            if (candidate.equals(cousin2)) return true;
+            if (candidate.equals(cousin2)) {
+                return true;
+            }
         }
         return false;
     }
 
     /**
-     * This method returns the level order accessor (getWhenTrue or getWhenFalse) that relates the parent directly 
-     * to the child.  If the two nodes don't have such a relationship, null is returned. 
+     * This method returns the level order accessor (getWhenTrue or getWhenFalse) that relates the parent directly
+     * to the child.  If the two nodes don't have such a relationship, null is returned.
      * Note that this only finds accessors for oldest children, not younger siblings.
      * @see AgendaItemChildAccessor for nomenclature explanation
      */
     private AgendaItemChildAccessor getOldestChildAccessor(
             AgendaItemBo child, AgendaItemBo parent) {
         AgendaItemChildAccessor levelOrderChildAccessor = null;
-        
+
         if (parent != null) {
             for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.children) {
                 if (child.equals(childAccessor.getChild(parent))) {
@@ -1104,24 +1119,26 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
         return levelOrderChildAccessor;
     }
-    
+
     /**
      * This method finds and returns the first agenda item in the agenda, or null if there are no items presently
-     * 
+     *
      * @param agenda
      * @return
      */
     private AgendaItemBo getFirstAgendaItem(AgendaBo agenda) {
         AgendaItemBo firstItem = null;
-        if (agenda != null && agenda.getItems() != null) for (AgendaItemBo agendaItem : agenda.getItems()) {
-            if (agenda.getFirstItemId().equals(agendaItem.getId())) {
-                firstItem = agendaItem;
-                break;
+        if (agenda != null && agenda.getItems() != null) {
+            for (AgendaItemBo agendaItem : agenda.getItems()) {
+                if (agenda.getFirstItemId().equals(agendaItem.getId())) {
+                    firstItem = agendaItem;
+                    break;
+                }
             }
         }
         return firstItem;
     }
-    
+
     /**
      * @return the closest younger sibling of the agenda item with the given ID, and if there is no such sibling, the closest younger cousin.
      * If there is no such cousin either, then null is returned.
@@ -1134,7 +1151,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         buildAgendaItemGenerationList(genList, root, 0, genNumber);
 
         int itemIndex = genList.indexOf(agendaItem);
-        if (genList.size() > itemIndex + 1) return genList.get(itemIndex + 1);
+        if (genList.size() > itemIndex + 1) {
+            return genList.get(itemIndex + 1);
+        }
 
         return null;
     }
@@ -1161,7 +1180,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                         nextLevel = currentLevel +1;
                     }
                     result = getAgendaItemGenerationNumber(nextLevel, child, agendaItemId);
-                    if (result != -1) break;
+                    if (result != -1) {
+                        break;
+                    }
                 }
             }
         }
@@ -1181,7 +1202,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             genList.add(node);
         }
 
-        if (currentLevel > generation) return;
+        if (currentLevel > generation) {
+            return;
+        }
 
         for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.linkedNodes) {
             AgendaItemBo child = childAccessor.getChild(node);
@@ -1208,11 +1231,13 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         buildAgendaItemGenerationList(genList, root, 0, genNumber);
 
         int itemIndex = genList.indexOf(agendaItem);
-        if (itemIndex >= 1) return genList.get(itemIndex - 1);
+        if (itemIndex >= 1) {
+            return genList.get(itemIndex - 1);
+        }
 
         return null;
     }
-    
+
 
     /**
      * returns the parent of the item with the passed in id.  Note that {@link AgendaItemBo}s related by ALWAYS relationships are considered siblings.
@@ -1238,10 +1263,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             for (AgendaItemChildAccessor childAccessor : AgendaItemChildAccessor.linkedNodes) {
                 AgendaItemBo child = childAccessor.getChild(node);
                 if (child != null) {
-                    // we don't change the level order parent when we traverse ALWAYS links 
+                    // we don't change the level order parent when we traverse ALWAYS links
                     AgendaItemBo lop = (childAccessor == AgendaItemChildAccessor.always) ? levelOrderParent : node;
                     result = getParentHelper(child, lop, agendaItemId);
-                    if (result != null) break;
+                    if (result != null) {
+                        break;
+                    }
                 }
             }
         }
@@ -1252,10 +1279,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * Search the tree for the agenda item with the given id.
      */
     private AgendaItemBo getAgendaItemById(AgendaItemBo node, String agendaItemId) {
-        if (node == null) throw new IllegalArgumentException("node must be non-null");
+        if (node == null) {
+            throw new IllegalArgumentException("node must be non-null");
+        }
 
         AgendaItemBo result = null;
-        
+
         if (agendaItemId.equals(node.getId())) {
             result = node;
         } else {
@@ -1263,10 +1292,12 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 AgendaItemBo child = childAccessor.getChild(node);
                 if (child != null) {
                     result = getAgendaItemById(child, agendaItemId);
-                    if (result != null) break;
+                    if (result != null) {
+                        break;
+                    }
                 }
             }
-        } 
+        }
         return result;
     }
 
@@ -1322,13 +1353,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     }
 
     private void deleteAgendaItem(AgendaItemBo root, String agendaItemIdToDelete) {
-        if (deleteAgendaItem(root, AgendaItemChildAccessor.whenTrue, agendaItemIdToDelete) || 
-                deleteAgendaItem(root, AgendaItemChildAccessor.whenFalse, agendaItemIdToDelete) || 
-                deleteAgendaItem(root, AgendaItemChildAccessor.always, agendaItemIdToDelete)); // TODO: this is confusing, refactor
+        if (deleteAgendaItem(root, AgendaItemChildAccessor.whenTrue, agendaItemIdToDelete) ||
+                deleteAgendaItem(root, AgendaItemChildAccessor.whenFalse, agendaItemIdToDelete) ||
+                deleteAgendaItem(root, AgendaItemChildAccessor.always, agendaItemIdToDelete))
+         {
+            ; // TODO: this is confusing, refactor
+        }
     }
-    
+
     private boolean deleteAgendaItem(AgendaItemBo agendaItem, AgendaItemChildAccessor childAccessor, String agendaItemIdToDelete) {
-        if (agendaItem == null || childAccessor.getChild(agendaItem) == null) return false;
+        if (agendaItem == null || childAccessor.getChild(agendaItem) == null) {
+            return false;
+        }
         if (agendaItemIdToDelete.equals(childAccessor.getChild(agendaItem).getId())) {
             // delete the child in such a way that any ALWAYS children don't get lost from the tree
             AgendaItemBo grandchildToKeep = childAccessor.getChild(agendaItem).getAlways();
@@ -1338,7 +1374,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             AgendaItemBo child = childAccessor.getChild(agendaItem);
             // recurse
             for (AgendaItemChildAccessor nextChildAccessor : AgendaItemChildAccessor.linkedNodes) {
-                if (deleteAgendaItem(child, nextChildAccessor, agendaItemIdToDelete)) return true;
+                if (deleteAgendaItem(child, nextChildAccessor, agendaItemIdToDelete)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -1464,7 +1502,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 AgendaItemBo child = childAccessor.getChild(node);
                 if (child != null) {
                     result = isSameOrChildNodeHelper(child, newParent, AgendaItemChildAccessor.linkedNodes);
-                    if (result == true) break;
+                    if (result == true) {
+                        break;
+                    }
                 }
             }
         }
@@ -1493,7 +1533,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 AgendaItemBo child = childAccessor.getChild(node);
                 if (child != null) {
                     result = getReferringNodeHelper(child, node, agendaItemId);
-                    if (result != null) break;
+                    if (result != null) {
+                        break;
+                    }
                 }
             }
         }
@@ -1527,7 +1569,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * get and set the referent
      */
     private static class AgendaItemInstanceChildAccessor {
-        
+
         private final AgendaItemChildAccessor accessor;
         private final AgendaItemBo instance;
 
@@ -1535,18 +1577,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             this.accessor = accessor;
             this.instance = instance;
         }
-        
+
         public void setChild(AgendaItemBo child) {
             accessor.setChild(instance, child);
         }
-        
+
         public AgendaItemBo getChild() {
             return accessor.getChild(instance);
         }
-        
+
         public AgendaItemBo getInstance() { return instance; }
     }
-    
+
     /**
      * <p>This class abstracts getting and setting a child of an AgendaItemBo, making some recursive operations
      * require less boiler plate.</p>
@@ -1576,30 +1618,32 @@ public class AgendaEditorController extends MaintenanceDocumentController {
      * </p>
      */
     protected static class AgendaItemChildAccessor {
-        
+
         private enum Child { WHEN_TRUE, WHEN_FALSE, ALWAYS };
-        
-        private static final AgendaItemChildAccessor whenTrue = new AgendaItemChildAccessor(Child.WHEN_TRUE); 
-        private static final AgendaItemChildAccessor whenFalse = new AgendaItemChildAccessor(Child.WHEN_FALSE); 
-        private static final AgendaItemChildAccessor always = new AgendaItemChildAccessor(Child.ALWAYS); 
+
+        private static final AgendaItemChildAccessor whenTrue = new AgendaItemChildAccessor(Child.WHEN_TRUE);
+        private static final AgendaItemChildAccessor whenFalse = new AgendaItemChildAccessor(Child.WHEN_FALSE);
+        private static final AgendaItemChildAccessor always = new AgendaItemChildAccessor(Child.ALWAYS);
 
         /**
          * Accessors for all linked items
          */
         private static final AgendaItemChildAccessor [] linkedNodes = { whenTrue, whenFalse, always };
-        
+
         /**
          * Accessors for children (so ALWAYS is omitted);
          */
         private static final AgendaItemChildAccessor [] children = { whenTrue, whenFalse };
-        
+
         private final Child whichChild;
-        
+
         private AgendaItemChildAccessor(Child whichChild) {
-            if (whichChild == null) throw new IllegalArgumentException("whichChild must be non-null");
+            if (whichChild == null) {
+                throw new IllegalArgumentException("whichChild must be non-null");
+            }
             this.whichChild = whichChild;
         }
-        
+
         /**
          * @return the referenced child
          */
@@ -1611,13 +1655,13 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             default: throw new IllegalStateException();
             }
         }
-        
+
         /**
-         * Sets the child reference and the child id 
+         * Sets the child reference and the child id
          */
         public void setChild(AgendaItemBo parent, AgendaItemBo child) {
             switch (whichChild) {
-            case WHEN_TRUE: 
+            case WHEN_TRUE:
                 parent.setWhenTrue(child);
                 parent.setWhenTrueId(child == null ? null : child.getId());
                 break;
@@ -1722,16 +1766,16 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         Node<RuleTreeNode,String> lastSimpleNode = grandChildren.get(lastIndex);
 
         // search until you find the first simple proposition since some nodes are operators.
-        while (!(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(lastSimpleNode.getNodeType()) 
+        while (!(SimplePropositionNode.NODE_TYPE.equalsIgnoreCase(lastSimpleNode.getNodeType())
                 || SimplePropositionEditNode.NODE_TYPE.equalsIgnoreCase(lastSimpleNode.getNodeType())
                 ) && lastIndex >= 0) {
             lastSimpleNode = grandChildren.get(lastIndex);
             lastIndex--;
         }
-        
+
         return lastSimpleNode;
     }
-    
+
     /**
     *
     * This method gets the last propostion in the topmost branch.
@@ -1742,9 +1786,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     protected String getDefaultAddLocationPropositionId(Node<RuleTreeNode, String> root) {
         List<Node<RuleTreeNode,String>> children = root.getChildren();
         String selectedId = "";
-        
-        // The root usually has only one child. 
-        //This child either has multiple grandchildren when there is more than one proposition or 
+
+        // The root usually has only one child.
+        //This child either has multiple grandchildren when there is more than one proposition or
         //is a simple proposition with no grandchildren.
         if (children.size() != 0) {
             Node<RuleTreeNode,String> child = children.get(0);
@@ -1758,9 +1802,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 // if there are no grandchildren, it means only a single simpleProposition
                 // has been added.
                 selectedId = child.getData().getProposition().getId();
-            }    
+            }
         }
-        
+
         return selectedId;
     }
 
@@ -1774,24 +1818,24 @@ public class AgendaEditorController extends MaintenanceDocumentController {
 
         // find parent
         Node<RuleTreeNode,String> root = agendaEditor.getAgendaItemLine().getRule().getPropositionTree().getRootElement();
-        
+
         // if a proposition is not selected, get the last one in the topmost
         // branch
         if (StringUtils.isEmpty(selectedPropId)) {
             selectedPropId = getDefaultAddLocationPropositionId(root);
         }
-        
+
         // parent is the proposition user selected
         Node<RuleTreeNode,String> parent = findParentPropositionNode( root, selectedPropId);
-        
+
         resetEditModeOnPropositionTree(root);
-          
+
         // add new child at appropriate spot
         if (parent != null){
             List<Node<RuleTreeNode,String>> children = parent.getChildren();
             for( int index=0; index< children.size(); index++){
                 Node<RuleTreeNode,String> child = children.get(index);
-               
+
                 // if our selected node is a simple proposition, add a new one after
                 if (propIdMatches(child, selectedPropId)){
                     // handle special case of adding to a lone simple proposition.
@@ -1896,7 +1940,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         List<Node<RuleTreeNode,String>> children = currentNode.getChildren();
         for( Node<RuleTreeNode,String> child : children){
               bingo = findPropositionTreeNode(child, selectedPropId);
-              if (bingo != null) break;
+              if (bingo != null) {
+                break;
+            }
         }
         return bingo;
     }
@@ -1908,14 +1954,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             List<Node<RuleTreeNode,String>> children = currentNode.getChildren();
             for( Node<RuleTreeNode,String> child : children){
                 RuleTreeNode dataNode = child.getData();
-                if (selectedPropId.equalsIgnoreCase(dataNode.getProposition().getId()))
+                if (selectedPropId.equalsIgnoreCase(dataNode.getProposition().getId())) {
                     return currentNode;
+                }
             }
 
             // if not found check grandchildren
             for( Node<RuleTreeNode,String> kid : children){
                   bingo = findParentPropositionNode(kid, selectedPropId);
-                  if (bingo != null) break;
+                  if (bingo != null) {
+                    break;
+                }
             }
         }
         return bingo;

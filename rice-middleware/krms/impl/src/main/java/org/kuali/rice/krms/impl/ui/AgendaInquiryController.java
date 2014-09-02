@@ -16,9 +16,9 @@
 package org.kuali.rice.krms.impl.ui;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.inquiry.InquiryController;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krms.impl.repository.ActionBo;
@@ -77,10 +77,12 @@ public class AgendaInquiryController  extends InquiryController {
      */
     private AgendaItemBo getFirstAgendaItem(AgendaBo agenda) {
         AgendaItemBo firstItem = null;
-        if (agenda != null && agenda.getItems() != null) for (AgendaItemBo agendaItem : agenda.getItems()) {
-            if (agenda.getFirstItemId().equals(agendaItem.getId())) {
-                firstItem = agendaItem;
-                break;
+        if (agenda != null && agenda.getItems() != null) {
+            for (AgendaItemBo agendaItem : agenda.getItems()) {
+                if (agenda.getFirstItemId().equals(agendaItem.getId())) {
+                    firstItem = agendaItem;
+                    break;
+                }
             }
         }
         return firstItem;
@@ -90,7 +92,9 @@ public class AgendaInquiryController  extends InquiryController {
      * Search the tree for the agenda item with the given id.
      */
     private AgendaItemBo getAgendaItemById(AgendaItemBo node, String agendaItemId) {
-        if (node == null) throw new IllegalArgumentException("node must be non-null");
+        if (node == null) {
+            throw new IllegalArgumentException("node must be non-null");
+        }
 
         AgendaItemBo result = null;
 
@@ -101,7 +105,9 @@ public class AgendaInquiryController  extends InquiryController {
                 AgendaItemBo child = childAccessor.getChild(node);
                 if (child != null) {
                     result = getAgendaItemById(child, agendaItemId);
-                    if (result != null) break;
+                    if (result != null) {
+                        break;
+                    }
                 }
             }
         }
@@ -130,8 +136,7 @@ public class AgendaInquiryController  extends InquiryController {
             agendaItem.setRule(rule);
             agendaEditor.setAgendaItemLine(agendaItem);
         } else {
-            // TODO: Add a copy not the reference
-            agendaEditor.setAgendaItemLine((AgendaItemBo) SerializationUtils.deepCopy(agendaItem));
+            agendaEditor.setAgendaItemLine(KradDataServiceLocator.getDataObjectService().copyInstance(agendaItem));
         }
 
 
@@ -198,7 +203,9 @@ public class AgendaInquiryController  extends InquiryController {
         private final Child whichChild;
 
         private AgendaItemChildAccessor(Child whichChild) {
-            if (whichChild == null) throw new IllegalArgumentException("whichChild must be non-null");
+            if (whichChild == null) {
+                throw new IllegalArgumentException("whichChild must be non-null");
+            }
             this.whichChild = whichChild;
         }
 

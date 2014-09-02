@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
-import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,13 +34,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.krad.data.CopyOption;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 
 @Entity
 @Table(name = "KRMS_AGENDA_T")
@@ -99,11 +101,14 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
         return this;
     }
 
+    @Override
     public Map<String, String> getAttributes() {
         HashMap<String, String> attributes = new HashMap<String, String>();
 
-        if (attributeBos != null) for (AgendaAttributeBo attr : attributeBos) {
-            attributes.put(attr.getAttributeDefinition().getName(), attr.getValue());
+        if (attributeBos != null) {
+            for (AgendaAttributeBo attr : attributeBos) {
+                attributes.put(attr.getAttributeDefinition().getName(), attr.getValue());
+            }
         }
 
         return attributes;
@@ -142,7 +147,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
      */
     public AgendaBo copyAgenda(String newAgendaName, String dateTimeStamp) {
         List<AgendaItemBo> agendaItems = this.getItems();
-        AgendaBo copiedAgenda = (AgendaBo) SerializationUtils.deepCopy(this);
+        AgendaBo copiedAgenda = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
         copiedAgenda.setName(newAgendaName);
 
         // Using a copiedAgenda we don't mess with the existing agenda at all.
@@ -186,6 +191,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
         return AgendaDefinition.Builder.create(bo).build();
     }
 
+    @Override
     public String getId() {
         return id;
     }
@@ -194,6 +200,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
         this.id = id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -202,6 +209,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
         this.name = name;
     }
 
+    @Override
     public String getTypeId() {
         return typeId;
     }
@@ -210,6 +218,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
         this.typeId = typeId;
     }
 
+    @Override
     public String getContextId() {
         return contextId;
     }
@@ -222,6 +231,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
         return active;
     }
 
+    @Override
     public boolean isActive() {
         return active;
     }
@@ -230,6 +240,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
         this.active = active;
     }
 
+    @Override
     public String getFirstItemId() {
         return firstItemId;
     }
@@ -262,6 +273,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
         this.context = context;
     }
 
+    @Override
     public Long getVersionNumber() {
         return versionNumber;
     }

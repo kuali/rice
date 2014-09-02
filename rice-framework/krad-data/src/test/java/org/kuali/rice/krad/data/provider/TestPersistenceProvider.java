@@ -17,6 +17,7 @@ package org.kuali.rice.krad.data.provider;
 
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
+import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.PersistenceOption;
 
 public class TestPersistenceProvider implements PersistenceProvider {
@@ -56,7 +57,7 @@ public class TestPersistenceProvider implements PersistenceProvider {
     }
 
     @Override
-    public <T> T copyInstance(T dataObject) {
+	public <T> T copyInstance(T dataObject, CopyOption... options) {
         return null;
     }
 

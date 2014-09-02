@@ -15,6 +15,28 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.DataObjectService;
@@ -30,29 +52,6 @@ import org.kuali.rice.krms.impl.ui.CustomOperatorUiTranslator;
 import org.kuali.rice.krms.impl.ui.TermParameter;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Entity
 @Table(name = "KRMS_PROP_T")
@@ -130,8 +129,8 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
 
     private void setupParameterDisplayString() {
         if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(getPropositionTypeCode())) {
-            // Simple Propositions should have 3 parameters ordered in reverse polish notation.  
-            // TODO: enhance to get term names for term type parameters.  
+            // Simple Propositions should have 3 parameters ordered in reverse polish notation.
+            // TODO: enhance to get term names for term type parameters.
             List<PropositionParameterBo> parameters = getParameters();
 
             if (parameters != null && parameters.size() == 3) {
@@ -140,7 +139,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
                 sb.append(getParamValue(parameters.get(0))).append(" ").append(getParamValue(parameters.get(2)));
 
                 if (valueDisplay != null) {
-                    // !=null and =null operators values will be null and should not be displayed  
+                    // !=null and =null operators values will be null and should not be displayed
                     sb.append(" ").append(valueDisplay);
                 }
 
@@ -241,6 +240,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         }
     }
 
+    @Override
     public Long getVersionNumber() {
         return versionNumber;
     }
@@ -308,8 +308,10 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         bo.compoundSequenceNumber = im.getCompoundSequenceNumber();
         bo.compoundComponents = new ArrayList<PropositionBo>();
 
-        if (im.getCompoundComponents() != null) for (PropositionDefinition prop : im.getCompoundComponents()) {
-            bo.compoundComponents.add(PropositionBo.from(prop));
+        if (im.getCompoundComponents() != null) {
+            for (PropositionDefinition prop : im.getCompoundComponents()) {
+                bo.compoundComponents.add(PropositionBo.from(prop));
+            }
         }
 
         bo.setVersionNumber(im.getVersionNumber());
@@ -344,7 +346,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
      * @return a PropositionBo partially populated.
      */
     public static PropositionBo createSimplePropositionBoStub(PropositionBo sibling, String pType) {
-        // create a simple proposition Bo  
+        // create a simple proposition Bo
         PropositionBo prop = null;
         if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(pType)) {
             prop = new PropositionBo();
@@ -356,7 +358,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
                 prop.setRuleId(sibling.getRuleId());
             }
 
-            // create blank proposition parameters  
+            // create blank proposition parameters
             PropositionParameterBo pTerm = new PropositionParameterBo();
             pTerm.setId(propositionParameterIdIncrementer.getNewId());
             pTerm.setParameterType("T");
@@ -365,7 +367,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
             pTerm.setVersionNumber(new Long(1));
             pTerm.setValue("");
 
-            // create blank proposition parameters  
+            // create blank proposition parameters
             PropositionParameterBo pOp = new PropositionParameterBo();
             pOp.setId(propositionParameterIdIncrementer.getNewId());
             pOp.setParameterType("O");
@@ -373,7 +375,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
             pOp.setSequenceNumber(new Integer("2"));
             pOp.setVersionNumber(new Long(1));
 
-            // create blank proposition parameters  
+            // create blank proposition parameters
             PropositionParameterBo pConst = new PropositionParameterBo();
             pConst.setId(propositionParameterIdIncrementer.getNewId());
             pConst.setParameterType("C");
@@ -390,13 +392,13 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     }
 
     public static PropositionBo createCompoundPropositionBoStub(PropositionBo existing, boolean addNewChild) {
-        // create a simple proposition Bo  
+        // create a simple proposition Bo
         PropositionBo prop = new PropositionBo();
         prop.setId(propositionIdIncrementer.getNewId());
         prop.setPropositionTypeCode(PropositionType.COMPOUND.getCode());
         prop.setCompoundOpCode(LogicalOperator.AND.getCode());
 
-        // default to and  
+        // default to and
         prop.setDescription("");
         prop.setEditMode(true);
 
@@ -419,13 +421,13 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     }
 
     public static PropositionBo createCompoundPropositionBoStub2(PropositionBo existing) {
-        // create a simple proposition Bo  
+        // create a simple proposition Bo
         PropositionBo prop = new PropositionBo();
         prop.setId(propositionIdIncrementer.getNewId());
         prop.setPropositionTypeCode(PropositionType.COMPOUND.getCode());
         prop.setRuleId(existing.getRuleId());
         prop.setCompoundOpCode(LogicalOperator.AND.getCode());
-        // default to and  
+        // default to and
         prop.setDescription("");
         prop.setEditMode(true);
         List<PropositionBo> components = new ArrayList<PropositionBo>();
@@ -436,7 +438,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     }
 
     public static PropositionBo copyProposition(PropositionBo existing) {
-        // Note: RuleId is not set  
+        // Note: RuleId is not set
         PropositionBo newProp = new PropositionBo();
         newProp.setId(propositionIdIncrementer.getNewId());
         newProp.setDescription(existing.getDescription());
@@ -445,7 +447,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         newProp.setCompoundOpCode(existing.getCompoundOpCode());
         newProp.setCompoundSequenceNumber(existing.getCompoundSequenceNumber());
 
-        // parameters  
+        // parameters
         List<PropositionParameterBo> newParms = new ArrayList<PropositionParameterBo>();
 
         for (PropositionParameterBo parm : existing.getParameters()) {
@@ -470,17 +472,6 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         newProp.setCompoundComponents(newCompoundComponents);
 
         return newProp;
-    }
-
-    /*
-     * This is being done because there is a  major issue with lazy relationships, in ensuring that the relationship is
-     * still available after the object has been detached, or serialized. For most JPA providers, after serialization
-     * any lazy relationship that was not instantiated will be broken, and either throw an error when accessed,
-     * or return null.
-     */
-    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
-        parameters.size();
-        stream.defaultWriteObject();
     }
 
     public String getTermSpecId() {
@@ -515,6 +506,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         this.termParameterList = termParameterList;
     }
 
+    @Override
     public String getId() {
         return id;
     }
@@ -523,6 +515,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         this.id = id;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -531,6 +524,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         this.description = description;
     }
 
+    @Override
     public String getRuleId() {
         return ruleId;
     }
@@ -539,10 +533,12 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         this.ruleId = ruleId;
     }
 
+    @Override
     public String getTypeId() {
         return typeId;
     }
 
+    @Override
     public String getPropositionTypeCode() {
         return propositionTypeCode;
     }
@@ -551,6 +547,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         this.propositionTypeCode = propositionTypeCode;
     }
 
+    @Override
     public List<PropositionParameterBo> getParameters() {
         return parameters;
     }
@@ -559,6 +556,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         this.parameters = parameters;
     }
 
+    @Override
     public String getCompoundOpCode() {
         return compoundOpCode;
     }
@@ -567,6 +565,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         this.compoundOpCode = compoundOpCode;
     }
 
+    @Override
     public Integer getCompoundSequenceNumber() {
         return compoundSequenceNumber;
     }
@@ -575,6 +574,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         this.compoundSequenceNumber = compoundSequenceNumber;
     }
 
+    @Override
     public List<PropositionBo> getCompoundComponents() {
         return compoundComponents;
     }

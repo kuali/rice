@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.krad.data.provider.impl;
 
-import com.google.common.collect.Sets;
+import java.util.Set;
+
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.QueryResults;
 import org.kuali.rice.krad.data.CompoundKey;
+import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.PersistenceOption;
@@ -30,7 +32,7 @@ import org.kuali.rice.krad.data.util.ReferenceLinker;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
-import java.util.Set;
+import com.google.common.collect.Sets;
 
 /**
  * DataObjectService implementation backed by the {@link ProviderRegistry}.
@@ -166,8 +168,8 @@ public class ProviderBasedDataObjectService implements DataObjectService {
      * {@inheritDoc}
      */
     @Override
-    public <T> T copyInstance(T dataObject) {
-        return persistenceProviderForObject(dataObject).copyInstance(dataObject);
+	public <T> T copyInstance(T dataObject, CopyOption... options) {
+		return persistenceProviderForObject(dataObject).copyInstance(dataObject, options);
     }
 
     /**

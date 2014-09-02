@@ -580,8 +580,9 @@ public final class ObjectUtils {
             return;
         }
 
+        // Removed this as the two remaining locations which call this are now performing the refresh themselves
         // need to materialize the updateable collections before resetting the property, because it may be used in the retrieval
-        materializeUpdateableCollections(bo);
+        //materializeUpdateableCollections(bo);
 
         // Set the property in the BO
         setObjectProperty(bo, propertyName, type, propertyValue);
@@ -618,7 +619,7 @@ public final class ObjectUtils {
     }
 
     /*
-    * Recursive up to a given depth; sets all occurences of the property in the object, its nested objects and its object lists with the given value.
+    * Recursive up to a given depth; sets all occurrences of the property in the object, its nested objects and its object lists with the given value.
     */
     public static void setObjectPropertyDeep(Object bo, String propertyName, Class type, Object propertyValue,
             int depth) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
@@ -627,13 +628,15 @@ public final class ObjectUtils {
             return;
         }
 
+        // Removed this as the two remaining locations which call this are now performing the refresh themselves
+        
         // need to materialize the updateable collections before resetting the property, because it may be used in the retrieval
-        try {
-            materializeUpdateableCollections(bo);
-        } catch(ClassNotPersistableException ex){
-            //Not all classes will be persistable in a collection. For e.g. externalizable business objects.
-            LOG.info("Not persistable dataObjectClass: "+bo.getClass().getName()+", field: "+propertyName);
-        }
+//        try {
+//            materializeUpdateableCollections(bo);
+//        } catch(ClassNotPersistableException ex){
+//            //Not all classes will be persistable in a collection. For e.g. externalizable business objects.
+//            LOG.info("Not persistable dataObjectClass: "+bo.getClass().getName()+", field: "+propertyName);
+//        }
 
     // Set the property in the BO
         setObjectProperty(bo, propertyName, type, propertyValue);

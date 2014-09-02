@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.impl.responsibility;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +43,8 @@ import org.kuali.rice.kim.api.type.KimTypeInfoService;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
 import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.krad.bo.DataObjectBase;
-import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.springframework.util.AutoPopulatingList;
@@ -179,19 +177,6 @@ public class ResponsibilityBo extends DataObjectBase implements ResponsibilityCo
 
     private KimTypeInfoService getTypeInfoService() {
         return KimApiServiceLocator.getKimTypeInfoService();
-    }
-
-    /*
-    This is being done because there is a  major issue with lazy relationships, in ensuring that the relationship is
-    still available after the object has been detached, or serialized. For most JPA providers, after serialization
-    any lazy relationship that was not instantiated will be broken, and either throw an error when accessed,
-    or return null.
-     */
-
-    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
-        attributeDetails.size();
-        roleResponsibilities.size();
-        stream.defaultWriteObject();
     }
 
     @Override

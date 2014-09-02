@@ -33,6 +33,7 @@ import org.kuali.rice.core.framework.persistence.jta.TransactionalNoValidationEx
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.exception.DocumentTypeAuthorizationException;
@@ -142,9 +143,8 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
 
             Object newDataObject = null;
 
-            // TODO should we be using ObjectUtils?
             if (dataObjectService.supports(oldDataObject.getClass())) {
-                newDataObject = dataObjectService.copyInstance(oldDataObject);
+                newDataObject = dataObjectService.copyInstance(oldDataObject, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
             } else {
                 newDataObject = SerializationUtils.deepCopy((Serializable) oldDataObject);
             }

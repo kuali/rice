@@ -15,15 +15,10 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.mo.common.Versioned;
-import org.kuali.rice.core.api.util.io.SerializationUtils;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
-import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinitionContract;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,10 +30,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.mo.common.Versioned;
+import org.kuali.rice.krad.data.CopyOption;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinitionContract;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
 /**
  * Agenda Item business object
@@ -139,7 +141,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
                 resultBuilder.append(getRule().getDescription());
             }
 
-            // add a description of the action configured on the rule, if there is one  
+            // add a description of the action configured on the rule, if there is one
             if (!CollectionUtils.isEmpty(getRule().getActions())) {
                 resultBuilder.append("   [");
                 ActionBo action = getRule().getActions().get(0);
@@ -176,6 +178,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the id
      */
+    @Override
     public String getId() {
         return this.id;
     }
@@ -190,6 +193,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the agendaId
      */
+    @Override
     public String getAgendaId() {
         return this.agendaId;
     }
@@ -204,6 +208,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the ruleId
      */
+    @Override
     public String getRuleId() {
         return this.ruleId;
     }
@@ -218,6 +223,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the subAgendaId
      */
+    @Override
     public String getSubAgendaId() {
         return this.subAgendaId;
     }
@@ -232,6 +238,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the whenTrueId
      */
+    @Override
     public String getWhenTrueId() {
         return this.whenTrueId;
     }
@@ -246,6 +253,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the whenFalseId
      */
+    @Override
     public String getWhenFalseId() {
         return this.whenFalseId;
     }
@@ -260,6 +268,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the alwaysId
      */
+    @Override
     public String getAlwaysId() {
         return this.alwaysId;
     }
@@ -271,6 +280,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
         this.alwaysId = alwaysId;
     }
 
+    @Override
     public Long getVersionNumber() {
         return versionNumber;
     }
@@ -282,6 +292,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the whenTrue
      */
+    @Override
     public AgendaItemBo getWhenTrue() {
         return this.whenTrue;
     }
@@ -302,6 +313,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the whenFalse
      */
+    @Override
     public AgendaItemBo getWhenFalse() {
         return this.whenFalse;
     }
@@ -322,6 +334,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the always
      */
+    @Override
     public AgendaItemBo getAlways() {
         return this.always;
     }
@@ -341,6 +354,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     /**
      * @return the rule
      */
+    @Override
     public RuleBo getRule() {
         return this.rule;
     }
@@ -412,13 +426,13 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
      * @return AgendaItemBo copy of this AgendaItem with new id and name
      */
     public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda, Map<String, RuleBo> oldRuleIdToNew, Map<String, AgendaItemBo> oldAgendaItemIdToNew, List<AgendaItemBo> copiedAgendaItems, final String dts) {
-        // Use deepCopy and update all the ids.  
-        AgendaItemBo copiedAgendaItem = (AgendaItemBo) SerializationUtils.deepCopy(this);
+        // Use deepCopy and update all the ids.
+        AgendaItemBo copiedAgendaItem = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
         copiedAgendaItem.setId(agendaItemIdIncrementer.getNewId());
         copiedAgendaItem.setAgendaId(copiedAgenda.getId());
         oldAgendaItemIdToNew.put(this.getId(), copiedAgendaItem);
 
-        // Don't create another copy of a rule that we have already copied.  
+        // Don't create another copy of a rule that we have already copied.
         if (!oldRuleIdToNew.containsKey(this.getRuleId())) {
             if (this.getRule() != null) {
                 copiedAgendaItem.setRule(this.getRule().copyRule(COPY_OF_TEXT + this.getRule().getName() + " " + dts));

@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.kim.rule.event.ui;
 
-import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.rule.ui.AddMemberRule;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.rules.rule.BusinessRule;
 import org.kuali.rice.krad.rules.rule.event.DocumentEventBase;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
+ * This is a description of what this class does - shyu don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -38,13 +38,15 @@ public class AddMemberEvent extends DocumentEventBase {
 
     public AddMemberEvent(String errorPathPrefix, Document document, KimDocumentRoleMember member) {
         this(errorPathPrefix, (IdentityManagementRoleDocument) document);
-        this.member = (KimDocumentRoleMember) SerializationUtils.deepCopy(member);
+        this.member = KradDataServiceLocator.getDataObjectService().copyInstance(member);
     }
 
+    @Override
     public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddMemberRule.class;
     }
 
+    @Override
     public boolean invokeRuleMethod(BusinessRule rule) {
         return ((AddMemberRule) rule).processAddMember(this);
     }

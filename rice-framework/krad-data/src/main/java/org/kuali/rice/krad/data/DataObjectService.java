@@ -207,7 +207,7 @@ public interface DataObjectService {
      *
      * @return a copy of the given data object
      */
-    <T> T copyInstance(T dataObject);
+	<T> T copyInstance(T dataObject, CopyOption... options);
 
     /**
      * Returns whether the DataObjectService supports the given type, where

@@ -73,7 +73,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     private final List<PeopleFlowDelegate> delegates;
 
     @XmlElement(name = Elements.FORCE_ACTION, required = false)
-    private boolean forceAction;
+    private Boolean forceAction;
 
     @SuppressWarnings("unused")
     @XmlAnyElement
@@ -133,7 +133,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     }
 
     @Override
-    public boolean isForceAction() {
+    public Boolean isForceAction() {
         return forceAction;
     }
 
@@ -149,7 +149,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         private String responsibilityId;
         private int priority;
         private List<PeopleFlowDelegate.Builder> delegates;
-        private boolean forceAction = true;
+        private Boolean forceAction = true;
 
         private Builder(String memberId, MemberType memberType) {
             setMemberId(memberId);
@@ -224,7 +224,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         }
 
         @Override
-        public boolean isForceAction() { return forceAction; }
+        public Boolean isForceAction() { return forceAction; }
 
         public void setMemberId(String memberId) {
             if (StringUtils.isBlank(memberId)) {
@@ -264,8 +264,12 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
             this.delegates = delegates;
         }
 
-        public void setForceAction(boolean forceAction) {
+        public void setForceAction(Boolean forceAction) {
             this.forceAction = forceAction;
+
+            if (forceAction == null) {
+                forceAction = true;
+            }
         }
     }
 

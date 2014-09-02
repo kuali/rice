@@ -27,11 +27,13 @@ import org.kuali.rice.kim.framework.group.GroupEbo;
 import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.jpa.converters.Boolean01Converter;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.ModuleService;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -81,8 +83,9 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "peopleFlowMember", orphanRemoval = true)
     List<PeopleFlowDelegateBo> delegates = new ArrayList<PeopleFlowDelegateBo>();
 
-    @Column(name = "FRC_ACTN")
-    private boolean forceAction = true;
+    @Column(name = "FRC_ACTN", nullable = false)
+    @Convert(converter = Boolean01Converter.class)
+    private Boolean forceAction = true;
 
     // non-persisted
     @Transient
@@ -174,12 +177,16 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
         this.delegates = delegates;
     }
 
-    public boolean isForceAction() {
+    public Boolean isForceAction() {
         return forceAction;
     }
 
-    public void setForceAction(boolean forceAction) {
+    public void setForceAction(Boolean forceAction) {
         this.forceAction = forceAction;
+
+        if (forceAction == null) {
+            forceAction = true;
+        }
     }
 
     public Person getPerson() {

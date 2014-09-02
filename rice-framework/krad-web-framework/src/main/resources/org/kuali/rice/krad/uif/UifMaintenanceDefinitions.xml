@@ -180,6 +180,9 @@
     <property name="readOnly" value="@{maintenanceAction eq 'Delete' or #parent.readOnly}"/>
     <property name="layoutManager.lineGroupPrototype">
       <bean parent="Uif-CollectionGridItem">
+        <property name="header">
+          <bean parent="Uif-HeaderFour"/>
+        </property>
         <property name="layoutManager.numberOfColumns"
                   value="@{maintenanceAction eq 'Edit' or maintenanceAction eq 'Copy' ? 3 : 2}"/>
         <property name="layoutManager.renderFirstRowHeader"

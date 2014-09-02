@@ -34,7 +34,6 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -107,8 +106,8 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     public static final String SUB_COLLECTION_UIF_DISCLOSURE_SPAN_UIF_HEADER_TEXT_SPAN_XPATH =
             "div.uif-group.uif-collectionGroup.uif-tableCollectionGroup.uif-tableSubCollection.uif-disclosure span.uif-headerText-span";
 
-
-//    protected String oneBrowser = null;
+    // one browser
+//    protected String oneBrowserHandle = null;
 
     protected String sessionId = null;
 
@@ -1204,7 +1203,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
         // going to the login page and closing other windows so tests can be run in one browser
 //        acceptAlertIfPresent();
-//        closeAllOtherWindows(oneBrowser);
+//        closeAllOtherWindows(oneBrowserHandle);
 //        driver.get(getBaseUrlString()
 //                + "/kr-login/login?viewId=DummyLoginView&returnLocation=%2Fkr-krad%2Fkradsampleapp%3FviewId%3DKradSampleAppHome%26methodToCall%3Dstart");
 //        acceptAlertIfPresent();
@@ -1243,9 +1242,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             }
             WebDriverUtils.openTestUrl(driver, testUrl);
 
-//            oneBrowser = driver.getWindowHandle(); // one browser other windows will be closed
-//            System.out.println("One Browser handle " + oneBrowser);
-//            closeAllOtherWindows(oneBrowser); // close all others than one browser
+//            oneBrowserHandle = driver.getWindowHandle(); // one browser other windows will be closed
+//            System.out.println("One Browser handle " + oneBrowserHandle);
+//            closeAllOtherWindows(oneBrowserHandle); // close all others than one browser
 
             this.sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
             System.out.println(jGrowlHeader + " sessionId is " + sessionId);

@@ -135,12 +135,12 @@
     <property name="formPostUrl" value="krmsAgendaInquiry" />
     <property name="items">
       <list>
-        <bean id="AgendaEditorView-Agenda-Page" parent="AgendaEditorView-Agenda-Page-Parent"/>
+        <bean id="AgendaInquiryView-Agenda-Page" parent="AgendaInquiryView-Agenda-Page-Parent"/>
         <bean id="AgendaEditorView-ViewRule-Page" parent="AgendaEditorView-ViewRule-Page-Parent"/>
       </list>
     </property>
     <property name="singlePageView" value="false"/>
-    <property name="entryPageId" value="AgendaEditorView-Agenda-Page"/>
+    <property name="entryPageId" value="AgendaInquiryView-Agenda-Page"/>
     <property name="propertyReplacers">
       <list>
         <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items[0].items" p:condition="dataObject eq null">
@@ -151,6 +151,17 @@
           </property>
         </bean>
       </list>
+    </property>
+  </bean>
+
+  <bean id="AgendaInquiryView-Agenda-Page-Parent" parent="Uif-Disclosure-Page">
+    <property name="items">
+      <list>
+        <bean parent="AgendaEditorView-AgendaSection" />
+      </list>
+    </property>
+    <property name="footer">
+      <bean parent="Uif-FooterBase"/>
     </property>
   </bean>
 

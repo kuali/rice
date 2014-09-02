@@ -27,6 +27,7 @@
       This is a persistence unit used for the purposes of static bytecode weaving in Eclipselink (see pom.xml of
       this module). It is not used or loaded by the runtime at all.
     </description>
+    <class>org.kuali.rice.krad.data.jpa.converters.Boolean01Converter</class>
     <class>org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter</class>
     <class>org.kuali.rice.kew.impl.peopleflow.PeopleFlowAttributeBo</class>
     <class>org.kuali.rice.kew.impl.peopleflow.PeopleFlowBo</class>

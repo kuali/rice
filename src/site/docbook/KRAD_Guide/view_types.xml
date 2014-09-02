@@ -457,6 +457,93 @@
         can choose any group layout, and introduce nested groups and sections.  All the widgets can
         be used. </para>
     </section>
+    <section>
+      <title>Bulk Update Maintenance Documents</title>
+      <para>Bulk Update Maintenance documents allow the update of multiple maintenance records from one document.
+        KRAD provides a special type of Maintenance document entry,
+        <emphasis role="keyword">uifBulkUpdateMaintenanceDocumentEntry</emphasis>, that provides a special data object
+        base class and maintainable to assist in constructing these documents.</para>
+      <para>The data object base class that controls bulk updates,
+        <emphasis role="keyword">org.kuali.rice.krad.maintenance.BulkUpdateMaintenanceDataObjectBase</emphasis>,
+        maintains two collections: <emphasis role="keyword">updateFieldValues</emphasis> and
+        <emphasis role="keyword">targetUpdateDataObjects</emphasis>.
+        <emphasis role="keyword">updateFieldValues</emphasis> is a map of the property names that need to be changed on
+        all updated objects to the new property values.  The <emphasis role="keyword">targetUpdateDataObjects</emphasis>
+        is a list of all of the maintenance record objects that need to be changed.  The custom maintainable,
+        <emphasis role="keyword">org.kuali.rice.krad.maintenance.BulkUpdateMaintainableImpl</emphasis>, will take care
+        of generating the necessary maintenance locks and updating the objects.  All of these operations are achieved
+        through data object metadata and reflection, but edge cases can be taken care of by extending the objects.</para>
+      <para>Currently, the Uif does not have a default interface for this, so one will have to be built for each bulk
+        update document.  An example is as follows:
+        <programlisting linenumbering = "numbered">&lt;bean id="TravelAccountBulkUpdateMaintenanceDocument" parent="uifBulkUpdateMaintenanceDocumentEntry"&gt;
+  &lt;property name="documentTypeName" value="TravelAccountBulkUpdateMaintenanceDocument"/&gt;
+  &lt;property name="maintainableClass" value="org.kuali.rice.krad.maintenance.BulkUpdateMaintainableImpl"/&gt;
+&lt;/bean&gt;
+
+&lt;bean id="TravelAccountBulkUpdate-MaintenanceView" parent="Uif-MaintenanceView"&gt;
+  &lt;property name="headerText" value="Travel Account Bulk Update Maintenance"/&gt;
+  &lt;property name="dataObjectClassName" value="org.kuali.rice.krad.maintenance.BulkUpdateMaintenanceDataObjectBase"/&gt;
+  &lt;property name="docTypeName" value="TravelAccountBulkUpdateMaintenanceDocument"/&gt;
+  &lt;property name="items"&gt;
+    &lt;list merge="true"&gt;
+      &lt;bean parent="Uif-MaintenanceGridSection"&gt;
+        &lt;property name="headerText" value="Update Fields"/&gt;
+        &lt;property name="items"&gt;
+          &lt;list&gt;
+            &lt;bean parent="Uif-InputField" p:label="New Travel Account Type Code" p:propertyName="accountTypeCode"
+                  p:bindingInfo.bindByNamePrefix="updateFieldValues" p:bindingInfo.bindToMap="true" p:required="true"&gt;
+              &lt;property name="control"&gt;
+                &lt;bean parent="Uif-VerticalRadioControl"/&gt;
+              &lt;/property&gt;
+              &lt;property name="optionsFinder"&gt;
+                &lt;bean class="org.kuali.rice.krad.demo.travel.options.AccountTypeKeyValues"/&gt;
+              &lt;/property&gt;
+            &lt;/bean&gt;
+          &lt;/list&gt;
+        &lt;/property&gt;
+      &lt;/bean&gt;
+      &lt;bean parent="Uif-MaintenanceStackedCollectionSection"&gt;
+        &lt;property name="headerText" value="Travel Accounts"/&gt;
+        &lt;property name="collectionObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/&gt;
+        &lt;property name="propertyName" value="targetUpdateDataObjects"/&gt;
+        &lt;property name="items"&gt;
+          &lt;list&gt;
+            &lt;bean parent="Uif-InputField" p:propertyName="number" p:enableAutoDirectInquiry="false" p:readOnly="@{!#isAddLine}"&gt;
+              &lt;property name="quickfinder"&gt;
+                &lt;bean parent="Uif-QuickFinder"&gt;
+                  &lt;property name="dataObjectClassName" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/&gt;
+                  &lt;property name="fieldConversions" value="number:number,name:name,accountTypeCode:accountTypeCode"/&gt;
+                &lt;/bean&gt;
+              &lt;/property&gt;
+            &lt;/bean&gt;
+            &lt;bean parent="Uif-DataField" p:propertyName="name"/&gt;
+            &lt;bean parent="Uif-DataField" p:propertyName="accountTypeCode"/&gt;
+          &lt;/list&gt;
+        &lt;/property&gt;
+        &lt;property name="layoutManager.summaryTitle" value="Travel Account"/&gt;
+        &lt;property name="layoutManager.summaryFields"&gt;
+          &lt;list&gt;
+            &lt;value&gt;number&lt;/value&gt;
+          &lt;/list&gt;
+        &lt;/property&gt;
+      &lt;/bean&gt;
+    &lt;/list&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+        Notice the alternate binding specified by
+        <emphasis role="keyword">p:bindingInfo.bindByNamePrefix="updateFieldValues" p:bindingInfo.bindToMap="true"</emphasis>.
+        This binds the <emphasis role="keyword">accountTypeCode</emphasis> update values to the map instead of its own
+        variable.
+        <figure>
+          <title>Bulk Update Maintenance Document Example</title>
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/KRAD_Guide/bulkUpdateMaintenanceViewExample.png"/>
+            </imageobject>
+          </mediaobject>
+        </figure>
+      </para>
+    </section>
   </section>
   <section>
     <title>Transactional View Type</title>

@@ -1115,6 +1115,14 @@
         </para>
       </section>
     </section>
+    <section>
+      <title>Miscellaneous</title>
+      <itemizedlist>
+        <listitem>
+          <para>The <emphasis role="keyword">AttributeValidatingTypeServiceBase</emphasis> has been moved into the krad package.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
   </section>
   <section>
     <title>Inquiry Conversion</title>

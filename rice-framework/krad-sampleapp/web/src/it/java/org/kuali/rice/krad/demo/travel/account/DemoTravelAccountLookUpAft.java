@@ -151,6 +151,36 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         } 
     }
 
+    private void testTravelAccountLookupCaseConstraint() throws Exception {
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
+        waitAndClickButtonByText(SEARCH);
+        waitAndClickByLinkText("edit");
+        waitAndTypeByName("document.documentHeader.documentDescription","Case Constraint Test");
+
+        //save to check the binding is correctly applied subsequent times KULRICE-12638
+        waitAndClickButtonByText("Save");
+        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
+        waitForIsTextPresent("Document was successfully saved.");
+
+        //remove the subsidized percent
+        findElement(By.xpath("/html/body/form/div/div[2]/main/section[2]/div/table/tbody/tr[7]/td[2]/div/input")).clear();
+        waitAndClickButtonByText("Save");
+        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
+        waitForTextPresent("Subsidized Percent: Required");
+
+        //re-add the subsidized percent and save
+        waitAndTypeByXpath("/html/body/form/div/div[2]/main/section[2]/div/table/tbody/tr[7]/td[2]/div/input","45");
+        waitAndClickButtonByText("Save");
+        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
+        waitForIsTextPresent("Document was successfully saved.");
+
+        //submit successfully
+        waitAndClickSubmitByText();
+        waitAndClickConfirmationOk();
+        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
+        waitForIsTextPresent("Document was successfully submitted.");
+    }
+
     private void testTravelAccountLookUpDocumentLocking() throws Exception {
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
     	waitAndClickButtonByText(SEARCH);
@@ -249,6 +279,18 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         @Test
         public void testTravelAccountLookUpDocumentLockingNav() throws Exception {
             testTravelAccountLookUpDocumentLocking();
+            passed();
+        }
+
+        @Test
+        public void testTravelAccountLookupCaseConstraintBookmark() throws Exception {
+            testTravelAccountLookupCaseConstraint();
+            passed();
+        }
+
+        @Test
+        public void testTravelAccountLookupCaseConstraintNav() throws Exception {
+            testTravelAccountLookupCaseConstraint();
             passed();
         }
 }

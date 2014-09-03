@@ -185,11 +185,6 @@ public class BindingInfo extends UifDictionaryBeanBase implements Serializable {
         } else {
             if (StringUtils.isNotBlank(formedBindingPath)) {
                 formedBindingPath += ".";
-
-                //KULRICE-13096 avoid duplicate property paths
-                if(propertyPath.startsWith(formedBindingPath)) {
-                    return propertyPath;
-                }
             }
             formedBindingPath += propertyPath;
         }

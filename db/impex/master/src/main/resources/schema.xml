@@ -4050,6 +4050,10 @@
         <column name="FDOC_NBR" primaryKey="true" size="14" type="VARCHAR"/>
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
     </table>
+    <table name="TRVL_AUTH_DOC_EXT_T">
+        <column name="DOC_HDR_ID" size="14" type="VARCHAR"/>
+        <column name="ANOTHER_PROP" size="10" type="VARCHAR"/>
+    </table>
     <table name="TRVL_AUTH_DOC_T">
         <column name="TRVL_AUTH_DOC_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="TRAVELER_DTL_ID" size="40" type="VARCHAR"/>

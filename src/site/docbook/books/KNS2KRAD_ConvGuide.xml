@@ -3689,6 +3689,47 @@ public void prepareExternalBusinessObject(BusinessObject businessObject);</progr
   <section>
     <title>Transactional Conversion</title>
     <para>&lt;introduction here></para>
+    <section xml:id="TPL1">
+      <title>Pessimistic Locking</title>
+      <para>
+        Transactional documents are able to be locked either fully or partially via a mechanism called Pessimistic
+        Locking.  In the KNS, pessimistic locking was tied into the edit modes that predated KIM permissions.  While
+        edit modes were put into KRAD, they should be considered a temporary feature as the KIM permissions are more
+        powerful.  During the transition to KRAD for pessimistic locking, it was found that while the pessimistic
+        locking mechanism relies on edit modes, it only changes full edit modes to view only modes and does not act
+        on any other edit modes, which are understood to be custom to each application.  The new design for
+        pessimistic locking only takes booleans and changes any edit permissions to view permissions if the lock cannot
+        be established.
+      </para>
+      <para>
+        During the conversion, all methods that were KNS specific in the
+        <emphasis role="keyword">org.kuali.rice.krad.service.PessimisticLockService</emphasis> were deprecated in favor
+        of new methods using the above strategy.  The KNS used the method
+        <emphasis role="keyword">establishLocks</emphasis> to both establish the locks and recalculate the edit modes.
+        KRAD now uses the new method <emphasis role="keyword">establishPessimisticLocks</emphasis> which does the same
+        thing but with cleaner code and returns a boolean.  This method has several protected helper methods that can
+        be overridden if customizing the
+        <emphasis role="keyword">org.kuali.rice.krad.service.PessimisticLockService</emphasis> is desired.  In addition,
+        where the KNS used the method <emphasis role="keyword">getDocumentActions</emphasis>, KRAD has moved this
+        behavior to a more appropriate place in the
+        <emphasis role="keyword">org.kuali.rice.krad.document.TransactionalDocumentAuthorizerBase</emphasis> where
+        document actions are typically set.
+      </para>
+      <para>
+        To handle on which workflow actions the locks were cleared, the KNS used a method in
+        <emphasis role="keyword">org.kuali.rice.krad.document.Document</emphasis> called
+        <emphasis role="keyword">getLockClearingMethodNames()</emphasis>.  This has been deprecated and the
+        the functionality moved to the transactional document controller, with the code living in
+        <emphasis role="keyword">org.kuali.rice.krad.document.TransactionalDocumentControllerServiceImpl</emphasis>.
+        Any implementer who desires to change this behavior can override this controller service and either add a call
+        to clear the pessimistic locks or remove the clearing of pessimistic locks by overriding any method.
+      </para>
+      <inlinemediaobject>
+        <imageobject>
+          <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
+        </imageobject>
+      </inlinemediaobject>
+    </section>
   </section>
   <section>
     <title>Authorizer and Presentation Controller Conversion</title>

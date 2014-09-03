@@ -35,7 +35,7 @@ public class LabsBootstrapMultiSelectPluginAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickByLinkText("Bootstrap multi-select plugin");
+    	waitAndClickByLinkText("Bootstrap Multi-select Plugin");
     }
 
     protected void testBootstrapMultiSelectPlugin() throws InterruptedException {

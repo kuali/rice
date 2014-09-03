@@ -72,10 +72,7 @@ public class TermMaintenanceEditCopyAft extends MainTmplMthdSTNavBase {
                 + StringUtils.substring(randomCode, 0, 4));
         clearTextByName("document.newMaintainableObject.dataObject.parametersMap[Campus Code]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.parametersMap[Campus Code]",randomCode);
-        waitAndClickByXpath("//button[contains(text(),'Submit')]");
-        waitAndClickConfirmationOk();
-        waitForProgressLoading();
-        waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
+        submitSuccessfully();
         waitForTextPresent(randomCode);
     }
 
@@ -91,10 +88,7 @@ public class TermMaintenanceEditCopyAft extends MainTmplMthdSTNavBase {
                 + StringUtils.substring(newRandomCode, 0, 4));
         clearTextByName("document.newMaintainableObject.dataObject.parametersMap[Campus Code]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.parametersMap[Campus Code]", newRandomCode);
-        waitAndClickByXpath("//button[contains(text(),'Submit')]");
-        waitAndClickConfirmationOk();
-        waitForProgressLoading();
-        waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
+        submitSuccessfully();
         waitForTextPresent(newRandomCode);
     }
 

@@ -119,6 +119,7 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
 
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
         waitAndClickButtonByText("Submit");
+        waitForProgressLoading();
         waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);

@@ -883,6 +883,15 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         }
     }
 
+    protected void submitSuccessfully() throws InterruptedException {
+        waitAndClickSubmitByText();
+        waitAndClickConfirmationOk();
+        waitForProgressLoading();
+        Thread.sleep(500);
+        checkForDocError();
+        waitForTextPresent("Document was successfully submitted.");
+    }
+
     // TODO delete after AddingNameSpaceAbstractSmokeTestBase migration
     protected void testAddingNamespace() throws Exception {
         testAddingNamespace(this);

@@ -15,8 +15,10 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 
 /**
  * View type for Transactional documents
@@ -31,5 +33,20 @@ public class TransactionalDocumentView extends DocumentView {
         super();
 
         setViewTypeName(UifConstants.ViewType.TRANSACTIONAL);
+    }
+
+    /** Override to make sure the header text is set.
+     *
+     * @param model
+     * @param parent
+     */
+    @Override
+    public void performFinalize(Object model, LifecycleElement parent) {
+        super.performFinalize(model, parent);
+
+        if (this.getHeader() != null && this.getHeaderText().length() == 0) {
+            DocumentEntry documentEntry = getDocumentEntryForView();
+            this.setHeaderText(documentEntry.getDocumentTypeName());
+        }
     }
 }

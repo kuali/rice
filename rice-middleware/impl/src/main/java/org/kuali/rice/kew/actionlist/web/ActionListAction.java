@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -512,12 +514,14 @@ public class ActionListAction extends KualiAction {
         if (StringUtils.isEmpty(sortName)) {
             return;
         }
-        // FIXME : sort items are causing problems after the JPA conversion - need to restore this
-//        Comparator<ActionItem> comparator = new ActionItemComparator(sortName);
-//        if (SortOrderEnum.DESCENDING.equals(sortOrder)) {
-//            comparator = ComparatorUtils.reversedComparator(comparator);
-//        }
-//        Collections.sort(actionList, comparator);
+
+        Comparator<ActionItemBase> comparator = new ActionItemComparator(sortName);
+        if (SortOrderEnum.DESCENDING.equals(sortOrder)) {
+            comparator = ComparatorUtils.reversedComparator(comparator);
+        }
+
+        Collections.sort(actionList, comparator);
+
         // re-index the action items
         int index = 0;
         for (ActionItemBase actionItem : actionList) {

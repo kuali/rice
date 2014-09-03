@@ -15,6 +15,21 @@
  */
 package org.kuali.rice.krad.data.provider.annotation.impl;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.DataObjectService;
@@ -57,20 +72,6 @@ import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
 import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
 import org.kuali.rice.krad.data.provider.impl.MetadataProviderBase;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * Parses custom krad-data annotations for additional metadata to layer on top of that provided by the persistence
@@ -485,14 +486,17 @@ public class AnnotationMetadataProviderImpl extends MetadataProviderBase {
 				referencePkFields = Collections.singletonList("principalId");
 			}
 		}
-		int index = 0;
-		for (String pkField : a.foreignKeyFields()) {
-			attributeRelationships.add(new DataObjectAttributeRelationshipImpl(pkField, referencePkFields.get(index)));
-			index++;
-		}
-		relationship.setAttributeRelationships(attributeRelationships);
+		if (!referencePkFields.isEmpty()) {
+			int index = 0;
+			for (String pkField : a.foreignKeyFields()) {
+				attributeRelationships.add(new DataObjectAttributeRelationshipImpl(pkField, referencePkFields
+						.get(index)));
+				index++;
+			}
+			relationship.setAttributeRelationships(attributeRelationships);
 
-		relationships.add(relationship);
+			relationships.add(relationship);
+		}
 		metadata.setRelationships(relationships);
 	}
 

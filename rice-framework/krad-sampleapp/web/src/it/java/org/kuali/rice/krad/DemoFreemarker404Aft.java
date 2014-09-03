@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.krad;
 
-import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,11 +35,16 @@ public class DemoFreemarker404Aft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-    	//No need for navigation test as we just need to test Freemarker Error on BAD URL.
+    	//No need for navigation as we just need to test Freemarker Error on BAD URL.
     }
 
     @Test
     public void testLookUpConditionalCriteriaBookmark() throws Exception {
-        //Need to test the BAD URL for Freemarker Error.
+        checkForIncidentReport();
+    }
+
+    @Test
+    public void testLookUpConditionalCriteriaNav() throws Exception {
+        checkForIncidentReport();
     }
 }

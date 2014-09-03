@@ -431,6 +431,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         names.add(new UITestObject("3", "John", "Wayne", ""));
         names.add(new UITestObject("4", "Jim", "", ""));
 
+        // build tree1 variable
         { // scope for name hiding purposes
             Node<String, String> item1 = new Node<String, String>("Item 1", "Item 1");
             item1.addChild(new Node<String, String>("SubItem A", "SubItem A"));
@@ -459,6 +460,7 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
             tree1.setRootElement(root);
         }
 
+        // build tree2 variable
         { // scope for name hiding purposes
             Node<UITestObject, String> item1 = new Node<UITestObject, String>(new UITestObject("1-A", "1-B", "1-C", "1-D"), "Item 1");
             item1.addChild(new Node<UITestObject, String>(new UITestObject("1SA-A", "1SA-B", "1SA-C", "1SA-D"), "SubItem A"));

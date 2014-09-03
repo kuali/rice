@@ -15,10 +15,13 @@
  */
 package edu.sampleu.travel.dataobject;
 
-import edu.sampleu.travel.options.ExpenseType;
-import edu.sampleu.travel.options.PostalCountryCode;
-import edu.sampleu.travel.options.PostalStateCode;
-import edu.sampleu.travel.options.TripType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+
 import org.junit.Test;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.UserSession;
@@ -31,12 +34,10 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.test.BaselineTestCase;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import edu.sampleu.travel.options.ExpenseType;
+import edu.sampleu.travel.options.PostalCountryCode;
+import edu.sampleu.travel.options.PostalStateCode;
+import edu.sampleu.travel.options.TripType;
 
 /**
  * Tests basic {@code TravelAuthorizationDocument} persistence.
@@ -44,6 +45,18 @@ import static org.junit.Assert.assertTrue;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
+//@PerTestUnitTestData(
+//        value = @UnitTestData(
+//        sqlStatements = {
+//                @UnitTestSql("create table TRVL_AUTH_DOC_EXT_T ( DOC_HDR_ID VARCHAR(14), ANOTHER_PROP VARCHAR(10) )")
+//        }
+//    ),
+//    tearDown = @UnitTestData(
+//            sqlStatements = {
+//                    @UnitTestSql("drop table TRVL_AUTH_DOC_EXT_T")
+//            }
+//            )
+//)
 public class TravelAuthorizationDocumentTest extends KRADTestCase {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
@@ -125,7 +138,7 @@ public class TravelAuthorizationDocumentTest extends KRADTestCase {
         assertTrue(TravelExpenseItem.class.getName() + " is not mapped in JPA",
                 KRADServiceLocator.getDataObjectService().supports(TravelAuthorizationDocument.class));
 
-        String id = createTravelAuthorizationDocument();
+        String id = createAndSaveTravelAuthorizationDocument().getDocumentNumber();
 
         TravelAuthorizationDocument document = (TravelAuthorizationDocument) KRADServiceLocatorWeb.getDocumentService().getByDocumentHeaderId(id);
         String documentNumber = document.getDocumentNumber();
@@ -151,7 +164,7 @@ public class TravelAuthorizationDocumentTest extends KRADTestCase {
         assertEquals("Travel Expense Item document ID is incorrect", travelExpenseItemDocumentNumber, documentNumber);
     }
 
-    private String createTravelAuthorizationDocument() throws Exception {
+    private TravelAuthorizationDocument createAndSaveTravelAuthorizationDocument() throws Exception {
         Document newDocument = KRADServiceLocatorWeb.getDocumentService().getNewDocument(TravelAuthorizationDocument.class);
         newDocument.getDocumentHeader().setDocumentDescription(DOCUMENT_DESCRIPTION);
         TravelAuthorizationDocument newTravelAuthorizationDocument = (TravelAuthorizationDocument) newDocument;
@@ -187,6 +200,18 @@ public class TravelAuthorizationDocumentTest extends KRADTestCase {
         travelExpenseItem.setTaxable(false);
         newTravelAuthorizationDocument.getActualExpenseItems().add(travelExpenseItem);
 
-        return KRADServiceLocatorWeb.getDocumentService().saveDocument(newTravelAuthorizationDocument).getDocumentNumber();
+        newTravelAuthorizationDocument.setExtension( new TravelAuthorizationDocumentExtension() );
+        ((TravelAuthorizationDocumentExtension) newTravelAuthorizationDocument.getExtension()).setAnotherProperty( "Test Value" );
+
+        return (TravelAuthorizationDocument) KRADServiceLocatorWeb.getDocumentService().saveDocument(newTravelAuthorizationDocument);
     }
+
+//    @Test
+//    public void testDocumentExtension() throws Exception {
+//        TravelAuthorizationDocument document = createAndSaveTravelAuthorizationDocument();
+//        assertNotNull( "extension missing after save", document.getExtension() );
+//        assertNotNull( "extension does not have document number after save", ((TravelAuthorizationDocumentExtension)document.getExtension()).getDocumentNumber() );
+//        assertEquals( "Document number not set in extension after save", document.getDocumentNumber(), ((TravelAuthorizationDocumentExtension)document.getExtension()).getDocumentNumber() );
+//    }
+
 }

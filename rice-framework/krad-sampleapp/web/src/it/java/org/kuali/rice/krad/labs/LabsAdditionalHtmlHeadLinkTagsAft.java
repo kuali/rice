@@ -35,7 +35,7 @@ public class LabsAdditionalHtmlHeadLinkTagsAft extends WebDriverLegacyITBase {
 
     @Override
     protected void navigate() throws Exception {
-    	waitAndClickByLinkText("Html head link tags");
+    	waitAndClickByLinkText("HTML head link tags");
     }
 
     protected void testDemoAdditionalHtmlHeadLinkTags() throws InterruptedException {

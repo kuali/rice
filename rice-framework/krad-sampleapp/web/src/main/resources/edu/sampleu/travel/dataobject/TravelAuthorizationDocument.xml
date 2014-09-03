@@ -24,5 +24,4 @@
 		<property name="documentClass" value="edu.sampleu.travel.dataobject.TravelAuthorizationDocument" />
 	</bean>
 
-
 </beans>

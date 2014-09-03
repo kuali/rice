@@ -388,9 +388,8 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBindingDefinition)
-            throws RiceIllegalArgumentException {
-        referenceObjectBindingBoService.updateReferenceObjectBinding(referenceObjectBindingDefinition);
+    public ReferenceObjectBinding updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBindingDefinition) throws RiceIllegalArgumentException {
+        return referenceObjectBindingBoService.updateReferenceObjectBinding(referenceObjectBindingDefinition);
     }
 
     @Override
@@ -471,8 +470,8 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateAgenda(AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException {
-        agendaBoService.updateAgenda(agendaDefinition);
+    public AgendaDefinition updateAgenda(AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException {
+        return agendaBoService.updateAgenda(agendaDefinition);
     }
 
     @Override
@@ -710,8 +709,8 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateAgendaItem(AgendaItemDefinition agendaItemDefinition) throws RiceIllegalArgumentException {
-        createUpdateAgendaItemIfNeeded(agendaItemDefinition);
+    public AgendaItemDefinition updateAgendaItem(AgendaItemDefinition agendaItemDefinition) throws RiceIllegalArgumentException {
+        return createUpdateAgendaItemIfNeeded(agendaItemDefinition);
     }
 
     private void crossCheckPropId(RuleDefinition ruleDefinition)
@@ -819,11 +818,11 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateRule(RuleDefinition ruleDefinition) throws RiceIllegalArgumentException {
+    public RuleDefinition updateRule(RuleDefinition ruleDefinition) throws RiceIllegalArgumentException {
         crossCheckPropId(ruleDefinition);
         ruleDefinition = this.createUpdatePropositionIfNeeded(ruleDefinition);
 
-        ruleBoService.updateRule(ruleDefinition);
+        return ruleBoService.updateRule(ruleDefinition);
     }
 
     @Override
@@ -840,8 +839,8 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateAction(ActionDefinition actionDefinition) throws RiceIllegalArgumentException {
-        actionBoService.updateAction(actionDefinition);
+    public ActionDefinition updateAction(ActionDefinition actionDefinition) throws RiceIllegalArgumentException {
+        return actionBoService.updateAction(actionDefinition);
     }
 
     @Override
@@ -1108,13 +1107,15 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateProposition(PropositionDefinition propositionDefinition) throws RiceIllegalArgumentException {
+    public PropositionDefinition updateProposition(PropositionDefinition propositionDefinition) throws RiceIllegalArgumentException {
         this.crossCheckPropositionParameters(propositionDefinition);
         PropositionDefinition.Builder propBldr = PropositionDefinition.Builder.create(propositionDefinition);
         propBldr = setSequenceOnCompoundPropositionsIfNeeded(propBldr);
         propBldr = maintainTermValuesAndChildPropositions(propBldr);
 
-        propositionBoService.updateProposition(propBldr.build());
+        propositionDefinition = propositionBoService.updateProposition(propBldr.build());
+
+        return propositionDefinition;
     }
 
     private PropositionDefinition.Builder setSequenceOnCompoundPropositionsIfNeeded(PropositionDefinition.Builder propBldr) {
@@ -1157,8 +1158,8 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage) throws RiceIllegalArgumentException {
-        naturalLanguageUsageBoService.updateNaturalLanguageUsage(naturalLanguageUsage);
+    public NaturalLanguageUsage updateNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage) throws RiceIllegalArgumentException {
+        return naturalLanguageUsageBoService.updateNaturalLanguageUsage(naturalLanguageUsage);
     }
 
     @Override
@@ -1229,8 +1230,8 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateContext(ContextDefinition contextDefinition) throws RiceIllegalArgumentException {
-        this.contextBoService.updateContext(contextDefinition);
+    public ContextDefinition updateContext(ContextDefinition contextDefinition) throws RiceIllegalArgumentException {
+        return contextBoService.updateContext(contextDefinition);
     }
 
     @Override
@@ -1262,8 +1263,8 @@ public class RuleManagementServiceImpl extends RuleRepositoryServiceImpl impleme
     }
 
     @Override
-    public void updateNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate) throws RiceIllegalArgumentException {
-        this.naturalLanguageTemplateBoService.updateNaturalLanguageTemplate(naturalLanguageTemplate);
+    public NaturalLanguageTemplate updateNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate) throws RiceIllegalArgumentException {
+        return naturalLanguageTemplateBoService.updateNaturalLanguageTemplate(naturalLanguageTemplate);
     }
 
     @Override

@@ -37,7 +37,7 @@ public interface TypeTypeRelationBoService {
      * @return a {@link TypeTypeRelation} exactly like the parameter passed in.
      * 
      */
-    public TypeTypeRelation createTypeTypeRelation(TypeTypeRelation typeTypeRelation);
+    TypeTypeRelation createTypeTypeRelation(TypeTypeRelation typeTypeRelation);
 
     /**
      * Retrieves a TypeTypeRelation from the repository based on the given id.
@@ -47,7 +47,7 @@ public interface TypeTypeRelationBoService {
      * A null reference is returned if an invalid or non-existent id is supplied.
      * 
      */
-    public TypeTypeRelation getTypeTypeRelation(String typeTypeRelationId);
+    TypeTypeRelation getTypeTypeRelation(String typeTypeRelationId);
 
     /**
      * This will update an existing {@link TypeTypeRelation}.
@@ -57,7 +57,7 @@ public interface TypeTypeRelationBoService {
      * @throws IllegalStateException if the TypeTypeRelation does not exists in the system.
      * 
      */
-    public void updateTypeTypeRelation(TypeTypeRelation typeTypeRelation);
+    TypeTypeRelation updateTypeTypeRelation(TypeTypeRelation typeTypeRelation);
 
     /**
      * Delete the {@link TypeTypeRelation} with the given id.
@@ -67,15 +67,15 @@ public interface TypeTypeRelationBoService {
      * @throws IllegalStateException if the TypeTypeRelation does not exists in the system
      * 
      */
-    public void deleteTypeTypeRelation(String typeTypeRelationId);
+    void deleteTypeTypeRelation(String typeTypeRelationId);
 
-    public List<TypeTypeRelation> findTypeTypeRelationsByFromType(String fromTypeId);
+    List<TypeTypeRelation> findTypeTypeRelationsByFromType(String fromTypeId);
 
-    public List<TypeTypeRelation> findTypeTypeRelationsByToType(String toTypeId);
+    List<TypeTypeRelation> findTypeTypeRelationsByToType(String toTypeId);
 
-    public List<TypeTypeRelation> findTypeTypeRelationsByRelationshipType(RelationshipType relationshipType);
+    List<TypeTypeRelation> findTypeTypeRelationsByRelationshipType(RelationshipType relationshipType);
 
-    public List<TypeTypeRelation> findTypeTypeRelationsBySequenceNumber(Integer sequenceNumber);
+    List<TypeTypeRelation> findTypeTypeRelationsBySequenceNumber(Integer sequenceNumber);
 
     /**
      * Converts a mutable {@link TypeTypeRelationBo} to its immutable counterpart, {@link TypeTypeRelation}.
@@ -83,7 +83,7 @@ public interface TypeTypeRelationBoService {
      * @return a {@link TypeTypeRelation} the immutable object.
      * 
      */
-    public TypeTypeRelation to(TypeTypeRelationBo typeTypeRelationBo);
+    TypeTypeRelation to(TypeTypeRelationBo typeTypeRelationBo);
 
     /**
      * Converts a immutable {@link TypeTypeRelation} to its mutable {@link TypeTypeRelationBo} counterpart.
@@ -91,6 +91,6 @@ public interface TypeTypeRelationBoService {
      * @return a {@link TypeTypeRelationBo} the mutable TypeTypeRelationBo.
      * 
      */
-    public TypeTypeRelationBo from(TypeTypeRelation typeTypeRelation);
+    TypeTypeRelationBo from(TypeTypeRelation typeTypeRelation);
 
 }

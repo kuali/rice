@@ -41,14 +41,15 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.*;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.deleteMatching;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatching;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
 
 /**
  * Implementation of the interface for accessing KRMS repository Agenda related
- * business objects. 
+ * business objects.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class AgendaBoServiceImpl implements AgendaBoService {
 
@@ -62,7 +63,9 @@ public class AgendaBoServiceImpl implements AgendaBoService {
             new ModelObjectUtils.Transformer<AgendaItemBo, AgendaItemDefinition>() {
                 public AgendaItemDefinition transform(AgendaItemBo input) {
                     return AgendaItemBo.to(input);
-                };
+                }
+
+                ;
             };
 
     // used for converting lists of BOs to model objects
@@ -70,22 +73,23 @@ public class AgendaBoServiceImpl implements AgendaBoService {
             new ModelObjectUtils.Transformer<AgendaBo, AgendaDefinition>() {
                 public AgendaDefinition transform(AgendaBo input) {
                     return AgendaBo.to(input);
-                };
-            };
+                }
 
+                ;
+            };
 
     /**
      * This overridden method creates a KRMS Agenda in the repository
      */
     @Override
     public AgendaDefinition createAgenda(AgendaDefinition agenda) {
-        if (agenda == null){
+        if (agenda == null) {
             throw new RiceIllegalArgumentException("agenda is null");
         }
         final String nameKey = agenda.getName();
         final String contextId = agenda.getContextId();
         final AgendaDefinition existing = getAgendaByNameAndContextId(nameKey, contextId);
-        if (existing != null){
+        if (existing != null) {
             throw new IllegalStateException("the agenda to create already exists: " + agenda);
         }
 
@@ -98,8 +102,8 @@ public class AgendaBoServiceImpl implements AgendaBoService {
      * This overridden method updates an existing Agenda in the repository
      */
     @Override
-    public void updateAgenda(AgendaDefinition agenda) {
-        if (agenda == null){
+    public AgendaDefinition updateAgenda(AgendaDefinition agenda) {
+        if (agenda == null) {
             throw new RiceIllegalArgumentException("agenda is null");
         }
 
@@ -126,22 +130,28 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         boToUpdate.setItems(existing.getItems());
 
         // delete any old, existing attributes
-        Map<String,String> fields = new HashMap<String,String>(1);
+        Map<String, String> fields = new HashMap<String, String>(1);
         fields.put("agenda.id", toUpdate.getId());
         deleteMatching(dataObjectService, AgendaAttributeBo.class, fields);
 
         // update new agenda and create new attributes
-        dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+        AgendaBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+
+        return to(updatedData);
     }
 
     @Override
     public void deleteAgenda(String agendaId) {
-        if (agendaId == null){ throw new RiceIllegalArgumentException("agendaId is null"); }
+        if (agendaId == null) {
+            throw new RiceIllegalArgumentException("agendaId is null");
+        }
         final AgendaBo bo = dataObjectService.find(AgendaBo.class, agendaId);
-        if (bo == null){ throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);}
+        if (bo == null) {
+            throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);
+        }
 
         List<AgendaItemDefinition> agendaItems = this.getAgendaItemsByAgendaId(bo.getId());
-        for( AgendaItemDefinition agendaItem : agendaItems) {
+        for (AgendaItemDefinition agendaItem : agendaItems) {
             dataObjectService.delete(AgendaItemBo.from(agendaItem));
         }
 
@@ -153,7 +163,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
      */
     @Override
     public AgendaDefinition getAgendaByAgendaId(String agendaId) {
-        if (StringUtils.isBlank(agendaId)){
+        if (StringUtils.isBlank(agendaId)) {
             throw new RiceIllegalArgumentException("agenda id is null or blank");
         }
         AgendaBo bo = dataObjectService.find(AgendaBo.class, agendaId);
@@ -185,7 +195,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
      */
     @Override
     public List<AgendaDefinition> getAgendasByContextId(String contextId) {
-        if (StringUtils.isBlank(contextId)){
+        if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("context ID is null or blank");
         }
         final Map<String, Object> map = new HashMap<String, Object>();
@@ -200,12 +210,12 @@ public class AgendaBoServiceImpl implements AgendaBoService {
      */
     @Override
     public AgendaItemDefinition createAgendaItem(AgendaItemDefinition agendaItem) {
-        if (agendaItem == null){
+        if (agendaItem == null) {
             throw new RiceIllegalArgumentException("agendaItem is null");
         }
-        if (agendaItem.getId() != null){
+        if (agendaItem.getId() != null) {
             final AgendaDefinition existing = getAgendaByAgendaId(agendaItem.getId());
-            if (existing != null){
+            if (existing != null) {
                 throw new IllegalStateException("the agendaItem to create already exists: " + agendaItem);
             }
         }
@@ -219,8 +229,8 @@ public class AgendaBoServiceImpl implements AgendaBoService {
      * This overridden method updates an existing Agenda in the repository
      */
     @Override
-    public void updateAgendaItem(AgendaItemDefinition agendaItem) {
-        if (agendaItem == null){
+    public AgendaItemDefinition updateAgendaItem(AgendaItemDefinition agendaItem) {
+        if (agendaItem == null) {
             throw new RiceIllegalArgumentException("agendaItem is null");
         }
         final String agendaItemIdKey = agendaItem.getId();
@@ -239,20 +249,21 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
         AgendaItemBo aiBo = AgendaItemBo.from(toUpdate);
         updateActionAttributes(aiBo);
-        dataObjectService.save(aiBo, PersistenceOption.FLUSH);
+        final AgendaItemBo updatedData = dataObjectService.save(aiBo, PersistenceOption.FLUSH);
+        return AgendaItemBo.to(updatedData);
     }
 
     private void updateActionAttributes(AgendaItemBo aiBo) {
-        if(aiBo.getRule()!=null){
+        if (aiBo.getRule() != null) {
             updateActionAttributes(aiBo.getRule().getActions());
         }
-        if(aiBo.getWhenTrue()!=null){
+        if (aiBo.getWhenTrue() != null) {
             updateActionAttributes(aiBo.getWhenTrue());
         }
-        if(aiBo.getWhenFalse()!=null){
+        if (aiBo.getWhenFalse() != null) {
             updateActionAttributes(aiBo.getWhenFalse());
         }
-        if(aiBo.getAlways()!=null){
+        if (aiBo.getAlways() != null) {
             updateActionAttributes(aiBo.getAlways());
         }
     }
@@ -279,14 +290,15 @@ public class AgendaBoServiceImpl implements AgendaBoService {
      */
     @Override
     public void addAgendaItem(AgendaItemDefinition agendaItem, String parentId, Boolean position) {
-        if (agendaItem == null){
+        if (agendaItem == null) {
             throw new RiceIllegalArgumentException("agendaItem is null");
         }
         AgendaItemDefinition parent = null;
-        if (parentId != null){
+        if (parentId != null) {
             parent = getAgendaItemById(parentId);
-            if (parent == null){
-                throw new IllegalStateException("parent agendaItem does not exist in repository. parentId = " + parentId);
+            if (parent == null) {
+                throw new IllegalStateException(
+                        "parent agendaItem does not exist in repository. parentId = " + parentId);
             }
         }
         // create new AgendaItemDefinition
@@ -303,15 +315,15 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         // link it to it's parent (for whenTrue/whenFalse, sibling for always
         if (parentId != null) {
             final AgendaItemDefinition.Builder builder = AgendaItemDefinition.Builder.create(parent);
-            if (position == null){
-                builder.setAlwaysId( toCreate.getId() );
-            } else if (position.booleanValue()){
-                builder.setWhenTrueId( toCreate.getId() );
-            } else if (!position.booleanValue()){
-                builder.setWhenFalseId( toCreate.getId() );
+            if (position == null) {
+                builder.setAlwaysId(toCreate.getId());
+            } else if (position.booleanValue()) {
+                builder.setWhenTrueId(toCreate.getId());
+            } else if (!position.booleanValue()) {
+                builder.setWhenFalseId(toCreate.getId());
             }
             final AgendaItemDefinition parentToUpdate = builder.build();
-            updateAgendaItem( parentToUpdate );
+            updateAgendaItem(parentToUpdate);
         }
     }
 
@@ -320,7 +332,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
      */
     @Override
     public AgendaItemDefinition getAgendaItemById(String id) {
-        if (StringUtils.isBlank(id)){
+        if (StringUtils.isBlank(id)) {
             throw new RiceIllegalArgumentException("agenda item id is null or blank");
         }
 
@@ -331,7 +343,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
     @Override
     public List<AgendaItemDefinition> getAgendaItemsByAgendaId(String agendaId) {
-        if (StringUtils.isBlank(agendaId)){
+        if (StringUtils.isBlank(agendaId)) {
             throw new RiceIllegalArgumentException("agenda id is null or null");
         }
         List<AgendaItemDefinition> results = null;
@@ -350,7 +362,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
     @Override
     public List<AgendaDefinition> getAgendasByType(String typeId) throws RiceIllegalArgumentException {
-        if (StringUtils.isBlank(typeId)){
+        if (StringUtils.isBlank(typeId)) {
             throw new RiceIllegalArgumentException("type ID is null or blank");
         }
 
@@ -362,12 +374,12 @@ public class AgendaBoServiceImpl implements AgendaBoService {
     }
 
     @Override
-    public List<AgendaDefinition> getAgendasByTypeAndContext(String typeId,
-            String contextId) throws RiceIllegalArgumentException {
-        if (StringUtils.isBlank(typeId)){
+    public List<AgendaDefinition> getAgendasByTypeAndContext(String typeId, String contextId)
+            throws RiceIllegalArgumentException {
+        if (StringUtils.isBlank(typeId)) {
             throw new RiceIllegalArgumentException("type ID is null or blank");
         }
-        if (StringUtils.isBlank(contextId)){
+        if (StringUtils.isBlank(contextId)) {
             throw new RiceIllegalArgumentException("context ID is null or blank");
         }
         final Map<String, Object> map = new HashMap<String, Object>();
@@ -389,8 +401,8 @@ public class AgendaBoServiceImpl implements AgendaBoService {
     }
 
     @Override
-    public List<AgendaItemDefinition> getAgendaItemsByTypeAndContext(String typeId,
-            String contextId) throws RiceIllegalArgumentException {
+    public List<AgendaItemDefinition> getAgendaItemsByTypeAndContext(String typeId, String contextId)
+            throws RiceIllegalArgumentException {
         return findAgendaItemsForAgendas(getAgendasByTypeAndContext(typeId, contextId));
     }
 
@@ -418,7 +430,8 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
                     Predicate predicate = in("agendaId", agendaIds.toArray());
                     QueryByCriteria criteria = QueryByCriteria.Builder.fromPredicates(predicate);
-                    QueryResults<AgendaItemBo> batch = getDataObjectService().findMatching(AgendaItemBo.class, criteria);
+                    QueryResults<AgendaItemBo> batch = getDataObjectService().findMatching(AgendaItemBo.class,
+                            criteria);
 
                     boResults.addAll(batch.getResults());
 
@@ -453,7 +466,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
     }
 
     protected DataObjectService getDataObjectService() {
-        if ( dataObjectService == null ) {
+        if (dataObjectService == null) {
             dataObjectService = KRADServiceLocator.getDataObjectService();
         }
         return dataObjectService;
@@ -485,32 +498,37 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
     /**
      * Converts a mutable bo to it's immutable counterpart
+     *
      * @param bo the mutable business object
      * @return the immutable object
      */
     @Override
     public AgendaDefinition to(AgendaBo bo) {
-        if (bo == null) { return null; }
+        if (bo == null) {
+            return null;
+        }
         return org.kuali.rice.krms.api.repository.agenda.AgendaDefinition.Builder.create(bo).build();
     }
 
-
     /**
      * Converts a immutable object to it's mutable bo counterpart
+     *
      * @param im immutable object
      * @return the mutable bo
      */
     @Override
     public AgendaBo from(AgendaDefinition im) {
-        if (im == null) { return null; }
+        if (im == null) {
+            return null;
+        }
 
         AgendaBo bo = new AgendaBo();
         bo.setId(im.getId());
-        bo.setName( im.getName() );
-        bo.setTypeId( im.getTypeId() );
-        bo.setContextId( im.getContextId() );
-        bo.setFirstItemId( im.getFirstItemId() );
-        bo.setVersionNumber( im.getVersionNumber() );
+        bo.setName(im.getName());
+        bo.setTypeId(im.getTypeId());
+        bo.setContextId(im.getContextId());
+        bo.setFirstItemId(im.getFirstItemId());
+        bo.setVersionNumber(im.getVersionNumber());
         bo.setActive(im.isActive());
         Set<AgendaAttributeBo> attributes = buildAgendaAttributeBo(im, bo);
 
@@ -533,7 +551,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         }
 
         // for each entry, build an AgendaAttributeBo and add it to the set
-        for (Entry<String,String> entry  : im.getAttributes().entrySet()){
+        for (Entry<String, String> entry : im.getAttributes().entrySet()) {
             KrmsAttributeDefinition attrDef = attributeDefinitionMap.get(entry.getKey());
 
             if (attrDef != null) {
@@ -541,13 +559,12 @@ public class AgendaBoServiceImpl implements AgendaBoService {
                 attributeBo.setAgenda(agendaBo);
                 attributeBo.setValue(entry.getValue());
                 attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attrDef));
-                attributes.add( attributeBo );
+                attributes.add(attributeBo);
             } else {
                 throw new RiceIllegalStateException("there is no attribute definition with the name '" +
-                        entry.getKey() + "' that is valid for the agenda type with id = '" + im.getTypeId() +"'");
+                        entry.getKey() + "' that is valid for the agenda type with id = '" + im.getTypeId() + "'");
             }
         }
         return attributes;
     }
-
 }

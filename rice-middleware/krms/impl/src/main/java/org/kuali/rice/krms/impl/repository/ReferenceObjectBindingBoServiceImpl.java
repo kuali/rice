@@ -89,7 +89,7 @@ public class ReferenceObjectBindingBoServiceImpl implements ReferenceObjectBindi
     }
 
     @Override
-    public void updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBinding) {
+    public ReferenceObjectBinding updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBinding) {
         incomingParamCheck(referenceObjectBinding , "referenceObjectBinding");
         final ReferenceObjectBinding existing = getReferenceObjectBinding(referenceObjectBinding.getId());
 
@@ -112,7 +112,9 @@ public class ReferenceObjectBindingBoServiceImpl implements ReferenceObjectBindi
         ReferenceObjectBindingBo boToUpdate = from(toUpdate);
 
         // update the rule and create new attributes
-         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+        ReferenceObjectBindingBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+
+        return to(updatedData);
     }
 
     @Override

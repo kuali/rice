@@ -315,7 +315,7 @@ public interface KrmsTypeRepositoryService {
      *
      */
     @WebMethod(operationName = "updateTypeTypeRelation")
-    void updateTypeTypeRelation(@WebParam(name = "typeTypeRelation") TypeTypeRelation typeTypeRelation)
+    TypeTypeRelation updateTypeTypeRelation(@WebParam(name = "typeTypeRelation") TypeTypeRelation typeTypeRelation)
             throws RiceIllegalArgumentException;
 
     /**

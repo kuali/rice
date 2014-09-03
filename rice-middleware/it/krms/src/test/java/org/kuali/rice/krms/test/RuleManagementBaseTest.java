@@ -300,9 +300,9 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         propBuilder = PropositionDefinition.Builder.create(propositionDefinition);
         propBuilder.setParameters(propParam);
 
-        ruleManagementService.updateProposition(propBuilder.build());
+        propositionDefinition = ruleManagementService.updateProposition(propBuilder.build());
         // re-fetch to get the updated version numbers
-        propositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
+        //propositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
 
         return propositionDefinition;
     }

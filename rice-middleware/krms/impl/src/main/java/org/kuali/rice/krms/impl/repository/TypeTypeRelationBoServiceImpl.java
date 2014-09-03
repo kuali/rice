@@ -88,7 +88,7 @@ public class TypeTypeRelationBoServiceImpl implements TypeTypeRelationBoService 
     }
 
     @Override
-    public void updateTypeTypeRelation(TypeTypeRelation typeTypeRelation) {
+    public TypeTypeRelation updateTypeTypeRelation(TypeTypeRelation typeTypeRelation) {
         incomingParamCheck(typeTypeRelation , "typeTypeRelation");
         final TypeTypeRelation existing = getTypeTypeRelation(typeTypeRelation.getId());
 
@@ -111,7 +111,9 @@ public class TypeTypeRelationBoServiceImpl implements TypeTypeRelationBoService 
         TypeTypeRelationBo boToUpdate = from(toUpdate);
 
         // update the rule and create new attributes
-         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+        TypeTypeRelationBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+
+        return to(updatedData);
     }
 
     @Override

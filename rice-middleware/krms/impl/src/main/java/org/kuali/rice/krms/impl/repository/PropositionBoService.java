@@ -51,7 +51,7 @@ public interface PropositionBoService {
      * @throws IllegalStateException if the proposition does not exist in the system
      */
     @CacheEvict(value={PropositionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
-    void updateProposition(PropositionDefinition prop);
+    PropositionDefinition updateProposition(PropositionDefinition prop);
 
     /**
      * This will delete an existing {@link PropositionDefinition}.
@@ -95,7 +95,7 @@ public interface PropositionBoService {
      * @throws IllegalStateException if the proposition parameter does not exist in the system
      */
     @CacheEvict(value={PropositionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
-    void updateParameter(PropositionParameter parameter);
+    PropositionParameter updateParameter(PropositionParameter parameter);
 
 
     /**

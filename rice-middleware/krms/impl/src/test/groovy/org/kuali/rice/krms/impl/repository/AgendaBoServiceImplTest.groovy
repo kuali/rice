@@ -119,13 +119,9 @@ class AgendaBoServiceImplTest {
 	}
 
 	@Before
-	void setupBoServiceMockContext() {
+	void setup() {
 		mockDataObjectService = new MockFor(DataObjectService.class)
-	}
-
-    @Before
-	void setupAttributeServiceMockContext() {
-		mockAttributeDefinitionService = new MockFor(KrmsAttributeDefinitionService.class);
+        mockAttributeDefinitionService = new MockFor(KrmsAttributeDefinitionService.class);
 	}
 
 	@Test
@@ -361,7 +357,9 @@ class AgendaBoServiceImplTest {
 		kads.setDataObjectService(dataObjectService)
 		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
 		
-		service.updateAgenda(TEST_EXISTING_AGENDA_DEF)
+		def updatedData = service.updateAgenda(TEST_EXISTING_AGENDA_DEF)
+
+        Assert.assertNotNull("Data should not be null coming from AgendaBoService updateAgenda", updatedData);
 		mockDataObjectService.verify(dataObjectService)
   }
 

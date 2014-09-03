@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krms.test;
 
+import static org.junit.Assert.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -199,7 +200,9 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         agendaDefBuilder1.setFirstItemId(agendaItem1.getId());
         agendaDef = agendaDefBuilder1.build();
 
-        agendaBoService.updateAgenda(agendaDef);
+        AgendaDefinition result = agendaBoService.updateAgenda(agendaDef);
+
+        assertNotNull(result);
     }
 
     protected void createAgendaDefinition2(String agendaName, ContextDefinition contextDefinition, String nameSpace ) {
@@ -217,7 +220,9 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         agendaDefBuilder1.setFirstItemId(agendaItem1.getId());
         agendaDef = agendaDefBuilder1.build();
 
-        agendaBoService.updateAgenda(agendaDef);
+        AgendaDefinition updatedData = agendaBoService.updateAgenda(agendaDef);
+
+        assertNotNull(updatedData);
     }
 
     protected KrmsTypeDefinition createKrmsActionTypeDefinition(String nameSpace) {
@@ -271,7 +276,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
 
         ruleDefBuilder.setProposition(parentProposition);
         ruleDef1 = ruleDefBuilder.build();
-        ruleBoService.updateRule(ruleDef1);
+        ruleDef1 = ruleBoService.updateRule(ruleDef1);
 
         // Action
         ActionDefinition.Builder actionDefBuilder1 = ActionDefinition.Builder.create(null, ruleName + "::TestAction", nameSpace, createKrmsActionTypeDefinition(nameSpace).getId(), ruleDef1.getId(), 1);

@@ -21,6 +21,9 @@ import org.junit.Before
 import org.junit.BeforeClass
 
 import org.junit.Test
+import org.kuali.rice.core.api.criteria.GenericQueryResults
+import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krad.service.BusinessObjectService
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
@@ -31,7 +34,7 @@ class KrmsAttributeDefinitionRepositoryService {
 
   static Map<String, KrmsTypeBo> sampleTypes = new HashMap<String, KrmsTypeBo>()
   static Map<String, KrmsTypeBo> sampleTypesKeyedByName = new HashMap<String, KrmsTypeBo>()
-  def mockBusinessObjectService
+  def mockDataObjectService
 
   @BeforeClass
   static void createSampleTypeBOs() {
@@ -46,24 +49,26 @@ class KrmsAttributeDefinitionRepositoryService {
 
   @Before
   void setupBoServiceMockContext() {
-    mockBusinessObjectService = new MockFor(BusinessObjectService.class)
+      mockDataObjectService = new MockFor(DataObjectService.class)
   }
 
 
   @Test
   public void test_getType() {
-    mockBusinessObjectService.demand.findBySinglePrimaryKey(1..1) {
-      Class clazz, id -> return sampleTypes.get("1")
-    }
+    KrmsTypeBo result = new KrmsTypeBo(active: true, id: "1", name: "DEFAULT", namespace: "KRMS_TEST", serviceName: "KrmsTypeBoServiceImpl")
+    mockDataObjectService.demand.find(1..1) {Class clazz, String id -> result}
+    DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+    KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
+    service.setDataObjectService(dataObjectService)
 
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+    KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
+    kads.setDataObjectService(dataObjectService)
+    KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
 
-    KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()
-    service.setBusinessObjectService(bos)
     KrmsTypeDefinition myType = service.getTypeById("1")
 
     Assert.assertEquals(KrmsTypeBo.to(sampleTypes.get("1")), myType)
-    mockBusinessObjectService.verify(bos)
+    mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
@@ -83,41 +88,41 @@ class KrmsAttributeDefinitionRepositoryService {
 //  @Ignore // commented out block of tests
 //  @Test
 //  public void testGetByNameAndNamespace() {
-//    mockBusinessObjectService.demand.findMatching(1..2) {
+//    mockDataObjectService.demand.findMatching(1..2) {
 //      Class clazz, Map map ->
 //      [sampleTypesKeyedByName.get(
 //              map.get(KRADPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE))]
 //    }
-//    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+//    BusinessObjectService bos = mockDataObjectService.proxyDelegateInstance()
 //
 //    KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()
 //    service.setBusinessObjectService(bos)
 //    KrmsType myType = service.getTypeByNameAndNamespace("Student","KRMS_TEST")
 //
 //    Assert.assertEquals(KrmsTypeBo.to(sampleTypesKeyedByName.get("Student")), myType)
-//    mockBusinessObjectService.verify(bos)
+//    mockDataObjectService.verify(bos)
 //  }
 
 //  @Test
 //  public void testGetByIdWhenNoneFound() {
-//    mockBusinessObjectService.demand.findMatching(1..1) {Class clazz, Map map -> []}
-//    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+//    mockDataObjectService.demand.findMatching(1..1) {Class clazz, Map map -> []}
+//    BusinessObjectService bos = mockDataObjectService.proxyDelegateInstance()
 //
 //    CountryService service = new CountryServiceImpl()
 //    service.setBusinessObjectService(bos)
 //    Country country = service.getCountryByAlternateCode("ZZ")
 //
 //    Assert.assertNull(country)
-//    mockBusinessObjectService.verify(bos)
+//    mockDataObjectService.verify(bos)
 //
 //  }
 //
 //  @Test
 //  public void testGetByAlternatePostalCountryCodeWhenMultipleFound() {
-//    mockBusinessObjectService.demand.findMatching(1..1) {
+//    mockDataObjectService.demand.findMatching(1..1) {
 //      Class clazz, Map map -> [sampleCountries.get("US"), sampleCountries.get("AU")]
 //    }
-//    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+//    BusinessObjectService bos = mockDataObjectService.proxyDelegateInstance()
 //
 //    CountryService service = new CountryServiceImpl()
 //    service.setBusinessObjectService(bos)
@@ -126,7 +131,7 @@ class KrmsAttributeDefinitionRepositoryService {
 //      service.getCountryByAlternateCode("US")
 //    }
 //
-//    mockBusinessObjectService.verify(bos)
+//    mockDataObjectService.verify(bos)
 //  }
 //
 //  @Test
@@ -145,28 +150,33 @@ class KrmsAttributeDefinitionRepositoryService {
 
   @Test
   public void findAllTypesByNamespace() {
-     mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map -> [sampleTypes.get("1"), sampleTypes.get("2")]
-    }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
-    KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()
-    service.setBusinessObjectService(bos)
+    mockDataObjectService.demand.findMatching(1..1) {Class clazz, QueryByCriteria map -> GenericQueryResults.Builder.create().build();}
+    DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+    KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
+    service.setDataObjectService(dataObjectService)
+
+    KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
+    kads.setDataObjectService(dataObjectService)
+    KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
+
     service.findAllTypesByNamespace("KRMS_TEST")
 
-    mockBusinessObjectService.verify(bos)
+    mockDataObjectService.verify(dataObjectService)
   }
 
   @Test
   public void testFindAllTypes() {
-    mockBusinessObjectService.demand.findMatching(1..1) {
-      Class clazz, Map map -> [sampleTypes.get("1"), sampleTypes.get("2"), sampleTypes.get("3")]
-    }
-    BusinessObjectService bos = mockBusinessObjectService.proxyDelegateInstance()
+    mockDataObjectService.demand.findMatching(1..1) {Class clazz, QueryByCriteria map -> GenericQueryResults.Builder.create().build();}
+    DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+    KrmsTypeRepositoryService service = new KrmsTypeRepositoryServiceImpl()
+    service.setDataObjectService(dataObjectService)
 
-    KrmsTypeRepositoryService service = new KrmsTypeBoServiceImpl()
-    service.setBusinessObjectService(bos)
+    KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
+    kads.setDataObjectService(dataObjectService)
+    KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
+
     service.findAllTypes()
 
-    mockBusinessObjectService.verify(bos)
+    mockDataObjectService.verify(dataObjectService)
   }
 }

@@ -328,7 +328,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         ruleDefBuilder1 = RuleDefinition.Builder.create(ruleDef1);
         ruleDefBuilder1.setProposition(createCompoundProposition(contextDefinition, ruleDef1));
         ruleDef1 = ruleDefBuilder1.build();
-        ruleBoService.updateRule(ruleDef1);
+        ruleDef1 = ruleBoService.updateRule(ruleDef1);
 
         // Action
         ActionDefinition.Builder actionDefBuilder1 = ActionDefinition.Builder.create(null, "testAction1", nameSpace, createKrmsActionTypeDefinition(nameSpace).getId(), ruleDef1.getId(), 1);

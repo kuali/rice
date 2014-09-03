@@ -24,12 +24,9 @@ import org.kuali.rice.krms.api.repository.term.TermDefinition;
 import org.kuali.rice.krms.api.repository.term.TermParameterDefinition;
 import org.kuali.rice.krms.api.repository.term.TermResolverDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
-import org.kuali.rice.krms.api.repository.type.KrmsTypeBoService;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
-import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.ContextBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -37,6 +34,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -44,63 +42,41 @@ import static org.junit.Assert.assertTrue;
 @BaselineMode(Mode.CLEAR_DB)
 public class TermRelatedBoTest extends AbstractBoTest {
 
-    private TermBoService termBoService;
-    private ContextBoService contextRepository;
-    private KrmsTypeBoService krmsTypeBoService;
+    private TermBoServiceImpl termBoService;
+    private ContextBoServiceImpl contextRepository;
+    private KrmsTypeBoServiceImpl krmsTypeBoService;
 
     @Before
     public void setup() {
-
-        // wire up BO services
-
         termBoService = new TermBoServiceImpl();
-
-        // TODO: fix
-        ((TermBoServiceImpl)termBoService).setDataObjectService(GlobalResourceLoader.<DataObjectService>getService(
-                "dataObjectService"));
-
+        termBoService.setDataObjectService(GlobalResourceLoader.<DataObjectService>getService("dataObjectService"));
         contextRepository = new ContextBoServiceImpl();
-        ((ContextBoServiceImpl)contextRepository).setDataObjectService(getDataObjectService());
-
+        contextRepository.setDataObjectService(getDataObjectService());
         krmsTypeBoService = new KrmsTypeBoServiceImpl();
-        ((KrmsTypeBoServiceImpl)krmsTypeBoService).setDataObjectService(getDataObjectService());
+        krmsTypeBoService.setDataObjectService(getDataObjectService());
     }
 
     @Test
     public void creationTest() {
-
         // create prerequisite objects
         ContextDefinition contextDefinition = createContext();
         KrmsTypeDefinition krmsTermResolverTypeDefinition = createTermResolverType();
 
         // output TermSpec
-        TermSpecificationDefinition outputTermSpec =
-                TermSpecificationDefinition.Builder.create(null, "outputTermSpec", contextDefinition.getId(),
-                        "java.lang.String").build();
-        outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
+        TermSpecificationDefinition outputTermSpec = getTermSpecificationDefinition(null, "outputTermSpec", contextDefinition, "java.lang.String");
 
         // prereq TermSpec
-        TermSpecificationDefinition prereqTermSpec =
-                TermSpecificationDefinition.Builder.create(null, "prereqTermSpec", contextDefinition.getId(),
-                        "java.lang.String").build();
-        prereqTermSpec = termBoService.createTermSpecification(prereqTermSpec);
+        TermSpecificationDefinition prereqTermSpec = getTermSpecificationDefinition(null, "prereqTermSpec", contextDefinition, "java.lang.String");
 
         // TermResolver
-        TermResolverDefinition termResolverDef =
-                TermResolverDefinition.Builder.create(null, "KRMS", "testResolver", krmsTermResolverTypeDefinition.getId(),
-                        TermSpecificationDefinition.Builder.create(outputTermSpec),
-                        Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec)),
-                        null,
-                        Collections.singleton("testParamName")).build();
-        termResolverDef = termBoService.createTermResolver(termResolverDef);
+        TermResolverDefinition termResolverDef = getTermResolver(null, "KRMS", "testResolver", krmsTermResolverTypeDefinition, outputTermSpec, prereqTermSpec);
 
         // Term Param
-        TermParameterDefinition.Builder termParamBuilder =
-                TermParameterDefinition.Builder.create(null, null, "testParamName", "testParamValue");
+        TermParameterDefinition.Builder termParamBuilder = TermParameterDefinition.Builder.create(null, null, "testParamName", "testParamValue");
 
         // Term
-        TermDefinition termDefinition =
-                TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singletonList(termParamBuilder)).build();
+        TermDefinition termDefinition = TermDefinition.Builder.create(null, TermSpecificationDefinition.Builder.create(outputTermSpec), Collections.singletonList(termParamBuilder)).build();
+
         termBoService.createTerm(termDefinition);
     }
 
@@ -117,13 +93,9 @@ public class TermRelatedBoTest extends AbstractBoTest {
         assertTrue(updateTermBuilder.getParameters().size() == 1);
         updateTermBuilder.getParameters().get(0).setValue("updatedParamValue");
 
-        termBoService.updateTerm(updateTermBuilder.build());
+        TermDefinition updatedTerm = termBoService.updateTerm(updateTermBuilder.build());
 
-        // check that the update stuck
-        TermDefinition updatedTerm = termBoService.getTerm(termDefinition.getId());
-
-        assertFalse("descriptions should not be equal after update",
-                updatedTerm.getDescription().equals(termDefinition.getDescription()));
+        assertFalse("descriptions should not be equal after update", updatedTerm.getDescription().equals(termDefinition.getDescription()));
 
         assertTrue(updatedTerm.getParameters().size() == 1);
 
@@ -145,13 +117,9 @@ public class TermRelatedBoTest extends AbstractBoTest {
         updateTermBuilder.getParameters().clear();
         updateTermBuilder.getParameters().add(TermParameterDefinition.Builder.create(null, termDefinition.getId(), "secondParamName", "secondParamValue"));
 
-        termBoService.updateTerm(updateTermBuilder.build());
+        TermDefinition updatedTerm = termBoService.updateTerm(updateTermBuilder.build());
 
-        // check that the update stuck
-        TermDefinition updatedTerm = termBoService.getTerm(termDefinition.getId());
-
-        assertFalse("descriptions should not be equal after update",
-                updatedTerm.getDescription().equals(termDefinition.getDescription()));
+        assertFalse("descriptions should not be equal after update", updatedTerm.getDescription().equals(termDefinition.getDescription()));
 
         assertTrue(updatedTerm.getParameters().size() == 1);
 
@@ -198,5 +166,22 @@ public class TermRelatedBoTest extends AbstractBoTest {
         krmsTermResolverTypeDefinition = krmsTypeBoService.createKrmsType(krmsTermResolverTypeDefinition);
 
         return krmsTermResolverTypeDefinition;
+    }
+
+    private TermResolverDefinition getTermResolver(String id, String namespaceCode, String name, KrmsTypeDefinition krmsTermResolverTypeDefinition, TermSpecificationDefinition outputTermSpec, TermSpecificationDefinition prereqTermSpec) {
+        final String id1 = krmsTermResolverTypeDefinition.getId();
+        final TermSpecificationDefinition.Builder output = TermSpecificationDefinition.Builder.create(outputTermSpec);
+        final Set<TermSpecificationDefinition.Builder> singleton = Collections.singleton(TermSpecificationDefinition.Builder.create(prereqTermSpec));
+        final Set<String> testParamName = Collections.singleton("testParamName");
+        final TermResolverDefinition.Builder builder = TermResolverDefinition.Builder.create(id, namespaceCode, name, id1, output, singleton, null, testParamName);
+        TermResolverDefinition termResolverDef = builder.build();
+        return termBoService.createTermResolver(termResolverDef);
+    }
+
+    private TermSpecificationDefinition getTermSpecificationDefinition(String termSpecificationId, String name, ContextDefinition contextDefinition, String type) {
+        final TermSpecificationDefinition.Builder termSpec = TermSpecificationDefinition.Builder.create(termSpecificationId, name, contextDefinition.getId(), type);
+        TermSpecificationDefinition outputTermSpec = termSpec.build();
+        outputTermSpec = termBoService.createTermSpecification(outputTermSpec);
+        return outputTermSpec;
     }
 }

@@ -189,7 +189,11 @@ public final class NaturalLanguageTemplateGenTest {
     }
 
     public static NaturalLanguageTemplate buildFullNaturalLanguageTemplate() {
-        NaturalLanguageTemplate.Builder builder = NaturalLanguageTemplate.Builder.create(LANGUAGE_CODE, NATURAL_LANGUAGE_USAGE_ID, TEMPLATE, TYPE_ID);
+        return buildFullNaturalLanguageTemplate(LANGUAGE_CODE, NATURAL_LANGUAGE_USAGE_ID, TEMPLATE, TYPE_ID);
+    }
+
+    public static NaturalLanguageTemplate buildFullNaturalLanguageTemplate(String languageCode, String naturalLanguageUsageId, String template, String typeId) {
+        NaturalLanguageTemplate.Builder builder = NaturalLanguageTemplate.Builder.create(languageCode, naturalLanguageUsageId, template, typeId);
         builder.setId(ID);
         NaturalLanguageTemplate naturalLanguageTemplate = builder.build();
         return naturalLanguageTemplate;

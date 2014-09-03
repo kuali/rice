@@ -22,6 +22,8 @@ import org.kuali.rice.krms.api.repository.typerelation.RelationshipType;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
 import org.kuali.rice.krms.test.AbstractBoTest;
 
+import static org.junit.Assert.assertNotNull;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -132,7 +134,8 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
         assert(!RelationshipType.USAGE_ALLOWED.equals(def.getRelationshipType()));
         TypeTypeRelationBo bo = typeTypeRelationBoServiceImpl.from(def);
         bo.setRelationshipType(RelationshipType.USAGE_ALLOWED);
-        typeTypeRelationBoServiceImpl.updateTypeTypeRelation(TypeTypeRelation.Builder.create(bo).build());
+        TypeTypeRelation updatedData = typeTypeRelationBoServiceImpl.updateTypeTypeRelation(TypeTypeRelation.Builder.create(bo).build());
+        assertNotNull(updatedData);
         TypeTypeRelation def2 = typeTypeRelationBoServiceImpl.getTypeTypeRelation(id);
         assert(RelationshipType.USAGE_ALLOWED.equals(def2.getRelationshipType()));
     }

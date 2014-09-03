@@ -153,13 +153,14 @@ public class TermRepositoryServiceMockImpl implements TermRepositoryService {
     }
 
     @Override
-    public void updateTermSpecification(TermSpecificationDefinition termSpec) throws RiceIllegalArgumentException {
+    public TermSpecificationDefinition updateTermSpecification(TermSpecificationDefinition termSpec) throws RiceIllegalArgumentException {
         TermSpecificationDefinition existing = this.getTermSpecificationById(termSpec.getId());
         if (existing == null) {
             throw new RiceIllegalArgumentException(termSpec.getId() + " does not exist");
         }
         this.termSpecificationMap.put(termSpec.getId(), termSpec);
 
+        return existing;
     }
 
     @Override
@@ -170,12 +171,13 @@ public class TermRepositoryServiceMockImpl implements TermRepositoryService {
     }
 
     @Override
-    public void updateTerm(TermDefinition termDef) throws RiceIllegalArgumentException {
-        TermDefinition existing = this.getTerm(termDef.getId());
+    public TermDefinition updateTerm(TermDefinition term) throws RiceIllegalArgumentException {
+        TermDefinition existing = this.getTerm(term.getId());
         if (existing == null) {
-            throw new RiceIllegalArgumentException(termDef.getId() + " does not exist");
+            throw new RiceIllegalArgumentException(term.getId() + " does not exist");
         }
-        this.termMap.put(termDef.getId(), termDef);
+        this.termMap.put(term.getId(), term);
+        return existing;
     }
 
     @Override
@@ -186,12 +188,13 @@ public class TermRepositoryServiceMockImpl implements TermRepositoryService {
     }
 
     @Override
-    public void updateTermResolver(TermResolverDefinition termResolver) throws RiceIllegalArgumentException {
+    public TermResolverDefinition updateTermResolver(TermResolverDefinition termResolver) throws RiceIllegalArgumentException {
         TermResolverDefinition existing = this.getTermResolverById(termResolver.getId());
         if (existing == null) {
             throw new RiceIllegalArgumentException(termResolver.getId() + " does not exist");
         }
         this.termResolverMap.put(termResolver.getId(), termResolver);
+        return existing;
     }
 
     @Override

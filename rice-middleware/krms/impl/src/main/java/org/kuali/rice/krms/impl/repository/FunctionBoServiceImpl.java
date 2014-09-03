@@ -37,7 +37,6 @@ import java.util.Map;
  * Default implementation of the {@link FunctionRepositoryService}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class FunctionBoServiceImpl implements FunctionRepositoryService, FunctionBoService {
 
@@ -48,7 +47,9 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
             new ModelObjectUtils.Transformer<FunctionBo, FunctionDefinition>() {
                 public FunctionDefinition transform(FunctionBo input) {
                     return FunctionBo.to(input);
-                };
+                }
+
+                ;
             };
 
     @Override
@@ -59,10 +60,12 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
     @Override
     public List<FunctionDefinition> getFunctions(List<String> functionIds) {
 
-        if (functionIds == null) throw new RiceIllegalArgumentException();
+        if (functionIds == null) {
+            throw new RiceIllegalArgumentException();
+        }
 
         List<FunctionDefinition> functionDefinitions = new ArrayList<FunctionDefinition>();
-        for (String functionId : functionIds){
+        for (String functionId : functionIds) {
             if (!StringUtils.isBlank(functionId)) {
                 FunctionDefinition functionDefinition = getFunctionById(functionId);
                 if (functionDefinition != null) {
@@ -81,7 +84,7 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
      */
     @Override
     public FunctionDefinition createFunction(FunctionDefinition function) {
-        if (function == null){
+        if (function == null) {
             throw new IllegalArgumentException("function is null");
         }
 
@@ -89,7 +92,7 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
         final String namespaceKey = function.getNamespace();
         final FunctionDefinition existing = getFunctionByNameAndNamespace(nameKey, namespaceKey);
 
-        if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
+        if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)) {
             throw new IllegalStateException("the function to create already exists: " + function);
         }
 
@@ -109,7 +112,7 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
      * @see org.kuali.rice.krms.impl.repository.FunctionBoService#updateFunction(org.kuali.rice.krms.api.repository.function.FunctionDefinition)
      */
     @Override
-    public void updateFunction(FunctionDefinition function) {
+    public FunctionDefinition updateFunction(FunctionDefinition function) {
         if (function == null) {
             throw new IllegalArgumentException("function is null");
         }
@@ -131,7 +134,7 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
             toUpdate = function;
         }
 
-        dataObjectService.save(FunctionBo.from(toUpdate), PersistenceOption.FLUSH);
+        return FunctionBo.to(dataObjectService.save(FunctionBo.from(toUpdate), PersistenceOption.FLUSH));
         // TODO: Do we need to return the updated FunctionDefinition?
     }
 
@@ -189,7 +192,7 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
      * @return the list of function definitions, or if none are found, an empty list
      */
     public List<FunctionDefinition> getFunctionsByNamespace(String namespace) {
-        if (StringUtils.isBlank(namespace)){
+        if (StringUtils.isBlank(namespace)) {
             throw new IllegalArgumentException("namespace is null or blank");
         }
 

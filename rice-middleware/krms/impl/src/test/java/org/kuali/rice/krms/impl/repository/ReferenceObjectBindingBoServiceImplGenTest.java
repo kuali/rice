@@ -17,119 +17,151 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krms.api.repository.KrmsTypeGenTest;
 import org.kuali.rice.krms.api.repository.ReferenceObjectBindingGenTest;
 import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
 public class ReferenceObjectBindingBoServiceImplGenTest {
+    private ReferenceObjectBindingBoServiceImpl service;
+    private ReferenceObjectBinding referenceObjectBinding;
+    @Mock private DataObjectService mockDataObjectService;
 
-    ReferenceObjectBindingBoServiceImpl referenceObjectBindingBoServiceImpl;
-    ReferenceObjectBinding referenceObjectBinding;
-
-    ReferenceObjectBinding getReferenceObjectBinding() {
-        return referenceObjectBinding;
-    }
-
-    public void setReferenceObjectBindingBoServiceImpl(ReferenceObjectBindingBoServiceImpl impl) {
-        this.referenceObjectBindingBoServiceImpl = impl;
-    }
-
-    public static org.kuali.rice.krms.impl.repository.ReferenceObjectBindingBoServiceImplGenTest create(ReferenceObjectBindingBoServiceImpl impl) {
-        org.kuali.rice.krms.impl.repository.ReferenceObjectBindingBoServiceImplGenTest test = new org.kuali.rice.krms.impl.repository.ReferenceObjectBindingBoServiceImplGenTest();
-        test.setReferenceObjectBindingBoServiceImpl(impl);
-        return test;
+    public ReferenceObjectBindingBoServiceImplGenTest() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @Before
     public void setUp() {
-        referenceObjectBindingBoServiceImpl = new ReferenceObjectBindingBoServiceImpl();
-        referenceObjectBindingBoServiceImpl.setDataObjectService(mock(DataObjectService.class));
+        service = new ReferenceObjectBindingBoServiceImpl();
+        service.setDataObjectService(mockDataObjectService);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findReferenceObjectBindingsByCollectionName_null_fail() {
-        referenceObjectBindingBoServiceImpl.findReferenceObjectBindingsByCollectionName(null);
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findReferenceObjectBindingsByKrmsDiscriminatorType_null_fail() {
-        referenceObjectBindingBoServiceImpl.findReferenceObjectBindingsByKrmsDiscriminatorType(null);
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findReferenceObjectBindingsByKrmsObject_null_fail() {
-        referenceObjectBindingBoServiceImpl.findReferenceObjectBindingsByKrmsObject(null);
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findReferenceObjectBindingsByNamespace_null_fail() {
-        referenceObjectBindingBoServiceImpl.findReferenceObjectBindingsByNamespace(null);
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findReferenceObjectBindingsByReferenceDiscriminatorType_null_fail() {
-        referenceObjectBindingBoServiceImpl.findReferenceObjectBindingsByReferenceDiscriminatorType(null);
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findReferenceObjectBindingsByReferenceObject_null_fail() {
-        referenceObjectBindingBoServiceImpl.findReferenceObjectBindingsByReferenceObject(null);
+    @Test
+    public void test_updateReferenceObjectBinding_success() {
+        final ReferenceObjectBinding data = ReferenceObjectBindingGenTest.buildFullReferenceObjectBinding();
+        final ReferenceObjectBinding findResult = ReferenceObjectBindingGenTest.buildFullReferenceObjectBinding();
+        final ReferenceObjectBindingBo saveResult = service.from(ReferenceObjectBindingGenTest.buildFullReferenceObjectBinding());
+        when(mockDataObjectService.find(any(Class.class), any(String.class))).thenReturn(service.from(findResult));
+        when(mockDataObjectService.save(any(ReferenceObjectBindingBo.class), any(PersistenceOption.class))).thenReturn(saveResult);
+        ReferenceObjectBinding updatedData = service.updateReferenceObjectBinding(data);
+        assertNotNull(updatedData);
     }
 
     @Test
     public void test_from_null_yields_null() {
-        assert(referenceObjectBindingBoServiceImpl.from(null) == null);
+        assertNull(service.from(null));
     }
 
     @Test
     public void test_from() {
         ReferenceObjectBinding def = ReferenceObjectBindingGenTest.buildFullReferenceObjectBinding();
-        ReferenceObjectBindingBo referenceObjectBindingBo = referenceObjectBindingBoServiceImpl.from(def);
-        assert(referenceObjectBindingBo.getKrmsDiscriminatorType().equals(def.getKrmsDiscriminatorType()));
-        assert(referenceObjectBindingBo.getKrmsObjectId().equals(def.getKrmsObjectId()));
-        assert(referenceObjectBindingBo.getNamespace().equals(def.getNamespace()));
-        assert(referenceObjectBindingBo.getReferenceDiscriminatorType().equals(def.getReferenceDiscriminatorType()));
-        assert(referenceObjectBindingBo.getReferenceObjectId().equals(def.getReferenceObjectId()));
-        assert(referenceObjectBindingBo.getId().equals(def.getId()));
+        ReferenceObjectBindingBo def2 = service.from(def);
+        assertEquals(def2.getKrmsDiscriminatorType(),def.getKrmsDiscriminatorType());
+        assertEquals(def2.getKrmsObjectId(),def.getKrmsObjectId());
+        assertEquals(def2.getNamespace(),def.getNamespace());
+        assertEquals(def2.getReferenceDiscriminatorType(),def.getReferenceDiscriminatorType());
+        assertEquals(def2.getReferenceObjectId(),def.getReferenceObjectId());
+        assertEquals(def2.getId(),def.getId());
     }
 
     @Test
     public void test_to() {
         ReferenceObjectBinding def = ReferenceObjectBindingGenTest.buildFullReferenceObjectBinding();
-        ReferenceObjectBindingBo referenceObjectBindingBo = referenceObjectBindingBoServiceImpl.from(def);
+        ReferenceObjectBindingBo referenceObjectBindingBo = service.from(def);
         ReferenceObjectBinding def2 = ReferenceObjectBindingBo.to(referenceObjectBindingBo);
-        assert(def.equals(def2));
+        assertEquals(def, def2);
+    }
+
+    @Test
+    public void test_createReferenceObjectBinding_success() {
+        final ReferenceObjectBinding findResult = null;
+        final ReferenceObjectBindingBo saveResult = service.from(ReferenceObjectBindingGenTest.buildFullReferenceObjectBinding());
+        when(mockDataObjectService.find(any(Class.class), any(String.class))).thenReturn(service.from(findResult));
+        when(mockDataObjectService.save(any(ReferenceObjectBindingBo.class), any(PersistenceOption.class))).thenReturn(saveResult);
+        ReferenceObjectBinding def = ReferenceObjectBindingGenTest.buildFullReferenceObjectBinding();
+        ReferenceObjectBinding referenceObjectBinding = service.createReferenceObjectBinding(def);
+        assertNotNull(referenceObjectBinding);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findReferenceObjectBindingsByCollectionName_null_fail() {
+        service.findReferenceObjectBindingsByCollectionName(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findReferenceObjectBindingsByKrmsDiscriminatorType_null_fail() {
+        service.findReferenceObjectBindingsByKrmsDiscriminatorType(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findReferenceObjectBindingsByKrmsObject_null_fail() {
+        service.findReferenceObjectBindingsByKrmsObject(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findReferenceObjectBindingsByNamespace_null_fail() {
+        service.findReferenceObjectBindingsByNamespace(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findReferenceObjectBindingsByReferenceDiscriminatorType_null_fail() {
+        service.findReferenceObjectBindingsByReferenceDiscriminatorType(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findReferenceObjectBindingsByReferenceObject_null_fail() {
+        service.findReferenceObjectBindingsByReferenceObject(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_createReferenceObjectBinding_null_fail() {
+        service.createReferenceObjectBinding(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_updateReferenceObjectBinding_null_fail() {
+        service.updateReferenceObjectBinding(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_deleteReferenceObjectBinding_null_fail() {
+        service.deleteReferenceObjectBinding(null);
     }
 
     @Test
     public void test_createReferenceObjectBinding() {
         ReferenceObjectBinding def = ReferenceObjectBindingGenTest.buildFullReferenceObjectBinding();
-        referenceObjectBinding = referenceObjectBindingBoServiceImpl.createReferenceObjectBinding(def);
+        referenceObjectBinding = service.createReferenceObjectBinding(def);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_createReferenceObjectBinding_null_fail() {
-        referenceObjectBindingBoServiceImpl.createReferenceObjectBinding(null);
+    public ReferenceObjectBinding getReferenceObjectBinding() {
+        return referenceObjectBinding;
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_updateReferenceObjectBinding_null_fail() {
-        referenceObjectBindingBoServiceImpl.updateReferenceObjectBinding(null);
+    public void setReferenceObjectBindingBoServiceImpl(ReferenceObjectBindingBoServiceImpl impl) {
+        this.service = impl;
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_deleteReferenceObjectBinding_null_fail() {
-        referenceObjectBindingBoServiceImpl.deleteReferenceObjectBinding(null);
+    public static ReferenceObjectBindingBoServiceImplGenTest create(ReferenceObjectBindingBoServiceImpl impl) {
+        ReferenceObjectBindingBoServiceImplGenTest test = new ReferenceObjectBindingBoServiceImplGenTest();
+        test.setReferenceObjectBindingBoServiceImpl(impl);
+        return test;
     }
-
-//    void create() { // TODO gen
-//        ReferenceObjectBinding def = ReferenceObjectBindingGenTest.buildFullFKReferenceObjectBinding(params);
-//    }
-
 }

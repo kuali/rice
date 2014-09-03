@@ -47,7 +47,7 @@ public interface RuleBoService {
      * @throws IllegalStateException if the Rule does not exists in the system
      */
     @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
-    public void updateRule(RuleDefinition rule);
+    public RuleDefinition updateRule(RuleDefinition rule);
 
     /**
      * Delete the {@link RuleDefinition} with the given id.

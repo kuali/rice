@@ -58,7 +58,7 @@ public interface ReferenceObjectBindingBoService {
      * @throws IllegalStateException if the ReferenceObjectBinding does not exists in the system.
      * 
      */
-    public void updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBinding);
+    public ReferenceObjectBinding updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBinding);
 
     /**
      * Delete the {@link ReferenceObjectBinding} with the given id.

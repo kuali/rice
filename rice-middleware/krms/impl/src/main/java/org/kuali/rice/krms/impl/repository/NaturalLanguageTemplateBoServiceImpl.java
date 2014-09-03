@@ -39,22 +39,21 @@ import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigration
 import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatching;
 
 /**
- * Implementation of the @{link NaturalLanguageTemplateBoService} interface for accessing  {@link NaturalLanguageTemplateBo} related business objects.
- * 
+ * Implementation of the @{link NaturalLanguageTemplateBoService} interface for accessing  {@link
+ * NaturalLanguageTemplateBo} related business objects.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemplateBoService {
 
     private DataObjectService dataObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;
-    private NaturalLanguageTemplaterContract naturalLanguageTemplater = new SimpleNaturalLanguageTemplater ();
+    private NaturalLanguageTemplaterContract naturalLanguageTemplater = new SimpleNaturalLanguageTemplater();
 
     /**
      * Sets the value of DataObjectService to the given value.
-     * 
+     *
      * @param dataObjectService the DataObjectService value to set.
-     * 
      */
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
@@ -118,26 +117,29 @@ public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemp
 
     @Override
     public NaturalLanguageTemplate getNaturalLanguageTemplate(String naturalLanguageTemplateId) {
-        incomingParamCheck(naturalLanguageTemplateId , "naturalLanguageTemplateId");
-        NaturalLanguageTemplateBo bo = dataObjectService.find(NaturalLanguageTemplateBo.class, naturalLanguageTemplateId);
+        incomingParamCheck(naturalLanguageTemplateId, "naturalLanguageTemplateId");
+        NaturalLanguageTemplateBo bo = dataObjectService.find(NaturalLanguageTemplateBo.class,
+                naturalLanguageTemplateId);
 
         return NaturalLanguageTemplateBo.to(bo);
     }
 
     @Override
-    public void updateNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate) {
-        incomingParamCheck(naturalLanguageTemplate , "naturalLanguageTemplate");
+    public NaturalLanguageTemplate updateNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate) {
+        incomingParamCheck(naturalLanguageTemplate, "naturalLanguageTemplate");
         final NaturalLanguageTemplate existing = getNaturalLanguageTemplate(naturalLanguageTemplate.getId());
 
         if (existing == null) {
-            throw new IllegalStateException("the NaturalLanguageTemplate to update does not exists: " + naturalLanguageTemplate);
+            throw new IllegalStateException(
+                    "the NaturalLanguageTemplate to update does not exists: " + naturalLanguageTemplate);
         }
 
         final NaturalLanguageTemplate toUpdate;
 
-        if (!existing.getId().equals(naturalLanguageTemplate.getId())){
+        if (!existing.getId().equals(naturalLanguageTemplate.getId())) {
             // if passed in id does not match existing id, correct it
-            final NaturalLanguageTemplate.Builder builder = NaturalLanguageTemplate.Builder.create(naturalLanguageTemplate);
+            final NaturalLanguageTemplate.Builder builder = NaturalLanguageTemplate.Builder.create(
+                    naturalLanguageTemplate);
             builder.setId(existing.getId());
             toUpdate = builder.build();
         } else {
@@ -148,26 +150,31 @@ public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemp
         NaturalLanguageTemplateBo boToUpdate = from(toUpdate);
 
         // delete any old, existing attributes
-        Map<String,String> fields = new HashMap<String,String>(1);
-        fields.put(KrmsImplConstants.PropertyNames.NaturalLanguageTemplate.NATURAL_LANGUAGE_TEMPLATE_ID, toUpdate.getId()); // TODO verify PropertyNames.NaturalLanguageTemplate.NATURAL_LANGUAGE_TEMPLATE_ID
+        Map<String, String> fields = new HashMap<String, String>(1);
+        fields.put(KrmsImplConstants.PropertyNames.NaturalLanguageTemplate.NATURAL_LANGUAGE_TEMPLATE_ID,
+                toUpdate.getId()); // TODO verify PropertyNames.NaturalLanguageTemplate.NATURAL_LANGUAGE_TEMPLATE_ID
         deleteMatching(dataObjectService, NaturalLanguageTemplateAttributeBo.class, fields);
 
         // update the rule and create new attributes
-         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+        NaturalLanguageTemplateBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+
+        return to(updatedData);
     }
 
     @Override
     public void deleteNaturalLanguageTemplate(String naturalLanguageTemplateId) {
-        incomingParamCheck(naturalLanguageTemplateId , "naturalLanguageTemplateId");
+        incomingParamCheck(naturalLanguageTemplateId, "naturalLanguageTemplateId");
         final NaturalLanguageTemplate existing = getNaturalLanguageTemplate(naturalLanguageTemplateId);
 
         if (existing == null) {
-            throw new IllegalStateException("the NaturalLanguageTemplate to delete does not exists: " + naturalLanguageTemplateId);
+            throw new IllegalStateException(
+                    "the NaturalLanguageTemplate to delete does not exists: " + naturalLanguageTemplateId);
         }
 
         // delete any existing attributes
-        Map<String,String> fields = new HashMap<String,String>(1);
-        fields.put(KrmsImplConstants.PropertyNames.NaturalLanguageTemplate.NATURAL_LANGUAGE_TEMPLATE_ID,existing.getId());
+        Map<String, String> fields = new HashMap<String, String>(1);
+        fields.put(KrmsImplConstants.PropertyNames.NaturalLanguageTemplate.NATURAL_LANGUAGE_TEMPLATE_ID,
+                existing.getId());
         deleteMatching(dataObjectService, NaturalLanguageTemplateAttributeBo.class, fields);
 
         dataObjectService.delete(from(existing));
@@ -201,8 +208,7 @@ public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemp
 
     @Override
     public NaturalLanguageTemplate findNaturalLanguageTemplateByLanguageCodeTypeIdAndNluId(String languageCode,
-            String typeId,
-            String naturalLanguageUsageId) {
+            String typeId, String naturalLanguageUsageId) {
         if (org.apache.commons.lang.StringUtils.isBlank(languageCode)) {
             throw new IllegalArgumentException("languageCode is null or blank");
         }
@@ -218,14 +224,16 @@ public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemp
         }
 
         if (bos.size() > 1) {
-            throw new RiceIllegalArgumentException (languageCode + typeId +  naturalLanguageUsageId + " is supposed to be unique");
+            throw new RiceIllegalArgumentException(
+                    languageCode + typeId + naturalLanguageUsageId + " is supposed to be unique");
         }
 
         return convertBosToImmutables(bos).get(0);
     }
 
     @Override
-    public List<NaturalLanguageTemplate> findNaturalLanguageTemplatesByNaturalLanguageUsage(String naturalLanguageUsageId) {
+    public List<NaturalLanguageTemplate> findNaturalLanguageTemplatesByNaturalLanguageUsage(
+            String naturalLanguageUsageId) {
         if (org.apache.commons.lang.StringUtils.isBlank(naturalLanguageUsageId)) {
             throw new IllegalArgumentException("naturalLanguageUsageId is null or blank");
         }
@@ -263,12 +271,13 @@ public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemp
         return convertBosToImmutables(bos);
     }
 
-    public List<NaturalLanguageTemplate> convertBosToImmutables(final Collection<NaturalLanguageTemplateBo> naturalLanguageTemplateBos) {
+    public List<NaturalLanguageTemplate> convertBosToImmutables(
+            final Collection<NaturalLanguageTemplateBo> naturalLanguageTemplateBos) {
         List<NaturalLanguageTemplate> immutables = new LinkedList<NaturalLanguageTemplate>();
 
         if (naturalLanguageTemplateBos != null) {
             NaturalLanguageTemplate immutable = null;
-            for (NaturalLanguageTemplateBo bo : naturalLanguageTemplateBos ) {
+            for (NaturalLanguageTemplateBo bo : naturalLanguageTemplateBos) {
                 immutable = to(bo);
                 immutables.add(immutable);
             }
@@ -286,11 +295,13 @@ public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemp
         return NaturalLanguageTemplateBo.from(naturalLanguageTemplate);
     }
 
-    private Collection<NaturalLanguageTemplateAttributeBo> buildAttributes(NaturalLanguageTemplate im, Collection<NaturalLanguageTemplateAttributeBo> attributes) {
+    private Collection<NaturalLanguageTemplateAttributeBo> buildAttributes(NaturalLanguageTemplate im,
+            Collection<NaturalLanguageTemplateAttributeBo> attributes) {
         // build a map from attribute name to definition
         Map<String, KrmsAttributeDefinition> attributeDefinitionMap = new HashMap<String, KrmsAttributeDefinition>();
 
-        List<KrmsAttributeDefinition> attributeDefinitions = getAttributeDefinitionService().findAttributeDefinitionsByType(im.getTypeId());
+        List<KrmsAttributeDefinition> attributeDefinitions =
+                getAttributeDefinitionService().findAttributeDefinitionsByType(im.getTypeId());
 
         for (KrmsAttributeDefinition attributeDefinition : attributeDefinitions) {
             attributeDefinitionMap.put(attributeDefinition.getName(), attributeDefinition);
@@ -298,19 +309,20 @@ public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemp
 
         // for each entry, build a NaturalLanguageTemplateAttributeBo and add it
         if (im.getAttributes() != null) {
-            for (Map.Entry<String,String> entry  : im.getAttributes().entrySet()) {
+            for (Map.Entry<String, String> entry : im.getAttributes().entrySet()) {
                 KrmsAttributeDefinition attrDef = attributeDefinitionMap.get(entry.getKey());
 
                 if (attrDef != null) {
                     NaturalLanguageTemplateAttributeBo attributeBo = new NaturalLanguageTemplateAttributeBo();
-                    attributeBo.setNaturalLanguageTemplateId( im.getId() );
+                    attributeBo.setNaturalLanguageTemplateId(im.getId());
                     attributeBo.setAttributeDefinitionId(attrDef.getId());
                     attributeBo.setValue(entry.getValue());
                     attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attrDef));
                     attributes.add(attributeBo);
                 } else {
                     throw new RiceIllegalStateException("there is no attribute definition with the name '" +
-                                 entry.getKey() + "' that is valid for the naturalLanguageTemplate type with id = '" + im.getTypeId() +"'");
+                            entry.getKey() + "' that is valid for the naturalLanguageTemplate type with id = '" + im
+                            .getTypeId() + "'");
                 }
             }
         }
@@ -321,20 +333,19 @@ public class NaturalLanguageTemplateBoServiceImpl implements NaturalLanguageTemp
     private Set<NaturalLanguageTemplateAttributeBo> buildAttributeBoSet(NaturalLanguageTemplate im) {
         Set<NaturalLanguageTemplateAttributeBo> attributes = new HashSet<NaturalLanguageTemplateAttributeBo>();
 
-        return (Set)buildAttributes(im, attributes);
+        return (Set) buildAttributes(im, attributes);
     }
 
     private List<NaturalLanguageTemplateAttributeBo> buildAttributeBoList(NaturalLanguageTemplate im) {
         List<NaturalLanguageTemplateAttributeBo> attributes = new LinkedList<NaturalLanguageTemplateAttributeBo>();
 
-        return (List)buildAttributes(im, attributes);
+        return (List) buildAttributes(im, attributes);
     }
 
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {
             throw new IllegalArgumentException(name + " was null");
-        } else if (object instanceof String
-                && StringUtils.isBlank((String)object)) {
+        } else if (object instanceof String && StringUtils.isBlank((String) object)) {
             throw new IllegalArgumentException(name + " was blank");
         }
     }

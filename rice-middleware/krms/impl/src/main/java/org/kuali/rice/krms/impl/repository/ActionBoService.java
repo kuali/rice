@@ -50,7 +50,7 @@ public interface ActionBoService {
      * @throws IllegalStateException if the Action does not exists in the system
      */
     @CacheEvict(value={ActionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
-	public void updateAction(ActionDefinition action);
+	public ActionDefinition updateAction(ActionDefinition action);
 	
     /**
      * Retrieves an Action from the repository based on the given action id.

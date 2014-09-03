@@ -17,129 +17,130 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.api.criteria.GenericQueryResults;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.core.api.criteria.QueryResults;
+import org.junit.runner.RunWith;
 import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krms.api.repository.KrmsTypeGenTest;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@RunWith(MockitoJUnitRunner.class)
 public final class KrmsTypeBoServiceImplGenTest {
-
-    org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl krmsTypeBoServiceImpl;
+    private KrmsTypeBoServiceImpl service;
+    @Mock private KrmsAttributeDefinitionService mockAttributeService;
+    @Mock private DataObjectService mockDataObjectService;
     KrmsTypeDefinition krmsType;
-
-    KrmsTypeDefinition getKrmsType() {
-        return krmsType;
-    }
-
-    KrmsTypeDefinition getKrmsTypeDefinition() {
-        return getKrmsType();
-    }
-
-    public void setKrmsTypeBoServiceImpl(org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl impl) {
-        this.krmsTypeBoServiceImpl = impl;
-    }
-
-    public static org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImplGenTest create(org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl impl) {
-        org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImplGenTest test = new org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImplGenTest();
-        test.setKrmsTypeBoServiceImpl(impl);
-        return test;
-    }
 
     @Before
     public void setUp() {
-        krmsTypeBoServiceImpl = new KrmsTypeBoServiceImpl();
-        KrmsAttributeDefinitionService mockAttributeService = mock(KrmsAttributeDefinitionService.class);
-//        krmsTypeBoServiceImpl.setAttributeDefinitionService(mockAttributeService);
-        DataObjectService dosMock = mock(DataObjectService.class);
-        when(dosMock.findMatching(any(Class.class), any(QueryByCriteria.class))).thenReturn(GenericQueryResults.Builder.create());
-        krmsTypeBoServiceImpl.setDataObjectService(dosMock);
+        MockitoAnnotations.initMocks(this);
+        service = new KrmsTypeBoServiceImpl();
+        service.setDataObjectService(mockDataObjectService);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_getTypeById_null_fail() {
-        krmsTypeBoServiceImpl.getTypeById(null);
+        service.getTypeById(null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_getTypeByName_null_fail() {
-        krmsTypeBoServiceImpl.getTypeByName(null, null);
+        service.getTypeByName(null, null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findAllTypesByNamespace_null_fail() {
-        krmsTypeBoServiceImpl.findAllTypesByNamespace(null);
+        service.findAllTypesByNamespace(null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findAllAgendaTypesByContextId_null_fail() {
-        krmsTypeBoServiceImpl.findAllAgendaTypesByContextId(null);
+        service.findAllAgendaTypesByContextId(null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_getAgendaTypeByAgendaTypeIdAndContextId_null_fail() {
-        krmsTypeBoServiceImpl.getAgendaTypeByAgendaTypeIdAndContextId(null, null);
+        service.getAgendaTypeByAgendaTypeIdAndContextId(null, null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findAllRuleTypesByContextId_null_fail() {
-        krmsTypeBoServiceImpl.findAllRuleTypesByContextId(null);
+        service.findAllRuleTypesByContextId(null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_getRuleTypeByRuleTypeIdAndContextId_null_fail() {
-        krmsTypeBoServiceImpl.getRuleTypeByRuleTypeIdAndContextId(null, null);
+        service.getRuleTypeByRuleTypeIdAndContextId(null, null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findAllActionTypesByContextId_null_fail() {
-        krmsTypeBoServiceImpl.findAllActionTypesByContextId(null);
+        service.findAllActionTypesByContextId(null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_getActionTypeByActionTypeIdAndContextId_null_fail() {
-        krmsTypeBoServiceImpl.getActionTypeByActionTypeIdAndContextId(null, null);
+        service.getActionTypeByActionTypeIdAndContextId(null, null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_getAttributeDefinitionById_null_fail() {
-        krmsTypeBoServiceImpl.getAttributeDefinitionById(null);
+        service.getAttributeDefinitionById(null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_getAttributeDefinitionByName_null_fail() {
-        krmsTypeBoServiceImpl.getAttributeDefinitionByName(null, null);
+        service.getAttributeDefinitionByName(null, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_createKrmsType_null_fail() {
+        service.createKrmsType(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_updateKrmsType_null_fail() {
+        service.updateKrmsType(null);
     }
 
     @Test
     public void test_createKrmsType() {
         KrmsTypeDefinition def = KrmsTypeGenTest.buildFullKrmsTypeDefinition();
 
-        krmsType = krmsTypeBoServiceImpl.getTypeByName(def.getNamespace(), def.getName());
+        krmsType = service.getTypeByName(def.getNamespace(), def.getName());
 
         if (krmsType == null) {
-            krmsType = krmsTypeBoServiceImpl.createKrmsType(def);
+            krmsType = service.createKrmsType(def);
         }
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_createKrmsType_null_fail() {
-        krmsTypeBoServiceImpl.createKrmsType(null);
+    public KrmsTypeDefinition getKrmsType() {
+        return krmsType;
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_updateKrmsType_null_fail() {
-        krmsTypeBoServiceImpl.updateKrmsType(null);
+    public KrmsTypeDefinition getKrmsTypeDefinition() {
+        return getKrmsType();
     }
 
+    public void setKrmsTypeBoServiceImpl(KrmsTypeBoServiceImpl impl) {
+        this.service = impl;
+    }
+
+    public static KrmsTypeBoServiceImplGenTest create(KrmsTypeBoServiceImpl impl) {
+        KrmsTypeBoServiceImplGenTest test = new KrmsTypeBoServiceImplGenTest();
+        test.setKrmsTypeBoServiceImpl(impl);
+        return test;
+    }
 }

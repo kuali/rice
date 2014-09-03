@@ -359,9 +359,7 @@ class ActionBoServiceImplTest {
 
   @Test
   void test_updateAction_does_not_exist() {
-		mockDataObjectService.demand.find(1..1) {
-			Class clazz, String id -> null
-		}
+		mockDataObjectService.demand.find(1..1) {Class clazz, String id -> null}
 		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		ActionBoService service = new ActionBoServiceImpl()
 		service.setDataObjectService(dataObjectService)
@@ -376,7 +374,7 @@ class ActionBoServiceImplTest {
 		mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_ACTION_BO}
 		mockDataObjectService.demand.findMatching(1..1) { clazz, map -> buildQueryResults([ADB1]) }
 		mockDataObjectService.demand.deleteMatching(1) { clazz, map -> }
-		mockDataObjectService.demand.save { bo, persistanceOptions -> }
+		mockDataObjectService.demand.save { bo, persistanceOptions -> TEST_ACTION_BO}
 
 		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		ActionBoService service = new ActionBoServiceImpl()
@@ -386,7 +384,14 @@ class ActionBoServiceImplTest {
 		kads.setDataObjectService(dataObjectService)
 		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
 		
-		service.updateAction(TEST_ACTION_DEF)
+		def updatedData = service.updateAction(TEST_ACTION_DEF)
+
+        Assert.assertNotNull(updatedData)
+        Assert.assertNotNull(updatedData.getId())
+        Assert.assertNotNull(updatedData.getName())
+        Assert.assertNotNull(updatedData.getNamespace())
+        Assert.assertNotNull(updatedData.getRuleId())
+        Assert.assertNotNull(updatedData.getTypeId())
 		mockDataObjectService.verify(dataObjectService)
   }
 }

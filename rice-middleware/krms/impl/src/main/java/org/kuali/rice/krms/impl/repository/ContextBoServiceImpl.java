@@ -22,15 +22,11 @@ import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.deleteMatching;
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
-
 /**
  * This is the interface for accessing KRMS repository Context related
- * business objects. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * business objects.
  *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ContextBoServiceImpl implements ContextBoService {
 
@@ -63,8 +59,8 @@ public class ContextBoServiceImpl implements ContextBoService {
      * This method updates an existing Context in the repository.
      */
     @Override
-    public void updateContext(ContextDefinition context) {
-        if (context == null){
+    public ContextDefinition updateContext(ContextDefinition context) {
+        if (context == null) {
             throw new IllegalArgumentException("context is null");
         }
 
@@ -78,7 +74,7 @@ public class ContextBoServiceImpl implements ContextBoService {
 
         final ContextDefinition toUpdate;
 
-        if (!existing.getId().equals(context.getId())){
+        if (!existing.getId().equals(context.getId())) {
             // if passed in id does not match existing id, correct it
             final ContextDefinition.Builder builder = ContextDefinition.Builder.create(context);
             builder.setId(existing.getId());
@@ -91,17 +87,19 @@ public class ContextBoServiceImpl implements ContextBoService {
         ContextBo boToUpdate = ContextBo.from(toUpdate);
 
         // delete any old, existing attributes
-        Map<String,String> fields = new HashMap<String,String>(1);
+        Map<String, String> fields = new HashMap<String, String>(1);
         fields.put("context.id", toUpdate.getId());
-        deleteMatching(dataObjectService, ContextAttributeBo.class, fields);
+        BusinessObjectServiceMigrationUtils.deleteMatching(dataObjectService, ContextAttributeBo.class, fields);
 
         // update the rule and create new attributes
-        dataObjectService.save(boToUpdate);
+        final ContextBo updatedData = dataObjectService.save(boToUpdate);
+
+        return ContextBo.to(updatedData);
     }
 
     @Override
     public ContextDefinition getContextByContextId(String contextId) {
-        if (StringUtils.isBlank(contextId)){
+        if (StringUtils.isBlank(contextId)) {
             return null;
         }
         ContextBo bo = dataObjectService.find(ContextBo.class, contextId);
@@ -109,18 +107,18 @@ public class ContextBoServiceImpl implements ContextBoService {
     }
 
     @Override
-    public ContextDefinition getContextByNameAndNamespace( String name, String namespace ){
-        if (StringUtils.isBlank(name)){
+    public ContextDefinition getContextByNameAndNamespace(String name, String namespace) {
+        if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("name is null or blank");
         }
-        if (StringUtils.isBlank(namespace)){
+        if (StringUtils.isBlank(namespace)) {
             throw new IllegalArgumentException("namespace is null or blank");
         }
 
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", name);
         map.put("namespace", namespace);
-        ContextBo bo = findSingleMatching(dataObjectService, ContextBo.class, map);
+        ContextBo bo = BusinessObjectServiceMigrationUtils.findSingleMatching(dataObjectService, ContextBo.class, map);
 
         return ContextBo.to(bo);
     }

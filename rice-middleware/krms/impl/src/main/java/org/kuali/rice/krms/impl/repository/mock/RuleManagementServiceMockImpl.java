@@ -183,7 +183,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBindingDefinition)
+    public ReferenceObjectBinding updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBindingDefinition)
             throws RiceIllegalArgumentException {
         // UPDATE
         ReferenceObjectBinding.Builder copy = ReferenceObjectBinding.Builder.create(referenceObjectBindingDefinition);
@@ -194,7 +194,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         referenceObjectBindingDefinition = copy.build();
         this.referenceObjectBindingMap.put(referenceObjectBindingDefinition.getId(), referenceObjectBindingDefinition);
-        return;
+        return old;
     }
 
     @Override
@@ -316,7 +316,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateAgenda(AgendaDefinition agendaDefinition)
+    public AgendaDefinition updateAgenda(AgendaDefinition agendaDefinition)
             throws RiceIllegalArgumentException {
         // UPDATE
         AgendaDefinition.Builder copy = AgendaDefinition.Builder.create(agendaDefinition);
@@ -327,7 +327,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         agendaDefinition = copy.build();
         this.agendaMap.put(agendaDefinition.getId(), agendaDefinition);
-        return;
+        return old;
     }
 
     @Override
@@ -412,7 +412,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateAgendaItem(AgendaItemDefinition agendaItemDefinition)
+    public AgendaItemDefinition updateAgendaItem(AgendaItemDefinition agendaItemDefinition)
             throws RiceIllegalArgumentException {
         // UPDATE
         AgendaItemDefinition.Builder copy = AgendaItemDefinition.Builder.create(agendaItemDefinition);
@@ -423,7 +423,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         agendaItemDefinition = copy.build();
         this.agendaItemMap.put(agendaItemDefinition.getId(), agendaItemDefinition);
-        return;
+        return old;
     }
 
     @Override
@@ -488,7 +488,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateRule(RuleDefinition ruleDefinition)
+    public RuleDefinition updateRule(RuleDefinition ruleDefinition)
             throws RiceIllegalArgumentException {
         // UPDATE
         RuleDefinition.Builder copy = RuleDefinition.Builder.create(ruleDefinition);
@@ -499,7 +499,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         ruleDefinition = copy.build();
         this.ruleMap.put(ruleDefinition.getId(), ruleDefinition);
-        return;
+        return old;
     }
 
     @Override
@@ -548,7 +548,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateAction(ActionDefinition actionDefinition)
+    public ActionDefinition updateAction(ActionDefinition actionDefinition)
             throws RiceIllegalArgumentException {
         // UPDATE
         ActionDefinition.Builder copy = ActionDefinition.Builder.create(actionDefinition);
@@ -559,7 +559,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         actionDefinition = copy.build();
         this.actionMap.put(actionDefinition.getId(), actionDefinition);
-        return;
+        return old;
     }
 
     @Override
@@ -646,8 +646,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateProposition(PropositionDefinition propositionDefinition)
-            throws RiceIllegalArgumentException {
+    public PropositionDefinition updateProposition(PropositionDefinition propositionDefinition) throws RiceIllegalArgumentException {
         if (this.propositionMap.containsKey(propositionDefinition.getId())) {
             throw new RiceIllegalArgumentException (propositionDefinition.getId() + "not found");
         }
@@ -679,7 +678,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         }
         propositionDefinition = copy.build();
         this.propositionMap.put(propositionDefinition.getId(), propositionDefinition);
-        return;
+        return propositionDefinition;
     }
 
     @Override
@@ -724,7 +723,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage)
+    public NaturalLanguageUsage updateNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage)
             throws RiceIllegalArgumentException {
         // UPDATE
         NaturalLanguageUsage.Builder copy = NaturalLanguageUsage.Builder.create(naturalLanguageUsage);
@@ -735,7 +734,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         naturalLanguageUsage = copy.build();
         this.naturalLanguageUsageMap.put(naturalLanguageUsage.getId(), naturalLanguageUsage);
-        return;
+        return old;
     }
 
     @Override
@@ -842,7 +841,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateContext(ContextDefinition contextDefinition)
+    public ContextDefinition updateContext(ContextDefinition contextDefinition)
             throws RiceIllegalArgumentException {
         // UPDATE
         ContextDefinition.Builder copy = ContextDefinition.Builder.create(contextDefinition);
@@ -853,7 +852,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         contextDefinition = copy.build();
         this.contextMap.put(contextDefinition.getId(), contextDefinition);
-        return;
+        return old;
     }
 
     @Override
@@ -928,7 +927,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
     }
 
     @Override
-    public void updateNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate)
+    public NaturalLanguageTemplate updateNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate)
             throws RiceIllegalArgumentException {
         // UPDATE
         NaturalLanguageTemplate.Builder copy = NaturalLanguageTemplate.Builder.create(naturalLanguageTemplate);
@@ -939,7 +938,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         naturalLanguageTemplate = copy.build();
         this.naturalLanguageTemplateMap.put(naturalLanguageTemplate.getId(), naturalLanguageTemplate);
-        return;
+        return old;
     }
 
     @Override

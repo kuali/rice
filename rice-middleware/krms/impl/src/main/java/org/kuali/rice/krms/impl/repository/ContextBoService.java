@@ -46,7 +46,7 @@ public interface ContextBoService {
      * @throws IllegalStateException if the Context does not exists in the system
      */
     @CacheEvict(value={ContextDefinition.Cache.NAME}, allEntries = true)
-	public void updateContext(ContextDefinition context);
+	public ContextDefinition updateContext(ContextDefinition context);
 	
 //	public void createContextAttribute(ContextAttribute contextAttribute);
 //	public void updateContextAttribute(ContextAttribute contextAttribute);

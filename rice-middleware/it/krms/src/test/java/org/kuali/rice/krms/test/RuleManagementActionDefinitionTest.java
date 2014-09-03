@@ -97,9 +97,9 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         builder.setDescription("ChangedDescr");
 
         // primary statement for test
-        ruleManagementService.updateAction(builder.build());
+        returnActionDefinition = ruleManagementService.updateAction(builder.build());
 
-        returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
+        //returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
 
         assertNotNull("action not found", returnActionDefinition);
         assertEquals("update action error:","ChangedDescr", returnActionDefinition.getDescription());

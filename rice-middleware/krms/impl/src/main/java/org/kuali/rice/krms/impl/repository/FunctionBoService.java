@@ -43,7 +43,7 @@ public interface FunctionBoService extends FunctionRepositoryService {
      * @throws IllegalArgumentException if the function is null
      * @throws IllegalStateException if the function does not exist in the system
      */
-    public void updateFunction(FunctionDefinition function);
+    public FunctionDefinition updateFunction(FunctionDefinition function);
 
     /**
      * Retrieves a Function from the repository based on the given function id.

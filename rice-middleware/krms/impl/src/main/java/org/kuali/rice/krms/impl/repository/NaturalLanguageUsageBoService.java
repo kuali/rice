@@ -68,7 +68,7 @@ public interface NaturalLanguageUsageBoService {
      * @throws IllegalStateException if the NaturalLanguageUsage does not exists in the system.
      * 
      */
-    public void updateNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage);
+    public NaturalLanguageUsage updateNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage);
 
     /**
      * Delete the {@link NaturalLanguageUsage} with the given id.

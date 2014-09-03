@@ -50,7 +50,7 @@ public interface KewTypeRepositoryService {
      * @throws IllegalStateException if the KewType does not exist in the system
      */
     @WebMethod(operationName="updateKewType")
-    void updateKewType(@WebParam(name = "kewType") KewTypeDefinition kewType) throws RiceIllegalArgumentException, RiceIllegalStateException;
+    KewTypeDefinition updateKewType(@WebParam(name = "kewType") KewTypeDefinition kewType) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Lookup a kew type based on the given id.
@@ -119,7 +119,7 @@ public interface KewTypeRepositoryService {
      * @throws IllegalStateException if the KewTypeAttribute does not exist in the system
      */
     @WebMethod(operationName="updateKewTypeAttribute")
-    void updateKewTypeAttribute(@WebParam(name = "kewTypeAttribute") KewTypeAttribute kewTypeAttribute) throws RiceIllegalArgumentException, RiceIllegalStateException;
+    KewTypeAttribute updateKewTypeAttribute(@WebParam(name = "kewTypeAttribute") KewTypeAttribute kewTypeAttribute) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
 
 }

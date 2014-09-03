@@ -309,7 +309,8 @@ class RuleBoServiceImplTest {
 		DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
 		RuleBoService service = new RuleBoServiceImpl()
 		service.setDataObjectService(bos)
-		service.updateRule(TEST_RULE_DEF)
+		def updatedData = service.updateRule(TEST_RULE_DEF)
+        Assert.assertNotNull(updatedData)
 		mockDataObjectService.verify(bos)
 	}
 

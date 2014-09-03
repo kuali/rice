@@ -29,14 +29,8 @@ import org.kuali.rice.krms.test.AbstractBoTest;
  *
  */
 public final class ReferenceObjectBindingIntegrationGenTest extends AbstractBoTest {
-
-
     ReferenceObjectBindingBoServiceImpl referenceObjectBindingBoServiceImpl;
     ReferenceObjectBinding referenceObjectBinding;
-
-    ReferenceObjectBinding getReferenceObjectBinding() {
-        return referenceObjectBinding;
-    }
 
     /**
      * Note lower case u, do not override superclasses setUp
@@ -48,32 +42,32 @@ public final class ReferenceObjectBindingIntegrationGenTest extends AbstractBoTe
         referenceObjectBindingBoServiceImpl.setDataObjectService(getDataObjectService());
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findReferenceObjectBindingsByCollectionName_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_findReferenceObjectBindingsByCollectionName_null_fail();
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findReferenceObjectBindingsByKrmsDiscriminatorType_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_findReferenceObjectBindingsByKrmsDiscriminatorType_null_fail();
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findReferenceObjectBindingsByKrmsObject_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_findReferenceObjectBindingsByKrmsObject_null_fail();
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findReferenceObjectBindingsByNamespace_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_findReferenceObjectBindingsByNamespace_null_fail();
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findReferenceObjectBindingsByReferenceDiscriminatorType_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_findReferenceObjectBindingsByReferenceDiscriminatorType_null_fail();
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_findReferenceObjectBindingsByReferenceObject_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_findReferenceObjectBindingsByReferenceObject_null_fail();
     }
@@ -97,13 +91,13 @@ public final class ReferenceObjectBindingIntegrationGenTest extends AbstractBoTe
         assert(referenceObjectBinding.getId() != null);
     }
 
-    @Test(expected = java.lang.IllegalStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void test_createReferenceObjectBinding_fail_existing() {
         test_createReferenceObjectBinding();
         test_createReferenceObjectBinding();
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_createReferenceObjectBinding_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_createReferenceObjectBinding_null_fail();
     }
@@ -125,12 +119,13 @@ public final class ReferenceObjectBindingIntegrationGenTest extends AbstractBoTe
         assert(!"UpdateTest".equals(def.getCollectionName()));
         ReferenceObjectBindingBo bo = referenceObjectBindingBoServiceImpl.from(def);
         bo.setCollectionName("UpdateTest");
-        referenceObjectBindingBoServiceImpl.updateReferenceObjectBinding(ReferenceObjectBinding.Builder.create(bo).build());
+        ReferenceObjectBinding updatedData = referenceObjectBindingBoServiceImpl.updateReferenceObjectBinding(ReferenceObjectBinding.Builder.create(bo).build());
         ReferenceObjectBinding def2 = referenceObjectBindingBoServiceImpl.getReferenceObjectBinding(id);
+        assert(updatedData!=null);
         assert("UpdateTest".equals(def2.getCollectionName()));
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_updateReferenceObjectBinding_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_updateReferenceObjectBinding_null_fail();
     }
@@ -145,7 +140,7 @@ public final class ReferenceObjectBindingIntegrationGenTest extends AbstractBoTe
         assert(def2 == null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_deleteReferenceObjectBinding_null_fail() {
         (ReferenceObjectBindingBoServiceImplGenTest.create(referenceObjectBindingBoServiceImpl)).test_deleteReferenceObjectBinding_null_fail();
     }
@@ -160,5 +155,9 @@ public final class ReferenceObjectBindingIntegrationGenTest extends AbstractBoTe
         test_createReferenceObjectBinding();
         assert(!referenceObjectBindingBoServiceImpl.findReferenceObjectBindingIds(query.build()).isEmpty());
         assert("ID".equals(referenceObjectBindingBoServiceImpl.findReferenceObjectBindingIds(query.build()).get(0)));
+    }
+
+    public ReferenceObjectBinding getReferenceObjectBinding() {
+        return referenceObjectBinding;
     }
 }

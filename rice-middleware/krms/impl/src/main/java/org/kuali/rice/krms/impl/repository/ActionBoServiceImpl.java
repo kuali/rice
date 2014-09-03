@@ -27,14 +27,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.*;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.deleteMatching;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatchingOrderBy;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
 
 /**
  * Implementation of the interface for accessing KRMS repository Action related
  * business objects.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class ActionBoServiceImpl implements ActionBoService {
 
@@ -45,7 +46,7 @@ public class ActionBoServiceImpl implements ActionBoService {
      */
     @Override
     public ActionDefinition createAction(ActionDefinition action) {
-        if (action == null){
+        if (action == null) {
             throw new IllegalArgumentException("action is null");
         }
 
@@ -53,7 +54,7 @@ public class ActionBoServiceImpl implements ActionBoService {
         final String actionNamespaceKey = action.getNamespace();
         final ActionDefinition existing = getActionByNameAndNamespace(actionNameKey, actionNamespaceKey);
 
-        if (existing != null){
+        if (existing != null) {
             throw new IllegalStateException("the action to create already exists: " + action);
         }
 
@@ -72,8 +73,8 @@ public class ActionBoServiceImpl implements ActionBoService {
      * This overridden method updates an existing Action in the repository.
      */
     @Override
-    public void updateAction(ActionDefinition action) {
-        if (action == null){
+    public ActionDefinition updateAction(ActionDefinition action) {
+        if (action == null) {
             throw new IllegalArgumentException("action is null");
         }
 
@@ -100,10 +101,13 @@ public class ActionBoServiceImpl implements ActionBoService {
         ActionBo boToUpdate = ActionBo.from(toUpdate);
 
         // delete any old, existing attributes
-        deleteMatching(dataObjectService, ActionAttributeBo.class, Collections.singletonMap("action.id", toUpdate.getId()));
+        deleteMatching(dataObjectService, ActionAttributeBo.class, Collections.singletonMap("action.id",
+                toUpdate.getId()));
 
         // update the action and create new attributes
-        dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+        final ActionBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+
+        return ActionBo.to(updatedData);
     }
 
     /**
@@ -111,7 +115,7 @@ public class ActionBoServiceImpl implements ActionBoService {
      */
     @Override
     public ActionDefinition getActionByActionId(String actionId) {
-        if (StringUtils.isBlank(actionId)){
+        if (StringUtils.isBlank(actionId)) {
             throw new IllegalArgumentException("action ID is null or blank");
         }
 
@@ -146,12 +150,12 @@ public class ActionBoServiceImpl implements ActionBoService {
      */
     @Override
     public List<ActionDefinition> getActionsByRuleId(String ruleId) {
-        if (StringUtils.isBlank(ruleId)){
+        if (StringUtils.isBlank(ruleId)) {
             throw new IllegalArgumentException("ruleId is null or blank");
         }
 
-        List<ActionBo> bos = findMatchingOrderBy(dataObjectService, ActionBo.class,
-                Collections.singletonMap("ruleId", ruleId), "sequenceNumber", true);
+        List<ActionBo> bos = findMatchingOrderBy(dataObjectService, ActionBo.class, Collections.singletonMap("ruleId",
+                ruleId), "sequenceNumber", true);
 
         return convertListOfBosToImmutables(bos);
     }
@@ -182,7 +186,7 @@ public class ActionBoServiceImpl implements ActionBoService {
      * @see org.kuali.rice.krms.impl.repository.ActionBoService#getActionsByRuleId(java.lang.String)
      */
     public ActionAttributeBo getActionAttributeById(String attrId) {
-        if (StringUtils.isBlank(attrId)){
+        if (StringUtils.isBlank(attrId)) {
             return null;
         }
 
@@ -205,7 +209,9 @@ public class ActionBoServiceImpl implements ActionBoService {
      * @return An unmodifiable List<Action>
      */
     List<ActionDefinition> convertListOfBosToImmutables(final Collection<ActionBo> actionBos) {
-        if (actionBos == null) { return Collections.emptyList(); }
+        if (actionBos == null) {
+            return Collections.emptyList();
+        }
 
         ArrayList<ActionDefinition> actions = new ArrayList<ActionDefinition>();
 
@@ -216,6 +222,4 @@ public class ActionBoServiceImpl implements ActionBoService {
 
         return Collections.unmodifiableList(actions);
     }
-
-
 }

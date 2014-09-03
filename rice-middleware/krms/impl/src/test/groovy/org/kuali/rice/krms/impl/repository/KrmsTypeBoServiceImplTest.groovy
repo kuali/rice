@@ -86,12 +86,9 @@ class KrmsTypeBoServiceImplTest {
 		mockDataObjectService = new MockFor(DataObjectService.class)
 	}
 
-
 	@Test
 	public void test_getType() {
-		mockDataObjectService.demand.find(1..1) {
-			clazz, id -> sampleTypes.get("1")
-		}
+		mockDataObjectService.demand.find(1..1) {clazz, id -> sampleTypes.get("1")}
 
 		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 
@@ -270,7 +267,8 @@ class KrmsTypeBoServiceImplTest {
 		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
 		KrmsTypeBoService service = new KrmsTypeBoServiceImpl()
 		service.setDataObjectService(dataObjectService)
-		service.updateKrmsType(TEST_KRMS_TYPE_DEF)
+		def updatedData = service.updateKrmsType(TEST_KRMS_TYPE_DEF)
+        Assert.assertNotNull(updatedData);
 		mockDataObjectService.verify(dataObjectService)
   }
 

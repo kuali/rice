@@ -28,14 +28,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.*;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatching;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatchingOrderBy;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
 
 /**
  * Implementation of the interface for accessing KRMS repository Proposition related
  * business objects.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class PropositionBoServiceImpl implements PropositionBoService {
 
@@ -49,7 +50,7 @@ public class PropositionBoServiceImpl implements PropositionBoService {
      */
     @Override
     public PropositionDefinition createProposition(PropositionDefinition prop) {
-        if (prop == null){
+        if (prop == null) {
             throw new IllegalArgumentException("proposition is null");
         }
         if (null != prop.getId()) {
@@ -68,7 +69,7 @@ public class PropositionBoServiceImpl implements PropositionBoService {
      * @see org.kuali.rice.krms.impl.repository.PropositionBoService#updateProposition(org.kuali.rice.krms.api.repository.proposition.PropositionDefinition)
      */
     @Override
-    public void updateProposition(PropositionDefinition prop) {
+    public PropositionDefinition updateProposition(PropositionDefinition prop) {
         if (prop == null) {
             throw new IllegalArgumentException("proposition is null");
         }
@@ -83,14 +84,14 @@ public class PropositionBoServiceImpl implements PropositionBoService {
         final PropositionDefinition toUpdate;
 
         if (!existing.getId().equals(prop.getId())) {
-        	final PropositionDefinition.Builder builder = PropositionDefinition.Builder.create(prop);
-        	builder.setId(existing.getId());
-        	toUpdate = builder.build();
+            final PropositionDefinition.Builder builder = PropositionDefinition.Builder.create(prop);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
         } else {
-        	toUpdate = prop;
+            toUpdate = prop;
         }
-        
-        dataObjectService.save(PropositionBo.from(toUpdate));
+
+        return PropositionBo.to(dataObjectService.save(PropositionBo.from(toUpdate)));
     }
 
     /**
@@ -100,7 +101,7 @@ public class PropositionBoServiceImpl implements PropositionBoService {
      */
     @Override
     public PropositionDefinition getPropositionById(String propId) {
-        if (StringUtils.isBlank(propId)){
+        if (StringUtils.isBlank(propId)) {
             throw new IllegalArgumentException("propId is null or blank");
         }
 
@@ -140,7 +141,7 @@ public class PropositionBoServiceImpl implements PropositionBoService {
 
         if (propositionBos != null) {
             PropositionDefinition immutable = null;
-            for (PropositionBo bo : propositionBos ) {
+            for (PropositionBo bo : propositionBos) {
                 immutable = to(bo);
                 immutables.add(immutable);
             }
@@ -161,7 +162,7 @@ public class PropositionBoServiceImpl implements PropositionBoService {
      */
     @Override
     public void createParameter(PropositionParameter parameter) {
-        if (parameter == null){
+        if (parameter == null) {
             throw new IllegalArgumentException("parameter is null");
         }
 
@@ -169,7 +170,8 @@ public class PropositionBoServiceImpl implements PropositionBoService {
         final Integer seqNoKey = parameter.getSequenceNumber();
         final PropositionParameter existing = getParameterByPropIdAndSequenceNumber(propIdKey, seqNoKey);
 
-        if (existing != null && existing.getPropId().equals(propIdKey) && existing.getSequenceNumber().equals(seqNoKey)){
+        if (existing != null && existing.getPropId().equals(propIdKey) && existing.getSequenceNumber().equals(
+                seqNoKey)) {
             throw new IllegalStateException("the parameter to create already exists: " + parameter);
         }
 
@@ -182,7 +184,7 @@ public class PropositionBoServiceImpl implements PropositionBoService {
      * @see org.kuali.rice.krms.impl.repository.PropositionBoService#updateParameter(org.kuali.rice.krms.api.repository.proposition.PropositionParameter)
      */
     @Override
-    public void updateParameter(PropositionParameter parameter) {
+    public PropositionParameter updateParameter(PropositionParameter parameter) {
         if (parameter == null) {
             throw new IllegalArgumentException("parameter is null");
         }
@@ -197,24 +199,32 @@ public class PropositionBoServiceImpl implements PropositionBoService {
 
         final PropositionParameter toUpdate;
 
-        if (!existing.getId().equals(parameter.getId())){
-        	final PropositionParameter.Builder builder = PropositionParameter.Builder.create(parameter);
-        	builder.setId(existing.getId());
-        	toUpdate = builder.build();
+        if (!existing.getId().equals(parameter.getId())) {
+            final PropositionParameter.Builder builder = PropositionParameter.Builder.create(parameter);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
         } else {
-        	toUpdate = parameter;
+            toUpdate = parameter;
         }
-        
-        dataObjectService.save(PropositionParameterBo.from(toUpdate));
-	}
+
+        final PropositionParameterBo boToUpdate = PropositionParameterBo.from(toUpdate);
+        final PropositionParameterBo updatedData = dataObjectService.save(boToUpdate);
+        //return PropositionParameterBo.to(updatedData);
+
+        final PropositionParameter.Builder builder = PropositionParameter.Builder.create(updatedData);
+        builder.setPropId(propIdKey);
+        return builder.build();
+    }
 
     @Override
     public void deleteProposition(String propId) {
-        if (propId == null) { throw new IllegalArgumentException("propId is null"); }
+        if (propId == null) {
+            throw new IllegalArgumentException("propId is null");
+        }
 
         final PropositionDefinition existing = getPropositionById(propId);
 
-        if (existing == null){
+        if (existing == null) {
             throw new IllegalStateException("the Proposition to delete does not exists: " + propId);
         }
 
@@ -234,8 +244,8 @@ public class PropositionBoServiceImpl implements PropositionBoService {
 
         final Map<String, Object> criteriaMap = Collections.<String, Object>singletonMap("propId", propId);
 
-        List<PropositionParameterBo> bos =
-                findMatchingOrderBy(dataObjectService, PropositionParameterBo.class, criteriaMap, "sequenceNumber", true);
+        List<PropositionParameterBo> bos = findMatchingOrderBy(dataObjectService, PropositionParameterBo.class,
+                criteriaMap, "sequenceNumber", true);
 
         return PropositionParameterBo.to(bos);
     }
@@ -259,7 +269,8 @@ public class PropositionBoServiceImpl implements PropositionBoService {
     /**
      * This overridden method gets a parameter by the Proposition Id and Sequence Number
      *
-     * @see org.kuali.rice.krms.impl.repository.PropositionBoService#getParameterByPropIdAndSequenceNumber(String, Integer)
+     * @see org.kuali.rice.krms.impl.repository.PropositionBoService#getParameterByPropIdAndSequenceNumber(String,
+     * Integer)
      */
     @Override
     public PropositionParameter getParameterByPropIdAndSequenceNumber(String propId, Integer sequenceNumber) {
@@ -280,12 +291,14 @@ public class PropositionBoServiceImpl implements PropositionBoService {
 
     /**
      * Converts a immutable {@link PropositionDefinition} to its mutable {@link PropositionBo} counterpart.
+     *
      * @param proposition the immutable object.
      * @return a {@link PropositionBo} the mutable PropositionBo.
-     *
      */
     public PropositionBo from(PropositionDefinition proposition) {
-        if (proposition == null) { return null; }
+        if (proposition == null) {
+            return null;
+        }
 
         PropositionBo propositionBo = new PropositionBo();
         propositionBo.setDescription(proposition.getDescription());
@@ -307,5 +320,4 @@ public class PropositionBoServiceImpl implements PropositionBoService {
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
     }
-
 }

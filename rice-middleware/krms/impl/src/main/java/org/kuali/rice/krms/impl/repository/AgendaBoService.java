@@ -53,7 +53,7 @@ public interface AgendaBoService {
      * @throws IllegalStateException if the Agenda does not exists in the system
      */
     @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
-	public void updateAgenda(AgendaDefinition agenda);
+	public AgendaDefinition updateAgenda(AgendaDefinition agenda);
 
     /**
      * Delete the {@link AgendaDefinition} with the given id.
@@ -118,7 +118,7 @@ public interface AgendaBoService {
      * @throws IllegalStateException if the AgendaItemDefinition does not exists in the system
      */
     @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
-	public void updateAgendaItem(AgendaItemDefinition agendaItem);
+	public AgendaItemDefinition updateAgendaItem(AgendaItemDefinition agendaItem);
 	
     /**
      * This will create an {@link org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition} in the repository exactly like

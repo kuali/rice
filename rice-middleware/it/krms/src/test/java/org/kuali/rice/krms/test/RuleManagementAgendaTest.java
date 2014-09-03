@@ -225,7 +225,8 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         // set second agendaContextId to same as first
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t5.agenda_Id));
         agendaBuilder.setContextId(t4.contextId);
-        ruleManagementService.updateAgenda(agendaBuilder.build());
+        AgendaDefinition updatedData = ruleManagementService.updateAgenda(agendaBuilder.build());
+        assertNotNull(updatedData);
 
         List<AgendaDefinition> agendas = ruleManagementService.getAgendasByContext(t4.contextId);
         assertEquals("Incorrect number of Agendas returned",2,agendas.size());
@@ -345,10 +346,11 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         // set agendaType for both agendas
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t8.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementService.updateAgenda(agendaBuilder.build());
+        AgendaDefinition updatedRules1 = ruleManagementService.updateAgenda(agendaBuilder.build());
+
         agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t9.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementService.updateAgenda(agendaBuilder.build());
+        AgendaDefinition updatedRules2 = ruleManagementService.updateAgenda(agendaBuilder.build());
 
         List<AgendaDefinition> agendas = ruleManagementService.getAgendasByType(krmsType.getId());
         assertEquals("Incorrect number of Agendas returned",2,agendas.size());
@@ -363,6 +365,8 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
             }
         }
 
+        assertNotNull(updatedRules1);
+        assertNotNull(updatedRules2);
         assertEquals("Incorrect results of getAgendasByContext",2,agendasFound);
     }
 
@@ -433,22 +437,26 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
         KrmsTypeDefinition krmsType = createKrmsTypeDefinition(null, t12.namespaceName, t12.namespaceType, null);
 
         // set agendaType for all agendas to match / and contextId of 5013 to match 5012 but not match 5014
-        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(
-                t12.agenda_Id));
+        AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t12.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementService.updateAgenda(agendaBuilder.build());
+        AgendaDefinition updatedAgenda = ruleManagementService.updateAgenda(agendaBuilder.build());
         agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t13.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
         agendaBuilder.setContextId(ruleManagementService.getAgenda(t12.agenda_Id).getContextId());
-        ruleManagementService.updateAgenda(agendaBuilder.build());
+        AgendaDefinition updatedRules1 = ruleManagementService.updateAgenda(agendaBuilder.build());
+
         agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(t14.agenda_Id));
         agendaBuilder.setTypeId(krmsType.getId());
-        ruleManagementService.updateAgenda(agendaBuilder.build());
+        AgendaDefinition updatedRules2 = ruleManagementService.updateAgenda(agendaBuilder.build());
         // create list of agendas with same ContextId
         List<String> agendaNames =  new ArrayList<String>();
         agendaNames.add(t12.agenda_Name);
         agendaNames.add(t13.agenda_Name);
         agendaNames.add(t14.agenda_Name);
+
+        assertNotNull(updatedAgenda);
+        assertNotNull(updatedRules1);
+        assertNotNull(updatedRules2);
 
         QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
         // find active agendas with same agendaType

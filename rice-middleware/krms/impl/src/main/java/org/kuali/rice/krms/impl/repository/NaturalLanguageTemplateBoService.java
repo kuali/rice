@@ -59,7 +59,7 @@ public interface NaturalLanguageTemplateBoService {
      * @throws IllegalStateException if the NaturalLanguageTemplate does not exists in the system.
      * 
      */
-    public void updateNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate);
+    public NaturalLanguageTemplate updateNaturalLanguageTemplate(NaturalLanguageTemplate naturalLanguageTemplate);
 
     /**
      * Delete the {@link NaturalLanguageTemplate} with the given id.

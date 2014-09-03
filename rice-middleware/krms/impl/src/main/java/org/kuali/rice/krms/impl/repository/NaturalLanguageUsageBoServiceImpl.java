@@ -32,10 +32,10 @@ import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigration
 import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
 
 /**
- * Implementation of the @{link NaturalLanguageUsageBoService} interface for accessing  {@link NaturalLanguageUsageBo} related business objects.
- * 
+ * Implementation of the @{link NaturalLanguageUsageBoService} interface for accessing  {@link NaturalLanguageUsageBo}
+ * related business objects.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public class NaturalLanguageUsageBoServiceImpl implements NaturalLanguageUsageBoService {
 
@@ -44,9 +44,8 @@ public class NaturalLanguageUsageBoServiceImpl implements NaturalLanguageUsageBo
 
     /**
      * Sets the value of DataObjectService to the given value.
-     * 
+     *
      * @param dataObjectService the DataObjectService value to set.
-     * 
      */
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
@@ -66,20 +65,22 @@ public class NaturalLanguageUsageBoServiceImpl implements NaturalLanguageUsageBo
 
     @Override
     public NaturalLanguageUsage createNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage) {
-        incomingParamCheck(naturalLanguageUsage , "naturalLanguageUsage");
+        incomingParamCheck(naturalLanguageUsage, "naturalLanguageUsage");
         if (StringUtils.isNotEmpty(naturalLanguageUsage.getId())) {
             final String naturalLanguageUsageIdKey = naturalLanguageUsage.getId();
             final NaturalLanguageUsage existing = getNaturalLanguageUsage(naturalLanguageUsageIdKey);
 
             if (existing != null) {
-                throw new IllegalStateException("the NaturalLanguageUsage to create already exists: " + naturalLanguageUsage);
+                throw new IllegalStateException(
+                        "the NaturalLanguageUsage to create already exists: " + naturalLanguageUsage);
             }
         } else {
-            final NaturalLanguageUsage existing =
-                getNaturalLanguageUsageByName(naturalLanguageUsage.getNamespace(), naturalLanguageUsage.getName());
+            final NaturalLanguageUsage existing = getNaturalLanguageUsageByName(naturalLanguageUsage.getNamespace(),
+                    naturalLanguageUsage.getName());
 
             if (existing != null) {
-                throw new IllegalStateException("the NaturalLanguageUsage to create already exists: " + naturalLanguageUsage);
+                throw new IllegalStateException(
+                        "the NaturalLanguageUsage to create already exists: " + naturalLanguageUsage);
             }
         }
 
@@ -90,7 +91,7 @@ public class NaturalLanguageUsageBoServiceImpl implements NaturalLanguageUsageBo
 
     @Override
     public NaturalLanguageUsage getNaturalLanguageUsage(String naturalLanguageUsageId) {
-        incomingParamCheck(naturalLanguageUsageId , "naturalLanguageUsageId");
+        incomingParamCheck(naturalLanguageUsageId, "naturalLanguageUsageId");
         NaturalLanguageUsageBo bo = dataObjectService.find(NaturalLanguageUsageBo.class, naturalLanguageUsageId);
 
         return NaturalLanguageUsageBo.to(bo);
@@ -116,12 +117,13 @@ public class NaturalLanguageUsageBoServiceImpl implements NaturalLanguageUsageBo
     }
 
     @Override
-    public void updateNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage) {
-        incomingParamCheck(naturalLanguageUsage , "naturalLanguageUsage");
+    public NaturalLanguageUsage updateNaturalLanguageUsage(NaturalLanguageUsage naturalLanguageUsage) {
+        incomingParamCheck(naturalLanguageUsage, "naturalLanguageUsage");
         final NaturalLanguageUsage existing = getNaturalLanguageUsage(naturalLanguageUsage.getId());
 
         if (existing == null) {
-            throw new IllegalStateException("the NaturalLanguageUsage to update does not exists: " + naturalLanguageUsage);
+            throw new IllegalStateException(
+                    "the NaturalLanguageUsage to update does not exists: " + naturalLanguageUsage);
         }
 
         final NaturalLanguageUsage toUpdate;
@@ -139,16 +141,19 @@ public class NaturalLanguageUsageBoServiceImpl implements NaturalLanguageUsageBo
         NaturalLanguageUsageBo boToUpdate = from(toUpdate);
 
         // update the rule and create new attributes
-         dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+        NaturalLanguageUsageBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+
+        return to(updatedData);
     }
 
     @Override
     public void deleteNaturalLanguageUsage(String naturalLanguageUsageId) {
-        incomingParamCheck(naturalLanguageUsageId , "naturalLanguageUsageId");
+        incomingParamCheck(naturalLanguageUsageId, "naturalLanguageUsageId");
         final NaturalLanguageUsage existing = getNaturalLanguageUsage(naturalLanguageUsageId);
 
         if (existing == null) {
-            throw new IllegalStateException("the NaturalLanguageUsage to delete does not exists: " + naturalLanguageUsageId);
+            throw new IllegalStateException(
+                    "the NaturalLanguageUsage to delete does not exists: " + naturalLanguageUsageId);
         }
 
         dataObjectService.delete(from(existing));
@@ -193,12 +198,13 @@ public class NaturalLanguageUsageBoServiceImpl implements NaturalLanguageUsageBo
         return convertBosToImmutables(bos);
     }
 
-    public List<NaturalLanguageUsage> convertBosToImmutables(final Collection<NaturalLanguageUsageBo> naturalLanguageUsageBos) {
+    public List<NaturalLanguageUsage> convertBosToImmutables(
+            final Collection<NaturalLanguageUsageBo> naturalLanguageUsageBos) {
         List<NaturalLanguageUsage> immutables = new LinkedList<NaturalLanguageUsage>();
 
         if (naturalLanguageUsageBos != null) {
             NaturalLanguageUsage immutable = null;
-            for (NaturalLanguageUsageBo bo : naturalLanguageUsageBos ) {
+            for (NaturalLanguageUsageBo bo : naturalLanguageUsageBos) {
                 immutable = to(bo);
                 immutables.add(immutable);
             }
@@ -219,8 +225,7 @@ public class NaturalLanguageUsageBoServiceImpl implements NaturalLanguageUsageBo
     private void incomingParamCheck(Object object, String name) {
         if (object == null) {
             throw new IllegalArgumentException(name + " was null");
-        } else if (object instanceof String
-                && StringUtils.isBlank((String)object)) {
+        } else if (object instanceof String && StringUtils.isBlank((String) object)) {
             throw new IllegalArgumentException(name + " was blank");
         }
     }

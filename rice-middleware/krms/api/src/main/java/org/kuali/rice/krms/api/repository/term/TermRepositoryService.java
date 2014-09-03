@@ -116,7 +116,8 @@ public interface TermRepositoryService {
      */
     @WebMethod(operationName = "updateTermSpecification")
     @CacheEvict(value = {TermSpecificationDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
-    void updateTermSpecification(@WebParam(name = "termSpec") TermSpecificationDefinition termSpec)
+    TermSpecificationDefinition updateTermSpecification(
+            @WebParam(name = "termSpec") TermSpecificationDefinition termSpec)
             throws RiceIllegalArgumentException;
 
      /**
@@ -155,7 +156,7 @@ public interface TermRepositoryService {
      * Update a {@link TermDefinition}
      *
      * @since 2.2.1
-     * @param termDef to be updated
+     * @param term to be updated
      *
      * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if
      * the termDef is null or blank.
@@ -163,7 +164,7 @@ public interface TermRepositoryService {
     @WebMethod(operationName = "updateTerm")
     @WebResult(name = "term")
     @CacheEvict(value = {TermDefinition.Cache.NAME}, allEntries = true)
-    void updateTerm(@WebParam(name = "termDef") TermDefinition termDef)
+    TermDefinition updateTerm(@WebParam(name = "termDef") TermDefinition term)
             throws RiceIllegalArgumentException;
 
 
@@ -250,7 +251,7 @@ public interface TermRepositoryService {
      */
     @WebMethod(operationName = "updateTermResolver")
     @CacheEvict(value = {TermResolverDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
-    void updateTermResolver(@WebParam(name = "termResolver") TermResolverDefinition termResolver)
+    TermResolverDefinition updateTermResolver(@WebParam(name = "termResolver") TermResolverDefinition termResolver)
             throws RiceIllegalArgumentException;
     
     

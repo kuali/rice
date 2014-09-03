@@ -27,8 +27,6 @@ import org.kuali.rice.core.api.exception.RiceIllegalStateException;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.PROPOSITION_PARAMETER_SERVICE_NAMES;
-import static org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService.PROPOSITION_SERVICE_NAMES;
 import org.kuali.rice.krms.api.repository.typerelation.RelationshipType;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
 import org.kuali.rice.krms.impl.repository.TypeTypeRelationSequenceComparator;
@@ -216,7 +214,7 @@ public class KrmsTypeRepositoryServiceMockImpl implements KrmsTypeRepositoryServ
     }
 
     @Override
-    public void updateTypeTypeRelation(TypeTypeRelation typeTypeRelation)
+    public TypeTypeRelation updateTypeTypeRelation(TypeTypeRelation typeTypeRelation)
             throws RiceIllegalArgumentException {
         // UPDATE
         TypeTypeRelation.Builder copy = TypeTypeRelation.Builder.create(typeTypeRelation);
@@ -227,7 +225,7 @@ public class KrmsTypeRepositoryServiceMockImpl implements KrmsTypeRepositoryServ
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         typeTypeRelation = copy.build();
         this.typeTypeRelationMap.put(typeTypeRelation.getId(), typeTypeRelation);
-        return;
+        return old;
     }
 
     @Override

@@ -154,10 +154,13 @@ public final class KrmsTypeGenTest {
     }
 
     public static KrmsTypeDefinition buildFullKrmsTypeDefinition() {
-        KrmsTypeDefinition.Builder builder = KrmsTypeDefinition.Builder.create(NAME, NAMESPACE);
+        return buildFullKrmsTypeDefinition(NAME, NAMESPACE);
+    }
+
+    public static KrmsTypeDefinition buildFullKrmsTypeDefinition(String name, String namespace) {
+        KrmsTypeDefinition.Builder builder = KrmsTypeDefinition.Builder.create(name,namespace);
         builder.setId(ID);
         KrmsTypeDefinition krmsTypeDefinition = builder.build();
         return krmsTypeDefinition;
     }
-
 }

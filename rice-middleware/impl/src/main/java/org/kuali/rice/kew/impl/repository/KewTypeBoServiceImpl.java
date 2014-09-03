@@ -67,7 +67,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
      * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#updateKewType(org.kuali.rice.kew.api.repository.type.KewTypeDefinition)
      */
     @Override
-    public void updateKewType(KewTypeDefinition kewType) {
+    public KewTypeDefinition updateKewType(KewTypeDefinition kewType) {
         if (kewType == null) {
             throw new RiceIllegalArgumentException("kewType is null");
         }
@@ -85,7 +85,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
             toUpdate = kewType;
         }
 
-        dataObjectService.save(KewTypeBo.from(toUpdate));
+        return KewTypeBo.to(dataObjectService.save(KewTypeBo.from(toUpdate)));
     }
 
     @Override
@@ -203,7 +203,7 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
      * @see org.kuali.rice.kew.api.repository.type.KewTypeRepositoryService#updateKewTypeAttribute(org.kuali.rice.kew.api.repository.type.KewTypeAttribute)
      */
     @Override
-    public void updateKewTypeAttribute(KewTypeAttribute kewTypeAttribute) {
+    public KewTypeAttribute updateKewTypeAttribute(KewTypeAttribute kewTypeAttribute) {
         if (kewTypeAttribute == null) {
             throw new RiceIllegalArgumentException("kewTypeAttribute is null");
         }
@@ -225,6 +225,6 @@ public final class KewTypeBoServiceImpl implements KewTypeRepositoryService {
             kewType = dataObjectService.find(KewTypeBo.class, kewTypeAttribute.getTypeId());
         }
 
-        dataObjectService.save(KewTypeAttributeBo.from(toUpdate, kewType));
+        return KewTypeAttributeBo.to(dataObjectService.save(KewTypeAttributeBo.from(toUpdate, kewType)));
     }
 }

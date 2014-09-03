@@ -33,50 +33,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.*;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatching;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatchingOrderBy;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
 
 public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
-
     private DataObjectService dataObjectService;
 
-	/**
-	 * This overridden method creates a KrmsType if it does not 
-	 * already exist in the repository.
-	 * 
-	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#createKrmsType(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition)
-	 */
-	@Override
-	public KrmsTypeDefinition createKrmsType(KrmsTypeDefinition krmsType) {
-		if (krmsType == null){
-	        throw new RiceIllegalArgumentException("krmsType is null");
-		}
-
-		final String nameKey = krmsType.getName();
-		final String namespaceKey = krmsType.getNamespace();
-		final KrmsTypeDefinition existing = getTypeByName(namespaceKey, nameKey);
-
-        if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)){
-            throw new RiceIllegalStateException("the KRMS Type to create already exists: " + krmsType);
-		}
-		
-		KrmsTypeBo bo = dataObjectService.save(KrmsTypeBo.from(krmsType), PersistenceOption.FLUSH);
-		
-		return KrmsTypeBo.to(bo);
-	}
-
-	/**
-	 * This overridden method updates an existing KrmsType
-	 * 
-	 * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#updateKrmsType(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition)
-	 */
-	@Override
-	public KrmsTypeDefinition updateKrmsType(KrmsTypeDefinition krmsType) {
+    /**
+     * This overridden method creates a KrmsType if it does not
+     * already exist in the repository.
+     *
+     * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#createKrmsType(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition)
+     */
+    @Override
+    public KrmsTypeDefinition createKrmsType(KrmsTypeDefinition krmsType) {
         if (krmsType == null) {
             throw new RiceIllegalArgumentException("krmsType is null");
         }
 
-		final String idKey = krmsType.getId();
-		final KrmsTypeBo existing = dataObjectService.find(KrmsTypeBo.class, idKey);
+        final String nameKey = krmsType.getName();
+        final String namespaceKey = krmsType.getNamespace();
+        final KrmsTypeDefinition existing = getTypeByName(namespaceKey, nameKey);
+
+        if (existing != null && existing.getName().equals(nameKey) && existing.getNamespace().equals(namespaceKey)) {
+            throw new RiceIllegalStateException("the KRMS Type to create already exists: " + krmsType);
+        }
+
+        KrmsTypeBo bo = dataObjectService.save(KrmsTypeBo.from(krmsType), PersistenceOption.FLUSH);
+
+        return KrmsTypeBo.to(bo);
+    }
+
+    /**
+     * This overridden method updates an existing KrmsType
+     *
+     * @see org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService#updateKrmsType(org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition)
+     */
+    @Override
+    public KrmsTypeDefinition updateKrmsType(KrmsTypeDefinition krmsType) {
+        if (krmsType == null) {
+            throw new RiceIllegalArgumentException("krmsType is null");
+        }
+
+        final String idKey = krmsType.getId();
+        final KrmsTypeBo existing = dataObjectService.find(KrmsTypeBo.class, idKey);
 
         if (existing == null) {
             throw new RiceIllegalStateException("the KRMS type does not exist: " + krmsType);
@@ -84,16 +85,16 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
         final KrmsTypeDefinition toUpdate;
 
-        if (!existing.getId().equals(krmsType.getId())){
-        	final KrmsTypeDefinition.Builder builder = KrmsTypeDefinition.Builder.create(krmsType);
-        	builder.setId(existing.getId());
-        	toUpdate = builder.build();
+        if (!existing.getId().equals(krmsType.getId())) {
+            final KrmsTypeDefinition.Builder builder = KrmsTypeDefinition.Builder.create(krmsType);
+            builder.setId(existing.getId());
+            toUpdate = builder.build();
         } else {
-        	toUpdate = krmsType;
+            toUpdate = krmsType;
         }
-        
+
         return KrmsTypeBo.to(dataObjectService.save(KrmsTypeBo.from(toUpdate), PersistenceOption.FLUSH));
-	}
+    }
 
     @Override
     public KrmsTypeDefinition getTypeById(final String id) {
@@ -119,7 +120,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("namespace", namespaceCode);
         map.put("name", name);
-        
+
         KrmsTypeBo myType = findSingleMatching(dataObjectService, KrmsTypeBo.class, Collections.unmodifiableMap(map));
 
         return KrmsTypeBo.to(myType);
@@ -151,7 +152,8 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         map.put("serviceName", serviceName);
         map.put("active", Boolean.TRUE);
 
-        Collection<KrmsTypeBo> krmsTypeBos = findMatching(dataObjectService, KrmsTypeBo.class, Collections.unmodifiableMap(map));
+        Collection<KrmsTypeBo> krmsTypeBos = findMatching(dataObjectService, KrmsTypeBo.class,
+                Collections.unmodifiableMap(map));
 
         return convertListOfBosToImmutables(krmsTypeBos);
     }
@@ -177,7 +179,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         map.put("contextId", contextId);
         Collection<ContextValidAgendaBo> contextValidAgendaBos = findMatchingOrderBy(dataObjectService,
                 ContextValidAgendaBo.class, Collections.unmodifiableMap(map), "agendaType.name", true);
-        List<KrmsTypeDefinition>  agendaTypes = new ArrayList<KrmsTypeDefinition>();
+        List<KrmsTypeDefinition> agendaTypes = new ArrayList<KrmsTypeDefinition>();
 
         for (ContextValidAgendaBo contextValidAgendaBo : contextValidAgendaBos) {
             agendaTypes.add(KrmsTypeBo.to(contextValidAgendaBo.getAgendaType()));
@@ -215,7 +217,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         map.put("contextId", contextId);
         Collection<ContextValidRuleBo> contextValidRuleBos = findMatchingOrderBy(dataObjectService,
                 ContextValidRuleBo.class, Collections.unmodifiableMap(map), "ruleType.name", true);
-        List<KrmsTypeDefinition>  ruleTypes = new ArrayList<KrmsTypeDefinition>();
+        List<KrmsTypeDefinition> ruleTypes = new ArrayList<KrmsTypeDefinition>();
 
         for (ContextValidRuleBo contextValidRuleBo : contextValidRuleBos) {
             ruleTypes.add(KrmsTypeBo.to(contextValidRuleBo.getRuleType()));
@@ -253,7 +255,7 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
         map.put("contextId", contextId);
         Collection<ContextValidActionBo> contextValidActionBos = findMatchingOrderBy(dataObjectService,
                 ContextValidActionBo.class, Collections.unmodifiableMap(map), "actionType.name", true);
-        List<KrmsTypeDefinition>  actionTypes = new ArrayList<KrmsTypeDefinition>();
+        List<KrmsTypeDefinition> actionTypes = new ArrayList<KrmsTypeDefinition>();
 
         for (ContextValidActionBo contextValidActionBo : contextValidActionBos) {
             actionTypes.add(KrmsTypeBo.to(contextValidActionBo.getActionType()));
@@ -320,12 +322,14 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
     /**
      * Converts a immutable {@link KrmsTypeDefinition} to its mutable {@link KrmsTypeBo} counterpart.
+     *
      * @param krmsType the immutable object.
      * @return a {@link KrmsTypeBo} the mutable KrmsTypeBo.
-     *
      */
     public KrmsTypeBo from(KrmsTypeDefinition krmsType) {
-        if (krmsType == null) return null;
+        if (krmsType == null) {
+            return null;
+        }
 
         KrmsTypeBo krmsTypeBo = new KrmsTypeBo();
         krmsTypeBo.setName(krmsType.getName());
@@ -363,5 +367,4 @@ public final class KrmsTypeBoServiceImpl implements KrmsTypeBoService {
 
         return Collections.unmodifiableList(krmsTypes);
     }
-
 }

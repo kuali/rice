@@ -72,7 +72,7 @@ public class RuleBoServiceImpl implements RuleBoService {
      * @see org.kuali.rice.krms.impl.repository.RuleBoService#updateRule(org.kuali.rice.krms.api.repository.rule.RuleDefinition)
      */
     @Override
-    public void updateRule(RuleDefinition rule) {
+    public RuleDefinition updateRule(RuleDefinition rule) {
         if (rule == null){
             throw new IllegalArgumentException("rule is null");
         }
@@ -100,7 +100,9 @@ public class RuleBoServiceImpl implements RuleBoService {
         reconcileActionAttributes(boToUpdate.getActions(), existing.getActions());
 
         // update the rule and create new attributes
-        dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+        RuleBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+
+        return RuleBo.to(updatedData);
     }
 
     /**

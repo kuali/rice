@@ -158,6 +158,16 @@ public abstract class DocumentControllerBase extends UifControllerBase {
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @see DocumentControllerService#close(org.kuali.rice.krad.web.form.DocumentFormBase)
+     */
+    @RequestMapping(params = "methodToCall=close")
+    public ModelAndView close(DocumentFormBase form) {
+        return getControllerService().close(form);
+    }
+
+    /**
      * @see DocumentControllerService#insertNote(org.kuali.rice.krad.web.form.DocumentFormBase)
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=insertNote")

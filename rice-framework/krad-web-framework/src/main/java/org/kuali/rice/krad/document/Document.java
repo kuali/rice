@@ -355,7 +355,10 @@ public interface Document extends GloballyUnique {
      * of the KNS KualiDocumentActionBase methods that should release locks
      *
      * @return the list of method names of an action that should clear locks for the current user
+     *
+     * @deprecated Use the {@code releasePessimisticLocks method} in the transactional KRAD controller
      */
+    @Deprecated
     List<String> getLockClearingMethodNames();
     
     /**

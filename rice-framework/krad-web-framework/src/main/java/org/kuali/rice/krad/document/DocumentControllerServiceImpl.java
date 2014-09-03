@@ -60,7 +60,6 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.DocumentView;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -210,7 +209,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
     public ModelAndView cancel(UifFormBase form) {
         performWorkflowAction((DocumentFormBase) form, UifConstants.WorkflowAction.CANCEL);
 
-        return getNavigationControllerService().returnToHub(form);
+        return getNavigationControllerService().returnToPrevious(form);
     }
 
     /**
@@ -299,7 +298,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
             return getModelAndViewService().getModelAndView(form);
         }
 
-        return getNavigationControllerService().returnToHub(form);
+        return getNavigationControllerService().returnToPrevious(form);
     }
 
     /**
@@ -309,7 +308,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
     public ModelAndView approve(DocumentFormBase form) {
         performWorkflowAction(form, UifConstants.WorkflowAction.APPROVE);
 
-        return getModelAndViewService().getModelAndView(form);
+        return getNavigationControllerService().returnToPrevious(form);
     }
 
     /**
@@ -357,7 +356,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
     public ModelAndView fyi(DocumentFormBase form) {
         performWorkflowAction(form, UifConstants.WorkflowAction.FYI);
 
-        return getModelAndViewService().getModelAndView(form);
+        return getNavigationControllerService().returnToPrevious(form);
     }
 
     /**
@@ -367,7 +366,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
     public ModelAndView acknowledge(DocumentFormBase form) {
         performWorkflowAction(form, UifConstants.WorkflowAction.ACKNOWLEDGE);
 
-        return getModelAndViewService().getModelAndView(form);
+        return getNavigationControllerService().returnToPrevious(form);
     }
 
     /**
@@ -394,6 +393,14 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
         props.setProperty(UifPropertyPaths.DOCUMENT_ID, form.getDocument().getDocumentNumber());
 
         return getModelAndViewService().performRedirect(form, workflowSuperUserUrl, props);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModelAndView close(DocumentFormBase form) {
+        return getNavigationControllerService().returnToPrevious(form);
     }
 
     /**

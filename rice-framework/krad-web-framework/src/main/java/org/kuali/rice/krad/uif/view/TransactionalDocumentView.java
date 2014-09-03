@@ -15,19 +15,35 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.util.RiceConstants;
+import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.authorization.PessimisticLock;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.PessimisticLockService;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
+import java.util.Map;
+
 /**
- * View type for Transactional documents
+ * View type for Transactional documents.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "transactionalDocumentView", parent = "Uif-TransactionalDocumentView")
 public class TransactionalDocumentView extends DocumentView {
+
     private static final long serialVersionUID = 4375336878804984171L;
+
+    private PessimisticLockService pessimisticLockService;
 
     public TransactionalDocumentView() {
         super();
@@ -35,18 +51,77 @@ public class TransactionalDocumentView extends DocumentView {
         setViewTypeName(UifConstants.ViewType.TRANSACTIONAL);
     }
 
-    /** Override to make sure the header text is set.
+    /**
+     * {@inheritDoc}
      *
-     * @param model
-     * @param parent
+     * <p>
+     * Makes sure that the header is set.  Locks the document if pessimistic locking is turned on.
+     * </p>
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
+        Map<String, Object> context = getContext();
+        DocumentEntry documentEntry = (DocumentEntry) context.get(UifConstants.ContextVariableNames.DOCUMENT_ENTRY);
+
         if (this.getHeader() != null && this.getHeaderText().length() == 0) {
-            DocumentEntry documentEntry = getDocumentEntryForView();
             this.setHeaderText(documentEntry.getDocumentTypeName());
         }
+        
+        if (documentEntry.getUsePessimisticLocking()) {
+            TransactionalDocumentFormBase form = (TransactionalDocumentFormBase) model;
+
+            generatePessimisticLockMessages(form);
+            setupPessimisticLockingTimeout(form);
+        }
     }
+
+    /**
+     * Generates the messages that warn users that the document has been locked for editing by another user.
+     *
+     * @param form form instance containing the transactional document data
+     */
+    protected void generatePessimisticLockMessages(TransactionalDocumentFormBase form) {
+        Document document = form.getDocument();
+        Person user = GlobalVariables.getUserSession().getPerson();
+
+        for (PessimisticLock lock : document.getPessimisticLocks()) {
+            if (!lock.isOwnedByUser(user)) {
+                String lockDescriptor = StringUtils.defaultIfBlank(lock.getLockDescriptor(), "full");
+                String lockOwner = lock.getOwnedByUser().getName();
+                String lockTime = RiceConstants.getDefaultTimeFormat().format(lock.getGeneratedTimestamp());
+                String lockDate = RiceConstants.getDefaultDateFormat().format(lock.getGeneratedTimestamp());
+
+                GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
+                        RiceKeyConstants.ERROR_TRANSACTIONAL_LOCKED, lockDescriptor, lockOwner, lockTime, lockDate);
+            }
+        }
+    }
+
+    /**
+     * Enables the session timeout warning if any pessimistic locks exist.
+     *
+     * @param form form instance containing the transactional document data
+     */
+    protected void setupPessimisticLockingTimeout(TransactionalDocumentFormBase form) {
+        Document document = form.getDocument();
+
+        if (!document.getPessimisticLocks().isEmpty()) {
+            form.getView().getSessionPolicy().setEnableTimeoutWarning(true);
+        }
+    }
+
+    protected PessimisticLockService getPessimisticLockService() {
+        if (pessimisticLockService == null) {
+            pessimisticLockService = KRADServiceLocatorWeb.getPessimisticLockService();
+        }
+
+        return pessimisticLockService;
+    }
+
+    protected void setPessimisticLockService(PessimisticLockService pessimisticLockService) {
+        this.pessimisticLockService = pessimisticLockService;
+    }
+
 }

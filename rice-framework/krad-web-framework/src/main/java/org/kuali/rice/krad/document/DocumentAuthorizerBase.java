@@ -19,7 +19,6 @@ import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionType;
-import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.kew.api.doctype.ProcessDefinition;
 import org.kuali.rice.kew.api.doctype.RoutePath;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
@@ -73,7 +72,7 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
     }
 
     public boolean canClose(Document document, Person user) {
-        return true;
+        return false;
     }
 
     public boolean canSave(Document document, Person user) {

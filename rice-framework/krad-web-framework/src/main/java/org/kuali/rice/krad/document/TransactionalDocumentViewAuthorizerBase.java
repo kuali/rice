@@ -15,12 +15,58 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.datadictionary.DocumentEntry;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.service.PessimisticLockService;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.web.form.DocumentFormBase;
+
+import java.util.Map;
+
 /**
- * Extension to DocumentViewAuthorizerBase interface which adds transactional document specific methods
+ * Extends {@link DocumentViewAuthorizerBase} to add additional authorization behavior to Transactional documents.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class TransactionalDocumentViewAuthorizerBase extends DocumentViewAuthorizerBase {
-    private static final long serialVersionUID = -3186117310438600893L;
+
+    private static final long serialVersionUID = -6361662425078612737L;
+
+    private PessimisticLockService pessimisticLockService;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean canEditView(View view, ViewModel model, Person user) {
+        boolean canEditView = super.canEditView(view, model, user);
+
+        Map<String, Object> context = view.getContext();
+        DocumentEntry documentEntry = (DocumentEntry) context.get(UifConstants.ContextVariableNames.DOCUMENT_ENTRY);
+
+        if (!documentEntry.getUsePessimisticLocking()) {
+            return canEditView;
+        }
+
+        DocumentFormBase documentForm = (DocumentFormBase) model;
+        Document document = documentForm.getDocument();
+
+        return getPessimisticLockService().establishPessimisticLocks(document, user, canEditView);
+    }
+
+    protected PessimisticLockService getPessimisticLockService() {
+        if (pessimisticLockService == null) {
+            pessimisticLockService = KRADServiceLocatorWeb.getPessimisticLockService();
+        }
+
+        return pessimisticLockService;
+    }
+
+    protected void setPessimisticLockService(PessimisticLockService pessimisticLockService) {
+        this.pessimisticLockService = pessimisticLockService;
+    }
 
 }

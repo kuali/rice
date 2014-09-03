@@ -152,6 +152,14 @@ public interface DocumentControllerService extends ControllerService {
     ModelAndView supervisorFunctions(DocumentFormBase form);
 
     /**
+     * Closes the document and returns to the hub.
+     *
+     * @param form form instance containing the document instance
+     * @return ModelAndView instance for rendering the document view
+     */
+    ModelAndView close(DocumentFormBase form);
+
+    /**
      * Invoked by the add note action to adding the note instance contained of the given form.
      *
      * @param form form instance containing the note instance

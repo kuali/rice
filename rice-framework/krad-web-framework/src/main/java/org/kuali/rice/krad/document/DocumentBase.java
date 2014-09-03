@@ -743,6 +743,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
      * @see org.kuali.rice.krad.document.Document#getLockClearingMethodNames()
      */
     @Override
+    @Deprecated
     public List<String> getLockClearingMethodNames() {
         return getLockClearningMethodNames();
     }

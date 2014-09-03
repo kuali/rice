@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
 
 /**
  * PessimisticLockServiceTest tests {@link PessimisticLockServiceImpl}
@@ -320,6 +320,149 @@ public class PessimisticLockServiceTest extends KRADTestCase {
         PessimisticLock savedLock = KRADServiceLocator.getDataObjectService().find(PessimisticLock.class, 1111L);
         assertEquals("Lock descriptor is not correct from lock that was saved", lockDescriptor, savedLock.getLockDescriptor());
     }
+
+    /**
+     * Tests the {@link org.kuali.rice.krad.service.PessimisticLockService.establishPessimisticLocks} method.
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testEstablishPessimisticLocks() throws Exception {
+        PessimisticLockService lockService = KRADServiceLocatorWeb.getPessimisticLockService();
+        AccountRequestDocument accountDoc = (AccountRequestDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest");
+
+        assertTrue("The AccountRequestDocument should be using pessimistic locking",
+                KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
+
+        // Have "quickstart" establish a pessimistic lock on the account request document.
+        UserSession quickstartSession = new UserSession("quickstart");
+        boolean canEdit = lockService.establishPessimisticLocks(accountDoc, quickstartSession.getPerson(), true);
+
+        // Check that "quickstart" has the only pessimistic lock
+        assertEquals("The wrong number of pessimistic locks are established", 1, accountDoc.getPessimisticLocks().size());
+        PessimisticLock quickstartPessimisticLock = accountDoc.getPessimisticLocks().get(0);
+        assertTrue("quickstart pessimistic lock was not established", quickstartPessimisticLock.isOwnedByUser(quickstartSession.getPerson()));
+
+        // Check that "quickstart" has edit permissions
+        assertTrue("quickstart cannot edit", canEdit);
+
+        // Have "admin" attempt to erroneously establish a pessimistic lock on the account request document.
+        UserSession adminSession = new UserSession("admin");
+        canEdit = lockService.establishPessimisticLocks(accountDoc, adminSession.getPerson(), true);
+
+        // Check that "admin" cannot establish a lock when one is already in place.
+        assertEquals("The wrong number of pessimistic locks are established", 1, accountDoc.getPessimisticLocks().size());
+        PessimisticLock adminPessimisticLock = accountDoc.getPessimisticLocks().get(0);
+        assertFalse("admin pessimistic lock was established", adminPessimisticLock.isOwnedByUser(adminSession.getPerson()));
+
+        // Check that "admin" does not have edit permissions
+        assertFalse("admin can edit", canEdit);
+
+        // Have "quickstart" attempt to erroneously establish a second pessimistic lock on the account request document.
+        canEdit = lockService.establishPessimisticLocks(accountDoc, quickstartSession.getPerson(), true);
+
+        // Check that there is still only one pessimistic lock established
+        assertEquals("The wrong number of pessimistic locks are established", 1, accountDoc.getPessimisticLocks().size());
+
+        // Check that "quickstart" has edit permissions
+        assertTrue("quickstart cannot edit", canEdit);
+    }
+
+    @Test
+    public void testCustomLockDescriptors() throws Exception {
+        PessimisticLockService lockService = KRADServiceLocatorWeb.getPessimisticLockService();
+        AccountRequestDocument2 accountDoc2 = (AccountRequestDocument2) KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest2");
+
+        assertTrue("The AccountRequestDocument2 should be using pessimistic locking",
+                KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc2.getClass().getName()).getUsePessimisticLocking());
+        assertTrue("The AccountRequestDocument2 should be using custom lock descriptors", accountDoc2.useCustomLockDescriptors());
+
+        String LOCK_KEY = AccountRequestDocument2.ACCT_REQ_DOC_2_EDITABLE_FIELDS;
+
+        // Have "quickstart" establish a pessimistic lock on the document by using a custom lock descriptor that only locks part of the document.
+        UserSession quickstartSession = new UserSession("quickstart");
+        GlobalVariables.getUserSession().addObject(LOCK_KEY, AccountRequestDocument2.EDIT_ALL_BUT_REASONS);
+        String quickstartLockDescriptor = accountDoc2.getCustomLockDescriptor(quickstartSession.getPerson());
+        assertNotNull("The document should have generated a custom lock descriptor", quickstartLockDescriptor);
+        boolean canQuickstartEdit = lockService.establishPessimisticLocks(accountDoc2, quickstartSession.getPerson(), true);
+
+        // Check that "quickstart" has the only pessimistic lock
+        assertEquals("The wrong number of pessimistic locks are established", 1, accountDoc2.getPessimisticLocks().size());
+        PessimisticLock quickstartPessimisticLock = accountDoc2.getPessimisticLocks().get(0);
+        assertEquals("quickstart pessimistic lock was established with wrong lock descriptor", quickstartLockDescriptor, quickstartPessimisticLock.getLockDescriptor());
+
+        // Check that "quickstart" has edit permissions
+        assertTrue("quickstart cannot edit", canQuickstartEdit);
+
+        // Have "admin" erroneously try to establish a lock using the same lock descriptor.
+        UserSession adminSession = new UserSession("admin");
+        GlobalVariables.getUserSession().addObject(LOCK_KEY, AccountRequestDocument2.EDIT_ALL_BUT_REASONS);
+        String adminLockDescriptor = accountDoc2.getCustomLockDescriptor(adminSession.getPerson());
+        assertNotNull("The document should have generated a custom lock descriptor", adminLockDescriptor);
+        assertEquals("Different lock descriptor generated for admin", quickstartLockDescriptor, adminLockDescriptor);
+        boolean canAdminEdit = lockService.establishPessimisticLocks(accountDoc2, adminSession.getPerson(), true);
+
+        // Check that "admin" cannot establish a lock when one is already in place.
+        assertEquals("The wrong number of pessimistic locks are established", 1, accountDoc2.getPessimisticLocks().size());
+        PessimisticLock adminPessimisticLock = accountDoc2.getPessimisticLocks().get(0);
+        assertFalse("admin pessimistic lock was established", adminPessimisticLock.isOwnedByUser(adminSession.getPerson()));
+
+        // Check that "admin" does not have edit permissions
+        assertFalse("admin can edit", canAdminEdit);
+
+        // Have "admin" establish a lock that has a different lock descriptor.
+        GlobalVariables.getUserSession().addObject(LOCK_KEY, AccountRequestDocument2.EDIT_REASONS_ONLY);
+        adminLockDescriptor = accountDoc2.getCustomLockDescriptor(quickstartSession.getPerson());
+        assertNotNull("The document should have generated a custom lock descriptor", adminLockDescriptor);
+        assertNotEquals("Same lock descriptor generated for admin", quickstartLockDescriptor, adminLockDescriptor);
+        canAdminEdit = lockService.establishPessimisticLocks(accountDoc2, adminSession.getPerson(), true);
+
+        // Check that "quickstart" and "admin" have the only pessimistic locks
+        assertEquals("The wrong number of pessimistic locks are established", 2, accountDoc2.getPessimisticLocks().size());
+        for (PessimisticLock pessimisticLock : accountDoc2.getPessimisticLocks()) {
+            if (pessimisticLock.isOwnedByUser(quickstartSession.getPerson())) {
+                assertEquals("quickstart pessimistic lock was established with wrong lock descriptor", quickstartLockDescriptor, pessimisticLock.getLockDescriptor());
+            } else if (pessimisticLock.isOwnedByUser(adminSession.getPerson())) {
+                assertEquals("admin pessimistic lock was established with wrong lock descriptor", adminLockDescriptor, pessimisticLock.getLockDescriptor());
+            }
+        }
+
+        // Check that "admin" has edit permissions
+        assertTrue("admin cannot edit", canAdminEdit);
+
+        // Have "quickstart" erroneously try to acquire the lock owned by "admin"
+        GlobalVariables.getUserSession().addObject(LOCK_KEY, AccountRequestDocument2.EDIT_REASONS_ONLY);
+        lockService.establishPessimisticLocks(accountDoc2, quickstartSession.getPerson(), true);
+
+        // Check that "quickstart" and "admin" have the only pessimistic locks
+        assertEquals("The wrong number of pessimistic locks are established", 2, accountDoc2.getPessimisticLocks().size());
+        for (PessimisticLock pessimisticLock : accountDoc2.getPessimisticLocks()) {
+            if (pessimisticLock.isOwnedByUser(quickstartSession.getPerson())) {
+                assertEquals("quickstart pessimistic lock was established with wrong lock descriptor", quickstartLockDescriptor, pessimisticLock.getLockDescriptor());
+            } else if (pessimisticLock.isOwnedByUser(adminSession.getPerson())) {
+                assertEquals("admin pessimistic lock was established with wrong lock descriptor", adminLockDescriptor, pessimisticLock.getLockDescriptor());
+            }
+        }
+
+        // Release all locks for "admin" and have "quickstart" obtain it
+        lockService.releaseAllLocksForUser(accountDoc2.getPessimisticLocks(), adminSession.getPerson(), adminLockDescriptor);
+        accountDoc2.refreshPessimisticLocks();
+        GlobalVariables.getUserSession().addObject(LOCK_KEY, AccountRequestDocument2.EDIT_REASONS_ONLY);
+        accountDoc2.getCustomLockDescriptor(quickstartSession.getPerson());
+        lockService.establishPessimisticLocks(accountDoc2, quickstartSession.getPerson(), true);
+
+        // Check that "quickstart" has the only pessimistic locks
+        assertEquals("The wrong number of pessimistic locks are established", 2, accountDoc2.getPessimisticLocks().size());
+        for (PessimisticLock pessimisticLock : accountDoc2.getPessimisticLocks()) {
+            assertTrue("quickstart pessimistic lock was not established", pessimisticLock.isOwnedByUser(quickstartSession.getPerson()));
+        }
+
+        // Release all the locks when done.
+        GlobalVariables.getUserSession().removeObject(LOCK_KEY);
+        lockService.releaseAllLocksForUser(accountDoc2.getPessimisticLocks(), quickstartSession.getPerson());
+        accountDoc2.refreshPessimisticLocks();
+        assertTrue("There is a pessimistic lock established", accountDoc2.getPessimisticLocks().isEmpty());
+    }
     
     /**
      * tests the PessimisticLockService.establishLocks method and the PessimisticLockService.getDocumentActions method
@@ -327,6 +470,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
      * @throws Exception
      */
     @Test
+    @Deprecated
     public void testEstablishLocks() throws Exception {
     	PessimisticLockService lockService = KRADServiceLocatorWeb.getPessimisticLockService();
     	AccountRequestDocument accountDoc = (AccountRequestDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest");
@@ -373,11 +517,31 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KRADConstants.KUALI_DEFAULT_TRUE_VALUE);
     	finalModes = lockService.establishLocks(accountDoc, editMode, quickstartSession.getPerson());
     	assertCorrectLocksAreInPlace(true, finalModes, 1, accountDoc.getPessimisticLocks(), quickstartPerson, null);
+
+        // Release lock for "quickstart" for additional testing
+        lockService.releaseAllLocksForUser(accountDoc.getPessimisticLocks(), quickstartSession.getPerson());
+        accountDoc.refreshPessimisticLocks();
+
+        // Have the system user create a workflow pessimistic lock.
+        UserSession systemSession = new UserSession(KRADConstants.SYSTEM_USER);
+        Person[] systemPerson = { systemSession.getPerson() };
+        lockService.establishWorkflowPessimisticLocking(accountDoc);
+        assertCorrectLocksAreInPlace(false, null, 1, accountDoc.getPessimisticLocks(), systemPerson, null);
+
+        // Make sure that no other users can lock when the workflow lock is in place.
+        editMode = new HashMap<String,String>();
+        editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KRADConstants.KUALI_DEFAULT_TRUE_VALUE);
+        finalModes = lockService.establishLocks(accountDoc, editMode, adminSession.getPerson());
+        assertCorrectLocksAreInPlace(false, finalModes, 1, accountDoc.getPessimisticLocks(), systemPerson, null);
+
+        // Ensure that workflow pessimistic locks can also be released.
+        lockService.releaseWorkflowPessimisticLocking(accountDoc);
+        assertTrue("There should not be any pessimistic locks present on the document", accountDoc.getPessimisticLocks().isEmpty());
     }
-    
+
     /**
-     * tests the PessimistLockService's workflow pessimistic locking capabilities
-     * 
+     * Tests the {@link org.kuali.rice.krad.service.PessimisticLockService.establishWorkflowPessimisticLocking} method.
+     *
      * @throws Exception
      */
     @Test
@@ -387,22 +551,27 @@ public class PessimisticLockServiceTest extends KRADTestCase {
     	assertTrue("The AccountRequestDocument should be using pessimistic locking",
     			KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
     	
-    	// Have the system user create a workflow pessimistic lock.
+    	// Have the system user establish a pessimistic lock on the account request document.
     	UserSession systemSession = new UserSession(KRADConstants.SYSTEM_USER);
-    	Person[] systemPerson = { systemSession.getPerson() };
     	lockService.establishWorkflowPessimisticLocking(accountDoc);
-       	assertCorrectLocksAreInPlace(false, null, 1, accountDoc.getPessimisticLocks(), systemPerson, null);
-       	
-       	// Make sure that no other users can lock when the workflow lock is in place.
-       	UserSession adminSession = new UserSession("admin");
-    	Map<String,String> editMode = new HashMap<String,String>();
-    	editMode.put(AuthorizationConstants.EditMode.FULL_ENTRY, KRADConstants.KUALI_DEFAULT_TRUE_VALUE);
-    	Map<?,?> finalModes = lockService.establishLocks(accountDoc, editMode, adminSession.getPerson());
-    	assertCorrectLocksAreInPlace(false, finalModes, 1, accountDoc.getPessimisticLocks(), systemPerson, null);
+
+        // Check that the system user has the only pessimistic lock
+        assertEquals("The wrong number of pessimistic locks are established", 1, accountDoc.getPessimisticLocks().size());
+        PessimisticLock krPessimisticLock = accountDoc.getPessimisticLocks().get(0);
+        assertTrue("kr pessimistic lock was not established", krPessimisticLock.isOwnedByUser(systemSession.getPerson()));
+
+        // Have "admin" attempt to erroneously establish a pessimistic lock on the account request document.
+        UserSession adminSession = new UserSession("admin");
+        lockService.establishPessimisticLocks(accountDoc, adminSession.getPerson(), true);
+
+        // Check that "admin" cannot establish a lock when one is already in place.
+        assertEquals("The wrong number of pessimistic locks are established", 1, accountDoc.getPessimisticLocks().size());
+        PessimisticLock adminPessimisticLock = accountDoc.getPessimisticLocks().get(0);
+        assertFalse("admin pessimistic lock was not established", adminPessimisticLock.isOwnedByUser(adminSession.getPerson()));
        	
        	// Ensure that workflow pessimistic locks can also be released.
        	lockService.releaseWorkflowPessimisticLocking(accountDoc);
-       	assertTrue("There should not be any pessimistic locks present on the document", accountDoc.getPessimisticLocks().isEmpty());
+       	assertTrue("There is a pessimistic lock established", accountDoc.getPessimisticLocks().isEmpty());
     }
     
     /**
@@ -411,6 +580,7 @@ public class PessimisticLockServiceTest extends KRADTestCase {
      * @throws Exception
      */
     @Test
+    @Deprecated
     public void testPessimisticLockingWithCustomDocumentLockDescriptors() throws Exception {
        	AccountRequestDocument2 accountDoc2 = (AccountRequestDocument2) KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest2");
        	assertTrue("The AccountRequestDocument2 should be using pessimistic locking", KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary(

@@ -22,6 +22,7 @@
 	<bean id="TravelAuthorizationDocument" parent="uifTransactionalDocumentEntry">
 		<property name="documentTypeName" value="TravelAuthorization" />
 		<property name="documentClass" value="edu.sampleu.travel.dataobject.TravelAuthorizationDocument" />
+    <property name="usePessimisticLocking" value="true" />
 	</bean>
 
 </beans>

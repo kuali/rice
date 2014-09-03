@@ -207,11 +207,142 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
     /**
-     * @param document
-     * @param user
-     * @return Set of actions are permitted the given user on the given document
+     * {@inheritDoc}
      */
     @Override
+    public boolean establishPessimisticLocks(Document document, Person user, boolean canEdit) {
+        // establish pessimistic locks if needed
+        if (isPessimisticLockNeeded(document, user, canEdit)) {
+            PessimisticLock pessimisticLock = createNewPessimisticLock(document, user);
+            document.addPessimisticLock(pessimisticLock);
+        }
+
+        // find if any pessimistic locks are owned by the given user
+        for (PessimisticLock pessimisticLock : document.getPessimisticLocks()) {
+            if (pessimisticLock.isOwnedByUser(user)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines whether to add a pessimistic lock on the {@code document} for {@code user} based on the current
+     * pessimistic locks and edit modes.
+     *
+     * @param document the document on which the locks will be established
+     * @param user the user for which the locks are being established
+     * @param canEdit whether the user currently can edit the document
+     *
+     * @return true if a pessimistic lock should be added, false otherwise
+     */
+    protected boolean isPessimisticLockNeeded(Document document, Person user, boolean canEdit) {
+        List<String> userOwnedLockDescriptors = new ArrayList<String>();
+        Map<String, Set<String>> otherOwnedLockDescriptors = new HashMap<String,Set<String>>();
+
+        // create the two lock containers that help determine whether to add a pessimistic lock
+        for (PessimisticLock pessimisticLock : document.getPessimisticLocks()) {
+            if (pessimisticLock.isOwnedByUser(user)) {
+                userOwnedLockDescriptors.add(pessimisticLock.getLockDescriptor());
+            } else {
+                if (!otherOwnedLockDescriptors.containsKey(pessimisticLock.getLockDescriptor())) {
+                    otherOwnedLockDescriptors.put(pessimisticLock.getLockDescriptor(), new HashSet<String>());
+                }
+
+                String otherOwnerPrincipalId = pessimisticLock.getOwnedByUser().getPrincipalId();
+                otherOwnedLockDescriptors.get(pessimisticLock.getLockDescriptor()).add(otherOwnerPrincipalId);
+            }
+        }
+
+        // double check whether the existing pessimistic locks are sane
+        checkExistingPessimisticLocks(document, userOwnedLockDescriptors, otherOwnedLockDescriptors);
+
+        // if no one has a lock on this document, then the document can be locked if the user can edit it
+        if (userOwnedLockDescriptors.isEmpty() && otherOwnedLockDescriptors.isEmpty()) {
+            return canEdit;
+        }
+
+        // if custom locking is turned on, then if the current user doesn't have a custom lock on this document and no
+        // one else has a custom lock on this document, then the document can be locked if the user can edit it
+        if (document.useCustomLockDescriptors()) {
+            String customLockDescriptor = document.getCustomLockDescriptor(user);
+            boolean userOwnsCustomLockDescriptor = userOwnedLockDescriptors.contains(customLockDescriptor);
+            boolean otherOwnsCustomLockDescriptor = otherOwnedLockDescriptors.containsKey(customLockDescriptor);
+
+            if (!userOwnsCustomLockDescriptor && !otherOwnsCustomLockDescriptor) {
+                return canEdit;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check to make sure that the current user doesn't erroneously share the same lock with another user.
+     *
+     * @param document the document to check for erroneous locks
+     * @param userOwnedLockDescriptors the list of lock descriptors for the current user
+     * @param otherOwnedLockDescriptors the map of other lock descriptors to all of the other users that own them
+     */
+    protected void checkExistingPessimisticLocks(Document document, List<String> userOwnedLockDescriptors, Map<String, Set<String>> otherOwnedLockDescriptors) {
+        for (String userOwnedLockDescriptor : userOwnedLockDescriptors) {
+            if (otherOwnedLockDescriptors.containsKey(userOwnedLockDescriptor)) {
+                Set<String> otherOwnerPrincipalIds = otherOwnedLockDescriptors.get(userOwnedLockDescriptor);
+                String workflowOwnerPrincipalId = getWorkflowPessimisticLockOwnerUser().getPrincipalId();
+                boolean hasOtherOwners = !otherOwnerPrincipalIds.isEmpty();
+                boolean hasMoreThanOneOtherOwner = otherOwnerPrincipalIds.size() > 1;
+                boolean hasWorkflowOwner = otherOwnerPrincipalIds.contains(workflowOwnerPrincipalId);
+
+                // if the lock has other owners, then if there is more than one other owner or if the single other owner
+                // is not the workflow user, then throw an error
+                if (hasOtherOwners && (hasMoreThanOneOtherOwner || !hasWorkflowOwner)) {
+                    StringBuilder builder = new StringBuilder("Found an invalid lock status on document number ");
+                    builder.append(document.getDocumentNumber());
+                    builder.append(" with current user and other user both having locks concurrently");
+
+                    if (document.useCustomLockDescriptors()) {
+                        builder.append(" for custom lock descriptor '");
+                        builder.append(userOwnedLockDescriptor);
+                        builder.append("'");
+                    }
+
+                    builder.append(".");
+
+                    LOG.debug(builder.toString());
+
+                    throw new PessimisticLockingException(builder.toString());
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates a new {@link PessimisticLock} on a {@code document} for a {@code user}.
+     *
+     * <p>
+     * If the {@code document} uses custom lock descriptors, then the new lock is generated with a custom lock
+     * descriptor for a portion of the document.  Otherwise, it will create a lock over the entire document.
+     * </p>
+     *
+     * @param document the document on which the locks will be established
+     * @param user the user for which the locks are being established
+     *
+     * @return the newly created lock object
+     */
+    protected PessimisticLock createNewPessimisticLock(Document document, Person user) {
+        if (document.useCustomLockDescriptors()) {
+            return generateNewLock(document.getDocumentNumber(), document.getCustomLockDescriptor(user), user);
+        } else {
+            return generateNewLock(document.getDocumentNumber(), user);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Deprecated
 	public Set getDocumentActions(Document document, Person user, Set<String> documentActions){
     	if(documentActions.contains(KRADConstants.KUALI_ACTION_CAN_CANCEL) && !hasPreRouteEditAuthorization(document, user) ){
     		documentActions.remove(KRADConstants.KUALI_ACTION_CAN_CANCEL);
@@ -238,7 +369,10 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      *         {@link #hasInitiateAuthorization(Document, Person)}), and the document has a lock owned by the given
      *         user. If the document is not using Pessimistic Locking the value returned will be that returned by
      *         {@link #hasInitiateAuthorization(Document, Person)}.
+     *
+     * @deprecated Different mechanism of obtaining authorization in KRAD
      */
+    @Deprecated
     protected boolean hasPreRouteEditAuthorization(Document document, Person user) {
     	if (document.getPessimisticLocks().isEmpty()) {
     		return true;
@@ -252,7 +386,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
         return false;
     }
 
-
+    @Deprecated
     protected boolean usesPessimisticLocking(Document document) {
         return getDataDictionaryService().getDataDictionary().getDocumentEntry(document.getClass().getName()).getUsePessimisticLocking();
     }
@@ -266,7 +400,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      */
     @Override
 	public void establishWorkflowPessimisticLocking(Document document) {
-        PessimisticLock lock = createNewPessimisticLock(document, new HashMap(), getWorkflowPessimisticLockOwnerUser());
+        PessimisticLock lock = createNewPessimisticLock(document, getWorkflowPessimisticLockOwnerUser());
         document.addPessimisticLock(lock);
     }
 
@@ -297,6 +431,8 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * This implementation will check the given document, editMode map, and user object to verify Pessimistic Locking. If the
      * given edit mode map contains an 'entry type' edit mode then the system will check the locks already in existence on
      * the document. If a valid lock for the given user is found the system will return the given edit mode map. If a valid
@@ -310,6 +446,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      *      java.util.Map, org.kuali.rice.kim.api.identity.Person)
      */
     @Override
+    @Deprecated
 	public Map establishLocks(Document document, Map editMode, Person user) {
         Map editModeMap = new HashMap();
         // givenUserLockDescriptors is a list of lock descriptors currently held on the document by the given user
@@ -414,6 +551,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      *            user the lock will be 'owned' by
      * @return true if the given edit mode map has at least one 'entry type' edit mode... false otherwise
      */
+    @Deprecated
     protected boolean isLockRequiredByUser(Document document, Map editMode, Person user) {
         // check for entry edit mode
         for (Iterator iterator = editMode.entrySet().iterator(); iterator.hasNext();) {
@@ -436,6 +574,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @return an adjusted edit mode map where 'entry type' edit modes have been removed or replaced using the
      *         {@link #getEntryEditModeReplacementMode} method
      */
+    @Deprecated
     protected Map getEditModeWithEditableModesRemoved(Map currentEditMode) {
         Map editModeMap = new HashMap();
         for (Iterator iterator = currentEditMode.entrySet().iterator(); iterator.hasNext();) {
@@ -459,6 +598,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      * @return true if the given entry has a key signifying an 'entry type' edit mode and the value is equal to
      *         {@link #EDIT_MODE_DEFAULT_TRUE_VALUE}... false if not
      */
+    @Deprecated
     protected boolean isEntryEditMode(Map.Entry entry) {
     	// check for FULL_ENTRY edit mode set to default true value
     	if (AuthorizationConstants.EditMode.FULL_ENTRY.equals(entry.getKey())) {
@@ -493,6 +633,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      *            user who will 'own' the new lock object
      * @return the newly created lock object
      */
+    @Deprecated
     protected PessimisticLock createNewPessimisticLock(Document document, Map editMode, Person user) {
         if (document.useCustomLockDescriptors()) {
             return generateNewLock(document.getDocumentNumber(), document.getCustomLockDescriptor(user), user);

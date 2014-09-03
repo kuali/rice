@@ -147,6 +147,7 @@ public final class RiceKeyConstants {
     public static final String ERROR_MAINTENANCE_LOCKED1 = "error.maintenance.locked.1";
     public static final String ERROR_MAINTENANCE_LOCKED2 = "error.maintenance.locked.2";
     public static final String ERROR_MAINTENANCE_LOCKED3 = "error.maintenance.locked.3";
+    public static final String ERROR_TRANSACTIONAL_LOCKED = "error.transactional.locked";
     public static final String ERROR_ZERO_AMOUNT = "error.zeroAmount";
     public static final String ERROR_ZERO_OR_NEGATIVE_AMOUNT = "error.zeroOrNegativeAmount";
     public static final String ERROR_NEGATIVE_AMOUNT = "error.negativeAmount";

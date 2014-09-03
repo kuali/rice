@@ -351,6 +351,26 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     public static final String SUBMIT_XPATH="//input[@name='methodToCall.route' and @alt='submit']";
 
     /**
+     * //input[@name='methodToCall.approve' and @alt='approve']
+     */
+    public static final String APPROVE_XPATH="//input[@name='methodToCall.approve' and @alt='approve']";
+
+    /**
+     * //input[@name='methodToCall.disapprove' and @alt='disapprove']
+     */
+    public static final String DISAPPROVE_XPATH="//input[@name='methodToCall.disapprove' and @alt='disapprove']";
+
+    /**
+     * //input[@name='methodToCall.acknowledge' and @alt='acknowledge']
+     */
+    public static final String ACKNOWLEDGE_XPATH="//input[@name='methodToCall.acknowledge' and @alt='acknowledge']";
+
+    /**
+     * //input[@name='methodToCall.close' and @alt='close']
+     */
+    public static final String CLOSE_XPATH="//input[@name='methodToCall.close' and @alt='close']";
+
+    /**
      * Travel Account Lookup
      */
     public static final String TRAVEL_ACCOUNT_LOOKUP_LINK_TEXT = "Travel Account Lookup";
@@ -2857,6 +2877,58 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected void waitAndClickSubmitByText() throws InterruptedException {
         waitAndClickButtonByText("Submit");
+    }
+
+    /**
+     * {@link #APPROVE_XPATH}
+     * @throws InterruptedException
+     */
+    protected void waitAndClickApprove() throws InterruptedException {
+        jGrowl("Click Approve");
+        waitAndClickByXpath(APPROVE_XPATH);
+    }
+
+    protected void waitAndClickApproveByText() throws InterruptedException {
+        waitAndClickButtonByText("Approve");
+    }
+
+    /**
+     * {@link #DISAPPROVE_XPATH}
+     * @throws InterruptedException
+     */
+    protected void waitAndClickDisapprove() throws InterruptedException {
+        jGrowl("Click Disapprove");
+        waitAndClickByXpath(DISAPPROVE_XPATH);
+    }
+
+    protected void waitAndClickDisapproveByText() throws InterruptedException {
+        waitAndClickButtonByText("Disapprove");
+    }
+
+    /**
+     * {@link #ACKNOWLEDGE_XPATH}
+     * @throws InterruptedException
+     */
+    protected void waitAndClickAcknowledge() throws InterruptedException {
+        jGrowl("Click Acknowledge");
+        waitAndClickByXpath(ACKNOWLEDGE_XPATH);
+    }
+
+    protected void waitAndClickAcknowledgeByText() throws InterruptedException {
+        waitAndClickButtonByText("Acknowledge");
+    }
+
+    /**
+     * {@link #CLOSE_XPATH}
+     * @throws InterruptedException
+     */
+    protected void waitAndClickClose() throws InterruptedException {
+        jGrowl("Click Close");
+        waitAndClickByXpath(CLOSE_XPATH);
+    }
+
+    protected void waitAndClickCloseByText() throws InterruptedException {
+        waitAndClickButtonByText("Close");
     }
 
     /**

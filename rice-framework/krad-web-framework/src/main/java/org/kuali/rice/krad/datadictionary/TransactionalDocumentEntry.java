@@ -16,16 +16,39 @@
 package org.kuali.rice.krad.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
+import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.TransactionalDocumentAuthorizerBase;
+import org.kuali.rice.krad.document.TransactionalDocumentBase;
+import org.kuali.rice.krad.document.TransactionalDocumentPresentationControllerBase;
 
 /**
- * TransactionalDocumentEntry
+ * Data dictionary entry class for {@link org.kuali.rice.krad.document.TransactionalDocument}.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BeanTag(name = "transactionalDocumentEntry")
 public class TransactionalDocumentEntry extends DocumentEntry {
+
     private static final long serialVersionUID = 5746921563371805425L;
 
-    public TransactionalDocumentEntry() {}
+    /**
+     * Constructs this {@code TransactionalDocumentEntry} with document presentation and authorization defaults.
+     */
+    public TransactionalDocumentEntry() {
+        super();
+
+        setDocumentClass(getStandardDocumentBaseClass());
+        documentAuthorizerClass = TransactionalDocumentAuthorizerBase.class;
+        documentPresentationControllerClass = TransactionalDocumentPresentationControllerBase.class;
+    }
+
+    /**
+     * Returns the default base class for a {@link org.kuali.rice.krad.document.TransactionalDocument}.
+     *
+     * @return the default base class for a {@link org.kuali.rice.krad.document.TransactionalDocument}
+     */
+    public Class<? extends Document> getStandardDocumentBaseClass() {
+        return TransactionalDocumentBase.class;
+    }
 
 }

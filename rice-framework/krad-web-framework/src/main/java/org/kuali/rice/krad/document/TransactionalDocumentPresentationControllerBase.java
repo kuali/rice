@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.krad.document;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.krad.document.Document;
-import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
-
-import java.util.HashSet;
-import java.util.Set;
-
 /**
 * Document presentation controller implementation for transactional documents.
 *
@@ -36,6 +28,17 @@ import java.util.Set;
 * @author Kuali Rice Team (rice.collab@kuali.org)
 */
 public class TransactionalDocumentPresentationControllerBase extends DocumentPresentationControllerBase implements TransactionalDocumentPresentationController {
-    private static Log LOG = LogFactory.getLog(TransactionalDocumentPresentationControllerBase.class);
+
+    private static final long serialVersionUID = 6830255382171510618L;
+
+    /**
+     * {@inheritDoc}
+     *
+     * A document should only show its close button if it is a transactional document, since closing releases its
+     * pessimistic locks.
+     */
+    public boolean canClose(Document document) {
+        return true;
+    }
 
 }

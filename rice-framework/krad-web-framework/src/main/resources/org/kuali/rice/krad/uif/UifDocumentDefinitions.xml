@@ -356,8 +356,13 @@
   <bean id="Uif-DocumentPageFooter" parent="Uif-FooterBase" p:render="@{!#view.superUserView}" >
     <property name="items">
       <list>
-        <bean parent="Uif-CancelAction" p:confirmationPromptText="Are you sure you want to cancel?"
-              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}"/>
+        <bean parent="Uif-CancelAction"
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}">
+          <property name="confirmationDialog">
+            <bean id="ConfirmCancelDialog" parent="Uif-DialogGroup-OkCancel"
+                  p:promptText="Are you sure you want to cancel?"/>
+          </property>
+        </bean>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="copy" p:actionLabel="Copy"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="performRouteReport" p:actionLabel="Route Report"
@@ -428,6 +433,8 @@
                   p:promptText="Reason for recall?"/>
           </property>
         </bean>
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="close" p:actionLabel="Close"
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CLOSE]}"/>
       </list>
     </property>
   </bean>
@@ -448,6 +455,12 @@
               value="org.kuali.rice.krad.document.TransactionalDocumentViewPresentationControllerBase"/>
     <property name="authorizerClass" value="org.kuali.rice.krad.document.TransactionalDocumentViewAuthorizerBase"/>
     <property name="formClass" value="org.kuali.rice.krad.web.form.TransactionalDocumentFormBase"/>
+    <property name="dialogs">
+      <list merge="true">
+        <bean id="ConfirmSaveOnCloseDialog" parent="Uif-DialogGroup-YesNo"
+              p:promptText="Would you like to save this document before you close it?"/>
+      </list>
+    </property>
   </bean>
 
   <bean id="Uif-DocumentNumber" parent="Uif-InputField" p:propertyName="documentNumber"

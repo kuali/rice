@@ -216,8 +216,8 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickBlanketApprove();
         jGrowl("Click OK");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
-        acceptAlert();
         checkForDocErrorKrad();
+        acceptAlert();
 
         // Redirected to Home page after Blanket Approve https://jira.kuali.org/browse/KULRICE-13042
         waitAndClickDemoLink();

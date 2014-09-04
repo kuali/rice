@@ -144,7 +144,7 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
             Object newDataObject = null;
 
             if (dataObjectService.supports(oldDataObject.getClass())) {
-                newDataObject = dataObjectService.copyInstance(oldDataObject, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
+                newDataObject = dataObjectService.copyInstance(oldDataObject);
             } else {
                 newDataObject = SerializationUtils.deepCopy((Serializable) oldDataObject);
             }

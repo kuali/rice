@@ -98,9 +98,9 @@ public class TermMaintenanceEditCopyAft extends MainTmplMthdSTNavBase {
         passed();
     }
 
-    @Test
-    public void testEditExistingTermWithParameterNav() throws Exception {
-        testCopyEditExistingTermWithParameter();
-        passed();
-    }
+//    @Test
+//    public void testCopyEditExistingTermWithParameterNav() throws Exception {
+//        testCopyEditExistingTermWithParameter();
+//        passed();
+//    }
 }

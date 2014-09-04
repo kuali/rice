@@ -121,9 +121,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         addAdHocRecipient(ActionRequestType.APPROVE.name(), APPROVER_PRINCIPAL_NAME_VALUE, getUserName());
 
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-        waitForTextPresent("Document was successfully submitted");
+        submitSuccessfully();
 
         openTravelAuthorization(documentNumber, APPROVER_PRINCIPAL_NAME_VALUE);
 
@@ -170,9 +168,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         addAdHocRecipient(ActionRequestType.APPROVE.name(), APPROVER_PRINCIPAL_NAME_VALUE);
 
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-        waitForTextPresent("Document was successfully submitted");
+        submitSuccessfully();
 
         waitAndClickCloseByText();
 
@@ -191,9 +187,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         addAdHocRecipient(ActionRequestType.APPROVE.name(), APPROVER_PRINCIPAL_NAME_VALUE);
 
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-        waitForTextPresent("Document was successfully submitted");
+        submitSuccessfully();
 
         waitAndClickCloseByText();
 
@@ -216,9 +210,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         addAdHocRecipient(ActionRequestType.APPROVE.name(), APPROVER_PRINCIPAL_NAME_VALUE);
 
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-        waitForTextPresent("Document was successfully submitted");
+        submitSuccessfully();
 
         waitAndClickCloseByText();
 
@@ -259,9 +251,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         addAdHocRecipient(ActionRequestType.ACKNOWLEDGE.name(), APPROVER_PRINCIPAL_NAME_VALUE);
 
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-        waitForTextPresent("Document was successfully submitted");
+        submitSuccessfully();
 
         waitAndClickCloseByText();
 
@@ -286,8 +276,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
         waitAndClickButtonByText(SEARCH);
         waitAndClickByLinkText(RETURN_VALUE_LINK_TEXT);
 
-        waitAndClickSaveByText();
-        waitForTextPresent("Document was successfully saved");
+        saveSuccessfully();
 
         return documentNumber;
     }

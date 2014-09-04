@@ -51,15 +51,7 @@
         <!--ex:Demo-CollectionEditLine-Example1 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
           <property name="headerText" value="Default Edit Line" />
-          <property name="instructionalText" value="This demo shows the default behavior of a collection's edit line in
-          dialog without custom edit line items nor custom actions. In this case, the edit line dialog items default to
-          the items in the collection group (in this example, the fields are 'field1' and 'field2'), and the actions
-          default to their respective prototypes. There are 2 default actions, the edit line in dialog line action,
-          which displays the edit line dialog with the current line items to edit, and the other is the save changes
-          action, which is displayed in the edit line dialog to save the changes made to the current line by invoking
-          the controller's saveLine method."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
           <property name="propertyName" value="collection1" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
@@ -83,12 +75,8 @@
         <!--ex:Demo-CollectionEditLine-Example2 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
           <property name="headerText" value="Custom Dialog Edit Line 1" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in
-          dialog with user-specified edit line items (in this example, only the field 'field1'), but actions default
-          to their respective prototypes. In this example, the custom field is one of the fields in the collection."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_2" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="editWithDialog" value="true"/>
@@ -120,12 +108,8 @@
         <!--ex:Demo-CollectionEditLine-Example3 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
           <property name="headerText" value="Custom Dialog Edit Line 2" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in dialog
-          with user-specified edit line items (in this example, only the field 'field3'), but actions default to
-          their respective prototypes. In this example, the custom field is not one of the fields in the collection."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_3" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="editWithDialog" value="true"/>
@@ -157,12 +141,8 @@
         <!--ex:Demo-CollectionEditLine-Example4 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
           <property name="headerText" value="Custom Dialog Line Action Edit Line" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in
-          dialog with default edit line items and a custom action, the edit line in dialog line action with a
-          custom label (you can also invoke custom scripts, etc.)."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_4" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="editWithDialog" value="true"/>
@@ -189,12 +169,8 @@
         <!--ex:Demo-CollectionEditLine-Example5 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
           <property name="headerText" value="Custom Dialog Save Action Edit Line" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in
-          dialog with default edit line items and a custom action, the save changes action displayed in the dialog
-          to save the changes made to the edited line by invoking the custom controller's method."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_5" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="editWithDialog" value="true"/>
@@ -222,12 +198,8 @@
         <!--ex:Demo-CollectionEditLine-Example6 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
           <property name="headerText" value="ReadOnly Edit Line" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in
-          dialog with user-specified edit line items wherein each individual items is 'readOnly', but actions default
-          to their respective prototypes."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_6" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="editWithDialog" value="true"/>
@@ -250,12 +222,8 @@
         <!--ex:Demo-CollectionEditLine-Example7 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
           <property name="headerText" value="Edit Authorization Edit Line (collection readOnly)" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in
-          dialog with default edit line items and default actions, wherein the line being edited fails the edit
-          line authorization (in this case, the failure is caused by the entire collection group being 'readOnly')."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_7" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="readOnly" value="true"/>
@@ -279,12 +247,8 @@
         <!--ex:Demo-CollectionEditLine-Example8 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
           <property name="headerText" value="Edit Authorization Edit Line (line authorization)" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in
-          dialog with default edit line items and default actions, wherein the line being edited fails the edit
-          line authorization (in this case, the failure is caused by the presentation controller)."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_8" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="editWithDialog" value="true"/>
@@ -317,12 +281,8 @@
         <!-- ex:Demo-CollectionEditLine-Example9 start-->
         <bean parent="Uif-TableCollectionSection">
           <property name="headerText" value="Lookup Collection Edit Line" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in
-          dialog with default edit line items and default actions, wherein a field in the line being edited has a
-          quickfinder for a lookup."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_9" />
           <property name="layoutManager.generateAutoSequence" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="editWithDialog" value="true"/>
@@ -352,11 +312,7 @@
         <!-- ex:Demo-CollectionEditLine-Example10 start-->
         <bean id="Demo-CollectionEditLine-Section1" parent="Uif-TableCollectionSection">
           <property name="headerText" value="SubCollection Edit Line" />
-          <property name="instructionalText" value="This demo shows the behavior of a collection's edit line in
-          dialog with default edit line items and default actions, wherein a field in the line being edited
-          has a sub-collection that is also editable."/>
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection4"/>
           <property name="editWithDialog" value="true"/>
           <property name="layoutManager.renderSequenceField" value="false"/>

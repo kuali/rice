@@ -27,7 +27,6 @@
       </list>
     </property>
   </bean>
-
   <bean id="Uif-DocumentView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.DocumentView" parent="Uif-FormView" p:enterKeyAction="@DEFAULT">
     <property name="cssClasses">
@@ -89,12 +88,15 @@
       <list>
         <bean parent="Uif-DocumentNumber"/>
         <bean parent="Uif-DocumentStatus"/>
+        <bean parent="Uif-DocumentTemplateNumber"/>
         <bean parent="Uif-DocumentInitiatorNetworkId"/>
         <bean parent="Uif-DocumentCreateDate"/>
       </list>
     </property>
     <property name="layoutManager">
-      <bean parent="Uif-GridLayoutBase" p:numberOfColumns="4" p:applyDefaultCellWidths="false"/>
+      <bean parent="Uif-GridLayoutBase"
+            p:numberOfColumns="@{document.documentHeader.documentTemplateNumber == null ? 4 : 6}"
+            p:applyDefaultCellWidths="false"/>
     </property>
     <property name="fieldBindingObjectPath" value="document"/>
     <property name="validationMessages.displayMessages" value="false"/>
@@ -501,12 +503,13 @@
     </property>
   </bean>
 
-  <bean id="Uif-DocumentTemplateNumber" parent="Uif-InputField" p:propertyName="documentTemplateNumber"
-        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">
+  <bean id="Uif-DocumentTemplateNumber" parent="Uif-InputField" p:propertyName="documentHeader.documentTemplateNumber"
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"
+        p:render="@{document.documentHeader.documentTemplateNumber == null ? false : true}">
     <property name="cssClasses">
-          <list merge="true">
-            <value>uif-documentTemplateNumber</value>
-          </list>
+      <list merge="true">
+        <value>uif-documentTemplateNumber</value>
+      </list>
     </property>
   </bean>
 
@@ -536,4 +539,5 @@
           </list>
     </property>
   </bean>
+
 </beans>

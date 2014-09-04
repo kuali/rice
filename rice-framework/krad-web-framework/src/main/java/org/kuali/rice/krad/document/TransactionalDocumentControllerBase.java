@@ -34,9 +34,9 @@ public abstract class TransactionalDocumentControllerBase extends DocumentContro
     /**
      * @see TransactionalDocumentControllerService#copy(org.kuali.rice.krad.web.form.TransactionalDocumentFormBase)
      */
-    @RequestMapping(params = "methodToCall=" + KRADConstants.Maintenance.METHOD_TO_CALL_COPY)
+    @RequestMapping(params = "methodToCall=" + KRADConstants.MAINTENANCE_COPY_METHOD_TO_CALL)
     public ModelAndView copy(TransactionalDocumentFormBase form) {
-        return getControllerService().cancelAttachment(form);
+        return getControllerService().copy(form);
     }
 
     @Override

@@ -71,7 +71,7 @@ rowDataAttributes<br>
         <#local loopCounter = loopCounter + 1/>
 
         <#-- skip if not rendering -->
-        <#if (item.render)>
+        <#--#if (item.render)-->
 
             <#local columnIndex = (colCount % numberOfColumns)/>
             <#local colCount=colCount + 1/>
@@ -189,7 +189,7 @@ rowDataAttributes<br>
                 <#local columnLoopArray=""/>
             </#if>
 
-        </#if>
+        <#--/#if-->
 
     </#list>
 </#macro>

@@ -125,6 +125,7 @@
   <bean id="Uif-DialogGroup-OkCancel" parent="Uif-DialogGroup">
     <property name="headerText" value="Please Confirm to Continue"/>
     <property name="promptText" value="Select OK to continue"/>
+    <property name="dialogCssClass" value="modal-sm"/>
     <property name="footer.items">
       <list>
         <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
@@ -142,6 +143,7 @@
   <bean id="Uif-DialogGroup-YesNo" parent="Uif-DialogGroup">
     <property name="headerText" value="Please Select"/>
     <property name="promptText" value="Are you sure you wish to continue?"/>
+    <property name="dialogCssClass" value="modal-sm"/>
     <property name="footer.items">
       <list>
         <bean parent="Uif-DialogDismissButton" p:actionLabel="No"/>

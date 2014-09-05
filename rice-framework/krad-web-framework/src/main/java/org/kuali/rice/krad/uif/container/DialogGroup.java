@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.krad.uif.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -33,6 +30,9 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Special type of group that presents the content in a modal dialog.
  *
@@ -47,7 +47,8 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
  *
  * <p>A dialog is a group and can be configured like any other general group. For building basic dialogs, there are
  * convenience properties that can be used. In addition, there are base beans provided with definitions for these
- * properties. This includes a basic prompt message and responses. Note to have responses with different action properties,
+ * properties. This includes a basic prompt message and responses. Note to have responses with different action
+ * properties,
  * set the items of the dialog groups footer directly.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -59,6 +60,7 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
         @BeanTag(name = "actionConfirmation", parent = "Uif-ActionConfirmation"),
         @BeanTag(name = "actionConfirmationExpl", parent = "Uif-ActionConfirmationExpl")})
 public class DialogGroup extends GroupBase {
+
     private static final long serialVersionUID = 1L;
 
     private MessageField prompt;
@@ -77,7 +79,6 @@ public class DialogGroup extends GroupBase {
      */
     public DialogGroup() {
         super();
-        dialogCssClass = "modal-sm";
     }
 
     /**

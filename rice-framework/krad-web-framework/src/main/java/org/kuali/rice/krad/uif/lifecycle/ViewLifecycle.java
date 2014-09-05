@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.krad.uif.lifecycle;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,6 +39,16 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Lifecycle object created during the view processing to hold event registrations.
  *
@@ -57,6 +56,7 @@ import org.kuali.rice.krad.web.form.UifFormBase;
  * @see LifecycleEventListener
  */
 public class ViewLifecycle implements Serializable {
+
     private static Logger LOG = Logger.getLogger(ViewLifecycle.class);
     private static final long serialVersionUID = -4767600614111642241L;
 
@@ -77,7 +77,7 @@ public class ViewLifecycle implements Serializable {
 
     final HttpServletRequest request;
     private ViewPostMetadata viewPostMetadata;
-    
+
     private Set<String> visitedIds;
 
     /**
@@ -136,7 +136,6 @@ public class ViewLifecycle implements Serializable {
             }
 
             lifecycleProcess.run();
-
         } finally {
             PROCESSOR.remove();
         }
@@ -211,16 +210,32 @@ public class ViewLifecycle implements Serializable {
         if (viewPostMetadata == null) {
             UifFormBase form = (UifFormBase) model;
 
-            throw new RuntimeException("View post metadata is null which cannot occur for refresh. Form id: "
-                    + form.getFormKey() + ", requested form id: " + form.getRequestedFormKey());
+            throw new RuntimeException(
+                    "View post metadata is null which cannot occur for refresh. Form id: " + form.getFormKey()
+                            + ", requested form id: " + form.getRequestedFormKey());
         }
 
         ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(componentId);
-        if ((componentPostMetadata == null) || componentPostMetadata.isDetachedComponent()) {
-            if (componentPostMetadata == null) {
-                componentPostMetadata = viewPostMetadata.initializeComponentPostMetadata(componentId);
-            }
+        boolean componentPostMetadataInitialized = false;
+        if (componentPostMetadata == null) {
+            componentPostMetadata = viewPostMetadata.initializeComponentPostMetadata(componentId);
+            componentPostMetadataInitialized = true;
+        }
 
+        String rootPath = componentPostMetadata.getRootObjectPath();
+
+        if (rootPath != null && !rootPath.equals(componentPostMetadata.getPath())) {
+            ComponentPostMetadata rootComponentPostMetadata = viewPostMetadata.getComponentPostMetadataForPath(
+                    rootPath);
+
+            // If the root object is a detached component, reinitialize it to refresh sub components correctly
+            if (rootComponentPostMetadata != null && rootComponentPostMetadata.isDetachedComponent()) {
+                setupStandaloneComponentForRefresh(view, rootComponentPostMetadata.getId(), rootComponentPostMetadata);
+            }
+        }
+
+        // If this component never had post metadata before or it is detached, then it is considered 'standalone'
+        if (componentPostMetadataInitialized || componentPostMetadata.isDetachedComponent()) {
             setupStandaloneComponentForRefresh(view, componentId, componentPostMetadata);
         }
 
@@ -255,6 +270,7 @@ public class ViewLifecycle implements Serializable {
             dialogs.addAll(view.getDialogs());
         }
 
+        refreshComponent.addDataAttribute("detached", "true");
         dialogs.add((Group) refreshComponent);
         view.setDialogs(dialogs);
 
@@ -488,7 +504,7 @@ public class ViewLifecycle implements Serializable {
         if (ViewLifecycle.isStrict()) {
             throw illegalState;
         } else {
-            if(LOG.isTraceEnabled()) {
+            if (LOG.isTraceEnabled()) {
                 LOG.trace(illegalState.getMessage(), illegalState);
             }
         }
@@ -566,10 +582,10 @@ public class ViewLifecycle implements Serializable {
 
         return active.model;
     }
-    
+
     /**
      * Gets the set of visited IDs for use during the apply model phase.
-     * 
+     *
      * @return The set of visited IDs for use during the apply model phase.
      */
     public static Set<String> getVisitedIds() {
@@ -600,7 +616,7 @@ public class ViewLifecycle implements Serializable {
 
         return active.viewPostMetadata;
     }
-    
+
     /**
      * When the lifecycle is processing a component refresh, returns a
      * {@link org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata} instance for the component being
@@ -658,7 +674,7 @@ public class ViewLifecycle implements Serializable {
         try {
             return processor == null ? null : processor.getActivePhase();
         } catch (IllegalStateException e) {
-            if(LOG.isDebugEnabled()) {
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("No lifecycle phase is active on the current processor", e);
             }
             return null;
@@ -747,6 +763,7 @@ public class ViewLifecycle implements Serializable {
      * Registration of an event.
      */
     protected class EventRegistration implements Serializable {
+
         private static final long serialVersionUID = -5077429381388641016L;
 
         // the event to listen for.
@@ -776,6 +793,7 @@ public class ViewLifecycle implements Serializable {
          * Event the registration is for.
          *
          * @return The event this registration is for.
+         *
          * @see LifecycleEvent
          */
         public LifecycleEvent getEvent() {
@@ -830,5 +848,4 @@ public class ViewLifecycle implements Serializable {
             this.eventListener = eventListener;
         }
     }
-
 }

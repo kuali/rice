@@ -75,6 +75,9 @@ KradResponse.prototype = {
         $pageInLayout.replaceWith(pageUpdate.find(">*"));
         $pageInLayout = jQuery(pageInLayout);
 
+        // remove detached dialogs
+        jQuery("[data-detached='true']").remove();
+
         pageValidatorReady = false;
         runHiddenScripts(kradVariables.VIEW_CONTENT_WRAPPER, false, true);
 

@@ -28,6 +28,7 @@ import java.util.Map;
  * @see ViewPostMetadata
  */
 public class ComponentPostMetadata implements Serializable {
+
     private static final long serialVersionUID = -6090575873840392956L;
 
     private String id;
@@ -200,6 +201,7 @@ public class ComponentPostMetadata implements Serializable {
      *
      * @param key key for the data value to retrieve
      * @return data value, or null if data does not exist
+     *
      * @see ComponentPostMetadata#getData()
      */
     public Object getData(String key) {
@@ -208,5 +210,18 @@ public class ComponentPostMetadata implements Serializable {
         }
 
         return null;
+    }
+
+    /**
+     * Get the path of the first object in this components path.
+     *
+     * @return the top most parent object's path for this component
+     */
+    public String getRootObjectPath() {
+        if (this.getPath() == null || !this.getPath().contains(".")) {
+            return this.getPath();
+        }
+
+        return this.getPath().substring(0, this.getPath().indexOf('.'));
     }
 }

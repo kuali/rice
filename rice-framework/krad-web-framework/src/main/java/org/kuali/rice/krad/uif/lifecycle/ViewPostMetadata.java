@@ -21,6 +21,7 @@ import org.kuali.rice.krad.web.bind.UifEncryptionPropertyEditorWrapper;
 
 import java.beans.PropertyEditor;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,6 +43,7 @@ import java.util.Set;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewPostMetadata implements Serializable {
+
     private static final long serialVersionUID = -515221881981451818L;
     private static final Logger LOG = Logger.getLogger(ViewPostMetadata.class);
 
@@ -73,8 +75,8 @@ public class ViewPostMetadata implements Serializable {
         addedCollectionObjects = Collections.synchronizedMap(new HashMap<String, List<Object>>());
         lookupCriteria = Collections.synchronizedMap(new HashMap<String, Map<String, Object>>());
         accessibleBindingPaths = Collections.synchronizedSet(new HashSet<String>());
-        accessibleMethodToCalls =  Collections.synchronizedSet(new HashSet<String>());
-        availableMethodToCalls =  Collections.synchronizedSet(new HashSet<String>());
+        accessibleMethodToCalls = Collections.synchronizedSet(new HashSet<String>());
+        availableMethodToCalls = Collections.synchronizedSet(new HashSet<String>());
     }
 
     /**
@@ -236,6 +238,28 @@ public class ViewPostMetadata implements Serializable {
     }
 
     /**
+     * Iterates over the componentPostMetadataMap to find a componentPostMetadata which matches the path given.
+     *
+     * @param path the path of the component to find componentPostMetadata for
+     * @return returns the componentPostMetadata that matches the path, null if not found or metadata for path not found
+     */
+    public ComponentPostMetadata getComponentPostMetadataForPath(String path) {
+        if (componentPostMetadataMap == null) {
+            return null;
+        }
+
+        Collection<ComponentPostMetadata> componentPostMetadataCollection = componentPostMetadataMap.values();
+
+        for (ComponentPostMetadata metadata : componentPostMetadataCollection) {
+            if (metadata.getPath() != null && metadata.getPath().equals(path)) {
+                return metadata;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Maintains configuration of properties that have been configured for the view (if render was
      * set to true) and there corresponding PropertyEdtior (if configured).
      *
@@ -350,6 +374,7 @@ public class ViewPostMetadata implements Serializable {
      *
      * @return the collection objects that were added during the current controller call if added through a process
      * other than the collection's own addLine call
+     *
      * @see org.kuali.rice.krad.uif.container.CollectionGroupBase
      */
     public Map<String, List<Object>> getAddedCollectionObjects() {
@@ -371,7 +396,6 @@ public class ViewPostMetadata implements Serializable {
      * by {@link org.kuali.rice.krad.uif.UifConstants.LookupCriteriaPostMetadata}.  Not all criteria attribute types
      * need to be specified.  A missing boolean attribute equals to false.
      * </p>
-     * @return
      */
     public Map<String, Map<String, Object>> getLookupCriteria() {
         return lookupCriteria;
@@ -483,7 +507,7 @@ public class ViewPostMetadata implements Serializable {
 
         this.availableMethodToCalls.add(methodToCall);
     }
-    
+
     /**
      * Look up a field editor.
      *
@@ -497,8 +521,7 @@ public class ViewPostMetadata implements Serializable {
         PropertyEditor propertyEditor = null;
         boolean requiresEncryption = false;
 
-        if (fieldPropertyEditors != null && fieldPropertyEditors
-                .containsKey(propertyName)) {
+        if (fieldPropertyEditors != null && fieldPropertyEditors.containsKey(propertyName)) {
             propertyEditor = fieldPropertyEditors.get(propertyName);
         } else if (secureFieldPropertyEditors != null && secureFieldPropertyEditors.containsKey(propertyName)) {
             propertyEditor = secureFieldPropertyEditors.get(propertyName);
@@ -507,11 +530,9 @@ public class ViewPostMetadata implements Serializable {
 
         if (propertyEditor != null) {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Registering custom editor for property path '"
-                        + propertyName
-                        + "' and property editor class '"
-                        + propertyEditor.getClass().getName()
-                        + "'");
+                LOG.debug(
+                        "Registering custom editor for property path '" + propertyName + "' and property editor class '"
+                                + propertyEditor.getClass().getName() + "'");
             }
 
             if (requiresEncryption) {
@@ -519,12 +540,11 @@ public class ViewPostMetadata implements Serializable {
                     LOG.debug("Enabling encryption for custom editor '" + propertyName +
                             "' and property editor class '" + propertyEditor.getClass().getName() + "'");
                 }
-                
+
                 return new UifEncryptionPropertyEditorWrapper(propertyEditor);
             }
         }
-        
+
         return propertyEditor;
     }
-
 }

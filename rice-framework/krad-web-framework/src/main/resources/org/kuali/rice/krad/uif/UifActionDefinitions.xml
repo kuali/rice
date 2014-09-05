@@ -45,11 +45,11 @@
         p:methodToCall="addLine" p:actionLabel="Add"
         p:actionEvent="addLine" p:loadingMessageText="Adding Line..." p:focusOnIdAfterSubmit="LINE_FIRST"
         p:performClientSideValidation="true" p:dirtyOnAction="true" p:id="@{#collectionGroup.id}_add"
-        p:defaultEnterKeyAction="true" p:dialogDismissOption="REQUEST"/>
+        p:defaultEnterKeyAction="true"/>
 
   <bean id="Uif-AddLineAction" parent="Uif-AddLineAction-parentBean"/>
 
-  <bean id="Uif-AddLineAction-Dialog" parent="Uif-AddLineAction-parentBean" p:actionLabel="Add">
+  <bean id="Uif-AddLineAction-Dialog" parent="Uif-AddLineAction-parentBean" p:actionLabel="Add" p:dialogDismissOption="REQUEST">
     <property name="libraryCssClasses">
       <list>
         <value>btn</value>

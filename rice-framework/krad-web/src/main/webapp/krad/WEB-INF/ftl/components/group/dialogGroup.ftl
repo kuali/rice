@@ -21,7 +21,7 @@
 <#macro uif_dialogGroup group>
 
     <@krad.wrap component=group renderAs="${group.wrapperTag}">
-    <div class="modal-dialog ${group.dialogCssClass}">
+    <div class="modal-dialog ${group.dialogCssClass!}">
         <div class="modal-content">
 
             <@krad.template component=group.header/>

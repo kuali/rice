@@ -116,6 +116,9 @@ public abstract class KimAttributeDataBo extends DataObjectBase implements KimAt
         for (Map.Entry<String, String> it : attributes.entrySet()) {
         //return attributes.entrySet().collect {
             KimTypeAttribute attr = getKimTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(it.getKey());
+            if (attr == null) {
+                LOG.error("Attribute " + it.getKey() + " was not found for kimType " + getKimTypeInfoService().getKimType(kimTypeId).getName());
+            }
             KimType theType = getKimTypeInfoService().getKimType(kimTypeId);
             if (attr != null && StringUtils.isNotBlank(it.getValue())) {
                 try {

@@ -55,7 +55,7 @@ public class GroupBo extends GroupBase {
     private List<GroupMemberBo> members;
 
     @OneToMany(targetEntity = GroupAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
-    @JoinColumn(name = "GRP_ID", referencedColumnName = "GRP_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "GRP_ID", referencedColumnName = "GRP_ID" )
     private List<GroupAttributeBo> attributeDetails;
 
     @Transient

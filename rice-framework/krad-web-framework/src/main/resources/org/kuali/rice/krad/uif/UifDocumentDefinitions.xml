@@ -88,7 +88,7 @@
       <list>
         <bean parent="Uif-DocumentNumber"/>
         <bean parent="Uif-DocumentStatus"/>
-        <bean parent="Uif-DocumentTemplateNumber"/>
+        <!--bean parent="Uif-DocumentTemplateNumber"/-->
         <bean parent="Uif-DocumentInitiatorNetworkId"/>
         <bean parent="Uif-DocumentCreateDate"/>
       </list>

@@ -50,58 +50,58 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void performModification(Object model, Component component) {
-		if ((component != null) && !(component instanceof Group)) {
-			throw new IllegalArgumentException("Compare field initializer only support Group components, found type: "
-					+ component.getClass());
-		}
-
-		if (component == null) {
-			return;
-		}
-
-		// list that will be built
-		List<Component> groupFields = new ArrayList<Component>();
-
-		Group group = (Group) component;
-		for (Component item : group.getItems()) {
-            if (item.isRender()) {
-                if (item instanceof Field) {
-                    Field field = (Field) item;
-
-                    // pull out label field
-                    Label label = field.getFieldLabel();
-                    if (label != null && label.isRender()) {
-                        synchronized (label) {
-                            label.getLibraryCssClasses().clear();
-                            label.addStyleClass("displayWith-" + field.getId());
-                            if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
-                                label.setRender(false);
-                            } else if (!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())) {
-                                label.setRender(true);
-                                String prefixStyle = "";
-                                if (StringUtils.isNotBlank(label.getStyle())) {
-                                    prefixStyle = label.getStyle();
-                                }
-                                label.setStyle(prefixStyle + ";" + "display: none;");
-                            }
-
-                            groupFields.add(label);
-
-                            // set boolean to indicate label field should not be
-                            // rendered with the attribute
-                            field.setLabelRendered(true);
-                        }
-                    }
-                }
-
-                groupFields.add(item);
-            }
+    public void performModification(Object model, Component component) {
+        if ((component != null) && !(component instanceof Group)) {
+            throw new IllegalArgumentException(
+                    "Compare field initializer only support Group components, found type: " + component.getClass());
         }
 
-		// update group
-		group.setItems(groupFields);
-	}
+        if (component == null) {
+            return;
+        }
+
+        // list that will be built
+        List<Component> groupFields = new ArrayList<Component>();
+
+        Group group = (Group) component;
+        for (Component item : group.getItems()) {
+            //if (item.isRender()) {
+            if (item instanceof Field) {
+                Field field = (Field) item;
+
+                // pull out label field
+                Label label = field.getFieldLabel();
+                if (label != null && label.isRender()) {
+                    synchronized (label) {
+                        label.getLibraryCssClasses().clear();
+                        label.addStyleClass("displayWith-" + field.getId());
+                        if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
+                            label.setRender(false);
+                        } else if (!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())) {
+                            label.setRender(true);
+                            String prefixStyle = "";
+                            if (StringUtils.isNotBlank(label.getStyle())) {
+                                prefixStyle = label.getStyle();
+                            }
+                            label.setStyle(prefixStyle + ";" + "display: none;");
+                        }
+
+                        groupFields.add(label);
+
+                        // set boolean to indicate label field should not be
+                        // rendered with the attribute
+                        field.setLabelRendered(true);
+                    }
+                }
+            }
+
+            groupFields.add(item);
+            //}
+        }
+
+        // update group
+        group.setItems(groupFields);
+    }
 
 	/**
 	 * {@inheritDoc}

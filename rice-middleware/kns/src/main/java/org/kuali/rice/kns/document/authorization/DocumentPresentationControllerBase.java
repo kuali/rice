@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document.authorization;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -108,4 +109,9 @@ public class DocumentPresentationControllerBase extends org.kuali.rice.krad.docu
 
     	return documentActions;
     }
+
+    public boolean canClose(Document document) {
+        return true;
+    }
+
 }

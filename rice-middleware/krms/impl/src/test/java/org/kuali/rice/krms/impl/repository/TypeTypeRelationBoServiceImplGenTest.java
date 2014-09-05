@@ -153,12 +153,14 @@ public class TypeTypeRelationBoServiceImplGenTest {
 
     public TypeTypeRelation createTypeTypeRelation(KrmsTypeDefinition fromType, KrmsTypeDefinition toType) {
         TypeTypeRelation def = TypeTypeRelationGenTest.buildFullFKTypeTypeRelation(fromType, toType);
-       return service.createTypeTypeRelation(def);
+        typeTypeRelation = service.createTypeTypeRelation(def);
+        return typeTypeRelation;
     }
 
     public TypeTypeRelation createTypeTypeRelationGeneratedId(KrmsTypeDefinition fromType, KrmsTypeDefinition toType) {
         TypeTypeRelation def = TypeTypeRelationGenTest.buildFullFKTypeTypeRelationNoId(fromType, toType);
-        return service.createTypeTypeRelation(def);
+        typeTypeRelation = service.createTypeTypeRelation(def);
+        return typeTypeRelation;
     }
 
     public TypeTypeRelation getTypeTypeRelation() {

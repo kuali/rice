@@ -22,6 +22,8 @@ import org.kuali.rice.krms.api.repository.typerelation.RelationshipType;
 import org.kuali.rice.krms.api.repository.typerelation.TypeTypeRelation;
 import org.kuali.rice.krms.test.AbstractBoTest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -29,14 +31,9 @@ import static org.junit.Assert.assertNotNull;
  *
  */
 public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
-
-    TypeTypeRelationBoServiceImpl typeTypeRelationBoServiceImpl;
-    TypeTypeRelation typeTypeRelation;
-    KrmsTypeBoServiceImpl krmsTypeBoServiceImpl;
-
-    TypeTypeRelation getTypeTypeRelation() {
-        return typeTypeRelation;
-    }
+    private TypeTypeRelationBoServiceImpl typeTypeRelationBoServiceImpl;
+    private TypeTypeRelation typeTypeRelation;
+    private KrmsTypeBoServiceImpl krmsTypeBoServiceImpl;
 
     /**
      * Note lower case u, do not override superclasses setUp
@@ -48,26 +45,6 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
         typeTypeRelationBoServiceImpl.setDataObjectService(getDataObjectService());
         krmsTypeBoServiceImpl = new KrmsTypeBoServiceImpl();
         krmsTypeBoServiceImpl.setDataObjectService(getDataObjectService());
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findTypeTypeRelationsByFromType_null_fail() {
-        (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_findTypeTypeRelationsByFromType_null_fail();
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findTypeTypeRelationsByToType_null_fail() {
-        (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_findTypeTypeRelationsByToType_null_fail();
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findTypeTypeRelationsByRelationshipType_null_fail() {
-        (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_findTypeTypeRelationsByRelationshipType_null_fail();
-    }
-
-    @Test(expected = java.lang.IllegalArgumentException.class)
-    public void test_findTypeTypeRelationsBySequenceNumber_null_fail() {
-        (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_findTypeTypeRelationsBySequenceNumber_null_fail();
     }
 
     @Test
@@ -89,8 +66,8 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
         TypeTypeRelationBoServiceImplGenTest test = TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl);
         test.createTypeTypeRelation(krmsType, krmsType); // TODO gen handle more than 1 of the same type
         typeTypeRelation = test.getTypeTypeRelation();
-        assert(typeTypeRelation != null);
-        assert(typeTypeRelation.getId() != null);
+        assertNotNull(typeTypeRelation);
+        assertNotNull(typeTypeRelation.getId());
     }
 
     @Test
@@ -102,17 +79,37 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
         TypeTypeRelationBoServiceImplGenTest test = TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl);
         test.createTypeTypeRelationGeneratedId(krmsType, krmsType);
         typeTypeRelation = test.getTypeTypeRelation();
-        assert(typeTypeRelation != null);
-        assert(typeTypeRelation.getId() != null);
+        assertNotNull(typeTypeRelation);
+        assertNotNull(typeTypeRelation.getId());
     }
 
-    @Test(expected = java.lang.IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findTypeTypeRelationsByFromType_null_fail() {
+        (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_findTypeTypeRelationsByFromType_null_fail();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findTypeTypeRelationsByToType_null_fail() {
+        (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_findTypeTypeRelationsByToType_null_fail();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findTypeTypeRelationsByRelationshipType_null_fail() {
+        (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_findTypeTypeRelationsByRelationshipType_null_fail();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_findTypeTypeRelationsBySequenceNumber_null_fail() {
+        (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_findTypeTypeRelationsBySequenceNumber_null_fail();
+    }
+
+    @Test(expected = IllegalStateException.class)
     public void test_createTypeTypeRelation_fail_existing() {
         test_createTypeTypeRelation();
         test_createTypeTypeRelation();
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_createTypeTypeRelation_null_fail() {
         (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_createTypeTypeRelation_null_fail();
     }
@@ -122,8 +119,8 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
         test_createTypeTypeRelation();
         TypeTypeRelation def = getTypeTypeRelation();
         TypeTypeRelation def2 = typeTypeRelationBoServiceImpl.getTypeTypeRelation(def.getId());
-        assert(def2 != null);
-        assert(def2.equals(def));
+        assertNotNull(def2);
+        assertEquals(def2, def);
     }
 
     @Test
@@ -131,16 +128,16 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
         test_createTypeTypeRelation();
         TypeTypeRelation def = getTypeTypeRelation();
         String id = def.getId();
-        assert(!RelationshipType.USAGE_ALLOWED.equals(def.getRelationshipType()));
+        assertNotEquals(RelationshipType.USAGE_ALLOWED, def.getRelationshipType());
         TypeTypeRelationBo bo = typeTypeRelationBoServiceImpl.from(def);
         bo.setRelationshipType(RelationshipType.USAGE_ALLOWED);
         TypeTypeRelation updatedData = typeTypeRelationBoServiceImpl.updateTypeTypeRelation(TypeTypeRelation.Builder.create(bo).build());
         assertNotNull(updatedData);
         TypeTypeRelation def2 = typeTypeRelationBoServiceImpl.getTypeTypeRelation(id);
-        assert(RelationshipType.USAGE_ALLOWED.equals(def2.getRelationshipType()));
+        assertEquals(RelationshipType.USAGE_ALLOWED,def2.getRelationshipType());
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_updateTypeTypeRelation_null_fail() {
         (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_updateTypeTypeRelation_null_fail();
     }
@@ -155,9 +152,12 @@ public final class TypeTypeRelationIntegrationGenTest extends AbstractBoTest{
         assert(def2 == null);
     }
 
-    @Test(expected = java.lang.IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void test_deleteTypeTypeRelation_null_fail() {
         (TypeTypeRelationBoServiceImplGenTest.create(typeTypeRelationBoServiceImpl)).test_deleteTypeTypeRelation_null_fail();
     }
 
+    private TypeTypeRelation getTypeTypeRelation() {
+        return typeTypeRelation;
+    }
 }

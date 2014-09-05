@@ -23,7 +23,6 @@ import com.predic8.wsdl.Operation;
 import com.predic8.wsdl.PortType;
 import com.predic8.wsdl.WSDLParser;
 import com.predic8.wsdl.diff.WsdlDiffGenerator;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
@@ -96,7 +95,7 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
     protected List<String> verifyWsdlDifferences(Difference diff, String level) {
         List<String> results = new ArrayList<String>();
 
-        if (diff.breaks() == true) {
+        if (diff.isBreaks()) {
             boolean ignore = false;
             for (String ignoreBreakageRegexp : ignoreBreakageRegexps) {
                 if (diff.getDescription().matches(ignoreBreakageRegexp)) {
@@ -106,25 +105,18 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
             }
 
             if (ignore) {
-                LOG.info(level + "non-breaking change: " + diff.getDescription());
+                LOG.info(level + "non-breaking change" + diff.getDescription());
             } else {
                 LOG.error(level + "breaking change: " + diff.getType() + diff.getDescription());
                 results.add(level + diff.getDescription());
             }
-        } else {
-            LOG.trace(level + "trivial change: " + diff.getDescription());
         }
 
-        // check for operation based sequence changes
+
+        //check for operation based sequence changes
         String opBreakageString = checkForOperationBasedChanges(diff);
         if (opBreakageString != null) {
             results.add(level + opBreakageString);
-        }
-
-        // check for previously empty responses changing to return something
-        String returnTypeBreakageString = checkForFormerlyVoidResponse(diff);
-        if (returnTypeBreakageString != null) {
-            results.add(level + returnTypeBreakageString);
         }
 
         for (Difference moreDiff : diff.getDiffs())  {
@@ -174,46 +166,6 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
                 }
             }
         }
-        return null;
-    }
-
-    /**
-     * Check for previously void methods that now return something, which is a breaking change.
-     *
-     * <p>model-soa-core's WSDL differ does not recognize this as a breakage, so we have to detect this manually
-     * by looking at the model for return types and looking for previously empty sequences that change to have
-     * element(s) in them.</p>
-     *
-     * @param diff the diff to check for this type of breakage
-     * @return an error string if a VC breakage is found, or null if no breakage is detected.
-     */
-    private String checkForFormerlyVoidResponse(Difference diff) {
-        // Check for a sequence with a complextype parent whose name ends with response that went from empty to non-empty
-
-        if ( ! "sequence".equals(diff.getType()) || diff.getA() == null || diff.getB() == null) {
-            return null;
-        }
-
-        Sequence oldSequence = (Sequence)diff.getA();
-        Sequence newSequence = (Sequence)diff.getB();
-
-        if ( ! (newSequence.getParent() instanceof ComplexType)) {
-            return null;
-        }
-
-        ComplexType parent = (ComplexType)newSequence.getParent();
-
-        // Assumption: generated response types end with the name Response
-        if ( ! parent.getName().endsWith("Response")) {
-            return null;
-        }
-
-        // Check for a sequence with a complextype parent whose name ends with response that went from empty to non-empty
-        if (CollectionUtils.isEmpty(oldSequence.getElements()) &&
-                CollectionUtils.isNotEmpty(newSequence.getElements())) {
-            return "Element cannot be added to a previously empty return";
-        }
-
         return null;
     }
 

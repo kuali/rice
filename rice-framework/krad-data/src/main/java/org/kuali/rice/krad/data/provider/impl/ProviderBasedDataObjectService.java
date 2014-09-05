@@ -24,7 +24,10 @@ import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
 import org.kuali.rice.krad.data.metadata.DataObjectMetadata;
+import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
+import org.kuali.rice.krad.data.metadata.MetadataChild;
 import org.kuali.rice.krad.data.metadata.MetadataRepository;
 import org.kuali.rice.krad.data.provider.PersistenceProvider;
 import org.kuali.rice.krad.data.provider.ProviderRegistry;
@@ -148,6 +151,7 @@ public class ProviderBasedDataObjectService implements DataObjectService {
     @Override
 	public <T> T save(T dataObject, PersistenceOption... options) {
         Set<PersistenceOption> optionSet = Sets.newHashSet(options);
+		pushOneToOneKeysToChildObjects(dataObject);
         T saved = persistenceProviderForObject(dataObject).save(dataObject, options);
         if (optionSet.contains(PersistenceOption.LINK_KEYS)) {
             DataObjectWrapper<T> wrapper = wrap(saved);
@@ -155,6 +159,45 @@ public class ProviderBasedDataObjectService implements DataObjectService {
         }
         return saved;
     }
+
+	protected void pushOneToOneKeysToChildObjects(Object dataObject) {
+		DataObjectWrapper<Object> wrappedParent = wrap(dataObject);
+		if (wrappedParent.getMetadata() == null) {
+			return;
+		}
+		// Loop over all relationships
+		for (DataObjectRelationship rel : wrappedParent.getMetadata().getRelationships()) {
+			// look for those which are part of this object exclusively
+			if (rel.isSavedWithParent() && rel.isDeletedWithParent()) {
+				Object child = wrappedParent.getPropertyValueNullSafe(rel.getName());
+				// if the child is null, just skip
+				if (child == null) {
+					continue;
+				}
+				DataObjectWrapper<Object> wrappedChild = wrap(child);
+				// REMOVED THIS FOR NOW - THE ATTRIBUTES DON'T EXIST IN THIS DIRECTION
+				// loop over the attributes, setting them on the child object
+				// for (DataObjectAttributeRelationship attr : rel.getAttributeRelationships()) {
+				// wrappedChild.setPropertyValue(attr.getChildAttributeName(),
+				// dataObjectWrapper.getPropertyValueNullSafe(attr.getParentAttributeName()));
+				// }
+				// inverse relationship - if it exists, add the parent object in
+				// the applicable property
+				MetadataChild inverseRelationship = rel.getInverseRelationship();
+				if (inverseRelationship != null) {
+					wrappedChild.setPropertyValue(inverseRelationship.getName(), dataObject);
+					for (DataObjectAttributeRelationship attr : inverseRelationship.getAttributeRelationships()) {
+						// note the reversal of child and parent - remember this is the *child's*
+						// relationship with the parent
+						// and like many children, the they they are in charge
+						wrappedChild.setPropertyValue(attr.getParentAttributeName(),
+								wrappedParent.getPropertyValueNullSafe(attr.getChildAttributeName()));
+					}
+				}
+			}
+		}
+
+	}
 
     /**
      * {@inheritDoc}

@@ -38,7 +38,6 @@ import org.kuali.rice.krad.test.document.bo.AccountExtension;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.krad.test.document.bo.SimpleAccount;
 import org.kuali.rice.krad.test.document.bo.SimpleAccountExtension;
-import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -153,29 +152,31 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         assertTestObjectIdentityEquals(saved, found);
     }
 
-//    @Test
-//    public void testExtensionKeySaving() {
-//        Account acct = new Account();
-//        acct.setNumber("a1");
-//        acct.setName("a1 name");
-//        AccountExtension ext = new AccountExtension();
-//        ext.setAccountTypeCode("EAX");
-//        acct.setExtension(ext);
-//        
-//        acct = provider.save(acct, PersistenceOption.FLUSH);
-//        assertNotNull( "extension object was null after save", acct.getExtension());
-//        assertEquals( "extension object class incorrect", AccountExtension.class, acct.getExtension().getClass() );
-//        ext = (AccountExtension) acct.getExtension();
-//        assertEquals( "account type code incorrect after save", "EAX", ext.getAccountTypeCode() );
-//        assertEquals( "account ID on extension not persisted", "a1", ext.getNumber() );
-//        
-//        provider.find(Account.class, "a1");
-//        assertNotNull( "extension object was null after reload", acct.getExtension());
-//        assertEquals( "extension object class incorrect after reload", AccountExtension.class, acct.getExtension().getClass() );
-//        ext = (AccountExtension) acct.getExtension();
-//        assertEquals( "account type code incorrect after reload", "EAX", ext.getAccountTypeCode() );
-//    }
-    
+    @Test
+    public void testExtensionKeySaving() {
+        Account acct = new Account();
+        acct.setNumber("a1");
+        acct.setName("a1 name");
+        AccountExtension ext = new AccountExtension();
+        ext.setAccountTypeCode("EAX");
+        acct.setExtension(ext);
+
+        acct = KradDataServiceLocator.getDataObjectService().save(acct, PersistenceOption.FLUSH);
+        assertNotNull( "extension object was null after save", acct.getExtension());
+        assertEquals( "extension object class incorrect", AccountExtension.class, acct.getExtension().getClass() );
+
+        ext = (AccountExtension) acct.getExtension();
+        assertEquals( "account type code incorrect after save", "EAX", ext.getAccountTypeCode() );
+        assertNotNull( "account object on extension not persisted", ext.getAccount() );
+        assertEquals( "account ID on extension not persisted", "a1", ext.getNumber() );
+
+        provider.find(Account.class, "a1");
+        assertNotNull( "extension object was null after reload", acct.getExtension());
+        assertEquals( "extension object class incorrect after reload", AccountExtension.class, acct.getExtension().getClass() );
+        ext = (AccountExtension) acct.getExtension();
+        assertEquals( "account type code incorrect after reload", "EAX", ext.getAccountTypeCode() );
+    }
+
     @Test
     public void testExistsSubQueryCriteria() {
 

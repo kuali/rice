@@ -206,12 +206,13 @@ public class TravelAuthorizationDocumentTest extends KRADTestCase {
         return (TravelAuthorizationDocument) KRADServiceLocatorWeb.getDocumentService().saveDocument(newTravelAuthorizationDocument);
     }
 
-//    @Test
-//    public void testDocumentExtension() throws Exception {
-//        TravelAuthorizationDocument document = createAndSaveTravelAuthorizationDocument();
-//        assertNotNull( "extension missing after save", document.getExtension() );
-//        assertNotNull( "extension does not have document number after save", ((TravelAuthorizationDocumentExtension)document.getExtension()).getDocumentNumber() );
-//        assertEquals( "Document number not set in extension after save", document.getDocumentNumber(), ((TravelAuthorizationDocumentExtension)document.getExtension()).getDocumentNumber() );
-//    }
+    @Test
+    public void testDocumentExtension() throws Exception {
+        TravelAuthorizationDocument document = createAndSaveTravelAuthorizationDocument();
+        assertNotNull( "extension missing after save", document.getExtension() );
+        assertNotNull( "extension does not have document after save", ((TravelAuthorizationDocumentExtension)document.getExtension()).getDocument() );
+        assertNotNull( "extension does not have document number after save", ((TravelAuthorizationDocumentExtension)document.getExtension()).getDocumentNumber() );
+        assertEquals( "Document number not set in extension after save", document.getDocumentNumber(), ((TravelAuthorizationDocumentExtension)document.getExtension()).getDocumentNumber() );
+    }
 
 }

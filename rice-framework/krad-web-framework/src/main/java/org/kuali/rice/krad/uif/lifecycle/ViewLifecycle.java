@@ -270,7 +270,7 @@ public class ViewLifecycle implements Serializable {
             dialogs.addAll(view.getDialogs());
         }
 
-        refreshComponent.addDataAttribute("detached", "true");
+        refreshComponent.addDataAttribute(UifConstants.DataAttributes.DETACHED, "true");
         dialogs.add((Group) refreshComponent);
         view.setDialogs(dialogs);
 

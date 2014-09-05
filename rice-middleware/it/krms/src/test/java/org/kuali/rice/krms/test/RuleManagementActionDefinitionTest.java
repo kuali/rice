@@ -36,7 +36,7 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
  *
  *   Each test focuses on one of the methods.
  */
-    public class RuleManagementActionDefinitionTest extends RuleManagementBaseTest {
+public class RuleManagementActionDefinitionTest extends RuleManagementBaseTest {
 
     @Override
     @Before
@@ -97,9 +97,9 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
         builder.setDescription("ChangedDescr");
 
         // primary statement for test
-        returnActionDefinition = ruleManagementService.updateAction(builder.build());
+        ruleManagementService.updateAction(builder.build());
 
-        //returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
+        returnActionDefinition = ruleManagementService.getAction(actionDefinition.getId());
 
         assertNotNull("action not found", returnActionDefinition);
         assertEquals("update action error:","ChangedDescr", returnActionDefinition.getDescription());

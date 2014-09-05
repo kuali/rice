@@ -209,7 +209,6 @@ public class PropositionBoServiceImpl implements PropositionBoService {
 
         final PropositionParameterBo boToUpdate = PropositionParameterBo.from(toUpdate);
         final PropositionParameterBo updatedData = dataObjectService.save(boToUpdate);
-        //return PropositionParameterBo.to(updatedData);
 
         final PropositionParameter.Builder builder = PropositionParameter.Builder.create(updatedData);
         builder.setPropId(propIdKey);

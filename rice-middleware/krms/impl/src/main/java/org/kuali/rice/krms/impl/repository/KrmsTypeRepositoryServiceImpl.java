@@ -127,8 +127,8 @@ public class KrmsTypeRepositoryServiceImpl implements KrmsTypeRepositoryService 
     }
 
     @Override
-    public TypeTypeRelation updateTypeTypeRelation(TypeTypeRelation typeTypeRelation) {
-        return typeTypeRelationBoService.updateTypeTypeRelation(typeTypeRelation);
+    public void updateTypeTypeRelation(TypeTypeRelation typeTypeRelation) {
+        typeTypeRelationBoService.updateTypeTypeRelation(typeTypeRelation);
     }
 
     @Override

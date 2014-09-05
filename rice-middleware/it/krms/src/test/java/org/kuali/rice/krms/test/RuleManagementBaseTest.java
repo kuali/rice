@@ -251,7 +251,7 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
      *
      * @param objectDiscriminator
      * @param namespace
-     * @param typeId
+     * @param typeName
      *
      * @return {@link PropositionDefinition}
      */
@@ -300,9 +300,9 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         propBuilder = PropositionDefinition.Builder.create(propositionDefinition);
         propBuilder.setParameters(propParam);
 
-        propositionDefinition = ruleManagementService.updateProposition(propBuilder.build());
+        ruleManagementService.updateProposition(propBuilder.build());
         // re-fetch to get the updated version numbers
-        //propositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
+        propositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
 
         return propositionDefinition;
     }
@@ -451,21 +451,21 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
      *
      *   Structure of the created agenda is as shown here.
      *           // agenda
-                 //   agendaItem0 ( rule0)
-                 //       WhenTrue   agendaItem1( rule1 )
-                 //       WhenFalse  agendaItem2( rule2 )
-                 //       Always     agendaItem3( rule3 )
-                 //   agendaItem1 ( rule1 )
-                 //       Always     agendaItem5
-                 //   agendaItem2 ( rule2 )
-                 //       WhenFalse  agendaItem4
-                 //       Always     agendaItem6
-                 //   agendaItem3 ( rule3 )
-                 //   agendaItem4 ( rule4 )
-                 //   agendaItem5 ( rule5 )
-                 //   agendaItem6 ( rule6 )
-                 //   agendaItem7 ( rule7 )
-                 //       action  ( key, value )
+     //   agendaItem0 ( rule0)
+     //       WhenTrue   agendaItem1( rule1 )
+     //       WhenFalse  agendaItem2( rule2 )
+     //       Always     agendaItem3( rule3 )
+     //   agendaItem1 ( rule1 )
+     //       Always     agendaItem5
+     //   agendaItem2 ( rule2 )
+     //       WhenFalse  agendaItem4
+     //       Always     agendaItem6
+     //   agendaItem3 ( rule3 )
+     //   agendaItem4 ( rule4 )
+     //   agendaItem5 ( rule5 )
+     //   agendaItem6 ( rule6 )
+     //   agendaItem7 ( rule7 )
+     //       action  ( key, value )
      *
      * @param namespace of the KRMS Agenda to be created
      * @param namespaceType of the namepace passed (Namespace will be created if it does not exist.)

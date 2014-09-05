@@ -214,8 +214,7 @@ public class KrmsTypeRepositoryServiceMockImpl implements KrmsTypeRepositoryServ
     }
 
     @Override
-    public TypeTypeRelation updateTypeTypeRelation(TypeTypeRelation typeTypeRelation)
-            throws RiceIllegalArgumentException {
+    public void updateTypeTypeRelation(TypeTypeRelation typeTypeRelation) throws RiceIllegalArgumentException {
         // UPDATE
         TypeTypeRelation.Builder copy = TypeTypeRelation.Builder.create(typeTypeRelation);
         TypeTypeRelation old = this.getTypeTypeRelation(typeTypeRelation.getId());
@@ -225,7 +224,6 @@ public class KrmsTypeRepositoryServiceMockImpl implements KrmsTypeRepositoryServ
         copy.setVersionNumber(copy.getVersionNumber() + 1);
         typeTypeRelation = copy.build();
         this.typeTypeRelationMap.put(typeTypeRelation.getId(), typeTypeRelation);
-        return old;
     }
 
     @Override

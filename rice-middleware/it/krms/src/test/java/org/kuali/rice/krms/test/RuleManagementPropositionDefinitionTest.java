@@ -229,9 +229,9 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
         builder.setPropositionTypeCode(PropositionType.COMPOUND.getCode());
 
         // focus of test is on this instruction
-        PropositionDefinition returnPropositionDefinition = ruleManagementService.updateProposition(builder.build());
+        ruleManagementService.updateProposition(builder.build());
 
-        //PropositionDefinition returnPropositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
+        PropositionDefinition returnPropositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
 
         assertEquals("description was not updated", "UpdatedDescription", returnPropositionDefinition.getDescription());
         assertEquals("propositionType was not updated", PropositionType.COMPOUND.getCode(), returnPropositionDefinition.getPropositionTypeCode());
@@ -278,7 +278,8 @@ public class RuleManagementPropositionDefinitionTest extends RuleManagementBaseT
                 createTestPropositionForRule(t6.object3).getId());
 
         for (String propositionId : propositionIds) {
-            PropositionDefinition.Builder builder = PropositionDefinition.Builder.create(ruleManagementService.getProposition(propositionId));
+            PropositionDefinition.Builder builder = PropositionDefinition.Builder.create(
+                    ruleManagementService.getProposition(propositionId));
             builder.setDescription("targetOfQuery");
             ruleManagementService.updateProposition(builder.build());
         }

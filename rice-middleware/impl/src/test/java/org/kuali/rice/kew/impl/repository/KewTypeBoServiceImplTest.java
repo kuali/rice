@@ -132,9 +132,7 @@ public class KewTypeBoServiceImplTest {
 
         when(mockDataObjectService.save(any(KewTypeAttributeBo.class))).thenReturn(TEST_KEW_TYPE_ATTRIBUTE_BO);
 
-        KewTypeAttribute updatedData = kewTypeBoService.updateKewTypeAttribute(newAttr);
-
-        assertNotNull(updatedData);
+        kewTypeBoService.updateKewTypeAttribute(newAttr);
 
         verify(mockDataObjectService, times(1)).find(Matchers.argThat(new ClassOrSubclassMatcher<KewTypeAttributeBo>(KewTypeAttributeBo.class)), any(KewTypeAttribute.class));
 
@@ -315,8 +313,7 @@ public class KewTypeBoServiceImplTest {
 
         getKewTypeBoService().updateKewType(TEST_KEW_TYPE_DEF);
 
-        verify(mockDataObjectService, times(1)).find(Matchers.argThat(new ClassOrSubclassMatcher<KewTypeBo>(
-                KewTypeBo.class)), anyObject());
+        verify(mockDataObjectService, times(1)).find(Matchers.argThat(new ClassOrSubclassMatcher<KewTypeBo>(KewTypeBo.class)), anyObject());
     }
 
     @Test
@@ -330,12 +327,9 @@ public class KewTypeBoServiceImplTest {
         when(mockDataObjectService.save(any(KewTypeAttributeBo.class))).thenReturn(TEST_KEW_TYPE_ATTRIBUTE_BO);
         when(mockDataObjectService.save(any(KewTypeBo.class))).thenReturn(TEST_KEW_TYPE_BO);
 
-        KewTypeDefinition updatedData = getKewTypeBoService().updateKewType(TEST_KEW_TYPE_DEF);
+        getKewTypeBoService().updateKewType(TEST_KEW_TYPE_DEF);
 
-        assertNotNull(updatedData);
-
-        verify(mockDataObjectService, times(1)).find(Matchers.argThat(new ClassOrSubclassMatcher<KewTypeBo>(
-                KewTypeBo.class)), any(String.class));
+        verify(mockDataObjectService, times(1)).find(Matchers.argThat(new ClassOrSubclassMatcher<KewTypeBo>(KewTypeBo.class)), any(String.class));
     }
 
     @Test(expected = IllegalArgumentException.class)

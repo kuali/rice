@@ -108,7 +108,7 @@ public class TermBoServiceImpl implements TermBoService {
     }
 
     @Override
-    public TermSpecificationDefinition updateTermSpecification(TermSpecificationDefinition termSpec) throws RiceIllegalArgumentException {
+    public void updateTermSpecification(TermSpecificationDefinition termSpec) throws RiceIllegalArgumentException {
         if (termSpec == null) {
             throw new IllegalArgumentException("term specification is null");
         }
@@ -137,10 +137,7 @@ public class TermBoServiceImpl implements TermBoService {
         reconcileContextValidTerms(existing, boToUpdate);
 
         // update the rule and create new attributes
-        TermSpecificationBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
-
-        return TermSpecificationBo.to(updatedData);
-
+        dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
     }
 
     /**
@@ -214,7 +211,7 @@ public class TermBoServiceImpl implements TermBoService {
     }
 
     @Override
-    public TermDefinition updateTerm(TermDefinition term) throws RiceIllegalArgumentException {
+    public void updateTerm(TermDefinition term) throws RiceIllegalArgumentException {
         if (term == null) {
             throw new IllegalArgumentException("term is null");
         }
@@ -242,9 +239,7 @@ public class TermBoServiceImpl implements TermBoService {
         TermBo boToUpdate = TermBo.from(toUpdate);
 
         // update the rule and create new attributes
-        TermBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
-
-        return TermBo.to(updatedData);
+        dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
     }
 
     @Override
@@ -279,7 +274,7 @@ public class TermBoServiceImpl implements TermBoService {
     }
 
     @Override
-    public TermResolverDefinition updateTermResolver(TermResolverDefinition termResolver) throws RiceIllegalArgumentException {
+    public void updateTermResolver(TermResolverDefinition termResolver) throws RiceIllegalArgumentException {
         if (termResolver == null) {
             throw new IllegalArgumentException("term resolver is null");
         }
@@ -313,9 +308,7 @@ public class TermBoServiceImpl implements TermBoService {
         dataObjectService.deleteMatching(TermResolverAttributeBo.class, crit);
 
         // update the rule and create new attributes
-        TermResolverBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
-
-        return TermResolverBo.to(updatedData);
+        dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
     }
 
     @Override

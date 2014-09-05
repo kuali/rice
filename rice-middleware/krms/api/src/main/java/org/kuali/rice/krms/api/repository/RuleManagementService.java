@@ -50,7 +50,7 @@ import org.kuali.rice.krms.api.repository.language.NaturalLanguageTemplate;
  */
 @WebService(name = "ruleManagementService", targetNamespace = KrmsConstants.Namespaces.KRMS_NAMESPACE_2_0)
 @SOAPBinding(style = SOAPBinding.Style.DOCUMENT, use = SOAPBinding.Use.LITERAL,
-parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
+        parameterStyle = SOAPBinding.ParameterStyle.WRAPPED)
 public interface RuleManagementService extends TranslateBusinessMethods {
 
     /**
@@ -133,7 +133,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     public List<ReferenceObjectBinding> findReferenceObjectBindingsByKrmsDiscriminatorType(
             @WebParam(name = "referenceObjectKrmsDiscriminatorType") String referenceObjectKrmsDiscriminatorType) throws RiceIllegalArgumentException;
 
-    
+
     /**
      * Retrieves list of ReferenceObjectBinding objects for the given obj
      * discriminator type and reference object id
@@ -151,10 +151,10 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @WebResult(name = "referenceObjectBindings")
     @Cacheable(value= ReferenceObjectBinding.Cache.NAME, key="'referenceObjectReferenceDiscriminatorType=' + #p0 + '|' + 'referenceObjectId=' + #p1")
     public List<ReferenceObjectBinding> findReferenceObjectBindingsByReferenceObject (
-            @WebParam(name = "referenceObjectReferenceDiscriminatorType") String referenceObjectReferenceDiscriminatorType, 
-            @WebParam(name = "referenceObjectId") String referenceObjectId) 
+            @WebParam(name = "referenceObjectReferenceDiscriminatorType") String referenceObjectReferenceDiscriminatorType,
+            @WebParam(name = "referenceObjectId") String referenceObjectId)
             throws RiceIllegalArgumentException;
-    
+
     /**
      * Retrieves list of ReferenceObjectBinding objects for the given KRMS obj
      * id.
@@ -182,7 +182,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateReferenceObjectBinding")
     @CacheEvict(value={ReferenceObjectBinding.Cache.NAME}, allEntries = true)
-    public ReferenceObjectBinding updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBindingDefinition) throws RiceIllegalArgumentException;
+    public void updateReferenceObjectBinding(ReferenceObjectBinding referenceObjectBindingDefinition) throws RiceIllegalArgumentException;
 
     /**
      * Delete the specified ReferenceObjectBinding object
@@ -268,8 +268,8 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @WebResult(name = "agenda")
     @Cacheable(value= AgendaDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'contextId=' + #p1")
     public AgendaDefinition getAgendaByNameAndContextId (@WebParam(name = "name") String name,
-                                                         @WebParam(name = "contextId") String contextId);
-    
+            @WebParam(name = "contextId") String contextId);
+
     /**
      * Retrieve Agendas of the specified type
      *
@@ -326,7 +326,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateAgenda")
     @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
-    public AgendaDefinition updateAgenda(@WebParam(name = "agendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
+    public void updateAgenda(@WebParam(name = "agendaDefinition") AgendaDefinition agendaDefinition) throws RiceIllegalArgumentException;
 
     /**
      * Delete the specified Agenda
@@ -422,8 +422,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateAgendaItem")
     @CacheEvict(value={AgendaTreeDefinition.Cache.NAME, AgendaDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME, ContextDefinition.Cache.NAME}, allEntries = true)
-    public AgendaItemDefinition updateAgendaItem(
-            @WebParam(name = "agendaItemDefinition") AgendaItemDefinition agendaItemDefinition) throws RiceIllegalArgumentException;
+    public void updateAgendaItem(@WebParam(name = "agendaItemDefinition") AgendaItemDefinition agendaItemDefinition) throws RiceIllegalArgumentException;
 
     /**
      * Delete the specified AgendaItem
@@ -483,8 +482,8 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @WebResult(name = "rule")
     @Cacheable(value= RuleDefinition.Cache.NAME, key="'name=' + #p0 + '|' + 'namespace=' + #p1")
     public RuleDefinition getRuleByNameAndNamespace(@WebParam(name = "name") String name,
-                                                    @WebParam(name = "namespace") String namespace);
-	
+            @WebParam(name = "namespace") String namespace);
+
     /**
      * Retrieves all of the rules for the given list of ruleIds.  The rule
      * includes the propositions which define the condition that is to be
@@ -520,7 +519,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateRule")
     @CacheEvict(value={RuleDefinition.Cache.NAME, PropositionDefinition.Cache.NAME, ActionDefinition.Cache.NAME, AgendaItemDefinition.Cache.NAME}, allEntries = true)
-    public RuleDefinition updateRule(@WebParam(name = "ruleDefinition") RuleDefinition ruleDefinition) throws RiceIllegalArgumentException;
+    public void updateRule(@WebParam(name = "ruleDefinition") RuleDefinition ruleDefinition) throws RiceIllegalArgumentException;
 
     /**
      * Delete the specified Rule
@@ -597,7 +596,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateAction")
     @CacheEvict(value={ActionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
-    public ActionDefinition updateAction(@WebParam(name = "actionDefinition") ActionDefinition actionDefinition) throws RiceIllegalArgumentException;
+    public void updateAction(@WebParam(name = "actionDefinition") ActionDefinition actionDefinition) throws RiceIllegalArgumentException;
 
     /**
      * Delete the specified Action
@@ -608,8 +607,8 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @WebMethod(operationName = "deleteAction")
     @CacheEvict(value={ActionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
     public void deleteAction(@WebParam(name = "id") String id) throws RiceIllegalArgumentException;
-  
-    
+
+
     ////
     //// proposition methods
     ////
@@ -677,7 +676,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateProposition")
     @CacheEvict(value={PropositionDefinition.Cache.NAME, RuleDefinition.Cache.NAME}, allEntries = true)
-    public PropositionDefinition updateProposition(
+    public void updateProposition(
             @WebParam(name = "propositionDefinition") PropositionDefinition propositionDefinition) throws RiceIllegalArgumentException;
 
     /**
@@ -745,8 +744,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateNaturalLanguageUsage")
     @CacheEvict(value={NaturalLanguageUsage.Cache.NAME, NaturalLanguageTemplate.Cache.NAME}, allEntries = true)
-    public NaturalLanguageUsage updateNaturalLanguageUsage(
-            @WebParam(name = "naturalLanguageUsage") NaturalLanguageUsage naturalLanguageUsage) throws RiceIllegalArgumentException;
+    public void updateNaturalLanguageUsage(@WebParam(name = "naturalLanguageUsage") NaturalLanguageUsage naturalLanguageUsage) throws RiceIllegalArgumentException;
 
     /**
      * Delete NaturalLanguageUsage
@@ -789,10 +787,10 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @CacheEvict(value={ContextDefinition.Cache.NAME}, allEntries = true)
     public ContextDefinition createContext(@WebParam(name = "contextDefinition") ContextDefinition contextDefinition) throws RiceIllegalArgumentException;
 
-    
+
     /**
      * find Create Context
-     * 
+     *
      * Searches for an existing context with the same name and namespace and returns it
      * otherwise it creates the context.
      *
@@ -806,7 +804,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @CacheEvict(value={ContextDefinition.Cache.NAME}, allEntries = true)
     public ContextDefinition findCreateContext(@WebParam(name = "contextDefinition") ContextDefinition contextDefinition) throws RiceIllegalArgumentException;
 
-    
+
     /**
      * Update the Context specified by the identifier in the input DTO
      *
@@ -817,7 +815,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateContext")
     @CacheEvict(value={ContextDefinition.Cache.NAME}, allEntries = true)
-    public ContextDefinition updateContext(@WebParam(name = "contextDefinition") ContextDefinition contextDefinition) throws RiceIllegalArgumentException;
+    public void updateContext(@WebParam(name = "contextDefinition") ContextDefinition contextDefinition) throws RiceIllegalArgumentException;
 
     /**
      * Delete the specified Context
@@ -904,8 +902,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
      */
     @WebMethod(operationName = "updateNaturalLanguageTemplate")
     @CacheEvict(value={NaturalLanguageTemplate.Cache.NAME}, allEntries = true)
-    public NaturalLanguageTemplate updateNaturalLanguageTemplate(
-            @WebParam(name = "naturalLanguageTemplate") NaturalLanguageTemplate naturalLanguageTemplate)
+    public void updateNaturalLanguageTemplate(@WebParam(name = "naturalLanguageTemplate") NaturalLanguageTemplate naturalLanguageTemplate)
             throws RiceIllegalArgumentException;
 
     /**
@@ -1048,7 +1045,7 @@ public interface RuleManagementService extends TranslateBusinessMethods {
             @WebParam(name = "languageCode") String languageCode)
             throws RiceIllegalArgumentException;
 
-  
+
     /**
      * Query for Context ids based on the given search criteria which is a Map
      * of Context field names to values.
@@ -1138,14 +1135,14 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     @XmlElement(name = "action", required = false)
     @WebResult(name = "actionIds")
     List<String> findActionIds(@WebParam(name = "query") QueryByCriteria queryByCriteria) throws RiceIllegalArgumentException;
-    
+
     ////
     //// extra methods from RuleRepositoryService copied here so I can break the dependence on that service
     //// and then implement different caching schemes for each 
     ////
-    
-    
-      /**
+
+
+    /**
      * Locates a ContextDefinition based on the given map of context qualifiers.
      * The requirements for valid selection criteria are implementation
      * dependent. An IllegalArgumentException may be thrown if the
@@ -1209,5 +1206,5 @@ public interface RuleManagementService extends TranslateBusinessMethods {
     public List<AgendaTreeDefinition> getAgendaTrees(@WebParam(name = "agendaIds") List<String> agendaIds)
             throws RiceIllegalArgumentException;
 
-   
+
 }

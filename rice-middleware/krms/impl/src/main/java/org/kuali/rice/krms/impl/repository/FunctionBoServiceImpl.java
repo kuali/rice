@@ -47,9 +47,7 @@ public class FunctionBoServiceImpl implements FunctionRepositoryService, Functio
             new ModelObjectUtils.Transformer<FunctionBo, FunctionDefinition>() {
                 public FunctionDefinition transform(FunctionBo input) {
                     return FunctionBo.to(input);
-                }
-
-                ;
+                };
             };
 
     @Override

@@ -17,6 +17,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
@@ -26,6 +27,7 @@ import org.kuali.rice.krms.api.repository.reference.ReferenceObjectBinding;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -38,13 +40,14 @@ import static org.mockito.Mockito.when;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ReferenceObjectBindingBoServiceImplGenTest {
     private ReferenceObjectBindingBoServiceImpl service;
     private ReferenceObjectBinding referenceObjectBinding;
-    @Mock private DataObjectService mockDataObjectService;
+    private DataObjectService mockDataObjectService;
 
     public ReferenceObjectBindingBoServiceImplGenTest() {
-        MockitoAnnotations.initMocks(this);
+        mockDataObjectService = mock(DataObjectService.class);
     }
 
     @Before

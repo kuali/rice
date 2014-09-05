@@ -50,7 +50,7 @@ public interface KewTypeRepositoryService {
      * @throws IllegalStateException if the KewType does not exist in the system
      */
     @WebMethod(operationName="updateKewType")
-    KewTypeDefinition updateKewType(@WebParam(name = "kewType") KewTypeDefinition kewType) throws RiceIllegalArgumentException, RiceIllegalStateException;
+    void updateKewType(@WebParam(name = "kewType") KewTypeDefinition kewType) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
     /**
      * Lookup a kew type based on the given id.
@@ -78,7 +78,7 @@ public interface KewTypeRepositoryService {
             @WebParam(name = "name") String name,
             @WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
-   /**
+    /**
      * Returns all KEW types that for a given namespace.
      *
      * @return all KEW types for a namespace
@@ -88,7 +88,7 @@ public interface KewTypeRepositoryService {
     @XmlElementWrapper(name = "namespaceTypes", required = false)
     @XmlElement(name = "namespaceType", required = false)
     List<KewTypeDefinition> findAllTypesByNamespace(
-    		@WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException;
+            @WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException;
 
     /**
      * Returns all KEW types
@@ -100,7 +100,7 @@ public interface KewTypeRepositoryService {
     @XmlElementWrapper(name = "types", required = false)
     @XmlElement(name = "type", required = false)
     List<KewTypeDefinition> findAllTypes();
-    
+
     /**
      * This will create a {@link KewTypeAttribute} exactly like the parameter passed in.
      *
@@ -119,7 +119,7 @@ public interface KewTypeRepositoryService {
      * @throws IllegalStateException if the KewTypeAttribute does not exist in the system
      */
     @WebMethod(operationName="updateKewTypeAttribute")
-    KewTypeAttribute updateKewTypeAttribute(@WebParam(name = "kewTypeAttribute") KewTypeAttribute kewTypeAttribute) throws RiceIllegalArgumentException, RiceIllegalStateException;
+    void updateKewTypeAttribute(@WebParam(name = "kewTypeAttribute") KewTypeAttribute kewTypeAttribute) throws RiceIllegalArgumentException, RiceIllegalStateException;
 
 
 }

@@ -57,7 +57,7 @@ public interface TermRepositoryService {
     @Cacheable(value = TermResolverDefinition.Cache.NAME, key = "'namespace=' + #p0")
     List<TermResolverDefinition> findTermResolversByNamespace(@WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException;
 
-     /**
+    /**
      * Retrieves the {@link TermDefinition} with the given termId.
      *
      * @since 2.1.1
@@ -105,7 +105,7 @@ public interface TermRepositoryService {
     TermSpecificationDefinition createTermSpecification(@WebParam(name = "termSpec") TermSpecificationDefinition termSpec)
             throws RiceIllegalArgumentException;
 
-     /**
+    /**
      * Updates a {@link TermSpecificationDefinition}
      *
      * @since 2.2.1
@@ -116,11 +116,10 @@ public interface TermRepositoryService {
      */
     @WebMethod(operationName = "updateTermSpecification")
     @CacheEvict(value = {TermSpecificationDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
-    TermSpecificationDefinition updateTermSpecification(
-            @WebParam(name = "termSpec") TermSpecificationDefinition termSpec)
+    void updateTermSpecification(@WebParam(name = "termSpec") TermSpecificationDefinition termSpec)
             throws RiceIllegalArgumentException;
 
-     /**
+    /**
      * Deletes a {@link TermSpecificationDefinition}
      *
      * @since 2.2.1
@@ -132,9 +131,9 @@ public interface TermRepositoryService {
     @WebMethod(operationName = "deleteTermSpecification")
     @CacheEvict(value = {TermSpecificationDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
     void deleteTermSpecification(@WebParam(name = "id") String id)
-            throws RiceIllegalArgumentException;  
-    
-    
+            throws RiceIllegalArgumentException;
+
+
     /**
      * Create a {@link TermDefinition}
      *
@@ -156,7 +155,7 @@ public interface TermRepositoryService {
      * Update a {@link TermDefinition}
      *
      * @since 2.2.1
-     * @param term to be updated
+     * @param termDef to be updated
      *
      * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if
      * the termDef is null or blank.
@@ -164,7 +163,7 @@ public interface TermRepositoryService {
     @WebMethod(operationName = "updateTerm")
     @WebResult(name = "term")
     @CacheEvict(value = {TermDefinition.Cache.NAME}, allEntries = true)
-    TermDefinition updateTerm(@WebParam(name = "termDef") TermDefinition term)
+    void updateTerm(@WebParam(name = "termDef") TermDefinition termDef)
             throws RiceIllegalArgumentException;
 
 
@@ -236,8 +235,8 @@ public interface TermRepositoryService {
     @CacheEvict(value = {TermResolverDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
     TermResolverDefinition createTermResolver(@WebParam(name = "termResolver") TermResolverDefinition termResolver)
             throws RiceIllegalArgumentException;
-    
-    
+
+
     /**
      * Updates the {@link TermResolverDefinition}.
      *
@@ -251,10 +250,10 @@ public interface TermRepositoryService {
      */
     @WebMethod(operationName = "updateTermResolver")
     @CacheEvict(value = {TermResolverDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
-    TermResolverDefinition updateTermResolver(@WebParam(name = "termResolver") TermResolverDefinition termResolver)
+    void updateTermResolver(@WebParam(name = "termResolver") TermResolverDefinition termResolver)
             throws RiceIllegalArgumentException;
-    
-    
+
+
     /**
      * deletes the {@link TermResolverDefinition} with the given id
      *
@@ -268,8 +267,8 @@ public interface TermRepositoryService {
     @CacheEvict(value = {TermResolverDefinition.Cache.NAME, TermDefinition.Cache.NAME}, allEntries = true)
     void deleteTermResolver(@WebParam(name = "id") String id)
             throws RiceIllegalArgumentException;
-    
-    
+
+
     /**
      * Retrieves the {@link TermResolverDefinition} for the given name and namespace
      *
@@ -281,12 +280,12 @@ public interface TermRepositoryService {
      */
     @WebMethod(operationName = "getTermResolverByNameAndNamespace")
     @WebResult(name = "termResolver")
-            // TODO: set the cache right
-//    @Cacheable(value = TermResolverDefinition.Cache.NAME, key = "'namespace=' + #p0")
-    TermResolverDefinition getTermResolverByNameAndNamespace(@WebParam(name = "name") String name, 
+    // TODO: set the cache right
+    //    @Cacheable(value = TermResolverDefinition.Cache.NAME, key = "'namespace=' + #p0")
+    TermResolverDefinition getTermResolverByNameAndNamespace(@WebParam(name = "name") String name,
             @WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException;
 
- 
+
     /**
      * Retrieves the {@link TermSpecificationDefinition} for the given name and namespace
      *
@@ -298,12 +297,12 @@ public interface TermRepositoryService {
      */
     @WebMethod(operationName = "getTermSpecificationByNameAndNamespace")
     @WebResult(name = "termSpecification")
-            // TODO: set the cache right
-//    @Cacheable(value = TermSpecificationDefinition.Cache.NAME, key = "'namespace=' + #p0")
-    TermSpecificationDefinition getTermSpecificationByNameAndNamespace(@WebParam(name = "name") String name, 
+    // TODO: set the cache right
+    //    @Cacheable(value = TermSpecificationDefinition.Cache.NAME, key = "'namespace=' + #p0")
+    TermSpecificationDefinition getTermSpecificationByNameAndNamespace(@WebParam(name = "name") String name,
             @WebParam(name = "namespace") String namespace) throws RiceIllegalArgumentException;
 
-    
+
     /**
      * Retrieves all the {@link TermSpecificationDefinition}s that are valid for the context with the given contextId.
      *

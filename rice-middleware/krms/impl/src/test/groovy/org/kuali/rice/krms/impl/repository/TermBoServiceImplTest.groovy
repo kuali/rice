@@ -25,7 +25,7 @@ import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition
 class TermBoServiceImplTest {
     private final shouldFail = new GroovyTestCase().&shouldFail
     def mockDataObjectService
-    def service
+    TermBoService service
 
     @Before
     void setup() {
@@ -44,9 +44,8 @@ class TermBoServiceImplTest {
         DataObjectService bos = mockDataObjectService.proxyDelegateInstance()
         service.setDataObjectService(bos)
 
-        TermSpecificationDefinition updatedData = service.updateTermSpecification(toUpdate)
+        service.updateTermSpecification(toUpdate)
 
-        Assert.assertNotNull(updatedData);
         mockDataObjectService.verify(bos)
     }
 }

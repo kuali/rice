@@ -17,6 +17,7 @@ package org.kuali.rice.krms.impl.repository;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kuali.rice.core.api.criteria.GenericQueryResults;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.krad.data.DataObjectService;
@@ -27,6 +28,7 @@ import org.kuali.rice.krms.api.repository.language.NaturalLanguageUsage;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +44,14 @@ import static org.mockito.Mockito.when;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
+@RunWith(MockitoJUnitRunner.class)
 public class NaturalLanguageUsageBoServiceImplGenTest {
     private NaturalLanguageUsageBoServiceImpl service;
     private NaturalLanguageUsage naturalLanguageUsage;
-    @Mock private DataObjectService mockDataObjectService;
+    private DataObjectService mockDataObjectService;
 
     public NaturalLanguageUsageBoServiceImplGenTest() {
-        MockitoAnnotations.initMocks(this);
+        mockDataObjectService = mock(DataObjectService.class);
     }
 
     @Before

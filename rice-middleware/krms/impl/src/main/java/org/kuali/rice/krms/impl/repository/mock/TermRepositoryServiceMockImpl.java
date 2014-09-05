@@ -153,14 +153,13 @@ public class TermRepositoryServiceMockImpl implements TermRepositoryService {
     }
 
     @Override
-    public TermSpecificationDefinition updateTermSpecification(TermSpecificationDefinition termSpec) throws RiceIllegalArgumentException {
+    public void updateTermSpecification(TermSpecificationDefinition termSpec) throws RiceIllegalArgumentException {
         TermSpecificationDefinition existing = this.getTermSpecificationById(termSpec.getId());
         if (existing == null) {
             throw new RiceIllegalArgumentException(termSpec.getId() + " does not exist");
         }
         this.termSpecificationMap.put(termSpec.getId(), termSpec);
 
-        return existing;
     }
 
     @Override
@@ -171,13 +170,12 @@ public class TermRepositoryServiceMockImpl implements TermRepositoryService {
     }
 
     @Override
-    public TermDefinition updateTerm(TermDefinition term) throws RiceIllegalArgumentException {
-        TermDefinition existing = this.getTerm(term.getId());
+    public void updateTerm(TermDefinition termDef) throws RiceIllegalArgumentException {
+        TermDefinition existing = this.getTerm(termDef.getId());
         if (existing == null) {
-            throw new RiceIllegalArgumentException(term.getId() + " does not exist");
+            throw new RiceIllegalArgumentException(termDef.getId() + " does not exist");
         }
-        this.termMap.put(term.getId(), term);
-        return existing;
+        this.termMap.put(termDef.getId(), termDef);
     }
 
     @Override
@@ -188,13 +186,12 @@ public class TermRepositoryServiceMockImpl implements TermRepositoryService {
     }
 
     @Override
-    public TermResolverDefinition updateTermResolver(TermResolverDefinition termResolver) throws RiceIllegalArgumentException {
+    public void updateTermResolver(TermResolverDefinition termResolver) throws RiceIllegalArgumentException {
         TermResolverDefinition existing = this.getTermResolverById(termResolver.getId());
         if (existing == null) {
             throw new RiceIllegalArgumentException(termResolver.getId() + " does not exist");
         }
         this.termResolverMap.put(termResolver.getId(), termResolver);
-        return existing;
     }
 
     @Override
@@ -205,45 +202,45 @@ public class TermRepositoryServiceMockImpl implements TermRepositoryService {
     }
 
     @Override
-    public TermResolverDefinition getTermResolverByNameAndNamespace(String name, String namespace) 
+    public TermResolverDefinition getTermResolverByNameAndNamespace(String name, String namespace)
             throws RiceIllegalArgumentException {
-      if (name == null || name.trim().isEmpty()) {
-          throw new RiceIllegalArgumentException ("name is " + name);
-      }
-      if (namespace == null || namespace.trim().isEmpty()) {
-          throw new RiceIllegalArgumentException ("namespace is " + namespace);
-      }
-      for (TermResolverDefinition info : this.termResolverMap.values()) {
-          if (namespace.equals(info.getNamespace())) {
-              if (name.equals(name)) {
-                  return info;
-              }
-          }
-      }
-      return null;
+        if (name == null || name.trim().isEmpty()) {
+            throw new RiceIllegalArgumentException ("name is " + name);
+        }
+        if (namespace == null || namespace.trim().isEmpty()) {
+            throw new RiceIllegalArgumentException ("namespace is " + namespace);
+        }
+        for (TermResolverDefinition info : this.termResolverMap.values()) {
+            if (namespace.equals(info.getNamespace())) {
+                if (name.equals(name)) {
+                    return info;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
-    public TermSpecificationDefinition getTermSpecificationByNameAndNamespace(String name, String namespace) 
+    public TermSpecificationDefinition getTermSpecificationByNameAndNamespace(String name, String namespace)
             throws RiceIllegalArgumentException {
-      if (name == null || name.trim().isEmpty()) {
-          throw new RiceIllegalArgumentException ("name is " + name);
-      }
-      if (namespace == null || namespace.trim().isEmpty()) {
-          throw new RiceIllegalArgumentException ("namespace is " + namespace);
-      }
-      for (TermSpecificationDefinition info : this.termSpecificationMap.values()) {
-          if (namespace.equals(info.getNamespace())) {
-              if (name.equals(name)) {
-                  return info;
-              }
-          }
-      }
-      return null;
+        if (name == null || name.trim().isEmpty()) {
+            throw new RiceIllegalArgumentException ("name is " + name);
+        }
+        if (namespace == null || namespace.trim().isEmpty()) {
+            throw new RiceIllegalArgumentException ("namespace is " + namespace);
+        }
+        for (TermSpecificationDefinition info : this.termSpecificationMap.values()) {
+            if (namespace.equals(info.getNamespace())) {
+                if (name.equals(name)) {
+                    return info;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public List<TermSpecificationDefinition> findAllTermSpecificationsByContextId(String contextId) {
-	throw new UnsupportedOperationException(getClass().getName() + " does not support this operation");
+        throw new UnsupportedOperationException(getClass().getName() + " does not support this operation");
     }
 }

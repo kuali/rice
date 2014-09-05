@@ -47,13 +47,13 @@ public interface KrmsTypeRepositoryService {
     public static final String CONSTANT_VALUE_PROPOSITION_PARAMETER_SERVICE_NAME = "constantPropositionParameterTypeService";
     public static final String FUNCTION_PROPOSITION_PARAMETER_SERVICE_NAME = "functionPropositionParameterTypeService";
     public static final String[] PROPOSITION_SERVICE_NAMES = {SIMPLE_PROPOSITION_SERVICE_NAME,
-        COMPOUND_PROPOSITION_SERVICE_NAME};
+            COMPOUND_PROPOSITION_SERVICE_NAME};
     public static final String[] PROPOSITION_PARAMETER_SERVICE_NAMES = {TERM_PROPOSITION_PARAMETER_SERVICE_NAME,
-        OPERATOR_PROPOSITION_PARAMETER_SERVICE_NAME,
-        CONSTANT_VALUE_PROPOSITION_PARAMETER_SERVICE_NAME,
-        FUNCTION_PROPOSITION_PARAMETER_SERVICE_NAME};
+            OPERATOR_PROPOSITION_PARAMETER_SERVICE_NAME,
+            CONSTANT_VALUE_PROPOSITION_PARAMETER_SERVICE_NAME,
+            FUNCTION_PROPOSITION_PARAMETER_SERVICE_NAME};
     public static final String TERM_PARAMETER_SERVICE_NAME = "termParameterTypeService";
-    
+
     ////
     //// type methods
     ////
@@ -315,7 +315,7 @@ public interface KrmsTypeRepositoryService {
      *
      */
     @WebMethod(operationName = "updateTypeTypeRelation")
-    TypeTypeRelation updateTypeTypeRelation(@WebParam(name = "typeTypeRelation") TypeTypeRelation typeTypeRelation)
+    void updateTypeTypeRelation(@WebParam(name = "typeTypeRelation") TypeTypeRelation typeTypeRelation)
             throws RiceIllegalArgumentException;
 
     /**
@@ -382,7 +382,7 @@ public interface KrmsTypeRepositoryService {
     @XmlElement(name = "serviceNameType", required = false)
     @WebResult(name = "serviceNameTypes")
     // TODO: put in CACHING if we want/need it
-//    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'allByNamespaceCode=' + #p0")
+    //    @Cacheable(value= KrmsTypeDefinition.Cache.NAME, key="'allByNamespaceCode=' + #p0")
     List<KrmsTypeDefinition> findAllTypesByServiceName(
             @WebParam(name = "serviceName") String serviceName)
             throws RiceIllegalArgumentException;
@@ -511,7 +511,7 @@ public interface KrmsTypeRepositoryService {
     @WebResult(name = "propositionParameterTypes")
     List<KrmsTypeDefinition> findPropositionParameterTypesForPropositionType(@WebParam(name = "propositionTypeId") String propositionTypeId)
             throws RiceIllegalArgumentException;
-    
+
 
     /**
      * find term parameter types for the given Term based Proposition Parameter type

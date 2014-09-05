@@ -41,9 +41,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.deleteMatching;
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findMatching;
-import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.findSingleMatching;
+import static org.kuali.rice.krms.impl.repository.BusinessObjectServiceMigrationUtils.*;
 
 /**
  * Implementation of the interface for accessing KRMS repository Agenda related
@@ -55,28 +53,22 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
     // TODO: deal with active flag
 
-    private DataObjectService dataObjectService;
-    private KrmsAttributeDefinitionService attributeDefinitionService;
-
     // used for converting lists of BOs to model objects
     private static final ModelObjectUtils.Transformer<AgendaItemBo, AgendaItemDefinition> toAgendaItemDefinition =
             new ModelObjectUtils.Transformer<AgendaItemBo, AgendaItemDefinition>() {
                 public AgendaItemDefinition transform(AgendaItemBo input) {
                     return AgendaItemBo.to(input);
-                }
-
-                ;
+                };
             };
-
     // used for converting lists of BOs to model objects
     private static final ModelObjectUtils.Transformer<AgendaBo, AgendaDefinition> toAgendaDefinition =
             new ModelObjectUtils.Transformer<AgendaBo, AgendaDefinition>() {
                 public AgendaDefinition transform(AgendaBo input) {
                     return AgendaBo.to(input);
-                }
-
-                ;
+                };
             };
+    private DataObjectService dataObjectService;
+    private KrmsAttributeDefinitionService attributeDefinitionService;
 
     /**
      * This overridden method creates a KRMS Agenda in the repository
@@ -456,6 +448,13 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         return results;
     }
 
+    protected DataObjectService getDataObjectService() {
+        if (dataObjectService == null) {
+            dataObjectService = KRADServiceLocator.getDataObjectService();
+        }
+        return dataObjectService;
+    }
+
     /**
      * Sets the dataObjectService attribute value.
      *
@@ -463,13 +462,6 @@ public class AgendaBoServiceImpl implements AgendaBoService {
      */
     public void setDataObjectService(final DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
-    }
-
-    protected DataObjectService getDataObjectService() {
-        if (dataObjectService == null) {
-            dataObjectService = KRADServiceLocator.getDataObjectService();
-        }
-        return dataObjectService;
     }
 
     protected KrmsAttributeDefinitionService getAttributeDefinitionService() {

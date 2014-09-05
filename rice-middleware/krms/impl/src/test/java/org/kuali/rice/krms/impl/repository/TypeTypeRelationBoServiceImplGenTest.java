@@ -32,6 +32,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -42,10 +43,10 @@ import static org.mockito.Mockito.when;
 public class TypeTypeRelationBoServiceImplGenTest {
     private TypeTypeRelationBoServiceImpl service;
     private TypeTypeRelation typeTypeRelation;
-    @Mock private DataObjectService mockDataObjectService;
+    private DataObjectService mockDataObjectService;
 
     public TypeTypeRelationBoServiceImplGenTest() {
-        MockitoAnnotations.initMocks(this);
+        mockDataObjectService = mock(DataObjectService.class);
     }
 
     @Before

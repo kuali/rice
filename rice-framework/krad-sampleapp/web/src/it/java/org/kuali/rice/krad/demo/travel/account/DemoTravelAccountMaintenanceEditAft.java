@@ -143,7 +143,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickBlanketApprove();
 
         //click on confirmation message
-        waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
+        waitAndClickConfirmBlanketApproveOk();
         acceptAlertIfPresent();
         waitForProgressLoading();
         checkForDocErrorKrad();
@@ -155,7 +155,8 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndClickBlanketApprove();
-        waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
+        waitAndClickConfirmBlanketApproveOk();
+ // waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
         acceptAlertIfPresent();
 
     }
@@ -216,6 +217,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickBlanketApprove();
         jGrowl("Click OK");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
+        waitForProgressLoading();
         checkForDocErrorKrad();
         acceptAlert();
 

@@ -88,8 +88,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
         assertElementPresent(By.cssSelector("button[data-submit_data = '{\\\"methodToCall\\\":\\\"cancel\\\"}']"), "Cancel button not found");
 
         waitAndClickCloseByText();
-        waitAndClick(By.cssSelector("div[data-parent = 'ConfirmSaveOnCloseDialog'] button[data-response = 'false']"));
-
+        waitAndClickConfirmSaveOnClose();
         openTravelAuthorization(documentNumber, EDITOR_PRINCIPAL_NAME_VALUE);
 
         assertTextNotPresent("This document currently has a full lock");

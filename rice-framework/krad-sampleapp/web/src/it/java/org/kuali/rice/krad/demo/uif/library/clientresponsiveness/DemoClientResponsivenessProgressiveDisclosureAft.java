@@ -96,7 +96,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     	waitForElementPresentByXpath("//input[@name='inputField11']");
     	waitForElementPresentByXpath("//input[@name='inputField12']");
     	waitAndClickByXpath("//input[@name='inputField9' and @value='show2']");
-    	waitForTextNotPresent("Loading...");
+        waitForProgressLoading();
     	waitForElementPresentByXpath("//input[@name='inputField13']");
     	waitForElementPresentByXpath("//input[@name='inputField14']");
     }
@@ -104,11 +104,11 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     protected void testClientResponsivenessProgressiveDisclosureConditionalRefresh() throws Exception {
     	waitAndClickByXpath("//li[@data-tabfor='Demo-ProgressiveDisclosure-Example6']/a[contains(text(),'Conditional Refresh')]");
     	waitAndClickByXpath("//input[@name='inputField15' and @value='show1']");
-    	waitForTextNotPresent("Loading...");
+        waitForProgressLoading();
     	waitAndTypeByName("inputField16","Hello World!");
     	waitAndTypeByName("inputField17","Hello Deep!");
     	waitAndClickByXpath("//input[@name='inputField15' and @value='show2']");
-        waitForTextNotPresent("Loading...");
+        waitForProgressLoading();
     	waitForTextPresent("Hello Deep!");
     }
     
@@ -116,17 +116,15 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     	waitAndClickByLinkText("Conditional Options");
     	selectByName("inputField19","Apples");
     	waitAndClickButtonByText("Refresh Group");
-        Thread.sleep(10000); // would be better to have a waitForTextNotPresent that takes seconds
-        waitForTextNotPresent("Loading...");
+        waitForProgressLoading(15);
     	selectByName("inputField4","Vegetables");
     	// Test page gives exception after this step.
         waitAndClickButtonByText("Refresh Field");
-        Thread.sleep(10000); // would be better to have a waitForTextNotPresent that takes seconds
-        waitForTextNotPresent("Loading...");
+        waitForProgressLoading(15);
         waitAndClickButtonByText("Refresh Field but with Server Errors");
         waitForTextPresent("Field 1: Intended message with key: serverTestError not found.");
         waitAndClickButtonByText("Refresh Page");
-        Thread.sleep(10000);
+        waitForProgressLoading(15);
         waitForTextNotPresent("Field 1: Intended message with key: serverTestError not found.");
     }
     
@@ -140,7 +138,7 @@ public class DemoClientResponsivenessProgressiveDisclosureAft extends WebDriverL
     	waitAndClickByLinkText("Collection Group With Refresh");
         jiraAwareTypeByName("newCollectionLines['collection1'].field2", "ref");
         fireEvent("focus", "collection1[0].field1");
-        waitForTextNotPresent("Loading...");
+        waitForProgressLoading();
     	//Test cannot be written ahead as there is a freemarker error in page
         checkForIncidentReport();
     }

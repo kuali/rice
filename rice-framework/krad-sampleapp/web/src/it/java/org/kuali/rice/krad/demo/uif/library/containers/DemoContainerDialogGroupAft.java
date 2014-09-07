@@ -60,6 +60,7 @@ public class DemoContainerDialogGroupAft extends WebDriverLegacyITBase {
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example3']/button");
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-DialogResponse1']/div/div/div[@data-parent='Demo-DialogGroup-DialogResponse1']/button[contains(text(),'OK')]");
     	acceptAlertIfPresent();
+        waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example3']/button");
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-DialogResponse1']/div/div/div[@data-parent='Demo-DialogGroup-DialogResponse1']/button[contains(text(),'Cancel')]");
     	acceptAlertIfPresent();
     }

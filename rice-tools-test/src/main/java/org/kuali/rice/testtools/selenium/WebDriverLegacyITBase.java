@@ -2734,6 +2734,11 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
     }
 
+    protected void waitAndClickConfirmSaveOnClose() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]");
+    }
+
     /**
      * {@link #ADMINISTRATION_LINK_TEXT}
      * @param failable

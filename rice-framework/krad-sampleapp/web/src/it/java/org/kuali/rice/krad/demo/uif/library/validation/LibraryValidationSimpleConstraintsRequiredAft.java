@@ -16,9 +16,9 @@
 package org.kuali.rice.krad.demo.uif.library.validation;
 
 import org.junit.Test;
-import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 
-public class LibraryValidationSimpleConstraintsRequiredAft extends DemoLibraryBase {
+public class LibraryValidationSimpleConstraintsRequiredAft extends LibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-SimpleConstraintView&methodToCall=start

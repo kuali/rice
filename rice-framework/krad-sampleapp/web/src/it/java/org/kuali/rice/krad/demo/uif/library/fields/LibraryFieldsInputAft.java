@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.demo.uif.library.fields;
 
 import org.junit.Test;
-import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -24,7 +24,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryFieldsInputAft extends DemoLibraryBase {
+public class LibraryFieldsInputAft extends LibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-InputFieldView&methodToCall=start

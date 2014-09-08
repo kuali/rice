@@ -17,7 +17,7 @@ package org.kuali.rice.krad.demo.uif.library.fields;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.w3c.dom.Document;
@@ -35,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryFieldsActionAft extends DemoLibraryBase {
+public class LibraryFieldsActionAft extends LibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-ActionFieldView&methodToCall=start

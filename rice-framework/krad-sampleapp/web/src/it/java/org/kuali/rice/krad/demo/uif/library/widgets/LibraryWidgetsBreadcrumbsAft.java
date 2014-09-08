@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.demo.uif.library.widgets;
 
 import org.junit.Test;
-import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryWidgetsBreadcrumbsAft extends DemoLibraryBase {
+public class LibraryWidgetsBreadcrumbsAft extends LibraryBase {
 
 	  /**
      * /kr-krad/kradsampleapp?viewId=Demo-BreadcrumbsView&methodToCall=start

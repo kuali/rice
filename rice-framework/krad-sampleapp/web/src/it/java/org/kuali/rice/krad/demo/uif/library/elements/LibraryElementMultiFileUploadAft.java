@@ -32,14 +32,14 @@ import java.util.jar.JarFile;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryElementMultiFileUploadAft extends DemoLibraryBase {
+public class LibraryElementMultiFileUploadAft extends LibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-MultiFileUploadView

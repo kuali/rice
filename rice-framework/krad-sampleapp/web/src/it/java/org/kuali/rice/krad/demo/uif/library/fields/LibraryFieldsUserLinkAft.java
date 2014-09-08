@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryFieldsUserLinkAft extends DemoFieldsKimLinkBase {
+public class LibraryFieldsUserLinkAft extends LibraryFieldsKimLinkBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-UserLinkFieldView&methodToCall=start

@@ -17,14 +17,14 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryWidgetsSuggestAft extends DemoLibraryBase {
+public class LibraryWidgetsSuggestAft extends LibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-SuggestView&methodToCall=start

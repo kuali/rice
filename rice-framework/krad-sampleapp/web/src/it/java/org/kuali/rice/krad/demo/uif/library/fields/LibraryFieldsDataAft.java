@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.demo.uif.library.fields;
 
 import org.junit.Ignore;
-import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -29,7 +29,7 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryFieldsDataAft extends DemoLibraryBase {
+public class LibraryFieldsDataAft extends LibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-DataFieldView&methodToCall=start

@@ -16,13 +16,13 @@
 package org.kuali.rice.krad.demo.uif.library.elements;
 
 import org.junit.Test;
-import org.kuali.rice.krad.demo.uif.library.DemoLibraryBase;
+import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryElementsActionAft extends DemoLibraryBase {
+public class LibraryElementsActionAft extends LibraryBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-ActionView&methodToCall=start

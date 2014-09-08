@@ -25,6 +25,13 @@
 			<description>BANotificationAttribute</description>
 			<type>RuleAttribute</type>
 		</ruleAttribute>
+    <ruleAttribute>
+      <name>ChildDocumentAttribute</name>
+      <className>org.kuali.rice.kew.actions.BlanketApproveTest.ChainedApprovalWorkflowAttribute</className>
+      <label>Child Document Attribute</label>
+      <description>Child Document Attribute</description>
+      <type>RuleAttribute</type>
+    </ruleAttribute>
 	</ruleAttributes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
 		<ruleTemplate>
@@ -91,6 +98,16 @@
 				</attribute>
 			</attributes>
 		</ruleTemplate>
+    <ruleTemplate>
+      <name>ChildDocumentRuleTemplate</name>
+      <description>Child Document Rule Template</description>
+      <attributes>
+        <attribute>
+          <name>ChildDocumentAttribute</name>
+          <required>true</required>
+        </attribute>
+      </attributes>
+    </ruleTemplate>
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
@@ -1211,6 +1228,103 @@
 				<join name="Join"/>
 			</routeNodes>
 		</documentType>
+    <!-- Chained Blanket Approval -->
+    <!-- Parent Document which can generate create a child approval -->
+    <!-- BEGIN: Chained Blanket Approve Parent Document -->
+    <documentType>
+      <name>ChainedBlanketApproveTestParent</name>
+      <parent>BlanketApproveTest</parent>
+      <description>Chained Blanket Approve Document Parent</description>
+      <label>BlanketApproveSequentialTest</label>
+      <postProcessorName>org.kuali.rice.kew.actions.BlanketApproveTest$ChainedApprovalPostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+      <docHandler>_blank</docHandler>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" nextNode="WorkflowDocument" />
+          <requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
+          <requests name="WorkflowDocument2" nextNode="Acknowledge1" />
+          <requests name="Acknowledge1" nextNode="Acknowledge2" />
+          <requests name="Acknowledge2" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+        <requests name="WorkflowDocument">
+          <activationType>P</activationType>
+          <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+        </requests>
+        <requests name="WorkflowDocument2">
+          <activationType>P</activationType>
+          <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+        </requests>
+        <requests name="Acknowledge1">
+          <activationType>P</activationType>
+          <ruleTemplate>Ack1Template</ruleTemplate>
+        </requests>
+        <requests name="Acknowledge2">
+          <activationType>P</activationType>
+          <ruleTemplate>Ack2Template</ruleTemplate>
+        </requests>
+      </routeNodes>
+      <attributes>
+        <attribute>
+          <name>ChildDocumentAttribute</name>
+        </attribute>
+      </attributes>
+    </documentType>
+    <!-- END: Chained Blanket Approve Parent Document -->
+    <!-- Chained Blanket Approve Document -->
+    <!-- BEGIN: Chained Blanket Approve Child Document -->
+    <documentType>
+      <name>ChainedBlanketApproveTestChild</name>
+      <parent>BlanketApproveTest</parent>
+      <description>Chained Blanket Approve Child Document; parent child relationship based on post processor</description>
+      <label>BlanketApproveSequentialTest</label>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+      <docHandler>_blank</docHandler>
+      <active>true</active>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" nextNode="WorkflowDocument" />
+          <requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
+          <requests name="WorkflowDocument2" nextNode="Acknowledge1" />
+          <requests name="Acknowledge1" nextNode="Acknowledge2" />
+          <requests name="Acknowledge2" />
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+        <requests name="WorkflowDocument">
+          <activationType>P</activationType>
+          <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+        </requests>
+        <requests name="WorkflowDocument2">
+          <activationType>P</activationType>
+          <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+        </requests>
+        <requests name="Acknowledge1">
+          <activationType>P</activationType>
+          <ruleTemplate>Ack1Template</ruleTemplate>
+        </requests>
+        <requests name="Acknowledge2">
+          <activationType>P</activationType>
+          <ruleTemplate>Ack2Template</ruleTemplate>
+        </requests>
+      </routeNodes>
+    </documentType>
+    <!-- END: Chained Blanket Approve Child Document -->
+
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
 		<rule>
@@ -1226,6 +1340,11 @@
 				</responsibility>
 			</responsibilities>
 		</rule>
+    <rule>
+      <documentType>ChainedBlanketApproveTestParent</documentType>
+      <ruleTemplate>ChildDocumentRuleTemplate</ruleTemplate>
+      <description>Chained Document requires a child document</description>
+    </rule>
 		<rule>
 			<documentType>SuperUserActionInvalidPostProcessor</documentType>
 			<ruleTemplate>WorkflowDocument2Template</ruleTemplate>

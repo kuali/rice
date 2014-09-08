@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.kuali.rice.core.framework.util.ApplicationThreadLocal;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
@@ -38,6 +39,8 @@ import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 public class RouteContext implements Serializable {
 
 	private static final long serialVersionUID = -7125137491367944594L;
+
+    private String id;
 
 	private DocumentRouteHeaderValue routeHeader;
 
@@ -58,6 +61,7 @@ public class RouteContext implements Serializable {
 	private boolean searchIndexingRequestedForContext = false;
 
 	public RouteContext() {
+        id = new String();
 	}
 
 	private static ThreadLocal<List<RouteContext>> ROUTE_CONTEXT_STACK = new ApplicationThreadLocal<List<RouteContext>>() {
@@ -72,9 +76,22 @@ public class RouteContext implements Serializable {
 		return ROUTE_CONTEXT_STACK.get().get(0);
 	}
 
+    public static void clearRouteContextByDocumentId(String documentId) {
+        if(StringUtils.isNotBlank(documentId)) {
+            // Pop top stack element with matching document id and replace with empty
+            for(int i = 0; i < ROUTE_CONTEXT_STACK.get().size(); i++) {
+                if(ROUTE_CONTEXT_STACK.get().get(i).routeHeader.getDocumentId().equals(documentId)) {
+                    ROUTE_CONTEXT_STACK.get().remove(i);
+                    ROUTE_CONTEXT_STACK.get().add(i, new RouteContext());
+                }
+            }
+        }
+
+    }
+
 	public static void clearCurrentRouteContext() {
-		ROUTE_CONTEXT_STACK.get().remove(0);
-		ROUTE_CONTEXT_STACK.get().add(0, new RouteContext());
+        ROUTE_CONTEXT_STACK.get().remove(0);
+        ROUTE_CONTEXT_STACK.get().add(0, new RouteContext());
 	}
 
 	public static RouteContext createNewRouteContext() {

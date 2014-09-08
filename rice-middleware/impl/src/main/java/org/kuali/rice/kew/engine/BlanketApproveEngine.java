@@ -66,8 +66,9 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             throw new IllegalArgumentException("Cannot process a null document id.");
         }
         MDC.put("docId", documentId);
-        RouteContext context = RouteContext.getCurrentRouteContext();
+
         try {
+            RouteContext context = RouteContext.createNewRouteContext();
             KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
             if ( LOG.isInfoEnabled() ) {
             	LOG.info("Processing document for Blanket Approval: " + documentId + " : " + nodeInstanceId);
@@ -146,7 +147,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         	}
             }
         } finally {
-        	RouteContext.clearCurrentRouteContext();
+        	RouteContext.releaseCurrentRouteContext();
             MDC.remove("docId");
         }
     }

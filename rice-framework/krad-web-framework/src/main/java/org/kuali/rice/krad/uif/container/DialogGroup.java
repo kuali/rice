@@ -24,11 +24,15 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
+import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +77,8 @@ public class DialogGroup extends GroupBase {
     private String onDialogResponseScript;
     private String onShowDialogScript;
     private String onHideDialogScript;
+
+    private boolean destroyContentsOnClose;
 
     /**
      * Default Constructor.
@@ -349,5 +355,21 @@ public class DialogGroup extends GroupBase {
      */
     public void setOnHideDialogScript(String onHideDialogScript) {
         this.onHideDialogScript = onHideDialogScript;
+    }
+
+    /**
+     * Flag to indicate whether the contents of the dialog should be destroyed on close.
+     *
+     * @return boolean to destroy contents
+     */
+    public boolean isDestroyContentsOnClose() {
+        return destroyContentsOnClose;
+    }
+
+    /**
+     * @see DialogGroup#isDestroyContentsOnClose()
+     */
+    public void setDestroyContentsOnClose(boolean destroyContentsOnClose) {
+        this.destroyContentsOnClose = destroyContentsOnClose;
     }
 }

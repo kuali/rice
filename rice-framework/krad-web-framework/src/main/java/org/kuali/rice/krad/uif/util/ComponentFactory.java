@@ -172,6 +172,7 @@ public class ComponentFactory {
     public static final String ADD_BLANK_LINE_ACTION = "Uif-AddBlankLineAction";
     public static final String ADD_WITH_DIALOG_ACTION = "Uif-AddWithDialogAction";
     public static final String ADD_LINE_DIALOG = "Uif-AddLineDialog";
+    public static final String DIALOG_DISMISS_ACTION = "Uif-DialogDismissButton";
     public static final String EDIT_LINE_DIALOG = "Uif-EditLineDialog";
     public static final String EDIT_LINE_IN_DIALOG_ACTION = "Uif-EditLineInDialogAction";
     public static final String EDIT_LINE_IN_DIALOG_SAVE_ACTION = "Uif-EditLineInDialogSaveAction";

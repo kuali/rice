@@ -80,6 +80,8 @@ public class ViewLifecycle implements Serializable {
 
     private Set<String> visitedIds;
 
+    private static String refreshComponentId;
+
     /**
      * Private constructor, for spawning a lifecycle context.
      *
@@ -214,6 +216,9 @@ public class ViewLifecycle implements Serializable {
                     "View post metadata is null which cannot occur for refresh. Form id: " + form.getFormKey()
                             + ", requested form id: " + form.getRequestedFormKey());
         }
+
+        // set the refresh id to the component id
+        refreshComponentId = componentId;
 
         ComponentPostMetadata componentPostMetadata = viewPostMetadata.getComponentPostMetadata(componentId);
         boolean componentPostMetadataInitialized = false;
@@ -748,6 +753,20 @@ public class ViewLifecycle implements Serializable {
      */
     public static boolean isActive() {
         return PROCESSOR.get() != null;
+    }
+
+    /**
+     * Id of the component to refresh.
+     */
+    public static String getRefreshComponentId() {
+        return refreshComponentId;
+    }
+
+    /**
+     * @see ViewLifecycle#getRefreshComponentId()
+     */
+    public static void setRefreshComponentId(String id) {
+        refreshComponentId = id;
     }
 
     /**

@@ -42,10 +42,9 @@ public class DemoCollectionEditLinePresentationController extends ViewPresentati
     @Override
     public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
             String propertyName, Object currentLine) {
-        if(currentLine instanceof UITestObject && propertyName.equalsIgnoreCase("collection1")) {
+        if(currentLine != null && currentLine instanceof UITestObject && propertyName.equalsIgnoreCase("collection1_8")) {
             UITestObject testObject = (UITestObject) currentLine;
-            if (testObject.getField4().equalsIgnoreCase("4") && collectionGroup.getHeader()
-                    .getHeaderText().equalsIgnoreCase("Edit Authorization Edit Line (line authorization)")) {
+            if (testObject.getField4() != null && testObject.getField4().equalsIgnoreCase("16")) {
                 return false;
             }
         }

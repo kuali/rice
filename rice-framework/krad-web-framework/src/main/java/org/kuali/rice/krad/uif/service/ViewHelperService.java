@@ -227,15 +227,36 @@ public interface ViewHelperService {
     void processCollectionAddBlankLine(ViewModel model, String collectionId, String collectionPath);
 
     /**
-     * Invoked when the edit line action is chosen for a collection. This method only does server side validation by
-     * default but creates hook for client applications to add additional logic like persisting data.
+     * Invoked when the retrieve edit line dialog action is chosen for a collection. This method only does server side
+     * validation by default but creates hook for client applications to add additional logic like persisting data.
      *
      * @param model Top level object containing the view data including the collection and new line
      * @param collectionId the id of the collection being added to
      * @param collectionPath the path to the collection being modified
      * @param selectedLineIndex The index within the collection of the line to edit.
      */
-    void processCollectionEditLine(ViewModel model, String collectionId, String collectionPath, int selectedLineIndex);
+    void processCollectionRetrieveEditLineDialog(ViewModel model, String collectionId,
+            String collectionPath, int selectedLineIndex);
+
+    /**
+     * Invoked when the edit line action is chosen for a collection. This method only does server side validation by
+     * default but creates hook for client applications to add additional logic like persisting data.
+     *
+     * @param model Top level object containing the view data including the collection and new line
+     * @param parameters the parameters for edit line request
+     */
+    void processCollectionEditLine(ViewModel model, CollectionActionParameters parameters);
+
+    /**
+     * Invoked when the close edit line dialog action is chosen for a collection.
+     *
+     * @param model Top level object containing the view data including the collection and new line
+     * @param collectionId the id of the collection being added to
+     * @param collectionPath the path to the collection being modified
+     * @param selectedLineIndex The index within the collection of the line to edit.
+     */
+    void processCollectionCloseEditLineDialog(ViewModel model, String collectionId,
+            String collectionPath, int selectedLineIndex);
 
     /**
      * Invoked when the save line action is chosen for a collection. This method only does server side validation by

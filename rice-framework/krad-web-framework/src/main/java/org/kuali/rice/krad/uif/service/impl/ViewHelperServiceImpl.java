@@ -35,6 +35,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.PropertyReplacer;
@@ -307,11 +308,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
             // now link the added line, this is important in situations where perhaps the collection element is
             // bi-directional and needs to point back to it's parent
-            linkAddedLine(viewModel, collectionPath, addedIndex);
+            boolean linkToAddedCollection = linkAddedLine(viewModel, collectionPath, addedIndex);
 
-            KRADServiceLocatorWeb.getLegacyDataAdapter().refreshAllNonUpdatingReferences(newLine);
-
-            if (viewModel instanceof UifFormBase) {
+            if (viewModel instanceof UifFormBase && linkToAddedCollection) {
+                KRADServiceLocatorWeb.getLegacyDataAdapter().refreshAllNonUpdatingReferences(newLine);
                 ((UifFormBase) viewModel).getAddedCollectionItems().add(newLine);
             }
             processAfterAddLine(viewModel, newLine, collectionId, collectionPath, isValidLine);
@@ -356,29 +356,73 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * {@inheritDoc}
      */
     @Override
-    public void processCollectionEditLine(ViewModel model, String collectionId, String collectionPath,
+    public void processCollectionRetrieveEditLineDialog(ViewModel model, String collectionId, String collectionPath,
             int selectedLineIndex) {
+        String objectPath = collectionPath + "[" + selectedLineIndex + "]";
+
+        // get the line instance for editing the line
+        Object dataObject = ObjectPropertyUtils.getPropertyValue(model, objectPath);
+        if (dataObject == null) {
+            logAndThrowRuntime("Unable to get collection property from model for path: " + objectPath);
+        }
+
+        // don't update the dialog object unless its null cause it means there are unsaved changes
+        if(((UifFormBase) model).getDialogDataObject() == null) {
+            ((UifFormBase) model).setDialogDataObject(CopyUtils.copy(dataObject));
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processCollectionEditLine(ViewModel model, CollectionActionParameters parameterData) {
+        String collectionId = parameterData.getSelectedCollectionId();
+        String collectionPath = parameterData.getSelectedCollectionPath();
+        int selectedLineIndex = parameterData.getSelectedLineIndex();
+
         // get the collection instance for editing the line
         Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, collectionPath);
         if (collection == null) {
             logAndThrowRuntime("Unable to get collection property from model for path: " + collectionPath);
         }
 
-        // TODO: look into other ways of identifying a line so we can deal with
-        // unordered collections
+        // save the dialog data object to the current line
         if (collection instanceof List) {
             Object editLine = ((List<Object>) collection).get(selectedLineIndex);
+            Object dialogDataObject = ((UifFormBase) model).getDialogDataObject();
+
+            if(dialogDataObject != null) {
+                editLine = CopyUtils.copy(dialogDataObject);
+                ((UifFormBase) model).setDialogDataObject(null);
+            }
 
             processBeforeEditLine(model, editLine, collectionId, collectionPath);
 
-            ((UifFormBase) model).getAddedCollectionItems().remove(editLine);
+            ((List<Object>) collection).remove(selectedLineIndex);
+            ((List<Object>) collection).add(selectedLineIndex, editLine);
 
             processAfterEditLine(model, editLine, collectionId, collectionPath);
 
         } else {
             logAndThrowRuntime("Only List collection implementations are supported for the edit by index method");
         }
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void processCollectionCloseEditLineDialog(ViewModel model, String collectionId, String collectionPath,
+            int selectedLineIndex) {
+        String objectPath = collectionPath + "[" + selectedLineIndex + "]";
+
+        // get the line instance for editing the line
+        Object dataObject = ObjectPropertyUtils.getPropertyValue(model, objectPath);
+        if (dataObject == null) {
+            logAndThrowRuntime("Unable to get collection property from model for path: " + objectPath);
+        }
+        ((UifFormBase) model).setDialogDataObject(null);
     }
 
     /**
@@ -558,7 +602,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         return index;
     }
 
-    protected void linkAddedLine(Object model, String collectionPath, int addedIndex) {
+    /**
+     * Set the parent for bi-directional relationships when adding a line to a collection.
+     *
+     * @param model the view data
+     * @param collectionPath the path to the collection being linked
+     * @param addedIndex the index of the added line
+     * @return whether the linked line needs further processing
+     */
+    protected boolean linkAddedLine(Object model, String collectionPath, int addedIndex) {
         int lastSepIndex = PropertyAccessorUtils.getLastNestedPropertySeparatorIndex(collectionPath);
         if (lastSepIndex != -1) {
             String collectionParentPath = collectionPath.substring(0, lastSepIndex);
@@ -568,7 +620,15 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
                 String collectionName = collectionPath.substring(lastSepIndex + 1);
                 wrappedParent.linkChanges(Sets.newHashSet(collectionName + "[" + addedIndex + "]"));
             }
+
+            // check if its edit line in dialog line action, and if it is we want to set the collection as
+            // the dialog's parent and do not want further processing of the dialog object
+            if(collectionParentPath.equalsIgnoreCase(UifPropertyPaths.DIALOG_DATA_OBJECT)) {
+                ((UifFormBase) model).setDialogDataObject(parent);
+                return false;
+            }
         }
+        return true;
     }
 
     /**

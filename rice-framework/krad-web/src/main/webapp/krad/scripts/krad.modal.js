@@ -78,6 +78,51 @@ function showDialog(dialogId, options) {
 }
 
 /**
+ * The method that displays the dialog for edit line.
+ *
+ * @see showDialog
+ *
+ * @param dialogId
+ * @param collectionPath
+ * @param lineIndex
+ */
+function showEditLineDialog(dialogId, collectionPath, lineIndex, options) {
+
+    jQuery.ajaxSetup({
+        cache: false
+    });
+
+    options = options || {};
+
+    var additionalData = { "actionParameters[selectedCollectionPath]" : collectionPath,
+        "actionParameters[selectedLineIndex]" : lineIndex };
+
+    if (options.resetDataOnRefresh) {
+        additionalData.resetDataOnRefresh = options.resetDataOnRefresh;
+    }
+
+    var $dialog = jQuery('#' + dialogId);
+
+    /*var placeholderSpan = '<span id="' + dialogId + '"class="' + kradVariables.CLASSES.PLACEHOLDER +
+            '" data-role="' + kradVariables.DATA_ROLES.PLACEHOLDER + '"></span>';
+
+    if ($dialog.length == 0) {
+        jQuery('#' + kradVariables.IDS.DIALOGS).append(placeholderSpan);
+    } else {
+        $dialog.contents().empty();
+        $dialog.replaceWith(placeholderSpan);
+    }*/
+
+    retrieveComponent(dialogId, "retrieveEditLineDialog", function() {
+        $dialog.bind(kradVariables.EVENTS.HIDDEN_MODAL, function (event) {
+            //$dialog.contents().empty();
+            $dialog.remove();
+        });
+        showDialog(dialogId, additionalData);
+    }, additionalData);
+}
+
+/**
  * Invoked to dismiss a dialog that is currently being shown.
  *
  * <p>If a dialog if found with the given id, its hide method is invoked. If the optional action parameter

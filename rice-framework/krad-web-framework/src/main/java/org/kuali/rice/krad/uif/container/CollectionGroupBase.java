@@ -34,7 +34,9 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
+import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
@@ -47,6 +49,7 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -424,6 +427,34 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         super.performFinalize(model, parent);
 
         addCollectionPostMetadata();
+
+        checkSubs((UifFormBase) model);
+    }
+
+    private void checkSubs(UifFormBase form) {
+        List<FieldGroup> subItems = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), FieldGroup.class);
+        for(FieldGroup fieldGroup : subItems) {
+            //List<CollectionGroup> collectionGroups = ViewLifecycleUtils.getElementsOfTypeDeep(
+                    //fieldGroup.getGroup().getItems(), CollectionGroup.class);
+            //for(CollectionGroup collectionGroup : collectionGroups) {
+            Group group = fieldGroup.getGroup();
+            if(group != null && group instanceof CollectionGroup) {
+                CollectionGroup collectionGroup = (CollectionGroup) group;
+                ComponentPostMetadata componentPostMetadata = form.getViewPostMetadata().getComponentPostMetadata(
+                        collectionGroup.getId());
+                if(componentPostMetadata != null) {
+                    componentPostMetadata.setDetachedComponent(true);
+                } else {
+                    componentPostMetadata = form.getViewPostMetadata().initializeComponentPostMetadata(collectionGroup.getId());
+                    ComponentPostMetadata componentPostMetadata1 = form.getViewPostMetadata().getComponentPostMetadata(getId());
+                    componentPostMetadata.setDetachedComponent(componentPostMetadata1.isDetachedComponent());
+                    componentPostMetadata.setData(componentPostMetadata1.getData());
+                    componentPostMetadata.setPath(componentPostMetadata1.getPath());
+                    componentPostMetadata.setPhasePathMapping(componentPostMetadata1.getPhasePathMapping());
+                    componentPostMetadata.setRefreshPathMappings(componentPostMetadata1.getRefreshPathMappings());
+                }
+            }
+        }
     }
 
     /**

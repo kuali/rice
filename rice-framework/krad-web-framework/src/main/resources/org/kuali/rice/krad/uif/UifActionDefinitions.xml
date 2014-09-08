@@ -76,7 +76,8 @@
         p:methodToCall="editLine" p:actionEvent="editLine" p:loadingMessageText="Editing Line..."
         p:focusOnIdAfterSubmit="LINE_FIRST"
         p:defaultEnterKeyAction="true" p:dialogDismissOption="REQUEST"
-        p:onClickScript="writeCurrentPageToSession(this);" p:fieldsToSend="#Uif-EditLineDialog_@{#collectionGroup.id}_line@{#index}">
+        p:onClickScript="writeCurrentPageToSession(this);"
+        p:fieldsToSend="#Uif-EditLineDialog_@{#collectionGroup.id}_line@{#index}">
   </bean>
 
   <bean id="Uif-DeleteLineAction" parent="Uif-SecondaryActionButton-Mini" p:methodToCall="deleteLine"

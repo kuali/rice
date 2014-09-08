@@ -192,19 +192,20 @@ public class CollectionGroupBuilder implements Serializable {
                     collectionGroup.getBindingInfo().getBindingPrefixForNested() + "[" + indexedElement.index + "]";
 
             // initialize the line dialogs, like edit line dialog
-            initializeLineDialogs(collectionGroup, indexedElement.index, currentLine);
+            initializeLineDialogs(collectionGroup, indexedElement.index, currentLine, model);
 
             List<Component> actionComponents = new ArrayList<>(ComponentUtils.copy(collectionGroup.getLineActions()));
 
             // if it is edit with dialog, then add the edit line action to the group's line actions
             if(collectionGroup.isEditWithDialog()) {
                 Action editLineActionForDialog = setupEditLineActionForDialog(collectionGroup,
-                        UifConstants.IdSuffixes.LINE + Integer.toString(indexedElement.index), actionComponents.size());
+                        UifConstants.IdSuffixes.LINE + Integer.toString(indexedElement.index),
+                        indexedElement.index, actionComponents.size());
                 actionComponents.add(editLineActionForDialog);
             }
 
             // initialize the line actions
-            List<? extends Component> lineActions = initializeLineActions(actionComponents, view, model,
+            List<? extends Component> lineActions = initializeLineActions(actionComponents, view,
                     collectionGroup, currentLine, indexedElement.index);
 
             LineBuilderContext lineBuilderContext = new LineBuilderContext(indexedElement.index, currentLine,
@@ -220,53 +221,94 @@ public class CollectionGroupBuilder implements Serializable {
      * @param collectionGroup the collection group to initialize the line dialogs for
      * @param lineIndex the current line index
      * @param currentLine the data object bound to the current line
+     * @param model the view's data
      */
-    private void initializeLineDialogs(CollectionGroup collectionGroup, int lineIndex, Object currentLine) {
+    private void initializeLineDialogs(CollectionGroup collectionGroup, int lineIndex,
+            Object currentLine, Object model) {
 
         if(!collectionGroup.isEditWithDialog()) {
             return;
         }
 
-        // if this is an edit line, set up the edit line dialog and add it to the list of dialogs
-        DialogGroup dialogGroup = setupEditLineDialog(collectionGroup, lineIndex, currentLine);
+        String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
+
+        // use the edit line dialog prototype to initialilze the edit line dialog
+        DialogGroup editLineDialog = ComponentUtils.copy(collectionGroup.getEditLineDialogPrototype());
+        editLineDialog.setId(ComponentFactory.EDIT_LINE_DIALOG + "_" + collectionGroup.getId() + lineSuffix);
+        editLineDialog.setRetrieveViaAjax(true);
+
+        if(ViewLifecycle.isRefreshLifecycle() && StringUtils.equals(editLineDialog.getId(),
+                ViewLifecycle.getRefreshComponentId()) && StringUtils.equals(((UifFormBase)model).
+                getActionParamaterValue("selectedCollectionPath"), collectionGroup.getBindingInfo().
+                getBindingPath()) && StringUtils.equals(((UifFormBase)model).
+                getActionParamaterValue("selectedLineIndex"), Integer.toString(lineIndex))) {
+            // if this is an edit line, set up the edit line dialog and add it to the list of dialogs
+            currentLine = ((UifFormBase) model).getDialogDataObject();
+            editLineDialog = setupEditLineDialog(editLineDialog, collectionGroup, lineIndex, lineSuffix, currentLine);
+        }
 
         // add the edit line dialog to the list of line dialogs for the group
         if(collectionGroup.getLineDialogs() == null || collectionGroup.getLineDialogs().isEmpty()) {
             collectionGroup.setLineDialogs((new ArrayList<DialogGroup>()));
         }
-        collectionGroup.getLineDialogs().add(dialogGroup);
+        collectionGroup.getLineDialogs().add(editLineDialog);
     }
 
     /**
      * Helper method to create and setup the edit line dialog for the indexed line.
      *
+     * @param editLineDialog the dialog to setup for editing the line
      * @param group the collection group to create line dialogs for
      * @param lineIndex the current line index
+     * @param lineSuffix the line suffix to use on dialog component id's
      * @param currentLine the data object bound to the current line
      * @return
      */
-    private DialogGroup setupEditLineDialog(CollectionGroup group, int lineIndex, Object currentLine) {
-        String lineSuffix = UifConstants.IdSuffixes.LINE + Integer.toString(lineIndex);
-
-        // use the edit line dialog prototype to initialilze the edit line dialog
-        DialogGroup editLineDialog = ComponentUtils.copy(group.getEditLineDialogPrototype());
-        editLineDialog.setId(ComponentFactory.EDIT_LINE_DIALOG + "_" + group.getId() + lineSuffix);
-
+    private DialogGroup setupEditLineDialog(DialogGroup editLineDialog, CollectionGroup group, int lineIndex,
+            String lineSuffix, Object currentLine) {
         // use the edit line dialog's save action prototype to initialilze the edit line dialog's save action
-        Component editLineInDialogSaveAction = ComponentUtils.copy(group.getEditInDialogSaveActionPrototype());
+        Action editLineInDialogSaveAction = ComponentUtils.copy(group.getEditInDialogSaveActionPrototype());
         editLineInDialogSaveAction.setId(editLineDialog.getId() + "_" +
                     ComponentFactory.EDIT_LINE_IN_DIALOG_SAVE_ACTION + Integer.toString(lineIndex));
 
+        // setup the cancel action for the edit line dialog
+        Action cancelEditLineInDialogAction = (Action) ComponentFactory.
+                getNewComponentInstance(ComponentFactory.DIALOG_DISMISS_ACTION);
+        cancelEditLineInDialogAction.setId(editLineDialog.getId() + "_" +
+                ComponentFactory.DIALOG_DISMISS_ACTION + Integer.toString(lineIndex));
+        cancelEditLineInDialogAction.setActionLabel("Cancel");
+        cancelEditLineInDialogAction.setRefreshId(group.getId());
+        cancelEditLineInDialogAction.setMethodToCall(UifConstants.MethodToCallNames.CLOSE_EDIT_LINE_DIALOG);
+        cancelEditLineInDialogAction.setDialogDismissOption("REQUEST");
+
         // add the created save action to the dialog's footer items
-        List<Component> actionComponents = ViewLifecycleUtils.getElementsOfTypeDeep(
-                editLineDialog.getFooter().getItems(), Component.class);
-        actionComponents.add(0, editLineInDialogSaveAction); // add it as the first button
+        List<Component> actionComponents = new ArrayList<Component>();
+        if(editLineDialog.getFooter().getItems() != null) {
+            actionComponents.addAll(editLineDialog.getFooter().getItems());
+        }
+
+        actionComponents.add(editLineInDialogSaveAction);
+        actionComponents.add(cancelEditLineInDialogAction);
         editLineDialog.getFooter().setItems(actionComponents);
 
         // initialize the dialog actions
         List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(actionComponents, Action.class);
         group.getCollectionGroupBuilder().initializeActions(actions, group, lineIndex);
         editLineDialog.getFooter().setItems(actionComponents);
+
+        // set the header actions (for example the close button/icon) to refresh the underlying edit line
+        // collection and resetting the edit line dialog
+        if(editLineDialog.getHeader().getUpperGroup().getItems() != null) {
+            List<Action> headerActions = ViewLifecycleUtils.getElementsOfTypeDeep(editLineDialog.getHeader().
+                    getUpperGroup().getItems(), Action.class);
+            initializeActions(headerActions, group, lineIndex);
+            for (Action headerAction : headerActions) {
+                headerAction.setRefreshId(group.getId());
+                headerAction.setMethodToCall(UifConstants.MethodToCallNames.CLOSE_EDIT_LINE_DIALOG);
+                headerAction.setDialogDismissOption("REQUEST");
+                headerAction.setActionScript(null);
+            }
+        }
 
         // update the context of the dialog for the current line
         ContextUtils.updateContextForLine(editLineDialog, group, currentLine, lineIndex, lineSuffix);
@@ -349,13 +391,12 @@ public class CollectionGroupBuilder implements Serializable {
      *
      * @param lineActions the actions to copy
      * @param view view instance the collection belongs to
-     * @param model top level object containing the data
      * @param collectionGroup collection group component for the collection
      * @param collectionLine object instance for the current line
      * @param lineIndex index of the line the actions should apply to
      */
     protected List<? extends Component> initializeLineActions(List<? extends Component> lineActions, View view,
-            Object model, CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
+            CollectionGroup collectionGroup, Object collectionLine, int lineIndex) {
         List<Component> actionComponents = new ArrayList<Component>(ComponentUtils.copy(lineActions));
 
         for (Component actionComponent : actionComponents) {
@@ -384,18 +425,21 @@ public class CollectionGroupBuilder implements Serializable {
      *
      * @param collectionGroup the collection group the line belongs to
      * @param lineSuffix the line index of the current line
+     * @param lineIndex the current line index
      * @param actionIndex the action index used in the id
      * @return the line action for edit line in dialog
      */
-    private Action setupEditLineActionForDialog(CollectionGroup collectionGroup, String lineSuffix, int actionIndex) {
+    private Action setupEditLineActionForDialog(CollectionGroup collectionGroup, String lineSuffix,
+            int lineIndex, int actionIndex) {
 
         Action action = ComponentUtils.copy(collectionGroup.getEditWithDialogActionPrototype());
 
         action.setId(ComponentFactory.EDIT_LINE_IN_DIALOG_ACTION + "_" + collectionGroup.getId() +
                     lineSuffix + UifConstants.IdSuffixes.ACTION + actionIndex);
 
-        String actionScript = UifConstants.JsFunctions.SHOW_DIALOG + "('" + ComponentFactory.EDIT_LINE_DIALOG +
-                "_" + collectionGroup.getId() + lineSuffix + "');";
+        String actionScript = UifConstants.JsFunctions.SHOW_EDIT_LINE_DIALOG + "('" +
+                ComponentFactory.EDIT_LINE_DIALOG + "_" + collectionGroup.getId() + lineSuffix + "', '" +
+                collectionGroup.getBindingInfo().getBindingName() + "', " + lineIndex + ");";
         action.setActionScript(actionScript);
 
         return action;

@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -37,6 +28,7 @@ import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
+import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.collections.LineBuilderContext;
 import org.kuali.rice.krad.uif.element.Action;
@@ -52,6 +44,7 @@ import org.kuali.rice.krad.uif.layout.collections.CollectionPagingHelper;
 import org.kuali.rice.krad.uif.layout.collections.DataTablesPagingHelper;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ColumnCalculationInfo;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
@@ -65,6 +58,15 @@ import org.kuali.rice.krad.uif.widget.RichTable;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Implementation of table layout manager.
@@ -282,6 +284,41 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
                 collectionGroup.isUseServerPaging() && this.getPagerWidget() != null) {
             // Set the appropriate page, total pages, and link script into the Pager
             CollectionLayoutUtils.setupPagerWidget(getPagerWidget(), collectionGroup, model);
+        }
+
+        setupEditDetails();
+    }
+
+    /**
+     * Helper method to setup edit line details dialog formatting.
+     */
+    private void setupEditDetails() {
+
+        // set the refresh id of line actions of the sub-collections to the parent collection
+        // and set the modal size to large if there is a sub-collection in the dialog
+        List<FieldGroup> fieldGroups = ViewLifecycleUtils.getElementsOfTypeDeep(allRowFields, FieldGroup.class);
+        for(FieldGroup fieldGroup : fieldGroups) {
+            Group group = fieldGroup.getGroup();
+
+            if(group != null) {
+                List<DialogGroup> dialogGroups = ViewLifecycleUtils.getElementsOfTypeDeep(
+                        group.getItems(), DialogGroup.class);
+
+                for(DialogGroup dialogGroup : dialogGroups) {
+                    List<FieldGroup> fieldGroupsList = ViewLifecycleUtils.getElementsOfTypeDeep(dialogGroup.getItems(),
+                            FieldGroup.class);
+
+                    for(FieldGroup fieldGroupItem : fieldGroupsList) {
+                        Group group1 = fieldGroupItem.getGroup();
+
+                        if(group1 != null && group1 instanceof CollectionGroup) {
+                            // since we have a sub-collections set the dialog's css class to bootstrap's modal-lg
+                            // overriding the default modal-sm set in the dialog group
+                            dialogGroup.setDialogCssClass("modal-lg");
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1667,8 +1704,13 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         if (ajaxDetailsRetrieval) {
             this.getRowDetailsGroup().setRetrieveViaAjax(true);
         }
-        
+
         detailsFieldGroup.setReadOnly(collectionGroup.getReadOnly());
+
+        // set the sub-collection field in the details to be read only if its an edit in dialog
+        if(collectionGroup.isEditWithDialog()) {
+            detailsFieldGroup.setReadOnly(true);
+        }
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);

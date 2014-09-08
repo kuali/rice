@@ -77,6 +77,25 @@ public class CollectionControllerServiceImpl implements CollectionControllerServ
      * {@inheritDoc}
      */
     @Override
+    public ModelAndView retrieveEditLineDialog(final UifFormBase form) {
+        final CollectionActionParameters parameters = new CollectionActionParameters(form, true);
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final ViewHelperService viewHelperService = ViewLifecycle.getHelper();
+                viewHelperService.processCollectionRetrieveEditLineDialog(form, parameters.selectedCollectionId,
+                        parameters.selectedCollectionPath, parameters.selectedLineIndex);
+            }
+        };
+
+        return performHelperLifecycle(form, runnable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public ModelAndView editLine(final UifFormBase form) {
         final CollectionActionParameters parameters = new CollectionActionParameters(form, true);
 
@@ -84,7 +103,25 @@ public class CollectionControllerServiceImpl implements CollectionControllerServ
             @Override
             public void run() {
                 final ViewHelperService viewHelperService = ViewLifecycle.getHelper();
-                viewHelperService.processCollectionEditLine(form, parameters.selectedCollectionId,
+                viewHelperService.processCollectionEditLine(form, parameters);
+            }
+        };
+
+        return performHelperLifecycle(form, runnable);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ModelAndView closeEditLineDialog(final UifFormBase form) {
+        final CollectionActionParameters parameters = new CollectionActionParameters(form, true);
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final ViewHelperService viewHelperService = ViewLifecycle.getHelper();
+                viewHelperService.processCollectionCloseEditLineDialog(form, parameters.selectedCollectionId,
                         parameters.selectedCollectionPath, parameters.selectedLineIndex);
             }
         };

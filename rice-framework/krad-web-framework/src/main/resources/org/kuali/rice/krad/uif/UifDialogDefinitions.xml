@@ -237,12 +237,13 @@
   </bean>
 
   <bean id="Uif-EditLineDialog" parent="Uif-DialogGroup" p:headerText="Edit Line Dialog">
-    <property name="footer.items">
-      <list>
+    <property name="destroyContentsOnClose" value="true"/>
+    <!--<property name="footer.items">-->
+      <!--<list>-->
         <!-- the action to save the edited line is built dynamically in class CollectionGroupBuilder-->
-        <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
-      </list>
-    </property>
+        <!--<bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>-->
+      <!--</list>-->
+    <!--</property>-->
   </bean>
 
 </beans>

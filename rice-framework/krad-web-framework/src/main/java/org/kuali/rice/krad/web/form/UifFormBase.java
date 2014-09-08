@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.krad.web.form;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -45,6 +32,18 @@ import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Base form class for views within the KRAD User Interface Framework.
@@ -201,6 +200,8 @@ public class UifFormBase implements ViewModel {
     protected boolean applyDefaultValues;
 
     protected HttpServletRequest request;
+
+    private Object dialogDataObject;
 
     public UifFormBase() {
         renderedInDialog = false;
@@ -1462,6 +1463,28 @@ public class UifFormBase implements ViewModel {
      */
     public boolean isAddedCollectionItem(Object item) {
         return addedCollectionItems.contains(item);
+    }
+
+    /**
+     * The data object to bind to for a dialog
+     *
+     * <p>The data object serves as a placeholder for temporary properties that might be used within a dialog. The
+     * purpose of placeholder is to provide a separation between the dialog object and the underlying object for use
+     * in cases like object manipulation.</p>
+     *
+     * @return
+     */
+    public Object getDialogDataObject() {
+        return dialogDataObject;
+    }
+
+    /**
+     * @see UifFormBase#getDialogDataObject()
+     *
+     * @param dataObject
+     */
+    public void setDialogDataObject(Object dataObject) {
+        this.dialogDataObject = dataObject;
     }
 
     @Override

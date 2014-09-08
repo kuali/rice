@@ -141,7 +141,7 @@ public class KradSampleAppController extends UifControllerBase {
     public ModelAndView customEditLine(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
         KradSampleAppForm kradSampleAppForm = (KradSampleAppForm) form;
-        List<UITestObject> testObjects = kradSampleAppForm.getCollection1();
+        List<UITestObject> testObjects = kradSampleAppForm.getCollection6();
         int index = 1;
         for(UITestObject testObject : testObjects) {
             testObject.setField1("Custom Edit Line " + Integer.toString(index));

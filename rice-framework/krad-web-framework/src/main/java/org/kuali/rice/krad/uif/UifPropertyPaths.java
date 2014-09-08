@@ -39,6 +39,7 @@ public class UifPropertyPaths {
     public static final String DATA_OBJECT_CLASS = "dataObjectClass";
     public static final String DEFAULT_OPEN = "defaultOpen";
     public static final String DIALOGS = "dialogs";
+    public static final String DIALOG_DATA_OBJECT = "dialogDataObject";
     public static final String DIALOG_EXPLANATIONS = "dialogExplanations";
     public static final String DOCUMENT_ID = "documentId";
     public static final String EXPRESSION_GRAPH = "expressionGraph";

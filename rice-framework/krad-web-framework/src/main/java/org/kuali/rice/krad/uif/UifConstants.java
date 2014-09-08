@@ -173,10 +173,12 @@ public class UifConstants {
         public static final String SAVE = "save";
         public static final String SEARCH = "search";
         public static final String CLOSE = "close";
+        public static final String CLOSE_EDIT_LINE_DIALOG = "closeEditLineDialog";
         public static final String ADD_LINE = "addLine";
         public static final String DELETE_LINE = "deleteLine";
         public static final String REFRESH = "refresh";
         public static final String CANCEL = "cancel";
+        public static final String RETRIEVE_EDIT_LINE_DIALOG = "retrieveEditLineDialog";
         public static final String SESSION_TIMEOUT = "sessionTimeout";
         public static final String TABLE_JSON = "tableJsonRetrieval";
         public static final String TABLE_DATA = "tableDataRetrieval";
@@ -584,7 +586,8 @@ public class UifConstants {
         public static final String SET_CONFIG_PARM = "setConfigParam";
         public static final String SET_VALUE = "setValue";
         public static final String SHOW_GROWL = "showGrowl";
-        public static final String SHOW_DIALOG = "showDialog";
+        public static final String SHOW_EDIT_LINE_DIALOG = "showEditLineDialog";
+        public static final String SHOW_DIALOG = "showEditLineDialog";
         public static final String VALIDATE_ADD_LINE = "validateAddLine";
         public static final String VALIDATE_LINE = "validateLine";
         public static final String WRITE_CURRENT_PAGE_TO_SESSION = "writeCurrentPageToSession";

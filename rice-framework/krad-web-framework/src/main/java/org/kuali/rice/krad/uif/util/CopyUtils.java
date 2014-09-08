@@ -15,6 +15,19 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
+import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.util.KRADConstants;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -33,14 +46,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.WeakHashMap;
-
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.krad.datadictionary.Copyable;
-import org.kuali.rice.krad.uif.component.DelayedCopy;
-import org.kuali.rice.krad.uif.component.ReferenceCopy;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Provides a lightweight "hands-free" copy implementation to replace the need for copyProperties()
@@ -289,12 +294,44 @@ public final class CopyUtils {
                 }
             }
 
+            if(obj.getClass().getName().contentEquals("UITestObject")) {
+                String className = obj.getClass().getName();
+            }
+
             return (T) topReference.get();
 
         } finally {
             recycle(topReference);
             copyState.recycle();
         }
+    }
+
+    /**
+     * Returns a copy of the object, or null if the object cannot
+     * be serialized.
+     */
+    public static Object copy(Object original) {
+        Object copyObject = null;
+        try {
+            // Write the object out to a byte array
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
+            out.writeObject(original);
+
+            out.flush();
+            out.close();
+
+            // Retrieve an input stream from the byte array and read
+            // a copy of the object back in.
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            copyObject = objectInputStream.readObject();
+        } catch(IOException e) {
+            e.printStackTrace();
+        } catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return copyObject;
     }
 
     /**

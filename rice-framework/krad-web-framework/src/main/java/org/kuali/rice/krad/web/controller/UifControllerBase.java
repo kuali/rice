@@ -218,11 +218,27 @@ public abstract class UifControllerBase {
     }
 
     /**
+     * @see org.kuali.rice.krad.web.service.CollectionControllerService#retrieveEditLineDialog(org.kuali.rice.krad.web.form.UifFormBase)
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=retrieveEditLineDialog")
+    public ModelAndView retrieveEditLineDialog(UifFormBase form) {
+        return getCollectionControllerService().retrieveEditLineDialog(form);
+    }
+
+    /**
      * @see org.kuali.rice.krad.web.service.CollectionControllerService#editLine(org.kuali.rice.krad.web.form.UifFormBase)
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=editLine")
     public ModelAndView editLine(UifFormBase form) {
         return getCollectionControllerService().editLine(form);
+    }
+
+    /**
+     * @see org.kuali.rice.krad.web.service.CollectionControllerService#closeEditLineDialog(org.kuali.rice.krad.web.form.UifFormBase)
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=closeEditLineDialog")
+    public ModelAndView closeEditLineDialog(UifFormBase form) {
+        return getCollectionControllerService().closeEditLineDialog(form);
     }
 
     /**

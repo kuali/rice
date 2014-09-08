@@ -136,7 +136,17 @@
     <property name="items">
       <list>
         <bean id="AgendaInquiryView-Agenda-Page" parent="AgendaInquiryView-Agenda-Page-Parent"/>
-        <bean id="AgendaEditorView-ViewRule-Page" parent="AgendaEditorView-ViewRule-Page-Parent"/>
+        <bean id="AgendaEditorView-ViewRule-Page" parent="AgendaEditorView-ViewRule-Page-Parent">
+          <property name="footer">
+            <bean parent="Uif-FooterBase">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-NavigationActionButton" p:navigateToPageId="AgendaInquiryView-Agenda-Page" p:actionLabel="return to agenda"/>
+                </list>
+              </property>
+            </bean>
+          </property>
+        </bean>
       </list>
     </property>
     <property name="singlePageView" value="false"/>

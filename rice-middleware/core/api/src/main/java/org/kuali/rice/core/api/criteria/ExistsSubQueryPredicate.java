@@ -32,10 +32,10 @@ import org.w3c.dom.Element;
 
 /**
  * An immutable predicate which represents an "WHERE EXISTS" statement.
- * 
- * This implementation assumes that there is a single field which can be related 
+ *
+ * This implementation assumes that there is a single field which can be related
  * between the inner and outer queries.  An equality between those fields is
- * automatically added to the predicates of the inner query.  
+ * automatically added to the predicates of the inner query.
  *
  * @see PredicateFactory for a convenient way to construct this class.
  *
@@ -55,7 +55,7 @@ public final class ExistsSubQueryPredicate extends AbstractPredicate implements 
 
     @XmlAttribute(name = Elements.SUB_QUERY_TYPE, required = true)
 	protected String subQueryType;
-    
+
     @XmlElements(value = {
             @XmlElement(name = AndPredicate.Constants.ROOT_ELEMENT_NAME, type = AndPredicate.class, required = false),
             @XmlElement(name = EqualPredicate.Constants.ROOT_ELEMENT_NAME, type = EqualPredicate.class, required = false),
@@ -73,6 +73,7 @@ public final class ExistsSubQueryPredicate extends AbstractPredicate implements 
             @XmlElement(name = NotEqualIgnoreCasePredicate.Constants.ROOT_ELEMENT_NAME, type = NotEqualIgnoreCasePredicate.class, required = false),
             @XmlElement(name = NotInPredicate.Constants.ROOT_ELEMENT_NAME, type = NotInPredicate.class, required = false),
             @XmlElement(name = NotInIgnoreCasePredicate.Constants.ROOT_ELEMENT_NAME, type = NotInIgnoreCasePredicate.class, required = false),
+            @XmlElement(name = NotLikeIgnoreCasePredicate.Constants.ROOT_ELEMENT_NAME, type = NotLikeIgnoreCasePredicate.class, required = false),
             @XmlElement(name = NotLikePredicate.Constants.ROOT_ELEMENT_NAME, type = NotLikePredicate.class, required = false),
             @XmlElement(name = NotNullPredicate.Constants.ROOT_ELEMENT_NAME, type = NotNullPredicate.class, required = false),
             @XmlElement(name = NullPredicate.Constants.ROOT_ELEMENT_NAME, type = NullPredicate.class, required = false),
@@ -108,7 +109,7 @@ public final class ExistsSubQueryPredicate extends AbstractPredicate implements 
     public Predicate getSubQueryPredicate() {
         return this.subQueryPredicate;
     }
-    
+
     @Override
     public String toString() {
         return new StringBuilder(CriteriaSupportUtils.findDynName(this.getClass().getSimpleName()))
@@ -131,5 +132,5 @@ public final class ExistsSubQueryPredicate extends AbstractPredicate implements 
     static class Elements {
         final static String SUB_QUERY_TYPE = "subQueryType";
         final static String SUB_QUERY_PREDICATE = "subQueryPredicate";
-    }    
+    }
 }

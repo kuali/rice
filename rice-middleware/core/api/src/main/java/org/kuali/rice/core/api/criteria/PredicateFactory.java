@@ -228,6 +228,30 @@ public final class PredicateFactory {
         return new LikeIgnoreCasePredicate(propertyPath, new CriteriaStringValue(value));
     }
 
+    /**
+     * Creates a not like ignore case predicate.  Defines that the property
+     * represented by the given path should be like to the specified value ignoring
+     * the case of the value.
+     *
+     * <p>Supports the following types of values:
+     *
+     * <ul>
+     *   <li>character data</li>
+     * </ul>
+     *
+     * @param propertyPath the path to the property which should be evaluated
+     * @param value the value to compare with the property value located at the
+     * propertyPath
+     *
+     * @return a predicate
+     *
+     * @throws IllegalArgumentException if the propertyPath is null
+     * @throws IllegalArgumentException if the value is null or of an invalid type
+     */
+    public static Predicate notLikeIgnoreCase(String propertyPath, CharSequence value) {
+        return new NotLikeIgnoreCasePredicate(propertyPath, new CriteriaStringValue(value));
+    }
+
 	/**
 	 * Creates a not equals ignore case predicate.  Defines that the property
      * represented by the given path should <strong>not</strong> be

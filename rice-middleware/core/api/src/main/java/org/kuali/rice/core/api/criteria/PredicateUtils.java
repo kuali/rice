@@ -15,15 +15,28 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.search.SearchOperator;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.between;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equalIgnoreCase;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThan;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThanOrEqual;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.isNotNull;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.isNull;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThan;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThanOrEqual;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.likeIgnoreCase;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.notEqualIgnoreCase;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.notLikeIgnoreCase;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.or;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.search.SearchOperator;
 
 public final class PredicateUtils {
 
@@ -38,7 +51,7 @@ public final class PredicateUtils {
                 if (entry.getValue() instanceof String) {
                     p.add(equalIgnoreCase(entry.getKey(), (String)entry.getValue()));
                 } else {
-                    p.add(equal(entry.getKey(), (String)entry.getValue()));
+                    p.add(equal(entry.getKey(), entry.getValue()));
                 }
 
             }
@@ -49,7 +62,7 @@ public final class PredicateUtils {
 
 
     /*
-     * Method to assist in converting a map of values for a lookup 
+     * Method to assist in converting a map of values for a lookup
      */
     public static Predicate convertMapToPredicate(Map<String, String> criteria) {
         List<Predicate> p = new ArrayList<Predicate>();
@@ -112,9 +125,9 @@ public final class PredicateUtils {
             return lessThan(key, StringUtils.replace(value, SearchOperator.LESS_THAN.op(), ""));
         } else if (value.contains(SearchOperator.LIKE_MANY.op()) || (value.contains(SearchOperator.LIKE_ONE.op()))) {
             if (isNot(value)) {
-                return notLike(key, stripNot(value));
+                return notLikeIgnoreCase(key, stripNot(value));
             } else {
-                return like(key, value);
+                return likeIgnoreCase(key, value);
             }
         } else {
             if (isNot(value)) {

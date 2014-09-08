@@ -15,7 +15,27 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import junit.framework.Assert;
+
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -23,23 +43,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AssignableTypeFilter;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * tests that all predicates can be marshalled and unmarshalled successfully
@@ -72,6 +75,7 @@ public class QueryByCriteriaJaxbTest {
         predicateSamplesMap.put(NotEqualIgnoreCasePredicate.class, PredicateFactory.notEqualIgnoreCase("foo", "val"));
         predicateSamplesMap.put(NotInPredicate.class, PredicateFactory.notIn("foo", "val"));
         predicateSamplesMap.put(NotInIgnoreCasePredicate.class, PredicateFactory.notInIgnoreCase("foo", "val"));
+        predicateSamplesMap.put(NotLikeIgnoreCasePredicate.class, PredicateFactory.notLikeIgnoreCase("foo", "val"));
         predicateSamplesMap.put(NotLikePredicate.class, PredicateFactory.notLike("foo", "val"));
     }
 
@@ -79,7 +83,7 @@ public class QueryByCriteriaJaxbTest {
     public void testAllPredicates() throws Exception {
 
         ArrayList<Class<?>> discoveredPredicateClasses = discoverSimplePredicateClasses();
-        
+
         // test each predicate on their own
         for (Class<?> discoveredPredicateClass : discoveredPredicateClasses) {
             // create a query containing a sample of this predicate type
@@ -90,7 +94,7 @@ public class QueryByCriteriaJaxbTest {
             QueryByCriteria queryByCriteria = wrapInQueryByCriteria(sample);
             LOG.debug("QueryByCriteria:");
             LOG.debug( queryByCriteria.toString() );
-            
+
             String xml = marshallToString(queryByCriteria);
             String lowerCaseXml = xml.toLowerCase();
             LOG.debug("XML:");
@@ -241,7 +245,7 @@ public class QueryByCriteriaJaxbTest {
         // since set predicate only had a size of 1, it will be reduced down to a simple equal predicate instead of an OR
         assertEquals("set", setPredicate.getPropertyPath());
         assertTrue(setPredicate.getValue() instanceof CriteriaIntegerValue);
-        assertEquals(BigInteger.valueOf(5), (BigInteger)setPredicate.getValue().getValue());
+        assertEquals(BigInteger.valueOf(5), setPredicate.getValue().getValue());
     }
 
     @Test
@@ -343,7 +347,7 @@ public class QueryByCriteriaJaxbTest {
         // since set predicate only had a size of 1, it will be reduced down to a simple equal predicate instead of an OR
         assertEquals("set", setPredicate.getPropertyPath());
         assertTrue(setPredicate.getValue() instanceof CriteriaIntegerValue);
-        assertEquals(BigInteger.valueOf(5), (BigInteger)setPredicate.getValue().getValue());
+        assertEquals(BigInteger.valueOf(5), setPredicate.getValue().getValue());
     }
 
     private void assertEmptyCriteria(QueryByCriteria criteria) {

@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
+import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.AndPredicate;
 import org.kuali.rice.core.api.criteria.CompositePredicate;
@@ -35,6 +42,7 @@ import org.kuali.rice.core.api.criteria.NotEqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotEqualPredicate;
 import org.kuali.rice.core.api.criteria.NotInIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotInPredicate;
+import org.kuali.rice.core.api.criteria.NotLikeIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotLikePredicate;
 import org.kuali.rice.core.api.criteria.NotNullPredicate;
 import org.kuali.rice.core.api.criteria.NullPredicate;
@@ -48,13 +56,6 @@ import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.criteria.SingleValuedPredicate;
 import org.kuali.rice.core.api.criteria.SubQueryPredicate;
 import org.kuali.rice.krad.data.jpa.NativeJpaQueryTranslator.TranslationContext;
-
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Base {@link QueryTranslator} implementation.
@@ -191,12 +192,27 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
     protected abstract void addNotLike(C criteria, String propertyPath, Object value);
 
     /**
-     * Adds an IN clause to the property.
-     *
-     * @param criteria the criteria to add to.
-     * @param propertyPath the property to add to.
-     * @param values the values to compare.
-     */
+	 * Adds a NOT LIKE clause to the property, ignoring case.
+	 * 
+	 * @param criteria
+	 *            the criteria to add to.
+	 * @param propertyPath
+	 *            the property to add to.
+	 * @param value
+	 *            the value to compare.
+	 */
+	protected abstract void addNotLikeIgnoreCase(C criteria, String propertyPath, String value);
+
+	/**
+	 * Adds an IN clause to the property.
+	 * 
+	 * @param criteria
+	 *            the criteria to add to.
+	 * @param propertyPath
+	 *            the property to add to.
+	 * @param values
+	 *            the values to compare.
+	 */
     protected abstract void addIn(C criteria, String propertyPath, Collection values);
 
     /**
@@ -387,6 +403,8 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
             addNotEqualTo(parent, pp, value);
         } else if (p instanceof NotEqualIgnoreCasePredicate) {
             addNotEqualToIgnoreCase(parent, pp, (String) value);
+		} else if (p instanceof NotLikeIgnoreCasePredicate) {
+			addNotLikeIgnoreCase(parent, pp, (String) value);
         } else if (p instanceof NotLikePredicate) {
             addNotLike(parent, pp, value);
         } else {

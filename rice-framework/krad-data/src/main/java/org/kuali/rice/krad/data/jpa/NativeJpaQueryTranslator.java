@@ -256,7 +256,8 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
     /**
      * {@inheritDoc}
      */
-    public Query createDeletionQuery(Class queryClazz, TranslationContext criteria) {
+    @Override
+	public Query createDeletionQuery(Class queryClazz, TranslationContext criteria) {
         CriteriaDelete jpaQuery = entityManager.getCriteriaBuilder().createCriteriaDelete(queryClazz);
 
         if (!criteria.predicates.isEmpty()) {
@@ -432,6 +433,15 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
         criteria.addPredicate(criteria.builder.like(criteria.builder.upper(criteria.attr(propertyPath)),
                 fixSearchPattern(value.toUpperCase())));
     }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void addNotLikeIgnoreCase(TranslationContext criteria, String propertyPath, String value) {
+		criteria.addPredicate(criteria.builder.notLike(criteria.builder.upper(criteria.attr(propertyPath)),
+				fixSearchPattern(value.toUpperCase())));
+	}
 
 	/**
 	 * {@inheritDoc}

@@ -37,7 +37,6 @@ import org.kuali.rice.kew.rule.GenericWorkflowAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.test.TestWorkflowUsers;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;

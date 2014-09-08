@@ -21,6 +21,7 @@ import org.kuali.rice.krad.web.service.ControllerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -34,7 +35,7 @@ public abstract class TransactionalDocumentControllerBase extends DocumentContro
     /**
      * @see TransactionalDocumentControllerService#copy(org.kuali.rice.krad.web.form.TransactionalDocumentFormBase)
      */
-    @RequestMapping(params = "methodToCall=" + KRADConstants.MAINTENANCE_COPY_METHOD_TO_CALL)
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=" + KRADConstants.Document.METHOD_TO_CALL_COPY)
     public ModelAndView copy(TransactionalDocumentFormBase form) {
         return getControllerService().copy(form);
     }

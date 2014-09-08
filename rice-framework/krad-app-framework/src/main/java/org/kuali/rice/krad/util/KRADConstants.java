@@ -673,6 +673,10 @@ public final class KRADConstants {
         public static final String LOCK_AFTER_VALUE_DELIM = "::";
     }
 
+    public static final class Document {
+        public static final String METHOD_TO_CALL_COPY = "copy";
+    }
+
     public static class Lookup {
         public static final String TITLE_RETURN_URL_PREPENDTEXT_PROPERTY = "title.return.url.value.prependtext";
         public static final String TITLE_ACTION_URL_PREPENDTEXT_PROPERTY = "title.action.url.value.prependtext";

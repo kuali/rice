@@ -23,6 +23,7 @@
 		<property name="documentTypeName" value="TravelAuthorization" />
 		<property name="documentClass" value="edu.sampleu.travel.dataobject.TravelAuthorizationDocument" />
     <property name="usePessimisticLocking" value="true" />
+    <property name="allowsCopy" value="true" />
 	</bean>
 
 </beans>

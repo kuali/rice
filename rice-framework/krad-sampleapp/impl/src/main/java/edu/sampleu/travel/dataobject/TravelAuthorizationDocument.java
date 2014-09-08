@@ -50,6 +50,7 @@ import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHintType;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHints;
+import org.kuali.rice.krad.document.Copyable;
 import org.kuali.rice.krad.document.TransactionalDocumentBase;
 
 
@@ -74,7 +75,7 @@ import org.kuali.rice.krad.document.TransactionalDocumentBase;
                          joinColumns= {@JoinColumn(name = "TRVL_AUTH_DOC_ID", insertable = false, updatable = false)})
 })
 @UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
-public class TravelAuthorizationDocument extends TransactionalDocumentBase {
+public class TravelAuthorizationDocument extends TransactionalDocumentBase implements Copyable {
 	private static final long serialVersionUID = -6609385831976630737L;
 
     // trip begin date

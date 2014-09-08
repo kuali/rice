@@ -194,4 +194,47 @@
     </property>
   </bean>
 
+  <bean id="TravelAuthorization-LookupView" parent="Uif-LookupView">
+    <property name="headerText" value="Travel Authorization Lookup View"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelAuthorizationDocument"/>
+    <property name="renderResultActions" value="true" />
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="tripBegin" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="tripEnd" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="travelTypeCode" />
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <!--
+        <bean parent="Uif-DataField" p:propertyName="documentNumber"/>
+        <bean parent="Uif-DataField" p:propertyName="documentTitle"/>
+        -->
+        <bean parent="Uif-DataField" p:propertyName="documentNumber"/>
+        <bean parent="Uif-DataField" p:propertyName="travelTypeCode" />
+        <bean parent="Uif-DataField" p:propertyName="tripBegin" />
+        <bean parent="Uif-DataField" p:propertyName="tripEnd" />
+      </list>
+    </property>
+    <property name="resultsGroup.lineActions">
+      <list>
+      <bean parent="Uif-ActionLink" p:actionLabel="View" p:ajaxSubmit="false">
+        <property name="actionUrl">
+          <bean parent="Uif-Url">
+            <property name="methodToCall" value="docHandler"/>
+            <property name="controllerMapping" value="/approval"/>
+            <property name="requestParameters">
+              <map>
+                <entry key="command" value="displayDocSearchView"/>
+                <entry key="docId" value="@{#line.documentNumber}"/>
+              </map>
+            </property>
+          </bean>
+        </property>
+      </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

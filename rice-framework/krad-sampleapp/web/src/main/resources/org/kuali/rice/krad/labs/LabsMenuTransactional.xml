@@ -87,6 +87,16 @@
             </list>
           </property>
         </bean>
+        <bean id="LabsMenuTransactional-Row1-Col4" parent="KradSampleAppDemo-DemoGroup"
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Transactional Sample - Lookup With Copy Actions"
+                    p:href="lookup?viewId=TravelAuthorization-LookupView"/>
+              <bean parent="Uif-Message" p:messageText="Transactional Document Lookup With Actions"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
   </bean>

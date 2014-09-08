@@ -57,4 +57,15 @@ public @interface ViewLifecycleRestriction {
      */
     String[] exclude() default {};
 
+    /**
+     * Expression to evaluate (must result in boolean) that will determine if the property is included
+     * at the configured phases.
+     *
+     * <p>Expressions have access to the model as the default context. Also, no expression syntax (@{}) should
+     * be used.</p>
+     *
+     * @return String condition to evaluate
+     */
+    String condition() default "";
+
 }

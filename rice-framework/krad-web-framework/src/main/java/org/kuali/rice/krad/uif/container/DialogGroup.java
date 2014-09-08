@@ -102,6 +102,8 @@ public class DialogGroup extends GroupBase {
     public void performInitialization(Object model) {
         super.performInitialization(model);
 
+        setRefreshedByAction(true);
+
         if ((explanation != null) && StringUtils.isBlank(explanation.getPropertyName()) && StringUtils.isBlank(
                 explanation.getBindingInfo().getBindingPath())) {
             explanation.setPropertyName(UifPropertyPaths.DIALOG_EXPLANATIONS + "['" + getId() + "']");

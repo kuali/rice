@@ -107,11 +107,11 @@
         <value>css/labsProposal.css</value>
       </list>
     </property>
-    <!--<property name="dialogs">-->
-    <!--<list>-->
-    <!--<ref bean="LabsProposal-wizard"/>-->
-    <!--</list>-->
-    <!--</property>-->
+    <property name="dialogs">
+    <list>
+    <ref bean="LabsProposal-wizard"/>
+    </list>
+    </property>
   </bean>
 
   <bean id="LabsProposalFixed" parent="Demo-AppHeader-View2">

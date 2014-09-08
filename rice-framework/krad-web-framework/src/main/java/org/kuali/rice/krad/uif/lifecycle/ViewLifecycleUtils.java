@@ -32,13 +32,19 @@ import java.util.WeakHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Utilities for working with {@link LifecycleElement} instances.
@@ -46,7 +52,6 @@ import org.kuali.rice.krad.uif.view.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ViewLifecycleUtils {
-
     private static final Logger LOG = Logger.getLogger(ViewLifecycleUtils.class);
 
     private static final String COMPONENT_CONTEXT_PREFIX = '#' + UifConstants.ContextVariableNames.COMPONENT + '.';
@@ -185,10 +190,19 @@ public final class ViewLifecycleUtils {
         }
 
         Set<String> restrictedPropertyNames = getLifecycleRestrictedProperties(element, viewPhase);
+        Map<String, String> conditionalPropertyRestrictions = getMetadata(
+                element.getClass()).conditionalPropertyRestrictions;
 
         Map<String, LifecycleElement> elements = Collections.emptyMap();
-
         for (String propertyName : nestedElementProperties) {
+            if (conditionalPropertyRestrictions.containsKey(propertyName) && ViewLifecycle.isActive() && !UifConstants
+                    .ViewPhases.PRE_PROCESS.equals(viewPhase)) {
+                boolean conditionResult = evaluateLifecycleCondition(conditionalPropertyRestrictions.get(propertyName));
+                if (!conditionResult) {
+                    continue;
+                }
+            }
+
             if (restrictedPropertyNames.contains(propertyName)) {
                 continue;
             }
@@ -198,6 +212,14 @@ public final class ViewLifecycleUtils {
         }
 
         for (String propertyName : nestedElementCollectionProperties) {
+            if (conditionalPropertyRestrictions.containsKey(propertyName) && ViewLifecycle.isActive() && !UifConstants
+                    .ViewPhases.PRE_PROCESS.equals(viewPhase)) {
+                boolean conditionResult = evaluateLifecycleCondition(conditionalPropertyRestrictions.get(propertyName));
+                if (!conditionResult) {
+                    continue;
+                }
+            }
+
             if (restrictedPropertyNames.contains(propertyName)) {
                 continue;
             }
@@ -222,6 +244,30 @@ public final class ViewLifecycleUtils {
         }
 
         return elements == Collections.EMPTY_MAP ? elements : Collections.unmodifiableMap(elements);
+    }
+
+    /**
+     * Evaluates a condition on a property lifecycle restriction.
+     *
+     * @param condition expression to evaluate
+     * @return boolean result of the expression evaluation
+     */
+    private static boolean evaluateLifecycleCondition(String condition) {
+        ExpressionEvaluator expressionEvaluator =
+                KRADServiceLocatorWeb.getExpressionEvaluatorFactory().createExpressionEvaluator();
+        expressionEvaluator.initializeEvaluationContext(ViewLifecycle.getModel());
+
+        Map<String, Object> context = new HashMap<String, Object>();
+
+        Map<String, String> properties = CoreApiServiceLocator.getKualiConfigurationService().getAllProperties();
+        context.put(UifConstants.ContextVariableNames.CONFIG_PROPERTIES, properties);
+        context.put(UifConstants.ContextVariableNames.CONSTANTS, KRADConstants.class);
+        context.put(UifConstants.ContextVariableNames.UIF_CONSTANTS, UifConstants.class);
+        context.put(UifConstants.ContextVariableNames.USER_SESSION, GlobalVariables.getUserSession());
+
+        Boolean result = (Boolean) expressionEvaluator.evaluateExpression(context, condition);
+
+        return result.booleanValue();
     }
     
     /**
@@ -423,6 +469,10 @@ public final class ViewLifecycleUtils {
         // set of all restricted properties on the element class, keyed by view phase
         private final Map<String, Set<String>> lifecycleRestrictedProperties;
 
+        // properties that have an condition for inclusion in lifecycle, key is property name
+        // value is the condition to evaluate
+        private final Map<String, String> conditionalPropertyRestrictions;
+
         /**
          * Creates a new metadata wrapper for a bean class.
          *
@@ -434,6 +484,7 @@ public final class ViewLifecycleUtils {
 
             if (restrictedPropertyNames.isEmpty()) {
                 lifecycleRestrictedProperties = Collections.emptyMap();
+                conditionalPropertyRestrictions = Collections.emptyMap();
 
                 return;
             }
@@ -448,6 +499,8 @@ public final class ViewLifecycleUtils {
                     restrictedPropertyNames));
             mutableLifecycleRestrictedProperties.put(UifConstants.ViewPhases.PRE_PROCESS, new HashSet<String>(
                     restrictedPropertyNames));
+
+            Map<String, String> mutableConditionalLifecycleProperties = new HashMap<>();
 
             // remove properties that should be included for certain phases
             for (String restrictedPropertyName : restrictedPropertyNames) {
@@ -477,9 +530,14 @@ public final class ViewLifecycleUtils {
                         restrictedProperties.add(restrictedPropertyName);
                     }
                 }
+
+                if (StringUtils.isNotBlank(restriction.condition())) {
+                    mutableConditionalLifecycleProperties.put(restrictedPropertyName, restriction.condition());
+                }
             }
 
             lifecycleRestrictedProperties = Collections.unmodifiableMap(mutableLifecycleRestrictedProperties);
+            conditionalPropertyRestrictions = Collections.unmodifiableMap(mutableConditionalLifecycleProperties);
         }
 
         private void removedRestrictionsForPrecedingPhases(
@@ -516,6 +574,14 @@ public final class ViewLifecycleUtils {
             Set<String> restrictedProperties = mutableLifecycleRestrictedProperties.get(phase);
 
             restrictedProperties.remove(propertyName);
+        }
+
+        private void addRestrictionForAllPhases(Map<String, Set<String>> mutableLifecycleRestrictedProperties,
+                        String propertyName) {
+            mutableLifecycleRestrictedProperties.get(UifConstants.ViewPhases.PRE_PROCESS).add(propertyName);
+            mutableLifecycleRestrictedProperties.get(UifConstants.ViewPhases.INITIALIZE).add(propertyName);
+            mutableLifecycleRestrictedProperties.get(UifConstants.ViewPhases.APPLY_MODEL).add(propertyName);
+            mutableLifecycleRestrictedProperties.get(UifConstants.ViewPhases.FINALIZE).add(propertyName);
         }
     }
 

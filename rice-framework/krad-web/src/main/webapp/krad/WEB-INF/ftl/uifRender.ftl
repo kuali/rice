@@ -19,12 +19,7 @@
 
 <#compress>
 
-    <#--<#if !KualiForm.ajaxRequest || (KualiForm.ajaxReturnType == "update-view")-->
-        <#--|| (KualiForm.ajaxReturnType == "update-page")>-->
-        <#global view=KualiForm.view!/>
-    <#--<#else>-->
-        <#--<#global view=KualiForm.postedView!/>-->
-    <#--</#if>-->
+    <#global view=KualiForm.view!/>
 
     <#if KualiForm.ajaxRequest && KualiForm.ajaxReturnType == "redirect">
         <div data-returntype="redirect">

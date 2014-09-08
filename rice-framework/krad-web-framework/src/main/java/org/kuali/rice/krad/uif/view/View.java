@@ -21,15 +21,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
@@ -46,13 +43,11 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.element.HeadLink;
 import org.kuali.rice.krad.uif.element.Header;
-import org.kuali.rice.krad.uif.element.Link;
 import org.kuali.rice.krad.uif.element.MetaTag;
 import org.kuali.rice.krad.uif.element.ViewHeader;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTask;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
 import org.kuali.rice.krad.uif.element.BreadcrumbItem;
 import org.kuali.rice.krad.uif.element.BreadcrumbOptions;
@@ -490,18 +485,6 @@ public class View extends ContainerBase {
     @Override
     public void notifyCompleted(ViewLifecyclePhase phase) {
         super.notifyCompleted(phase);
-
-        if (phase.getViewPhase().equals(UifConstants.ViewPhases.INITIALIZE)) {
-
-            // get the list of dialogs from the view and then set the refreshedByAction on the
-            // dialog to true.
-            // This will leave the component in the viewIndex to be updated using an AJAX call
-            // TODO: Figure out a better way to store dialogs only if it is rendered using an
-            // ajax request
-            for (Component dialog : getDialogs()) {
-                dialog.setRefreshedByAction(true);
-            }
-        }
 
         if (phase.getViewPhase().equals(UifConstants.ViewPhases.FINALIZE)) {
             ViewLifecycle.getHelper().performCustomViewFinalize(ViewLifecycle.getModel());
@@ -1686,6 +1669,8 @@ public class View extends ContainerBase {
      * @return List of dialog Groups
      */
     @BeanTagAttribute
+    @ViewLifecycleRestriction(value = UifConstants.ViewPhases.FINALIZE,
+            condition = "!ajaxRequest || (ajaxReturnType eq 'update-view')")
     public List<Group> getDialogs() {
         if (dialogs == Collections.EMPTY_LIST && isMutable(true)) {
             dialogs = new LifecycleAwareList<Group>(this);

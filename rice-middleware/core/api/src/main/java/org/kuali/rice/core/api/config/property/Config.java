@@ -180,6 +180,8 @@ public interface Config {
 
 	public static final String ENABLE_EMAIL_REMINDER_LIFECYCLE = "email.reminder.lifecycle.enabled";
 	public static final String ENABLE_XML_PIPELINE_LIFECYCLE = "xml.pipeline.lifecycle.enabled";
+
+    public static final String AUTHN_USE_PRINCIPAL_ID = "authn.use_principal_id";
 	
 	public static final String OUT_BOX_MODE = "actionlist.outbox";
 

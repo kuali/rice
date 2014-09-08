@@ -108,7 +108,10 @@ public class UserLoginFilter implements Filter {
                 throw new AuthenticationException("Blank User from AuthenticationService - This should never happen.");
             }
 
-            Principal principal = getIdentityService().getPrincipalByPrincipalName(principalName);
+            final Principal principal = getKualiConfigurationService().getPropertyValueAsBoolean(KRADConstants.AUTHN_USE_PRINCIPAL_ID) 
+                ? getIdentityService().getPrincipal(principalName)
+                : getIdentityService().getPrincipalByPrincipalName(principalName);
+
             if (principal == null) {
                 throw new AuthenticationException("Unknown User: " + principalName);
             }

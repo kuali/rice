@@ -184,14 +184,23 @@ public class ProviderBasedDataObjectService implements DataObjectService {
 				// inverse relationship - if it exists, add the parent object in
 				// the applicable property
 				MetadataChild inverseRelationship = rel.getInverseRelationship();
-				if (inverseRelationship != null) {
-					wrappedChild.setPropertyValue(inverseRelationship.getName(), dataObject);
-					for (DataObjectAttributeRelationship attr : inverseRelationship.getAttributeRelationships()) {
-						// note the reversal of child and parent - remember this is the *child's*
-						// relationship with the parent
-						// and like many children, the they they are in charge
-						wrappedChild.setPropertyValue(attr.getParentAttributeName(),
-								wrappedParent.getPropertyValueNullSafe(attr.getChildAttributeName()));
+				if (inverseRelationship != null && inverseRelationship instanceof DataObjectRelationship) {
+					try {
+						wrappedChild.setPropertyValue(inverseRelationship.getName(), dataObject);
+						for (DataObjectAttributeRelationship attr : inverseRelationship.getAttributeRelationships()) {
+							// note the reversal of child and parent - remember this is the *child's*
+							// relationship with the parent
+							// and like many children, the they they are in charge
+							wrappedChild.setPropertyValue(attr.getParentAttributeName(),
+									wrappedParent.getPropertyValueNullSafe(attr.getChildAttributeName()));
+						}
+					} catch (Exception ex) {
+						LOG.warn("Unable to set 1:1 child keys.  Persistance of child object may not be correct.  Parent Object.property: "
+								+ dataObject.getClass().getName()
+								+ "."
+								+ rel.getName()
+								+ " / Child Type: "
+										+ child.getClass().getName(), ex);
 					}
 				}
 			}

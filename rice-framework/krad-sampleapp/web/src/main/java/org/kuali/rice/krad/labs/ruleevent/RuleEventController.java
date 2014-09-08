@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * Set up a custom save method for the document controller to test custom save document event rule processing.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
@@ -41,7 +43,8 @@ public class RuleEventController extends MaintenanceDocumentController {
         event.setName("Lab-RuleEventController");
         event.addFact("RuleEventSave", document.getDocumentDataObject());
         event.setRuleMethodName("processRule");
-        super.save(docForm);
+
+        super.save(docForm, event);
 
         return getModelAndView(form);
     }

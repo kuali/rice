@@ -13,22 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.krad.labs.ruleevent;
+package org.kuali.rice.krad.demo.travel.rules;
 
-import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.krad.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.krad.rules.rule.event.RuleEvent;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
- * Created by nigupta on 5/7/2014.
+ * Provides method for custom rule event invocation.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BusinessRuleImpl extends MaintenanceDocumentRuleBase {
+public class TravelAccountMaintenanceDocumentRule extends MaintenanceDocumentRuleBase {
 
-    public boolean processRule( RuleEvent event ) {
-        GlobalVariables.getMessageMap().putInfo( KRADConstants.GLOBAL_MESSAGES,
-                "Processed business rule for event '" + event.getName() + "'." );
+    /**
+     * Records that the {@code event} has been processed.
+     *
+     * @param event the rule event to record
+     *
+     * @return true
+     */
+    public boolean processRule(RuleEvent event) {
+        // using fake growl message due to lack of testing resources
+        GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, "demo.fakeGrowl",
+                "Processed business rule for event '" + event.getName() + "'.");
+
         return true;
     }
 }

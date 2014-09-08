@@ -22,7 +22,9 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
- * Created by nigupta on 5/7/2014.
+ * Provides method for custom rule event invocation.
+ *
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleEventImpl extends SaveDocumentEvent {
 
@@ -32,9 +34,10 @@ public class RuleEventImpl extends SaveDocumentEvent {
 
     @Override
     public boolean invokeRuleMethod( BusinessRule rule ) {
-        //System.out.println( "############################# Default RuleEventImpl!" );
-        GlobalVariables.getMessageMap().putInfo( KRADConstants.GLOBAL_MESSAGES,
-                "Applied custom business rule class '" + rule.getClass().getName() + "'." );
+        GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, "demo.fakeGrowl",
+                "Applied custom business rule class '" + rule.getClass().getName() + "'.");
+
         return true;
     }
+
 }

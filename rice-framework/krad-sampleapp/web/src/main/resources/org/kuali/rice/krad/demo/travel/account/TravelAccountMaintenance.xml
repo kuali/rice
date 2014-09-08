@@ -24,6 +24,13 @@
   <bean id="TravelAccountMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
     <property name="documentTypeName" value="TravelAccountMaintenanceDocument"/>
+    <property name="businessRulesClass" value="org.kuali.rice.krad.demo.travel.rules.TravelAccountMaintenanceDocumentRule" />
+    <property name="defaultExistenceChecks">
+      <list>
+        <bean parent="ReferenceDefinition" p:attributeName="accountType" p:attributeToHighlightOnFail="accountTypeCode"/>
+        <bean parent="ReferenceDefinition" p:attributeName="fiscalOfficer" p:attributeToHighlightOnFail="foId"/>
+      </list>
+    </property>
     <property name="lockingKeys">
       <list>
         <value>number</value>

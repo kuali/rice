@@ -909,6 +909,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitForProgressLoading();
         Thread.sleep(500);
         checkForDocError();
+        checkForDocErrorKrad();
         waitForTextPresent("Document was successfully submitted.");
     }
 

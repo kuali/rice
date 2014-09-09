@@ -66,9 +66,9 @@
       </bean>
     </property>
     <property name="dataAttributes">
-       <map merge="true">
-         <entry key="role" value="dialogheader"/>
-       </map>
+      <map merge="true">
+        <entry key="role" value="dialogheader"/>
+      </map>
     </property>
   </bean>
 
@@ -153,7 +153,7 @@
   </bean>
 
   <bean id="Uif-DialogGroup-MultiOpt" parent="Uif-DialogGroup">
-      <property name="footer.cssClasses" value="uif-footer"/>
+    <property name="footer.cssClasses" value="uif-footer"/>
   </bean>
 
   <bean id="Uif-SensitiveData-DialogGroup" parent="Uif-DialogGroup-YesNo">
@@ -238,12 +238,6 @@
 
   <bean id="Uif-EditLineDialog" parent="Uif-DialogGroup" p:headerText="Edit Line Dialog">
     <property name="destroyContentsOnClose" value="true"/>
-    <!--<property name="footer.items">-->
-      <!--<list>-->
-        <!-- the action to save the edited line is built dynamically in class CollectionGroupBuilder-->
-        <!--<bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>-->
-      <!--</list>-->
-    <!--</property>-->
   </bean>
 
 </beans>

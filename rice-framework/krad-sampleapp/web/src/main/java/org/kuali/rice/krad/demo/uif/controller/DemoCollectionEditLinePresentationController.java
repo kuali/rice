@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.controller;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.view.View;
@@ -26,25 +27,13 @@ import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
  */
 public class DemoCollectionEditLinePresentationController extends ViewPresentationControllerBase {
 
-    /*@Override
-    public boolean canEditLineField(View view, ViewModel model, CollectionGroup collectionGroup,
-            String collectionPropertyName, Object line, Field field, String propertyName) {
-        if(field instanceof DataField) {
-            DataField dataField = (DataField) field;
-            if(dataField.getPropertyName().equalsIgnoreCase("field4") &&
-                    dataField.getBindingInfo().getCollectionPath().equalsIgnoreCase("collection1")) {
-                return false;
-            }
-        }
-        return true;
-    }*/
-
     @Override
-    public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup,
-            String propertyName, Object currentLine) {
-        if(currentLine != null && currentLine instanceof UITestObject && propertyName.equalsIgnoreCase("collection1_8")) {
+    public boolean canEditLine(View view, ViewModel model, CollectionGroup collectionGroup, String propertyName,
+            Object currentLine) {
+        if (currentLine != null && currentLine instanceof UITestObject && propertyName.equalsIgnoreCase(
+                "collection1_8")) {
             UITestObject testObject = (UITestObject) currentLine;
-            if (testObject.getField4() != null && testObject.getField4().equalsIgnoreCase("16")) {
+            if (testObject.getField4() != null && StringUtils.equals(testObject.getField4(), "16")) {
                 return false;
             }
         }

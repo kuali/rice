@@ -40,6 +40,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.ContextUtils;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
@@ -63,6 +64,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CollectionGroupLineBuilder implements Serializable {
+
     private static final long serialVersionUID = 981187437246864378L;
 
     private LineBuilderContext lineBuilderContext;
@@ -83,8 +85,9 @@ public class CollectionGroupLineBuilder implements Serializable {
 
         boolean hasLineFields =
                 (lineBuilderContext.getLineFields() != null) && (!lineBuilderContext.getLineFields().isEmpty());
-        boolean hasSubCollections = (lineBuilderContext.getSubCollectionFields() != null) &&
-                (!lineBuilderContext.getSubCollectionFields().isEmpty());
+        boolean hasSubCollections =
+                (lineBuilderContext.getSubCollectionFields() != null) && (!lineBuilderContext.getSubCollectionFields()
+                        .isEmpty());
 
         // invoke layout manager and setup edit line dialog to build the complete line
         if (hasLineFields || hasSubCollections) {
@@ -104,7 +107,7 @@ public class CollectionGroupLineBuilder implements Serializable {
             }
             actions.addAll(dialogGroups);
             lineBuilderContext.setLineActions(actions);
-            //lineBuilderContext.getCollectionGroup().getLineDialogs().clear();
+            lineBuilderContext.getCollectionGroup().getLineDialogs().clear();
 
             // invoke the layout manager
             lineBuilderContext.getLayoutManager().buildLine(lineBuilderContext);
@@ -152,7 +155,7 @@ public class CollectionGroupLineBuilder implements Serializable {
         ContextUtils.pushObjectToContextDeep(lineFields, UifConstants.ContextVariableNames.READONLY_LINE, !canEditLine);
         ContextUtils.pushObjectToContextDeep(actions, UifConstants.ContextVariableNames.READONLY_LINE, !canEditLine);
 
-        if(!canEditLine) {
+        if (!canEditLine) {
             Iterator<Action> actionsIterator = actions.iterator();
             while (actionsIterator.hasNext()) {
                 Action action = actionsIterator.next();
@@ -222,7 +225,7 @@ public class CollectionGroupLineBuilder implements Serializable {
             if (item instanceof RemoteFieldsHolder) {
                 List<InputField> translatedFields = ((RemoteFieldsHolder) item).fetchAndTranslateRemoteFields(group);
                 processedItems.addAll(translatedFields);
-            } else if(item instanceof Field) {
+            } else if (item instanceof Field) {
                 processedItems.add((Field) item);
             }
         }
@@ -236,15 +239,14 @@ public class CollectionGroupLineBuilder implements Serializable {
      *
      * @param lineFields list of fields to update
      */
-    //protected void adjustFieldBindingAndId(List<Field> lineFields) {
     protected void adjustFieldBindingAndId(List<Field> lineFields, String bindingPath) {
         for (Field field : lineFields) {
             if (field instanceof DataBinding && ((DataBinding) field).getBindingInfo().isBindToForm()) {
                 BindingInfo bindingInfo = ((DataBinding) field).getBindingInfo();
                 bindingInfo.setCollectionPath(null);
-                bindingInfo.setBindingName(bindingInfo.getBindingName() + "[" + lineBuilderContext.getLineIndex() + "]");
+                bindingInfo.setBindingName(
+                        bindingInfo.getBindingName() + "[" + lineBuilderContext.getLineIndex() + "]");
             } else {
-                //ComponentUtils.prefixBindingPath(field, lineBuilderContext.getBindingPath());
                 ComponentUtils.prefixBindingPath(field, bindingPath);
             }
 
@@ -272,8 +274,8 @@ public class CollectionGroupLineBuilder implements Serializable {
                 continue;
             }
 
-            boolean focusLineFirst = StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) &&
-                    action.getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString());
+            boolean focusLineFirst = StringUtils.isNotBlank(action.getFocusOnIdAfterSubmit()) && action
+                    .getFocusOnIdAfterSubmit().equalsIgnoreCase(UifConstants.Order.LINE_FIRST.toString());
             boolean lineHasFields = !lineFields.isEmpty();
             if (focusLineFirst && lineHasFields) {
                 action.setFocusOnIdAfterSubmit(lineFields.get(0).getId() + UifConstants.IdSuffixes.CONTROL);
@@ -451,18 +453,18 @@ public class CollectionGroupLineBuilder implements Serializable {
      *
      * @return true if the user can edit the line, false if not
      */
-    protected boolean checkEditLineAuthorizationAndPresentationLogic(CollectionGroup collectionGroup,
-            ViewModel model, Object currentLine) {
+    protected boolean checkEditLineAuthorizationAndPresentationLogic(CollectionGroup collectionGroup, ViewModel model,
+            Object currentLine) {
         ViewPresentationController presentationController = ViewLifecycle.getView().getPresentationController();
         ViewAuthorizer authorizer = ViewLifecycle.getView().getAuthorizer();
 
         Person user = GlobalVariables.getUserSession().getPerson();
 
-        boolean canEditLine = authorizer.canEditLine(ViewLifecycle.getView(), model,
-                collectionGroup, collectionGroup.getPropertyName(), currentLine, user);
+        boolean canEditLine = authorizer.canEditLine(ViewLifecycle.getView(), model, collectionGroup,
+                collectionGroup.getPropertyName(), currentLine, user);
         if (canEditLine) {
-            canEditLine = presentationController.canEditLine(ViewLifecycle.getView(), model,
-                    collectionGroup, collectionGroup.getPropertyName(), currentLine);
+            canEditLine = presentationController.canEditLine(ViewLifecycle.getView(), model, collectionGroup,
+                    collectionGroup.getPropertyName(), currentLine);
         }
 
         return canEditLine;
@@ -725,23 +727,21 @@ public class CollectionGroupLineBuilder implements Serializable {
     protected void setupEditLineDetails() {
         CollectionGroup group = lineBuilderContext.getCollectionGroup();
 
-        if(!group.isEditWithDialog()) {
+        if (!group.isEditWithDialog()) {
             return;
         }
 
-        for(DialogGroup lineDialog : group.getLineDialogs()) {
+        for (DialogGroup lineDialog : group.getLineDialogs()) {
             String dialogId = lineDialog.getId();
 
             UifFormBase form = (UifFormBase) lineBuilderContext.getModel();
-            if(ViewLifecycle.isRefreshLifecycle() && StringUtils.equals(dialogId,
-                    ViewLifecycle.getRefreshComponentId()) && StringUtils.equals(form.getActionParamaterValue(
-                    "selectedCollectionPath"), lineBuilderContext.getCollectionGroup().getBindingInfo().
-                    getBindingPath()) && StringUtils.equals(form.getActionParamaterValue("selectedLineIndex"),
-                    Integer.toString(lineBuilderContext.getLineIndex())) && lineDialog.getId().contains(
+            if (group.getCollectionGroupBuilder().refreshEditLineDialogContents(lineDialog, form, group,
+                    lineBuilderContext.getLineIndex()) && lineDialog.getId().contains(
                     ComponentFactory.EDIT_LINE_DIALOG)) {
                 form.setUpdateComponent(lineDialog);
                 // if there are no custom user items or if there are no items, then use the line fields as items
-                if (lineDialog.getItems() == null || lineDialog.getItems().isEmpty() || !group.isCustomEditLineDialog()) {
+                if (lineDialog.getItems() == null || lineDialog.getItems().isEmpty() || !group
+                        .isCustomEditLineDialog()) {
                     List<Field> lineFields = lineBuilderContext.getLineFields();
 
                     // process and set items
@@ -753,37 +753,43 @@ public class CollectionGroupLineBuilder implements Serializable {
                     items.addAll(processDialogSubFieldsFromRowDetails(lineDialog));
                     lineDialog.setItems(items);
                 } else { // user provided dialog items
-                    List<Field> dialogFields = ViewLifecycleUtils.getElementsOfTypeDeep(
-                            lineDialog.getItems(), Field.class);
+                    List<Component> dialogFields = new ArrayList<>(lineDialog.getItems());
                     List<Field> newFields = new ArrayList<Field>();
                     List<Field> newFieldGroups = new ArrayList<Field>();
                     int fieldIndex = 0;
                     int subIndex = 0;
 
                     // for every user provided dialog item, find its corresponding line field and set the binding info
-                    for (Field dialogField : dialogFields) {
+                    for (Component dialogField : dialogFields) {
                         if (dialogField instanceof DataField) {
                             DataField dataField = (DataField) dialogField;
                             DataField lineField = findItemInLineFields(dataField);
 
                             if (lineField != null) {
-                                dataField.getBindingInfo().setCollectionPath(lineField.getBindingInfo().getCollectionPath());
+                                dataField.getBindingInfo().setCollectionPath(
+                                        lineField.getBindingInfo().getCollectionPath());
                                 // set the line field to read-only
                                 lineField.setReadOnly(true);
                             } else {
                                 // update the binding info on the custom field
-                                //dataField.getBindingInfo().setBindByNamePrefix(lineBuilderContext.getBindingPath());
                                 dataField.getBindingInfo().setCollectionPath(group.getBindingInfo().getBindingName());
                             }
                             dataField.getBindingInfo().setBindByNamePrefix(UifPropertyPaths.DIALOG_DATA_OBJECT);
                             newFields.add(dataField);
-                        } else if(dialogField instanceof FieldGroup) {
+                        } else if (dialogField instanceof FieldGroup) {
                             FieldGroup fieldGroup = (FieldGroup) dialogField;
-                            if(fieldGroup.getGroup() instanceof CollectionGroup) {
+                            if (fieldGroup.getGroup() instanceof CollectionGroup) {
                                 newFieldGroups.add(getNewFieldGroup(fieldGroup, (CollectionGroup) fieldGroup.
-                                        getGroup(), lineDialog, fieldIndex, subIndex));
+                                        getGroup(), lineDialog, fieldIndex, subIndex, null));
                                 subIndex++;
                             }
+                        } else if (dialogField instanceof CollectionGroup) {
+                            CollectionGroup collectionGroup = (CollectionGroup) dialogField;
+                            FieldGroup fieldGroupPrototype =
+                                    lineBuilderContext.getLayoutManager().getSubCollectionFieldGroupPrototype();
+                            newFieldGroups.add(getNewFieldGroup(fieldGroupPrototype, collectionGroup, lineDialog,
+                                    fieldIndex, subIndex, UifPropertyPaths.DIALOG_DATA_OBJECT));
+                            subIndex++;
                         }
                         fieldIndex++;
                     }
@@ -792,24 +798,24 @@ public class CollectionGroupLineBuilder implements Serializable {
                 }
             }
 
-            List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(
-                    lineBuilderContext.getLineActions(), Action.class);
+            List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(lineBuilderContext.getLineActions(),
+                    Action.class);
 
-            for(Action action : actions) {
+            for (Action action : actions) {
                 action.setRefreshId(lineDialog.getId());
                 action.setFocusOnIdAfterSubmit(lineDialog.getId());
             }
         }
 
         // set all collection fields and sub-collection fields to readOnly
-        if(lineBuilderContext.getCollectionGroup().isEditWithDialog()) {
-            for(Field lineField : lineBuilderContext.getLineFields()) {
-                if(lineField instanceof InputField) {
+        if (lineBuilderContext.getCollectionGroup().isEditWithDialog()) {
+            for (Field lineField : lineBuilderContext.getLineFields()) {
+                if (lineField instanceof InputField) {
                     lineField.setReadOnly(Boolean.TRUE);
                 }
             }
             List<FieldGroup> subLineFields = lineBuilderContext.getSubCollectionFields();
-            if(subLineFields != null) {
+            if (subLineFields != null) {
                 for (FieldGroup subLineField : subLineFields) {
                     subLineField.setReadOnly(Boolean.TRUE);
                 }
@@ -830,18 +836,18 @@ public class CollectionGroupLineBuilder implements Serializable {
         int fieldIndex = lineDialog.getItems().size();
         int subIndex = 0;
 
-        for(FieldGroup subCollectionFieldGroup : subCollectionFields) {
+        for (FieldGroup subCollectionFieldGroup : subCollectionFields) {
             CollectionGroup subCollectionGroup = (CollectionGroup) subCollectionFieldGroup.getGroup();
 
             // make a copy of the sub-group for the dialog
             newSubCollectionFields.add(getNewFieldGroup(subCollectionFieldGroup, subCollectionGroup, lineDialog,
-                    fieldIndex, subIndex));
+                    fieldIndex, subIndex, UifPropertyPaths.DIALOG_DATA_OBJECT));
             fieldIndex++;
             subIndex++;
 
-            List<Component> components = ViewLifecycleUtils.getElementsOfTypeDeep(
-                    subCollectionGroup.getItems(), Component.class);
-            for(Component component: components) {
+            List<Component> components = ViewLifecycleUtils.getElementsOfTypeDeep(subCollectionGroup.getItems(),
+                    Component.class);
+            for (Component component : components) {
                 component.setReadOnly(Boolean.TRUE);
             }
         }
@@ -885,8 +891,8 @@ public class CollectionGroupLineBuilder implements Serializable {
 
                         FieldGroup fieldGroupPrototype = lineBuilderContext.
                                 getLayoutManager().getSubCollectionFieldGroupPrototype();
-                        newSubCollectionFields.add(getNewFieldGroup(fieldGroupPrototype, subCollectionGroup,
-                                lineDialog, fieldIndex, subIndex));
+                        newSubCollectionFields.add(getNewFieldGroup(fieldGroupPrototype, subCollectionGroup, lineDialog,
+                                fieldIndex, subIndex, UifPropertyPaths.DIALOG_DATA_OBJECT));
                         subIndex++;
                     } else if (component instanceof Field) {
                         Field subCollectionField = (Field) component;
@@ -898,7 +904,7 @@ public class CollectionGroupLineBuilder implements Serializable {
 
                     ContextUtils.pushObjectToContextDeep(newSubCollectionFields,
                             UifConstants.ContextVariableNames.PARENT_LINE,
-                            ((UifFormBase)lineBuilderContext.getModel()).getDialogDataObject());
+                            ((UifFormBase) lineBuilderContext.getModel()).getDialogDataObject());
                 }
             }
         }
@@ -906,65 +912,87 @@ public class CollectionGroupLineBuilder implements Serializable {
         return newSubCollectionFields;
     }
 
+    /**
+     * Helper method that creates a new field group for a given sub-collection.
+     *
+     * @param fieldGroupPrototype the field group prototype to use
+     * @param subCollectionGroup the sub-collection to create field group for
+     * @param lineDialog the line dialog that the field group should be in
+     * @param fieldIndex the index to apply for the field group
+     * @param subIndex the index to apply for the sub-collection
+     * @return the created field group
+     */
     private FieldGroup getNewFieldGroup(FieldGroup fieldGroupPrototype, CollectionGroup subCollectionGroup,
-            DialogGroup lineDialog, int fieldIndex, int subIndex) {
+            DialogGroup lineDialog, int fieldIndex, int subIndex, String bindingPrefix) {
         FieldGroup newSubCollectionFieldGroup = ComponentUtils.copy(fieldGroupPrototype);
         newSubCollectionFieldGroup.setId(lineDialog.getId() +
                 UifConstants.IdSuffixes.FIELDSET + Integer.toString(fieldIndex));
-        newSubCollectionFieldGroup.pushObjectToContext(
-                UifConstants.ContextVariableNames.PARENT, lineDialog);
+        newSubCollectionFieldGroup.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, lineDialog);
 
         CollectionGroup newSubCollectionGroup = ComponentUtils.copy(subCollectionGroup);
         newSubCollectionGroup.setId(newSubCollectionFieldGroup.getId() + UifConstants.IdSuffixes.SUB +
                 Integer.toString(subIndex));
-        newSubCollectionGroup.getBindingInfo().setBindByNamePrefix(UifPropertyPaths.DIALOG_DATA_OBJECT);
+        if (bindingPrefix != null) {
+            newSubCollectionGroup.getBindingInfo().setBindByNamePrefix(bindingPrefix);
+        }
+
+        if (newSubCollectionGroup.getBindingInfo().getBindingName() == null) {
+            newSubCollectionGroup.getBindingInfo().setBindingName(newSubCollectionGroup.getPropertyName());
+        }
+
         newSubCollectionGroup.pushObjectToContext(UifConstants.ContextVariableNames.PARENT, lineDialog);
         newSubCollectionGroup.addDataAttribute(UifConstants.
                 ContextVariableNames.PARENT, lineDialog.getId());
 
         if (newSubCollectionGroup.isRenderAddLine()) {
-            newSubCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(
-                    UifPropertyPaths.DIALOG_DATA_OBJECT);
+            newSubCollectionGroup.getAddLineBindingInfo().setBindByNamePrefix(newSubCollectionGroup.
+                    getBindingInfo().getBindByNamePrefix());
+            newSubCollectionGroup.getAddLineBindingInfo().setBindingName(newSubCollectionGroup.
+                    getBindingInfo().getBindingName());
+            String addBindingPath = UifPropertyPaths.NEW_COLLECTION_LINES + "['" +
+                    newSubCollectionGroup.getBindingInfo().getBindByNamePrefix() + "." +
+                    newSubCollectionGroup.getBindingInfo().getBindingName() + "']";
+            Object addLine = ObjectPropertyUtils.getPropertyValue(lineBuilderContext.getModel(), addBindingPath);
+            if (addLine != null) {
+                ObjectPropertyUtils.setPropertyValue(lineBuilderContext.getModel(), addBindingPath, null);
+            }
         }
 
         // set the new collection group's line actions to refresh the entire
         // dialog not just the sub-collection
-        List<Action> subLineActions = ViewLifecycleUtils.getElementsOfTypeDeep(
-                newSubCollectionGroup.getLineActions(), Action.class);
+        List<Action> subLineActions = ViewLifecycleUtils.getElementsOfTypeDeep(newSubCollectionGroup.getLineActions(),
+                Action.class);
         setupSubCollectionActions(subLineActions, lineDialog.getId(),
                 lineBuilderContext.getCollectionGroup().getBindingInfo().getBindingName(),
                 lineBuilderContext.getLineIndex());
 
         // initialize the new sub-collections line actions
-        lineBuilderContext.getCollectionGroup().getCollectionGroupBuilder().initializeLineActions(
-                subLineActions, ViewLifecycle.getView(), newSubCollectionGroup,
-                lineBuilderContext.getCurrentLine(), lineBuilderContext.getLineIndex());
+        lineBuilderContext.getCollectionGroup().getCollectionGroupBuilder().initializeLineActions(subLineActions,
+                ViewLifecycle.getView(), newSubCollectionGroup, lineBuilderContext.getCurrentLine(),
+                lineBuilderContext.getLineIndex());
 
         // get the add line actions for this group
-        List<Component> subAddLineComponents = new ArrayList<Component>(
-                newSubCollectionGroup.getAddLineActions());
-        if(newSubCollectionGroup.getAddBlankLineAction() != null) {
+        List<Component> subAddLineComponents = new ArrayList<Component>(newSubCollectionGroup.getAddLineActions());
+        if (newSubCollectionGroup.getAddBlankLineAction() != null) {
             subAddLineComponents.add(newSubCollectionGroup.getAddBlankLineAction());
         }
-        List<Action> subAddLineActions = ViewLifecycleUtils.getElementsOfTypeDeep(
-                subAddLineComponents, Action.class);
+        List<Action> subAddLineActions = ViewLifecycleUtils.getElementsOfTypeDeep(subAddLineComponents, Action.class);
 
         // initialize the new sub-collections add line actions
         setupSubCollectionActions(subAddLineActions, lineDialog.getId(), lineBuilderContext.
-                        getCollectionGroup().getBindingInfo().getBindingName(),
-                lineBuilderContext.getLineIndex());
+                        getCollectionGroup().getBindingInfo().getBindingName(), lineBuilderContext.getLineIndex()
+        );
 
         newSubCollectionFieldGroup.setGroup(newSubCollectionGroup);
 
         ContextUtils.updateContextForLine(newSubCollectionFieldGroup, lineBuilderContext.
-                        getCollectionGroup(), ((UifFormBase)lineBuilderContext.getModel()).
+                        getCollectionGroup(), ((UifFormBase) lineBuilderContext.getModel()).
                         getDialogDataObject(), lineBuilderContext.getLineIndex(),
-                lineBuilderContext.getIdSuffix() + UifConstants.IdSuffixes.SUB + subIndex);
-        ContextUtils.pushObjectToContextDeep(newSubCollectionGroup,
-                UifConstants.ContextVariableNames.PARENT_LINE,
-                ((UifFormBase)lineBuilderContext.getModel()).getDialogDataObject());
+                lineBuilderContext.getIdSuffix() + UifConstants.IdSuffixes.SUB + subIndex
+        );
+        ContextUtils.pushObjectToContextDeep(newSubCollectionGroup, UifConstants.ContextVariableNames.PARENT_LINE,
+                ((UifFormBase) lineBuilderContext.getModel()).getDialogDataObject());
         return newSubCollectionFieldGroup;
-
     }
 
     /**
@@ -979,8 +1007,8 @@ public class CollectionGroupLineBuilder implements Serializable {
 
         // for each line field create and add a corresponding dialog field
         int fieldIndex = 0;
-        for(Field lineField : lineFields) {
-            if(!(lineField instanceof FieldGroup)) {
+        for (Field lineField : lineFields) {
+            if (!(lineField instanceof FieldGroup)) {
                 Field newLineField = getNewFieldForEditLineDialog(lineField, prefix +
                         UifConstants.IdSuffixes.FIELDSET + Integer.toString(fieldIndex));
                 newLineFields.add(newLineField);
@@ -1001,9 +1029,8 @@ public class CollectionGroupLineBuilder implements Serializable {
         Field newLineField = ComponentUtils.copy(field, id);
 
         // set the line field to point to the dialog's data object
-        if(newLineField instanceof DataField) {
-            ((DataField)newLineField).getBindingInfo().setBindByNamePrefix(
-                    UifPropertyPaths.DIALOG_DATA_OBJECT);
+        if (newLineField instanceof DataField) {
+            ((DataField) newLineField).getBindingInfo().setBindByNamePrefix(UifPropertyPaths.DIALOG_DATA_OBJECT);
         }
         return newLineField;
     }
@@ -1017,7 +1044,7 @@ public class CollectionGroupLineBuilder implements Serializable {
      * @param lineIndex the index of the line being edited in the dialog
      */
     private void setupSubCollectionActions(List<Action> actions, String dialogId, String bindingName, int lineIndex) {
-        for(Action action : actions) {
+        for (Action action : actions) {
             action.setDialogDismissOption("REQUEST");
             action.setRefreshId(dialogId);
             String actionScript = UifConstants.JsFunctions.SHOW_EDIT_LINE_DIALOG + "('" +
@@ -1034,16 +1061,15 @@ public class CollectionGroupLineBuilder implements Serializable {
      * are the same.</p>
      *
      * @param dataItem the data field to get the line item for
-     * @return
      */
     private DataField findItemInLineFields(DataField dataItem) {
-            for(Field field : lineBuilderContext.getLineFields()) {
-                if(field instanceof DataField) {
-                    if (dataItem.getPropertyName().equals(((DataField) field).getPropertyName())) {
-                        return (DataField) field;
-                    }
+        for (Field field : lineBuilderContext.getLineFields()) {
+            if (field instanceof DataField) {
+                if (dataItem.getPropertyName().equals(((DataField) field).getPropertyName())) {
+                    return (DataField) field;
                 }
             }
+        }
         return null;
     }
 

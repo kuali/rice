@@ -47,16 +47,15 @@
   </bean>
 
   <!-- CollectionEditLine -->
-  <bean id="Demo-CollectionEditLine-Example1"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--ex:Demo-CollectionEditLine-Example1 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="items">
             <list>
@@ -71,16 +70,15 @@
   </bean>
 
   <!-- CollectionEditLine -->
-  <bean id="Demo-CollectionEditLine-Example2"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--ex:Demo-CollectionEditLine-Example2 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection2" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection2"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="editLineDialogPrototype">
             <bean parent="Uif-EditLineDialog">
@@ -104,16 +102,15 @@
   </bean>
 
   <!-- CollectionEditLine -->
-  <bean id="Demo-CollectionEditLine-Example3"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example3" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--ex:Demo-CollectionEditLine-Example3 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection3" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection3"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="editLineDialogPrototype">
             <bean parent="Uif-EditLineDialog">
@@ -138,16 +135,15 @@
   </bean>
 
   <!-- CollectionEditLine -->
-  <bean id="Demo-CollectionEditLine-Example4"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example4" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--ex:Demo-CollectionEditLine-Example4 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_4" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_4"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="editWithDialogActionPrototype">
             <bean parent="Uif-EditLineInDialogAction" p:actionLabel="Demo Edit Line">
@@ -166,16 +162,15 @@
   </bean>
 
   <!-- CollectionEditLine -->
-  <bean id="Demo-CollectionEditLine-Example5"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example5" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--ex:Demo-CollectionEditLine-Example5 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection6" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection6"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="editInDialogSaveActionPrototype">
             <bean parent="Uif-EditLineInDialogSaveAction" p:actionLabel="Demo Save Line"
@@ -195,16 +190,15 @@
   </bean>
 
   <!-- CollectionEditLine -->
-  <bean id="Demo-CollectionEditLine-Example6"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example6" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--ex:Demo-CollectionEditLine-Example6 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_6" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_6"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="items">
             <list>
@@ -219,16 +213,15 @@
   </bean>
 
   <!-- CollectionEditLine -->
-  <bean id="Demo-CollectionEditLine-Example7"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example7" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--ex:Demo-CollectionEditLine-Example7 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_7" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_7"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="readOnly" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="items">
@@ -244,16 +237,15 @@
   </bean>
 
   <!-- CollectionEditLine -->
-  <bean id="Demo-CollectionEditLine-Example8"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example8" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!--ex:Demo-CollectionEditLine-Example8 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_8" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_8"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="editLineDialogPrototype">
             <bean parent="Uif-EditLineDialog">
@@ -278,16 +270,15 @@
   </bean>
 
   <!-- CollectionEditLine quickfinder -->
-  <bean id="Demo-CollectionEditLine-Example9"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionEditLine-Example9" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CollectionEditLine-Example9 start-->
         <bean parent="Uif-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_9" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_9"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="items">
             <list>
@@ -299,8 +290,6 @@
                 </property>
               </bean>
               <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
-              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
-              <bean parent="Uif-InputField" p:label="Field 4" p:propertyName="field4"/>
             </list>
           </property>
         </bean>
@@ -315,12 +304,11 @@
       <list>
         <!-- ex:Demo-CollectionEditLine-Example10 start-->
         <bean id="Demo-CollectionEditLine-Section1" parent="Uif-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection4"/>
           <property name="editWithDialog" value="true"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
-          <property name="layoutManager.richTable.render" value="true" />
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="layoutManager.rowDetailsGroup">
             <bean parent="Uif-VerticalBoxGroup">
               <property name="items">
@@ -347,10 +335,9 @@
   <bean id="Demo-CollectionEditLine-SubCollection1" parent="Uif-Disclosure-TableSubCollection-WithinSection"
         p:layoutManager.numberOfColumns="4">
     <property name="headerText" value="Row Details SubCollection"/>
-    <property name="collectionObjectClass"
-              value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
     <property name="propertyName" value="subList"/>
-    <property name="layoutManager.richTable.render" value="true" />
+    <property name="layoutManager.richTable.render" value="true"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
@@ -373,12 +360,11 @@
       <list>
         <!-- ex:Demo-CollectionEditLine-Example11 start-->
         <bean id="Demo-CollectionEditLine-Section2" parent="Uif-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection5"/>
           <property name="editWithDialog" value="true"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
-          <property name="layoutManager.richTable.render" value="false" />
+          <property name="layoutManager.richTable.render" value="false"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
@@ -402,10 +388,9 @@
   <bean id="Demo-CollectionEditLine-SubCollection2" parent="Uif-Disclosure-TableSubCollection-WithinSection"
         p:layoutManager.numberOfColumns="4">
     <property name="headerText" value="SubCollection"/>
-    <property name="collectionObjectClass"
-              value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
     <property name="propertyName" value="subList"/>
-    <property name="layoutManager.richTable.render" value="false" />
+    <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"
@@ -428,16 +413,16 @@
       <list>
         <!-- ex:Demo-CollectionEditLine-Example12 start-->
         <bean id="Demo-CollectionEditLine-Section3" parent="Uif-TableCollectionSection">
-          <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection7"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
-          <property name="layoutManager.richTable.render" value="false" />
+          <property name="layoutManager.richTable.render" value="false"/>
           <property name="editWithDialog" value="true"/>
           <property name="editLineDialogPrototype">
             <bean parent="Uif-EditLineDialog">
               <property name="items">
                 <list>
+                  <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
                   <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
                   <ref bean="Demo-CollectionEditLine-SubCollection3"/>
                 </list>
@@ -462,10 +447,9 @@
   <bean id="Demo-CollectionEditLine-SubCollection3" parent="Uif-Disclosure-TableSubCollection-WithinSection"
         p:layoutManager.numberOfColumns="4">
     <property name="headerText" value="Custom SubCollection"/>
-    <property name="collectionObjectClass"
-              value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+    <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
     <property name="propertyName" value="subList"/>
-    <property name="layoutManager.richTable.render" value="false" />
+    <property name="layoutManager.richTable.render" value="false"/>
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1" p:label="SubField 1"

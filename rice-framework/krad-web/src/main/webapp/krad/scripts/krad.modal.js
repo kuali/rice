@@ -78,16 +78,18 @@ function showDialog(dialogId, options) {
 }
 
 /**
- * The method that displays the dialog for edit line.
+ * Retrieve and display the modal dialog for edit line.
+ *
+ * <p>This method is triggered to display the line fields of a given line in a collection to be able
+ * to edit the values of the fields.</p>
+ *
+ * @param dialogId the id of the modal dialog
+ * @param collectionPath the path to the collection that the line being edited belongs to
+ * @param lineIndex the index of the line being edited
  *
  * @see showDialog
- *
- * @param dialogId
- * @param collectionPath
- * @param lineIndex
  */
 function showEditLineDialog(dialogId, collectionPath, lineIndex, options) {
-
     jQuery.ajaxSetup({
         cache: false
     });
@@ -102,22 +104,11 @@ function showEditLineDialog(dialogId, collectionPath, lineIndex, options) {
     }
 
     var $dialog = jQuery('#' + dialogId);
-
-    /*var placeholderSpan = '<span id="' + dialogId + '"class="' + kradVariables.CLASSES.PLACEHOLDER +
-            '" data-role="' + kradVariables.DATA_ROLES.PLACEHOLDER + '"></span>';
-
-    if ($dialog.length == 0) {
-        jQuery('#' + kradVariables.IDS.DIALOGS).append(placeholderSpan);
-    } else {
-        $dialog.contents().empty();
-        $dialog.replaceWith(placeholderSpan);
-    }*/
-
     retrieveComponent(dialogId, "retrieveEditLineDialog", function() {
         $dialog.bind(kradVariables.EVENTS.HIDDEN_MODAL, function (event) {
-            //$dialog.contents().empty();
             $dialog.remove();
         });
+
         showDialog(dialogId, additionalData);
     }, additionalData);
 }

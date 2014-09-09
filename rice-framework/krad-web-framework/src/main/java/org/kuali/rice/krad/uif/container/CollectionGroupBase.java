@@ -34,9 +34,7 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
-import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
@@ -49,7 +47,6 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.QuickFinder;
 import org.kuali.rice.krad.util.KRADUtils;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -256,25 +253,25 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
 
         // if its a edit line in dialog, then set the edit line dialog and edit line action if not supplied
-        if(editWithDialog) {
+        if (editWithDialog) {
 
             // initialize edit line dialog prototype if not set
-            if(editLineDialogPrototype == null) {
+            if (editLineDialogPrototype == null) {
                 editLineDialogPrototype = (DialogGroup) ComponentUtils.copy(ComponentFactory.
                         getNewComponentInstance(ComponentFactory.EDIT_LINE_DIALOG));
-            } else if(editLineDialogPrototype.getItems() != null && !editLineDialogPrototype.getItems().isEmpty()) {
+            } else if (editLineDialogPrototype.getItems() != null && !editLineDialogPrototype.getItems().isEmpty()) {
                 // set custom dialog flag
                 customEditLineDialog = true;
             }
 
             // initialize the edit line action prototype if not set
-            if(editWithDialogActionPrototype == null) {
+            if (editWithDialogActionPrototype == null) {
                 editWithDialogActionPrototype = (Action) ComponentUtils.copy(ComponentFactory.
                         getNewComponentInstance(ComponentFactory.EDIT_LINE_IN_DIALOG_ACTION));
             }
 
             // initialize the edit line dialog's save action prototype
-            if(editInDialogSaveActionPrototype == null) {
+            if (editInDialogSaveActionPrototype == null) {
                 editInDialogSaveActionPrototype = ComponentUtils.copy((Action) ComponentFactory.
                         getNewComponentInstance(ComponentFactory.EDIT_LINE_IN_DIALOG_SAVE_ACTION));
             }
@@ -427,34 +424,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         super.performFinalize(model, parent);
 
         addCollectionPostMetadata();
-
-        checkSubs((UifFormBase) model);
-    }
-
-    private void checkSubs(UifFormBase form) {
-        List<FieldGroup> subItems = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), FieldGroup.class);
-        for(FieldGroup fieldGroup : subItems) {
-            //List<CollectionGroup> collectionGroups = ViewLifecycleUtils.getElementsOfTypeDeep(
-                    //fieldGroup.getGroup().getItems(), CollectionGroup.class);
-            //for(CollectionGroup collectionGroup : collectionGroups) {
-            Group group = fieldGroup.getGroup();
-            if(group != null && group instanceof CollectionGroup) {
-                CollectionGroup collectionGroup = (CollectionGroup) group;
-                ComponentPostMetadata componentPostMetadata = form.getViewPostMetadata().getComponentPostMetadata(
-                        collectionGroup.getId());
-                if(componentPostMetadata != null) {
-                    componentPostMetadata.setDetachedComponent(true);
-                } else {
-                    componentPostMetadata = form.getViewPostMetadata().initializeComponentPostMetadata(collectionGroup.getId());
-                    ComponentPostMetadata componentPostMetadata1 = form.getViewPostMetadata().getComponentPostMetadata(getId());
-                    componentPostMetadata.setDetachedComponent(componentPostMetadata1.isDetachedComponent());
-                    componentPostMetadata.setData(componentPostMetadata1.getData());
-                    componentPostMetadata.setPath(componentPostMetadata1.getPath());
-                    componentPostMetadata.setPhasePathMapping(componentPostMetadata1.getPhasePathMapping());
-                    componentPostMetadata.setRefreshPathMappings(componentPostMetadata1.getRefreshPathMappings());
-                }
-            }
-        }
     }
 
     /**

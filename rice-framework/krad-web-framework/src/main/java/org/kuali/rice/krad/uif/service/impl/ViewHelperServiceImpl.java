@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.core.api.util.io.SerializationUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.data.DataObjectService;
@@ -367,8 +368,8 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         }
 
         // don't update the dialog object unless its null cause it means there are unsaved changes
-        if(((UifFormBase) model).getDialogDataObject() == null) {
-            ((UifFormBase) model).setDialogDataObject(CopyUtils.copy(dataObject));
+        if (((UifFormBase) model).getDialogDataObject() == null) {
+            ((UifFormBase) model).setDialogDataObject(SerializationUtils.deepCopy((Serializable) dataObject));
         }
     }
 
@@ -392,7 +393,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             Object editLine = ((List<Object>) collection).get(selectedLineIndex);
             Object dialogDataObject = ((UifFormBase) model).getDialogDataObject();
 
-            if(dialogDataObject != null) {
+            if (dialogDataObject != null) {
                 editLine = CopyUtils.copy(dialogDataObject);
                 ((UifFormBase) model).setDialogDataObject(null);
             }
@@ -623,7 +624,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
             // check if its edit line in dialog line action, and if it is we want to set the collection as
             // the dialog's parent and do not want further processing of the dialog object
-            if(collectionParentPath.equalsIgnoreCase(UifPropertyPaths.DIALOG_DATA_OBJECT)) {
+            if (collectionParentPath.equalsIgnoreCase(UifPropertyPaths.DIALOG_DATA_OBJECT)) {
                 ((UifFormBase) model).setDialogDataObject(parent);
                 return false;
             }

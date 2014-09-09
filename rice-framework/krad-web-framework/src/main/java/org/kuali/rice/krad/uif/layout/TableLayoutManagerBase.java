@@ -82,6 +82,7 @@ import java.util.TreeMap;
  */
 @BeanTag(name = "tableCollectionLayout-bean", parent = "Uif-TableCollectionLayout")
 public class TableLayoutManagerBase extends CollectionLayoutManagerBase implements TableLayoutManager {
+
     private static final long serialVersionUID = 3622267585541524208L;
 
     private int numberOfColumns;
@@ -175,7 +176,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
     @Override
     public void performInitialization(Object model) {
         CollectionGroup collectionGroup = (CollectionGroup) ViewLifecycle.getPhase().getElement();
-        
+
         if (Boolean.TRUE.equals(collectionGroup.getReadOnly())) {
             getAddLineGroup().setReadOnly(true);
             actionFieldPrototype.setReadOnly(true);
@@ -246,7 +247,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         setNumberOfColumns(totalColumns);
 
         // Default equal cell widths class
-        if (this.isApplyDefaultCellWidths() || Boolean.TRUE.equals(this.isAutoTruncateColumns())){
+        if (this.isApplyDefaultCellWidths() || Boolean.TRUE.equals(this.isAutoTruncateColumns())) {
             this.addStyleClass("uif-table-fixed");
         }
 
@@ -268,15 +269,12 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
         //set the js properties for rowGrouping on richTables
         if ((groupingPropertyNames != null || StringUtils.isNotBlank(this.getGroupingTitle())) && richTable != null) {
-            richTable.setGroupingOptionsJSString("{iGroupingColumnIndex: "
-                    + groupingColumnIndex
-                    + ", bGenerateGroupTotalRows:"
-                    + this.generateGroupTotalRows
-                    + ", bSetGroupingClassOnTR: true"
-                    + ", sGroupingClass: 'uif-groupRow'"
-                    + (this.getGroupingPrefix() != null ? ", sGroupLabelPrefix: '" + this.getGroupingPrefix() + "'" :
-                    "")
-                    + "}");
+            richTable.setGroupingOptionsJSString(
+                    "{iGroupingColumnIndex: " + groupingColumnIndex + ", bGenerateGroupTotalRows:"
+                            + this.generateGroupTotalRows + ", bSetGroupingClassOnTR: true"
+                            + ", sGroupingClass: 'uif-groupRow'" + (this.getGroupingPrefix() != null ?
+                            ", sGroupLabelPrefix: '" + this.getGroupingPrefix() + "'" : "") + "}"
+            );
         }
 
         // Calculate the number of pages for the pager widget if we are using server paging
@@ -297,21 +295,21 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         // set the refresh id of line actions of the sub-collections to the parent collection
         // and set the modal size to large if there is a sub-collection in the dialog
         List<FieldGroup> fieldGroups = ViewLifecycleUtils.getElementsOfTypeDeep(allRowFields, FieldGroup.class);
-        for(FieldGroup fieldGroup : fieldGroups) {
+        for (FieldGroup fieldGroup : fieldGroups) {
             Group group = fieldGroup.getGroup();
 
-            if(group != null) {
-                List<DialogGroup> dialogGroups = ViewLifecycleUtils.getElementsOfTypeDeep(
-                        group.getItems(), DialogGroup.class);
+            if (group != null) {
+                List<DialogGroup> dialogGroups = ViewLifecycleUtils.getElementsOfTypeDeep(group.getItems(),
+                        DialogGroup.class);
 
-                for(DialogGroup dialogGroup : dialogGroups) {
+                for (DialogGroup dialogGroup : dialogGroups) {
                     List<FieldGroup> fieldGroupsList = ViewLifecycleUtils.getElementsOfTypeDeep(dialogGroup.getItems(),
                             FieldGroup.class);
 
-                    for(FieldGroup fieldGroupItem : fieldGroupsList) {
+                    for (FieldGroup fieldGroupItem : fieldGroupsList) {
                         Group group1 = fieldGroupItem.getGroup();
 
-                        if(group1 != null && group1 instanceof CollectionGroup) {
+                        if (group1 != null && group1 instanceof CollectionGroup) {
                             // since we have a sub-collections set the dialog's css class to bootstrap's modal-lg
                             // overriding the default modal-sm set in the dialog group
                             dialogGroup.setDialogCssClass("modal-lg");
@@ -626,11 +624,12 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             this.firstRowFields = lineFields;
         }
 
-        boolean renderActions = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
+        boolean renderActions = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(
+                collectionGroup.getReadOnly());
         int extraColumns = 0;
         String rowCss = "";
-        boolean addLineInTable =
-                collectionGroup.isRenderAddLine() && !Boolean.TRUE.equals(collectionGroup.getReadOnly()) && !isSeparateAddLine();
+        boolean addLineInTable = collectionGroup.isRenderAddLine() && !Boolean.TRUE.equals(
+                collectionGroup.getReadOnly()) && !isSeparateAddLine();
 
         if (collectionGroup.isHighlightNewItems() && ((UifFormBase) lineBuilderContext.getModel())
                 .isAddedCollectionItem(currentLine)) {
@@ -654,7 +653,8 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         lineContext.put(UifConstants.ContextVariableNames.INDEX, Integer.valueOf(lineIndex));
         lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
         lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, isAddLine && !isSeparateAddLine());
-        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, Boolean.TRUE.equals(collectionGroup.getReadOnly()));
+        lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, Boolean.TRUE.equals(
+                collectionGroup.getReadOnly()));
 
         // conditionalRowCssClass generation logic, if applicable
         if (conditionalRowCssClasses != null && !conditionalRowCssClasses.isEmpty()) {
@@ -706,8 +706,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             addEnterKeyDataAttributeToGroup(getAddLineGroup(), lineContext, expressionEvaluator,
                     collectionGroup.getAddLineEnterKeyAction());
 
-            if (getAddLineGroup().getHeader() != null
-                    && StringUtils.isBlank(getAddLineGroup().getTitle())
+            if (getAddLineGroup().getHeader() != null && StringUtils.isBlank(getAddLineGroup().getTitle())
                     && StringUtils.isBlank(getAddLineGroup().getHeader().getHeaderText())) {
                 getAddLineGroup().getHeader().setHeaderText(collectionGroup.getAddLabel());
             }
@@ -791,7 +790,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
             ContextUtils.updateContextForLine(sequenceField, collectionGroup, currentLine, lineIndex, idSuffix);
             allRowFields.add(sequenceField);
-            
+
             extraColumns++;
 
             if (actionColumnIndex == 2 && renderActions) {
@@ -832,10 +831,8 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             // current lineField's colSpan.
             // Only insert if ActionField has to be placed at the end. Else the specification of actionColumnIndex should
             // take care of putting it in the right location
-            insertActionField = (cellPosition != 0 && lineFields.size() != numberOfDataColumns)
-                    && renderActions
-                    && renderActionsLast
-                    && ((cellPosition % numberOfDataColumns) == 0);
+            insertActionField = (cellPosition != 0 && lineFields.size() != numberOfDataColumns) && renderActions
+                    && renderActionsLast && ((cellPosition % numberOfDataColumns) == 0);
 
             cellPosition += lineField.getColSpan();
 
@@ -869,12 +866,10 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             //details action
             if (lineField instanceof FieldGroup && ((FieldGroup) lineField).getItems() != null) {
                 for (Component component : ((FieldGroup) lineField).getItems()) {
-                    if (component != null
-                            && component instanceof Action
-                            && (component.getDataAttributes() != null)
-                            && component.getDataAttributes().get("role") != null
-                            && component.getDataAttributes().get("role").equals("detailsLink")
-                            && StringUtils.isBlank(((Action) component).getActionScript())) {
+                    if (component != null && component instanceof Action && (component.getDataAttributes() != null)
+                            && component.getDataAttributes().get("role") != null && component.getDataAttributes().get(
+                            "role").equals("detailsLink") && StringUtils.isBlank(
+                            ((Action) component).getActionScript())) {
                         ((Action) component).setActionScript("rowDetailsActionHandler(this,'" + this.getId() + "');");
                     }
                 }
@@ -964,7 +959,8 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         // action fields, since they should span all rows for the line
         int rowCount = calculateNumberOfRows(lineFields);
 
-        boolean renderActions = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(collectionGroup.getReadOnly());
+        boolean renderActions = collectionGroup.isRenderLineActions() && !Boolean.TRUE.equals(
+                collectionGroup.getReadOnly());
 
         int extraColumns = 0;
 
@@ -1012,11 +1008,9 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             // current lineField's colSpan.
             // Only Insert if ActionField has to be placed at the end. Else the specification of actionColumnIndex
             // should take care of putting it in the right location
-            insertActionHeader = (cellPosition != 0
-                    && lineFields.size() != numberOfDataColumns
-                    && renderActions
-                    && renderActionsLast
-                    && ((cellPosition % numberOfDataColumns) == 0));
+            insertActionHeader =
+                    (cellPosition != 0 && lineFields.size() != numberOfDataColumns && renderActions && renderActionsLast
+                            && ((cellPosition % numberOfDataColumns) == 0));
 
             if (insertActionHeader) {
                 addActionHeader(rowCount, cellPosition);
@@ -1040,9 +1034,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Adds the action header
-     *
-     * @param rowCount
-     * @param cellPosition
      */
     protected void addActionHeader(int rowCount, int cellPosition) {
         getActionFieldPrototype().setLabelRendered(true);
@@ -1212,7 +1203,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         if (columnCalculations == null) {
             return Collections.emptyList();
         }
-        
+
         List<Component> components = new ArrayList<Component>(columnCalculations.size() * 3);
         for (ColumnCalculationInfo cInfo : columnCalculations) {
             components.add(cInfo.getTotalField());
@@ -1708,7 +1699,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         detailsFieldGroup.setReadOnly(collectionGroup.getReadOnly());
 
         // set the sub-collection field in the details to be read only if its an edit in dialog
-        if(collectionGroup.isEditWithDialog()) {
+        if (collectionGroup.isEditWithDialog()) {
             detailsFieldGroup.setReadOnly(true);
         }
 
@@ -1904,8 +1895,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
     public void setGroupingTitle(String groupingTitle) {
         if (groupingTitle != null && !groupingTitle.contains("@{")) {
             throw new RuntimeException("groupingTitle MUST contain a springEL expression to uniquely"
-                    + " identify a collection group (often related to some value of the line). "
-                    + "Value provided: "
+                    + " identify a collection group (often related to some value of the line). " + "Value provided: "
                     + this.getGroupingTitle());
         }
         this.groupingTitle = groupingTitle;
@@ -2024,8 +2014,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Set the header labels
-     *
-     * @param headerLabels
      */
     protected void setHeaderLabels(List<Label> headerLabels) {
         this.headerLabels = headerLabels;
@@ -2033,8 +2021,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Set the row fields
-     *
-     * @param allRowFields
      */
     protected void setAllRowFields(List<Field> allRowFields) {
         this.allRowFields = allRowFields;
@@ -2042,8 +2028,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Set the first row fields
-     *
-     * @param firstRowFields
      */
     protected void setFirstRowFields(List<Field> firstRowFields) {
         this.firstRowFields = firstRowFields;
@@ -2051,8 +2035,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Set flag of whether a header is added
-     *
-     * @param headerAdded
      */
     protected void setHeaderAdded(boolean headerAdded) {
         this.headerAdded = headerAdded;
@@ -2060,8 +2042,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Sets action column index
-     *
-     * @param actionColumnIndex
      */
     protected void setActionColumnIndex(int actionColumnIndex) {
         this.actionColumnIndex = actionColumnIndex;
@@ -2069,8 +2049,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Set grouping column index
-     *
-     * @param groupingColumnIndex
      */
     protected void setGroupingColumnIndex(int groupingColumnIndex) {
         this.groupingColumnIndex = groupingColumnIndex;
@@ -2078,8 +2056,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Set flag generate group total rows
-     *
-     * @param generateGroupTotalRows
      */
     protected void setGenerateGroupTotalRows(boolean generateGroupTotalRows) {
         this.generateGroupTotalRows = generateGroupTotalRows;
@@ -2087,8 +2063,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Set columns to calculate
-     *
-     * @param columnsToCalculate
      */
     protected void setColumnsToCalculate(List<String> columnsToCalculate) {
         this.columnsToCalculate = columnsToCalculate;
@@ -2096,8 +2070,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
 
     /**
      * Set footer calculation components
-     *
-     * @param footerCalculationComponents
      */
     protected void setFooterCalculationComponents(List<Component> footerCalculationComponents) {
         this.footerCalculationComponents = footerCalculationComponents;
@@ -2140,8 +2112,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
                 tracer.createError("If rowDetailsGroup is set richTable must be set and its render true",
                         currentValues);
             }
-
         }
     }
-
 }

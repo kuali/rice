@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.demo.uif.library.containers;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 
@@ -50,13 +51,20 @@ public class LibraryContainerCollectionGroupAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@id='Demo-CollectionGroup-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-disclosureContent']/div[2]/div/table");
         waitForElementPresentByXpath("//div[@id='Demo-CollectionGroup-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-disclosureContent']/div[2]/div[2]/table");
         waitForElementPresentByXpath("//div[@id='Demo-CollectionGroup-Example2']/div[@class='uif-verticalBoxLayout clearfix']/div/div[@class='uif-disclosureContent']/div[2]/div[3]/table");
-        
-     }
+    }
+    
+    protected void testLibraryContainerCollectionGroupTableLayoutReadOnly() throws Exception {
+        selectByName("exampleShown","Table Layout Readonly");
+        if(isElementPresentByXpath("//button[contains(text(),'Add Line')]")){
+        	JiraAwareFailureUtils.fail("Add Line present in readonly", this);
+        }
+    }
     
     @Test
     public void testContainerCollectionGroupBookmark() throws Exception {
         testLibraryContainerCollectionGroupTableLayout();
         testLibraryContainerCollectionGroupStackedLayout();
+        testLibraryContainerCollectionGroupTableLayoutReadOnly();
         passed();
     }
 
@@ -64,6 +72,7 @@ public class LibraryContainerCollectionGroupAft extends WebDriverLegacyITBase {
     public void testContainerCollectionGroupNav() throws Exception {
         testLibraryContainerCollectionGroupTableLayout();
         testLibraryContainerCollectionGroupStackedLayout();
+        testLibraryContainerCollectionGroupTableLayoutReadOnly();
         passed();
     }  
 }

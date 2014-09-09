@@ -31,7 +31,7 @@
   <properties>
     <web.launch.context.path>/krad-sampleapp</web.launch.context.path>
     <bootstrap.spring.file>classpath:KradSampleAppBeans.xml</bootstrap.spring.file>
-    <maven.surefire.skip>false</maven.surefire.skip>
+    <maven.surefire.skip>true</maven.surefire.skip>
     <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
     <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
     <!-- csv based JMeter tests result in one graph in Jenkins, we want a graph per test -->

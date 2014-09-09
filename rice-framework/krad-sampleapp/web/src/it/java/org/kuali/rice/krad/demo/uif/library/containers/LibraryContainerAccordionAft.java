@@ -50,7 +50,6 @@ public class LibraryContainerAccordionAft extends WebDriverLegacyITBase {
         assertElementPresentByXpath("//section[@id='Demo-AccordionGroup-SubList2' and @style='display: block;']");
         waitAndClickByLinkText("Accordion Item 2");
         assertElementPresentByXpath("//section[@id='Demo-AccordionGroup-SubList2' and @style='display: none;']");
-    
     }
     
     @Test

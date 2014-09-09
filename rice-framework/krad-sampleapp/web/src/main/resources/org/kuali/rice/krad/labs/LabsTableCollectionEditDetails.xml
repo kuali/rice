@@ -33,10 +33,6 @@
               <property name="layoutManager.generateAutoSequence" value="true"/>
               <property name="layoutManager.richTable.render" value="true"/>
               <property name="editWithDialog" value="true" />
-              <!--<property name="editWithDialogActionPrototype">-->
-                <!--<bean parent="Uif-EditLineInDialogAction" p:actionLabel="This Lab's Edit">-->
-                <!--</bean>-->
-              <!--</property>-->
               <property name="items">
                 <list>
                   <bean parent="Uif-DataField" p:label="Field 1" p:propertyName="field1"/>

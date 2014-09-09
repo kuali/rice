@@ -395,7 +395,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             Object dialogDataObject = ((UifFormBase) model).getDialogDataObject();
 
             if (dialogDataObject != null) {
-                editLine = CopyUtils.copy(dialogDataObject);
+                editLine = SerializationUtils.deepCopy((Serializable) dialogDataObject);
                 ((UifFormBase) model).setDialogDataObject(null);
             }
 

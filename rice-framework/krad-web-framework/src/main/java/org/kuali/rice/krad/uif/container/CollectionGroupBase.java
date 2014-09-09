@@ -414,7 +414,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
         actionScript = ScriptUtils.appendScript(addWithDialogAction.getActionScript(), actionScript);
         actionScript = ScriptUtils.appendScript(actionScript, ScriptUtils.buildFunctionCall(
-                UifConstants.JsFunctions.SHOW_DIALOG, dialogId));
+                UifConstants.JsFunctions.SHOW_DIALOG, dialogId, propertyName));
 
         addWithDialogAction.setActionScript(actionScript);
     }

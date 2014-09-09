@@ -163,7 +163,7 @@
     <orderEntry type="module" module-name="rice-location-web" />
     <orderEntry type="module" module-name="rice-edl-framework" />
     <orderEntry type="module" module-name="rice-krad-service-impl" />
-    <orderEntry type="library" name="Maven: org.codehaus.groovy:groovy-all:1.8.9" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.codehaus.groovy:groovy-all:1.8.9" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:3.1" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.web:jstl-impl:1.2" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet.jsp.jstl:jstl-api:1.2" level="project" />
@@ -188,6 +188,9 @@
     <orderEntry type="library" name="Maven: sslext:sslext:1.2-0" level="project" />
     <orderEntry type="module" module-name="rice-krms-impl" />
     <orderEntry type="module" module-name="rice-edl-impl" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.reflections:reflections:0.9.9-RC1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.mockito:mockito-core:1.9.5" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.objenesis:objenesis:1.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: mysql:mysql-connector-java:5.1.24" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.cxf:cxf-rt-transports-http-jetty:2.7.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.eclipse.jetty:jetty-server:8.1.15.v20140411" level="project" />

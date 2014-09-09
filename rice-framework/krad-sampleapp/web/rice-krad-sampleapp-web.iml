@@ -152,6 +152,11 @@
           <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/krad-servlet.xml</file>
           <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/kradguest-servlet.xml</file>
           <file>file://$MODULE_DIR$/src/main/webapp/WEB-INF/login-servlet.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsLayoutTestViews.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsLayoutTestViews.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsMaintenanceViews.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsMaintenanceViews.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/org/kuali/rice/krad/labs/LabsProposal.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -344,7 +349,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.sun:tools:1.7">
         <CLASSES>
-          <root url="jar:///usr/lib/jvm/java-7-oracle/lib/tools.jar!/" />
+          <root url="jar://C:/Java/jdk64/jdk1.7.0_60/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

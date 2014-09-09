@@ -72,7 +72,7 @@ public class WebDriverUtils {
     /**
      * http://localhost:8080/kr-dev
      */
-    public static final String DEFAULT_BASE_URL = "http://localhost:8080/kr-dev";
+    public static final String DEFAULT_BASE_URL = "http://localhost:8080/krad-dev";
 
     /**
      * http://localhost:8080/krad-dev

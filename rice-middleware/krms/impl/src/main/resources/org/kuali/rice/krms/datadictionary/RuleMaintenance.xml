@@ -533,19 +533,15 @@
       <bean parent="Uif-Message"/>
     </property>
     <property name="dataGroupPrototype">
-      <bean parent="Uif-HorizontalBoxGroup" p:style="float: right;"
-            p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}">
+      <bean parent="Uif-HorizontalBoxGroup" p:style="float: right;" p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}">
         <property name="items">
           <list>
-            <bean parent="Uif-ActionImage"
-                  p:actionScript="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
+            <bean parent="Uif-ActionImage" p:actionScript="ajaxCallPropositionTree('goToEditProposition', 'RuleEditorView-TreeGroup');">
               <property name="actionImage">
-                <bean parent="Uif-Image" p:source="../krms/images/edit.png"
-                      p:altText="Edit" p:cssClasses="actionReveal"/>
+                <bean parent="Uif-Image" p:source="../krms/images/edit.png" p:altText="Edit" p:cssClasses="actionReveal"/>
               </property>
             </bean>
-            <bean parent="Uif-InputField" p:propertyName="proposition.id"
-                  p:showLabel="false" p:label="id" p:maxLength="255">
+            <bean parent="Uif-InputField" p:propertyName="proposition.id" p:showLabel="false" p:maxLength="255">
               <property name="control">
                 <bean parent="Uif-HiddenControl" p:cssClasses="hiddenId"/>
               </property>
@@ -564,15 +560,15 @@
       <bean parent="Uif-HorizontalBoxGroup">
         <property name="items">
           <list>
-            <bean parent="Uif-InputField" p:propertyName="proposition.id"
-                  p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}"
-                  p:showLabel="false" p:label="id" p:maxLength="255">
+
+            <bean parent="Uif-InputField" p:propertyName="proposition.id" p:progressiveRender="@{#form.viewTypeName.toString() == 'MAINTENANCE'}" p:showLabel="false" p:maxLength="255">
               <property name="control">
-                <bean parent="Uif-HiddenControl" p:cssClasses="hiddenId"/>
+                <bean parent="Uif-HiddenControl" p:cssClasses="hiddenId" />
               </property>
             </bean>
+
             <bean parent="Uif-DataField" p:propertyName="proposition.parameterDisplayString"
-                  p:showLabel="false" p:label="id" p:cssClasses="parameterDisplayString">
+                  p:showLabel="false" p:cssClasses="parameterDisplayString">
             </bean>
 
             <bean parent="selectedNodeQuickActions"/>
@@ -594,8 +590,7 @@
           <list>
 
             <!-- Hidden ID field -->
-            <bean parent="Uif-InputField" p:propertyName="proposition.id"
-                  p:showLabel="false" p:label="id" p:maxLength="255">
+            <bean parent="Uif-InputField" p:propertyName="proposition.id" p:showLabel="false" p:maxLength="255">
               <property name="control">
                 <bean parent="Uif-HiddenControl" p:cssClasses="hiddenId"/>
               </property>
@@ -786,12 +781,12 @@
       <bean parent="Uif-HorizontalBoxGroup">
         <property name="items">
           <list>
-            <bean parent="Uif-InputField" p:propertyName="proposition.id"
-                  p:showLabel="false" p:label="id" p:maxLength="255">
+            <bean parent="Uif-InputField" p:propertyName="proposition.id" p:showLabel="false" p:maxLength="255">
               <property name="control">
                 <bean parent="Uif-HiddenControl" p:cssClasses="hiddenId"/>
               </property>
             </bean>
+
             <bean parent="Uif-InputField" p:propertyName="proposition.description" p:constraintText="size 100"
                   p:showLabel="false" p:label="description" p:maxLength="255" p:style="margin-left: 12pt">
               <property name="control">

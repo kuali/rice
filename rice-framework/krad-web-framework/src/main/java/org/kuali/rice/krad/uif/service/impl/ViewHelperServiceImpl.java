@@ -275,11 +275,6 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
             logAndThrowRuntime("Add line instance not found for path: " + addLineBindingInfo.getBindingPath());
         }
 
-        // Adding an empty list because this item does not need to be further processed, but needs to init
-        // a new add line
-        List<Object> lineDataObjects = new ArrayList<Object>();
-        model.getViewPostMetadata().getAddedCollectionObjects().put(collectionId, lineDataObjects);
-
         processAndAddLineObject(model, addLine, collectionId, collectionPath);
     }
 
@@ -305,6 +300,12 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         boolean isValidLine = performAddLineValidation(viewModel, newLine, collectionId, collectionPath);
         if (isValidLine) {
+
+            // Adding an empty list because this item does not need to be further processed, but needs to init
+            // a new add line
+            List<Object> lineDataObjects = new ArrayList<Object>();
+            viewModel.getViewPostMetadata().getAddedCollectionObjects().put(collectionId, lineDataObjects);
+
             int addedIndex = addLine(collection, newLine, addLinePlacement.equals("TOP"));
 
             // now link the added line, this is important in situations where perhaps the collection element is
@@ -460,7 +461,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param collection the collection of the lines of data
      * @return true if the action is allowed and the line should be removed, false if the line should not be removed
      */
-    private Object extractNewValuesAndAssign(String collectionPath, int selectedLineIndex, Map<String, String[]> parameters, List<Object> collection) {
+    protected Object extractNewValuesAndAssign(String collectionPath, int selectedLineIndex, Map<String, String[]> parameters, List<Object> collection) {
         String[] fieldList = new String[]{"field1", "field2", "field3", "field4", "field5", "field6"};
         Object saveLine = collection.get(selectedLineIndex);
         for(String field : fieldList){
@@ -494,7 +495,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      *
      * @param data the array of strings
      */
-    private String extractSingleValue(String[] data){
+    protected String extractSingleValue(String[] data){
         if (data == null) return null;
         if (data.length < 1) return null;
         return data[0];
@@ -683,7 +684,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param fieldConversions the map of field conversions to filter
      * @return a {@link java.util.Map} containing the filtered field conversions
      */
-    private Map<String, String> filterByReturnedFieldConversions(String multiValueReturnFields,
+    protected Map<String, String> filterByReturnedFieldConversions(String multiValueReturnFields,
             Map<String, String> fieldConversions) {
 
         Map <String, String> returnedFieldConversions = new HashMap<String, String>();
@@ -713,7 +714,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param duplicateLinePropertyNames property names to check for duplicates
      * @return true if there is a duplicate line, false otherwise
      */
-    private boolean containsDuplicateLine(Object addLine, Collection<Object> collectionItems,
+    protected boolean containsDuplicateLine(Object addLine, Collection<Object> collectionItems,
             List<String> duplicateLinePropertyNames) {
         if (collectionItems.isEmpty() || duplicateLinePropertyNames.isEmpty()) {
             return false;
@@ -737,7 +738,7 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
      * @param duplicateLinePropertyNames the property names to check for duplicates
      * @return true if {@code addLine} is a duplicate of {@code collectionItem}, false otherwise
      */
-    private boolean isDuplicateLine(Object addLine, Object collectionItem, List<String> duplicateLinePropertyNames) {
+    protected boolean isDuplicateLine(Object addLine, Object collectionItem, List<String> duplicateLinePropertyNames) {
         if (duplicateLinePropertyNames.isEmpty()) {
             return false;
         }

@@ -50,34 +50,34 @@ public class LabelSeparateModifier extends ComponentModifierBase {
 	 * {@inheritDoc}
 	 */
 	@Override
-    public void performModification(Object model, Component component) {
-        if ((component != null) && !(component instanceof Group)) {
-            throw new IllegalArgumentException(
-                    "Compare field initializer only support Group components, found type: " + component.getClass());
-        }
+	public void performModification(Object model, Component component) {
+		if ((component != null) && !(component instanceof Group)) {
+			throw new IllegalArgumentException("Compare field initializer only support Group components, found type: "
+					+ component.getClass());
+		}
 
-        if (component == null) {
-            return;
-        }
+		if (component == null) {
+			return;
+		}
 
-        // list that will be built
-        List<Component> groupFields = new ArrayList<Component>();
+		// list that will be built
+		List<Component> groupFields = new ArrayList<Component>();
 
-        Group group = (Group) component;
-        for (Component item : group.getItems()) {
-            //if (item.isRender()) {
-            if (item instanceof Field) {
-                Field field = (Field) item;
+		Group group = (Group) component;
+		for (Component item : group.getItems()) {
+			if (item instanceof Field) {
+				Field field = (Field) item;
 
-                // pull out label field
-                Label label = field.getFieldLabel();
-                if (label != null && label.isRender()) {
+				// pull out label field
+				Label label = field.getFieldLabel();
+                if (label != null && label.isRender())
                     synchronized (label) {
                         label.getLibraryCssClasses().clear();
                         label.addStyleClass("displayWith-" + field.getId());
                         if (!field.isRender() && StringUtils.isBlank(field.getProgressiveRender())) {
                             label.setRender(false);
-                        } else if (!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())) {
+                        }
+                        else if (!field.isRender() && StringUtils.isNotBlank(field.getProgressiveRender())) {
                             label.setRender(true);
                             String prefixStyle = "";
                             if (StringUtils.isNotBlank(label.getStyle())) {
@@ -92,16 +92,14 @@ public class LabelSeparateModifier extends ComponentModifierBase {
                         // rendered with the attribute
                         field.setLabelRendered(true);
                     }
-                }
-            }
+			}
 
-            groupFields.add(item);
-            //}
-        }
+			groupFields.add(item);
+		}
 
-        // update group
-        group.setItems(groupFields);
-    }
+		// update group
+		group.setItems(groupFields);
+	}
 
 	/**
 	 * {@inheritDoc}

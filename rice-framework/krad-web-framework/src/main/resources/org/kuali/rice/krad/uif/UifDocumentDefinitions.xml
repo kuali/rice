@@ -88,9 +88,24 @@
       <list>
         <bean parent="Uif-DocumentNumber"/>
         <bean parent="Uif-DocumentStatus"/>
-        <!--bean parent="Uif-DocumentTemplateNumber"/-->
         <bean parent="Uif-DocumentInitiatorNetworkId"/>
         <bean parent="Uif-DocumentCreateDate"/>
+      </list>
+    </property>
+    <property name="propertyReplacers">
+      <list>
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items"
+              p:condition="@{document.documentHeader.documentTemplateNumber != null}">
+          <property name="replacement">
+            <list>
+              <bean parent="Uif-DocumentNumber"/>
+              <bean parent="Uif-DocumentStatus"/>
+              <bean parent="Uif-DocumentTemplateNumber"/>
+              <bean parent="Uif-DocumentInitiatorNetworkId"/>
+              <bean parent="Uif-DocumentCreateDate"/>
+            </list>
+          </property>
+        </bean>
       </list>
     </property>
     <property name="layoutManager">
@@ -504,8 +519,7 @@
   </bean>
 
   <bean id="Uif-DocumentTemplateNumber" parent="Uif-InputField" p:propertyName="documentHeader.documentTemplateNumber"
-        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader"
-        p:render="@{document.documentHeader.documentTemplateNumber == null ? false : true}">
+        p:dictionaryObjectEntry="org.kuali.rice.krad.bo.DocumentHeader">
     <property name="cssClasses">
       <list merge="true">
         <value>uif-documentTemplateNumber</value>

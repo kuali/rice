@@ -292,6 +292,27 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
      */
     @Override
     public ModelAndView blanketApprove(DocumentFormBase form) {
+        Document document = form.getDocument();
+        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
+
+        //disable blanket approve if adhoc route completion exists
+        List<AdHocRouteRecipient> adHocRecipients = new ArrayList<AdHocRouteRecipient>();
+        adHocRecipients.addAll(document.getAdHocRoutePersons());
+        adHocRecipients.addAll(document.getAdHocRouteWorkgroups());
+
+        //check for ad hoc completion request
+        for (AdHocRouteRecipient adHocRouteRecipient : adHocRecipients) {
+            String actionRequestedCode = adHocRouteRecipient.getActionRequested();
+
+            //add error and send back
+            if (KewApiConstants.ACTION_REQUEST_COMPLETE_REQ.equals(actionRequestedCode)) {
+                GlobalVariables.getMessageMap().putError(KRADConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME,
+                        RiceKeyConstants.ERROR_ADHOC_COMPLETE_BLANKET_APPROVE_NOT_ALLOWED);
+
+                return getModelAndViewService().getModelAndView(form);
+            }
+        }
+
         performWorkflowAction(form, UifConstants.WorkflowAction.BLANKETAPPROVE);
 
         if (GlobalVariables.getMessageMap().hasErrors()) {

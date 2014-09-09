@@ -152,15 +152,43 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {
             jiraAwareFail("BlanketApprove was not successful. subsidizedPercent should be 42");
         }
-        waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
+        waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit" + RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndClickBlanketApprove();
         waitAndClickConfirmBlanketApproveOk();
- // waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
+        // waitAndClickByXpath("/html/body/form/div/div[2]/main/div/section[1]/div/div/div[2]/button[2]");
         acceptAlertIfPresent();
 
     }
 
+    protected void testTravelAccountMaintenanceEditBlanketApproveAdHocComplete() throws Exception {
+        waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit" + RandomStringUtils.randomAlphabetic(2));
+
+        //add add hoc user with complete action
+        waitAndClickByLinkText("Ad Hoc Recipients");
+        waitAndSelectByName("newCollectionLines['document.adHocRoutePersons'].actionRequested", "COMPLETE");
+        waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", "dev1");
+        waitAndClickById("Uif-AdHocPersonCollection_add");
+
+        //verify blanket approve fails with correct message
+        waitAndClickBlanketApprove();
+        waitAndClickConfirmBlanketApproveOk();
+        waitForTextPresent("Blanket Approve cannot be performed when adhoc route for completion request is newly added");
+
+        //remove add hoc user
+        waitAndClickById("Uif-AdHocPersonCollection_del_line0");
+
+        //add add hoc group with complete action
+        waitAndSelectByName("newCollectionLines['document.adHocRouteWorkgroups'].actionRequested", "COMPLETE");
+        waitAndTypeByName("newCollectionLines['document.adHocRouteWorkgroups'].recipientName", "Kuali Developers");
+        waitAndClickById("CollectionGroup_AdHocWorkgroup_add");
+        waitAndClickBlanketApprove();
+
+        //verify blanket approve fails with correct message
+        waitAndClickBlanketApprove();
+        waitAndClickConfirmBlanketApproveOk();
+        waitForTextPresent("Blanket Approve cannot be performed when adhoc route for completion request is newly added");
+    }
 
     protected void testTravelAccountMaintenanceEditXss() throws Exception {
         waitAndTypeByName(DESCRIPTION_FIELD,"\"/><script>alert('!')</script>");
@@ -290,7 +318,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         testTravelAccountMaintenanceEditXss();
         passed();
     }
-    
+
     @Test
     public void testDemoTravelAccountMaintenanceEditFiscalOfficerBookmark() throws Exception {
     	testEditFiscalOfficer();
@@ -313,5 +341,14 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         testSubAccountOperations();
         passed();
     }
-
+    @Test
+    public void testTravelAccountMaintenanceEditBlanketApproveAdHocCompleteBookmark() throws Exception {
+        testTravelAccountMaintenanceEditBlanketApproveAdHocComplete();
+        passed();
+    }
+    @Test
+    public void testTravelAccountMaintenanceEditBlanketApproveAdHocCompleteNav() throws Exception {
+        testTravelAccountMaintenanceEditBlanketApproveAdHocComplete();
+        passed();
+    }
 }

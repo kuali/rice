@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.krad.uif.view;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.doctype.DocumentType;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -27,6 +30,7 @@ import org.kuali.rice.krad.document.DocumentViewPresentationControllerBase;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.util.KRADConstants;
 
 /**
@@ -61,6 +65,7 @@ public class DocumentView extends FormView {
      *
      * <ul>
      * <li>Retrieve the document entry</li>
+     * <li>Makes sure that the header is set.</li>
      * <li>Set up the document view authorizer and presentation controller</li>
      * </ul>
      *
@@ -73,6 +78,14 @@ public class DocumentView extends FormView {
         // get document entry
         DocumentEntry documentEntry = getDocumentEntryForView();
         pushObjectToContext(UifConstants.ContextVariableNames.DOCUMENT_ENTRY, documentEntry);
+
+        // default document type on the header
+        String documentTypeName = documentEntry.getDocumentTypeName();
+        DocumentType documentType = KewApiServiceLocator.getDocumentTypeService().getDocumentTypeByName(documentTypeName);
+
+        if (getHeader() != null && StringUtils.isBlank(getHeaderText())) {
+            setHeaderText(documentType.getLabel());
+        }
 
         // setup authorizer and presentation controller using the configured authorizer and pc for document
         if (getAuthorizer() == null) {

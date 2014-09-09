@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kim.api.identity.Person;
-import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
@@ -30,8 +29,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.form.TransactionalDocumentFormBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-
-import java.util.Map;
 
 /**
  * View type for Transactional documents.
@@ -55,21 +52,14 @@ public class TransactionalDocumentView extends DocumentView {
      * {@inheritDoc}
      *
      * <p>
-     * Makes sure that the header is set.  Locks the document if pessimistic locking is turned on.
+     * Locks the document if pessimistic locking is turned on.
      * </p>
      */
     @Override
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        Map<String, Object> context = getContext();
-        DocumentEntry documentEntry = (DocumentEntry) context.get(UifConstants.ContextVariableNames.DOCUMENT_ENTRY);
-
-        if (this.getHeader() != null && this.getHeaderText().length() == 0) {
-            this.setHeaderText(documentEntry.getDocumentTypeName());
-        }
-        
-        if (documentEntry.getUsePessimisticLocking()) {
+        if (getDocumentEntryForView().getUsePessimisticLocking()) {
             TransactionalDocumentFormBase form = (TransactionalDocumentFormBase) model;
 
             generatePessimisticLockMessages(form);

@@ -87,7 +87,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         } else {
             ActionRequestValue actionRequest = context.getActionRequestFactory().addRootActionRequest(
                     context.getActionRequested().getCode(), member.getPriority(), toRecipient(member), "",
-                    member.getResponsibilityId(), member.isForceAction(), getActionRequestPolicyCode(member), null);
+                    member.getResponsibilityId(), member.getForceAction(), getActionRequestPolicyCode(member), null);
 
             if (actionRequest != null) {
                 memberRequests.add(actionRequest);
@@ -169,7 +169,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         if (!CollectionUtils.isEmpty(memberships)) {
             roleMemberRequest = context.getActionRequestFactory().addKimRoleRequest(
                     context.getActionRequested().getCode(), member.getPriority(), role, memberships, null,
-                    member.getResponsibilityId(), member.isForceAction(), actionRequestPolicyCode, null, ignoreKimDelegates);
+                    member.getResponsibilityId(), member.getForceAction(), actionRequestPolicyCode, null, ignoreKimDelegates);
         }
 
         return roleMemberRequest;
@@ -229,7 +229,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         String delegationAnnotation = generateDelegationAnnotation(memberRequest, member, delegate);
 
         context.getActionRequestFactory().addDelegationRequest(memberRequest, recipient,
-                delegate.getResponsibilityId(), member.isForceAction(),
+                delegate.getResponsibilityId(), member.getForceAction(),
                 delegate.getDelegationType(), delegationAnnotation, null);
     }
 
@@ -337,7 +337,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
         if (!CollectionUtils.isEmpty(memberships)) {
             context.getActionRequestFactory().addDelegateKimRoleRequest(parentRequest,
                     delegate.getDelegationType(), context.getActionRequested().getCode(), member.getPriority(), role,
-                    memberships, null, delegate.getResponsibilityId(), member.isForceAction(), actionRequestPolicyCode, null);
+                    memberships, null, delegate.getResponsibilityId(), member.getForceAction(), actionRequestPolicyCode, null);
         }
     }
 

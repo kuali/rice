@@ -68,7 +68,8 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         MDC.put("docId", documentId);
 
         try {
-            RouteContext context = RouteContext.createNewRouteContext();
+            RouteContext context = RouteContext.getCurrentRouteContextByDocumentId(documentId);
+
             KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
             if ( LOG.isInfoEnabled() ) {
             	LOG.info("Processing document for Blanket Approval: " + documentId + " : " + nodeInstanceId);
@@ -253,6 +254,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             }
         }
         if (notifyContext != null && !requestsToNotify.isEmpty()) {
+
         	ActionRequestFactory arFactory = new ActionRequestFactory(RouteContext.getCurrentRouteContext().getDocument(), nodeInstance);
         	KimPrincipalRecipient delegatorRecipient = null;
         	if (actionTaken.getDelegatorPrincipal() != null) {

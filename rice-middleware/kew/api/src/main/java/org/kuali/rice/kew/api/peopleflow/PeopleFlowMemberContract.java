@@ -75,6 +75,6 @@ public interface PeopleFlowMemberContract {
      *
      * @return true if Force Action is specified
      */
-    Boolean isForceAction();
+    Boolean getForceAction();
 
 }

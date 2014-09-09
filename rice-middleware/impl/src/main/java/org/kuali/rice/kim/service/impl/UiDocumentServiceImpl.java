@@ -2377,7 +2377,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entRoleRspAction.setActionTypeCode(roleRspAction.getActionTypeCode());
 					entRoleRspAction.setPriorityNumber(roleRspAction.getPriorityNumber());
 					entRoleRspAction.setRoleMemberId(roleRspAction.getRoleMemberId());
-					entRoleRspAction.setForceAction(roleRspAction.isForceAction());
+					entRoleRspAction.setForceAction(roleRspAction.getForceAction());
 					entRoleRspAction.setRoleResponsibilityId(roleRspAction.getRoleResponsibilityId());
 					List<RoleResponsibilityActionBo> actions = getRoleRspActions(roleMember.getRoleMemberId());
 					if(ObjectUtils.isNotNull(actions)){

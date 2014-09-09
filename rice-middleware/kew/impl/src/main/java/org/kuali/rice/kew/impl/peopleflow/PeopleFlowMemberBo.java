@@ -177,7 +177,7 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
         this.delegates = delegates;
     }
 
-    public Boolean isForceAction() {
+    public Boolean getForceAction() {
         return forceAction;
     }
 
@@ -320,7 +320,7 @@ public class PeopleFlowMemberBo implements Serializable, PeopleFlowMemberContrac
             memberBo.getDelegates().add(PeopleFlowDelegateBo.from(delegate, memberBo));
         }
 
-        memberBo.setForceAction(member.isForceAction());
+        memberBo.setForceAction(member.getForceAction());
 
         return memberBo;
     }

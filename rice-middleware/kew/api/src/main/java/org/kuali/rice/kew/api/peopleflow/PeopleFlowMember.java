@@ -99,7 +99,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         this.responsibilityId = builder.getResponsibilityId();
         this.priority = builder.getPriority();
         this.delegates = ModelObjectUtils.buildImmutableCopy(builder.getDelegates());
-        this.forceAction = builder.isForceAction();
+        this.forceAction = builder.getForceAction();
     }
 
     @Override
@@ -133,7 +133,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
     }
 
     @Override
-    public Boolean isForceAction() {
+    public Boolean getForceAction() {
         return forceAction;
     }
 
@@ -184,7 +184,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
                 }
             }
 
-            builder.setForceAction(contract.isForceAction());
+            builder.setForceAction(contract.getForceAction());
 
             return builder;
         }
@@ -224,7 +224,7 @@ public final class PeopleFlowMember extends AbstractDataTransferObject implement
         }
 
         @Override
-        public Boolean isForceAction() { return forceAction; }
+        public Boolean getForceAction() { return forceAction; }
 
         public void setMemberId(String memberId) {
             if (StringUtils.isBlank(memberId)) {

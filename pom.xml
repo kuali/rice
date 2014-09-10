@@ -189,7 +189,7 @@
     <velocity.tools.version>2.0</velocity.tools.version>
     <wss4j.version>1.6.16</wss4j.version>
     <xalan.version>2.7.2</xalan.version>
-    <xapool.version>1.5.0-patch4</xapool.version>
+    <xapool.version>1.5.0-patch6</xapool.version>
     <xercesImpl.version>2.11.0</xercesImpl.version>
     <!-- need v. 1.4.01 of xml-apis with xercesImpl 2.11.0 -->
     <xml-apis.version>1.4.01</xml-apis.version>

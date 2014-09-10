@@ -69,7 +69,7 @@ public class UifConstants {
     public static final String REQUIRED_INDICATOR_ID = "Uif-RequiredIndicator";
     public static final String REQUIRED_NEXT_STATE_INDICATOR_ID = "Uif-RequiredIndicator-ForNextState";
     public static final String REFERER = "Referer";
-    public static final String NO_RETURN = "NO_RETURN";
+    public static final String NO_RETURN = "";
 
     public static final String EXPORT_FILE_NAME = "export.xml";
     public static final String KUALI_FORM_ATTR = "KualiForm";

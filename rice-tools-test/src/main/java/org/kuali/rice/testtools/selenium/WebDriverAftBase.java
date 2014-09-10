@@ -1792,19 +1792,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void waitIsVisible(By by) throws InterruptedException {
-        driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
-        isVisible(by);
-        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-
-        //        for (int second = 0;; second++) {
-        //            if (second >= waitSeconds) {
-        //                jiraAwareFail(TIMEOUT_MESSAGE + " " + by.toString());
-        //            }
-        //            if (isVisible(by)) {
-        //                break;
-        //            }
-        //            Thread.sleep(1000);
-        //        }
+        waitIsVisible(by, this.getClass().getSimpleName());
     }
 
     protected void waitIsVisible(By by, String message) throws InterruptedException {
@@ -1816,6 +1804,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
                 break;
             }
             Thread.sleep(1000);
+        }
+
+        if (!isVisible(by)) {
+            jiraAwareFail(by.toString() + " not visiable", message);
         }
     }
 

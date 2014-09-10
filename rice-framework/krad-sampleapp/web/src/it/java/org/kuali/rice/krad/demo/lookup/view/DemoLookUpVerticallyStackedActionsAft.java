@@ -66,30 +66,30 @@ public class DemoLookUpVerticallyStackedActionsAft extends ViewDemoAftBase {
 
     protected void testLookUpVerticallyStackedActions() throws InterruptedException {
     	//Search By Number 
-    	waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER,"A139638996");
+    	waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER,"a1");
     	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
-    	waitForElementPresentByXpath("//a[contains(text(),'A139638996')]");
+        waitForProgressLoading();
     	assertVerticallyStackedActions();
     	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
-    	
+
+        //Search By Fiscal Officer
+        waitAndTypeByName(PRINCIPAL_NAME,"fran");
+        waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitForProgressLoading();
+        assertVerticallyStackedActions();
+        waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
+
     	//Search By Name
-    	waitAndTypeByName(TRAVEL_ACCOUNT_NAME,"A1396389962525av");
+    	waitAndTypeByName(TRAVEL_ACCOUNT_NAME,"Travel Account 3");
     	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
-    	waitForTextPresent("A1396389962525av");
-    	assertVerticallyStackedActions();
-    	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
-    	
-    	//Search By Fiscal Officer
-    	waitAndTypeByName(PRINCIPAL_NAME,"fran");
-    	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
-    	waitForTextPresent("fran");
+        waitForProgressLoading();
     	assertVerticallyStackedActions();
     	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
     }
     
     private void assertVerticallyStackedActions() throws InterruptedException{
-    	waitForElementPresentByXpath("//a[contains(text(),'edit') and @class='uif-link uif-boxLayoutVerticalItem clearfix']");
-    	waitForElementPresentByXpath("//a[contains(text(),'copy') and @class='uif-link uif-boxLayoutVerticalItem clearfix']");
+    	waitIsVisibleByXpath("//a[contains(text(),'edit') and @class='uif-link uif-boxLayoutVerticalItem pull-left clearfix']");
+        assertTrue(isVisibleByXpath("//a[contains(text(),'copy') and @class='uif-link uif-boxLayoutVerticalItem pull-left clearfix']"));
     }
 
     @Test

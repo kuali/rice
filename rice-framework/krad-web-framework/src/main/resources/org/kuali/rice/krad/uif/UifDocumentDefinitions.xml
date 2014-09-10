@@ -205,15 +205,20 @@
               p:label="Attachment Type"
               p:readOnly="@{!#isAddLine}"
               p:render="@{#DocumentEntry.allowsNoteAttachments and #DocumentEntry.attachmentTypesValuesFinderClass != null}">
-          <property name="control">
-            <bean parent="Uif-DropdownControl"/>
-          </property>
-          <property name="optionsFinder">
-            <bean class="org.kuali.rice.krad.demo.travel.options.AttachmentTypeCodeKeyValues" p:blankOption="true"/>
-          </property>
+            <!--
+            <property name="control">
+              <bean parent="Uif-DropdownControl"/>
+            </property>
+
+            <property name="optionsFinder">
+              <bean class="org.kuali.rice.krad.demo.travel.options.AttachmentTypeCodeKeyValues" p:blankOption="true"/>
+            </property>
+            -->
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="adHocRouteRecipient.id" p:readOnly="@{!#isAddLine}"
-              p:render="@{#DocumentEntry.allowsNoteAttachments and #DocumentEntry.attachmentTypesValuesFinderClass != null}"/>
+        <bean parent="Uif-InputField" p:propertyName="adHocRouteRecipient.id"
+              p:label="Notification Recipient"
+              p:readOnly="@{!#isAddLine}"
+              p:render="@{#DocumentEntry.allowsNoteFYI}"/>
       </list>
     </property>
     <property name="bindingInfo.bindingObjectPath" value="document"/>

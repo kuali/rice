@@ -131,7 +131,8 @@
   </bean>
 
   <bean id="Uif-DocumentNotesSection" parent="Uif-Disclosure-TableCollectionSection"
-        p:layoutManager.suppressLineWrapping="true">
+        p:layoutManager.suppressLineWrapping="true"
+        p:render="@{#view.authorizer.canViewNoteAttachment(document, null, #userSession.getPerson())}">
     <property name="headerText"
               value="Notes @{#DocumentEntry.allowsNoteAttachments ? 'and Attachments' : ''} (@{document.notes.size()})"/>
     <property name="propertyName" value="notes"/>
@@ -171,6 +172,7 @@
                 <property name="replacement">
                   <list>
                     <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="downloadAttachment"
+                          p:render="@{#view.authorizer.canViewNoteAttachment(document, #line.attachment?.attachmentTypeCode, #userSession.getPerson())}"
                           p:ajaxSubmit="false"
                           p:actionLabel="Download Attachment" p:title="Download Attachment"
                           p:disableBlocking="true"
@@ -199,10 +201,19 @@
           </property>
         </bean>
         <!-- TODO: field needs translation to options label when read-only -->
-        <bean parent="Uif-InputField" p:propertyName="attachment.attachmentTypeCode"
-              p:render="@{#DocumentEntry.allowsNoteAttachments and #DocumentEntry.attachmentTypesValuesFinderClass != null}"/>
+        <bean parent="Uif-InputField" p:propertyName="attachment.attachmentTypeCode" p:width="auto"
+              p:label="Attachment Type"
+              p:readOnly="@{!#isAddLine}"
+              p:render="@{#DocumentEntry.allowsNoteAttachments and #DocumentEntry.attachmentTypesValuesFinderClass != null}">
+          <property name="control">
+            <bean parent="Uif-DropdownControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.travel.options.AttachmentTypeCodeKeyValues" p:blankOption="true"/>
+          </property>
+        </bean>
         <bean parent="Uif-InputField" p:propertyName="adHocRouteRecipient.id" p:readOnly="@{!#isAddLine}"
-              p:render="@{#DocumentEntry.allowsNoteFYI and #actionFlags[#Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}"/>
+              p:render="@{#DocumentEntry.allowsNoteAttachments and #DocumentEntry.attachmentTypesValuesFinderClass != null}"/>
       </list>
     </property>
     <property name="bindingInfo.bindingObjectPath" value="document"/>

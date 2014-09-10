@@ -129,7 +129,7 @@
         DOC_TYP_DESC="Parent Document Type for all Rice Documents"
         DOC_TYP_ID="2681" DOC_TYP_NM="RiceDocument" DOC_TYP_VER_NBR="0"
         LBL="Rice Document" OBJ_ID="6166CBA1BA82644DE0404F8189D86C09"
-        PARNT_ID="2680" RTE_VER_NBR="2" VER_NBR="44"/>
+        PARNT_ID="2680" RTE_VER_NBR="2" VER_NBR="45"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${application.url}/travelDocument2.do?methodToCall=docHandler"
         DOC_TYP_DESC="Create a New Travel Request" DOC_TYP_ID="2683"
@@ -342,7 +342,7 @@
         OBJ_ID="57e7ee1d-e44a-4154-9ba4-ee562c434c98" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
-    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
+    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="0"
         DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
         DOC_TYP_DESC="Create a New Travel Account Maintenance Document"
         DOC_TYP_ID="3006" DOC_TYP_NM="TravelAccountMaintenanceDocument"
@@ -350,7 +350,7 @@
         LBL="Travel Account Maintenance Document"
         OBJ_ID="0b89a795-8079-460a-b456-39c5c477938b" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
-        PREV_DOC_TYP_VER_NBR="2029" RTE_VER_NBR="2" VER_NBR="1"/>
+        PREV_DOC_TYP_VER_NBR="2029" RTE_VER_NBR="2" VER_NBR="2"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="0"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
         DOC_TYP_DESC="Create/edit a component" DOC_TYP_ID="3007"
@@ -386,7 +386,7 @@
         DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#campus"
         LBL="CampusMaintenanceDocument"
-        OBJ_ID="afd31a43-5259-464a-afab-e32812019e84" PARNT_ID="2681"
+        OBJ_ID="372c1527-dc5a-43c2-9dbf-f82e55b7687c" PARNT_ID="2681"
         PREV_DOC_TYP_VER_NBR="2708" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
@@ -394,7 +394,7 @@
         DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#campus_type"
         LBL="CampusTypeMaintenanceDocument"
-        OBJ_ID="17141731-395b-4c98-bedd-3472d1820d0f" PARNT_ID="2681"
+        OBJ_ID="ae4c5adc-0846-41ad-b769-704b2ce2b074" PARNT_ID="2681"
         PREV_DOC_TYP_VER_NBR="2709" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
@@ -403,7 +403,7 @@
         GRP_ID="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#parameter_component"
         LBL="Component Maintenance Document"
-        OBJ_ID="85fd8960-98e6-45ab-9ef3-10d14a9d2996" PARNT_ID="2681"
+        OBJ_ID="844c3c16-b98c-40b9-8936-e2d9d8f07c8b" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="3007" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -412,7 +412,7 @@
         DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#country"
         LBL="CountryMaintenanceDocument"
-        OBJ_ID="ca4db54d-f9b1-466f-a7cd-f8d93cd86476" PARNT_ID="2681"
+        OBJ_ID="a345366d-91d2-4f72-ab97-99454041e0de" PARNT_ID="2681"
         PREV_DOC_TYP_VER_NBR="2710" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
@@ -420,7 +420,7 @@
         DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#county"
         LBL="CountyMaintenanceDocument"
-        OBJ_ID="e87dc865-026a-40c8-9066-3f5a6b23e372" PARNT_ID="2681"
+        OBJ_ID="3f2b7016-8b82-4d3e-b775-8fdbb171f0dc" PARNT_ID="2681"
         PREV_DOC_TYP_VER_NBR="2711" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
@@ -429,7 +429,7 @@
         DOC_TYP_VER_NBR="1" GRP_ID="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#document_type"
         LBL="Workflow Maintenance Document Type Document"
-        OBJ_ID="0dd901d9-523a-4b73-bf96-26fada394a63" PARNT_ID="2681"
+        OBJ_ID="a149e456-2bf0-4283-96a0-e0149cc98536" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="2011" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
@@ -438,7 +438,7 @@
         DOC_TYP_ID="3016" DOC_TYP_NM="NamespaceMaintenanceDocument"
         DOC_TYP_VER_NBR="1" GRP_ID="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#namespace"
-        LBL="Namespace" OBJ_ID="92063399-923c-4911-8574-d2b1e760fcc3"
+        LBL="Namespace" OBJ_ID="a8b679b2-f2b8-44c8-a345-e774a710f5bb"
         PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="2031" RTE_VER_NBR="2" VER_NBR="1"/>
@@ -450,7 +450,7 @@
         DOC_TYP_VER_NBR="1" GRP_ID="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#parameter_component"
         LBL="Parameter Detail Type Maintenance Document"
-        OBJ_ID="a4c0c6e8-dab4-4d05-b040-191116352cb8" PARNT_ID="2681"
+        OBJ_ID="cdfcf934-3518-4f2e-86bb-535b12aaac29" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="2033" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
@@ -460,7 +460,7 @@
         GRP_ID="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#parameter"
         LBL="Parameter Maintenance Document"
-        OBJ_ID="af537dd6-a6f8-45b8-9c3d-c462ee7d5be4" PARNT_ID="2681"
+        OBJ_ID="4332182a-58ad-4543-9e42-e560a0d3a16d" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="2034" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
@@ -470,7 +470,7 @@
         DOC_TYP_VER_NBR="1" GRP_ID="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#parameter_type"
         LBL="Parameter Type Maintenance Document"
-        OBJ_ID="616d65b1-5b44-481f-8921-a415514305fa" PARNT_ID="2681"
+        OBJ_ID="86cef961-6ced-457c-ae44-257ed9d05028" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="2032" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -479,7 +479,7 @@
         DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#postal_code"
         LBL="PostalCodeMaintenanceDocument"
-        OBJ_ID="bbf8bcde-298c-49d7-bb9a-332795757174" PARNT_ID="2681"
+        OBJ_ID="0beb998e-be28-4cbf-95b5-476b90f6f53f" PARNT_ID="2681"
         PREV_DOC_TYP_VER_NBR="2712" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
@@ -487,7 +487,7 @@
         DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#state"
         LBL="StateMaintenanceDocument"
-        OBJ_ID="8b7ce563-efdf-4d0f-84ec-1fedea947775" PARNT_ID="2681"
+        OBJ_ID="bbb816a7-46c2-4167-aaa0-cdfe95b8ea20" PARNT_ID="2681"
         PREV_DOC_TYP_VER_NBR="2713" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
@@ -495,21 +495,21 @@
         DOC_TYP_NM="IdentityManagementGenericPermissionMaintenanceDocument"
         DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#permission"
-        LBL="Permission" OBJ_ID="f15d1843-9940-49a6-8608-b1e1e0be6de6"
+        LBL="Permission" OBJ_ID="59cc3191-58e4-4714-89f3-5ff2bb7e6e4a"
         PARNT_ID="2994" PREV_DOC_TYP_VER_NBR="2999" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kim.url}/identityManagementGroupDocument.do?methodToCall=docHandler"
         DOC_TYP_ID="3023" DOC_TYP_NM="IdentityManagementGroupDocument"
         DOC_TYP_VER_NBR="2"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#group"
-        LBL="Group" OBJ_ID="e6c11384-b5ee-4134-a7a8-ff29b7b67db9"
+        LBL="Group" OBJ_ID="e622f211-33e1-4745-b6f4-c9c1bd7e196e"
         PARNT_ID="2994" PREV_DOC_TYP_VER_NBR="2996" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kim.url}/identityManagementPersonDocument.do?methodToCall=docHandler"
         DOC_TYP_ID="3024" DOC_TYP_NM="IdentityManagementPersonDocument"
         DOC_TYP_VER_NBR="2"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#person"
-        LBL="Person" OBJ_ID="c4436830-ed2b-47f4-b393-1a8bd0e97828"
+        LBL="Person" OBJ_ID="242bbb49-937d-4139-b748-136608b9c712"
         PARNT_ID="2994" PREV_DOC_TYP_VER_NBR="2997" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kr.url}/maintenance.do?methodToCall=docHandler"
@@ -518,14 +518,14 @@
         DOC_TYP_VER_NBR="1"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#responsibility"
         LBL="Review Responsibility"
-        OBJ_ID="9fdf6a02-9df8-4ba7-8358-029e74068219" PARNT_ID="2994"
+        OBJ_ID="18b49704-2ba3-4aa4-b93e-5373a6e8d4fd" PARNT_ID="2994"
         PREV_DOC_TYP_VER_NBR="2998" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${kim.url}/identityManagementRoleDocument.do?methodToCall=docHandler"
         DOC_TYP_ID="3026" DOC_TYP_NM="IdentityManagementRoleDocument"
         DOC_TYP_VER_NBR="2"
         HELP_DEF_URL="http://site.kuali.org/rice/${rice.version}/reference/html/Help.html#role"
-        LBL="Role" OBJ_ID="00aabe4e-4ed2-4cff-b3f7-b4f6986ba089"
+        LBL="Role" OBJ_ID="fbd244bd-0e61-4997-a07f-f11e0a447869"
         PARNT_ID="2994" PREV_DOC_TYP_VER_NBR="2995" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="0"
         DOC_HDLR_URL="${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"
@@ -534,7 +534,7 @@
         DOC_TYP_NM="TravelAccountTypeMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Travel Account Type MaintenanceDocument"
-        OBJ_ID="60e81d20-3f87-488d-bc42-d1eeca74648a" PARNT_ID="2681"
+        OBJ_ID="fec81bf8-247c-4263-87e8-d0ac8421ff19" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="2"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
@@ -544,7 +544,7 @@
         DOC_TYP_NM="TravelAttachmentGroupSampleMaintenanceDocument"
         DOC_TYP_VER_NBR="0" GRP_ID="1"
         LBL="Travel Attachment Group Sample Maintenance Document"
-        OBJ_ID="88d16426-2550-4042-9531-16bf0297ede3" PARNT_ID="2681"
+        OBJ_ID="2c9de466-cabd-43cb-8250-5c08306aa697" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
@@ -554,7 +554,7 @@
         DOC_TYP_NM="TravelAttachmentSampleMaintenanceDocument"
         DOC_TYP_VER_NBR="0" GRP_ID="1"
         LBL="Travel Attachment Sample Maintenance Document"
-        OBJ_ID="ddcdb7b8-8dbc-4919-8f61-cd965ef3f901" PARNT_ID="2681"
+        OBJ_ID="b0ecb702-2ac0-493e-877f-f3e5adf6a36c" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="0"
@@ -563,14 +563,14 @@
         DOC_TYP_ID="3030" DOC_TYP_NM="TravelAuthorization"
         DOC_TYP_VER_NBR="1" GRP_ID="1"
         LBL="Travel Authorization Document"
-        OBJ_ID="127204d1-7f44-42cd-855c-2a05e34a797d" PARNT_ID="2681"
+        OBJ_ID="995b7d05-356e-4de9-9946-43398cb753ee" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="3008" RTE_VER_NBR="2" VER_NBR="2"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_TYP_DESC="Parent Document Type for all Travel Documents"
         DOC_TYP_ID="3031" DOC_TYP_NM="TravelDocument"
         DOC_TYP_VER_NBR="0" LBL="Travel Document"
-        OBJ_ID="909f6cc7-9139-447f-961f-39188e9de96b" PARNT_ID="2681"
+        OBJ_ID="e7501219-f5d1-4af2-9836-c0bf5d1f7f42" PARNT_ID="2681"
         RTE_VER_NBR="2" VER_NBR="8"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=org.kuali.rice.krad.labs.LabsTravelCompany"
@@ -579,7 +579,7 @@
         DOC_TYP_NM="LabsTravelCompanyMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Labs Travel Company MaintenanceDocument"
-        OBJ_ID="a0d62888-0c07-4208-8a26-0db793804d94" PARNT_ID="3031"
+        OBJ_ID="0a4f9207-e3fa-42e0-8e62-0ed757087fc6" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -587,7 +587,7 @@
         DOC_TYP_DESC="Create a Travel Company Maintenance Document"
         DOC_TYP_ID="3033" DOC_TYP_NM="TravelCompanyMaintenanceDocument"
         DOC_TYP_VER_NBR="0" LBL="Travel Company MaintenanceDocument"
-        OBJ_ID="15d6207c-884c-4743-b285-b0a5edbce8ea" PARNT_ID="3031"
+        OBJ_ID="eedbb0ad-16f9-4314-8aa1-fdf4145b0184" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -597,7 +597,7 @@
         DOC_TYP_NM="TravelDestinationMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Travel Travel Destination Maintenance Document"
-        OBJ_ID="5f2bc023-839f-47b4-a6a6-4411e2c2104b" PARNT_ID="3031"
+        OBJ_ID="8894bced-4e5c-4670-9bb2-030fc38841a1" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -607,7 +607,7 @@
         DOC_TYP_NM="TravelMileageRateMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Travel Mileage Rate Maintenance Document"
-        OBJ_ID="27211332-32ff-46f0-80a5-f8b5d5a13946" PARNT_ID="3031"
+        OBJ_ID="d82e70f2-ce8f-4c46-8421-ab469b4e61db" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -616,7 +616,7 @@
         DOC_TYP_ID="3036" DOC_TYP_NM="TravelerDetailMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Travel Traveler Detail Maintenance Document"
-        OBJ_ID="5350ea02-01d0-4447-8dfb-7e6a00bc502e" PARNT_ID="3031"
+        OBJ_ID="09630bb8-366a-446b-a927-47f0fb011b8f" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -626,7 +626,7 @@
         DOC_TYP_NM="LegacyKnsTravelCompanyMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Legacy KNS/OJB Travel Company MaintenanceDocument"
-        OBJ_ID="c4715186-c6df-4c04-a83c-bef63cc7803e" PARNT_ID="3031"
+        OBJ_ID="7a3da5c5-17d6-4e08-a0cc-bbbe94194b8b" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -636,7 +636,7 @@
         DOC_TYP_NM="LegacyKradTravelCompanyMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Legacy KRAD/JPA Travel Company MaintenanceDocument"
-        OBJ_ID="d879a9ea-2416-4f26-aca0-5621c7d230f7" PARNT_ID="3031"
+        OBJ_ID="c6e23c67-3347-4cb0-98a7-8d2745453a41" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
@@ -644,7 +644,7 @@
         DOC_TYP_DESC="Travel Authorization Document in KNS and OJB"
         DOC_TYP_ID="3039" DOC_TYP_NM="LegacyTravelAuthorizationKns"
         DOC_TYP_VER_NBR="0" LBL="Travel Authorization"
-        OBJ_ID="42c435c3-8dd7-4d3d-822a-8bb10309c04f" PARNT_ID="2681"
+        OBJ_ID="18a79183-1daa-497c-8807-326d8c759703" PARNT_ID="2681"
         RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;docTypeName=TravelAccountBulkUpdateMaintenanceDocument"
@@ -653,26 +653,35 @@
         DOC_TYP_NM="TravelAccountBulkUpdateMaintenanceDocument"
         DOC_TYP_VER_NBR="0"
         LBL="Travel Account Bulk Update MaintenanceDocument"
-        OBJ_ID="f7de533c-ae4a-4458-a740-2770058cad0d" PARNT_ID="2681"
+        OBJ_ID="ec4b35dc-21de-4ea5-abdc-6a1101083ab5" PARNT_ID="2681"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         RTE_VER_NBR="2" VER_NBR="1"/>
+    <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
+        DOC_HDLR_URL="${kr.krad.url}/maintenance?methodToCall=docHandler"
+        DOC_TYP_DESC="Create a New Travel Account Maintenance Document"
+        DOC_TYP_ID="3041" DOC_TYP_NM="TravelAccountMaintenanceDocument"
+        DOC_TYP_VER_NBR="2" GRP_ID="1"
+        LBL="Travel Account Maintenance Document"
+        OBJ_ID="efd4e5f3-5bbc-4115-96e3-9416f561764e" PARNT_ID="3031"
+        POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
+        PREV_DOC_TYP_VER_NBR="3006" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" CUR_IND="1"
         DOC_HDLR_URL="${application.url}/kr-krad/maintenance?methodToCall=docHandler&amp;dataObjectClassName=org.kuali.rice.krad.demo.travel.dataobject.TravelAccountType"
         DOC_TYP_DESC="Create a Travel Account Type Maintenance Document"
-        DOC_TYP_ID="3041"
+        DOC_TYP_ID="3042"
         DOC_TYP_NM="TravelAccountTypeMaintenanceDocument"
         DOC_TYP_VER_NBR="1"
         LBL="Travel Account Type MaintenanceDocument"
-        OBJ_ID="b81e74c3-894a-47c3-adc1-275de1178d25" PARNT_ID="3031"
+        OBJ_ID="3d9dbcc6-4c7f-49c9-9683-24fdc2ce21e2" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="3027" RTE_VER_NBR="2" VER_NBR="1"/>
     <KREW_DOC_TYP_T ACTV_IND="1" BLNKT_APPR_GRP_ID="1" CUR_IND="1"
         DOC_HDLR_URL="${application.url}/kr-krad/approval?methodToCall=docHandler"
         DOC_TYP_DESC="Create a New Travel Authorization Document"
-        DOC_TYP_ID="3042" DOC_TYP_NM="TravelAuthorization"
+        DOC_TYP_ID="3043" DOC_TYP_NM="TravelAuthorization"
         DOC_TYP_VER_NBR="2" GRP_ID="1"
         LBL="Travel Authorization Document"
-        OBJ_ID="1e7f467a-45bf-473c-a042-06a052d7f949" PARNT_ID="3031"
+        OBJ_ID="30622e36-8080-4b8d-aa1d-ca58c8ef2273" PARNT_ID="3031"
         POST_PRCSR="org.kuali.rice.krad.workflow.postprocessor.KualiPostProcessor"
         PREV_DOC_TYP_VER_NBR="3030" RTE_VER_NBR="2" VER_NBR="1"/>
 </dataset>

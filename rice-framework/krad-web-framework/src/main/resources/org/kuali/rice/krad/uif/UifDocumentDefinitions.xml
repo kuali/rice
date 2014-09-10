@@ -204,16 +204,11 @@
         <bean parent="Uif-InputField" p:propertyName="attachment.attachmentTypeCode" p:width="auto"
               p:label="Attachment Type"
               p:readOnly="@{!#isAddLine}"
-              p:render="@{#DocumentEntry.allowsNoteAttachments and #DocumentEntry.attachmentTypesValuesFinderClass != null}">
-            <!--
+              p:render="@{#DocumentEntry.allowsNoteAttachments and #DocumentEntry.attachmentTypesValuesFinderClass != null}"
+              p:optionsFinderClass="@{#DocumentEntry.attachmentTypesValuesFinderClass}">
             <property name="control">
               <bean parent="Uif-DropdownControl"/>
             </property>
-
-            <property name="optionsFinder">
-              <bean class="org.kuali.rice.krad.demo.travel.options.AttachmentTypeCodeKeyValues" p:blankOption="true"/>
-            </property>
-            -->
         </bean>
         <bean parent="Uif-InputField" p:propertyName="adHocRouteRecipient.id"
               p:label="Notification Recipient"

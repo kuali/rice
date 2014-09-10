@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.krad.uif.util;
 
-import org.kuali.rice.core.api.config.property.Config;
-import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.krad.datadictionary.Copyable;
-import org.kuali.rice.krad.uif.component.DelayedCopy;
-import org.kuali.rice.krad.uif.component.ReferenceCopy;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
-import org.kuali.rice.krad.util.KRADConstants;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -46,6 +33,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.WeakHashMap;
+
+import org.kuali.rice.core.api.config.property.Config;
+import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.krad.datadictionary.Copyable;
+import org.kuali.rice.krad.uif.component.DelayedCopy;
+import org.kuali.rice.krad.uif.component.ReferenceCopy;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.util.KRADConstants;
 
 /**
  * Provides a lightweight "hands-free" copy implementation to replace the need for copyProperties()
@@ -73,7 +68,7 @@ public final class CopyUtils {
      * </p>
      *
      * @return True if deep copy will be truncated with a delayed copy proxy, false for full deep
-     * copy.
+     *         copy.
      */
     public static boolean isDelay() {
         if (delay == null) {
@@ -107,8 +102,8 @@ public final class CopyUtils {
                 i++;
             }
             StackTraceElement caller = trace[i];
-            cid = obj.getClass().getSimpleName() + ":" + caller.getClassName() + ":" + caller.getMethodName() + ":"
-                    + caller.getLineNumber();
+            cid = obj.getClass().getSimpleName() + ":" + caller.getClassName()
+                    + ":" + caller.getMethodName() + ":" + caller.getLineNumber();
             ProcessLogger.ntrace("deep-copy:", ":" + cid, 1000L, 500L);
         }
 
@@ -120,12 +115,16 @@ public final class CopyUtils {
      *
      * @param type The type to check.
      * @return True if {@link #getDeepCopy(Object)} may be expected to follow references to this
-     * type. False if the type should not be deeply copied.
+     *         type. False if the type should not be deeply copied.
      */
     public static boolean isCopyAvailable(Class<?> type) {
-        return type != null && (Copyable.class.isAssignableFrom(type) || ArrayList.class.isAssignableFrom(type)
-                || LinkedList.class.isAssignableFrom(type) || HashMap.class.isAssignableFrom(type) || HashSet.class
-                .isAssignableFrom(type) || type.isArray());
+        return type != null
+                && (Copyable.class.isAssignableFrom(type)
+                        || ArrayList.class.isAssignableFrom(type)
+                        || LinkedList.class.isAssignableFrom(type)
+                        || HashMap.class.isAssignableFrom(type)
+                        || HashSet.class.isAssignableFrom(type)
+                        || type.isArray());
     }
 
     /**
@@ -140,8 +139,8 @@ public final class CopyUtils {
      * @return A shallow copy of obj, or null if obj is null.
      *
      * @throws CloneNotSupportedException If copying is not available on the object, or if thrown by
-     * clone() itself. When isShallowCopyAvailable() returns true, then this exception is
-     * not expected and may be considered an internal error.
+     *         clone() itself. When isShallowCopyAvailable() returns true, then this exception is
+     *         not expected and may be considered an internal error.
      */
     @SuppressWarnings("unchecked")
     public static <T> T getShallowCopy(T obj) throws CloneNotSupportedException {
@@ -182,14 +181,13 @@ public final class CopyUtils {
 
             throw new CloneNotSupportedException(
                     "Not a supported copyable type.  This condition should not be reached. " + obj.getClass() + " "
-                            + obj
-            );
+                            + obj);
         }
     }
 
     /**
-     * Helper for {@link #preventModification(Copyable)} and {@link #getDeepCopy(Object)} for
-     * detecting whether or not to queue deep references from the current node.
+     * Helper for {@link #getDeepCopy(Object)} for detecting whether or not to queue deep references
+     * from the current node.
      */
     private static boolean isDeep(CopyReference<?> ref, Object source) {
         if (!(ref instanceof FieldReference)) {
@@ -241,7 +239,7 @@ public final class CopyUtils {
      *
      * @param obj an object.
      * @return The non-proxied bean represented by source, copied if needed. When source is not
-     * copyable, or not proxied, it is returned as-is.
+     *         copyable, or not proxied, it is returned as-is.
      */
     public static <T> T unwrap(T obj) {
         return DelayedCopyableHandler.unwrap(obj);
@@ -298,48 +296,20 @@ public final class CopyUtils {
     }
 
     /**
-     * Returns a copy of the object, or null if the object cannot
-     * be serialized.
-     */
-    public static Object copy(Object original) {
-        Object copyObject = null;
-        try {
-            // Write the object out to a byte array
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(byteArrayOutputStream);
-            out.writeObject(original);
-
-            out.flush();
-            out.close();
-
-            // Retrieve an input stream from the byte array and read
-            // a copy of the object back in.
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            copyObject = objectInputStream.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return copyObject;
-    }
-
-    /**
      * Retrieves all field names for the given class that have the given annotation
      *
      * @param clazz class to find field annotations for
      * @param annotationClass class for annotation to find
      * @return map containing the field name that has the annotation as a key and the annotation
-     * instance as a value
+     *         instance as a value
      */
     public static Map<String, Annotation> getFieldsWithAnnotation(Class<?> clazz,
             Class<? extends Annotation> annotationClass) {
         if (clazz == null) {
-            return Collections.<String, Annotation>emptyMap();
+            return Collections.<String, Annotation> emptyMap();
         }
         Map<String, Annotation> rv = getMetadata(clazz).annotatedFieldsByAnnotationType.get(annotationClass);
-        return rv == null ? Collections.<String, Annotation>emptyMap() : rv;
+        return rv == null ? Collections.<String, Annotation> emptyMap() : rv;
     }
 
     /**
@@ -390,8 +360,8 @@ public final class CopyUtils {
             if (target == null) {
                 Class<?> targetClass = ref.getTargetClass();
 
-                if (Copyable.class.isAssignableFrom(targetClass) && targetClass.isInterface() && ref.isDelayAvailable()
-                        && isDelay()) {
+                if (Copyable.class.isAssignableFrom(targetClass) && targetClass.isInterface()
+                        && ref.isDelayAvailable() && isDelay()) {
                     target = DelayedCopyableHandler.getDelayedCopy((Copyable) source);
                 } else {
 
@@ -505,6 +475,8 @@ public final class CopyUtils {
 
         /**
          * This method ...
+         *
+         * @return
          */
         String getPath();
 
@@ -512,7 +484,7 @@ public final class CopyUtils {
          * Determines whether or not a delayed copy proxy should be considered on this reference.
          *
          * @return True if a delayed copy proxy may be used with this reference, false to always
-         * perform deep copy.
+         *         perform deep copy.
          */
         boolean isDelayAvailable();
 
@@ -945,8 +917,8 @@ public final class CopyUtils {
      * @param index The array index.
      * @return An array reference for temporary use while deep cloning.
      */
-    private static <T> ArrayReference<T> getArrayReference(Object source, Object target, int index,
-            CopyReference<?> pref) {
+    private static <T> ArrayReference<T> getArrayReference(
+            Object source, Object target, int index, CopyReference<?> pref) {
         @SuppressWarnings("unchecked")
         ArrayReference<T> ref = RecycleUtils.getRecycledInstance(ArrayReference.class);
 
@@ -1065,8 +1037,8 @@ public final class CopyUtils {
      * @return A list reference for temporary use while deep cloning.
      */
     @SuppressWarnings("unchecked")
-    private static ListReference<?> getListReference(List<?> source, List<?> target, int index, Class<?> targetClass,
-            Type type, CopyReference<?> pref) {
+    private static ListReference<?> getListReference(List<?> source, List<?> target, int index,
+            Class<?> targetClass, Type type, CopyReference<?> pref) {
         ListReference<Object> ref = RecycleUtils.getRecycledInstance(ListReference.class);
 
         if (ref == null) {
@@ -1190,8 +1162,8 @@ public final class CopyUtils {
      * @return A map reference for temporary use while deep cloning.
      */
     @SuppressWarnings("unchecked")
-    private static MapReference<?> getMapReference(Map.Entry<?, ?> sourceEntry, Map<?, ?> target, Class<?> targetClass,
-            Type type, CopyReference<?> pref) {
+    private static MapReference<?> getMapReference(Map.Entry<?, ?> sourceEntry, Map<?, ?> target,
+            Class<?> targetClass, Type type, CopyReference<?> pref) {
         MapReference<Object> ref = RecycleUtils.getRecycledInstance(MapReference.class);
 
         if (ref == null) {
@@ -1285,8 +1257,8 @@ public final class CopyUtils {
                         continue;
                     }
 
-                    Class<?> collectionType = ObjectPropertyUtils.getUpperBound(ObjectPropertyUtils.getComponentType(
-                            currentField.getGenericType()));
+                    Class<?> collectionType = ObjectPropertyUtils.getUpperBound(
+                            ObjectPropertyUtils.getComponentType(currentField.getGenericType()));
 
                     if (collectionType.equals(Object.class) || isCopyAvailable(collectionType)) {
                         collectionTypeMap.put(currentField, collectionType);
@@ -1310,8 +1282,8 @@ public final class CopyUtils {
     /**
      * Static cache for reducing annotated field lookup overhead.
      */
-    private static final Map<Class<?>, ClassMetadata> CLASS_META_CACHE = Collections.synchronizedMap(
-            new WeakHashMap<Class<?>, ClassMetadata>());
+    private static final Map<Class<?>, ClassMetadata> CLASS_META_CACHE =
+            Collections.synchronizedMap(new WeakHashMap<Class<?>, ClassMetadata>());
 
     /**
      * Get copy metadata for a class.

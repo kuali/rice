@@ -62,10 +62,6 @@ public class LabsConfigurationAft extends WebDriverLegacyITBase {
     protected void navigate() throws Exception {
     }
 
-    protected void testLabsConfiguration() throws InterruptedException {
-    	testLabsConfigurationWithClassInstantiation();
-    }
-
     private void testLabsConfigurationWithClassInstantiation() throws InterruptedException {
     	waitAndClickByLinkText("Configuration with Class Instantiation");
     	
@@ -82,9 +78,9 @@ public class LabsConfigurationAft extends WebDriverLegacyITBase {
     	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
     	
     	//Search By Principal Name
-    	waitAndTypeByName(PRINCIPAL_NAME,"fred");
+    	waitAndTypeByName(PRINCIPAL_NAME,"fran");
     	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
-    	waitForTextPresent("Travel Account 1");
+    	waitForTextPresent("Travel Account");
     	waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
     	
     	//Search By Date
@@ -96,11 +92,42 @@ public class LabsConfigurationAft extends WebDriverLegacyITBase {
     
     private void testConfigurationWithSpringServiceExpression() throws InterruptedException {
     	//Waiting for Incident report to fix.
+        waitAndClickByLinkText("Configuration with Spring Service Expression");
+
+        //Search By Number
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_NAME,"a2");
+        waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitForTextPresent("a2");
+        waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
+
+        //Search By Name
+        waitAndTypeByName(TRAVEL_ACCOUNT_NAME,"Travel Account 2");
+        waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitForTextPresent("Travel Account 2");
+        waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
+
+        //Search By Date
+        waitAndTypeByName("lookupCriteria[rangeLowerBoundKeyPrefix_createDate]","06/01/2000");
+        waitAndTypeByName("lookupCriteria[createDate]","06/01/2050");
+        waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitForTextPresent("Travel Account");
+
+        //Search By Principal Name
+        waitAndTypeByName(PRINCIPAL_NAME,"fran");
+        waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitForTextPresent("Travel Account");
+        waitAndClickButtonByText(CLEAR_VALUES_BUTTON_TEXT);
     }
     
     @Test
-    public void testLabsConfigurationBookmark() throws Exception {
-    	testLabsConfiguration();
+    public void testLabsConfigurationWithClassInstantiationBookmark() throws Exception {
+        testLabsConfigurationWithClassInstantiation();
+        passed();
+    }
+
+    @Test
+    public void testLabsConfigurationWithSpringServiceExpressionBookmark() throws Exception {
+        testConfigurationWithSpringServiceExpression();
         passed();
     }
 }

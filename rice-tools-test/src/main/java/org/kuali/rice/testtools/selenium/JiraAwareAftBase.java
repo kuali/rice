@@ -429,6 +429,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         try {
             return WebDriverUtils.findElement(getDriver(), by);
         } catch (Throwable t) {
+            checkForIncidentReport(by.toString(), t.getMessage());
             jiraAwareFail(by.toString(), t.getMessage(), t);
         }
         return null; // required by compiler, never reached
@@ -440,6 +441,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
             WebDriverUtils.highlightElement(getDriver(), found);
             return found;
         } catch (Throwable t) {
+            checkForIncidentReport(by.toString(), t.getMessage());
             jiraAwareFail(by.toString(), t.getMessage() + " " + this.getClass().toString(), t);
         }
         return null; // required by compiler, never reached
@@ -537,6 +539,11 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     public void jiraAwareFail(String contents, String message, Throwable throwable) {
         jiraAwareFail(contents, message, throwable, this);
     }
+
+    public void jiraAwareFail(String pageSource, By by, String message, Throwable t) {
+
+    }
+
 
     /**
      * {@see #checkForIncidentReport} and {@see JiraAwareFailureUtils#fail}.

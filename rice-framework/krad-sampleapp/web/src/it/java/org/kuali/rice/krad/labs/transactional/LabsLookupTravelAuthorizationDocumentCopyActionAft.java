@@ -42,7 +42,7 @@ public class LabsLookupTravelAuthorizationDocumentCopyActionAft extends LabsTran
 
     @Override
     protected void navigate() throws Exception {
-        navigateToTransactional("Transactional Sample - Lookup with Copy Actions");
+        navigateToTransactional("Transactional Sample - Lookup With Copy Actions");
 
     }
 

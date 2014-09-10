@@ -88,6 +88,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         waitAndClickButtonByText("Add");
+        waitForProgressAddingLine();
         String errorMessage []={"Duplicate Sub Accounts (Travel Sub Account Number) are not allowed."};
         assertTextPresent(errorMessage);
 
@@ -95,6 +96,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account A");
         waitAndClickButtonByText("Add");
+        waitForProgressAddingLine();
         String errorMessage2 []={"Duplicate Sub Accounts (Travel Sub Account Number) are not allowed."};
         assertTextPresent(errorMessage2);
         
@@ -121,14 +123,15 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.name' and @value='Travel Account 14']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='fran']");
         waitAndClickButtonByText("Add");
+        waitForProgressAddingLine();
         waitForElementPresentByXpath("//a[contains(text(),subAccount)]");
 
         saveSuccessfully();
 
         assertTextPresent("SAVED");
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-        waitForProgressLoading();
+
+        submitSuccessfully();
+
         waitAndClickButtonByText("Reload");
         waitForProgressLoading();
         checkForDocErrorKrad();
@@ -148,6 +151,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitForProgressLoading();
         checkForDocErrorKrad();
         waitAndClickDemoLink();
+        acceptAlertIfPresent();
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {
             jiraAwareFail("BlanketApprove was not successful. subsidizedPercent should be 42");
@@ -247,10 +251,10 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
         waitForProgressLoading();
         checkForDocErrorKrad();
-        acceptAlert();
 
         // Redirected to Home page after Blanket Approve https://jira.kuali.org/browse/KULRICE-13042
         waitAndClickDemoLink();
+        acceptAlertIfPresent();
         waitAndClickByLinkText("Travel Account Maintenance (Edit)");
 
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {

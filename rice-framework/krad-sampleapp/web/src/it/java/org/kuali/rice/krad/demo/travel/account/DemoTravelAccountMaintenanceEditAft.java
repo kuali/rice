@@ -93,7 +93,9 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         assertTextPresent(errorMessage);
 
         // Verify that adding a duplicate Sub Account and Sub Account Name is not allowed.
+        clearTextByName(SUB_ACCOUNT_FIELD);
         waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccountDuplicate);
+        clearTextByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account A");
         waitAndClickButtonByText("Add");
         waitForProgressAddingLine();
@@ -117,7 +119,9 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
 
         // Add a new sub account
         String subAccount = "Z1" + RandomStringUtils.randomAlphabetic(2);
+        clearTextByName(SUB_ACCOUNT_FIELD);
         waitAndTypeByName(SUB_ACCOUNT_FIELD, subAccount);
+        clearTextByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccountName", "Sub Account 1"+RandomStringUtils.randomAlphabetic(2));
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.number' and @value='a14']");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.name' and @value='Travel Account 14']");

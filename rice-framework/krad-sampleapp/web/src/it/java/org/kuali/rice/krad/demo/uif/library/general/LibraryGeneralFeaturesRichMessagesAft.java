@@ -81,18 +81,22 @@ public class LibraryGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase
     protected void testGeneralFeaturesRichMessagesAction() throws Exception {
         selectByName("exampleShown", "Action");
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][1]/a"));
+        waitForProgressLoading();
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][2]/a"));
+        waitForProgressLoading();
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
 
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][3]/a"));
+        waitForProgressLoading();
         assertJgrowlText("Sample Message Text. Data passed: You passed data");
         waitAndClick(By.className("jGrowl-close"));
 
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][4]/a"));
+        waitForProgressLoading();
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
     }

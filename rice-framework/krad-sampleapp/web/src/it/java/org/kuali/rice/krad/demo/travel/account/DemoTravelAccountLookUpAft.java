@@ -202,6 +202,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
+        checkForDocErrorKrad();
 
     	if(waitForIsTextPresent("Document was successfully submitted.")) {
 

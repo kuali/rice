@@ -60,8 +60,6 @@ public class DemoTravelAuthorizationCopyAft extends WebDriverLegacyITBase {
 
         waitForElementNotPresent(By.cssSelector("div[data-label = 'Copied from Document Number']"));
 
-        waitAndClick(By.cssSelector("button[data-submit_data = '{\\\"methodToCall\\\":\\\"reload\\\"}']"));
-        waitForPageToLoad();
         waitAndClick(By.cssSelector("button[data-submit_data = '{\\\"methodToCall\\\":\\\"copy\\\"}']"));
 
         assertElementPresent(By.cssSelector("div[data-label = 'Copied from Document Number']"));

@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
+import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.exception.WorkflowException;
@@ -41,6 +42,7 @@ import org.kuali.rice.kew.framework.postprocessor.DocumentRouteLevelChange;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.UserSessionUtils;
 import org.kuali.rice.krad.bo.AdHocRoutePerson;
 import org.kuali.rice.krad.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.krad.bo.DocumentHeader;
@@ -264,8 +266,6 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
         String sourceDocumentHeaderId = getDocumentNumber();
         setNewDocumentHeader();
 
-        getDocumentHeader().setDocumentTemplateNumber(sourceDocumentHeaderId);
-
         //clear out notes from previous bo
         this.notes.clear();
         addCopyErrorDocumentNote("copied from document " + sourceDocumentHeaderId);
@@ -277,23 +277,35 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
      * @throws WorkflowException
      */
     protected void setNewDocumentHeader() throws WorkflowException {
-        TransactionalDocument newDoc =
-                (TransactionalDocument) KRADServiceLocatorWeb.getDocumentService().getNewDocument(
-                        getDocumentHeader().getWorkflowDocument().getDocumentTypeName());
-        newDoc.getDocumentHeader().setDocumentDescription(getDocumentHeader().getDocumentDescription());
-        newDoc.getDocumentHeader().setOrganizationDocumentNumber(getDocumentHeader().getOrganizationDocumentNumber());
+        // collect the header information from the old document
+        Person user = GlobalVariables.getUserSession().getPerson();
+        WorkflowDocument sourceWorkflowDocument
+                = KRADServiceLocatorWeb.getWorkflowDocumentService().loadWorkflowDocument(getDocumentNumber(), user);
+        String sourceDocumentTypeName = sourceWorkflowDocument.getDocumentTypeName();
 
+        // initiate the new workflow entry, get the workflow doc
+        WorkflowDocument workflowDocument
+                = KRADServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument(sourceDocumentTypeName, user);
+        UserSessionUtils.addWorkflowDocument(GlobalVariables.getUserSession(), workflowDocument);
+
+        // set new values on the document header, including the document number from which it was copied
+        Document newDocument = KRADServiceLocatorWeb.getDocumentService().getNewDocument(sourceDocumentTypeName);
+        DocumentHeader newDocumentHeader = newDocument.getDocumentHeader();
+        newDocumentHeader.setDocumentTemplateNumber(getDocumentNumber());
+        newDocumentHeader.setDocumentDescription(getDocumentHeader().getDocumentDescription());
+        newDocumentHeader.setOrganizationDocumentNumber(getDocumentHeader().getOrganizationDocumentNumber());
+
+        // set the new document number on this document
         try {
-            KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectPropertyDeep(this, KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(),
-                    newDoc.getDocumentNumber());
+            KRADServiceLocatorWeb.getLegacyDataAdapter().setObjectPropertyDeep(this,
+                    KRADPropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(), newDocument.getDocumentNumber());
         } catch (Exception e) {
             LOG.error("Unable to set document number property in copied document " + this, e);
-            throw new RuntimeException("Unable to set document number property in copied document " + this,
-                    e);
+            throw new RuntimeException("Unable to set document number property in copied document " + this, e);
         }
 
-        // replace current documentHeader with new documentHeader
-        setDocumentHeader(newDoc.getDocumentHeader());
+        // replace the current document header with the new document header
+        setDocumentHeader(newDocument.getDocumentHeader());
     }
 
     /**

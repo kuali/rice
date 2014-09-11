@@ -48,18 +48,14 @@ public class TransactionalDocumentControllerServiceImpl extends DocumentControll
     @Override
     public ModelAndView copy(TransactionalDocumentFormBase form) {
         try {
-            // Load document to copy; load document checks that user can open document
-            loadDocument(form);
-
             // Load any lazy loaded data before proceeding with copy
             KradDataServiceLocator.getDataObjectService().wrap(form.getDocument()).materializeReferencedObjectsToDepth(3,
                     MaterializeOption.UPDATE_UPDATABLE_REFS);
 
-            // Two copy actions, the first clones the original and detaches the data from em
-            // The second generates new header data
+            // Clones the original and detach the data
             form.setDocument(KradDataServiceLocator.getDataObjectService().copyInstance(form.getDocument()));
 
-
+            // Generate the header data after the copy
             ((Copyable) form.getDocument()).toCopy();
         } catch (WorkflowException e) {
             throw new RuntimeException("Unable to copy transactional document", e);

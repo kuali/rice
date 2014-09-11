@@ -436,6 +436,7 @@
         </bean>
         <bean parent="AgendaEditorView-barButton" p:actionScript="var enabled = enabledCheck('paste');
           if (enabled) {
+              disablePasteButton();
               ajaxCallPropositionTree('pasteProposition', 'RuleEditorView-TreeGroup');
           }
           "

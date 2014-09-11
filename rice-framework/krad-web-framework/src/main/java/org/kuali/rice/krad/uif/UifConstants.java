@@ -587,7 +587,7 @@ public class UifConstants {
         public static final String SET_VALUE = "setValue";
         public static final String SHOW_GROWL = "showGrowl";
         public static final String SHOW_EDIT_LINE_DIALOG = "showEditLineDialog";
-        public static final String SHOW_DIALOG = "showEditLineDialog";
+        public static final String SHOW_DIALOG = "showDialog";
         public static final String VALIDATE_ADD_LINE = "validateAddLine";
         public static final String VALIDATE_LINE = "validateLine";
         public static final String WRITE_CURRENT_PAGE_TO_SESSION = "writeCurrentPageToSession";

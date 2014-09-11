@@ -61,8 +61,6 @@
   <!-- Edit button for the collection lines -->
   <bean id="Uif-EditLineInDialogAction" parent="EditLineInDialogAction-parentBean"
         p:render="@{#collectionGroup.editWithDialog}"/>
-        <!--p:preSubmitCall="validateEditLine(@{#collectionGroup.id});"/>-->
-        <!--p:actionScript="showDialog('Uif-EditLineDialog_@{#collectionGroup.id}@{#lineSuffix}');"-->
   <bean id="EditLineInDialogAction-parentBean" abstract="true" parent="Uif-SecondaryActionButton-Mini" p:actionLabel="Edit in Dialog">
     <property name="actionParameters">
       <map>

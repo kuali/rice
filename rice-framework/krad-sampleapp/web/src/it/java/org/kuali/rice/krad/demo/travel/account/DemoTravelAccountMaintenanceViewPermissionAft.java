@@ -19,6 +19,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 
@@ -50,12 +51,15 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
         waitAndClickByLinkText("Travel Account Maintenance (New)");
     }
 
-    private void createAndRouteDoc(String user, String accountNumber) throws Exception {
+    private void createAndRouteDoc(String user) throws Exception {
         String docid = waitForElementPresentByXpath(DOC_ID_KRAD_XPATH).getText();
 
-        waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Maintenance AdHoc Recipients Document");
+        String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        String accountNumber = random.substring(random.length() - 4, random.length());
+        waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Maintenance AdHoc Recipients Document "
+                + random);
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", accountNumber);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Yo There!");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", random);
         waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT']");
 
         waitAndClickByXpath("//a/span[contains(text(),'Notes and Attachments')]");
@@ -68,8 +72,7 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
         waitAndSelectByName("newCollectionLines['document.notes'].attachment.attachmentTypeCode", "OTH");
 
         waitAndClickByXpath("//button[@title='Add a Note']");
-        Thread.sleep(2000);
-        assertTextPresent("Bonzo!");
+        waitForTextPresent("Bonzo!");
         assertTextPresent("attachment.oth");
 
         waitAndClickByLinkText("Ad Hoc Recipients");
@@ -77,9 +80,7 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
         waitAndClickById("Uif-AdHocPersonCollection_add");
         waitForElementPresentByXpath("//div[@data-parent=\"Uif-AdHocPersonCollection\"]/div/span[contains(text(), '" + user + "']");
 
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-        waitForIsTextPresent("Document was successfully submitted.");
+        submitSuccessfully();
 
         open(getBaseUrlString() + "/portal.jsp");
         impersonateUser(user);
@@ -89,7 +90,7 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
     }
 
     protected void testTravelAccountMaintenanceViewPermissionT1() throws Exception {
-        createAndRouteDoc("erin", "1014");
+        createAndRouteDoc("erin");
         waitForElementNotPresent(By.xpath("//a/span[contains(text(),'Notes and Attachments')]"));
         waitForElementNotPresent(By.xpath("//button[contains(text(),'Delete')]"));
         assertTextNotPresent("Bonzo!");
@@ -98,7 +99,7 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
     }
 
     protected void testTravelAccountMaintenanceViewPermissionT2() throws Exception {
-        createAndRouteDoc("dev1", "1015");
+        createAndRouteDoc("dev1");
         waitAndClickByXpath("//a/span[contains(text(),'Notes and Attachments')]");
         assertTextPresent("Bonzo!");
         assertTextPresent("attachment.oth");

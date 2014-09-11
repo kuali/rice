@@ -73,13 +73,13 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
         }
    }
 
-//    @Test
+    @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationBookmark() throws Exception {
     	testDemoCustomRuleEventAndDocumentEventMethodInvocation();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationNav() throws Exception {
     	testDemoCustomRuleEventAndDocumentEventMethodInvocation();
         passed();
@@ -91,7 +91,7 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
         passed();
     }
 
-//    @Test
+    @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChecNav() throws Exception {
     	testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec();
         passed();

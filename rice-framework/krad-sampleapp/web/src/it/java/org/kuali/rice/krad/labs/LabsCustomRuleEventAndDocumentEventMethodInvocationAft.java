@@ -20,6 +20,7 @@ import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
+import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -66,15 +67,19 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
         waitForTextPresent("Travel Account Type Code: Required");
         fireEvent("document.newMaintainableObject.dataObject.accountTypeCode", "focus");
         waitForElementPresentByXpath("//div[@class='popover top in uif-tooltip-error-cs']");
+        fireEvent("document.newMaintainableObject.dataObject.accountTypeCode", "blur");
+        if(isElementPresentByXpath("//div[@class='popover top in uif-tooltip-error-cs']")){
+            JiraAwareFailureUtils.fail("Required popup still present", this);
+        }
    }
 
-    @Test
+//    @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationBookmark() throws Exception {
     	testDemoCustomRuleEventAndDocumentEventMethodInvocation();
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationNav() throws Exception {
     	testDemoCustomRuleEventAndDocumentEventMethodInvocation();
         passed();
@@ -86,7 +91,7 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
         passed();
     }
 
-    @Test
+//    @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChecNav() throws Exception {
     	testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec();
         passed();

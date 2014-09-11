@@ -73,11 +73,11 @@ public class LibraryLayoutManagersTableLayoutAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//section[@data-parent='Demo-TableLayoutManager-Example5']/div/div/table/tbody/tr/td[2]/div/input[@value='a']");
         waitAndClickByXpath("//section[@data-parent='Demo-TableLayoutManager-Example5']/div/button[contains(text(),'Add Line')]");
         waitForElementPresentByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']");
-        waitAndTypeByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-body']/div[2]/div/input","1");
-        waitAndTypeByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-body']/div[4]/div/input","1");
-        waitAndTypeByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-body']/div[6]/div/input","1");
-        waitAndTypeByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-body']/div[8]/div/input","1");
-        waitAndClickByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-footer']/button[2]");
+        waitAndTypeByName("newCollectionLines['collection5'].field4", "4"); // last first since we are waiting for all inputs to be present
+        jiraAwareTypeByName("newCollectionLines['collection5'].field3", "3");
+        jiraAwareTypeByName("newCollectionLines['collection5'].field2", "2");
+        jiraAwareTypeByName("newCollectionLines['collection5'].field1", "1");
+        waitAndClickByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[2]/button[2]");
         waitForElementPresentByXpath("//section[@data-parent='Demo-TableLayoutManager-Example5']/div/div/table/tbody/tr/td[2]/div/input[@value='1']");
     }
     
@@ -86,10 +86,10 @@ public class LibraryLayoutManagersTableLayoutAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//section[@data-parent='Demo-TableLayoutManager-Example6']/div/div/table/tbody/tr/td[2]/div/input[@value='a']");
         waitAndClickByXpath("//section[@data-parent='Demo-TableLayoutManager-Example6']/div/button[contains(text(),'Add Line')]");
         waitForElementPresentByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']");
-        waitAndTypeByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-body']/div[2]/div/input","1");
-        waitAndTypeByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-body']/div[4]/div/input","1");
-        waitAndTypeByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-body']/div[6]/div/input","1");
-        waitAndTypeByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-body']/div[8]/div/input","1");
+        waitAndTypeByName("newCollectionLines['collection6'].field4", "4");
+        jiraAwareTypeByName("newCollectionLines['collection6'].field3", "3");
+        jiraAwareTypeByName("newCollectionLines['collection6'].field2", "2");
+        jiraAwareTypeByName("newCollectionLines['collection6'].field1", "1");
         waitAndClickByXpath("//section[@class='modal fade uif-cssGridGroup in' and @style='display: block;']/div/div/div[@class='modal-footer']/button[2]");
         waitForElementPresentByXpath("//section[@data-parent='Demo-TableLayoutManager-Example6']/div/div/table/tbody/tr[4]/td[2]/div/input[@value='1']");
     }
@@ -134,13 +134,14 @@ public class LibraryLayoutManagersTableLayoutAft extends WebDriverLegacyITBase {
     	testLayoutManagersJqueryTableFeatures();
     	testLayoutManagersAddBlankLineTop();
     	testLayoutManagersAddBlankLineBottom();
-    	testLayoutManagersAddViaLightBoxTop();
-    	testLayoutManagersAddViaLightBoxBottom();
     	testLayoutManagersActionColumnLeft();
     	testLayoutManagersActionColumn3();
     	testLayoutManagersSaveRow();
     	testLayoutManagersMultirow();
     	testLayoutManagersSeparateAddLine();
+        // these to are failing on the Add button click of the lightbox
+        testLayoutManagersAddViaLightBoxBottom();
+        testLayoutManagersAddViaLightBoxTop();
     	passed();
     }
 }

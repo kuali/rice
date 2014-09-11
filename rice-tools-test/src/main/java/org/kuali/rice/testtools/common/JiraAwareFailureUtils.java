@@ -141,7 +141,7 @@ public class JiraAwareFailureUtils {
             failOnMatchedJira(ExceptionUtils.getStackTrace(throwable), throwable.getMessage(), failable);
             failable.fail(contents + " " + message + " " + throwable.getMessage() + "\n\t" + ExceptionUtils.getStackTrace(throwable));
         }
-        failable.fail(contents + " " + message + " " + contents);
+        failable.fail(message + "\n" + contents);
     }
 
     /**

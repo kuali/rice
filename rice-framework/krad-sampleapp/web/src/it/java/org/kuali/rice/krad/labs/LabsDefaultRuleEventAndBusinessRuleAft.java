@@ -63,21 +63,23 @@ public class LabsDefaultRuleEventAndBusinessRuleAft extends WebDriverLegacyITBas
         waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
         waitAndClickByXpath("//button[contains(text(),'Submit')]");
         waitForTextPresent("Travel Account Type Code: Required");
+        fireEvent("document.newMaintainableObject.dataObject.accountTypeCode", "focus");
+        waitForElementPresentByXpath("//div[@class='popover top in uif-tooltip-error-cs']");
    }
 
-//    @Test
+    @Test
     public void testDefaultRuleEventAndBusinessRuleBookmark() throws Exception {
     	testDefaultRuleEventAndBusinessRule();
         passed();
     }
 
-//    @Test
+    @Test
     public void testDefaultRuleEventAndBusinessRuleNav() throws Exception {
     	testDefaultRuleEventAndBusinessRule();
         passed();
     }
     
-//    @Test
+    @Test
     public void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeCheckBookmark() throws Exception {
     	testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec();
         passed();

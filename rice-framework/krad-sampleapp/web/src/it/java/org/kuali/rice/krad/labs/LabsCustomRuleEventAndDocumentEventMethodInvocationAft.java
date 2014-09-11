@@ -64,6 +64,8 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
         waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name");
         waitAndClickByXpath("//button[contains(text(),'Submit')]");
         waitForTextPresent("Travel Account Type Code: Required");
+        fireEvent("document.newMaintainableObject.dataObject.accountTypeCode", "focus");
+        waitForElementPresentByXpath("//div[@class='popover top in uif-tooltip-error-cs']");
    }
 
     @Test

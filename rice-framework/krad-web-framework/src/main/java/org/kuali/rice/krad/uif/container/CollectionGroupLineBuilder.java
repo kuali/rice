@@ -1042,7 +1042,9 @@ public class CollectionGroupLineBuilder implements Serializable {
             String actionScript = UifConstants.JsFunctions.SHOW_EDIT_LINE_DIALOG + "('" +
                     dialogId + "', '" + bindingName + "', " + lineIndex + ");";
             action.setRefreshedByAction(false);
-            action.setSuccessCallback(actionScript);
+            action.setSuccessCallback("jQuery.unblockUI();" + actionScript);
+            action.setOnClickScript("jQuery('#" + dialogId +
+                "').one('hide.bs.modal', function(e) { jQuery.blockUI({ message: '<h1>Editing line ...</h1>' }); });");
         }
     }
 

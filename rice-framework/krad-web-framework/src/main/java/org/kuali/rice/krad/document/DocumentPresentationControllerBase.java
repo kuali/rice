@@ -249,14 +249,15 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
      * </p>
      *
      * @param document the document to check
-     *
      * @return true if a super user approve or disapprove action can be taken on the {@code document}, false otherwise
      */
     protected boolean canApproveOrDisapprove(Document document) {
+        boolean canComplete = canComplete(document);
         String documentNumber = document.getDocumentNumber();
         DocumentStatus status = KewApiServiceLocator.getWorkflowDocumentService().getDocumentStatus(documentNumber);
 
-        return !isStateInitiatedFinalCancelled(status) && !isStateSaved(status) && !isStateProcessedOrDisapproved(status);
+        return !canComplete && !isStateInitiatedFinalCancelled(status) && !isStateSaved(status)
+                && !isStateProcessedOrDisapproved(status);
     }
 
     /**

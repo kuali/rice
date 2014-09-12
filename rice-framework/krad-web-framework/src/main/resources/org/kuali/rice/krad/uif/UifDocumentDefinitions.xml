@@ -395,6 +395,8 @@
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="performRouteReport" p:actionLabel="Route Report"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT]}"/>
+        <bean parent="Uif-SecondaryActionButton" p:methodToCall="complete" p:actionLabel="Complete"
+              p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COMPLETE]}"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="sendAdHocRequests" p:actionLabel="Send Adhoc"
               p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]}"/>
         <bean parent="Uif-SecondaryActionButton" p:methodToCall="fyi" p:actionLabel="FYI"

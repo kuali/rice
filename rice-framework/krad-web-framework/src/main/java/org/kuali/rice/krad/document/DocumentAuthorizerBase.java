@@ -86,7 +86,9 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
     }
 
     public boolean canCancel(Document document, Person user) {
-        return isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
+        boolean isCompletionRequested = document.getDocumentHeader().getWorkflowDocument().isCompletionRequested();
+
+        return isCompletionRequested || isAuthorizedByTemplate(document, KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE,
                 KimConstants.PermissionTemplateNames.CANCEL_DOCUMENT, user.getPrincipalId());
     }
 

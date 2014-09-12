@@ -48,24 +48,6 @@ public class MaintenanceDocumentControllerServiceImpl extends DocumentController
     private MaintenanceDocumentService maintenanceDocumentService;
 
     /**
-     * Determines whether the document needs to be set to read only based on how it is being loaded.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public ModelAndView docHandler(DocumentFormBase form) throws WorkflowException {
-        ModelAndView modelAndView = super.docHandler(form);
-
-        String command = form.getCommand();
-
-        if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && (form.getDocId() != null)) {
-            form.getView().setReadOnly(Boolean.TRUE);
-        }
-
-        return modelAndView;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

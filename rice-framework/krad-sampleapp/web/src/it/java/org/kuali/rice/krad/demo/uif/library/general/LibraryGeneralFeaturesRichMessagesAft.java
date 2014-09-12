@@ -106,6 +106,7 @@ public class LibraryGeneralFeaturesRichMessagesAft extends WebDriverLegacyITBase
         waitAndClick(By.xpath("//p[@data-parent='Demo-RichMessages-Example14'][5]/a"));
         WebDriverUtils.waitToAcceptAlert(getDriver(), WebDriverUtils.configuredImplicityWait() * 2,
                 this.getClass().toString());
+        waitForProgressLoading();
         assertJgrowlText("Sample Message Text. Data passed: none");
         waitAndClick(By.className("jGrowl-close"));
     }

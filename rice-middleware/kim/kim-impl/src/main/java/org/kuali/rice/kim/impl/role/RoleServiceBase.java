@@ -32,7 +32,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
@@ -59,8 +58,8 @@ import org.kuali.rice.kim.framework.role.RoleEbo;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
 import org.kuali.rice.kim.framework.type.KimTypeService;
 import org.kuali.rice.kim.impl.KIMPropertyConstants;
-import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
+import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
@@ -320,9 +319,10 @@ abstract class RoleServiceBase {
      * Attempts to add predicates to the query to filter based on subqueries against the
      * role member attribute data table.
      *
-     * This is used for <b>exact matches only!</b>  An "EXISTS" subquery will be created for
+     * An "EXISTS" subquery will be created for
      * each non-blank attribute value passed to this method and they will be anded together
-     * and returned to the calling code.
+     * and returned to the calling code.  The attribute value of the qualification will be compared
+     * using a "LIKE" operation.  So, any non-escaped wildcard values (* or ?) will be respected.
      *
      * @param qualification An "and" predicate containing the exists predicates if at least one
      *                      qualification has a non-blank value.  <b>null</b> if all values
@@ -338,7 +338,7 @@ abstract class RoleServiceBase {
         for (Map.Entry<String, String> qualifier : qualification.entrySet()) {
             if (StringUtils.isNotBlank(qualifier.getValue())) {
                 Predicate subQueryCriteria = PredicateFactory.and(
-                        PredicateFactory.equal("attributeValue", qualifier.getValue()),
+                        PredicateFactory.like("attributeValue", qualifier.getValue()),
                         PredicateFactory.equal("kimAttributeId", qualifier.getKey()),
                         PredicateFactory.equalsProperty("assignedToId", null, "parent.id" ));
                 Predicate existsSubquery = PredicateFactory.existsSubquery(RoleMemberAttributeDataBo.class.getName(), subQueryCriteria);

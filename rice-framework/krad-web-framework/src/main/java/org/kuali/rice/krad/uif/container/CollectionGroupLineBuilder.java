@@ -797,14 +797,6 @@ public class CollectionGroupLineBuilder implements Serializable {
                     lineDialog.setItems(newFields);
                 }
             }
-
-            List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(lineBuilderContext.getLineActions(),
-                    Action.class);
-
-            for (Action action : actions) {
-                action.setRefreshId(lineDialog.getId());
-                action.setFocusOnIdAfterSubmit(lineDialog.getId());
-            }
         }
 
         // set all collection fields and sub-collection fields to readOnly

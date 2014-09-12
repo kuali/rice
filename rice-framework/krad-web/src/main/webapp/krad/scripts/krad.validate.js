@@ -641,7 +641,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                                 data.infoTotal);
 
                         //set the window title
-                        addCountToDocumentTitle(countMessage);
+                        //addCountToDocumentTitle(countMessage);
 
                         var single = isSingularMessage(newList);
                         var pageValidationHeader;

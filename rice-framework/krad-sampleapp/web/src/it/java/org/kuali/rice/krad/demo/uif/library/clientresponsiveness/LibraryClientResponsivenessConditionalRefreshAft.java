@@ -60,7 +60,7 @@ public class LibraryClientResponsivenessConditionalRefreshAft extends WebDriverL
     protected void testClientResponsivenessConditionalRefreshRefreshAdvancedExample() throws Exception {
         waitAndClickByLinkText("Advanced Example");
         selectByName("inputField5","Apple");
-        selectByName("inputField4","Vegetables");
+        waitAndSelectByName("inputField4","Vegetables");
         waitAndSelectByName("inputField5","Beans");
     }
     

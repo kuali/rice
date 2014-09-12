@@ -66,9 +66,10 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
         waitAndClickByXpath("//button[contains(text(),'Submit')]");
         waitForTextPresent("Travel Account Type Code: Required");
         fireEvent("document.newMaintainableObject.dataObject.accountTypeCode", "focus");
-        waitForElementPresentByXpath("//div[@class='popover top in uif-tooltip-error-cs']");
+        waitForElementVisibleBy(By.xpath("//div[@class='popover top in uif-tooltip-error-cs']"));
         fireEvent("document.newMaintainableObject.dataObject.accountTypeCode", "blur");
-        if(isElementPresentByXpath("//div[@class='popover top in uif-tooltip-error-cs']")){
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode); // focus, blur just doesn't do it sometimes
+        if(isVisibleByXpath("//div[@class='popover top in uif-tooltip-error-cs']")){
             JiraAwareFailureUtils.fail("Required popup still present", this);
         }
    }

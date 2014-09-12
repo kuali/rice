@@ -2264,23 +2264,23 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     protected void testServerErrorsIT() throws Exception {
         waitAndClickByXpath("//button[contains(.,'Get Error Messages')]");
         waitForElementPresent("div[data-messages_for=\"Demo-ValidationLayout-SectionsPage\"] .uif-errorMessageItem-field");
-        waitIsVisibleByXpath("//div[@data-header_for='Demo-ValidationLayout-Section1']");
+        waitIsVisibleByXpath("//header[@data-header_for='Demo-ValidationLayout-Section1']");
         assertElementPresentByXpath("//*[@data-messageitemfor='Demo-ValidationLayout-Section1' and @class='uif-errorMessageItem']");
         assertElementPresent("div[data-role=\"InputField\"] img[alt=\"Error\"]");
         assertElementPresentByXpath("//a[contains(.,'Section 1 Title')]");
         fireMouseOverEventByXpath("//a[contains(.,'Field 1')]");
         assertElementPresent(".uif-errorMessageItem-field");
         waitAndClickByXpath("//a[contains(.,'Field 1')]");
-        waitIsVisible(".jquerybubblepopup-innerHtml");
-        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems");
-        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
+        waitIsVisible(".popover");
+        waitIsVisible(".popover-content > .uif-serverMessageItems");
+        waitIsVisible(".popover-content > .uif-serverMessageItems .uif-errorMessageItem-field");
         waitAndTypeByName("field1", "");
         fireEvent("field1", "blur");
         fireEvent("field1", "focus");
-        waitIsVisible(".jquerybubblepopup-innerHtml");
-        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
-        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems");
-        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-clientMessageItems  .uif-errorMessageItem-field");
+        waitIsVisible(".popover");
+        waitIsVisible(".popover-content > .uif-serverMessageItems .uif-errorMessageItem-field");
+        waitIsVisible(".popover-content > .uif-clientMessageItems");
+        waitIsVisible(".popover-content > .uif-clientMessageItems  .uif-errorMessageItem-field");
         waitAndTypeByName("field1", "t");
 
         for (int second = 0;; second++) {
@@ -2288,15 +2288,15 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
                 jiraAwareFail(TIMEOUT_MESSAGE);
             }
             try {
-                if (!isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems")) {
+                if (!isElementPresent(".popover-content > .uif-clientMessageItems")) {
                     break;
                 }
             } catch (Exception e) {}
             Thread.sleep(1000);
         }
 
-        waitIsVisible(".jquerybubblepopup-innerHtml > .uif-serverMessageItems .uif-errorMessageItem-field");
-        assertFalse(isElementPresent(".jquerybubblepopup-innerHtml > .uif-clientMessageItems"));
+        waitIsVisible(".popover-content > .uif-serverMessageItems .uif-errorMessageItem-field");
+        assertFalse(isElementPresent(".popover-content > .uif-clientMessageItems"));
     }
 
     protected void testServerInfoIT() throws Exception {

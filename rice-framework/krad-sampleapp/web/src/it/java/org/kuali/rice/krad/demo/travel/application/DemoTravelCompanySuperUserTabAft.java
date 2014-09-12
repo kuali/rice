@@ -19,6 +19,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -126,6 +127,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         travelAccountCreateDocument();
         waitAndClickByLinkText("Super User Actions");
         waitAndTypeByName("document.superUserAnnotation","Reason for approval");
+        assertElementPresent(By.xpath("//section[@id = 'Uif-SuperUserActionRequests']//a[contains(text(), 'One, User')]"));
         waitAndClickButtonByText(APPROVE);
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 2);
         waitForTextPresent("was superuser approved.");
@@ -136,6 +138,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         travelAccountCreateDocument();
         waitAndClickByLinkText("Super User Actions");
         waitAndTypeByName("document.superUserAnnotation","Reason For disapproval");
+        assertElementPresent(By.xpath("//section[@id = 'Uif-SuperUserActionRequests']//a[contains(text(), 'One, User')]"));
         waitAndClickButtonByText(DISAPPROVE);
         waitForTextPresent("was superuser disapproved.");
         reloadAndCheckDocStatus("DISAPPROVED");

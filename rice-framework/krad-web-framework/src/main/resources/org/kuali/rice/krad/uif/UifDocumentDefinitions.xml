@@ -345,9 +345,9 @@
           <property name="items">
             <list>
               <bean parent="Uif-DataField" p:propertyName="actionRequested" p:label="Action"/>
-              <bean parent="Uif-DataField" p:propertyName="principalId" p:label="Requested Of" p:render="@{#lp.userRequest}"/>
-              <bean parent="Uif-DataField" p:propertyName="groupId" p:label="Requested Of" p:render="@{#lp.groupRequest}"/>
-              <bean parent="Uif-DataField" p:propertyName="roleName" p:label="Requested Of" p:render="@{#lp.roleRequest}"/>
+              <bean parent="Uif-UserLinkField" p:principalId="@{#lp.principalId}" p:label="Requested Of" p:render="@{#lp.userRequest}"/>
+              <bean parent="Uif-GroupLinkField" p:groupId="@{#lp.groupId}" p:label="Requested Of" p:render="@{#lp.groupRequest}"/>
+              <bean parent="Uif-RoleLinkField" p:roleId="@{#lp.roleName}" p:label="Requested Of" p:render="@{#lp.roleRequest}"/>
               <bean parent="Uif-DataField" p:propertyName="dateCreated" p:label="Date/Time"/>
               <bean parent="Uif-DataField" p:propertyName="annotation" p:label="Annotation"/>
             </list>

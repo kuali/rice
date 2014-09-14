@@ -67,13 +67,13 @@ public class LibraryWidgetsHelpAft extends LibraryBase {
     	selectByName("exampleShown","External Help");
     	waitAndClickByXpath("//div[@id='Demo-Help-Section3_disclosureContent']/div/div/div/button[@title='Help for Field Label']");
     	switchToWindow("Kuali Foundation");
-    	switchToWindow("Kuali ::");
+    	switchToWindow("Kuali");
     	waitAndClickByXpath("//div[@id='Demo-Help-Section3_disclosureContent']/div[2]/div/div/button[@title='Help for Field Label']");
     	switchToWindow("Kuali Foundation");
-    	switchToWindow("Kuali ::");
+    	switchToWindow("Kuali");
     	waitAndClickByXpath("//div[@id='Demo-Help-Section3_disclosureContent']/div[3]/div/div/button[@title='Help for Field Label']");
     	switchToWindow("Kuali Foundation");
-    	switchToWindow("Kuali ::");
+    	switchToWindow("Kuali");
     }
     
     private void testAllHelp() throws Exception {

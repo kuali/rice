@@ -302,7 +302,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     /**
      * Kuali :: Rich Messages
      */
-    public static final String RICH_MESSAGES_WINDOW_TITLE = "Kuali :: Rich Messages";
+    public static final String RICH_MESSAGES_WINDOW_TITLE = "Kuali Rich Messages";
 
     /**
      * //div[contains(div,'Document was successfully saved.')]
@@ -1331,6 +1331,25 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         return params;
     }
 
+    protected void testDemoCustomRuleEventAndDocumentEventMethodInvocationAccountTypeChec() throws InterruptedException {
+        String randomCode = org.apache.commons.lang3.RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        waitAndTypeByName("document.documentHeader.documentDescription","Travel Account Maintenance New Test Document " + randomCode);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name","Test Account Name " + randomCode);
+        waitAndClickByXpath("//button[contains(text(),'Submit')]");
+        assertTravelAccountTypeCodeRequired();
+    }
+
+    protected void assertTravelAccountTypeCodeRequired() throws InterruptedException {
+        waitForTextPresent("Travel Account Type Code: Required");
+        fireEvent("document.newMaintainableObject.dataObject.accountTypeCode", "focus");
+        waitForElementVisibleBy(By.xpath("//div[@class='popover top in uif-tooltip-error-cs']"));
+        fireEvent("document.newMaintainableObject.dataObject.accountTypeCode", "blur");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number", "a"); // focus, blur just doesn't do it sometimes
+        if(isVisibleByXpath("//div[@class='popover top in uif-tooltip-error-cs']")){
+            JiraAwareFailureUtils.fail("Required popup still present", this);
+        }
+    }
 
     protected void testDocTypeLookup() throws Exception {
         selectFrameIframePortlet();

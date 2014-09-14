@@ -43,22 +43,22 @@ public class LibraryClientResponsivenessEnterKeySupportAft extends WebDriverLega
 
     protected void testClientResponsivenessEnterKeySupportDefaultViewKey() throws Exception {
     	waitAndClickByXpath("//section[@id='Demo-EnterKeySupport-Example1']/a");
-    	switchToWindow("Kuali :: Default View Key");
+    	switchToWindow("Kuali Default View Key");
     	pressEnterByName("field1");
     	acceptAlertIfPresent();
-    	switchToWindow("Kuali ::");
+    	switchToWindow("Kuali");
     }
     
     protected void testClientResponsivenessEnterKeySupportDefaultPageKey() throws Exception {
     	waitAndClickByXpath("//a[@id='Demo-EnterKeySupport-Example2_tab']");
     	waitAndClickByXpath("//section[@id='Demo-EnterKeySupport-Example2']/a");
-    	switchToWindow("Kuali :: Default Page Key");
+    	switchToWindow("Kuali Default Page Key");
     	pressEnterByName("field1");
     	acceptAlertIfPresent();
     	waitAndClickByXpath("//a[@name='Demo-EnterKeySupport-Example2-Page2']");
     	pressEnterByName("field2");
     	acceptAlertIfPresent();
-    	switchToWindow("Kuali ::");
+    	switchToWindow("Kuali");
     }
     
     protected void testClientResponsivenessEnterKeySupportDefaultGroupKey() throws Exception {

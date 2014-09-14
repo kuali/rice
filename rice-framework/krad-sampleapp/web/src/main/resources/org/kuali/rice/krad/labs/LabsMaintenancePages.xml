@@ -360,11 +360,15 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR6C2" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of Inactivation Blocking"
+              p:instructionalText="Inactivation blocking is the ability of the maintenance document framework to prevent
+              the inactivation of a Business Object if there is another (active) business object that references it.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Traveler Detail Maintenance Record holds a reference to Traveler Type and is active."
+                    p:href="maintenance?methodToCall=maintenanceEdit&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerDetail&amp;id=1"/>
+              <bean parent="Uif-Link" p:linkText="Traveler Type Maintenance Record cannot be inactivated since it is referenced by Traveler Detail."
+                    p:href="maintenance?methodToCall=maintenanceEdit&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelerType&amp;code=EMP"/>
             </list>
           </property>
         </bean>

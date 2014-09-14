@@ -46,6 +46,13 @@
         <ref bean="TravelerDetail-driversLicenseNumber" />
         <ref bean="TravelerDetail-liabilityInsurance" />
         <ref bean="TravelerDetail-citizenship" />
+        <ref bean="TravelerDetail-active" />
+      </list>
+    </property>
+    <property name="inactivationBlockingDefinitions">
+      <list>
+        <bean parent="InactivationBlockingDefinition" p:blockedReferencePropertyName="travelerType" p:blockedBusinessObjectClass="edu.sampleu.travel.dataobject.TravelerType"
+              p:blockingReferenceBusinessObjectClass="edu.sampleu.travel.dataobject.TravelerDetail"/>
       </list>
     </property>
   </bean>
@@ -323,4 +330,19 @@
     </property>
   </bean>
 
+  <bean id="TravelerDetail-active" parent="TravelerDetail-active-parentBean" />
+  <bean id="TravelerDetail-active-parentBean" parent="AttributeDefinition">
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter" />
+    <property name="name" value="active" />
+    <property name="label" value="Traveler Detail Active Indicator" />
+    <property name="shortLabel" value="Traveler Detail Active" />
+    <property name="summary" value="Whether Active or Inactive" />
+    <property name="description" value="Whether Active or Inactive" />
+    <property name="controlField">
+      <bean parent="Uif-CheckboxControl"/>
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
+    </property>
+  </bean>
 </beans>

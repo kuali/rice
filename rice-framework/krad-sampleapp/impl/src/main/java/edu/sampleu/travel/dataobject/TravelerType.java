@@ -22,9 +22,12 @@ import javax.persistence.Table;
 
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
 
 @Entity
 @Table(name="TRVL_TRAVELER_TYP_T")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
 public class TravelerType extends DataObjectBase implements MutableInactivatable {
 	private static final long serialVersionUID = 1L;
 

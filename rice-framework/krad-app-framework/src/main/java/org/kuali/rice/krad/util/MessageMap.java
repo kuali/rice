@@ -204,6 +204,50 @@ public class MessageMap implements Serializable {
     }
 
     /**
+     * Creates error message given the error key and parameters and adds it to the message map.
+     *
+     * @param propertyName name of the property associated with the error
+     * @param errorKey   message key for the error
+     * @param escapeHtmlMessageParameters  whether to escape HTML characters in the message parameters
+     * @param errorParameters   zero or more parameters for the message text
+     * @return TypeArrayList
+     */
+    public List<ErrorMessage> putError(String propertyName, String errorKey, Boolean escapeHtmlMessageParameters, String... errorParameters) {
+        ErrorMessage message = new ErrorMessage(errorKey, errorParameters);
+        return putMessageInMap(errorMessages, propertyName, message, true, escapeHtmlMessageParameters);
+    }
+
+    /**
+     * Creates error message given the message key and parameters and adds it to the warning message map.
+     *
+     * @param propertyName name of the property associated with the warning
+     * @param messageKey   message key for the error
+     * @param escapeHtmlMessageParameters  whether to escape HTML characters in the message parameters
+     * @param messageParameters   zero or more parameters for the message text
+     * @return TypeArrayList
+     */
+    public List<ErrorMessage> putWarning(String propertyName, String messageKey, Boolean escapeHtmlMessageParameters,
+            String... messageParameters) {
+        ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
+        return putMessageInMap(warningMessages, propertyName, message, true, escapeHtmlMessageParameters);
+    }
+
+    /**
+     * Creates error message given the message key and parameters and adds it to the info message map.
+     *
+     * @param propertyName name of the property associated with the info
+     * @param messageKey   message key for the info
+     * @param escapeHtmlMessageParameters  whether to escape HTML characters in the message parameters
+     * @param messageParameters   zero or more parameters for the message text
+     * @return TypeArrayList
+     */
+    public List<ErrorMessage> putInfo(String propertyName, String messageKey, Boolean escapeHtmlMessageParameters,
+            String... messageParameters) {
+        ErrorMessage message = new ErrorMessage(messageKey, messageParameters);
+        return putMessageInMap(infoMessages, propertyName, message, true, escapeHtmlMessageParameters);
+    }
+
+    /**
      * Adds a growl (using the default theme) to the message map with the given title and message
      *
      * @param growlTitle - title for the growl

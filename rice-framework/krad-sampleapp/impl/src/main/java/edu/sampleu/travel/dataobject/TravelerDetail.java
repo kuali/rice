@@ -92,6 +92,8 @@ public class TravelerDetail extends DataObjectBase implements MutableInactivatab
     protected String travelerTypeCode;
 //    @ManyToOne
 //    @JoinColumn(name = "traveler_typ_cd", insertable=false, updatable=false)
+
+    @Relationship(foreignKeyFields="travelerTypeCode")
     @Transient
     protected TravelerType travelerType;
     @Column(name = "customer_num", length = 40, nullable = true)

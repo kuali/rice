@@ -1,0 +1,110 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:dd="http://rice.kuali.org/dd"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://rice.kuali.org/dd http://rice.kuali.org/dd/dd.xsd">
+
+  <bean id="TravelerType" parent="TravelerType-parentBean" />
+  <bean id="TravelerType-parentBean" abstract="true" parent="DataObjectEntry">
+    <property name="dataObjectClass" value="edu.sampleu.travel.dataobject.TravelerType" />
+    <property name="titleAttribute" value="code" />
+    <property name="objectLabel" value="Traveler Type" />
+    <property name="attributes">
+      <list>
+        <ref bean="TravelerType-code" />
+        <ref bean="TravelerType-sourceCode" />
+        <ref bean="TravelerType-name" />
+        <ref bean="TravelerType-advances" />
+        <ref bean="TravelerType-active" />
+      </list>
+    </property>
+
+
+  </bean>
+  <bean id="TravelerType-code" parent="TravelerType-code-parentBean" />
+  <bean id="TravelerType-code-parentBean" parent="AttributeDefinition">
+    <property name="name" value="code" />
+    <property name="label" value="Code" />
+    <property name="shortLabel" value="Code" />
+    <property name="maxLength" value="3" />
+    <property name="required" value="true" />
+    <property name="summary" value="Code" />
+    <property name="description" value="Code" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="50"/>
+    </property>
+    <property name="validCharactersConstraint">
+      <bean  parent="AlphaNumericPatternConstraint"/>
+    </property>
+  </bean>
+
+ <bean id="TravelerType-sourceCode" parent="TravelerType-sourceCode-parentBean" />
+  <bean id="TravelerType-sourceCode-parentBean" parent="AttributeDefinition">
+    <property name="name" value="sourceCode" />
+    <property name="label" value="Source Code" />
+    <property name="shortLabel" value="Source Code" />
+    <property name="maxLength" value="255" />
+    <property name="summary" value="Source Code" />
+    <property name="description" value="Source Code" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="255"/>
+    </property>
+  </bean>
+
+  <bean id="TravelerType-name" parent="TravelerType-name-parentBean" />
+  <bean id="TravelerType-name-parentBean" parent="AttributeDefinition">
+    <property name="name" value="name" />
+    <property name="label" value="Name" />
+    <property name="shortLabel" value="Name" />
+    <property name="maxLength" value="255" />
+    <property name="summary" value="Name" />
+    <property name="description" value="Name" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="20"/>
+    </property>
+  </bean>
+
+  <bean id="TravelerType-advances" parent="TravelerType-advances-parentBean" />
+  <bean id="TravelerType-advances-parentBean" parent="AttributeDefinition">
+    <property name="name" value="advances" />
+    <property name="label" value="Advances" />
+    <property name="shortLabel" value="Advances" />
+    <property name="maxLength" value="40" />
+    <property name="required" value="false" />
+    <property name="summary" value="Advances" />
+    <property name="description" value="Advances" />
+    <property name="controlField">
+      <bean parent="Uif-TextControl" p:size="40"/>
+    </property>
+  </bean>
+
+  <bean id="TravelerType-active" parent="TravelerType-active-parentBean" />
+  <bean id="TravelerType-active-parentBean" parent="AttributeDefinition">
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter" />
+    <property name="name" value="active" />
+    <property name="label" value="Traveler Type Active Indicator" />
+    <property name="shortLabel" value="Traveler Type Active" />
+    <property name="summary" value="Whether Active or Inactive" />
+    <property name="description" value="Whether Active or Inactive" />
+    <property name="controlField">
+      <bean parent="Uif-CheckboxControl"/>
+    </property>
+    <property name="validCharactersConstraint">
+      <bean parent="AnyCharacterPatternConstraint"/>
+    </property>
+  </bean>
+</beans>

@@ -56,6 +56,7 @@ import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.DataObjectAuthorizationService;
 import org.kuali.rice.krad.service.DictionaryValidationService;
 import org.kuali.rice.krad.service.InactivationBlockingDetectionService;
+import org.kuali.rice.krad.service.InactivationBlockingDisplayService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.ErrorMessage;
@@ -302,55 +303,52 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         if (!getLegacyDataAdapter().hasPrimaryKeyFieldValues(newDataObject)) {
             throw new RuntimeException("Maintenance document did not have all primary key values filled in.");
         }
-        Properties parameters = new Properties();
-        parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE,
-                inactivationBlockingMetadata.getBlockedDataObjectClass().getName());
-        parameters.put(KRADConstants.DISPATCH_REQUEST_PARAMETER,
-                KRADConstants.METHOD_DISPLAY_ALL_INACTIVATION_BLOCKERS);
 
-        List<String> keys = getLegacyDataAdapter().listPrimaryKeyFieldNames(newDataObject.getClass());
+        // Even though we found a blocking record in the passed in InactivationBlockingMetada,
+        // we need to look at all inactivationBlockingMetadata associated dataObjectClass for error display
+        Class boClass = document.getNewMaintainableObject().getDataObjectClass();
+        Set<InactivationBlockingMetadata> inactivationBlockingMetadatas =
+                getDataDictionaryService().getAllInactivationBlockingDefinitions(boClass);
 
-        // build key value url parameters used to retrieve the business object
-        for (String keyName : keys) {
+        StringBuffer errorMessage = new StringBuffer();
 
-            Object keyValue = null;
-            if (keyName != null) {
-                keyValue = getDataObjectService().wrap(newDataObject).getPropertyValueNullSafe(keyName);
-            }
+        if (inactivationBlockingMetadatas != null ) {
 
-            if (keyValue == null) {
-                keyValue = "";
-            } else if (keyValue instanceof java.sql.Date) { //format the date for passing in url
-                if (Formatter.findFormatter(keyValue.getClass()) != null) {
-                    Formatter formatter = Formatter.getFormatter(keyValue.getClass());
-                    keyValue = (String) formatter.format(keyValue);
+            InactivationBlockingDisplayService inactivationBlockingDisplayService = KRADServiceLocatorWeb
+                    .getInactivationBlockingDisplayService();
+
+            for (InactivationBlockingMetadata blockingMetadata : inactivationBlockingMetadatas) {
+
+                String blockingLabel = getDataDictionaryService().getDataDictionary().getDataObjectEntry(inactivationBlockingMetadata.getBlockingDataObjectClass().getName()).getObjectLabel();
+
+                String relationshipLabel = inactivationBlockingMetadata.getRelationshipLabel();
+                String displayLabel;
+
+                if (StringUtils.isEmpty(relationshipLabel)) {
+
+                    displayLabel = blockingLabel;
+                } else {
+                    displayLabel = blockingLabel + " (" + relationshipLabel + ")";
                 }
-            } else {
-                keyValue = keyValue.toString();
-            }
+                List<String> blockerObjectList = inactivationBlockingDisplayService.displayAllBlockingRecords(newDataObject,
+                        inactivationBlockingMetadata);
 
-            // Encrypt value if it is a secure field
-            if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(
-                    inactivationBlockingMetadata.getBlockedDataObjectClass(), keyName)) {
-                try {
-                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                        keyValue = CoreApiServiceLocator.getEncryptionService().encrypt(keyValue);
+                if (!blockerObjectList.isEmpty()) {
+                    errorMessage.append("<h4>"+blockingLabel+"</h4>");
+                    for(String blockerKey : blockerObjectList) {
+                        errorMessage.append("<li>");
+                        errorMessage.append(blockerKey);
+                        errorMessage.append("</li>");
                     }
-                } catch (GeneralSecurityException e) {
-                    LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
-                    throw new RuntimeException(e);
                 }
+
+                errorMessage.append("<br>");
             }
-
-            parameters.put(keyName, keyValue);
         }
-
-        String blockingUrl = UrlFactory.parameterizeUrl(KRADConstants.DISPLAY_ALL_INACTIVATION_BLOCKERS_ACTION,
-                parameters);
 
         // post an error about the locked document
         GlobalVariables.getMessageMap().putError(KRADConstants.GLOBAL_ERRORS,
-                RiceKeyConstants.ERROR_INACTIVATION_BLOCKED, blockingUrl);
+                RiceKeyConstants.ERROR_INACTIVATION_BLOCKED, false, errorMessage.toString());
     }
 
     /**

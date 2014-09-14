@@ -4181,6 +4181,18 @@
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
+    <table name="TRVL_TRAVELER_TYP_T">
+        <column name="CODE" primaryKey="true" size="45" type="VARCHAR"/>
+        <column name="SRC_CODE" size="45" type="VARCHAR"/>
+        <column name="NM" size="45" type="VARCHAR"/>
+        <column name="ADVANCES_IND" size="45" type="VARCHAR"/>
+        <column name="ACTV_IND" size="45" type="VARCHAR"/>
+        <column name="OBJ_ID" size="45" type="VARCHAR"/>
+        <column name="VER_NBR" type="DECIMAL"/>
+        <unique name="TRVL_TRAVELER_TYP_T_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
     <table name="TRV_ACCT">
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>
@@ -4304,7 +4316,7 @@
     <sequence name="KREW_ACTN_RQST_S" nextval="2369"/>
     <sequence name="KREW_ACTN_TKN_S" nextval="2329"/>
     <sequence name="KREW_ATTR_DEFN_S" nextval="10000"/>
-    <sequence name="KREW_DOC_HDR_S" nextval="3044"/>
+    <sequence name="KREW_DOC_HDR_S" nextval="3045"/>
     <sequence name="KREW_DOC_LNK_S" nextval="2000"/>
     <sequence name="KREW_DOC_NTE_S" nextval="2020"/>
     <sequence name="KREW_DOC_TYP_ATTR_S" nextval="2011"/>
@@ -4316,8 +4328,8 @@
     <sequence name="KREW_PPL_FLW_MBR_S" nextval="10000"/>
     <sequence name="KREW_PPL_FLW_S" nextval="10000"/>
     <sequence name="KREW_RSP_S" nextval="2065"/>
-    <sequence name="KREW_RTE_NODE_CFG_PARM_S" nextval="2638"/>
-    <sequence name="KREW_RTE_NODE_S" nextval="2984"/>
+    <sequence name="KREW_RTE_NODE_CFG_PARM_S" nextval="2643"/>
+    <sequence name="KREW_RTE_NODE_S" nextval="2986"/>
     <sequence name="KREW_RTE_TMPL_S" nextval="1645"/>
     <sequence name="KREW_RULE_EXPR_S" nextval="2002"/>
     <sequence name="KREW_RULE_TMPL_OPTN_S" nextval="2020"/>

@@ -261,6 +261,7 @@ public class LibraryFieldsUserLinkAft extends LibraryFieldsKimLinkBase {
         Thread.sleep(2000);
         waitAndClickByName("testPrincipalId4");
 
+        waitForProgressLoading();
         exampleDiv = waitForExampleElementById(DEMO_PAGE_ID7);
         try {
             field = findElement(By.xpath("//section[@id='" + DEMO_PAGE_ID7 + "']/div[@data-label='" +

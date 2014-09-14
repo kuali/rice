@@ -59,18 +59,21 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     	//Search By Number
     	waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_NAME,"BALFTYHTB");
     	waitAndClickSearchByText();
+        waitForProgressLoading();
     	waitForTextPresent("BALFTYHTB");
         waitAndClickClearValues();
 
     	//Search By Name
     	waitAndTypeByName(TRAVEL_ACCOUNT_NAME,"Travel Account 2");
         waitAndClickSearchByText();
+        waitForProgressLoading();
     	waitForTextPresent("Travel Account 2");
         waitAndClickClearValues();
     	
     	//Search By Principal Name
     	waitAndTypeByName(PRINCIPAL_NAME,"fred");
         waitAndClickSearchByText();
+        waitForProgressLoading();
     	waitForTextPresent("Travel Account 1");
         waitAndClickClearValues();
     	
@@ -78,12 +81,14 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     	waitAndTypeByName("lookupCriteria[rangeLowerBoundKeyPrefix_createDate]","06/01/2000");
     	waitAndTypeByName("lookupCriteria[createDate]","06/01/2050");
         waitAndClickSearchByText();
+        waitForProgressLoading();
     	waitForTextPresent("Travel Account");
     }
     
     protected void testBasicLookUpSearchEditSave() throws InterruptedException {
     	//Search 
         waitAndClickSearchByText();
+        waitForProgressLoading();
     	waitAndClickByLinkText("edit");
     	
     	//Edit & Save

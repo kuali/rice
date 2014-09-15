@@ -112,6 +112,8 @@ public class DemoTravelCompanyCompletionRequestAft extends WebDriverLegacyITBase
         waitAndClickByLinkText(SUPER_USER_ACTIONS);
         verifyButtons();
         waitAndClickButtonByText(COMPLETE);
+        waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 8);
+
         ReloadAndCheckDocStatus(FINAL);
     }
 
@@ -134,6 +136,8 @@ public class DemoTravelCompanyCompletionRequestAft extends WebDriverLegacyITBase
         verifyButtons();
 
         waitAndClickButtonByText(COMPLETE);
+        waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 8);
+
         ReloadAndCheckDocStatus(FINAL);
     }
 

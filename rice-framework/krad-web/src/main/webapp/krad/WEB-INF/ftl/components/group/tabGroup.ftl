@@ -23,17 +23,19 @@
     <#local tabPanes>
         <div class="${group.tabsWidget.tabContentClass}">
             <#list group.items as item>
-                <#if group.defaultActiveTabId?has_content && group.defaultActiveTabId == item.id>
-                    <div id="${item.id}_tabPanel" class="tab-pane active"
-                         role="tabpanel" aria-hidden="false" tabindex="0"
-                         aria-labelledby="${item.id}_tab" data-tabwrapperfor="${item.id}" data-type="TabWrapper" >
-                        <@krad.template component=item/>
-                    </div>
-                <#else>
-                    <div id="${item.id}_tabPanel" class="tab-pane" role="tabpanel" aria-hidden="true" tabindex="-1"
-                         aria-labelledby="${item.id}_tab" data-tabwrapperfor="${item.id}" data-type="TabWrapper" >
-                        <@krad.template component=item/>
-                    </div>
+                <#if item.render>
+                    <#if group.defaultActiveTabId?has_content && group.defaultActiveTabId == item.id>
+                        <div id="${item.id}_tabPanel" class="tab-pane active"
+                             role="tabpanel" aria-hidden="false" tabindex="0"
+                             aria-labelledby="${item.id}_tab" data-tabwrapperfor="${item.id}" data-type="TabWrapper" >
+                            <@krad.template component=item/>
+                        </div>
+                    <#else>
+                        <div id="${item.id}_tabPanel" class="tab-pane" role="tabpanel" aria-hidden="true" tabindex="-1"
+                             aria-labelledby="${item.id}_tab" data-tabwrapperfor="${item.id}" data-type="TabWrapper" >
+                            <@krad.template component=item/>
+                        </div>
+                    </#if>
                 </#if>
             </#list>
         </div>
@@ -46,22 +48,24 @@
         <!-- Nav tabs -->
         <ul id="${group.id}_tabList" class="${group.tabsWidget.tabNavClass}" role="tablist">
             <#list group.items as item>
-                <#if group.defaultActiveTabId?has_content && group.defaultActiveTabId == item.id>
-                    <li data-tabfor="${item.id}" class="active" role="presentation">
-                        <a id="${item.id}_tab" href="#${item.id}_tabPanel" role="tab" tabindex="0"
-                           aria-controls="${item.id}_tabPanel" aria-expanded="true"
-                           aria-selected="true" data-toggle="tab">
-                            ${(item.header.headerText)}
-                        </a>
-                    </li>
-                <#else>
-                    <li data-tabfor="${item.id}" role="presentation">
-                        <a id="${item.id}_tab" href="#${item.id}_tabPanel" role="tab" tabindex="-1"
-                           aria-controls="${item.id}_tabPanel" aria-expanded="false"
-                           aria-selected="false" data-toggle="tab">
-                            ${(item.header.headerText)}
-                        </a>
-                    </li>
+                <#if item.render>
+                    <#if group.defaultActiveTabId?has_content && group.defaultActiveTabId == item.id>
+                        <li data-tabfor="${item.id}" class="active" role="presentation">
+                            <a id="${item.id}_tab" href="#${item.id}_tabPanel" role="tab" tabindex="0"
+                               aria-controls="${item.id}_tabPanel" aria-expanded="true"
+                               aria-selected="true" data-toggle="tab">
+                                ${(item.header.headerText)}
+                            </a>
+                        </li>
+                    <#else>
+                        <li data-tabfor="${item.id}" role="presentation">
+                            <a id="${item.id}_tab" href="#${item.id}_tabPanel" role="tab" tabindex="-1"
+                               aria-controls="${item.id}_tabPanel" aria-expanded="false"
+                               aria-selected="false" data-toggle="tab">
+                                ${(item.header.headerText)}
+                            </a>
+                        </li>
+                    </#if>
                 </#if>
             </#list>
         </ul>

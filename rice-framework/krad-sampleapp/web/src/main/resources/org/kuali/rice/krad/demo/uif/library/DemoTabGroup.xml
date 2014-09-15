@@ -88,6 +88,14 @@
                   </list>
                 </property>
               </bean>
+              <!-- if render is false, tab will not render -->
+              <bean parent="Uif-VerticalBoxSection" p:headerText="Zeta" p:render="@{booleanField1}">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-Label" p:labelText="Content within the Zeta tab" p:renderColon="false"/>
+                  </list>
+                </property>
+              </bean>
             </list>
           </property>
           <property name="tabsWidget.position" value="BOTTOM"/>

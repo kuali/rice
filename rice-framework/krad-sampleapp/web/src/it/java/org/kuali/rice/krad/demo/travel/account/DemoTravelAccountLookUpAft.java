@@ -215,8 +215,12 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     		waitAndClickButtonByText(SEARCH);
         	waitAndClickByLinkText("edit");
         	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
-            submitSuccessfully();
-    	}
+
+            waitAndClickSubmitByText();
+            waitAndClickConfirmationOk();
+            waitForProgressLoading();
+            // there should be a doc error at this point
+        }
 
         waitForTextPresent("This document cannot be Saved or Routed");
 

@@ -717,29 +717,27 @@ function isEmpty(str) {
 }
 
 /**
- * Appends the message count to the document title (window title)
+ * Appends the message count to the document title (window title) 
+ * 
+ * First look to see if there is a error/warning/info message already 
+ * in the tab title, in the event that the there is no error/warning/info 
+ * at all add the message to the title. If there is an error/warning/info 
+ * message and then either update the new message or remove the error and 
+ * the dash. 
  *
  * @param countMessage the new message to append
  */
 function addCountToDocumentTitle(countMessage, errorTotal, warningTotal, infoTotal) {
-	/* look to see if there is a error/warning/info message */
 	var tokenIndex = document.title.lastIndexOf(" - ");
     if (errorTotal > 0  || warningTotal > 0 || infoTotal > 0) {
-    	/* in the event that the error/warning/info is made worse update the error*/
         if (tokenIndex > -1 && !isEmpty(countMessage)) {
             document.title = document.title.substr(0, tokenIndex) + " - " + countMessage;
-        } 
-    	/* in the event that the error/warning/info is corrected get rid of error */
-        else if (tokenIndex > -1 && isEmpty(countMessage)) { 
+        } else if (tokenIndex > -1 && isEmpty(countMessage)) { 
             document.title = document.title.substr(0, tokenIndex);
-        } 
-    	/* in the event that the error/warning/info did not exist before but has at least one now */
-        else if (!isEmpty(countMessage)) { 
+        } else if (!isEmpty(countMessage)) { 
             document.title = document.title + " - " + countMessage;
         }
-    } 
-	/* in the event that the there is no error/warning/info at all */
-    else if (!isEmpty(countMessage)) {
+    } else if (!isEmpty(countMessage)) {
         document.title = document.title + " - " + countMessage;
     }
 }

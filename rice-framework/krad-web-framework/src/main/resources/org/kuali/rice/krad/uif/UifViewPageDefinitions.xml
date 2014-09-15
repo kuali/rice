@@ -116,7 +116,7 @@
   <bean id="Uif-FormView" abstract="true" parent="Uif-FormView-parentBean"/>
   <bean id="Uif-FormView-parentBean" abstract="true"
         class="org.kuali.rice.krad.uif.view.FormView" parent="Uif-View">
-    <property name="applicationTitleText" value="Kuali @{#view.headerText ne null ? #view.headerText : ''}"/>
+    <property name="applicationTitleText" value="Kuali @{#view.headerText ne null ? ':: ' + #view.headerText : ''}"/>
     <property name="cssClasses">
       <list>
         <value>uif-formView</value>

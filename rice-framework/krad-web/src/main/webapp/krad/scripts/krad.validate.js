@@ -637,11 +637,10 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                 if (pageLevel) {
                     if (newList.children().length) {
 
-                        var countMessage = generateCountString(data.errorTotal, data.warningTotal,
-                                data.infoTotal);
+                        var countMessage = generateCountString(data.errorTotal, data.warningTotal, data.infoTotal);
 
                         //set the window title
-                        //addCountToDocumentTitle(countMessage);
+                        addCountToDocumentTitle(countMessage, data.errorTotal, data.warningTotal, data.infoTotal);
 
                         var single = isSingularMessage(newList);
                         var pageValidationHeader;
@@ -709,24 +708,40 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
 }
 
 /**
+ * Convience method for checking if a string is undefined, blank, or empty
+ *
+ * @param str String for testing
+ */
+function isEmpty(str) {
+    return (!str || 0 === str.length);
+}
+
+/**
  * Appends the message count to the document title (window title)
  *
  * @param countMessage the new message to append
  */
-function addCountToDocumentTitle(countMessage) {
-
-    if (document.title.indexOf(getMessage(kradVariables.MESSAGE_TOTAL_ERROR, null, null) > 0)
-            || document.title.indexOf(getMessage(kradVariables.MESSAGE_TOTAL_WARNING, null, null) > 0)
-            || document.title.indexOf(getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null) > 0)) {
-
-        var tokenIndex = document.title.lastIndexOf(" - ");
-        if (tokenIndex > -1) {
+function addCountToDocumentTitle(countMessage, errorTotal, warningTotal, infoTotal) {
+	/* look to see if there is a error/warning/info message */
+	var tokenIndex = document.title.lastIndexOf(" - ");
+    if (errorTotal > 0  || warningTotal > 0 || infoTotal > 0) {
+    	/* in the event that the error/warning/info is made worse update the error*/
+        if (tokenIndex > -1 && !isEmpty(countMessage)) {
             document.title = document.title.substr(0, tokenIndex) + " - " + countMessage;
-            return;
+        } 
+    	/* in the event that the error/warning/info is corrected get rid of error */
+        else if (tokenIndex > -1 && isEmpty(countMessage)) { 
+            document.title = document.title.substr(0, tokenIndex);
+        } 
+    	/* in the event that the error/warning/info did not exist before but has at least one now */
+        else if (!isEmpty(countMessage)) { 
+            document.title = document.title + " - " + countMessage;
         }
+    } 
+	/* in the event that the there is no error/warning/info at all */
+    else if (!isEmpty(countMessage)) {
+        document.title = document.title + " - " + countMessage;
     }
-
-    document.title = document.title + " - " + countMessage;
 }
 
 /**

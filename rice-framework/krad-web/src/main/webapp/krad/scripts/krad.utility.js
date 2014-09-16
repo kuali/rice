@@ -854,7 +854,7 @@ function collectionLineChanged(inputField, highlightItemClass) {
     var innerLayout = jQuery(inputField).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
             + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
 
-    if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
+    if (innerLayout && innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         var row = jQuery(inputField).closest('tr');
         var enabled = row.find('.dirty').length > 0;
         var saveButton = row.find('.' + kradVariables.SAVE_LINE_ACTION_CLASS);

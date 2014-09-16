@@ -49,6 +49,7 @@ import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.krad.bo.BusinessObject;
 import org.kuali.rice.krad.bo.InactivatableFromTo;
 import org.kuali.rice.krad.bo.PersistableBusinessObject;
+import org.kuali.rice.krad.bo.PersistableBusinessObjectBaseAdapter;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.krad.dao.DocumentDao;
 import org.kuali.rice.krad.dao.LookupDao;
@@ -272,7 +273,7 @@ public class KNSLegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public boolean isProxied(Object object) {
-    	if ( object == null || !(object instanceof BusinessObject) ) {
+    	if (object == null || (!(object instanceof BusinessObject) && !(object instanceof PersistableBusinessObjectBaseAdapter))) {
     		return false;
     	}
 		return persistenceService.isProxied(object);

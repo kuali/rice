@@ -302,7 +302,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     /**
      * Kuali :: Rich Messages
      */
-    public static final String RICH_MESSAGES_WINDOW_TITLE = "Kuali Rich Messages";
+    public static final String RICH_MESSAGES_WINDOW_TITLE = "Kuali :: Rich Messages";
 
     /**
      * //div[contains(div,'Document was successfully saved.')]

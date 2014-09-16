@@ -92,6 +92,11 @@
         <bean parent="Uif-DocumentCreateDate"/>
       </list>
     </property>
+    <property name="layoutManager">
+      <bean parent="Uif-GridLayoutBase"
+            p:numberOfColumns="4"
+            p:applyDefaultCellWidths="false"/>
+    </property>
     <property name="propertyReplacers">
       <list>
         <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="items"
@@ -106,12 +111,15 @@
             </list>
           </property>
         </bean>
+        <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="layoutManager"
+              p:condition="@{document.documentHeader.documentTemplateNumber != null}">
+          <property name="replacement">
+            <bean parent="Uif-GridLayoutBase"
+                  p:numberOfColumns="6"
+                  p:applyDefaultCellWidths="false"/>
+          </property>
+        </bean>
       </list>
-    </property>
-    <property name="layoutManager">
-      <bean parent="Uif-GridLayoutBase"
-            p:numberOfColumns="@{document.documentHeader.documentTemplateNumber == null ? 4 : 6}"
-            p:applyDefaultCellWidths="false"/>
     </property>
     <property name="fieldBindingObjectPath" value="document"/>
     <property name="validationMessages.displayMessages" value="false"/>

@@ -17,6 +17,7 @@ package org.kuali.rice.kew.actions;
 
 import mocks.MockEmailNotificationService;
 import org.apache.cxf.common.util.StringUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -256,7 +257,9 @@ public class BlanketApproveTest extends KEWTestCase {
      *
      * @throws Exception
      */
-    @Test public void testChainedBlanketApproval() throws Exception {
+    @Ignore
+    @Test
+    public void testChainedBlanketApproval() throws Exception {
         // Generate child document
         WorkflowDocument childDocument = WorkflowDocumentFactory.createDocument(getPrincipalIdForName(TEST_USER_EWESTFAL), ChainedChildSetup.DOCUMENT_TYPE_NAME);
         WorkflowAttributeDefinition.Builder childDocAttribute = WorkflowAttributeDefinition.Builder.create(ChainedParentSetup.CHILD_DOC_ATTRIBUTE);

@@ -68,7 +68,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         MDC.put("docId", documentId);
 
         try {
-            RouteContext context = RouteContext.createNewRouteContext();
+            RouteContext context = RouteContext.getCurrentRouteContext();
             KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
             if ( LOG.isInfoEnabled() ) {
             	LOG.info("Processing document for Blanket Approval: " + documentId + " : " + nodeInstanceId);
@@ -147,7 +147,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         	}
             }
         } finally {
-        	RouteContext.releaseCurrentRouteContext();
+            RouteContext.clearCurrentRouteContext();
             MDC.remove("docId");
         }
     }

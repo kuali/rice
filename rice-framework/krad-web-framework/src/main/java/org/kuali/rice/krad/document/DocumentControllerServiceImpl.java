@@ -18,6 +18,8 @@ package org.kuali.rice.krad.document;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -124,6 +126,8 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
         DocumentView view = (DocumentView) form.getView();
 
         if (ArrayUtils.contains(DOCUMENT_LOAD_COMMANDS, command) && (form.getDocId() != null)) {
+            checkReturnLocationForDocSearch(command, form);
+
             loadDocument(form);
 
             if (KewApiConstants.SUPERUSER_COMMAND.equals(command)) {
@@ -141,6 +145,19 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
         }
 
         return getModelAndViewService().getModelAndView(form);
+    }
+
+    /**
+     * Determines if the DOCSEARCH_COMMAND is the present command value and updates the return location to the base
+     * application url
+     *
+     * @param command the current command value
+     * @param form the form with the updated return location
+     */
+    private void checkReturnLocationForDocSearch(String command, DocumentFormBase form) {
+        if (KewApiConstants.DOCSEARCH_COMMAND.equals(command)) {
+            form.setReturnLocation(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.APPLICATION_URL_KEY));
+        }
     }
 
     /**

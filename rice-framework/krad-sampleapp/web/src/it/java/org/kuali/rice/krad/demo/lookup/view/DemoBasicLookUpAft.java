@@ -89,7 +89,7 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     	//Search 
         waitAndClickSearchByText();
         waitForProgressLoading();
-    	waitAndClickByLinkText("edit");
+        waitAndClickByXpath("(//a[text()='edit'])[2]");
     	
     	//Edit & Save
     	waitAndTypeByName("document.documentHeader.documentDescription","Edited Description");

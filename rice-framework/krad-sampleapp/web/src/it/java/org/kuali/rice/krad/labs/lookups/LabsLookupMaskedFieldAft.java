@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.lookups;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -64,6 +65,7 @@ public class LabsLookupMaskedFieldAft extends LabsLookupBase {
     }
 
     protected void testLabsLookupMaskedFieldWildcard()throws Exception {
+        waitForElementVisibleBy(By.name("lookupCriteria[name]"));
         clearTextByName("lookupCriteria[name]");
         waitAndTypeByName("lookupCriteria[number]","a1*");
         waitAndTypeByName("lookupCriteria[name]","Travel *");

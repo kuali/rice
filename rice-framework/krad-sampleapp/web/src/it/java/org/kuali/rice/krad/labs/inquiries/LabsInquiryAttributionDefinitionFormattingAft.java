@@ -88,7 +88,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                 {"Customer Number:", "CUST"},
                 {"Drivers License:", "*****45678"},
                 {"Drivers License Exp Date:", "/"},
-                {"Active:", "true"},
+                {"Traveler Detail Active Indicator:", "true"},
                 {"Non Resident Alien:", "false"},
                 {"Liability Insurance:", "false"},};
         assertLabeledTextPresent(LabeledText);

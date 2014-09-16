@@ -46,7 +46,7 @@ public class LibraryNavigationAft extends LibraryNavigationBase {
             fail("Expected another window to be opened " + t.getCause());
         }
         waitForElementPresentByClassName("uif-headerText-span");
-        assertTrue(driver.getTitle().contains("Kuali Navigation View"));
+        assertTrue(driver.getTitle().contains("Kuali :: Navigation View"));
         assertTextPresent("Navigation View");
     }
 

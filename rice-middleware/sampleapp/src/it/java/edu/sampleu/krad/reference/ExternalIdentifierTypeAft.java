@@ -53,9 +53,11 @@ public class ExternalIdentifierTypeAft extends WebDriverLegacyITBase {
     protected void testExternalIdentifierType() throws Exception {
         selectFrameIframePortlet();
         waitAndClickSearchByText();
+        waitForProgressLoading();
         assertTextPresent(new String[][]{{"HR"},{"LICENSE"}});
         waitAndTypeByName("lookupCriteria[code]","LICENSE");
         waitAndClickSearchByText();
+        waitForProgressLoading();
         waitForTextNotPresent("HR");
         assertTextPresent("LICENSE");
     }

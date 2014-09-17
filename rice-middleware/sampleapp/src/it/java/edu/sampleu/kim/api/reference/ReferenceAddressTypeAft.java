@@ -49,4 +49,43 @@ public class ReferenceAddressTypeAft extends AddressTypeAft {
         waitAndClickAdministration();
         waitAndClickByLinkText("Address Type");
     }
+
+    @Override
+    protected void testAddressType() throws Exception {
+        selectFrameIframePortlet();
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
+        String[][] data = {{"HM", "Home", "b"},
+                {"OTH", "Other", "c"},
+                {"WRK", "Work", "a"}};
+        assertTextPresent(data);
+        waitAndClickByName("methodToCall.clearValues");
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickById("activeYes");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickByName("methodToCall.clearValues");
+
+        //Search by "No" Filter in Active Indicator
+        waitAndClickById("activeNo");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickByName("methodToCall.clearValues");
+
+        //Search by Address Type Code Filter
+        waitAndTypeByName("code","HM");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"HM", "Home", "b"};
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickByName("methodToCall.clearValues");
+
+        //Search by Address Type Name Filter
+        waitAndTypeByName("name","Home");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"HM", "Home", "b"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickByName("methodToCall.clearValues");
+    }
 }

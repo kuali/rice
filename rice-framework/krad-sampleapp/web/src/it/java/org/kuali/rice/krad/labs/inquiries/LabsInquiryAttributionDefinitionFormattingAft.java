@@ -84,7 +84,7 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
                 {"Email Address:", ""},
                 {"Gender:", "M"},
                 {"Phone Number:", "(xxx)xxx-xxxx"},
-                {"Traveler Type Code:", "123"},
+                {"Traveler Type Code:", "EMP"},
                 {"Customer Number:", "CUST"},
                 {"Drivers License:", "*****45678"},
                 {"Drivers License Exp Date:", "/"},

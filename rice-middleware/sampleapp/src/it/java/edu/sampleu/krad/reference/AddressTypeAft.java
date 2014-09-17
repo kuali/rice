@@ -56,12 +56,40 @@ public class AddressTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testAddressType() throws Exception {
         selectFrameIframePortlet();
-        clickSearch();
 
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
         String[][] data = {{"HM", "Home", "b"},
-                           {"OTH", "Other", "c"},
-                           {"WRK", "Work", "a"}};
+                {"OTH", "Other", "c"},
+                {"WRK", "Work", "a"}};
         assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Address Type Code Filter
+        waitAndTypeByName("lookupCriteria[code]","HM");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"HM", "Home", "b"};
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Address Type Name Filter
+        waitAndTypeByName("lookupCriteria[name]","Home");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"HM", "Home", "b"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
     }
 
     protected void testAddressTypeNoResults() throws Exception {
@@ -74,7 +102,7 @@ public class AddressTypeAft extends WebDriverLegacyITBase {
     @Test
     public void testAddressTypeBookmark() throws Exception {
         testAddressType();
-        assertTextPresent("return value"); // bookmark should have return values as BOOKMARK_URL has renderReturnLink=true
+//        assertTextPresent("return value"); // bookmark should have return values as BOOKMARK_URL has renderReturnLink=true
         passed();
     }
 

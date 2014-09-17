@@ -52,17 +52,44 @@ public class AffiliationTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testAffiliationType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickSearchByText();
-        waitForProgressLoading();
-        assertTextPresent(new String[][]{{"AFLT"}, {"FCLTY"}, {"STAFF"}});
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
+        String[][] data = {{"AFLT", "Affiliate", "d"},
+                {"FCLTY", "Faculty", "b"},
+                {"STAFF", "Staff", "c"}};
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-        waitAndClickSearchByText();
-        waitForTextNotPresent("AFLT");
-        waitForProgressLoading();
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Address Type Code Filter
         waitAndTypeByName("lookupCriteria[code]","AFLT");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"AFLT", "Affiliate", "d"};
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Address Type Name Filter
+        waitAndTypeByName("lookupCriteria[name]","Affiliate");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"AFLT", "Affiliate", "d"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
+    }
+
+    protected void clickSearch() throws InterruptedException {
         waitAndClickSearchByText();
-        waitForProgressLoading();
-        waitForTextNotPresent("FCLTY");
     }
 
     @Test

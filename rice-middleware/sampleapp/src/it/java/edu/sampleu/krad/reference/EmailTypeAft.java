@@ -49,21 +49,47 @@ public class EmailTypeAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Email Type");
     }
 
+    protected void clickSearch() throws InterruptedException {
+        waitAndClickSearchByText();
+    }
+
     //Code for KRAD Test Package.
     protected void testEmailType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickSearchByText();
-        Thread.sleep(3000);
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
         String[][] data = {{"HM", "Home", "b"},
-                           {"OTH", "Other", "c"},
-                           {"WRK", "Work", "a"}};
+                {"OTH", "Other", "c"},
+                {"WRK", "Work", "a"}};
         assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-        waitAndClickSearchByText();
-        waitForTextNotPresent("HM");
-        waitAndTypeByName("lookupCriteria[code]","OTH");
-        waitAndClickSearchByText();
-        waitForTextPresent("Other");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Address Type Code Filter
+        waitAndTypeByName("lookupCriteria[code]","HM");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"HM", "Home", "b"};
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Address Type Name Filter
+        waitAndTypeByName("lookupCriteria[name]","Home");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"HM", "Home", "b"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
     }
 
     @Test

@@ -86,17 +86,19 @@ public class DemoBasicLookUpAft extends ViewDemoAftBase {
     }
     
     protected void testBasicLookUpSearchEditSave() throws InterruptedException {
-    	//Search 
+    	//Search By Number
+        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_NAME,"a2");
         waitAndClickSearchByText();
         waitForProgressLoading();
-        waitAndClickByXpath("(//a[text()='edit'])[2]");
+        waitForTextPresent("a2");
+        waitAndClickByLinkText("edit");
     	
     	//Edit & Save
     	waitAndTypeByName("document.documentHeader.documentDescription","Edited Description");
     	getTextByXpath("//div[@data-label='Travel Account Name']");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.name"," Edited");
 
-        saveSuccessfully();
+        submitSuccessfully();
     }
    
     @Test

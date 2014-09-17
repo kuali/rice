@@ -1207,9 +1207,6 @@
     <property name="layoutManager">
       <bean parent="Uif-StackedCollectionLayout-List"/>
     </property>
-    <property name="addLineBindingInfo">
-      <null/>
-    </property>
     <property name="addLineLabel">
       <null/>
     </property>

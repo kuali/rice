@@ -76,6 +76,7 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
     @Test
     public void testCollectionFeaturesAddLineBookmark() throws Exception {
         testCollectionFeaturesDefaultAddLine();
+        testCollectionFeaturesDefaultAddLineDuplicatePropertyName();
         testCollectionFeaturesDefaultAddBlankLine();
         testCollectionFeaturesDefaultAddViaLightbox();
         passed();
@@ -84,8 +85,17 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
     @Test
     public void testCollectionFeaturesAddLineNav() throws Exception {
         testCollectionFeaturesDefaultAddLine();
+        testCollectionFeaturesDefaultAddLineDuplicatePropertyName();
         testCollectionFeaturesDefaultAddBlankLine();
         testCollectionFeaturesDefaultAddViaLightbox();
         passed();
-    }  
+    }
+
+    protected void testCollectionFeaturesDefaultAddLineDuplicatePropertyName() throws Exception {
+        selectByName("exampleShown","Collection Add Line w duplicateLinePropertyNames");
+        waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[2]/div/input","13");
+        waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[3]/div/input","14");
+        waitAndClickByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[4]/div/fieldset/div/button");
+        waitForElementPresentByXpath("//li[@class='uif-errorMessageItem' and contains(text(),'Duplicate Default Add Line with duplicateLinePropertyNames property configured')]");
+    }
 }

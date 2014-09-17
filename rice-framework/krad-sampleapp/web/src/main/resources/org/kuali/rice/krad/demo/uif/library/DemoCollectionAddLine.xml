@@ -29,10 +29,12 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-CollectionAddLine-Example1"/>
+        <ref bean="Demo-CollectionAddLine-Example6"/>
         <ref bean="Demo-CollectionAddLine-Example2"/>
         <ref bean="Demo-CollectionAddLine-Example3"/>
         <ref bean="Demo-CollectionAddLine-Example4"/>
         <ref bean="Demo-CollectionAddLine-Example5"/>
+
       </list>
     </property>
   </bean>
@@ -345,4 +347,33 @@
     </property>
   </bean>
 
+  <!-- CollectionAddLine with Duplicate Property Names -->
+  <bean id="Demo-CollectionAddLine-Example6"  parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionAddLine-Example6 start-->
+        <bean parent="Uif-Disclosure-TableCollectionSection">
+          <property name="duplicateLinePropertyNames">
+            <list>
+              <value>field1</value>
+              <value>field2</value>
+            </list>
+          </property>
+          <property name="headerText" value="Default Add Line with duplicateLinePropertyNames property configured" />
+          <property name="collectionObjectClass"
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
+          <property name="propertyName" value="collection1_9" />
+          <property name="layoutManager.generateAutoSequence" value="true" />
+          <property name="layoutManager.richTable.render" value="true" />
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionAddLine-Example6 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

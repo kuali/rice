@@ -116,13 +116,14 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     }
     
     protected void testContainerDialogGroupServerDialog2() throws Exception {
-    	waitAndClickByLinkText("Server Dialog Ex. 2");
-    	waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example9']/button");
+        waitAndClickByLinkText("Server Dialog Ex. 2");
+        waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example9']/button");
         waitForProgressLoading();
-    	waitAndClickByXpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'OK')]");
-    	waitForElementPresentByXpath("//a[contains(text(),'Required')]");
-    	waitAndClickByXpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'Cancel')]");
-    
+        waitAndClickByXpath(
+                "//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'OK')]");
+        waitForElementPresentByXpath("//a[contains(text(),'Required')]");
+        waitAndClickByXpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'Cancel')]");
+    }
     protected void testContainerDialogGroupAjaxRetrieval() throws Exception {
     	waitAndClickByLinkText("Ajax Retrieval");
     	//Needs to fix the functionality.
@@ -166,7 +167,7 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	testContainerDialogGroupShowDialog2();
     	testContainerDialogGroupDialogEvents();
         testContainerDialogGroupServerDialog2();
-    	testContainerDialogGroupServerDialog1();
+        testContainerDialogGroupServerDialog1();
     	testContainerDialogGroupAjaxRetrieval();
     	testContainerDialogGroupValidationInDialog();
     	testContainerDialogGroupDialogReuse();

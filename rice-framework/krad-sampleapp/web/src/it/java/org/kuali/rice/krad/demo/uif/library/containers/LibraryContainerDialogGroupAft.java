@@ -122,7 +122,6 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'OK')]");
     	waitForElementPresentByXpath("//a[contains(text(),'Required')]");
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'Cancel')]");
-    }
     
     protected void testContainerDialogGroupAjaxRetrieval() throws Exception {
     	waitAndClickByLinkText("Ajax Retrieval");
@@ -166,8 +165,8 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	testContainerDialogGroupShowDialog1();
     	testContainerDialogGroupShowDialog2();
     	testContainerDialogGroupDialogEvents();
+        testContainerDialogGroupServerDialog2();
     	testContainerDialogGroupServerDialog1();
-    	testContainerDialogGroupServerDialog2();
     	testContainerDialogGroupAjaxRetrieval();
     	testContainerDialogGroupValidationInDialog();
     	testContainerDialogGroupDialogReuse();

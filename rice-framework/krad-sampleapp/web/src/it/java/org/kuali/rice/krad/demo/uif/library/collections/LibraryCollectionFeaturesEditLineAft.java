@@ -113,6 +113,7 @@ public class LibraryCollectionFeaturesEditLineAft extends WebDriverLegacyITBase 
 
         if (firstFieldToEdit != null && secondFieldToEdit != null) {
             jGrowl("Since we could edit both fields, verify " + randomNumberString + " is not present");
+            waitForProgressLoading();
             waitForTextNotPresent(randomNumberString);
         }
         waitForTextPresent(randomNumberString2);

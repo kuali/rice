@@ -654,10 +654,11 @@ function initFieldHandlers() {
                 $currentControl = jQuery(this).children("[data-role='Control']");
                 // determine whether we are still in the widget. If we are out of the widget and the field
                 // is not a radio button, then validate
-                var radioButtons = jQuery(this).find('input:radio');
-                if (isRelatedTarget(this, event) !== true && buttonHovered === false && radioButtons.length == 0) {
-                    validateFieldValue($currentControl);
-                }
+                    var radioButtons = jQuery(this).find('input:radio');
+                    if ($currentControl.length && isRelatedTarget(this, event) !== true && buttonHovered === false && radioButtons.length == 0) {
+                        validateFieldValue($currentControl);
+                    }
+
             });
 
     // capture datepicker widget button

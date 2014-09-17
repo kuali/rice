@@ -80,9 +80,13 @@ public class UserSession implements Serializable {
      * @param principalName the principalName
      */
     protected void initPerson(String principalName) {
-        this.person = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(KRADConstants.AUTHN_USE_PRINCIPAL_ID) 
-            ? KimApiServiceLocator.getPersonService().getPerson(principalName)
-            : KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        // this.person = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(KRADConstants.AUTHN_USE_PRINCIPAL_ID) 
+        //     ? KimApiServiceLocator.getPersonService().getPerson(principalName)
+        //     : KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+		this.person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        if (this.person == null) {
+	        this.person = KimApiServiceLocator.getPersonService().getPerson(principalName);
+        }
         if (this.person == null) {
             throw new IllegalArgumentException(
                     "Failed to locate a principal with principal name '" + principalName + "'");

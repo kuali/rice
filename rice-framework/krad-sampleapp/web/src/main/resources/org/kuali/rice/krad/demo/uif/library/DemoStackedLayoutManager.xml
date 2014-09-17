@@ -131,9 +131,9 @@
           </property>
           <property name="lineActions">
             <list>
-              <bean id="Demo-StackedLayoutManager-Collection2-Action1" parent="Uif-PrimaryActionButton"
+              <bean id="Demo-StackedLayoutManager-Collection2-Action1" parent="Uif-SecondaryActionButton-Mini"
                     p:disabled="@{#line.field1 eq '1'}"/>
-              <bean id="Demo-StackedLayoutManager-Collection2-Action2" parent="Uif-PrimaryActionButton"
+              <bean id="Demo-StackedLayoutManager-Collection2-Action2" parent="Uif-SecondaryActionButton-Mini"
                     p:onClickScript="alert('foo');" p:methodToCall="deleteLine"/>
             </list>
           </property>

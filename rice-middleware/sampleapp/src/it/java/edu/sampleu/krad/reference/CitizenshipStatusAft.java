@@ -52,24 +52,9 @@ public class CitizenshipStatusAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testCitizenshipStatus() throws Exception {
       selectFrameIframePortlet();
-        waitAndClickSearchByText();
+      waitAndClickSearchByText();
       Thread.sleep(3000);
-//      Code cannot be executed as there is not data to test on Citizenship Status.
-//      assertTextPresent("AFLT");
-//      assertTextPresent("FCLTY");
-//      assertTextPresent("STAFF");
-//      waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-//      waitAndClickSearchByText();
-//      Thread.sleep(3000);
-//      if(isTextPresent("AFLT")) {
-//          fail("Conditions not working !");
-//      }
-//      waitAndTypeByName("lookupCriteria[code]","AFLT");
-//      waitAndClickSearchByText();
-//      Thread.sleep(3000);
-//      if(isTextPresent("FCLTY")) {
-//          fail("Conditions not working !");
-//      }
+      //Code cannot be executed as there is not data to test on Citizenship Status.
     }
 
     @Test

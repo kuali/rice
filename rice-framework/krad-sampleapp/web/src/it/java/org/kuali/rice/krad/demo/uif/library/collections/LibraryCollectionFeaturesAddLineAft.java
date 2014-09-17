@@ -49,7 +49,22 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//input[@name='collection1[0].field1' and @value='12']");
         assertElementPresentByXpath("//input[@name='collection1[0].field2' and @value='5']");
     }
-    
+
+    protected void testCollectionFeaturesDefaultAddLineDuplicatePropertyName() throws Exception {
+        selectByName("exampleShown","Collection Add Line w duplicateLinePropertyNames");
+        waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[2]/div/input","13");
+        waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[3]/div/input","14");
+        waitAndClickByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[4]/div/fieldset/div/button");
+        waitForElementPresentByXpath("//li[@class='uif-errorMessageItem' and contains(text(),'Duplicate Default Add Line with duplicateLinePropertyNames property configured')]");
+    }
+
+    protected void testCollectionFeaturesDefaultAddBlankLine() throws Exception {
+        selectByName("exampleShown","Collection Add Blank Line");
+        waitAndClickByXpath("//section[@id='Demo-CollectionAddLine-Example3']/section/div/button");
+        assertElementPresentByXpath("//input[@name='collection1_6[0].field1' and @value]");
+        assertElementPresentByXpath("//input[@name='collection1_6[0].field2' and @value]");
+    }
+
     protected void testCollectionFeaturesDefaultAddViaLightbox() throws Exception {
         selectByName("exampleShown","Collection Add with Dialog");
         jGrowl("Click Add Line");
@@ -65,14 +80,7 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//input[@name='collection1_2[0].field1' and @value='42']");
         waitForElementPresentByXpath("//input[@name='collection1_2[0].field2' and @value='55']");
     }
-    
-    protected void testCollectionFeaturesDefaultAddBlankLine() throws Exception {
-        selectByName("exampleShown","Collection Add Blank Line");
-        waitAndClickByXpath("//section[@id='Demo-CollectionAddLine-Example3']/section/div/button");
-        assertElementPresentByXpath("//input[@name='collection1_6[0].field1' and @value]");
-        assertElementPresentByXpath("//input[@name='collection1_6[0].field2' and @value]");
-    }
-    
+
     @Test
     public void testCollectionFeaturesAddLineBookmark() throws Exception {
         testCollectionFeaturesDefaultAddLine();
@@ -91,11 +99,4 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         passed();
     }
 
-    protected void testCollectionFeaturesDefaultAddLineDuplicatePropertyName() throws Exception {
-        selectByName("exampleShown","Collection Add Line w duplicateLinePropertyNames");
-        waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[2]/div/input","13");
-        waitAndTypeByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[3]/div/input","14");
-        waitAndClickByXpath("//section[@id='Demo-CollectionAddLine-Example6']/section/div/div/table/tbody/tr[1]/td[4]/div/fieldset/div/button");
-        waitForElementPresentByXpath("//li[@class='uif-errorMessageItem' and contains(text(),'Duplicate Default Add Line with duplicateLinePropertyNames property configured')]");
-    }
 }

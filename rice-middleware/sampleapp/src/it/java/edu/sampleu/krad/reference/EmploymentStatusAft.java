@@ -52,11 +52,51 @@ public class EmploymentStatusAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testEmploymentStatus() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickSearchByText();
-        assertTextPresent(new String[][]{{"On Non-Pay Leave"}, {"Active"}, {"Deceased"}});
+        waitAndClickClearValues();
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
+        String[][] data = {{"A", "Active", "01","true"},
+                {"D", "Deceased", "99","true"}};
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Code Filter
+        waitAndTypeByName("lookupCriteria[code]","A");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"A", "Active", "01","true"};
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Name Filter
         waitAndTypeByName("lookupCriteria[name]","Active");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"A", "Active", "01","true"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
+
+        //Search by Short Code Filter
+        waitAndTypeByName("lookupCriteria[sortCode]","01");
+        clickSearch();
+        String[] assertSearchResultForShortCode = {"A", "Active", "01","true"};
+        assertTextPresent(assertSearchResultForShortCode);
+        waitAndClickClearValues();
+    }
+
+    protected void clickSearch() throws InterruptedException {
         waitAndClickSearchByText();
-        waitForTextNotPresent("Deceased");
     }
 
     @Test

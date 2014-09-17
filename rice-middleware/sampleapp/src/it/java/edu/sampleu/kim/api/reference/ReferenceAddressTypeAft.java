@@ -73,6 +73,7 @@ public class ReferenceAddressTypeAft extends AddressTypeAft {
         clickSearch();
         waitForTextPresent("No values match this search.");
         waitAndClickByName("methodToCall.clearValues");
+        waitAndClickById("activeYes");
 
         //Search by Address Type Code Filter
         waitAndTypeByName("code","HM");

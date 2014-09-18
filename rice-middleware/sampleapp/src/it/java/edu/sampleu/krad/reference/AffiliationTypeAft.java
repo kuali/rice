@@ -73,14 +73,14 @@ public class AffiliationTypeAft extends WebDriverLegacyITBase {
         waitForTextPresent("No values match this search.");
         waitAndClickClearValues();
 
-        //Search by Address Type Code Filter
+        //Search by Code Filter
         waitAndTypeByName("lookupCriteria[code]","AFLT");
         clickSearch();
         String[] assertSearchResultForTypeCode = {"AFLT", "Affiliate", "d"};
         assertTextPresent(assertSearchResultForTypeCode);
         waitAndClickClearValues();
 
-        //Search by Address Type Name Filter
+        //Search by Name Filter
         waitAndTypeByName("lookupCriteria[name]","Affiliate");
         clickSearch();
         String[] assertSearchResultForTypeName = {"AFLT", "Affiliate", "d"};

@@ -89,6 +89,7 @@ public class LabsLookupTravelAuthorizationDocumentCloseActionAft extends LabsTra
         waitAndClickButtonByText("Close");
 
         jGrowl("Click No Confirmation");
+        waitForElementVisibleBy(By.xpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'No')]"));
         waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'No')]");
 
         waitForPageToLoad();

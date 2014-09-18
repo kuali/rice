@@ -904,9 +904,13 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected void submitSuccessfully() throws InterruptedException {
+        submitSuccessfully(WebDriverUtils.configuredImplicityWait());
+    }
+
+    protected void submitSuccessfully(int loadingSeconds) throws InterruptedException {
         waitAndClickSubmitByText();
         waitAndClickConfirmationOk();
-        waitForProgressLoading();
+        waitForProgressLoading(loadingSeconds);
         Thread.sleep(500);
         checkForDocError();
         checkForDocErrorKrad();

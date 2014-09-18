@@ -121,17 +121,14 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndClickLinkContainingText("return value");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/fieldset/div/button");
         waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button[@class='btn btn-default uif-action icon-search']");
+        waitForProgressLoading();
         gotoLightBox();
         waitAndClickSearchByText();
+        waitForProgressLoading();
         waitAndClickLinkContainingText("return value");
         waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/fieldset/div/button");
         waitForTextPresent("Delete"); // wait for ajax to finish adding ad hoc group
-        waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
-        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
-        checkForDocErrorKrad();
-        waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
-
+        submitSuccessfully();
         //unlock record
         WebElement webElement = findElement(By.xpath("./html/body/form/div/header/div/table/tbody/tr[1]/td[1]/div"));
         String documentId = webElement.getText();

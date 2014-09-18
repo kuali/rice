@@ -727,8 +727,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 * attribute.
 	 */
 	private void saveAuditErrors(HttpServletRequest request) {
-		if (!KNSGlobalVariables.getAuditErrorMap().isEmpty()) {
-			request.setAttribute(KNSConstants.AUDIT_ERRORS, KNSGlobalVariables.getAuditErrorMap());
+		if (!GlobalVariables.getAuditErrorMap().isEmpty()) {
+			request.setAttribute(KNSConstants.AUDIT_ERRORS, GlobalVariables.getAuditErrorMap());
 		}
 	}
 

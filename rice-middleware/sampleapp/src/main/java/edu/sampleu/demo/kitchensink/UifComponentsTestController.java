@@ -15,16 +15,13 @@
  */
 package edu.sampleu.demo.kitchensink;
 
-import java.util.Properties;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.util.AuditCluster;
+import org.kuali.rice.krad.util.AuditError;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -33,6 +30,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Controller for the Test UI Page
@@ -306,6 +310,34 @@ public class UifComponentsTestController extends UifControllerBase {
         return getModelAndView(form);
     }
 
+    /**
+     * Adds warning and info messages to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addAuditErrors")
+    public ModelAndView addAuditErrors(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        List<AuditError> auditErrors = new ArrayList<AuditError>();
+        List<AuditError> auditWarnings = new ArrayList<AuditError>();
+        Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
+        for (String id : inputFieldIds) {
+            if (form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH) != null) {
+                String key = (String) form.getViewPostMetadata().getComponentPostData(id,
+                        UifConstants.PostMetadata.PATH);
+                auditErrors.add(new AuditError(key, "error1Test", "link"));
+                auditWarnings.add(new AuditError(key, "warning1Test", "link"));
+            }
+        }
+        auditErrors.add(new AuditError("Demo-ValidationLayout-Section1", "errorSectionTest", "link"));
+
+        GlobalVariables.getAuditErrorMap().put("A", new AuditCluster("A", auditErrors,
+                KRADConstants.Audit.AUDIT_ERRORS));
+        GlobalVariables.getAuditErrorMap().put("B", new AuditCluster("B", auditWarnings,
+                KRADConstants.Audit.AUDIT_WARNINGS));
+
+        return getModelAndView(form);
+    }
+
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=gotoState2")
     public ModelAndView gotoState2(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
             HttpServletRequest request, HttpServletResponse response) {
@@ -345,10 +377,6 @@ public class UifComponentsTestController extends UifControllerBase {
     /**
      * Generates a fake incident report to test for errorCallback
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
      * @return ModelAndView model and view
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=errorCheck")
@@ -365,10 +393,6 @@ public class UifComponentsTestController extends UifControllerBase {
     /**
      * Test controller method to check for ajax redirect functionality. Redirects to the portal main page
      *
-     * @param form
-     * @param result
-     * @param request
-     * @param response
      * @return ModelAndView model and view
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=redirectCheck")
@@ -408,12 +432,6 @@ public class UifComponentsTestController extends UifControllerBase {
     /**
      * Performs custom line action for collection 4 in kitchen sink collection demo.
      * Just puts out a growl message and returns.
-     *
-     * @param uifForm
-     * @param result
-     * @param request
-     * @param response
-     * @return
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=updateOfficial")
     public ModelAndView updateOfficial(@ModelAttribute("KualiForm") UifFormBase uifForm, BindingResult result,
@@ -429,10 +447,6 @@ public class UifComponentsTestController extends UifControllerBase {
     /**
      * Changes the view to readOnly and returns.
      *
-     * @param uifForm
-     * @param result
-     * @param request
-     * @param response
      * @return readOnly View
      */
     @RequestMapping(method = RequestMethod.POST, params = "methodToCall=makeReadOnly")

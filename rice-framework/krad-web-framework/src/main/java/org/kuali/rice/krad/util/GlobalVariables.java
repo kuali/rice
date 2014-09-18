@@ -69,6 +69,13 @@ public final class GlobalVariables {
     private Map<String,Object> requestCache = new HashMap<String, Object>();
     private UifFormManager uifFormManager = null;
 
+    private static ThreadLocal<HashMap<String, AuditCluster>> auditErrorMaps = new ApplicationThreadLocal<HashMap<String, AuditCluster>>() {
+    	@Override
+    	protected HashMap<String, AuditCluster> initialValue() {
+    		return new HashMap<String, AuditCluster>();
+    	}
+    };
+
     private GlobalVariables() {}
 
     /**
@@ -164,12 +171,29 @@ public final class GlobalVariables {
     }
 
     /**
+     * @return ArrayList containing audit error messages.
+     */
+    public static Map<String, AuditCluster> getAuditErrorMap() {
+        return auditErrorMaps.get();
+    }
+
+    /**
+     * Sets a new (clean) AuditErrorList
+     *
+     * @param errorMap
+     */
+    public static void setAuditErrorMap(HashMap<String, AuditCluster> errorMap) {
+        auditErrorMaps.set(errorMap);
+    }
+
+    /**
      * Clears out GlobalVariable objects with the exception of the UserSession
      */
     public static void clear() {
         GlobalVariables vars = getCurrentGlobalVariables();
         vars.messageMap = new MessageMap();
         vars.requestCache = new HashMap<String,Object>();
+        auditErrorMaps.set(new HashMap<String, AuditCluster>());
     }
 
     /**

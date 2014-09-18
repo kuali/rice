@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util;
+package org.kuali.rice.krad.util;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * KRA Audit Error class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- * @deprecated Only used in KNS classes, use KRAD.
  */
-@Deprecated
 public class AuditError {
 
     private String errorKey;
+    private String validationKey;
     private String messageKey;
     private String link;
     private String[] params;
@@ -58,6 +58,26 @@ public class AuditError {
      */
     public void setErrorKey(String errorKey) {
         this.errorKey = errorKey;
+    }
+
+    /**
+     * The key used to match in the ValidationMessages component, should either be id, property path,
+     * or a key to match for that component; if NOT set, this will return errorKey.
+     *
+     * @return the validation key used by ValidationMessages
+     */
+    public String getValidationKey() {
+        if (StringUtils.isBlank(validationKey)) {
+            return errorKey;
+        }
+        return validationKey;
+    }
+
+    /**
+     * @see #getValidationKey()
+     */
+    public void setValidationKey(String validationKey) {
+        this.validationKey = validationKey;
     }
 
     /**

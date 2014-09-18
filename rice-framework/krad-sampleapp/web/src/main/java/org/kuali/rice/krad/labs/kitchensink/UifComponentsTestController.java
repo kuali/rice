@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krad.labs.kitchensink;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -25,7 +27,10 @@ import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.util.AuditCluster;
+import org.kuali.rice.krad.util.AuditError;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
@@ -302,6 +307,32 @@ public class UifComponentsTestController extends UifControllerBase {
 
         this.addWarnings(form, result, request, response);
         this.addInfo(form, result, request, response);
+
+        return getModelAndView(form);
+    }
+
+    /**
+     * Adds warning and info messages to fields defined in the validationMessageFields array
+     */
+    @RequestMapping(method = RequestMethod.POST, params = "methodToCall=addAuditErrors")
+    public ModelAndView addAuditErrors(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        List<AuditError> auditErrors = new ArrayList<AuditError>();
+        List<AuditError> auditWarnings = new ArrayList<AuditError>();
+        Set<String> inputFieldIds = form.getViewPostMetadata().getInputFieldIds();
+        for (String id : inputFieldIds) {
+            if (form.getViewPostMetadata().getComponentPostData(id, UifConstants.PostMetadata.PATH) != null) {
+                String key = (String) form.getViewPostMetadata().getComponentPostData(id,
+                        UifConstants.PostMetadata.PATH);
+                auditErrors.add(new AuditError(key, "error1Test", "link"));
+                auditWarnings.add(new AuditError(key, "warning1Test", "link"));
+            }
+        }
+        auditErrors.add(new AuditError("Demo-ValidationLayout-Section1", "errorSectionTest", "link"));
+
+        GlobalVariables.getAuditErrorMap().put("A", new AuditCluster("A", auditErrors, KRADConstants.Audit.AUDIT_ERRORS));
+        GlobalVariables.getAuditErrorMap().put("B", new AuditCluster("B", auditWarnings, KRADConstants.Audit.AUDIT_WARNINGS));
 
         return getModelAndView(form);
     }

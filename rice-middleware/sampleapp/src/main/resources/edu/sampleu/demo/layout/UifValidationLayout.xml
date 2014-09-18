@@ -48,6 +48,8 @@
                   p:methodToCall="addWarnInfoMessages"/>
             <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Single Group Error"
                   p:methodToCall="addSingleErrorMessage"/>
+            <bean parent="Uif-PrimaryActionButton" p:actionLabel="Get Audit Errors"
+                  p:methodToCall="addAuditErrors"/>
           </list>
         </property>
       </bean>

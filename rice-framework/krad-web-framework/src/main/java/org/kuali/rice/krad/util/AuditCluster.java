@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util;
+package org.kuali.rice.krad.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,7 @@ import java.util.List;
  * KRA Audit Cluster; container for related set of audit errors.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- * @deprecated Only used in KNS classes, use KRAD.
  */
-@Deprecated
 public class AuditCluster {
 
     private String label;

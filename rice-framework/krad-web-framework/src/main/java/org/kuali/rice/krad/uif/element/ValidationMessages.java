@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,8 +28,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.uif.UifDictionaryBeanBase;
+import org.kuali.rice.krad.messages.MessageService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
+import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.field.FieldGroup;
@@ -38,8 +42,11 @@ import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.AuditCluster;
+import org.kuali.rice.krad.util.AuditError;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.MessageMap;
 
@@ -123,10 +130,59 @@ public class ValidationMessages extends UifDictionaryBeanBase {
             masterKeyList.add(parentContainerId);
         }
 
+        processAuditErrors(masterKeyList);
+
         for (String key : masterKeyList) {
             errors.addAll(getMessages(view, key, messageMap.getErrorMessagesForProperty(key, true)));
             warnings.addAll(getMessages(view, key, messageMap.getWarningMessagesForProperty(key, true)));
             infos.addAll(getMessages(view, key, messageMap.getInfoMessagesForProperty(key, true)));
+        }
+    }
+
+    /**
+     * Process any AuditErrors which exist in AuditClusters in the AuditErrorMap of GlobalVariables and add them
+     * to either errors or warnings for this component, matching on errorKey.
+     *
+     * @param masterKeyList the keys to look for
+     */
+    private void processAuditErrors(List<String> masterKeyList) {
+        Map<String, AuditCluster> clusterMap = GlobalVariables.getAuditErrorMap();
+
+        for (AuditCluster auditCluster : clusterMap.values()) {
+            boolean isError = !(auditCluster.getCategory().equals(KRADConstants.Audit.AUDIT_WARNINGS));
+
+            List<AuditError> auditErrors = auditCluster.getAuditErrorList();
+            if (auditErrors == null) {
+                continue;
+            }
+
+            for (AuditError auditError: auditErrors) {
+                if (!masterKeyList.contains(auditError.getValidationKey())) {
+                    continue;
+                }
+
+                MessageService messageService = KRADServiceLocatorWeb.getMessageService();
+
+                // find message by key
+                String message = messageService.getMessageText(auditError.getMessageKey());
+                if (message == null) {
+                    message = "Intended message with key: " + auditError.getErrorKey() + " not found.";
+                }
+
+                if (auditError.getParams() != null && StringUtils.isNotBlank(message)) {
+                    message = message.replace("'", "''");
+                    message = MessageFormat.format(message, auditError.getParams());
+                }
+
+                message = MessageStructureUtils.translateStringMessage(message);
+
+                if (isError) {
+                    errors.add(message);
+                }
+                else {
+                    warnings.add(message);
+                }
+            }
         }
     }
 
@@ -162,7 +218,7 @@ public class ValidationMessages extends UifDictionaryBeanBase {
     /**
      * Gets all the keys associated to this ValidationMessages. This includes the id of
      * the parent component, additional keys to match, and the bindingPath if
-     * this is an ValidationMessages for an InputField. These are the keys that are
+     * this is a ValidationMessages for a DataBinding component. These are the keys that are
      * used to match errors with their component and display them as part of its
      * ValidationMessages.
      *
@@ -179,10 +235,10 @@ public class ValidationMessages extends UifDictionaryBeanBase {
             keyList.add(parent.getId());
         }
 
-        if (parent instanceof InputField) {
-            if (((InputField) parent).getBindingInfo() != null && StringUtils.isNotEmpty(
-                    ((InputField) parent).getBindingInfo().getBindingPath())) {
-                keyList.add(((InputField) parent).getBindingInfo().getBindingPath());
+        if (parent instanceof DataBinding) {
+            if (((DataBinding) parent).getBindingInfo() != null && StringUtils.isNotEmpty(
+                    ((DataBinding) parent).getBindingInfo().getBindingPath())) {
+                keyList.add(((DataBinding) parent).getBindingInfo().getBindingPath());
             }
         }
 

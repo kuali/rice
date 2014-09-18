@@ -111,7 +111,7 @@ public class GroupValidationMessages extends ValidationMessages {
             pageLevel = true;
             forceShow = true;
             parent.addDataAttribute(UifConstants.DataAttributes.SERVER_MESSAGES, Boolean.toString(
-                    GlobalVariables.getMessageMap().hasMessages()));
+                    GlobalVariables.getMessageMap().hasMessages() || !GlobalVariables.getAuditErrorMap().isEmpty()));
             if (this instanceof PageValidationMessages) {
                 showPageSummaryHeader = ((PageValidationMessages) this).isShowPageSummaryHeader();
             }

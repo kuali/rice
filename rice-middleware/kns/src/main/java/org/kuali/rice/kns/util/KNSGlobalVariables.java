@@ -19,9 +19,6 @@ import org.kuali.rice.core.framework.util.ApplicationThreadLocal;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.util.GlobalVariables;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -41,13 +38,6 @@ public final class KNSGlobalVariables {
         protected MessageList initialValue() {
             return new MessageList();
         }
-    };
-
-    private static ThreadLocal<HashMap<String, AuditCluster>> auditErrorMaps = new ApplicationThreadLocal<HashMap<String, AuditCluster>>() {
-    	@Override
-    	protected HashMap<String, AuditCluster> initialValue() {
-    		return new HashMap<String, AuditCluster>();
-    	}
     };
 
     /**
@@ -77,24 +67,6 @@ public final class KNSGlobalVariables {
     }
 
     /**
-     * @return ArrayList containing audit error messages.
-     */
-    @Deprecated
-    public static Map<String, AuditCluster> getAuditErrorMap() {
-        return auditErrorMaps.get();
-    }
-
-    /**
-     * Sets a new (clean) AuditErrorList
-     *
-     * @param errorMap
-     */
-    @Deprecated
-    public static void setAuditErrorMap(HashMap<String, AuditCluster> errorMap) {
-        auditErrorMaps.set(errorMap);
-    }
-
-    /**
      * sets the kualiForm object into the global variable for this thread
      *
      * @param kualiForm
@@ -108,7 +80,6 @@ public final class KNSGlobalVariables {
     public static void clear() {
         GlobalVariables.clear();
         messageLists.set(new MessageList());
-        auditErrorMaps.set(new HashMap<String, AuditCluster>());
         kualiForms.set(null);
     }
 }

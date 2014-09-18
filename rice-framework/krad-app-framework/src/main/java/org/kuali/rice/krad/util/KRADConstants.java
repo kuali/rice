@@ -737,4 +737,9 @@ public final class KRADConstants {
         public static final String LOOKUP = "/lookup";
         public static final String MAINTENANCE = "/maintenance";
     }
+
+    public static final class Audit {
+        public static final String AUDIT_ERRORS = "Error";
+        public static final String AUDIT_WARNINGS = "Warnings";
+    }
 }

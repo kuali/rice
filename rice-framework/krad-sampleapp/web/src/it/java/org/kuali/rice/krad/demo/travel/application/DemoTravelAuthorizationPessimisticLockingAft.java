@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.travel.application;
 import org.junit.Test;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 
 /**
@@ -69,7 +70,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, EDITOR_PRINCIPAL_NAME_VALUE);
 
-        assertTextPresent("This document currently has a full lock");
+        waitForTextPresent("This document currently has a full lock");
         waitForElementNotPresent(By.cssSelector("input[name = '" + DOCUMENT_DESCRIPTION_FIELD + "']"));
         waitForElementNotPresent(By.cssSelector("input[name = '" + CONTACT_NUMBER_FIELD + "']"));
 
@@ -79,7 +80,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, getUserName());
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
         assertElementPresent(By.cssSelector("input[name = '" + DOCUMENT_DESCRIPTION_FIELD + "']"));
         assertElementPresent(By.cssSelector("input[name = '" + CONTACT_NUMBER_FIELD + "']"));
 
@@ -91,7 +92,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
         waitAndClickConfirmSaveOnClose();
         openTravelAuthorization(documentNumber, EDITOR_PRINCIPAL_NAME_VALUE);
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
         assertElementPresent(By.cssSelector("input[name = '" + DOCUMENT_DESCRIPTION_FIELD + "']"));
         assertElementPresent(By.cssSelector("input[name = '" + CONTACT_NUMBER_FIELD + "']"));
 
@@ -101,7 +102,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, getUserName());
 
-        assertTextPresent("This document currently has a full lock");
+        waitForTextPresent("This document currently has a full lock");
         waitForElementNotPresent(By.cssSelector("input[name = '" + DOCUMENT_DESCRIPTION_FIELD + "']"));
         waitForElementNotPresent(By.cssSelector("input[name = '" + CONTACT_NUMBER_FIELD + "']"));
 
@@ -124,7 +125,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, APPROVER_PRINCIPAL_NAME_VALUE);
 
-        assertTextPresent("This document currently has a full lock");
+        waitForTextPresent("This document currently has a full lock");
         waitForElementNotPresent(By.cssSelector("input[name = '" + DOCUMENT_DESCRIPTION_FIELD + "']"));
         waitForElementNotPresent(By.cssSelector("input[name = '" + CONTACT_NUMBER_FIELD + "']"));
 
@@ -132,7 +133,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, getUserName());
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
         assertElementPresent(By.cssSelector("input[name = '" + DOCUMENT_DESCRIPTION_FIELD + "']"));
         assertElementPresent(By.cssSelector("input[name = '" + CONTACT_NUMBER_FIELD + "']"));
 
@@ -142,7 +143,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, APPROVER_PRINCIPAL_NAME_VALUE);
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
         assertElementPresent(By.cssSelector("input[name = '" + DOCUMENT_DESCRIPTION_FIELD + "']"));
         assertElementPresent(By.cssSelector("input[name = '" + CONTACT_NUMBER_FIELD + "']"));
 
@@ -150,7 +151,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, getUserName());
 
-        assertTextPresent("This document currently has a full lock");
+        waitForTextPresent("This document currently has a full lock");
         waitForElementNotPresent(By.cssSelector("input[name = '" + DOCUMENT_DESCRIPTION_FIELD + "']"));
         waitForElementNotPresent(By.cssSelector("input[name = '" + CONTACT_NUMBER_FIELD + "']"));
 
@@ -167,13 +168,13 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         addAdHocRecipient(ActionRequestType.APPROVE.name(), APPROVER_PRINCIPAL_NAME_VALUE);
 
-        submitSuccessfully();
+        submitSuccessfully(WebDriverUtils.configuredImplicityWait() * 5);
 
         waitAndClickCloseByText();
 
         openTravelAuthorization(documentNumber, EDITOR_PRINCIPAL_NAME_VALUE);
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
     }
 
     /**
@@ -196,7 +197,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, EDITOR_PRINCIPAL_NAME_VALUE);
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
     }
 
     /**
@@ -222,7 +223,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, EDITOR_PRINCIPAL_NAME_VALUE);
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
     }
 
     /**
@@ -237,7 +238,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, EDITOR_PRINCIPAL_NAME_VALUE);
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
     }
 
     /**
@@ -260,7 +261,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
 
         openTravelAuthorization(documentNumber, EDITOR_PRINCIPAL_NAME_VALUE);
 
-        assertTextNotPresent("This document currently has a full lock");
+        waitForTextNotPresent("This document currently has a full lock");
     }
 
     private String createTravelAuthorization() throws Exception {

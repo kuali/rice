@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.uif.library.collections;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -81,8 +82,10 @@ public class LibraryCollectionFeaturesEditLineAft extends WebDriverLegacyITBase 
     	waitAndSelectByName("exampleShown", "Edit Authorization Edit Line (line authorization)");
    	    testEditAuthorizationEditLineLineAuthorizationFeatures("Demo-CollectionEditLine-Example8");
     }
-    
-    protected void testLookupCollectionEditLine() throws Exception {
+
+    @Ignore  //Demo removed as part of KULRICE - 13246
+    @Test
+    public void testLookupCollectionEditLine() throws Exception {
     	waitAndSelectByName("exampleShown", "Lookup Collection Edit Line");
     	testLookupCollectionEditLineFeatures("Demo-CollectionEditLine-Example9");
     }
@@ -96,7 +99,7 @@ public class LibraryCollectionFeaturesEditLineAft extends WebDriverLegacyITBase 
         testReadOnlyEditLine();
         testEditAuthorizationEditLineCollectionReadOnly();
         testEditAuthorizationEditLineLineAuthorization();
-        testLookupCollectionEditLine();
+      //  testLookupCollectionEditLine();
     }
 
     protected void testAllFeatures(String sectionDataParent, String firstFieldToEdit, String secondFieldToEdit)

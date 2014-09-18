@@ -635,6 +635,18 @@
             <unique-column name="OBJ_ID"/>
         </unique>
     </table>
+    <table name="TRVL_TRAVELER_TYP_T">
+        <column name="CODE" primaryKey="true" size="45" type="VARCHAR"/>
+        <column name="SRC_CODE" size="45" type="VARCHAR"/>
+        <column name="NM" size="45" type="VARCHAR"/>
+        <column name="ADVANCES_IND" size="45" type="VARCHAR"/>
+        <column name="ACTV_IND" size="45" type="VARCHAR"/>
+        <column name="OBJ_ID" size="45" type="VARCHAR"/>
+        <column name="VER_NBR" type="DECIMAL"/>
+        <unique name="TRVL_TRAVELER_TYP_T_TC0">
+            <unique-column name="OBJ_ID"/>
+        </unique>
+    </table>
     <table name="TRV_ACCT">
         <column name="ACCT_NUM" primaryKey="true" size="10" type="VARCHAR"/>
         <column name="OBJ_ID" required="true" size="36" type="VARCHAR"/>

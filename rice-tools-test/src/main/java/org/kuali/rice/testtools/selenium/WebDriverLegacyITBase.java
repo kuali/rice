@@ -2756,6 +2756,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected void waitAndClickConfirmSaveOnClose() throws InterruptedException {
         jGrowl("Click OK Confirmation");
+        waitForElementVisibleBy(By.xpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]"));
         waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]");
     }
 

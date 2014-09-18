@@ -1595,7 +1595,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             if (second >= waitSeconds)
                 failed = true;
             try {
-                if (failed || (driver.findElements(by)).size() > 0)
+                if (failed || driver.findElement(by).isDisplayed())
                     break;
             } catch (Exception e) {}
             Thread.sleep(1000);

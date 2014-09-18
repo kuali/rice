@@ -77,14 +77,14 @@ public class EmailTypeAft extends WebDriverLegacyITBase {
         waitForTextPresent("No values match this search.");
         waitAndClickClearValues();
 
-        //Search by Address Type Code Filter
+        //Search by Code Filter
         waitAndTypeByName("lookupCriteria[code]","HM");
         clickSearch();
         String[] assertSearchResultForTypeCode = {"HM", "Home", "b"};
         assertTextPresent(assertSearchResultForTypeCode);
         waitAndClickClearValues();
 
-        //Search by Address Type Name Filter
+        //Search by Name Filter
         waitAndTypeByName("lookupCriteria[name]","Home");
         clickSearch();
         String[] assertSearchResultForTypeName = {"HM", "Home", "b"};

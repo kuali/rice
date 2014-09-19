@@ -230,7 +230,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			setupAddress(identityManagementPersonDocument, entityType, origEntityType.getAddresses());
             kimEntity.setEntityTypeContactInfos(entityTypes);
 		} else{
-			if(ObjectUtils.isNotNull(origEntity.getExternalIdentifiers())) {
+            if(ObjectUtils.isNotNull(origEntity.getPrincipals())) {
+                kimEntity.setPrincipals(origEntity.getPrincipals());
+            }
+            if(ObjectUtils.isNotNull(origEntity.getExternalIdentifiers())) {
                 kimEntity.setExternalIdentifiers(origEntity.getExternalIdentifiers());
             }
 			if(ObjectUtils.isNotNull(origEntity.getEmploymentInformation())) {

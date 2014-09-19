@@ -36,6 +36,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -1643,6 +1644,21 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForElementsPresentByClassName(String name, String message) throws InterruptedException {
         jiraAwareWaitFors(By.className(name), message);
+    }
+
+    /**
+     * {@see WebDriverUtils#waitFor}.
+     *
+     * @param by to find
+     * @param message on failure
+     */
+    protected List<WebElement> waitAndGetElementsFor(By by, String message) throws InterruptedException {
+        try {
+            return WebDriverUtils.waitFors(getDriver(), WebDriverUtils.configuredImplicityWait(), by, message);
+        } catch (Throwable t) {
+            jiraAwareFail(by, message, t);
+        }
+        return new ArrayList<WebElement>();
     }
 
     protected WebElement waitForElementPresentById(String id) throws InterruptedException {

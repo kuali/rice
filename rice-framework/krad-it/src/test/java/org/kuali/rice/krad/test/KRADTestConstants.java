@@ -36,6 +36,20 @@ public final class KRADTestConstants {
         }
     }
 
+    public static final class DataAttributesConstants {
+        public static final String PARENT = "parent";
+    }
+
+    public static final class CssClassNames {
+        public static final String INPUT_FIELD = "uif-inputField";
+        public static final String HORIZONTAL_FIELD_GROUP = "uif-horizontalFieldGroup";
+        public static final String ADD_LINE_ROW = "uif-collectionAddItem";
+        public static final String MODAL_DIALOG_BODY = "modal-body";
+        public static final String MODAL_DIALOG_FOOTER = "modal-footer";
+        public static final String MODAL_DIALOG_HEADER = "modal-header";
+        public static final String ROW_DETAILS_GROUP = "uif-rowDetails";
+    }
+
     private KRADTestConstants() {
         throw new UnsupportedOperationException("do not call");
     }

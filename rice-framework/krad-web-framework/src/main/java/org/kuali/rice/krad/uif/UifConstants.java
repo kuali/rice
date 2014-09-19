@@ -215,6 +215,7 @@ public class UifConstants {
         public static final String COLUMN_SORTS = "_columnSorts";
         public static final String COMPARE = "_comp";
         public static final String CONSTRAINT = "_constraint";
+        public static final String DELETE_LINE = "_del";
         public static final String DETAIL_LINK = "_detLink";
         public static final String DETAIL_GROUP = "_detGroup";
         public static final String DIALOG_GROUP = "_dialogGroup";

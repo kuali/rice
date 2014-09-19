@@ -181,9 +181,11 @@ JavascriptKradVariables.prototype = {
         MODAL_NAMESPACE: "modal",
         MODAL_CLASS: ".modal",
         MODAL_CONTENT_CLASS: ".modal-content",
+        MODAL_BACKDROP_CLASS: ".modal-backdrop",
         MODAL_BODY_CLASS: ".modal-body",
         MODAL_HEADER_CLASS: ".modal-header",
         MODAL_FOOTER_CLASS: ".modal-footer",
+        MODAL_OPEN: "modal-open",
         MODAL_CLOSE_DIALOG: "close_dialog"
     },
     NAVIGATION_ID: "Uif-Navigation",

@@ -75,6 +75,9 @@ KradResponse.prototype = {
         $pageInLayout.replaceWith(pageUpdate.find(">*"));
         $pageInLayout = jQuery(pageInLayout);
 
+        // Removes traces of dialog if one was destroyed by the refresh
+        ensureDialogBackdropRemoved();
+
         // remove detached dialogs
         jQuery("[data-detached='true']").remove();
 
@@ -172,6 +175,9 @@ KradResponse.prototype = {
                 $componentInDom.replaceWith(componentContent);
             }
 
+            // Removes traces of dialog if one was destroyed by the refresh
+            ensureDialogBackdropRemoved();
+
             $componentInDom = jQuery("#" + id);
 
             if ($componentInDom.parent().is("td")) {
@@ -260,6 +266,9 @@ KradResponse.prototype = {
         else {
             view.replaceWith(viewUpdate);
         }
+
+        // Removes traces of dialog if one was destroyed by the refresh
+        ensureDialogBackdropRemoved();
 
         var appFooterUpdate = update.find("#" + kradVariables.APPLICATION_FOOTER_WRAPPER);
         app.find("#" + kradVariables.APPLICATION_FOOTER_WRAPPER).replaceWith(appFooterUpdate);

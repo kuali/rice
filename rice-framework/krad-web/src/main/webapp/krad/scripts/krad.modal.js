@@ -478,3 +478,16 @@ function openLinkInDialog($link, dialogId) {
         window.location = href;
     }
 }
+
+/**
+ *  Ensures the modal backdrop is removed incase a dialog was destroyed by a component refresh.
+ */
+function ensureDialogBackdropRemoved() {
+    var $backdrop = jQuery(kradVariables.MODAL.MODAL_BACKDROP_CLASS);
+
+    // If no dialog is currently shown and the modal backdrop still exists, remove it
+    if (jQuery(kradVariables.MODAL.MODAL_CLASS + ":visible").length === 0 && $backdrop.length === 1) {
+       jQuery("body").removeClass(kradVariables.MODAL.MODAL_OPEN);
+       $backdrop.remove();
+    }
+}

@@ -52,12 +52,21 @@ public class LibraryClientResponsivenessDisableAft extends WebDriverLegacyITBase
        selectByName("multiSelectField1","Option 3");
        waitAndClickByXpath("//input[@type='radio' and @value='1']");
        waitAndClickByName("checkboxesField1");
+       waitForElementPresentByXpath("//a[@class='btn btn-default icon-calendar ui-datepicker-trigger']");
        
        //Scenario-2 - disabled
        waitAndClickByXpath("//input[@type='radio' and @value='disable']");
        if(isEnabledByName("inputField2") && isEnabledByName("inputField3") && isEnabledByName("inputField4") && isEnabledByName("inputField6") &&
                isEnabledByName("inputField7") && isEnabledByName("multiSelectField1")) {
            fail("Field Not Disabled Properly.");
+       }
+       waitAndClickByXpath("//a[@class='btn btn-default icon-edit-sign']");
+       if(!isElementPresentByXpath("//div[@class='fancybox-inner']/div/textarea[@disabled]")){
+           jiraAwareFail("Textarea in the popup should be disabled but it is not.");
+       }
+       waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+       if(isElementPresentByXpath("//a[@class='btn btn-default icon-calendar ui-datepicker-trigger']")){
+            jiraAwareFail("Icon for DatePicker has not changed while it is disabled");
        }
     }
     

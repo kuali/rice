@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.uif.library.collections;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.kuali.rice.krad.test.KRADTestConstants;
@@ -182,9 +183,9 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     protected void testAllFeatures(String exampleId, int lineIndex, int dialogIndex, boolean custom, boolean readOnly,
             boolean auth) throws Exception {
         verifyCollectionRowFieldsAreNonEditable(exampleId);
-                if(!readOnly) {
-                    verifyAddLineAndDeleteLineStillWork(exampleId);
-                }
+        if (!readOnly) {
+            verifyAddLineAndDeleteLineStillWork(exampleId);
+        }
         verifyEditInDialogWorks(exampleId, lineIndex, dialogIndex, custom, auth);
     }
 
@@ -477,8 +478,6 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
                 "//button[contains(@data-onclick, '" +
                 UifConstants.JsFunctions.SHOW_EDIT_LINE_DIALOG +
                 "')]";
-        //assertIsVisibleByXpath(fieldGroupXPath, "Row to edit is missing edit button.");
-        //assertIsVisibleByXpath(fieldGroupDivXPath, "Row to edit is missing edit button.");
         List<WebElement> elements = findVisibleElements(By.xpath(fieldGroupXPath));
         List<WebElement> buttonElements = findVisibleElements(By.xpath(fieldGroupDivXPath));
         int sizeElements = elements.size();
@@ -615,12 +614,14 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         return stringBuilder.toString();
     }
 
+    @Ignore
     @Test
     public void testCollectionFeaturesEditLineBookmark() throws Exception {
         testCollectionFeaturesEditLine();
         passed();
     }
 
+    @Ignore
     @Test
     public void testCollectionFeaturesEditLineNav() throws Exception {
         testCollectionFeaturesEditLine();

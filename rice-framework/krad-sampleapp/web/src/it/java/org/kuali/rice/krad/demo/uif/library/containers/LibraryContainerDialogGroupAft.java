@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.containers;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -119,9 +120,9 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Server Dialog Ex. 2");
         waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example9']/button");
         waitForProgressLoading();
-        waitAndClickByXpath(
-                "//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'OK')]");
+        waitAndClickByXpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'OK')]");
         waitForElementPresentByXpath("//a[contains(text(),'Required')]");
+        waitIsVisible(By.xpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'Cancel')]"));
         waitAndClickByXpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'Cancel')]");
     }
     protected void testContainerDialogGroupAjaxRetrieval() throws Exception {
@@ -166,8 +167,8 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	testContainerDialogGroupShowDialog1();
     	testContainerDialogGroupShowDialog2();
     	testContainerDialogGroupDialogEvents();
-        testContainerDialogGroupServerDialog2();
         testContainerDialogGroupServerDialog1();
+        testContainerDialogGroupServerDialog2();
     	testContainerDialogGroupAjaxRetrieval();
     	testContainerDialogGroupValidationInDialog();
     	testContainerDialogGroupDialogReuse();

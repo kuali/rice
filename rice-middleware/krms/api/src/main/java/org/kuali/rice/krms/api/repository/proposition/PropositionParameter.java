@@ -149,7 +149,7 @@ public final class PropositionParameter extends AbstractDataTransferObject imple
         private TermDefinition termValue;
         private String parameterType;
         private Integer sequenceNumber;
-        private Long versionNumber;
+        private Long versionNumber = 0L;
         private PropositionDefinition.Builder proposition;
 
         /**

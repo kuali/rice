@@ -93,8 +93,8 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
     @Version
     private Long versionNumber;
 
-    @ManyToOne(targetEntity = PropositionBo.class, fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
-    @JoinColumn(name = "PROP_ID", referencedColumnName = "PROP_ID", insertable = true, updatable = true)
+    @ManyToOne(targetEntity = PropositionBo.class, fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "PROP_ID", referencedColumnName = "PROP_ID")
     private PropositionBo proposition;
 
     @OneToMany(mappedBy = "rule",
@@ -393,7 +393,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
     }
 
     public static RuleBo copyRule(RuleBo existing) {
-        // create a simple proposition Bo
+        // create a rule Bo
         RuleBo newRule = new RuleBo();
         // copy simple fields
         newRule.setId(ruleIdIncrementer.getNewId());

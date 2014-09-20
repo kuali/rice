@@ -255,6 +255,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         AgendaEditor agendaEditor = getAgendaEditor(form);
         AgendaEditorBusRule rule = new AgendaEditorBusRule();
 
+        // clear the deleted list for the previous edited rule before editing another one
+        agendaEditor.clearDeletedPropositionIdsFromRule();
+
         if (rule.validContext(agendaEditor) && rule.validAgendaName(agendaEditor)) {
             agendaEditor.setAddRuleInProgress(false);
             // this is the root of the tree:
@@ -357,6 +360,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             newAgendaItem.setAgendaId(getCreateAgendaId(agenda));
 
             if (agenda.getFirstItemId() == null) {
+                agenda.setFirstItem(newAgendaItem);
                 agenda.setFirstItemId(newAgendaItem.getId());
             } else {
                 // insert agenda in tree
@@ -447,6 +451,18 @@ public class AgendaEditorController extends MaintenanceDocumentController {
     private boolean validateSimpleProposition(PropositionBo proposition, String namespace) {
         boolean result = true;
 
+        if (!CollectionUtils.isEmpty(proposition.getCompoundComponents())) {
+            GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
+                    "error.rule.proposition.simple.hasChildren", proposition.getDescription());
+            result &= false; // simple prop should not have compound components
+        }
+
+        if (CollectionUtils.isEmpty(proposition.getParameters())) {
+            result &= false;
+
+            return result;
+        }
+
         String propConstant = null;
         if (proposition.getParameters().get(1) != null) {
             propConstant = proposition.getParameters().get(1).getValue();
@@ -474,6 +490,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             GlobalVariables.getMessageMap().putErrorWithoutFullErrorPath(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
                     "error.rule.proposition.simple.blankField", proposition.getDescription(), "Operator");
             result &= false;
+
+            // The remaining checks depend on a non-blank operator, so we'll short circuit to avoid possible NPEs
+            return result;
         }
 
         if (StringUtils.isBlank(propConstant) && !operatorCode.endsWith("null")) { // ==null and !=null operators have blank values.
@@ -510,12 +529,6 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                     }
                 }
             }
-        }
-
-        if (!CollectionUtils.isEmpty(proposition.getCompoundComponents())) {
-            GlobalVariables.getMessageMap().putError(KRMSPropertyConstants.Rule.PROPOSITION_TREE_GROUP_ID,
-                    "error.rule.proposition.simple.hasChildren", proposition.getDescription());
-            result &= false; // simple prop should not have compound components
         }
 
         return result;
@@ -689,6 +702,10 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         } else {
             form.getActionParameters().put(UifParameters.NAVIGATE_TO_PAGE_ID, "AgendaEditorView-EditRule-Page");
         }
+
+        // apply deleted item IDs
+        agendaEditor.applyDeletedPropositionIdsFromRule();
+
         return super.navigate(form);
     }
 
@@ -847,6 +864,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if (bogusRootNode != null) {
                 // clean up special case with bogus root node
                 agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenTrueId());
+                agendaEditor.getAgenda().setFirstItem(bogusRootNode.getWhenTrue());
                 ruleEditorMessage.append(" to ").append(getFirstAgendaItem(agendaEditor.getAgenda()).getRule().getName()).append(" When TRUE group");
             } else {
                 ruleEditorMessage.append(" within its sibling group, above " + olderSibling.getRule().getName());
@@ -947,6 +965,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             if (bogusRootNode != null) {
                 // clean up special case with bogus root node
                 agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenFalseId());
+                agendaEditor.getAgenda().setFirstItem(bogusRootNode.getWhenFalse());
             }
             ruleEditorMessage.append("Moved ").append(node.getRule().getName()).append(" down ");
             ruleEditorMessage.append(" within its sibling group, below ").append(youngerSibling.getRule().getName());
@@ -1064,6 +1083,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         if (bogusRootNode != null) {
             // clean up special case with bogus root node
             agendaEditor.getAgenda().setFirstItemId(bogusRootNode.getWhenFalseId());
+            agendaEditor.getAgenda().setFirstItem(bogusRootNode.getWhenFalse());
             ruleEditorMessage.append(getFirstAgendaItem(agendaEditor.getAgenda()).getRule().getName()).append(" When TRUE group");
         }
         agendaEditor.setRuleEditorMessage(ruleEditorMessage.toString());
@@ -1332,6 +1352,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             // need to handle the first item here, our recursive method won't handle it.
             if (agendaItemSelected.equals(firstItem.getId())) {
                 agendaEditor.getAgenda().setFirstItemId(firstItem.getAlwaysId());
+                agendaEditor.getAgenda().setFirstItem(firstItem.getAlways());
             } else {
                 deleteAgendaItem(firstItem, agendaItemSelected);
             }
@@ -1443,6 +1464,7 @@ public class AgendaEditorController extends MaintenanceDocumentController {
                 // remove node
                 if (orgRefNode == null) {
                     agendaEditor.getAgenda().setFirstItemId(node.getAlwaysId());
+                    agendaEditor.getAgenda().setFirstItem(node.getAlways());
                 } else {
                     // determine if true, false or always
                     // do appropriate operation
@@ -2303,7 +2325,9 @@ public class AgendaEditorController extends MaintenanceDocumentController {
             }
         }
 
+        agendaEditor.getDeletedPropositionIdsFromRule().add(selectedPropId);
         agendaEditor.getAgendaItemLine().getRule().refreshPropositionTree(false);
+
         return getModelAndView(form);
     }
 

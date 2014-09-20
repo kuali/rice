@@ -233,6 +233,7 @@ public final class AgendaItemDefinition extends AbstractDataTransferObject imple
         private Builder(String id, String agendaId) {
         	setId(id);
         	setAgendaId(agendaId);
+            setVersionNumber(0L);
         }
 
         /**

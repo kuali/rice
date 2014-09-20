@@ -25,10 +25,10 @@ import org.kuali.rice.core.api.uif.RemotableTextInput;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
 import org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator;
+import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.maintenance.Maintainable;
 import org.kuali.rice.krad.maintenance.MaintainableImpl;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
-import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.Container;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -93,6 +93,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     public static final String NEW_AGENDA_EDITOR_DOCUMENT_TEXT = "New Agenda Editor Document";
     private static final RepositoryBoIncrementer termIdIncrementer = new RepositoryBoIncrementer(TermBo.TERM_SEQ_NAME);
     private static final RepositoryBoIncrementer termParameterIdIncrementer = new RepositoryBoIncrementer(TermParameterBo.TERM_PARM_SEQ_NAME);
+    private static final RepositoryBoIncrementer agendaItemIncrementer = new RepositoryBoIncrementer(AgendaBo.AGENDA_SEQ_NAME);
 
     private transient KrmsRetriever krmsRetriever = new KrmsRetriever();
 
@@ -357,6 +358,30 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
     public void saveDataObject() {
         AgendaBo agendaBo = ((AgendaEditor) getDataObject()).getAgenda();
 
+        AgendaItemBo firstItem = null;
+
+        // Find the first agenda item
+        for (AgendaItemBo agendaItem : agendaBo.getItems()) {
+            if (agendaBo.getFirstItemId().equals(agendaItem.getId())) {
+                firstItem = agendaItem;
+            }
+        }
+
+        // if new agenda persist without items
+        List<AgendaItemBo> agendaItems = agendaBo.getItems();
+        List<AgendaItemBo> updatedItems = new ArrayList<AgendaItemBo>();
+        if (getDataObjectService().find(AgendaBo.class,agendaBo.getId()) == null) {
+            agendaBo.setItems(updatedItems);
+            agendaBo.setFirstItem(null);
+            agendaBo = getDataObjectService().save(agendaBo);
+            getDataObjectService().flush(AgendaBo.class);
+            String agendaBoId = agendaBo.getId();
+            agendaBo = getDataObjectService().find(AgendaBo.class,agendaBoId);
+            agendaBo.setItems(agendaItems);
+            agendaBo.setFirstItem(firstItem);
+        }
+
+
         // handle saving new parameterized terms and processing custom operators
         for (AgendaItemBo agendaItem : agendaBo.getItems()) {
             PropositionBo propositionBo = agendaItem.getRule().getProposition();
@@ -369,40 +394,40 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         if (agendaBo != null) {
             flushCacheBeforeSave();
 
-            /*
-             AgendaItemBo has columns alwaysId, whenFirstId and whenLastId
-             that have fk constraints to a column (agendaItemid) on the same
-             table.
+            // Need to set the first item for persistence to cascade
+            agendaBo.setFirstItem(firstItem);
+            getDataObjectService().save(agendaBo, PersistenceOption.FLUSH);
 
-             With hibernate in this scenario caching all inserts causes them
-             to be executed at the same time in the DB and we get an integrity
-             violation exception.
+            // delete orphaned propositions -- this may not be as comprehensive as it should
+            for (String deletedPropId : ((AgendaEditor) getDataObject()).getDeletedPropositionIds()) {
+                PropositionBo toDelete = getDataObjectService().find(PropositionBo.class, deletedPropId);
 
-             The solution is to decouple AgendaBo from AgendaItemBo persist
-             the agenaItems one at at time and flush, causing the items
-             to be persisted avoiding the integrity constraint
-            */
-
-            if(this.getMaintenanceAction() != null &&
-                    this.getMaintenanceAction().equals(KRADConstants.MAINTENANCE_COPY_ACTION)){
-                List<AgendaItemBo> agendaItems = agendaBo.getItems();
-                agendaBo.setItems(new ArrayList<AgendaItemBo>());
-                getDataObjectService().save(agendaBo);
-
-                for(AgendaItemBo item : agendaItems) {
-                    getDataObjectService().save(item);
-                    getDataObjectService().flush(AgendaItemBo.class);
-                }
-
-                agendaBo.setItems(agendaItems);
-            }else{
-                getDataObjectService().save(agendaBo);
+                deletePropositionFromTree(toDelete);
             }
         } else {
-            throw new RuntimeException("Cannot save object of type: " + agendaBo + " with business object service");
+            throw new RuntimeException("Cannot save null " + AgendaBo.class.getName() + " with business object service");
         }
     }
 
+    /**
+     * removes all parent-child relationships from this proposition, and deletes it.
+     *
+     * <p><B>NOTE:</B> This method assumes that the proposition exists in the database.</p>
+     *
+     * @param toDelete the proposition to delete
+     */
+    private void deletePropositionFromTree(PropositionBo toDelete) {
+        if (toDelete != null) {
+            // clear out children to nuke join table rows
+            if (!CollectionUtils.isEmpty(toDelete.getCompoundComponents())) {
+                toDelete.getCompoundComponents().clear();
+            }
+
+            // save it first to delete the join table rows
+            getDataObjectService().save(toDelete);
+            getDataObjectService().delete(toDelete);
+        }
+    }
 
     private void addItemsToListForDeletion(List<AgendaItemBo> deletionOrder, AgendaItemBo agendaItemBo){
         if (!deletionOrder.contains(agendaItemBo) && ObjectUtils.isNotNull(agendaItemBo)) {

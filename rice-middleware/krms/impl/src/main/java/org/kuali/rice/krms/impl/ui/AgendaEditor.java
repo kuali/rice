@@ -23,6 +23,7 @@ import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,8 @@ public class AgendaEditor implements Serializable {
     private String cutAgendaItemId;
     private String selectedPropositionId;
     private String cutPropositionId;
+    private List<String> deletedPropositionIdsFromRule = new ArrayList<>();
+    private List<String> deletedPropositionIds = new ArrayList<>();
     private String copyRuleName;
     private String oldContextId;
     private String ruleEditorMessage;
@@ -271,6 +274,67 @@ public class AgendaEditor implements Serializable {
      */
     public String getCutPropositionId() {
         return cutPropositionId;
+    }
+
+    /**
+     * A list of the IDs for the propositions that have been deleted from this rule.
+     *
+     * @return the deleted proposition IDs
+     */
+    public List<String> getDeletedPropositionIdsFromRule() {
+        return deletedPropositionIdsFromRule;
+    }
+
+    /**
+     * Set the list of the IDs for the propositions that have been deleted from this rule.
+     *
+     * @param deletedPropositionIdsFromRule the proposition IDs to set
+     */
+    public void setDeletedPropositionIdsFromRule(List<String> deletedPropositionIdsFromRule) {
+        this.deletedPropositionIdsFromRule = deletedPropositionIdsFromRule;
+    }
+
+    /**
+     * Get the list of the IDs for propositions that have been deleted from this agenda.
+     *
+     * @return the deleted proposition IDs
+     */
+    public List<String> getDeletedPropositionIds() {
+        return deletedPropositionIds;
+    }
+
+    /**
+     * Set the list of the IDs for propositions that have been deleted from this agenda.
+     *
+     * @param deletedPropositionIds the proposition IDs to set
+     */
+    public void setDeletedPropositionIds(List<String> deletedPropositionIds) {
+        this.deletedPropositionIds = deletedPropositionIds;
+    }
+
+    public void addDeletedPropositionIdFromRule(String propId) {
+        getDeletedPropositionIdsFromRule().add(propId);
+    }
+
+    /**
+     * Removes all of the proposition ID that have been tracked as deleted from this rule.
+     *
+     * <p>This is something to do when the user abandons the changes that have been made to
+     * the current edited rule.</p>
+     */
+    public void clearDeletedPropositionIdsFromRule() {
+        getDeletedPropositionIdsFromRule().clear();
+    }
+
+    /**
+     * Moves all of the proposition IDs that have been tracked as deleted from this rule to
+     * the list on the agenda.
+     *
+     * <p>This essentially commits to the deletions that have been made in the rule.</p>
+     */
+    public void applyDeletedPropositionIdsFromRule() {
+        getDeletedPropositionIds().addAll(getDeletedPropositionIdsFromRule());
+        clearDeletedPropositionIdsFromRule();
     }
 
     public String getContextName() {

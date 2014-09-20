@@ -49,6 +49,7 @@ public final class KrmsRepositoryServiceLocator {
     public static final String KRMS_AGENDA_AUTHORIZATION_SERVICE = "agendaAuthorizationService";
     public static final String KRMS_REPOSITORY_TO_ENGINE_TRANSLATOR = "repositoryToEngineTranslator";
     public static final String TYPE_TYPE_RELATION_BO_SERVICE = "typeTypeRelationBoService";
+    public static final String KRMS_PROPOSITION_BO_SERVICE = "propositionBoService";
 
 	private static KrmsAttributeDefinitionService krmsAttributeDefinitionService;
     private static ContextBoService contextBoService;
@@ -60,6 +61,7 @@ public final class KrmsRepositoryServiceLocator {
     private static KrmsTypeRepositoryService krmsTypeRepositoryService;
     private static RepositoryToEngineTranslator krmsRepositoryToEngineTranslator;
     private static TypeTypeRelationBoService typeTypeRelationBoService;
+    private static PropositionBoService propositionBoService;
 
     public static <T extends Object> T getService(String serviceName) {
 		return KrmsRepositoryServiceLocator.<T>getBean(serviceName);
@@ -148,5 +150,12 @@ public final class KrmsRepositoryServiceLocator {
             typeTypeRelationBoService = getService(TYPE_TYPE_RELATION_BO_SERVICE);
         }
         return typeTypeRelationBoService;
+    }
+
+    public static PropositionBoService getPropositionBoService() {
+        if (propositionBoService == null) {
+            propositionBoService = getService(KRMS_PROPOSITION_BO_SERVICE);
+        }
+        return propositionBoService;
     }
 }

@@ -610,7 +610,6 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         agendaBo.setTypeId(null);
         agendaBo = getDataObjectService().save(agendaBo, PersistenceOption.FLUSH);
 
-        agendaBo.setFirstItemId(ruleBo.getId());
         AgendaItemBo agendaItemBo = new AgendaItemBo();
         agendaItemBo.setRule(ruleBo);
         agendaItemBo.setAgendaId(agendaBo.getId());
@@ -620,6 +619,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         agendaItems.add(agendaItemBo);
         agendaBo.setItems(agendaItems);
         agendaBo.setFirstItemId(agendaItemBo.getId());
+        agendaBo.setFirstItem(agendaItemBo);
 
         // also add attribute to the agenda to store event
         Set<AgendaAttributeBo> agendaAttributes = new HashSet<AgendaAttributeBo>();

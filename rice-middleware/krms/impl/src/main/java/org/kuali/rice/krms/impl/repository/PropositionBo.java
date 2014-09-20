@@ -15,29 +15,8 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
@@ -52,6 +31,25 @@ import org.kuali.rice.krms.impl.ui.CustomOperatorUiTranslator;
 import org.kuali.rice.krms.impl.ui.TermParameter;
 import org.kuali.rice.krms.impl.util.KrmsImplConstants;
 import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.Version;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Entity
 @Table(name = "KRMS_PROP_T")
@@ -81,7 +79,8 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     @Column(name = "DSCRM_TYP_CD")
     private String propositionTypeCode;
 
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "proposition")
+    @PrivateOwned
+    @OneToMany(orphanRemoval = true, mappedBy = "proposition", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
     @OrderBy("sequenceNumber")
     private List<PropositionParameterBo> parameters = new ArrayList<PropositionParameterBo>();
 
@@ -92,10 +91,9 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     private Integer compoundSequenceNumber;
 
     @Column(name = "VER_NBR")
-    @Version
-    private Long versionNumber;
+    private Long versionNumber = 0l;
 
-    @ManyToMany(targetEntity = PropositionBo.class, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = PropositionBo.class, cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "KRMS_CMPND_PROP_PROPS_T", joinColumns = { @JoinColumn(name = "CMPND_PROP_ID", referencedColumnName = "PROP_ID") }, inverseJoinColumns = { @JoinColumn(name = "PROP_ID", referencedColumnName = "PROP_ID") })
     @OrderBy("compoundSequenceNumber")
     private List<PropositionBo> compoundComponents;
@@ -383,7 +381,11 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
             pConst.setSequenceNumber(new Integer("1"));
             pConst.setVersionNumber(new Long(1));
             pConst.setValue("");
-            List<PropositionParameterBo> paramList = Arrays.asList(pTerm, pConst, pOp);
+
+            List<PropositionParameterBo> paramList = new ArrayList<PropositionParameterBo>(3);
+            paramList.add(pTerm);
+            paramList.add(pConst);
+            paramList.add(pOp);
 
             prop.setParameters(paramList);
         }
@@ -466,7 +468,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         List<PropositionBo> newCompoundComponents = new ArrayList<PropositionBo>();
         for (PropositionBo component : existing.getCompoundComponents()) {
             PropositionBo newComponent = copyProposition(component);
-            ((ArrayList<PropositionBo>) newCompoundComponents).add(component);
+            ((ArrayList<PropositionBo>) newCompoundComponents).add(newComponent);
         }
 
         newProp.setCompoundComponents(newCompoundComponents);
@@ -531,6 +533,10 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
 
     public void setRuleId(String ruleId) {
         this.ruleId = ruleId;
+
+        if (getCompoundComponents() != null) for (PropositionBo child : getCompoundComponents()) {
+            child.setRuleId(ruleId);
+        }
     }
 
     @Override

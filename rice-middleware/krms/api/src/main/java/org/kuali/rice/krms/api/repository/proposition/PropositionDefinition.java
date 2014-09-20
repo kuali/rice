@@ -248,7 +248,6 @@ public final class PropositionDefinition extends AbstractDataTransferObject impl
 			setRuleId(ruleId);
 			setTypeId(typeId);
 			setParameters(parameters);
-            setVersionNumber(0L);
         }
 
         /**

@@ -290,7 +290,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
 
         // we don't set rule here, it is set in RuleBo.from
 
-        setRuleIdRecursive(im.getRuleId(), bo);
+        bo.setRuleId(im.getRuleId());
 
         bo.typeId = im.getTypeId();
         bo.propositionTypeCode = im.getPropositionTypeCode();
@@ -312,21 +312,13 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
             }
         }
 
-        bo.setVersionNumber(im.getVersionNumber());
+        if (im.getVersionNumber() == null) {
+            bo.setVersionNumber(0l);
+        } else {
+            bo.setVersionNumber(im.getVersionNumber());
+        }
 
         return bo;
-    }
-
-    private static void setRuleIdRecursive(String ruleId, PropositionBo prop) {
-        prop.ruleId = ruleId;
-
-        if (prop.compoundComponents != null) {
-            for (PropositionBo child : prop.compoundComponents) {
-                if (child != null) {
-                    setRuleIdRecursive(ruleId, child);
-                }
-            }
-        }
     }
 
     /**
@@ -531,6 +523,11 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
         return ruleId;
     }
 
+    /**
+     * Sets the ruleId on this proposition and all its compound components.
+     *
+     * @param ruleId the ruleId to set
+     */
     public void setRuleId(String ruleId) {
         this.ruleId = ruleId;
 

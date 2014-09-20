@@ -194,7 +194,6 @@ public final class AgendaDefinition extends AbstractDataTransferObject implement
             setContextId(contextId);
             setActive(true);
             setAttributes(new HashMap<String, String>());
-            setVersionNumber(0L);
         }
 
          /**

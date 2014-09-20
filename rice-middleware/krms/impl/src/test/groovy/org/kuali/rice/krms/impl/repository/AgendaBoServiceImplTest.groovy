@@ -337,7 +337,8 @@ class AgendaBoServiceImplTest {
 
   @Test
   void test_updateAgenda_success() {
-		mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO.getFirstItem() }
 		mockDataObjectService.demand.deleteMatching(1) { clazz, map -> }
 		mockDataObjectService.demand.save { bo, po ->
             ((AgendaBo)bo).setId("1");
@@ -356,7 +357,7 @@ class AgendaBoServiceImplTest {
 		KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
 		kads.setDataObjectService(dataObjectService)
 		KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
-		
+
 		def updatedData = service.updateAgenda(TEST_EXISTING_AGENDA_DEF)
 
         Assert.assertNotNull("Data should not be null coming from AgendaBoService updateAgenda", updatedData);

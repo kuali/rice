@@ -55,7 +55,7 @@ public class LabsLookupMultipleValuesReturnAft extends LabsLookupBase {
         waitAndTypeByName("lookupCriteria[name]","*");
         waitAndTypeByName("lookupCriteria[fiscalOfficer.principalName]","eri*");
         waitAndClickSearch3();
-        assertResultCount("6");
+        assertResultCount("7");
         waitAndClickByXpath("//input[@type='checkbox' and @value='CAT:Travel Account 10:a10']");
 
         // EAT in DB

@@ -48,9 +48,11 @@ public class LabsInquiryDefaultInquirableAft extends LabsInquiryBase {
                                           {"Code And Description:", "CAT - Clearing"},
                                         //{"Subsidized Percent:", ""}, skip field till a good way to handle empty strings is figured out
                                           };
+        String fiscalOfficer = waitForLabeledText("Fiscal Officer User ID:");
+        String fiscalOfficerName = waitForLabeledText("Fiscal Officer Name:");
         String[][] lightBoxFiscalOfficerLabeledText = {{"Travel Account Number:", "a14"},
-                {"Fiscal Officer User ID:", "fran"},
-                {"Fiscal Officer Name:", "fran, fran"}};
+                {"Fiscal Officer User ID:", fiscalOfficer},
+                {"Fiscal Officer Name:", fiscalOfficerName}};
         assertLabeledTextPresent(lightBoxTravelAccountLabeledText);
         assertLabeledTextPresent(lightBoxFiscalOfficerLabeledText);
         

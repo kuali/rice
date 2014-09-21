@@ -904,7 +904,8 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected void submitSuccessfully() throws InterruptedException {
-        submitSuccessfully(WebDriverUtils.configuredImplicityWait());
+//        submitSuccessfully(WebDriverUtils.configuredImplicityWait());
+        submitSuccessfully(120); // temp for release as I cannot modify the CI Job
     }
 
     protected void submitSuccessfully(int loadingSeconds) throws InterruptedException {

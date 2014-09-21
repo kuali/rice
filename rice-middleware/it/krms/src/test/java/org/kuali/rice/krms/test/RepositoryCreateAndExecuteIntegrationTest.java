@@ -301,12 +301,7 @@ public class RepositoryCreateAndExecuteIntegrationTest extends AbstractAgendaBoT
     }
 
     private List<ResultEvent> executeEngineResults(EngineResults eResults1) {
-        try {
-            return eResults1.getAllResults(); // CI NPE
-        } catch (NullPointerException npe) {
-            fail("https://jira.kuali.org/browse/KULRICE-8625 KRMS RepositoryCreateAndExecuteIntegrationTest fails with NPE in CI passes locally." + ExceptionUtils.getStackTrace(npe));
-        }
-        return null;
+        return eResults1.getAllResults();
     }
 
     private void assertAgendaDidNotExecute(String agendaName) {

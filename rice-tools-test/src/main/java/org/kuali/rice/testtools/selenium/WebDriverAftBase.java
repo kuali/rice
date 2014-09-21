@@ -1579,8 +1579,8 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
      * @param message
      * @throws InterruptedException
      */
-    protected void waitForElementVisible(String elementLocator, String message) throws InterruptedException {
-        waitForElementVisibleBy(By.cssSelector(elementLocator), message);
+    protected WebElement waitForElementVisible(String elementLocator, String message) throws InterruptedException {
+        return waitForElementVisibleBy(By.cssSelector(elementLocator), message);
     }
 
     protected WebElement waitForElementVisibleBy(By by) throws InterruptedException {
@@ -1644,6 +1644,12 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForElementsPresentByClassName(String name, String message) throws InterruptedException {
         jiraAwareWaitFors(By.className(name), message);
+    }
+
+    protected String waitForLabeledText(String label) throws InterruptedException {
+        return waitForElementVisibleBy(By.xpath("//th/label[contains(text(), '"
+                + label
+                + "')]/../following-sibling::*/div/span")).getText();
     }
 
     /**

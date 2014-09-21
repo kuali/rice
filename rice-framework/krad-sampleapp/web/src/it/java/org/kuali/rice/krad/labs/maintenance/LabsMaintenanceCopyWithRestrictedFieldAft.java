@@ -40,10 +40,11 @@ public class LabsMaintenanceCopyWithRestrictedFieldAft extends LabsMaintenanceBa
 
     protected void testMaintenanceCopyWithRestrictedField() throws InterruptedException {
     	waitAndClickByLinkText("Travel Company Maintenance Sample - Copy with restricted field");
-    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/th/label[contains(text(),'Fiscal Officer:')]");
-    	assertElementPresentByXpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr/td/div/span[contains(text(),'fran')]");
+
+        String fiscalOfficerName = waitForLabeledText("Fiscal Officer:");
+
         String newFiscalOfficerText = findElement(By.xpath("//div[@id='TravelAccount-Basic_disclosureContent']/table/tbody/tr[5]/td[2]/div")).getText();
-        assertFalse("Maintenance Copy Restricted Field not restricted, fran not found in fiscal office text", newFiscalOfficerText.contains("fran"));
+        assertFalse("Maintenance Copy Restricted Field not restricted, fran not found in fiscal office text", newFiscalOfficerText.contains("fiscalOfficerName"));
     }
 
     @Test

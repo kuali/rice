@@ -40,13 +40,13 @@ public class LabsMaintenanceDisableDeleteAft extends LabsMaintenanceBase {
     protected void testMaintenanceDisableDelete() throws InterruptedException {
     	waitAndClickByLinkText("Travel Account Maintenance Sample - Basic Delete");
     	waitForTextPresent("Unable to delete. Object does not support delete action.");
-    	String assertText [] ={"a14","Travel Account 14","Clearing","fran"};
+    	String assertText [] ={"a14","Travel Account 14","Clearing"};
     	assertTextPresent(assertText);
     }
     
     protected void testMaintenanceBasicEdit() throws InterruptedException {
     	waitAndClickByLinkText("Travel Account Maintenance Sample - Basic Edit");
-    	String assertText [] ={"a14","Travel Account 14","Clearing","fran"};
+    	String assertText [] ={"a14","Travel Account 14","Clearing"};
     	assertTextPresent(assertText);
     	waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.name' and @value='Travel Account 14']");
     	waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT' and @checked='checked']");

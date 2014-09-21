@@ -46,7 +46,7 @@ public class LibraryClientResponsivenessDisableAft extends WebDriverLegacyITBase
     protected void testClientResponsivenessDisable() throws Exception {
        //Scenario-1 - enabled
        waitAndClickByXpath("//input[@type='radio' and @value='enable']");
-       waitAndTypeByName("inputField2","a");
+       waitAndTypeByName("inputField2","a1");
        waitAndTypeByName("inputField3","b");
        selectByName("inputField4", "Option 2");
        selectByName("multiSelectField1","Option 3");
@@ -60,14 +60,16 @@ public class LibraryClientResponsivenessDisableAft extends WebDriverLegacyITBase
                isEnabledByName("inputField7") && isEnabledByName("multiSelectField1")) {
            fail("Field Not Disabled Properly.");
        }
-       waitAndClickByXpath("//a[@class='btn btn-default icon-edit-sign']");
-       if(!isElementPresentByXpath("//div[@class='fancybox-inner']/div/textarea[@disabled]")){
-           jiraAwareFail("Textarea in the popup should be disabled but it is not.");
-       }
-       waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
-       if(isElementPresentByXpath("//a[@class='btn btn-default icon-calendar ui-datepicker-trigger']")){
-            jiraAwareFail("Icon for DatePicker has not changed while it is disabled");
-       }
+// @Ignore https://jira.kuali.org/browse/KULRICE-12615
+//       waitAndClickByXpath("//a[@class='btn btn-default icon-edit-sign']");
+//       if(!isElementPresentByXpath("//div[@class='fancybox-inner']/div/textarea[@disabled]")){
+//           jiraAwareFail("Textarea in the popup should be disabled but it is not.");
+//       }
+// @Ignore https://jira.kuali.org/browse/KULRICE-12616
+//       waitAndClickByXpath("//a[@class='fancybox-item fancybox-close']");
+//       if(isElementPresentByXpath("//a[@class='btn btn-default icon-calendar ui-datepicker-trigger']")){
+//            jiraAwareFail("Icon for DatePicker has not changed while it is disabled");
+//       }
     }
     
     protected void testClientResponsivenessDisableOnChange() throws Exception {

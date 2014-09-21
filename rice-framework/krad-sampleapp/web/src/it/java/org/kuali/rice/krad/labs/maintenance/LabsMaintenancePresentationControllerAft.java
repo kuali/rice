@@ -41,8 +41,7 @@ public class LabsMaintenancePresentationControllerAft extends LabsMaintenanceBas
     	waitAndClickByLinkText("Travel Account Maintenance Sample - Presentation Controller");
     	String [][] accountInformation = {{"Travel Account Number:","a14","a14"},
     			{"Account Name:","Travel Account 14","Travel Account 14"},
-    			{"Travel Account Type Code:","Clearing","Clearing"},
-    			{"Fiscal Officer:","fran","fran"}};
+    			{"Travel Account Type Code:","Clearing","Clearing"}};
     	assertTextPresent(accountInformation);
     	assertTextNotPresent("Sub Account Information");
     }

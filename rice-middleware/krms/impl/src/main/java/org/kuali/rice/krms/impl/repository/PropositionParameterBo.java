@@ -133,7 +133,12 @@ public class PropositionParameterBo implements PropositionParameterContract, Ser
         bo.setTermValue(im.getTermValue());
         bo.parameterType = im.getParameterType();
         bo.sequenceNumber = im.getSequenceNumber();
-        bo.setVersionNumber(im.getVersionNumber());
+
+        if (im.getVersionNumber() == null) {
+            bo.setVersionNumber(0l);
+        } else {
+            bo.setVersionNumber(im.getVersionNumber());
+        }
 
         return bo;
     }

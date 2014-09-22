@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.transactional;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -86,7 +87,7 @@ public class LabsLookupTravelAuthorizationDocumentCloseActionAft extends LabsTra
         }
 
         // click the close button
-        waitAndClickButtonByText("Close");
+        waitAndClickButtonByText("Close", WebDriverUtils.configuredImplicityWait() * 10);
 
         jGrowl("Click No Confirmation");
         waitForElementVisibleBy(By.xpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'No')]"));

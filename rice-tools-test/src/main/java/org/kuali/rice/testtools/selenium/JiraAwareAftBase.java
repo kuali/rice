@@ -627,20 +627,24 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @throws InterruptedException
      */
     protected void jiraAwareWaitAndClick(By by, String message, JiraAwareFailable failable) throws InterruptedException {
+        jiraAwareWaitAndClick(by, WebDriverUtils.configuredImplicityWait(), message, failable);
+    }
+
+    protected void jiraAwareWaitAndClick(By by, int waitSeconds, String message, JiraAwareFailable failable) throws InterruptedException {
         try {
-            jiraAwareWaitFor(by, message, failable);
+            jiraAwareWaitFor(by, waitSeconds, message, failable);
             findElement(by).click();
             // possible future code of outputting clicked components in a more generic way, but need to look into duplicates, don't delete
-//            WebElement element = findElement(by);
-//            String jgrowl = element.getAttribute("name");
-//            if (jgrowl == null || "".equals(jgrowl)) {
-//                jgrowl = element.getAttribute("id");
-//            }
-//            if (jgrowl == null || "".equals(jgrowl)) {
-//                jgrowl = by.toString();
-//            }
-//            WebDriverUtils.jGrowl(getDriver(), "Click " + jgrowl, false, "Click " + jgrowl);
-//            element.click();
+            //            WebElement element = findElement(by);
+            //            String jgrowl = element.getAttribute("name");
+            //            if (jgrowl == null || "".equals(jgrowl)) {
+            //                jgrowl = element.getAttribute("id");
+            //            }
+            //            if (jgrowl == null || "".equals(jgrowl)) {
+            //                jgrowl = by.toString();
+            //            }
+            //            WebDriverUtils.jGrowl(getDriver(), "Click " + jgrowl, false, "Click " + jgrowl);
+            //            element.click();
         } catch (Throwable t) {
             failable.jiraAwareFail(by.toString(), message, t);
         }
@@ -698,8 +702,12 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
      * @throws InterruptedException
      */
     protected void jiraAwareWaitFor(By by, String message, JiraAwareFailable failable) throws InterruptedException {
+        jiraAwareWaitFor(by, WebDriverUtils.configuredImplicityWait(), message, failable);
+    }
+
+    protected void jiraAwareWaitFor(By by, int waitSeconds, String message, JiraAwareFailable failable) throws InterruptedException {
         try {
-            WebDriverUtils.waitFor(getDriver(), WebDriverUtils.configuredImplicityWait(), by, message);
+            WebDriverUtils.waitFor(getDriver(), waitSeconds, by, message);
         } catch (Throwable t) {
             jiraAwareFail(by.toString(), message, t, failable);
         }

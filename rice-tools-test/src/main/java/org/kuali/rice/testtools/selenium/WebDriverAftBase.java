@@ -1376,13 +1376,26 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         jiraAwareWaitAndClick(By.xpath(xpath), message);
     }
 
+    protected void waitAndClickByXpath(String xpath, int waitSeconds, String message) throws InterruptedException {
+        jiraAwareWaitAndClick(By.xpath(xpath), waitSeconds, message, this);
+    }
+
     protected void waitAndClickButtonByText(String buttonText) throws InterruptedException {
         waitAndClickButtonByText(buttonText, this.getClass().toString());
+    }
+
+    protected void waitAndClickButtonByText(String buttonText, int waitSeconds) throws InterruptedException {
+        waitAndClickButtonByText(buttonText, waitSeconds, this.getClass().toString());
     }
 
     protected void waitAndClickButtonByText(String buttonText, String message) throws InterruptedException {
         jGrowl("Click " + buttonText + " button.");
         waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]", message);
+    }
+
+    protected void waitAndClickButtonByText(String buttonText, int waitSeconds, String message) throws InterruptedException {
+        jGrowl("Click " + buttonText + " button.");
+        waitAndClickByXpath("//button[contains(text(), '" + buttonText + "')]", waitSeconds, message);
     }
 
     protected void waitAndClickButtonByExactText(String buttonText) throws InterruptedException {

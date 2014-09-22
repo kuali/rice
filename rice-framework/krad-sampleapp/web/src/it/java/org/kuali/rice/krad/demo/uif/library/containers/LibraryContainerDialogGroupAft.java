@@ -125,6 +125,7 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
         waitIsVisible(By.xpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'Cancel')]"));
         waitAndClickByXpath("//section[@id='Demo-DialogGroup-ServerResponse2']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse2']/button[contains(text(),'Cancel')]");
     }
+
     protected void testContainerDialogGroupAjaxRetrieval() throws Exception {
     	waitAndClickByLinkText("Ajax Retrieval");
     	//Needs to fix the functionality.
@@ -168,11 +169,11 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	testContainerDialogGroupShowDialog2();
     	testContainerDialogGroupDialogEvents();
         testContainerDialogGroupServerDialog1();
-        testContainerDialogGroupServerDialog2();
+//      testContainerDialogGroupServerDialog2(); // fails when run with others, test below
     	testContainerDialogGroupAjaxRetrieval();
-    	testContainerDialogGroupValidationInDialog();
+//    	testContainerDialogGroupValidationInDialog(); // fails when run with others, test below
     	testContainerDialogGroupDialogReuse();
-    	testContainerDialogGroupSmallDialog();
+//    	testContainerDialogGroupSmallDialog(); // fails when run with others, test below
     	testContainerDialogGroupLargeDialog();
     }
     
@@ -186,5 +187,41 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     public void testContainerDialogGroupNav() throws Exception {
     	testContainerDialogGroupAll();
         passed();
-    }  
+    }
+
+    @Test
+    public void testContainerDialogGroupServerDialog2Bookmark() throws Exception {
+        testContainerDialogGroupServerDialog2();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupServerDialog2Nav() throws Exception {
+        testContainerDialogGroupServerDialog2();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupValidationInDialogBookmark() throws Exception {
+        testContainerDialogGroupValidationInDialog();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupValidationInDialogNav() throws Exception {
+        testContainerDialogGroupValidationInDialog();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupSmallDialogBookmark() throws Exception {
+        testContainerDialogGroupSmallDialog();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupSmallDialogNav() throws Exception {
+        testContainerDialogGroupSmallDialog();
+        passed();
+    }
 }

@@ -15,6 +15,7 @@
  */
 package edu.sampleu.main;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -22,6 +23,7 @@ import org.junit.Test;
  */
 public class WorkFlowRouteRulesBlanketAppNavAft extends WorkFlowRouteRulesBlanketAppAftBase {
 
+    @Ignore // https://jira.kuali.org/browse/KULRICE-13289
     @Test
     public void testWorkFlowRouteRulesBlanketAppNav() throws Exception {
         testWorkFlowRouteRulesBlanketAppNav(this);

@@ -72,6 +72,18 @@ public class DemoTravelMileageLookUpAft extends ViewDemoAftBase {
 		//    	assertTextPresent(activeResults);
     }
 
+    protected void testTravelMileageLookUpPreserveLockingKeysOnCopy() throws Exception {
+        waitAndTypeByName("lookupCriteria[mileageRateId]","10000");
+        waitAndClickButtonByText(SEARCH);
+        waitAndClickByLinkText("copy");
+        waitForElementPresentByXpath("//a[contains(text(),'10000')]");
+        waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.mileageRateId' and @value='10000']");
+        waitAndTypeByName("document.documentHeader.documentDescription","Description");
+        waitAndClickByXpath("//button[contains(text(),'Submit')]");
+        waitAndClickConfirmationOk();
+        waitForTextPresent("This document cannot be Saved or Routed because a record with the same primary key already exists.");
+    }
+
     @Test
     public void testTravelMileageLookUpBookmark() throws Exception {
         testTravelMileageLookUp();
@@ -81,6 +93,18 @@ public class DemoTravelMileageLookUpAft extends ViewDemoAftBase {
     @Test
     public void testTravelMileageLookUpNav() throws Exception {
         testTravelMileageLookUp();
+        passed();
+    }
+
+    @Test
+    public void testTravelMileageLookUpPreserveLockingKeysOnCopyBookmark() throws Exception {
+        testTravelMileageLookUpPreserveLockingKeysOnCopy();
+        passed();
+    }
+
+    @Test
+    public void testTravelMileageLookUpPreserveLockingKeysOnCopyNav() throws Exception {
+        testTravelMileageLookUpPreserveLockingKeysOnCopy();
         passed();
     }
 }

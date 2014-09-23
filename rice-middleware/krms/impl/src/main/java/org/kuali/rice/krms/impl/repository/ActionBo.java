@@ -81,8 +81,7 @@ public class ActionBo implements ActionDefinitionContract, Versioned, Serializab
     @Version
     private Long versionNumber;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "action",
-            cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(mappedBy = "action", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
     private List<ActionAttributeBo> attributeBos;
 
     @Override

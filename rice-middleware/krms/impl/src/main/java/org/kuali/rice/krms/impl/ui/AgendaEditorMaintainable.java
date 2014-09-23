@@ -367,7 +367,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             }
         }
 
-        // if new agenda persist without items
+        // if new agenda persist without items.  This works around a chicken and egg problem
+        // with KRMS_AGENDA_T.INIT_AGENDA_ITM_ID and KRMS_AGENDA_ITM_T.AGENDA_ITM_ID both being non-nullable
         List<AgendaItemBo> agendaItems = agendaBo.getItems();
         List<AgendaItemBo> updatedItems = new ArrayList<AgendaItemBo>();
         if (getDataObjectService().find(AgendaBo.class,agendaBo.getId()) == null) {

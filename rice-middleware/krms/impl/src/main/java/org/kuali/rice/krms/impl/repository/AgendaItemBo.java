@@ -33,6 +33,7 @@ import javax.persistence.Version;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.OptimisticLocking;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
@@ -50,6 +51,7 @@ import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
  */
 @Entity
 @Table(name = "KRMS_AGENDA_ITM_T")
+@OptimisticLocking(cascade = true)
 public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Serializable {
 
     private static final long serialVersionUID = 1L;

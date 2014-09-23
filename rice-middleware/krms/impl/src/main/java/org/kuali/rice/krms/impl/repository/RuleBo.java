@@ -36,6 +36,7 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.OptimisticLocking;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.core.api.util.tree.Node;
 import org.kuali.rice.core.api.util.tree.Tree;
@@ -57,6 +58,7 @@ import org.kuali.rice.krms.impl.ui.SimplePropositionNode;
 
 @Entity
 @Table(name = "KRMS_RULE_T")
+@OptimisticLocking(cascade = true)
 public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -97,12 +99,11 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
     @JoinColumn(name = "PROP_ID", referencedColumnName = "PROP_ID")
     private PropositionBo proposition;
 
-    @OneToMany(mappedBy = "rule",
-            cascade = { CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(mappedBy = "rule", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
     private List<ActionBo> actions;
 
-    @OneToMany(targetEntity = RuleAttributeBo.class, fetch = FetchType.LAZY, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
-    @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID", insertable = true, updatable = true)
+    @OneToMany(targetEntity = RuleAttributeBo.class, fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID")
     private List<RuleAttributeBo> attributeBos;
 
     @Transient

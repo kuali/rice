@@ -80,7 +80,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     private String propositionTypeCode;
 
     @PrivateOwned
-    @OneToMany(orphanRemoval = true, mappedBy = "proposition", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "proposition", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
     @OrderBy("sequenceNumber")
     private List<PropositionParameterBo> parameters = new ArrayList<PropositionParameterBo>();
 
@@ -91,7 +91,8 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     private Integer compoundSequenceNumber;
 
     @Column(name = "VER_NBR")
-    private Long versionNumber = 0l;
+    @Version
+    private Long versionNumber;
 
     @OneToMany(targetEntity = PropositionBo.class, cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(name = "KRMS_CMPND_PROP_PROPS_T", joinColumns = { @JoinColumn(name = "CMPND_PROP_ID", referencedColumnName = "PROP_ID") }, inverseJoinColumns = { @JoinColumn(name = "PROP_ID", referencedColumnName = "PROP_ID") })
@@ -312,11 +313,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
             }
         }
 
-        if (im.getVersionNumber() == null) {
-            bo.setVersionNumber(0l);
-        } else {
-            bo.setVersionNumber(im.getVersionNumber());
-        }
+        bo.versionNumber = im.getVersionNumber();
 
         return bo;
     }

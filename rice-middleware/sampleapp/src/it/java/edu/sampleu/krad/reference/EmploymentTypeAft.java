@@ -52,12 +52,46 @@ public class EmploymentTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testEmploymentType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickSearchByText();
-        assertTextPresent(new String[][]{{"N"}, {"O"}, {"P"}});
+        waitAndClickClearValues();
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
+        waitForTextPresent("Non-Professional");
+        String[][] data = {{"N", "Non-Professional", "02","true"},
+                {"O", "Other", "99","true"}};
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Code Filter
         waitAndTypeByName("lookupCriteria[code]","N");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"N", "Non-Professional", "02","true"};
+        waitForTextPresent("Non-Professional");
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Name Filter
+        waitAndTypeByName("lookupCriteria[name]","Non-Professional");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"N", "Non-Professional", "02","true"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
+    }
+
+    protected void clickSearch() throws InterruptedException {
         waitAndClickSearchByText();
-        waitForTextNotPresent("Other");
-        assertTextPresent("N");
     }
 
     @Test

@@ -52,15 +52,46 @@ public class EntityTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testEntityType() throws Exception {
         selectFrameIframePortlet();
-        waitAndClickSearchByText();
-        assertTextPresent(new String[][]{{"PERSON"}, {"SYSTEM"}});
-        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-        waitAndClickSearchByText();
-        waitForTextNotPresent("PERSON");
-        waitAndTypeByName("lookupCriteria[code]","PERSON");
-        waitAndClickSearchByText();
-        waitForTextNotPresent("SYSTEM");
+        waitAndClickClearValues();
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
         waitForTextPresent("PERSON");
+        String[][] data = {{"PERSON", "Person", "01","true"},
+                {"SYSTEM", "System", "02","true"}};
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Code Filter
+        waitAndTypeByName("lookupCriteria[code]","PERSON");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"PERSON", "Person", "01","true"};
+        waitForTextPresent("PERSON");
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Name Filter
+        waitAndTypeByName("lookupCriteria[name]","PERSON");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"PERSON", "Person", "01","true"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
+    }
+
+    protected void clickSearch() throws InterruptedException {
+        waitAndClickSearchByText();
     }
 
     @Test

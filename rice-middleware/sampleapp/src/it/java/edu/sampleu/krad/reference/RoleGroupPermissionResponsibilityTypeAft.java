@@ -52,17 +52,53 @@ public class RoleGroupPermissionResponsibilityTypeAft extends WebDriverLegacyITB
     //Code for KRAD Test Package.
     protected void testRoleGroupPermissionResponsibilityType() throws Exception {
         selectFrameIframePortlet();
-        selectByName("lookupCriteria[namespaceCode]","KR-BUS - Service Bus");
+        waitAndClickClearValues();
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
+        waitForTextPresent("Namespace or Component");
+        String[][] data = {{"KUALI", "Default", "1","true"},
+                {"KR-NS", "Namespace or Component", "10","true"}};
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Code Filter
+        selectByName("lookupCriteria[namespaceCode]","KUALI - Kuali Systems");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"KUALI", "Default", "1","true"};
+        waitForTextPresent("Default");
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Name Filter
+        waitAndTypeByName("lookupCriteria[name]","KUALI");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"KUALI", "Default", "1","true"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
+
+        //Search by Type Identifier Filter
+        waitAndTypeByName("lookupCriteria[id]","1");
+        clickSearch();
+        String[] assertSearchResultForShortCode = {"KUALI", "Default", "1","true"};
+        assertTextPresent(assertSearchResultForShortCode);
+        waitAndClickClearValues();
+    }
+
+    protected void clickSearch() throws InterruptedException {
         waitAndClickSearchByText();
-        Thread.sleep(3000);
-        assertTextPresent("No values match this search.");
-        waitAndClickButtonByText("Clear Values");
-        waitAndClickSearchByText();
-        assertDataTableContains(new String[][]{{"KUALI"}, {"KR-NS"}});
-        waitAndTypeByName("lookupCriteria[name]","Permission");
-        waitAndClickSearchByText();
-        waitForTextNotPresent("Namespace or Component");
-        assertTextPresent("KR-IDM");
     }
 
     @Test

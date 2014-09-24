@@ -52,12 +52,46 @@ public class PhoneTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testPhoneType() throws Exception {
         selectFrameIframePortlet();
+        waitAndClickClearValues();
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
+        waitForTextPresent("HM");
+        String[][] data = {{"HM", "Home", "b","true"},
+                {"MBL", "Mobile", "c","true"}};
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Code Filter
+        waitAndTypeByName("lookupCriteria[code]","HM");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"HM", "Home", "b","true"};
+        waitForTextPresent("HM");
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Name Filter
+        waitAndTypeByName("lookupCriteria[name]","HM");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"HM", "Home", "b","true"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
+    }
+
+    protected void clickSearch() throws InterruptedException {
         waitAndClickSearchByText();
-        assertTextPresent(new String[][]{{"HM"}, {"MBL"}});
-        waitAndTypeByName("lookupCriteria[code]","MBL");
-        waitAndClickSearchByText();
-        waitForTextNotPresent("HM");
-        assertTextPresent("MBL");
     }
 
     @Test

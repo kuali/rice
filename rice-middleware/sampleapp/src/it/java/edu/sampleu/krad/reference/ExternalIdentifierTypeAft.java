@@ -52,14 +52,46 @@ public class ExternalIdentifierTypeAft extends WebDriverLegacyITBase {
     //Code for KRAD Test Package.
     protected void testExternalIdentifierType() throws Exception {
         selectFrameIframePortlet();
+        waitAndClickClearValues();
+
+        //Search by "Both" Filter in Active Indicator
+        clickSearch();
+        waitForTextPresent("LOGON");
+        String[][] data = {{"LOGON", "Logon ID", "01","true"},
+                {"RFID", "RFID Implant", "07","true"}};
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "Yes" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
+        clickSearch();
+        assertTextPresent(data);
+        waitAndClickClearValues();
+
+        //Search by "No" Filter in Active Indicator
+        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
+        clickSearch();
+        waitForTextPresent("No values match this search.");
+        waitAndClickClearValues();
+
+        //Search by Code Filter
+        waitAndTypeByName("lookupCriteria[code]","LOGON");
+        clickSearch();
+        String[] assertSearchResultForTypeCode = {"LOGON", "Logon ID", "01","true"};
+        waitForTextPresent("LOGON");
+        assertTextPresent(assertSearchResultForTypeCode);
+        waitAndClickClearValues();
+
+        //Search by Name Filter
+        waitAndTypeByName("lookupCriteria[name]","LOGON");
+        clickSearch();
+        String[] assertSearchResultForTypeName = {"LOGON", "Logon ID", "01","true"};
+        assertTextPresent(assertSearchResultForTypeName);
+        waitAndClickClearValues();
+    }
+
+    protected void clickSearch() throws InterruptedException {
         waitAndClickSearchByText();
-        waitForProgressLoading();
-        assertTextPresent(new String[][]{{"HR"},{"LICENSE"}});
-        waitAndTypeByName("lookupCriteria[code]","LICENSE");
-        waitAndClickSearchByText();
-        waitForProgressLoading();
-        waitForTextNotPresent("HR");
-        assertTextPresent("LICENSE");
     }
 
     @Test

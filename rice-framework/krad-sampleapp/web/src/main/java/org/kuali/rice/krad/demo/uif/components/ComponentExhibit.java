@@ -71,16 +71,16 @@ public class ComponentExhibit extends ContentElementBase {
         }
 
         //source code viewer setup
-        if(demoSourceCode != null && !demoSourceCode.isEmpty()){
+        if(demoSourceCode != null && demoSourceCode.size() > currentIndice){
             sourceCodeViewer.setSourceCode(demoSourceCode.get(currentIndice));
         }
 
-        if(additionalDemoSourceCode1 != null && !additionalDemoSourceCode1.isEmpty()
+        if(additionalDemoSourceCode1 != null && additionalDemoSourceCode1.size() > currentIndice
                 && additionalDemoSourceCode1.get(currentIndice) != null){
             additionalSourceCodeViewer1.setSourceCode(additionalDemoSourceCode1.get(currentIndice));
         }
 
-        if(additionalDemoSourceCode2 != null && !additionalDemoSourceCode2.isEmpty()
+        if(additionalDemoSourceCode2 != null && additionalDemoSourceCode2.size() > currentIndice
                         && additionalDemoSourceCode2.get(currentIndice) != null){
             additionalSourceCodeViewer2.setSourceCode(additionalDemoSourceCode2.get(currentIndice));
         }

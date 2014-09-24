@@ -640,7 +640,7 @@ function writeMessagesForGroup(id, data, forceWrite, skipCalculateTotals) {
                         var countMessage = generateCountString(data.errorTotal, data.warningTotal, data.infoTotal);
 
                         //set the window title
-                        addCountToDocumentTitle(countMessage, data.errorTotal, data.warningTotal, data.infoTotal);
+                        addCountToDocumentTitle(countMessage);
 
                         var single = isSingularMessage(newList);
                         var pageValidationHeader;
@@ -727,16 +727,13 @@ function isEmpty(str) {
  *
  * @param countMessage the new message to append
  */
-function addCountToDocumentTitle(countMessage, errorTotal, warningTotal, infoTotal) {
+function addCountToDocumentTitle(countMessage) {
 	var tokenIndex = document.title.lastIndexOf(" - ");
-    if (errorTotal > 0  || warningTotal > 0 || infoTotal > 0) {
-        if (tokenIndex > -1 && !isEmpty(countMessage)) {
-            document.title = document.title.substr(0, tokenIndex) + " - " + countMessage;
-        } else if (tokenIndex > -1 && isEmpty(countMessage)) { 
-            document.title = document.title.substr(0, tokenIndex);
-        } else if (!isEmpty(countMessage)) { 
-            document.title = document.title + " - " + countMessage;
-        }
+
+    if (tokenIndex > -1 && !isEmpty(countMessage)) {
+        document.title = document.title.substr(0, tokenIndex) + " - " + countMessage;
+    } else if (tokenIndex > -1 && isEmpty(countMessage)) {
+        document.title = document.title.substr(0, tokenIndex);
     } else if (!isEmpty(countMessage)) {
         document.title = document.title + " - " + countMessage;
     }

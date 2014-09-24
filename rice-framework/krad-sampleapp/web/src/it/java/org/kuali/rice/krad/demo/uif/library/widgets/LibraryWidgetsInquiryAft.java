@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.LibraryBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,20 +42,32 @@ public class LibraryWidgetsInquiryAft extends LibraryBase {
     protected void testWidgetsInquiry() throws Exception {
         waitAndClickByLinkText("a2");
     	gotoLightBox();
-    	waitForElementPresentByXpath("//a[contains(text(),'a2')]");
+
+        // the primary key should be a text field with no link
+        waitForElementPresentByXpath("//div[@data-label = 'Travel Account Number']");
+        waitForElementNotPresent(By.xpath("//a[contains(text(),'a2')]"));
+        assertElementPresent(By.xpath("//div[@data-label = 'Travel Account Number']/span[contains(text(),'a2')]"));
+
     	waitForTextPresent("Travel Account 2");
+
         waitAndClickLightBoxClose();
     	selectTopFrame();
     }
 
     protected void testWidgetDirectInquiry() throws Exception {
-       waitAndClickByLinkText("Direct Inquiry");
-       jGrowl("Click Direct Inquiry button");
-       waitAndClickByXpath("//button[@title='Direct Inquiry']");
-       gotoLightBox();
-   	   waitForElementPresentByXpath("//a[contains(text(),'a1')]");
-   	   waitForTextPresent("Travel Account 1");
-       waitAndClickLightBoxClose();
+        waitAndClickByLinkText("Direct Inquiry");
+        jGrowl("Click Direct Inquiry button");
+        waitAndClickByXpath("//button[@title='Direct Inquiry']");
+        gotoLightBox();
+
+        // the primary key should be a text field with no link
+        waitForElementPresentByXpath("//div[@data-label = 'Travel Account Number']");
+        waitForElementNotPresent(By.xpath("//a[contains(text(),'a2')]"));
+        assertElementPresent(By.xpath("//div[@data-label = 'Travel Account Number']/span[contains(text(),'a1')]"));
+
+   	    waitForTextPresent("Travel Account 1");
+
+        waitAndClickLightBoxClose();
     }
  
     private void testAllInquiry() throws Exception {

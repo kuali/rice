@@ -55,7 +55,7 @@ public class DemoTravelAccountTypeInquiryAft extends WebDriverLegacyITBase {
     }
     
     protected void testTravelAccountTypeInquiry() throws Exception {
-        waitForElementPresentByXpath("//a[contains(text(),'IAT')]");
+        waitForElementPresentByXpath("//div[@data-label = 'Travel Account Type Code']/span[contains(text(),'IAT')]");
         assertTextPresent(LabsInquiryBase.LABELED_IAT_TEXT);
      }
 }

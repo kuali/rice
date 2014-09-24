@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.type.TypeUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
@@ -1114,16 +1115,17 @@ public class DataFieldBase extends FieldBase implements DataField {
 
         View view = ViewLifecycle.getView();
         Object model = ViewLifecycle.getModel();
+        Object object = ViewModelUtils.getParentObjectForMetadata(view, model, this);
 
         // Do checks for inquiry when read only
         if (Boolean.TRUE.equals(getReadOnly())) {
-
             String bindingPath = getBindingInfo().getBindingPath();
+
             if (StringUtils.isBlank(bindingPath) || bindingPath.equals("null")) {
                 return false;
             }
 
-            // check if field value is null, if so no inquiry
+            // do not render the inquiry if the field value is null
             try {
                 Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
 
@@ -1135,30 +1137,31 @@ public class DataFieldBase extends FieldBase implements DataField {
                 return false;
             }
 
-            // skips creating inquiry link if same as parent
+            // do not render the inquiry link if it is the same as its parent
             if (view.getViewTypeName() == UifConstants.ViewType.INQUIRY) {
                 InquiryForm inquiryForm = (InquiryForm) model;
-                String propertyName = getPropertyName();
+                String dataObjectClassName = inquiryForm.getDataObjectClassName();
+                String dictionaryObjectEntry = getDictionaryObjectEntry();
 
-                // value of field
-                Object fieldValue = ObjectPropertyUtils.getPropertyValue(ViewModelUtils.getParentObjectForMetadata(
-                        view, model, this), propertyName);
+                // check whether the current inquiry is the same as its parent
+                if (StringUtils.equals(dataObjectClassName, dictionaryObjectEntry)) {
+                    String propertyName = getPropertyName();
 
-                // value of field in request parameter
-                Object parameterValue = inquiryForm.getInitialRequestParameters().get(propertyName);
+                    // get the value of field in request parameter
+                    String[] parameterValues = inquiryForm.getInitialRequestParameters().get(propertyName);
 
-                // if data classes and field values are equal
-                if (inquiryForm.getDataObjectClassName().equals(getDictionaryObjectEntry())
-                        && parameterValue != null && fieldValue.equals(parameterValue)) {
-                    return false;
+                    // get the value of field
+                    Object propertyValue = ObjectPropertyUtils.getPropertyValue(object, propertyName);
+
+                    // do not render the inquiry if the request parameter contains the parent field value
+                    if (ArrayUtils.contains(parameterValues, propertyValue))  {
+                        return false;
+                    }
                 }
             }
         }
 
-        // get parent object for inquiry metadata
-        Object parentObject = ViewModelUtils.getParentObjectForMetadata(view, model, this);
-        return parentObject == null ? false : KRADServiceLocatorWeb.getViewDictionaryService().isInquirable(
-                parentObject.getClass());
+        return object != null && KRADServiceLocatorWeb.getViewDictionaryService().isInquirable(object.getClass());
     }
 
 }

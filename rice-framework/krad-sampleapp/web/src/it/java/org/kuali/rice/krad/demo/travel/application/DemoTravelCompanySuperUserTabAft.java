@@ -161,8 +161,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         waitForTextPresent("Action request");
         waitForTextPresent("was superuser approved in Document");
 
-        // This is currently broken - Once KULRICE-13093 is fixed this line can be uncommented
-        //assertFalse("Remaining action should not be checked", isCheckedByName("selectedCollectionLines['document.actionRequests']"));
+        assertFalse("Remaining action should not be checked", isCheckedByName("selectedCollectionLines['document.actionRequests']"));
 
         waitAndTypeByName("document.superUserAnnotation","Reason For Taking Action for user2");
         checkByName("selectedCollectionLines['document.actionRequests']");

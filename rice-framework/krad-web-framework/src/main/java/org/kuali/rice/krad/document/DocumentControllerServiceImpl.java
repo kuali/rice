@@ -708,6 +708,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
         }
 
         document.setSuperUserAnnotation("");
+        form.getSelectedCollectionLines().remove(UifPropertyPaths.ACTION_REQUESTS);
 
         return getModelAndViewService().getModelAndView(form);
     }

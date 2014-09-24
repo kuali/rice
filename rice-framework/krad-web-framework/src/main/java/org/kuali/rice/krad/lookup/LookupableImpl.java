@@ -336,6 +336,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             }
         }
 
+        // Remove any unprocessedSearchCriteria that are marked as readOnly
+        for (String readOnlyItem : form.getReadOnlyFieldsList()) {
+            unprocessedSearchCriteria.remove(readOnlyItem);
+        }
+
         if (!unprocessedSearchCriteria.isEmpty()) {
             throw new RuntimeException(
                     "Invalid search value sent for property name(s): " + unprocessedSearchCriteria.toString());

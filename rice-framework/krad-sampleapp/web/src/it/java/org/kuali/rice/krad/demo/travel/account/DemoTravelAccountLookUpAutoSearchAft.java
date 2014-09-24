@@ -70,6 +70,18 @@ public class DemoTravelAccountLookUpAutoSearchAft extends ViewDemoAftBase {
 //        }
     }
 
+    protected void testDemoTravelAccountLookUpAdditionalSearch() throws Exception {
+        waitForTextPresent("Showing 1 to 10");
+
+        By[] results = {By.linkText("a1"), By.linkText("a2"), By.linkText("a3"), By.linkText("a4"), By.linkText("a5"),
+                By.linkText("a6"), By.linkText("a7"), By.linkText("a8"), By.linkText("a9"), By.linkText("a10"),
+                By.linkText("a11"), By.linkText("a12"), By.linkText("a13"), By.linkText("a14")};
+
+        assertElementsPresentInResultPages(results);
+        waitAndClickButtonByText(SEARCH);
+        checkForIncidentReport();
+     }
+
     @Test
     public void testDemoTravelAccountLookUpAutoSearchNav() throws Exception {
         testDemoTravelAccountLookUpAutoSearch();
@@ -81,7 +93,14 @@ public class DemoTravelAccountLookUpAutoSearchAft extends ViewDemoAftBase {
         testDemoTravelAccountLookUpAutoSearch();
         passed();
     }
-    
+
+    @Test
+    public void testDemoTravelAccountLookUpAdditionalBookmark() throws Exception {
+        testDemoTravelAccountLookUpAdditionalSearch();
+        passed();
+    }
+
+
     private void waitSearchAndReturnFromLightbox() throws Exception {
     	gotoLightBox();
     	waitAndClickButtonByText("Search");

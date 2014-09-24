@@ -440,18 +440,15 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	private void checkDefaultApprovalPolicy(DocumentRouteHeaderValue document) throws RouteManagerException {
 		if (!document.getDocumentType().getDefaultApprovePolicy().getPolicyValue().booleanValue()) {
 			LOG.debug("Checking if any requests have been generated for the document");
-			List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(document.getDocumentId());
+			List requests = KEWServiceLocator.getActionRequestService().findAllActionRequestsByDocumentId(
+                    document.getDocumentId());
 			boolean approved = false;
 			for (Iterator iter = requests.iterator(); iter.hasNext();) {
 				ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-				if (actionRequest.isApproveOrCompleteRequest() && actionRequest.isDone()) { // &&
-																							// !(actionRequest.getRouteMethodName().equals(KewApiConstants.ADHOC_ROUTE_MODULE_NAME)
-																							// &&
-																							// actionRequest.isReviewerUser()
-																							// &&
-																							// document.getInitiatorWorkflowId().equals(actionRequest.getWorkflowId())))
-																							// {
-					LOG.debug("Found at least one processed approve request so document can be approved");
+				if (actionRequest.isApproveOrCompleteRequest() && actionRequest.isDone() &&
+                        !document.getInitiatorWorkflowId().equals(actionRequest.getPrincipalId())) {
+					LOG.debug("Found at least one processed approve or completion request for someone other than"
+                            + " the initiator so document can be approved");
 					approved = true;
 					break;
 				}
@@ -459,7 +456,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			if (!approved) {
 				LOG.debug("Document requires at least one request and none are present");
 				// TODO what route method name to pass to this?
-				throw new RouteManagerException("Document should have generated at least one approval request.");
+				throw new RouteManagerException("Document should have generated at least one approval or completion"
+                        + " request for someone other than the initiator.");
 			}
 		}
 	}

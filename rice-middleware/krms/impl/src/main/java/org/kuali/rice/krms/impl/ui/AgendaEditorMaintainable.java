@@ -394,10 +394,11 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
 
         if (agendaBo != null) {
             flushCacheBeforeSave();
+            getDataObjectService().flush(AgendaBo.class);
 
             // Need to set the first item for persistence to cascade
             agendaBo.setFirstItem(firstItem);
-            getDataObjectService().save(agendaBo, PersistenceOption.FLUSH);
+            getDataObjectService().save(agendaBo);
 
             // delete orphaned propositions -- this may not be as comprehensive as it should
             for (String deletedPropId : ((AgendaEditor) getDataObject()).getDeletedPropositionIds()) {

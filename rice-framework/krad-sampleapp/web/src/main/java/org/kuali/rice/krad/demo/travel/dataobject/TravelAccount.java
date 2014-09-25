@@ -131,9 +131,16 @@ public class TravelAccount extends DataObjectBase implements Serializable {
 
     public Person getFiscalOfficer() {
         // KULRICE-12849.  Must be an existing person in KIM
-        fiscalOfficer = KimApiServiceLocator.getPersonService().updatePersonIfNecessary(foId, fiscalOfficer);
-        if (StringUtils.isBlank(fiscalOfficer.getPrincipalId())) {
-            fiscalOfficer = null;
+        if ((fiscalOfficer == null) || !StringUtils.equals(fiscalOfficer.getPrincipalId(), getFoId())) {
+            fiscalOfficer = KimApiServiceLocator.getPersonService().getPerson(getFoId());
+
+            if (fiscalOfficer == null) {
+                try {
+                    fiscalOfficer = KimApiServiceLocator.getPersonService().getPersonImplementationClass().newInstance();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
         return fiscalOfficer;

@@ -107,6 +107,7 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
     @Override
     protected void waitForSuccessfulSubmitMessage() throws InterruptedException {
         waitAndClickConfirmSubmitOk();
+        checkForDocErrorKrad();
         assertTrue(waitForElementVisibleBy(By.xpath("//div[@id='AgendaEditorView-Agenda-Page_messages']")).getText().contains("Document was successfully submitted."));
     }
 
@@ -115,13 +116,18 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
         selectFrameIframePortlet();
         waitAndCreateNew();
         waitAndClickSubmit();
-        assertTrue(waitForElementVisibleBy(By.xpath("//div[@id='AgendaEditorView-Agenda-Page_messages']")).getText()
-                .contains("Agenda: 3 errors"));
-        String detailError = waitForElementVisibleBy(By.xpath("//ul[@class='uif-validationMessagesList']")).getText();
-        assertTrue(detailError.contains("3 errors before Rules"));
-        assertTrue(detailError.contains("Namespace: Required"));
-        assertTrue(detailError.contains("Name: Required"));
-        assertTrue(detailError.contains("Context: Required"));
+        String mainError = waitForElementVisibleBy(By.xpath("//div[@id='AgendaEditorView-Agenda-Page_messages']")).getText();
+        assertTrue(mainError + " does not contain Agenda: 3 errors", mainError.contains("Agenda: 3 errors"));
+        String detailError = waitForElementVisibleBy(By.xpath("//section[@data-parent='AgendaEditorView-Agenda-Page']/div/div")).getText();
+        assertTrue(detailError + " does not contain 3 errors", detailError.contains("3 errors"));
+        assertTrue(detailError + " does not contain Namespace: Required", detailError.contains("Namespace: Required"));
+        assertTrue(detailError + " does not contain Name: Required", detailError.contains("Name: Required"));
+        assertTrue(detailError + " does not contain Context: Required", detailError.contains("Context: Required"));
+
+        // verify required fields divs have the uif-hasError class
+        isVisible(By.xpath("//select[@name='document.newMaintainableObject.dataObject.namespace']/../../div[@class='uif-inputField uif-hasError']"));
+        isVisible(By.xpath("//input[@name='document.newMaintainableObject.dataObject.agenda.name']/../../div[@class='uif-inputField uif-hasError']"));
+        isVisible(By.xpath("//input[@name='document.newMaintainableObject.dataObject.contextName']/../../div[@class='uif-inputField uif-hasError']"));
     }
 
     @Override

@@ -50,7 +50,7 @@ public class LabsMaintenancePromptBeforeRoutingAft extends LabsMaintenanceBase {
     	waitAndClickSubmitByText();
         waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'Cancel')]");
         waitAndClickSubmitByText();
-        //waitAndClickConfirmationOk();
+        //waitAndClickConfirmSubmitOk();
     	//It is getting Incident Report at the moment, so cannot check the functionality now.
     }
 

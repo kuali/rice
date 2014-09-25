@@ -176,7 +176,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
 
         //submit successfully
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
         waitForIsTextPresent("Document was successfully submitted.");
     }
@@ -200,7 +200,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	waitAndClickByLinkText("return value");
     	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
         checkForDocErrorKrad();
 
@@ -217,7 +217,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
 
             waitAndClickSubmitByText();
-            waitAndClickConfirmationOk();
+            waitAndClickConfirmSubmitOk();
             waitForProgressLoading();
             // there should be a doc error at this point
         }

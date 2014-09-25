@@ -100,7 +100,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         PeopleFlowDocInfo docInfo = peopleFlowCreateNew();
 
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         Thread.sleep(3000);
         checkForDocError();
         checkForIncidentReport();
@@ -194,7 +194,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         String tempValue=AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForTextPresent("Document was successfully submitted.");
         selectTopFrame();
         waitAndClickByLinkText("Main Menu");
@@ -207,7 +207,7 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         clearTextByName("document.newMaintainableObject.dataObject.name");
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Document Name"+tempValue);
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForTextPresent("A PeopleFlow already exists with the name");
     }
 

@@ -594,6 +594,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         docSearch(docId);
         waitForElementPresentByXpath(DOC_ID_XPATH_3);
         jGrowl("Is doc status for docId: " + docId + " " + docStatus + "?");
+        acceptAlertIfPresent(); // Agenda
         assertEquals(docId, getTextByXpath(DOC_ID_XPATH_3));
         assertEquals(docStatus, getTextByXpath(DOC_STATUS_XPATH_2));
     }
@@ -602,6 +603,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         selectParentWindow();
         selectTopFrame();
         waitAndClickDocSearchTitle();
+        acceptAlertIfPresent(); // Agenda
         waitForPageToLoad();
         selectFrameIframePortlet();
         waitAndTypeByName("documentId", docId);
@@ -634,8 +636,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected void blanketApproveCheck() throws InterruptedException {
-        waitAndClickByName(BLANKET_APPROVE_NAME,
-                "No blanket approve button does the user " + getUserName() + " have permission?");
+        waitAndClickBlanketApproveKns();
         checkForIncidentReport();
     }
 
@@ -653,8 +654,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
      */
     protected void blanketApproveTest(String docId) throws InterruptedException {
         jGrowl("Click Blanket Approve");
-        waitAndClickByName(BLANKET_APPROVE_NAME,
-                "No blanket approve button does the user " + getUserName() + " have permission?");
+        waitAndClickBlanketApproveKns();
         Thread.sleep(2000);
         checkForIncidentReport();
         blanketApproveAssert(docId);
@@ -910,7 +910,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected void submitSuccessfully(int loadingSeconds) throws InterruptedException {
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForProgressLoading(loadingSeconds);
         Thread.sleep(500);
         checkForDocError();
@@ -1060,6 +1060,37 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         passed();
     }
 
+    protected String testBlanketApprove() throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        String docId = verifyDocInitiated();
+        assertBlanketApproveButtonsPresent();
+        createNewLookupDetails();
+
+        jGrowl("Click Blanket Approve");
+        waitAndClickBlanketApproveKns();
+        Thread.sleep(2000);
+
+        int attempts = 0;
+        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
+                ++attempts <= 3) {
+            uniqueString = null; // make sure try a new one
+            jGrowl("record with the same primary key already exists");
+            createNewEnterDetails();
+            jGrowl("Click Blanket Approve");
+            waitAndClickBlanketApproveKns();
+        }
+
+        checkForIncidentReport();
+        blanketApproveAssert(docId);
+        return docId;
+    }
+
+    protected void waitAndClickBlanketApproveKns() throws InterruptedException {
+        waitAndClickByName(BLANKET_APPROVE_NAME,
+                "No blanket approve button does the user " + getUserName() + " have permission?");
+    }
+
     protected void testCancelConfirmation() throws InterruptedException {
         waitAndCancelConfirmation();
     }
@@ -1081,7 +1112,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
         waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         assertTextPresent(new String[]{"Document was successfully submitted.", "ENROUTE"});
         passed();
     }
@@ -1145,7 +1176,8 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         selectFrameIframePortlet();
         waitAndCreateNew();
         waitAndClickSubmit();
-        waitForElementVisibleBy(By.xpath("//div[@class='error']")).getText().contains(" error(s) found on page.");
+        assertTrue(waitForElementVisibleBy(By.xpath("//div[@class='error']")).getText().contains(
+                " error(s) found on page."));
     }
     
     protected String testCreateNewSave() throws Exception {
@@ -1165,11 +1197,15 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         }
 
         checkForDocError();
-        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
+        waitForSuccessfulSaveMessage();
         assertDocSearch(docId, "SAVED");
         waitAndClickRouteLogIcon();
         assertRouteStatus("SAVED");
         return docId;
+    }
+
+    protected void waitForSuccessfulSaveMessage() throws InterruptedException {
+        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
     }
 
     protected String testCreateNewSubmit() throws Exception {
@@ -1188,13 +1224,16 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         }
 
         checkForDocError();
-        waitForElementVisibleBy(By.xpath(DOC_SUBMIT_SUCCESS_MSG_XPATH));
+        waitForSuccessfulSubmitMessage();
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
         return docId;
     }
-    
+
+    protected void waitForSuccessfulSubmitMessage()
+            throws InterruptedException {waitForElementVisibleBy(By.xpath(DOC_SUBMIT_SUCCESS_MSG_XPATH));}
+
     protected String testCreateNewSaveSubmit() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();
@@ -1212,10 +1251,10 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         }
 
         checkForDocError();
-        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
+        waitForSuccessfulSaveMessage();
         waitAndClickSubmit();
         checkForDocError();
-        waitForElementVisibleBy(By.xpath(DOC_SUBMIT_SUCCESS_MSG_XPATH));
+        waitForSuccessfulSubmitMessage();
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
@@ -1384,7 +1423,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         String thisDocId = verifyDocInitiated();
         assertFalse("Document id should not be the same as original (" + docId + ").", docId.equals(thisDocId));
         waitAndClickSave();
-        waitForElementVisibleBy(By.xpath(SAVE_SUCCESSFUL_XPATH));
+        waitForSuccessfulSaveMessage();
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
@@ -2749,9 +2788,9 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickButtonByText("Clear Values");
     }
 
-    protected void waitAndClickConfirmationOk() throws InterruptedException {
+    protected void waitAndClickConfirmCancelOk() throws InterruptedException {
         jGrowl("Click OK Confirmation");
-        String xpath = "//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]";
+        String xpath = "//div[@data-parent='ConfirmCancelDialog']/button[contains(text(),'OK')]";
         waitForElementVisibleBy(By.xpath(xpath)).click();
     }
 
@@ -2765,6 +2804,12 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         jGrowl("Click OK Confirmation");
         waitForElementVisibleBy(By.xpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]"));
         waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]");
+    }
+
+    protected void waitAndClickConfirmSubmitOk() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        String xpath = "//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]";
+        waitForElementVisibleBy(By.xpath(xpath)).click();
     }
 
     /**
@@ -3035,8 +3080,9 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     protected String waitForDocId() throws InterruptedException {
         checkForDocError();
         waitForElementPresentByXpath(DOC_ID_XPATH);
-
-        return findElement(By.xpath(DOC_ID_XPATH)).getText();
+        String docId = findElement(By.xpath(DOC_ID_XPATH)).getText();
+        jGrowl("Document Number is " + docId);
+        return docId;
     }
 
     protected String waitForDocIdKrad() throws InterruptedException {

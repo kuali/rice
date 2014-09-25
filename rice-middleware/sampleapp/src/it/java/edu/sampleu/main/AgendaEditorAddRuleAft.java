@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
-import org.openqa.selenium.Keys;
 
 /**
  * test that checks that rules can be added to agendas
@@ -87,7 +86,7 @@ public class AgendaEditorAddRuleAft extends WebDriverLegacyITBase {
         // validate rule exists
         waitForTextPresent(ruleName);
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForTextPresent("Document was successfully submitted", WebDriverUtils.configuredImplicityWait() * 2);
         assertDocSearch(docId, "FINAL");
         passed();

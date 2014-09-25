@@ -91,7 +91,7 @@ public class DemoTravelCompanyCompletionRequestAft extends WebDriverLegacyITBase
         waitAndClickByLinkText("Ad Hoc Recipients");
 
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 4);
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }

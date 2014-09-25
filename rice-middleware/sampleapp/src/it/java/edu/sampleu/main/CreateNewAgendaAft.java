@@ -15,16 +15,18 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CreateNewAgendaAft extends WebDriverLegacyITBase {
+
+    private boolean useUi = false;
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Create%20New%20Agenda&channelUrl=" + WebDriverUtils.getBaseUrlString() +
@@ -40,8 +42,99 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
         return BOOKMARK_URL;
     }
 
+    // Lots of Overrides as KRMS was early KRAD
+    @Override
+    protected void assertBlanketApproveButtonsPresent() {
+        assertTrue(isVisible(By.xpath("//button[contains( text(), 'Cancel')]")));
+        assertTrue(isVisible(By.xpath("//button[contains( text(), 'Save')]")));
+        assertTrue(isVisible(By.xpath("//button[contains( text(), 'Blanket Approve')]")));
+        assertTrue(isVisible(By.xpath("//button[contains( text(), 'Submit')]")));
+    }
+
+    @Override
+    public void checkForDocError() {
+        checkForDocErrorKrad();
+    }
+
+    @Override
+    protected void waitAndClickBlanketApproveKns() throws InterruptedException {
+        waitAndClickBlanketApprove();
+        waitAndClickConfirmBlanketApproveOk();
+        waitForProgressLoading();
+    }
+
+    @Override
+    protected void waitAndCancelConfirmation() throws InterruptedException {
+        waitAndClickCancel();
+        acceptAlertIfPresent();
+        waitAndClickConfirmCancelOk();
+    }
+
+    @Override
+    protected void waitAndClickCancel() throws InterruptedException {
+        waitAndClickCancelByText();
+    }
+
+    @Override
+    protected void waitAndCreateNew() {
+        // no-op as the create new link is on the portal page.
+    }
+
+    @Override
+    protected String waitForDocId() throws InterruptedException {
+        checkForDocError();
+        String docId = waitForLabeledText("Document Number:");
+        jGrowl("Document Number is " + docId);
+        return docId;
+    }
+
+    @Override
+    protected void waitAndClickSave() throws InterruptedException {
+        waitAndClickSaveByText();
+    }
+
+    @Override
+    protected void waitAndClickSubmit() throws InterruptedException {
+        waitAndClickSubmitByText();
+    }
+
+    @Override
+    protected void waitForSuccessfulSaveMessage() throws InterruptedException {
+        assertTrue(waitForElementVisibleBy(By.xpath("//div[@id='AgendaEditorView-Agenda-Page_messages']")).getText()
+                .contains("Document was successfully saved."));
+    }
+
+    @Override
+    protected void waitForSuccessfulSubmitMessage() throws InterruptedException {
+        waitAndClickConfirmSubmitOk();
+        assertTrue(waitForElementVisibleBy(By.xpath("//div[@id='AgendaEditorView-Agenda-Page_messages']")).getText().contains("Document was successfully submitted."));
+    }
+
+    @Override
+    protected void testCreateNewRequired() throws Exception {
+        selectFrameIframePortlet();
+        waitAndCreateNew();
+        waitAndClickSubmit();
+        assertTrue(waitForElementVisibleBy(By.xpath("//div[@id='AgendaEditorView-Agenda-Page_messages']")).getText()
+                .contains("Agenda: 3 errors"));
+        String detailError = waitForElementVisibleBy(By.xpath("//ul[@class='uif-validationMessagesList']")).getText();
+        assertTrue(detailError.contains("3 errors before Rules"));
+        assertTrue(detailError.contains("Namespace: Required"));
+        assertTrue(detailError.contains("Name: Required"));
+        assertTrue(detailError.contains("Context: Required"));
+    }
+
+    @Override
+    protected String verifyDocInitiated() throws InterruptedException {
+        String docId = waitForDocId();
+        assertEquals("INITIATED", waitForLabeledText("Document Status:"));
+        assertEquals(getUserName(), waitForLabeledText(" Initiator Network Id:"));
+        return docId;
+    }
+
     @Override
     protected void navigate() throws Exception {
+        useUi = true; // nav test will use UI components (lookups), bookmark types it in
         waitForTitleToEqualKualiPortalIndex();
         selectTopFrame();
         waitAndClickByLinkText("Main Menu","");
@@ -52,83 +145,103 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
         checkForIncidentReport("Create New Agenda", "");
     }
 
-    //    @Override
-    //    protected String getBookmarkUrl() {
-    //        return BOOKMARK_URL;
-    //    }
-    //
-    //    /**
-    //     * {@inheritDoc}
-    //     * Create New Agenda
-    //     * @return
-    //     */
-    //    @Override
-    //    protected String getLinkLocator() {
-    //        return "Create New Agenda";
-    //    }
-
-
     protected void createNewEnterDetails() throws InterruptedException {
         selectFrameIframePortlet();
         selectByName("document.newMaintainableObject.dataObject.namespace","Kuali Rules Test");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name",getDescriptionUnique());
-        waitAndTypeByName("document.newMaintainableObject.dataObject.contextName","Context1");
+        inputDetails();
+
+        if (useUi) {
+            waitAndClickLabeledQuickFinder("Context:");
+            waitForProgressLoading();
+            gotoIframeByXpath("//iframe");
+            waitAndClickSearchByText();
+            waitAndClickReturnValue();
+            selectTopFrame();
+            gotoNestedFrame();
+        }
+    }
+
+    @Override
+    protected void createNewLookupDetails() throws InterruptedException {
+        createNewEnterDetails();
+    }
+
+    private void inputDetails() throws InterruptedException {
+        waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", getDescriptionUnique());
+        if (!useUi) {
+            waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
+        }
     }
 
     @Test
-    public void testCreateNewAgendaSaveBookmark() throws Exception {
-        createNewEnterDetails();
-        waitAndClickByXpath("//button[contains(text(),'Save')]");
-        passed();
-    }
-
-    @Test
-    public void testCreateNewAgendaSaveNav() throws Exception {
-        createNewEnterDetails();
-        waitAndClickByXpath("//button[contains(text(),'Save')]");
-        passed();
-    }
-
-    @Test
-    public void testCreateNewAgendaSubmitBookmark() throws Exception {
-        createNewEnterDetails();
-        waitAndClickByXpath("//button[contains(text(),'Submit')]");
-        waitAndClickConfirmationOk();
-        passed();
-    }
-
-    @Test
-    public void testCreateNewAgendaSubmitNav() throws Exception {
-        createNewEnterDetails();
-        waitAndClickByXpath("//button[contains(text(),'Submit')]");
-        waitAndClickConfirmationOk();
+    public void testCreateNewCancelBookmark() throws Exception {
+        testCreateNewCancel();
         passed();
     }
 
     @Test
-    public void testCreateNewAgendaSaveSubmitBookmark() throws Exception {
-        createNewEnterDetails();
-        waitAndClickByXpath("//button[contains(text(),'Save')]");
-        waitAndClickByXpath("//button[contains(text(),'Submit')]");
-        waitAndClickConfirmationOk();
+    public void testCreateNewCancelNav() throws Exception {
+        testCreateNewCancel();
         passed();
     }
 
     @Test
-    public void testCreateNewAgendaSaveSubmitNav() throws Exception {
-        createNewEnterDetails();
-        waitAndClickByXpath("//button[contains(text(),'Save')]");
-        waitAndClickByXpath("//button[contains(text(),'Submit')]");
-        waitAndClickConfirmationOk();
+    public void testCreateNewRequiredBookmark() throws Exception {
+        testCreateNewRequired();
         passed();
     }
 
-    public void testCreateNewAgendaBookmark(JiraAwareFailable failable) throws Exception {
-        testCreateNewAgenda();
+    @Test
+    public void testCreateNewRequiredNav() throws Exception {
+        testCreateNewRequired();
         passed();
     }
-    public void testCreateNewAgendaNav(JiraAwareFailable failable) throws Exception {
-        testCreateNewAgenda();
+
+    @Test
+    public void testCreateNewSaveBookmark() throws Exception {
+        testCreateNewSave();
+        passed();
+    }
+
+    @Test
+    public void testCreateNewSaveNav() throws Exception {
+        testCreateNewSave();
+        passed();
+    }
+
+    @Test
+    public void testCreateNewSaveSubmitBookmark() throws Exception {
+        testCreateNewSaveSubmit();
+        passed();
+    }
+
+    @Test
+    public void testCreateNewSaveSubmitNav() throws Exception {
+        testCreateNewSaveSubmit();
+        passed();
+    }
+
+    @Test
+    public void testCreateNewSubmitBookmark() throws Exception {
+        testCreateNewSubmit();
+        passed();
+    }
+
+    @Test
+    public void testCreateNewSubmitNav() throws Exception {
+        testCreateNewSubmit();
+        passed();
+    }
+
+    @Test
+    public void testBlanketAppBookmark() throws Exception {
+        testBlanketApprove();
+        passed();
+    }
+
+    @Test
+    public void testBlanketAppNav() throws Exception {
+        testBlanketApprove();
         passed();
     }
 }

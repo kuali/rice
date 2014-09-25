@@ -80,7 +80,7 @@ public class DemoTravelMileageLookUpAft extends ViewDemoAftBase {
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.mileageRateId' and @value='10000']");
         waitAndTypeByName("document.documentHeader.documentDescription","Description");
         waitAndClickByXpath("//button[contains(text(),'Submit')]");
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForTextPresent("This document cannot be Saved or Routed because a record with the same primary key already exists.");
     }
 

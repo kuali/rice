@@ -64,7 +64,7 @@ public class TermMaintenanceNewAft extends MainTmplMthdSTNavBase {
         waitAndTypeByName("document.newMaintainableObject.dataObject.parametersMap[Campus Code]","FakeCampus" + randomCode);
 
         waitAndClickByXpath("//button[contains(text(),'Submit')]");
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForProgressLoading();
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
         waitForTextPresent("FakeCampus" + randomCode);

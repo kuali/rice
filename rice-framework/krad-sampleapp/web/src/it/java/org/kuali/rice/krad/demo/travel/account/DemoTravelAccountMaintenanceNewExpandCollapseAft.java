@@ -16,11 +16,8 @@
 package org.kuali.rice.krad.demo.travel.account;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.kuali.rice.testtools.selenium.WebDriverUtils;
-import org.openqa.selenium.By;
 import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -63,7 +60,7 @@ public class DemoTravelAccountMaintenanceNewExpandCollapseAft extends WebDriverL
     	waitAndClickByXpath("//section[@class='uif-disclosure tableborders wrap uif-boxLayoutVerticalItem clearfix']/header/h3/a");
     	waitForElementPresentByXpath("//section[@class='uif-disclosure tableborders wrap uif-boxLayoutVerticalItem clearfix']/div[@style='display: block; overflow: hidden;']");
     	waitAndClickButtonByExactText("Submit");
-    	waitAndClickConfirmationOk();
+    	waitAndClickConfirmSubmitOk();
     	waitForElementPresentByXpath("//section[@class='uif-disclosure tableborders wrap uif-boxLayoutVerticalItem clearfix']/header/h3/a[@data-open='true']");
     }
 

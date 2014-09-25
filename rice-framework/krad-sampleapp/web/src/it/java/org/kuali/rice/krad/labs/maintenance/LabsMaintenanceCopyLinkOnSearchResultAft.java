@@ -51,7 +51,7 @@ public class LabsMaintenanceCopyLinkOnSearchResultAft extends LabsMaintenanceBas
         }
         waitAndTypeByName("document.documentHeader.documentDescription","copy testing");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForProgressLoading();
         waitForTextPresent("Document was successfully submitted.");
         open(getBaseUrlString()+BOOKMARK_URL);

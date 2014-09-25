@@ -1337,6 +1337,13 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
                 + "')]"));
     }
 
+    protected void waitAndClickLabeledQuickFinder(String label) throws InterruptedException {
+        jGrowl("Click link quickfinder labeled with " + label);
+        waitAndClick(By.xpath("//th/label[contains(text(), '" + label
+                + "')]/../following-sibling::*/div/div/div/button[@class='btn btn-default uif-action icon-search']"));
+        screenshot();
+    }
+
     protected void waitAndClickLightBoxClose() throws InterruptedException {
         jGrowl("Click lightbox close");
         waitAndClickByXpath("//button[contains(text(),'x')]");

@@ -28,15 +28,16 @@
     <property name="demoGroups">
       <list>
         <ref bean="Demo-TableComparisonView-Example1"/>
+        <ref bean="Demo-TableComparisonView-Example2"/>
       </list>
     </property>
   </bean>
 
-  <bean id="Demo-TableComparisonView-Example1" parent="Uif-VerticalBoxSection" p:headerText="Table Comparison Example">
+  <bean id="Demo-TableComparisonView-Example1" parent="Uif-VerticalBoxSection" p:headerText="Table Comparison Example 1">
     <property name="items">
       <list>
         <bean parent="Uif-Message" p:messageText="This example compares two similar objects and allows editing of one object. There is an 'onChange' JavaScript on fields for 'Value 1' and 'Value 2'."/>
-        <bean parent="Uif-Link" p:linkText="Table Comparison Example"
+        <bean parent="Uif-Link" p:linkText="Table Comparison Example 1"
               p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableComparison-View1&amp;methodToCall=start"
               p:target="_blank"/>
       </list>
@@ -48,7 +49,7 @@
     <property name="parentLocation">
       <bean parent="Uif-KradSampleAppPortalParentLocation"/>
     </property>
-    <property name="headerText" value="Table Comparison Example"/>
+    <property name="headerText" value="Table Comparison Example 1"/>
     <property name="items">
       <list>
         <bean parent="Uif-Page">
@@ -110,4 +111,107 @@
     <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
   </bean>
   <!-- ex:Demo-TableComparisonView-Example1 end-->
+
+  <bean id="Demo-TableComparisonView-Example2" parent="Uif-VerticalBoxSection" p:headerText="Table Comparison Example 2">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Message" p:messageText="This example compares two similar objects and sub collections of objects."/>
+        <bean parent="Uif-Link" p:linkText="Table Comparison Example 2"
+              p:href="@{#ConfigProperties['krad.url']}/kradsampleapp?viewId=Demo-TableComparison-View2&amp;methodToCall=start"
+              p:target="_blank"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- ex:Demo-TableComparisonView-Example2 start-->
+  <bean id="Demo-TableComparison-View2" parent="Uif-FormView">
+    <property name="parentLocation">
+      <bean parent="Uif-KradSampleAppPortalParentLocation"/>
+    </property>
+    <property name="headerText" value="Table Comparison Example 2"/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-Page">
+          <property name="items">
+            <list>
+              <bean parent="Uif-VerticalBoxSection">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-VerticalBoxSection">
+                      <property name="headerText" value="Course Logistics"/>
+                      <property name="items">
+                        <list>
+                          <bean parent="Uif-GridGroup">
+                            <property name="items">
+                              <list>
+                                <bean parent="Uif-InputField" p:label="Terms" p:propertyName="field1"/>
+                                <bean parent="Uif-InputField" p:label="Duration" p:propertyName="field2"/>
+                                <bean parent="Uif-VerticalFieldGroup" p:label="Outcomes">
+                                  <property name="items">
+                                    <list>
+                                      <bean parent="Uif-StackedCollectionSection">
+                                        <property name="propertyName" value="subList"/>
+                                        <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+                                        <property name="cssClasses">
+                                          <list merge="true">
+                                            <value>course_detail_subsection</value>
+                                          </list>
+                                        </property>
+                                        <property name="layoutManager.lineGroupPrototype.header.headerLevel" value="h5"/>
+                                        <property name="layoutManager.lineGroupPrototype.header.headerTagCssClasses">
+                                          <list merge="true">
+                                            <value>course_detail_subsection_header</value>
+                                          </list>
+                                        </property>
+                                        <property name="layoutManager.lineGroupPrototype.header.headerText" value="Outcome @{(#index + 1)}"/>
+                                        <property name="renderLineActions" value="false"/>
+                                        <property name="renderAddLine" value="false"/>
+                                        <property name="items">
+                                          <list>
+                                            <bean parent="Uif-DataField" p:label="Type" p:propertyName="field1"/>
+                                            <bean parent="Uif-DataField" p:label="Credit Value" p:propertyName="field2"/>
+                                            <bean parent="Uif-DataField" p:label="Field3" p:propertyName="field3"/>
+                                            <bean parent="Uif-DataField" p:label="Field4" p:propertyName="field4"/>
+                                          </list>
+                                        </property>
+                                      </bean>
+                                    </list>
+                                  </property>
+                                </bean>
+                              </list>
+                            </property>
+                            <property name="layoutManager.numberOfColumns" value="3"/>
+                            <property name="componentModifiers">
+                              <list merge="true">
+                                <bean parent="Uif-CompareFieldCreate-Modifier">
+                                  <property name="headerFieldPrototype">
+                                    <bean parent="Uif-HeaderOne"/>
+                                  </property>
+                                  <property name="comparables">
+                                    <list>
+                                      <bean parent="Uif-CompareConfig" p:readOnly="true" p:headerText="uiTestObject1" p:compareToForValueChange="true"
+                                            p:bindingObjectPath="uiTestObject1"/>
+                                      <bean parent="Uif-CompareConfig" p:headerText="uiTestObject2" p:compareToForFieldRender="true"
+                                            p:bindingObjectPath="uiTestObject2"/>
+                                    </list>
+                                  </property>
+                                  <property name="generateCompareHeaders" value="false"/>
+                                </bean>
+                              </list>
+                            </property>
+                          </bean>
+                        </list>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="formClass" value="org.kuali.rice.krad.labs.kitchensink.UifComponentsTestForm"/>
+  </bean>
+  <!-- ex:Demo-TableComparisonView-Example2 end-->
 </beans>

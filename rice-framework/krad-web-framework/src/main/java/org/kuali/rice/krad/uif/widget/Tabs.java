@@ -59,21 +59,19 @@ public class Tabs extends WidgetBase {
     public void performFinalize(Object model, LifecycleElement parent) {
         super.performFinalize(model, parent);
 
-        if (!(parent instanceof TabGroup)) {
-            throw new RuntimeException("Parent for tabs widget should be tab group, not " + parent.getClass());
-        }
+        if (parent instanceof TabGroup) {
+            if (position.equals(UifConstants.Position.LEFT) || position.equals(UifConstants.Position.RIGHT)) {
+                tabNavClass = tabNavClass + " col-sm-3";
+                tabContentClass = tabContentClass + " col-sm-9";
+            }
 
-        if (position.equals(UifConstants.Position.LEFT) || position.equals(UifConstants.Position.RIGHT)) {
-            tabNavClass = tabNavClass + " col-sm-3";
-            tabContentClass = tabContentClass + " col-sm-9";
-        }
-
-        if (position.equals(UifConstants.Position.LEFT)) {
-            ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_LEFT);
-        } else if (position.equals(UifConstants.Position.RIGHT)) {
-            ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_RIGHT);
-        } else if (position.equals(UifConstants.Position.BOTTOM)) {
-            ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_BOTTOM);
+            if (position.equals(UifConstants.Position.LEFT)) {
+                ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_LEFT);
+            } else if (position.equals(UifConstants.Position.RIGHT)) {
+                ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_RIGHT);
+            } else if (position.equals(UifConstants.Position.BOTTOM)) {
+                ((TabGroup) parent).addStyleClass(CssConstants.Tabs.TABS_BOTTOM);
+            }
         }
     }
 

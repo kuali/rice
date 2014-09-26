@@ -333,4 +333,47 @@
       </list>
     </property>
   </bean>
+  <bean id="KradInquirySample-PageR7C2" parent="KradSampleAppView">
+    <property name="page.items">
+      <list>
+        <bean id="KradInquirySampleItems-PageR7C2" parent="Uif-VerticalBoxSection">
+          <property name="items">
+            <list>
+              <bean parent="Uif-ActionLink" p:actionLabel="Show Dialog"
+                    p:actionScript="showDialog('KradInquirySample-PageR7C2-Dialog');"/>
+              <bean id="KradInquirySample-PageR7C2-Dialog" parent="Uif-DialogGroup" p:headerText="Dialog with Inquiry">
+                <property name="layoutManager">
+                  <bean parent="Uif-CssGridLabelColumnLayout"/>
+                </property>
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:readOnly="true" p:propertyName="inputField1" p:defaultValue="a2">
+                      <property name="instructionalText" value="Click the link to perform an inquiry on this TravelAccount number" />
+                      <property name="inquiry">
+                        <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                              p:inquiryParameters="inputField1:number"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-InputField" p:propertyName="inputField2" p:defaultValue="a1">
+                      <property name="instructionalText" value="Click the button to perform an inquiry on this TravelAccount number  (input 'a1')" />
+                      <property name="inquiry">
+                        <bean parent="Uif-Inquiry" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                              p:inquiryParameters="inputField2:number"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+                <property name="footer.items">
+                  <list>
+                    <bean parent="Uif-DialogDismissButton" p:actionLabel="Continue"/>
+                  </list>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>
+

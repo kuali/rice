@@ -1178,7 +1178,13 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
                 dataType: "json",
                 beforeSend: null,
                 complete: null,
-                error: null,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var responseContents = document.createElement('div');
+                    responseContents.innerHTML = jqXHR.responseText;
+
+                    var kradResponse = new KradResponse(responseContents);
+                    kradResponse.processResponse();
+                },
                 data: queryData,
                 success: successFunction
             });
@@ -1518,7 +1524,13 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
         data: queryData,
         beforeSend: null,
         complete: null,
-        error: null,
+        error: function (jqXHR, textStatus, errorThrown) {
+            var responseContents = document.createElement('div');
+            responseContents.innerHTML = jqXHR.responseText;
+
+            var kradResponse = new KradResponse(responseContents);
+            kradResponse.processResponse();
+        },
         success: function (data) {
             // write out return message (or blank)
             var returnMessageSpan = jQuery("#" + queryFieldId + "_info_message");

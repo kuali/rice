@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.application;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
@@ -53,9 +54,28 @@ public class DemoTravelAuthorizationAft extends WebDriverLegacyITBase {
         assertEquals("Header content is incorrect", "Travel Authorization Document", element.getText());
     }
 
+    protected void testTravelAuthorization() throws Exception {
+        String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        waitAndTypeByName("document.documentHeader.documentDescription","Description : "+randomCode);
+        waitAndClickByXpath("//button[@id='travelerQuickfinder_quickfinder_act']");
+        gotoIframeByXpath("//iframe[@class='uif-iFrame uif-lookupDialog-iframe']");
+        waitAndClickByXpath("//button[contains(text(),'Search')]");
+        waitAndClickByXpath("//a[contains(text(),'return value')]");
+        waitAndTypeByName("document.cellPhoneNumber","8000884215");
+        waitAndClickByXpath("//div[@data-label='Primary Destination Id']/div/div/button");
+        gotoIframeByXpath("//iframe[@class='uif-iFrame uif-lookupDialog-iframe']");
+        waitAndClickByXpath("//button[contains(text(),'Clear Values')]");
+        waitAndClickByXpath("//button[contains(text(),'Search')]");
+        waitAndClickByXpath("//a[contains(text(),'return value')]");
+        waitAndClickByXpath("//button[contains(text(),'Submit')]");
+        waitAndClickConfirmSubmitOk();
+        waitForTextPresent("Document was successfully submitted.");
+    }
+
     @Test
     public void testHeaderTextBookmark() throws Exception {
         testHeaderText();
+        testTravelAuthorization();
         passed();
     }
 
@@ -64,5 +84,4 @@ public class DemoTravelAuthorizationAft extends WebDriverLegacyITBase {
         testHeaderText();
         passed();
     }
-
 }

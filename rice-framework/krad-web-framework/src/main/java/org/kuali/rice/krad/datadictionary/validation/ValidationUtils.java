@@ -19,6 +19,9 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
@@ -355,13 +358,30 @@ public class ValidationUtils {
     }
 
     /**
-     * checks whether the provided object is null or empty
+     * Checks whether the provided object is null, or if a String, List, Set or Map is empty.
      *
      * @param value - the object to check
-     * @return true if the object is null or empty, false otherwise
+     * @return true if the object is null or if a String, List, Set, or Map is empty, false otherwise
      */
     public static boolean isNullOrEmpty(Object value) {
-        return value == null || (value instanceof String && StringUtils.isBlank(((String) value).trim()));
+        boolean nullOrEmpty = false;
+        if (value == null) {
+            nullOrEmpty = true;
+        }
+        else if (value instanceof String) {
+            nullOrEmpty = StringUtils.isBlank(((String) value).trim());
+        }
+        else if (value instanceof List) {
+            nullOrEmpty = ((List)value).isEmpty();
+        }
+        else if (value instanceof Set) {
+            nullOrEmpty = ((Set)value).isEmpty();
+        }
+        else if (value instanceof Map) {
+            nullOrEmpty = ((Map)value).isEmpty();
+        }
+
+        return nullOrEmpty;
     }
 
     /**

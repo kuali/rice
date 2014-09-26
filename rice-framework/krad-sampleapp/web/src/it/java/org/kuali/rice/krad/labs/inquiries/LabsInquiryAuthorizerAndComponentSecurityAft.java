@@ -38,55 +38,52 @@ public class LabsInquiryAuthorizerAndComponentSecurityAft extends LabsInquiryBas
     }
 
     protected void testInquiryAuthorizerAndComponentSecurity() throws InterruptedException {
-    	
-    	//Link to Inquiry with Authorizer configured
+    	// Link to Inquiry with Authorizer configured
     	waitAndClickByLinkText("Link to Inquiry with Authorizer configured");
-        waitAndClickByLinkText("10000");
-        gotoLightBox();
-        String[][] lightBoxLabeledText = {{"Id:", "10000"},
-                {"Travel Authorization Document:", "10000"},
-                {"Primary Destination:", "10000"},
-//                {"Date of Use:", getDateToday()},
-                {"Breakfast Value:", "10"}, 
-                {"Lunch Value:", "10"},
-                {"Dinner Value:", "15"},
-                {"Amount estimated for incidentals:", "20"},
-                {"Mileage rate:", "DO"},
-                {"Number of estimated miles:", "30"}};
-        assertLabeledTextPresent(lightBoxLabeledText);
+
+        String[][] nonSecureLabeledText = {{"Id:", "10000"},
+                                           {"Primary Destination:", "10000"},
+                                           {"Date of Use:", "/"}}; // getDateToday()
+
+        assertLabeledTextPresent(nonSecureLabeledText);
         clickCollapseAll();
-        assertLabeledTextNotPresent(lightBoxLabeledText);
+        assertLabeledTextNotPresent(nonSecureLabeledText);
         clickExpandAll();
-        assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickLightBoxClose();
-        selectTopFrame();
-        String[][] LabeledText = {{"Id:", "10000"},
-                {"Primary Destination:", "10000"},
-//                {"Date of Use:", getDateToday()}
-                };
-        assertLabeledTextPresent(LabeledText);
-        clickCollapseAll();
-        assertLabeledTextNotPresent(LabeledText);
-        clickExpandAll();
-        assertLabeledTextPresent(LabeledText);
+        assertLabeledTextPresent(nonSecureLabeledText);
+
         waitAndClickButtonByText("< Back");
         
         // Link to Inquiry with Component Security and Attribute Security configured on the view.
         waitAndClickByLinkText("Link to Inquiry with Component Security and Attribute Security configured on the view.");
-        waitAndClickByLinkText("10000");
-        gotoLightBox();
-        assertLabeledTextPresent(lightBoxLabeledText);
+
+        assertLabeledTextPresent(nonSecureLabeledText);
         clickCollapseAll();
-        assertLabeledTextNotPresent(lightBoxLabeledText);
+        assertLabeledTextNotPresent(nonSecureLabeledText);
         clickExpandAll();
-        assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickLightBoxClose();
-        selectTopFrame();
-        assertLabeledTextPresent(LabeledText);
+        assertLabeledTextPresent(nonSecureLabeledText);
+
+        waitAndClickButtonByText("< Back");
+
+        // Link to Inquiry with Component Security and Attribute Security overriden by Kim Permissions.
+        waitAndClickByLinkText("Link to Inquiry with Component Security and Attribute Security overriden by Kim Permissions.");
+
+        String[][] secureLabeledText = {{"Id:", "10000"},
+                                        {"Travel Authorization Document Id:", "10000"},
+                                        {"Primary Destination:", "10000"},
+                                        {"Date of Use:", "/"}, // getDateToday()
+                                        {"Breakfast Value:", "10"},
+                                        {"Lunch Value:", "10"},
+                                        {"Dinner Value:", "15"},
+                                        {"Amount estimated for incidentals:", "20"},
+                                        {"Mileage Rate Name:", "Domestic"},
+                                        {"Mileage Rate:", "0.305"},
+                                        {"Number of estimated miles:", "30"}};
+
+        assertLabeledTextPresent(secureLabeledText);
         clickCollapseAll();
-        assertLabeledTextNotPresent(LabeledText);
+        assertLabeledTextNotPresent(secureLabeledText);
         clickExpandAll();
-        assertLabeledTextPresent(LabeledText);
+        assertLabeledTextPresent(secureLabeledText);
     }
 
     @Test

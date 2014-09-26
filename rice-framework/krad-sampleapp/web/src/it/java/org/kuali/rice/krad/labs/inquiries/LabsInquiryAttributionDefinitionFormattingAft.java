@@ -38,60 +38,60 @@ public class LabsInquiryAttributionDefinitionFormattingAft extends LabsInquiryBa
     }
 
     protected void testInquiryAttributionDefinitionFormatting() throws InterruptedException {
-    	
     	// Inquiry - AttributionDefinition Formatting
     	waitAndClickByLinkText("Inquiry - AttributionDefinition Formatting");
-        
-    	// Lightbox
-        waitAndClickLinkContainingText("10000");
-        gotoLightBox();
-        String[][] lightBoxLabeledText = {{"Id:", "10000"},
-                                          {"Travel Authorization Document:", "10000"},
-                                          {"Travel Company Name:", "Discount Travel"},
-                                          {"Expense Type:", "ME"},
-                                          {"Expense Description:", "Family Related"}, 
-                                          {"Expense Date:", "/"},
-                                          {"Expense Amount:", "1,278.97"},
-                                          {"Reimbursable:", "true"},
-                                          {"Taxable:", "true"}};
-        waitForProgressLoading();
-        assertLabeledTextPresent(lightBoxLabeledText);
+
+        String[][] formattedLabeledText = {{"Id:", "10000"},
+                                           {"Travel Authorization Document:", "10000"},
+                                           {"Travel Company Name:", "Discount Travel"},
+                                           {"Expense Type:", "ME"},
+                                           {"Expense Description:", "Family Related"},
+                                           {"Expense Date:", "/"}, // getDateToday()
+                                           {"Expense Amount:", "1,278.97"},
+                                           {"Reimbursable:", "true"},
+                                           {"Taxable:", "true"}};
+
+        assertLabeledTextPresent(formattedLabeledText);
         clickCollapseAll();
-        assertLabeledTextNotPresent(lightBoxLabeledText);
+        assertLabeledTextNotPresent(formattedLabeledText);
         clickExpandAll();
-        assertLabeledTextPresent(lightBoxLabeledText);
-        waitAndClickLightBoxClose();
-        selectTopFrame();
-        assertLabeledTextPresent(lightBoxLabeledText);
+        assertLabeledTextPresent(formattedLabeledText);
+
         waitAndClickButtonByText("< Back");
         
         //Inquiry - AttributionDefinition Formatting (Partial Attribute Masking, Additional Display Attribute Name)
         waitAndClickByLinkText("Inquiry - AttributionDefinition Formatting (Partial Attribute Masking, Additional Display Attribute Name)");
-        String[][] LabeledText = {{"Id:", "1"},
-                {"Document Number:", "??"},
-                {"Principal Id:", "fred"},
-                {"Traveler Name:", ""},
-                {"Traveler User ID:", ""},
-                {"First and Last Name (additionalDisplayAttributeName example):", "Test *-* Traveler"},
-                {"Middle Name:", "A"},
-                {"Last Name:", "Traveler"},
-                {"Street Address Line1:", "123 Nowhere St."},
-                {"Street Address Line2:", ""},
-                {"City Name:", "Davis"},
-                {"State", "CA"},
-                {"Zip:", "95616"},
-                {"Country:", "US"},
-                {"Email Address:", ""},
-                {"Gender:", "M"},
-                {"Phone Number:", "(xxx)xxx-xxxx"},
-                {"Traveler Type Code:", "EMP"},
-                {"Customer Number:", "CUST"},
-                {"Drivers License:", "*****45678"},
-                {"Drivers License Exp Date:", "/"},
-                {"Traveler Detail Active Indicator:", "true"},
-                {"Non Resident Alien:", "false"},
-                {"Liability Insurance:", "false"},};
-        assertLabeledTextPresent(LabeledText);
+
+        String[][] maskedLabeledText = {{"Id:", "1"},
+                                        {"Document Number:", "??"},
+                                        {"Principal Id:", "fred"},
+//                                      {"Traveler Name:", ""}, skip field till a good way to handle empty strings is figured out
+//                                      {"Traveler User ID:", ""}, skip field till a good way to handle empty strings is figured out
+                                        {"First and Last Name (additionalDisplayAttributeName example):", "Test *-* Traveler"},
+                                        {"Middle Name:", "A"},
+                                        {"Last Name:", "Traveler"},
+                                        {"Street Address Line1:", "123 Nowhere St."},
+//                                      {"Street Address Line2:", ""}, skip field till a good way to handle empty strings is figured out
+                                        {"City Name:", "Davis"},
+                                        {"State", "CA"},
+                                        {"Zip:", "95616"},
+                                        {"Country:", "US"},
+//                                      {"Email Address:", ""}, skip field till a good way to handle empty strings is figured out
+                                        {"Gender:", "M"},
+                                        {"Phone Number:", "(xxx)xxx-xxxx"},
+                                        {"Traveler Type Code:", "EMP"},
+                                        {"Customer Number:", "CUST"},
+                                        {"Drivers License:", "*****45678"},
+                                        {"Drivers License Exp Date:", "/"},
+                                        {"Traveler Detail Active Indicator:", "true"},
+                                        {"Non Resident Alien:", "false"},
+                                        {"Liability Insurance:", "false"}};
+
+        assertLabeledTextPresent(maskedLabeledText);
+        clickCollapseAll();
+        assertLabeledTextNotPresent(maskedLabeledText);
+        clickExpandAll();
+        assertLabeledTextPresent(maskedLabeledText);
     }
 
     @Test

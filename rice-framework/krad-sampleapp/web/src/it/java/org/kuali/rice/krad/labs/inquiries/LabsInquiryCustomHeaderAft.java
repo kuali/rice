@@ -39,13 +39,7 @@ public class LabsInquiryCustomHeaderAft extends LabsInquiryBase {
 
     protected void testInquiryCustomHeader() throws InterruptedException {
     	waitAndClickByLinkText("Link to Inquiry with a Custom Header");
-    	
-    	// Lightbox
-        waitAndClickByLinkText("IAT");
-        gotoLightBox();
-        assertLabeledIatText();
-        waitAndClickLightBoxClose();
-        selectTopFrame();
+
         assertLabeledTextPresent(LABELED_IAT_TEXT);
         assertTextPresent("Account Type Information");
     }

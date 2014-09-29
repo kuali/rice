@@ -15,9 +15,7 @@
  */
 package edu.sampleu.krad.reference;
 
-import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
@@ -25,7 +23,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PhoneTypeAft extends WebDriverLegacyITBase {
+public class PhoneTypeAft extends TypeBaseAft {
 
     /**
      *   AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Phone%20Type&channelUrl="
@@ -44,65 +42,17 @@ public class PhoneTypeAft extends WebDriverLegacyITBase {
     }
 
     @Override
+    protected String[][] getData() {
+        return new String[][] {{"HM", "Home", "b","true"},
+                {"MBL", "Mobile", "c","true"},
+                {"OTH", "Other", "d", "true" },
+                {"WRK", "Work", "a", "true" },
+                {}};
+    }
+
+    @Override
     protected void navigate() throws InterruptedException {
         waitAndClickKRAD();
         waitAndClickByLinkText("Phone Type");
-    }
-
-    //Code for KRAD Test Package.
-    protected void testPhoneType() throws Exception {
-        selectFrameIframePortlet();
-        waitAndClickClearValues();
-
-        //Search by "Both" Filter in Active Indicator
-        clickSearch();
-        waitForTextPresent("HM");
-        String[][] data = {{"HM", "Home", "b","true"},
-                {"MBL", "Mobile", "c","true"}};
-        assertTextPresent(data);
-        waitAndClickClearValues();
-
-        //Search by "Yes" Filter in Active Indicator
-        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
-        clickSearch();
-        assertTextPresent(data);
-        waitAndClickClearValues();
-
-        //Search by "No" Filter in Active Indicator
-        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-        clickSearch();
-        waitForTextPresent("No values match this search.");
-        waitAndClickClearValues();
-
-        //Search by Code Filter
-        waitAndTypeByName("lookupCriteria[code]","HM");
-        clickSearch();
-        String[] assertSearchResultForTypeCode = {"HM", "Home", "b","true"};
-        waitForTextPresent("HM");
-        assertTextPresent(assertSearchResultForTypeCode);
-        waitAndClickClearValues();
-
-        //Search by Name Filter
-        waitAndTypeByName("lookupCriteria[name]","HM");
-        clickSearch();
-        String[] assertSearchResultForTypeName = {"HM", "Home", "b","true"};
-        assertTextPresent(assertSearchResultForTypeName);
-        waitAndClickClearValues();
-    }
-
-    protected void clickSearch() throws InterruptedException {
-        waitAndClickSearchByText();
-    }
-
-    @Test
-    public void testPhoneTypeBookmark() throws Exception {
-        testPhoneType();
-        passed();
-    }
-
-    @Test
-    public void testPhoneTypeNav() throws Exception {
-        testPhoneType();
-        passed();
     }
 }

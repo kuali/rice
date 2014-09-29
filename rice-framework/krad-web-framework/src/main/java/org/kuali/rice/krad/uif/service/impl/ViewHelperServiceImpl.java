@@ -671,8 +671,10 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
 
         if (containsDuplicateLine(newLine, collectionItems, duplicateLinePropertyNames)) {
             isValid = false;
-            GlobalVariables.getMessageMap().putErrorForSectionId(collectionId, RiceKeyConstants.ERROR_DUPLICATE_ELEMENT,
-                    collectionLabel, duplicateLineLabelString);
+            String propertyId = UifPropertyPaths.NEW_COLLECTION_LINES + "['" + collectionPath + "']." +
+                        duplicateLinePropertyNames.get(0);
+            GlobalVariables.getMessageMap().putError(propertyId, RiceKeyConstants.ERROR_DUPLICATE_ELEMENT,
+                        collectionLabel, duplicateLineLabelString);
         }
 
         return isValid;

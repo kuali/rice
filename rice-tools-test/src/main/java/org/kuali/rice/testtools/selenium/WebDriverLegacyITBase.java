@@ -1097,9 +1097,10 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected void testCreateNewAgenda() throws Exception {
         selectFrameIframePortlet();
+        String desc = getDescriptionUnique();
+        String docId = waitForAgendaDocId();
         selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");
-        String agendaName = "Agenda Date :" + Calendar.getInstance().getTime().toString();
-        waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", "Agenda " + agendaName);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", desc);
         fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
         waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
         fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
@@ -1114,6 +1115,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickSubmitByText();
         waitAndClickConfirmSubmitOk();
         assertTextPresent(new String[]{"Document was successfully submitted.", "ENROUTE"});
+        assertDocSearch(docId, "ENROUTE");
         passed();
     }
 
@@ -3074,7 +3076,9 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected String waitForAgendaDocId() throws InterruptedException {
-        return waitForElementPresentByXpath("//div[@data-label=\"Document Number\"]").getText();
+        String docId = waitForElementPresentByXpath("//div[@data-label=\"Document Number\"]").getText();
+        jGrowl("Document Number is " + docId);
+        return docId;
     }
 
     protected String waitForDocId() throws InterruptedException {

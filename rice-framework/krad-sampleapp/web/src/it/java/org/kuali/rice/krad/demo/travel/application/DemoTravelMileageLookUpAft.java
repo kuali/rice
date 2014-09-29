@@ -56,6 +56,7 @@ public class DemoTravelMileageLookUpAft extends ViewDemoAftBase {
     	waitAndClickButtonByText(SEARCH);
     	waitForTextPresent("No values match this search.");
     	waitForTextPresent("You have entered the primary key for this table (Id) in the search criteria. Since these fields can be used to uniquely identify a row in this table, the other search criteria entered will be ignored.");
+        waitForTextPresent("Lookup Results: 2 messages");
     	waitAndClickButtonByText(CLEAR_VALUES);
     	waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
     	waitAndClickButtonByText(SEARCH);
@@ -66,7 +67,8 @@ public class DemoTravelMileageLookUpAft extends ViewDemoAftBase {
     	waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
     	waitAndClickButtonByText(SEARCH);
     	waitForTextPresent("No values match this search.");
-    	//No value present so asserting the message.
+        waitForTextNotPresent("Lookup Results: 1 messages");
+        //No value present so asserting the message.
 		//    	String activeResults [] ={"10000","DO","Domestic","0.305","true"};
 		//    	Thread.sleep(1000); //Required as the below method "only waits for first element" in array. Here first element gets loaded and second takes a while.
 		//    	assertTextPresent(activeResults);

@@ -1033,14 +1033,14 @@ function generateCountString(errorTotal, warningTotal, infoTotal) {
 
             if (infoTotal == 1) {
 
-
-//              Check to see if the info message is coming from a lookup result page. If yes then
-//              do not display the count message at the top.
-                if (countMessage != "" && jQuery("#uLookupResults.uif-infoMessageItem").length > 0) {
-                    countMessage = countMessage + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGE, null, null, infoTotal);
-                }
-                else {
-                    countMessage = "";
+//              Check to see if the info message is coming from a lookup result page. If it is, do not add single
+//              messages to the top of the page unless there are other messages to display as well.
+                if (jQuery("#uLookupResults").children().length > 0) {
+                    if (countMessage != "") {
+                        countMessage = countMessage + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGES, null, null, infoTotal);
+                    }
+                } else {
+                    countMessage = countMessage + getMessage(kradVariables.MESSAGE_TOTAL_MESSAGES, null, null, infoTotal);
                 }
             }
             else {

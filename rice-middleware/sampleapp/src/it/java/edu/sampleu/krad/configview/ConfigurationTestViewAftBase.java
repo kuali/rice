@@ -59,6 +59,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
         testAddLineWithAllDay(idPrefix, addLineIdSuffix);
         testAddLineAllDay(idPrefix, addLineIdSuffix);
+        testInitialColumnSorting(idPrefix);
         passed();
     }
 
@@ -67,6 +68,7 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         testAddLineWithSpecificTime(idPrefix, addLineIdSuffix);
         testAddLineWithAllDay(idPrefix, addLineIdSuffix);
         testAddLineAllDay(idPrefix, addLineIdSuffix);
+        testInitialColumnSorting(idPrefix);
         passed();
     }
 
@@ -119,6 +121,17 @@ public abstract class ConfigurationTestViewAftBase extends WebDriverLegacyITBase
         List<WebElement> columns = findElements(By.xpath("//button[contains(text(), 'Delete')]"), table);
         assertEquals("line was not added", 3, columns.size());
 
+    }
+
+    protected void testInitialColumnSorting(String idPrefix) throws Exception {
+        waitForElementPresentByXpath("//section[@id = '" + idPrefix + "DayEventSection']");
+
+        // confirm that the table is sorted by the second column
+        waitForElementPresentByXpath("//section[@id = '" + idPrefix + "DayEventSection']//table/tbody/tr[1]/td[2]//span[contains(text(), '10/01/2010')]");
+        waitForElementPresentByXpath("//section[@id = '" + idPrefix + "DayEventSection']//table/tbody/tr[2]/td[2]//span[contains(text(), '10/02/2010')]");
+        waitForElementPresentByXpath("//section[@id = '" + idPrefix + "DayEventSection']//table/tbody/tr[3]/td[2]//span[contains(text(), '10/03/2010')]");
+        waitForElementPresentByXpath("//section[@id = '" + idPrefix + "DayEventSection']//table/tbody/tr[4]/td[2]//span[contains(text(), '10/04/2010')]");
+        waitForElementPresentByXpath("//section[@id = '" + idPrefix + "DayEventSection']//table/tbody/tr[5]/td[2]//span[contains(text(), '10/05/2010')]");
     }
 
     /**

@@ -17,6 +17,7 @@ package edu.sampleu.demo.kitchensink;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.LocalDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.util.tree.Node;
@@ -473,6 +474,13 @@ public class UifComponentsTestForm extends UifFormBase {
         remoteFieldValuesMap2.put("remoteField2", "Banana");
         remoteFieldValuesMap2.put("remoteField3", true);
         remoteFieldValuesMap2.put("remoteField4", "Fruit");
+
+        LocalDateTime dayEventStart = LocalDateTime.parse("2010-10-01");
+        dayEvents.add(new DayEvent("fifth", dayEventStart.plusDays(4).toDate(), "10:00", "AM", false));
+        dayEvents.add(new DayEvent("fourth", dayEventStart.plusDays(3).toDate(), "04:00", "PM", false));
+        dayEvents.add(new DayEvent("first", dayEventStart.toDate(), "10:00", "AM", false));
+        dayEvents.add(new DayEvent("second", dayEventStart.plusDays(1).toDate(), "12:00", "PM", false));
+        dayEvents.add(new DayEvent("third", dayEventStart.plusDays(2).toDate(), "02:00", "PM", false));
 
         field88 = "Fruits";
         field91 = "Read only value";

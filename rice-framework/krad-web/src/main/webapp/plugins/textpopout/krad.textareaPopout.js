@@ -22,8 +22,7 @@
 			options = $.extend({
 				label: "",
 				summary: "",
-				constraint: "",
-                readOnly: ""
+				constraint: ""
 			}, options);
 			
 			var id= $(this).attr("id");
@@ -41,7 +40,6 @@
 			var labelHtml="";
 			var summaryHtml="";
 			var constraintHtml="";
-            var readOnly=options.readOnly;
 			if(options.label){
 				labelHtml = "<label for='textarea_popout_control'>"+options.label+"</label>";
 			}
@@ -64,8 +62,7 @@
 						value = "";
 					}
 
-                    if (readOnly === true) {
-
+                    if (obj[0].disabled === true) {
                         var options = {
                             content: "<div class='textarea_popout'>"+labelHtml+summaryHtml
                                 +"<textarea id='textarea_popout_control' readonly>"+value+"</textarea>"
@@ -108,7 +105,6 @@
                     }
 
 	        		context.fancybox(options);
-
 				});
 			});
 		});

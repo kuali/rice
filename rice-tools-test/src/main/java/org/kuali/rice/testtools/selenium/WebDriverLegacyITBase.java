@@ -410,8 +410,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected String uiFramework = AutomatedFunctionalTestUtils.REMOTE_UIF_KNS;   // default to KNS
 
-    protected String uniqueString;
-
     private static final Map<String, String> actionRequestLabelMap;
     private static Map<String, String> actionRequestButtonMap;
     static{
@@ -825,19 +823,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitIsVisibleByXpath(visibleLocator);
         waitAndClickByXpath(clickLocator);
         waitNotVisibleByXpath(visibleLocator);
-    }
-
-    protected String getDescriptionBase() {
-        return this.getClass().toString().substring(this.getClass().toString().lastIndexOf(".") + 1,
-                this.getClass().toString().length()) +
-                "." + testMethodName + " description";
-    }
-
-    protected String getDescriptionUnique() {
-        if (uniqueString == null) {
-            uniqueString = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        }
-        return getDescriptionBase() + " " + uniqueString;
     }
 
     protected String getDocStatus() {

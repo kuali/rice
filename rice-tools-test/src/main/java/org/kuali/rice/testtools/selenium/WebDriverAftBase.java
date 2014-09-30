@@ -121,6 +121,8 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
      */
     public static final String TIMEOUT_MESSAGE = "timeout";
 
+    protected String uniqueString;
+
     protected String user = "admin";
 
     protected int waitSeconds;
@@ -617,6 +619,19 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         if (givenUser != null) {
             user = givenUser;
         }
+    }
+
+    protected String getDescriptionBase() {
+        return this.getClass().toString().substring(this.getClass().toString().lastIndexOf(".") + 1,
+                this.getClass().toString().length()) +
+                "." + testMethodName + " description";
+    }
+
+    protected String getDescriptionUnique() {
+        if (uniqueString == null) {
+            uniqueString = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        }
+        return getDescriptionBase() + " " + uniqueString;
     }
 
     protected WebElement findButtonByText(String buttonText) {

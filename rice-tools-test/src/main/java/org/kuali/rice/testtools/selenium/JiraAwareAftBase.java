@@ -461,8 +461,12 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected boolean isVisible(By by) {
         List<WebElement> elements = getDriver().findElements(by);
         for (WebElement element: elements) {
-            if (element.isDisplayed()) {
-                return true;
+            try {
+                if (element.isDisplayed()) {
+                    return true;
+                }
+            } catch (Throwable t) {
+                // don't fail
             }
         }
         return false;

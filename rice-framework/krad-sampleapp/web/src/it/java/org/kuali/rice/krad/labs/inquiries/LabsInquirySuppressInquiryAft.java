@@ -34,7 +34,7 @@ public class LabsInquirySuppressInquiryAft extends LabsInquiryBase {
 
     @Override
     protected void navigate() throws Exception {
-    	navigateToInquiry("Inquiry - Suppress Inquiry.");
+    	navigateToInquiry("Inquiry - Suppress Inquiry");
     }
 
     protected void testInquirySuppressInquiry() throws InterruptedException {

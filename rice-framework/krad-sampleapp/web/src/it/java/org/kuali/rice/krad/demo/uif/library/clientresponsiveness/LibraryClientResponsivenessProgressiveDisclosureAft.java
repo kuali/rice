@@ -122,10 +122,10 @@ public class LibraryClientResponsivenessProgressiveDisclosureAft extends WebDriv
         waitAndClickButtonByText("Refresh Field");
         waitForProgressLoading(15);
         waitAndClickButtonByText("Refresh Field but with Server Errors");
-        waitForTextPresent("Field 1: Intended message with key: serverTestError not found.");
+        waitForTextPresent("Field 1: This field caused a server test error");
         waitAndClickButtonByText("Refresh Page");
         waitForProgressLoading(60);
-        waitForTextNotPresent("Field 1: Intended message with key: serverTestError not found.");
+        waitForTextNotPresent("Field 1: This field caused a server test error");
     }
     
     protected void testClientResponsivenessProgressiveDisclosureRefreshBasedOnTimer() throws Exception {

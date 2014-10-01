@@ -72,7 +72,7 @@ public class DemoLookUpConditionalCriteriaAft extends ViewDemoAftBase {
         fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "focus");
         fireEvent(LOOKUP_CRITERIA_NUMBER_NAME, "blur");
         waitAndClickSearch3();
-        assertFalse(isElementPresentByName(LOOKUP_CRITERIA_DATE_LOWER_BOUND_NAME));
+        waitForElementNotPresent(By.name(LOOKUP_CRITERIA_DATE_LOWER_BOUND_NAME));
         assertFalse(isElementPresentByName(LOOKUP_CRITERIA_DATE_UPPER_BOUND_NAME));
 
         clearTextByName(LOOKUP_CRITERIA_NUMBER_NAME);

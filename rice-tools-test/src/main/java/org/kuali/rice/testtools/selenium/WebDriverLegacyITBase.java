@@ -3104,6 +3104,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected WebElement waitForToolTipPresent() throws InterruptedException {
+        waitIsVisible("[class='popover top in']");
         WebElement tooltip =  waitForElementPresent("[class='popover top in']");
         jGrowl("ToolTip " + tooltip.getText());
         return tooltip;

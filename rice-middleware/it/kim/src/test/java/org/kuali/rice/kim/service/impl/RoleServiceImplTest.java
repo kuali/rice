@@ -15,20 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -56,7 +43,14 @@ import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.PersistenceOption;
 
-import com.google.common.collect.Maps;
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 public class RoleServiceImplTest extends KIMTestCase {
     private RoleService roleService;
@@ -197,6 +191,32 @@ public class RoleServiceImplTest extends KIMTestCase {
                 }
             }
         }
+    }
+
+    @Test
+    public void testPrincipalCreateRemoveWithQualifiers() {
+        Role roleId = roleService.getRole(ROLE_ID);
+        List<String> roleIds = new ArrayList<String>();
+        roleIds.add(roleId.getId());
+
+        Map<String, String> attributes = new HashMap<String, String>();
+        attributes.put("parameterName", "parameterNameValue");
+        attributes.put("namespaceCode", "namespaceCodeValue");
+        attributes.put("componentName", "componentNameValue");
+        int memberCountBeforeAdding = getActiveRoleMemberCount(roleIds, attributes);
+
+        roleService.assignPrincipalToRole(ROLE_MEMBER_ID1, roleId.getNamespaceCode(), roleId.getName(), attributes);
+
+        int memberCountAfterAdding = getActiveRoleMemberCount(roleIds, attributes);
+        assertTrue("Member not added to role.", memberCountAfterAdding == memberCountBeforeAdding + 1);
+        roleService.removePrincipalFromRole(ROLE_MEMBER_ID1, roleId.getNamespaceCode(), roleId.getName(), attributes);
+        int memberCountAfterRemoving = getActiveRoleMemberCount(roleIds, attributes);
+        assertEquals("Member not removed from role.", memberCountBeforeAdding, memberCountAfterRemoving);
+    }
+
+    private int getActiveRoleMemberCount(List<String> roleIds, Map<String, String> qualifiers) {
+        final List<RoleMembership> roleMembers = roleService.getRoleMembers(roleIds, qualifiers);
+        return roleMembers.size();
     }
 
     @Test

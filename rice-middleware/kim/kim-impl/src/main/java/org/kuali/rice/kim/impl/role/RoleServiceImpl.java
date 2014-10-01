@@ -2263,7 +2263,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         // look for an exact qualifier match
         List<RoleMemberBo> rms = getRoleMembersByExactQualifierMatch(role, principalId, memberTypeToRoleDaoActionMap.get(MemberType.PRINCIPAL.getCode()), qualifier);
         if(CollectionUtils.isEmpty(rms)) {
-            rms = getRoleMembersByDefaultStrategy(role.getId(), principalId, MemberType.PRINCIPAL.getCode(), qualifier);
+            //Convert qualifier keys to use KIM attribute IDs since that's what getRoleMembersByDefaultStrategy is looking for.
+            String kimTypeId = role.getKimTypeId();
+            Map<String, String> attributeQualifierMap = new HashMap<String, String>();
+            for (String qualifierKey : qualifier.keySet()) {
+                attributeQualifierMap.put(getKimAttributeId(kimTypeId, qualifierKey), qualifier.get(qualifierKey));
+            }
+
+            rms = getRoleMembersByDefaultStrategy(role.getId(), principalId, MemberType.PRINCIPAL.getCode(),
+                    attributeQualifierMap);
         }
         removeRoleMembers(rms);
     }

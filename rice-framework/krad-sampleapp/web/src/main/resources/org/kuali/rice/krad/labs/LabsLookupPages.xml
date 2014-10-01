@@ -43,7 +43,7 @@
                       </property>
                     </bean>
                     <bean parent="Uif-InputField" p:propertyName="inputField13">
-                      <property name="instructionalText" value="Click the button to perform a lookup on TravelAccounts" />
+                      <property name="instructionalText" value="Click the button to perform a lookup with return by script on TravelAccounts" />
                       <property name="quickfinder">
                         <bean parent="Uif-QuickFinderByScript" p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
                               p:fieldConversions="number:inputField13"/>

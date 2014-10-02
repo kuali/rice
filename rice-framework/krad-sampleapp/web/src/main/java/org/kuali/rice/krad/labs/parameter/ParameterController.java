@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.labs.parameter;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.coreservice.api.CoreServiceApiServiceLocator;
 import org.kuali.rice.coreservice.api.parameter.Parameter;
 import org.kuali.rice.coreservice.api.parameter.ParameterKey;
@@ -49,9 +50,13 @@ public class ParameterController extends UifControllerBase {
         String componentCode = parameterForm.getComponentCode();
         String parameterName = parameterForm.getParameterName();
 
-        ParameterKey key = ParameterKey.create(applicationId, namespaceCode, componentCode, parameterName);
+        Parameter parameter = null;
 
-        Parameter parameter = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameter(key);
+        if (StringUtils.isNotBlank(applicationId) && StringUtils.isNotBlank(namespaceCode)
+            && StringUtils.isNotBlank(componentCode) && StringUtils.isBlank(parameterName)) {
+            ParameterKey key = ParameterKey.create(applicationId, namespaceCode, componentCode, parameterName);
+            parameter = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameter(key);
+        }
 
         if (parameter != null) {
             Parameter.Builder builder = Parameter.Builder.create(parameter);

@@ -21,7 +21,7 @@
                     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
   <bean id="LabsParameterView" parent="Uif-FormView" p:instructionalText="View for changing parameters">
-    <property name="headerText" value="Parameter Update"/>
+    <property name="headerText" value="Parameter Updater - For testing purposes only"/>
     <property name="singlePageView" value="true"/>
     <property name="page">
       <bean parent="Uif-Page">
@@ -38,22 +38,22 @@
   <bean id="Labs-Parameter-Section" parent="Uif-GridSection">
     <property name="items">
       <list>
-        <bean parent="Uif-InputField" p:propertyName="namespaceCode" p:label="Namespace Code">
+        <bean parent="Uif-InputField" p:propertyName="namespaceCode" p:label="Namespace Code" p:required="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="componentCode" p:label="Component Code">
+        <bean parent="Uif-InputField" p:propertyName="componentCode" p:label="Component Code" p:required="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="parameterName" p:label="Parameter Name">
+        <bean parent="Uif-InputField" p:propertyName="parameterName" p:label="Parameter Name" p:required="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="parameterValue" p:label="Parameter Value">
+        <bean parent="Uif-InputField" p:propertyName="parameterValue" p:label="Parameter Value" p:required="true">
           <property name="control">
             <bean parent="Uif-TextControl"/>
           </property>

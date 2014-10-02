@@ -428,7 +428,8 @@ function createDatePicker(controlId, options, disabled) {
         }
         if (disabled === true) {
             datePickerControl.datepicker('disable');
-            datePickerControl.next(".ui-datepicker-trigger").css("cursor", "not-allowed");
+            datePickerControl.next("div").css({"cursor":"not-allowed"}).children(".ui-datepicker-trigger")
+                    .addClass(kradVariables.DISABLED_CLASS).css({"backgroundColor":"#eee"});
         }
     });
 

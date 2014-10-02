@@ -614,7 +614,8 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
 
                 if (disableControl.is(".hasDatepicker")) {
                     disableControl.datepicker("disable");
-                    disableControl.next(".ui-datepicker-trigger").css("cursor", "not-allowed");
+                    disableControl.next("div").css("cursor","not-allowed").children(".ui-datepicker-trigger")
+                            .addClass(kradVariables.DISABLED_CLASS).css("backgroundColor","#eee");
                 }
                 if (disableControl.is(".uif-spinnerControl")) {
                     disableControl.spinner("disable");
@@ -629,7 +630,8 @@ function setupDisabledCheck(controlName, disableCompId, disableCompType, conditi
 
                 if (disableControl.is(".hasDatepicker")) {
                     disableControl.datepicker("enable");
-                    disableControl.next(".ui-datepicker-trigger").css("cursor", "pointer");
+                    disableControl.next("div").css("cursor", "none").children(".ui-datepicker-trigger")
+                            .removeClass(kradVariables.DISABLED_CLASS).css("backgroundColor","#fff");
                 }
                 if (disableControl.is(".uif-spinnerControl")) {
                     disableControl.spinner("enable");

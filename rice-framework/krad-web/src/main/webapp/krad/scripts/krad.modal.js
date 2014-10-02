@@ -366,7 +366,8 @@ function openIframeDialog(url, dialogId) {
     jQuery(window).one("message." + kradVariables.MODAL.MODAL_NAMESPACE, function (event) {
         switch (event.originalEvent.data) {
             case kradVariables.MODAL.MODAL_CLOSE_DIALOG:
-                jQuery(kradVariables.MODAL.MODAL_CLASS).modal("hide");
+                jQuery(kradVariables.IFRAME).parents(kradVariables.MODAL.MODAL_CLASS).modal("hide");
+
                 break;
         }
     });

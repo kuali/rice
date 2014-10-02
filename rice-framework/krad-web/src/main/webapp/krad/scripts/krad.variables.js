@@ -131,6 +131,7 @@ JavascriptKradVariables.prototype = {
     JUMP_TO_ID: "jumptoid",
     JUMP_TO_NAME: "jumptoname",
     PAGE_ID: "pageId",
+    IFRAME: "iframe",
     PORTAL_IFRAME_ID: "iframeportlet",
     INCIDENT_REPORT_VIEW_CLASS: "Uif-IncidentReportView",
     INFO_HIGHLIGHT_SECTION_CLASS: "uif-infoHighlight-section",

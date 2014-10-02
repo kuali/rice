@@ -304,12 +304,6 @@ public class Inquiry extends WidgetBase {
 
                 ViewLifecycle viewLifecycle = ViewLifecycle.getActiveLifecycle();
 
-                // Make sure our inquiry parameters are included as a rendered property path
-                if(!viewLifecycle.getViewPostMetadata().getAllRenderedPropertyPaths().contains(inquiryParameterFrom.toString())){
-                    setRender(false);
-                    return;
-                }
-
                 paramMapStringBuilder.append(inquiryParameterFrom);
                 paramMapStringBuilder.append(":");
                 paramMapStringBuilder.append(inquiryParameter.getValue());

@@ -50,7 +50,7 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="number">
-                <property name="onChangeScript" value=" jQuery('.subAccount_travelAccountNumber').val( jQuery(&quot;input[name='document.newMaintainableObject.dataObject.number']&quot;).val() );"/>
+                <property name="onChangeScript" value="jQuery('.subAccount_travelAccountNumber').val( jQuery(&quot;input[name='document.newMaintainableObject.dataObject.number']&quot;).val() );"/>
               </bean>
               <bean parent="Uif-InputField" p:propertyName="name"/>
               <bean parent="Uif-InputField" p:propertyName="accountTypeCode" p:required="true" />
@@ -70,10 +70,10 @@
                 <property name="items">
                   <list>
                     <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true" p:required="true" p:readOnly="@{!#isAddLine}">
-                      <property name="fieldLabel.render"  value="false"/>
+                      <property name="fieldLabel.render" value="false"/>
                     </bean>
                     <bean parent="Uif-InputField" p:propertyName="travelAccountNumber" p:enableAutoQuickfinder="false" p:defaultValue="@{document.newMaintainableObject.dataObject.number}">
-                      <property name="fieldLabel.render"  value="false"/>
+                      <property name="fieldLabel.render" value="false"/>
                       <property name="control">
                         <bean parent="Uif-HiddenControl" p:cssClasses="subAccount_travelAccountNumber"/>
                       </property>

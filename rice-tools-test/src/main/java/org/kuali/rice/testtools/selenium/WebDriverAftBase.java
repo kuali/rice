@@ -905,7 +905,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void gotoLightBox() throws InterruptedException {
-        waitForElementPresent(By.cssSelector(".uif-lookupDialog-iframe"));
+        waitForElementVisibleBy(By.cssSelector(".uif-lookupDialog-iframe"));
         driver.switchTo().frame(driver.findElement(By.cssSelector(".uif-lookupDialog-iframe")));
     }
 

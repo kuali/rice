@@ -34,7 +34,7 @@ public class LabsInquiryLayoutManagerNumberOfColumnsAft extends LabsInquiryBase 
 
     @Override
     protected void navigate() throws Exception {
-    	navigateToInquiry("Inquiry - LayoutManager number of columns.");
+    	navigateToInquiry("Inquiry - LayoutManager number of columns");
     }
 
     protected void testInquiryLayoutManagerNumberOfColumns() throws InterruptedException {

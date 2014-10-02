@@ -110,7 +110,7 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
 
         if (fileUploadList != null && fileUploadList.size() > 0) {
             for (File file : fileUploadList) {
-                waitAndTypeByXpath("//div[@data-label='ID']/input", "attachment" + uniqueString);
+                waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.attachments'].id", "attachment" + uniqueString);
                 String path = file.getAbsolutePath().toString();
                 waitIsVisibleByXpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']");
                 driver.findElement(By.xpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']"))
@@ -241,7 +241,7 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
     }
 
     @Test
-    public void testInquiryforDataObjectWithAttachmentBookmarkNav() throws Exception {
+    public void testInquiryforDataObjectWithAttachmentNav() throws Exception {
         testInquiryforDataObjectWithAttachment();
         passed();
     }
@@ -253,7 +253,7 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
     }
 
     @Test
-    public void testInquiryforDataObjectWithAttachmentCollectionBookmarkNav() throws Exception {
+    public void testInquiryforDataObjectWithAttachmentCollectionNav() throws Exception {
         testInquiryforDataObjectWithAttachmentCollection();
         passed();
     }

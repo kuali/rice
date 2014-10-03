@@ -658,6 +658,14 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         blanketApproveAssert(docId);
     }
 
+    protected void blanketApproveSuccessfully() throws InterruptedException {
+        waitAndClickBlanketApprove();
+        waitAndClickConfirmBlanketApproveOk();
+        acceptAlertIfPresent(); // LabsLookupDefaultCreateNewBlanketApproveAft
+        waitForProgressLoading();
+        checkForDocErrorKrad();
+        waitForTextPresent("Document was successfully approved.");
+    }
 
     protected void failOnErrorMessageItem() {
         failOnErrorMessageItem(this.getClass().getName());
@@ -2819,7 +2827,8 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected void waitAndClickAdHocPersonAdd() throws InterruptedException  {
         jGrowl("Click AdHoc Person add");
-        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button");
+        waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
+//        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/fieldset/div/button");
     }
 
     protected void waitAndClickAdHocGroupAdd() throws InterruptedException  {

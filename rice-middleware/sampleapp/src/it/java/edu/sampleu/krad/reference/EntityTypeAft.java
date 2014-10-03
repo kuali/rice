@@ -15,9 +15,7 @@
  */
 package edu.sampleu.krad.reference;
 
-import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
@@ -25,7 +23,7 @@ import org.kuali.rice.testtools.selenium.WebDriverUtils;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EntityTypeAft extends WebDriverLegacyITBase {
+public class EntityTypeAft extends TypeBaseAft {
 
     /**
      *  AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Entity%20Type&channelUrl="
@@ -44,65 +42,14 @@ public class EntityTypeAft extends WebDriverLegacyITBase {
     }
 
     @Override
+    protected String[][] getData() {
+        return new String[][]{{"PERSON", "Person", "01","true"},
+                {"SYSTEM", "System", "02","true"}};
+    }
+
+    @Override
     protected void navigate() throws InterruptedException {
         waitAndClickKRAD();
         waitAndClickByLinkText("Entity Type");
-    }
-
-    //Code for KRAD Test Package.
-    protected void testEntityType() throws Exception {
-        selectFrameIframePortlet();
-        waitAndClickClearValues();
-
-        //Search by "Both" Filter in Active Indicator
-        clickSearch();
-        waitForTextPresent("PERSON");
-        String[][] data = {{"PERSON", "Person", "01","true"},
-                {"SYSTEM", "System", "02","true"}};
-        assertTextPresent(data);
-        waitAndClickClearValues();
-
-        //Search by "Yes" Filter in Active Indicator
-        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
-        clickSearch();
-        assertTextPresent(data);
-        waitAndClickClearValues();
-
-        //Search by "No" Filter in Active Indicator
-        waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
-        clickSearch();
-        waitForTextPresent("No values match this search.");
-        waitAndClickClearValues();
-
-        //Search by Code Filter
-        waitAndTypeByName("lookupCriteria[code]","PERSON");
-        clickSearch();
-        String[] assertSearchResultForTypeCode = {"PERSON", "Person", "01","true"};
-        waitForTextPresent("PERSON");
-        assertTextPresent(assertSearchResultForTypeCode);
-        waitAndClickClearValues();
-
-        //Search by Name Filter
-        waitAndTypeByName("lookupCriteria[name]","PERSON");
-        clickSearch();
-        String[] assertSearchResultForTypeName = {"PERSON", "Person", "01","true"};
-        assertTextPresent(assertSearchResultForTypeName);
-        waitAndClickClearValues();
-    }
-
-    protected void clickSearch() throws InterruptedException {
-        waitAndClickSearchByText();
-    }
-
-    @Test
-    public void testEntityTypeBookmark() throws Exception {
-        testEntityType();
-        passed();
-    }
-
-    @Test
-    public void testEntityTypeNav() throws Exception {
-        testEntityType();
-        passed();
     }
 }

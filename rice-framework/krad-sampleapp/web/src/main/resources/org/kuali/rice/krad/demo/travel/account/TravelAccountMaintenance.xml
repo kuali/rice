@@ -20,7 +20,7 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-  
+
   <bean id="TravelAccountMaintenanceDocument" parent="uifMaintenanceDocumentEntry">
     <property name="dataObjectClass" value="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"/>
     <property name="documentTypeName" value="TravelAccountMaintenanceDocument"/>
@@ -49,7 +49,9 @@
           <property name="headerText" value="Account Information"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="number"/>
+              <bean parent="Uif-InputField" p:propertyName="number">
+                <property name="onChangeScript" value="jQuery('.subAccount_travelAccountNumber').val( jQuery(&quot;input[name='document.newMaintainableObject.dataObject.number']&quot;).val() );"/>
+              </bean>
               <bean parent="Uif-InputField" p:propertyName="name"/>
               <bean parent="Uif-InputField" p:propertyName="accountTypeCode" p:required="true" />
               <bean parent="Uif-InputField" p:propertyName="foId"/>
@@ -64,7 +66,22 @@
           <property name="propertyName" value="subAccounts"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true" p:readOnly="@{!#isAddLine}"/>
+              <bean id="subAccountId" parent="Uif-HorizontalFieldGroup" p:label="Travel Sub Account Number" p:required="true">
+                <property name="items">
+                  <list>
+                    <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true" p:required="true" p:readOnly="@{!#isAddLine}">
+                      <property name="fieldLabel.render" value="false"/>
+                    </bean>
+                    <bean parent="Uif-InputField" p:propertyName="travelAccountNumber" p:enableAutoQuickfinder="false" p:defaultValue="@{document.newMaintainableObject.dataObject.number}">
+                      <property name="fieldLabel.render" value="false"/>
+                      <property name="hidden" value="true"/>
+                      <property name="control">
+                        <bean parent="Uif-HiddenControl" p:cssClasses="subAccount_travelAccountNumber"/>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
               <bean parent="Uif-InputField" p:propertyName="subAccountName" p:readOnly="@{!#isAddLine}"/>
             </list>
           </property>

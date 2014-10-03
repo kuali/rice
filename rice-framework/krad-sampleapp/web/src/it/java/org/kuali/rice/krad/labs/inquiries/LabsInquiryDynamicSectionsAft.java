@@ -39,16 +39,11 @@ public class LabsInquiryDynamicSectionsAft extends LabsInquiryBase {
 
     protected void testInquiryDynamicSections() throws InterruptedException {
     	waitAndClickByLinkText("Link to Inquiry with Dynamic Sections");
-    	
-    	// Lightbox
-        waitAndClickByLinkText("IAT");
-        gotoLightBox();
-        assertLabeledIatText();
-        waitAndClickLightBoxClose();
-        selectTopFrame();
+
+        // Statically Added
         assertLabeledIatText();
 
-        //Dynamically Added 
+        // Dynamically Added
         String[][] LabeledTextDynamic = {{"Dynamically Added Field:", "This is a dynamically set value."}};
         assertLabeledTextPresent(LabeledTextDynamic);
         clickCollapseAll();

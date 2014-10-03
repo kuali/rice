@@ -90,7 +90,7 @@
       <bean parent="Uif-DropdownControl"/>
     </property>
     <property name="optionsFinder">
-      <bean class="org.kuali.rice.krms.impl.repository.ContextTypeValuesFinder" p:blankOption="true"/>
+      <bean class="org.kuali.rice.krms.impl.repository.ContextTypeValuesFinder" p:addBlankOption="true"/>
     </property>
     <property name="name" value="typeId"/>
     <property name="label" value="Context Type Id"/>

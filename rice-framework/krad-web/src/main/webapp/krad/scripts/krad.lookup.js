@@ -88,7 +88,7 @@ function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialo
                 data['actionParameters[returnTarget]'] = 'iframeportlet';
             }
 
-            var baseURI = this.documentURI;
+            var baseURI = this.location.href;
             if (baseURI.indexOf("?") > -1) {
                 baseURI = baseURI.substring(0, baseURI.indexOf("?"));
             }

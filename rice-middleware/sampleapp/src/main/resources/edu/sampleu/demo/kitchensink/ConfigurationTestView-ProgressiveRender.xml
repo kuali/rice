@@ -141,10 +141,10 @@
         <entry key="bInfo" value="false"/>
         <entry key="bLengthChange" value="false"/>
         <entry key="bPaginate" value="false"/>
-        <entry key="aaSorting" value="[[1,'desc']]"/>
+        <entry key="aaSorting" value="[[1,'asc']]"/>
         <entry key="aoColumns"
                value="[ {'bSortable':false, 'sWidth':'20%'},
-                {'bSortable':false, 'sType':'kuali_date', 'sTitle':'Start Date', 'sWidth':'20%', 'sSortDataType' : 'dom-text'},
+                {'bSortable':true, 'sType':'kuali_date', 'sTitle':'Start Date', 'sWidth':'20%', 'sSortDataType' : 'dom-text'},
                 {'bSortable':false, 'sWidth':'20%'},
                 {'bSortable':false, 'sWidth':'20%'},
                 {'bSortable':false, 'sWidth':'20%'}

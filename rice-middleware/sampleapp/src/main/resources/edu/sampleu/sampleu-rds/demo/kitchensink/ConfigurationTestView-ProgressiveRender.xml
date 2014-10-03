@@ -109,9 +109,9 @@
         <spring:entry key="bInfo" value="false"/>
         <spring:entry key="bLengthChange" value="false"/>
         <spring:entry key="bPaginate" value="false"/>
-        <spring:entry key="aaSorting" value="[[1,'desc']]"/>
+        <spring:entry key="aaSorting" value="[[1,'asc']]"/>
         <spring:entry key="aoColumns"
-                      value="[ {'bSortable':false, 'sWidth':'20%'},                 {'bSortable':false, 'sType':'kuali_date', 'sTitle':'Start Date', 'sWidth':'20%', 'sSortDataType' : 'dom-text'},                 {'bSortable':false, 'sWidth':'20%'},                 {'bSortable':false, 'sWidth':'20%'},                 {'bSortable':false, 'sWidth':'20%'}               ]"/>
+                      value="[ {'bSortable':false, 'sWidth':'20%'},                 {'bSortable':true, 'sType':'kuali_date', 'sTitle':'Start Date', 'sWidth':'20%', 'sSortDataType' : 'dom-text'},                 {'bSortable':false, 'sWidth':'20%'},                 {'bSortable':false, 'sWidth':'20%'},                 {'bSortable':false, 'sWidth':'20%'}               ]"/>
       </spring:map>
     </spring:property>
   </disclosure-tableCollectionSection-bean>

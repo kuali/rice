@@ -173,9 +173,12 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
             criteriaCopy.putAll(criteriaMap);
             // check the attribute definitions for attribute names
             for(String key : criteriaCopy.keySet()) {
-                if (isParamAttribute(key) && StringUtils.isNotBlank(criteriaMap.get(key))) {
-                    String attributeName = StringUtils.substringBetween(key, "attributes(", ")");
-                    attribsMap.put(attributeName, criteriaMap.get(key));
+                if (isParamAttribute(key)) {
+                    if (StringUtils.isNotBlank(criteriaMap.get(key))) {
+                        String attributeName = StringUtils.substringBetween(key, "attributes(", ")");
+                        attribsMap.put(attributeName, criteriaMap.get(key));
+                    }
+
                     // valid attribute name so remove from criteria map
                     criteriaMap.remove(key);
                 }
@@ -379,7 +382,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                     prop = ((GroupBo)element).getGroupAttributeValueById(id);
                 }
                 if (prop == null) {
-                    prop = (String) KradDataServiceLocator.getDataObjectService().wrap(element).getPropertyValueNullSafe(col.getPropertyName());
+                    prop = (String) KradDataServiceLocator.getDataObjectService().wrap(element)
+                            .getPropertyValueNullSafe(findAndConvertAttributeNamesToMappableProperty(col.getPropertyName()));
                 } else {
                 }
 
@@ -579,6 +583,20 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 	public void setTypeId(String typeId) {
 		this.typeId = typeId;
 	}
+
+    /**
+     * This method determines if a property name refers to an attribute. If so, we have to adjust the formatting so the
+     * wrapper recognizes it as being mappable.
+     * @param propertyName is any property name that will be wrapped as part of a lookup result
+     * @return either the unaltered property name or a modified version of the property name if it is an attribute
+     */
+    private String findAndConvertAttributeNamesToMappableProperty(String propertyName) {
+        if (isParamAttribute(propertyName)) {
+            return propertyName.replaceAll("attributes\\((.*?)\\)", "attributes\\[$1\\]");
+        } else {
+            return propertyName;
+        }
+    }
 
     @Override
     public void performClear(LookupForm lookupForm) {

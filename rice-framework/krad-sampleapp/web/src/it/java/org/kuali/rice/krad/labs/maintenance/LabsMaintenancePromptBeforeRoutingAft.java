@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.labs.maintenance;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 
 /**
@@ -40,18 +39,19 @@ public class LabsMaintenancePromptBeforeRoutingAft extends LabsMaintenanceBase {
     }
 
     protected void testMaintenancePromptBeforeRouting() throws InterruptedException {
-        String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
-    	waitAndTypeByName("document.documentHeader.documentDescription","Prompt Before Routing");
-    	waitAndTypeByName("document.newMaintainableObject.dataObject.number",randomCode);
-    	waitAndTypeByName("document.newMaintainableObject.dataObject.name","Travel Account 14"+randomCode);
+        String desc = getDescriptionUnique();
+    	waitAndTypeByName("document.documentHeader.documentDescription",desc);
+    	waitAndTypeByName("document.newMaintainableObject.dataObject.number",uniqueString);
+    	waitAndTypeByName("document.newMaintainableObject.dataObject.name","Travel Account 14"+uniqueString);
     	waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT']");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName","fred");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.createDate","04/09/2014");
     	waitAndClickSubmitByText();
         waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'Cancel')]");
         waitAndClickSubmitByText();
-        //waitAndClickConfirmationOk();
-    	//It is getting Incident Report at the moment, so cannot check the functionality now.
+        waitAndClickConfirmSubmitOk(); //It is getting Incident Report at the moment, so cannot check the functionality now.
+        checkForDocErrorKrad();
+        waitForTextPresent("Document was successfully submitted.");
     }
 
     @Test

@@ -79,6 +79,7 @@ public class DemoLookUpOperatorsAft extends ViewDemoAftBase {
     	waitAndTestTravelAccountNameInput("!NULL",new String[]{"a1","a6","a7","a10","a11","a12","a13","a14"}, "a2");
     	waitAndTypeByName(TRAVEL_ACCOUNT_NAME,"NULL");
     	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitForProgressLoading();
     	waitForTextPresent("No values match this search.");
     	waitAndTypeByName(PRINCIPAL_NAME,"fr* && *k");
     	waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
@@ -87,6 +88,7 @@ public class DemoLookUpOperatorsAft extends ViewDemoAftBase {
     private void waitAndTestTravelAccountInput(String inputValue, String [] assertPresentStringValue, String assertNotPresentStringValue) throws InterruptedException{
     	 waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER,inputValue);
          waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+         waitForProgressLoading();
          if(assertPresentStringValue!=null) {
         	 for(int i=0; i<assertPresentStringValue.length ; i++) {
         		 waitForElementPresentByXpath("//table[@id='uLookupResults_layout']/*//a[contains(text(),'"+assertPresentStringValue[i]+"')]");
@@ -99,8 +101,9 @@ public class DemoLookUpOperatorsAft extends ViewDemoAftBase {
     }
     
     private void waitAndTestTravelAccountNameInput(String inputValue, String [] assertPresentStringValue, String assertNotPresentStringValue) throws InterruptedException{
-   	 waitAndTypeByName(TRAVEL_ACCOUNT_NAME,inputValue);
+   	    waitAndTypeByName(TRAVEL_ACCOUNT_NAME,inputValue);
         waitAndClickButtonByText(SEARCH_BUTTON_TEXT);
+        waitForProgressLoading();
         if(assertPresentStringValue!=null) {
         	for(int i=0; i<assertPresentStringValue.length ; i++) {
 	       		 waitForElementPresentByXpath("//table[@id='uLookupResults_layout']/*//a[contains(text(),'"+assertPresentStringValue[i]+"')]");

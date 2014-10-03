@@ -15,10 +15,8 @@
  */
 package org.kuali.rice.krad.demo.travel.application;
 
-import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
-import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -84,7 +82,7 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     protected void testTravelAccountAuthorizationSubmit() throws Exception {
     	testTravelAccountAuthorization();
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
 // No isn't visible but Yes is?!
 //        waitForElementVisibleBy(By.xpath("//label[contains(text(), 'No')]"), "").click();
 //        waitAndClick(By.xpath("//label[contains(text(), 'No')]"));

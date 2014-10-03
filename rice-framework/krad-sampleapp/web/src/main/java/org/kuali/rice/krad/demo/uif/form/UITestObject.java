@@ -246,12 +246,12 @@ public class UITestObject implements Serializable {
     //        this.fileUploadName = fileUploadName;
     //    }
 
-    public void setSubList(List<UITestObject> subList) {
-        this.subList = subList;
-    }
-
     public List<UITestObject> getSubList() {
         return subList;
+    }
+
+    public void setSubList(List<UITestObject> subList) {
+        this.subList = subList;
     }
 
     public Map<String, Object> getRemoteFieldValuesMap() {

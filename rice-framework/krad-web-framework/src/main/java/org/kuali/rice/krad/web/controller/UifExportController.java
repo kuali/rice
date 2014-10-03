@@ -141,8 +141,11 @@ public class UifExportController extends UifControllerBase {
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         InquiryForm inquiryForm = (InquiryForm) form;
         Object dataObject = inquiryForm.getDataObject();
-        applyCustomExport(Collections.singletonList(dataObject), inquiryForm.getDataObjectClassName(),
-                KRADConstants.XML_FORMAT, response);
+
+        if (dataObject != null) {
+            applyCustomExport(Collections.singletonList(dataObject), inquiryForm.getDataObjectClassName(),
+                    KRADConstants.XML_FORMAT, response);
+        }
 
         return null;
     }

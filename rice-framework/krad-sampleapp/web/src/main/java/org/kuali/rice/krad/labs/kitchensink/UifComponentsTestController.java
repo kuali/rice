@@ -82,6 +82,10 @@ public class UifComponentsTestController extends UifControllerBase {
             }
         }
 
+        GlobalVariables.getMessageMap().putInfoForSectionId("UifCompView-SelectFields", "general.message", "This info "
+                + "message should be on the Selection Controls section. There should also be a link to this message at "
+                + "the top of the page.");
+
         GlobalVariables.getMessageMap().addGrowlMessage("Welcome!", "kitchenSink.welcome");
 
         return super.start(uiTestForm);

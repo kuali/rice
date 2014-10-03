@@ -147,7 +147,6 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     private String testRoleName4 = "GuestRole";
     private String testRoleName5 = "GuestRole";
 
-
     private UITestObject uiTestObject1;
     private UITestObject uiTestObject2;
 
@@ -244,7 +243,18 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         this.multiSelectField1.add("4");
 
         uiTestObject1 = new UITestObject("Foo", "FooBar", "FooBear", "FooRacket");
-        uiTestObject2 = new UITestObject("Foo", "FooBar2", "FooBear", "FooRacket2");
+        uiTestObject2 = new UITestObject("Foo2", "FooBar2", "FooBear2", "FooRacket2");
+        // add some sub objects
+        List<UITestObject> sl = new ArrayList<>();
+        for (int x = 0; x<3; ++x) {
+            sl.add(new UITestObject("sl1_f1_" + x, "sl1_f2_" + x, "sl1_f3_" + x, "sl1_f4_" + x));
+        }
+        uiTestObject1.setSubList(sl);
+        sl = new ArrayList<>();
+        for (int x = 0; x<3; ++x) {
+            sl.add(new UITestObject("sl2_f1_" + x, "sl2_f2_" + x, "sl2_f3_" + x, "sl2_f4_" + x));
+        }
+        uiTestObject2.setSubList(sl);
 
         messageField1 = "fruits";
 
@@ -1680,19 +1690,19 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
         return StringUtils.EMPTY;
     }
 
-    public UITestObject getUiTestObject2() {
-        return uiTestObject2;
-    }
-
-    public void setUiTestObject2(UITestObject uiTestObject2) {
-        this.uiTestObject2 = uiTestObject2;
-    }
-
     public UITestObject getUiTestObject1() {
         return uiTestObject1;
     }
 
     public void setUiTestObject1(UITestObject uiTestObject1) {
         this.uiTestObject1 = uiTestObject1;
+    }
+
+    public UITestObject getUiTestObject2() {
+        return uiTestObject2;
+    }
+
+    public void setUiTestObject2(UITestObject uiTestObject2) {
+        this.uiTestObject2 = uiTestObject2;
     }
 }

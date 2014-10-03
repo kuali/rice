@@ -461,8 +461,12 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected boolean isVisible(By by) {
         List<WebElement> elements = getDriver().findElements(by);
         for (WebElement element: elements) {
-            if (element.isDisplayed()) {
-                return true;
+            try {
+                if (element.isDisplayed()) {
+                    return true;
+                }
+            } catch (Throwable t) {
+                // don't fail
             }
         }
         return false;
@@ -769,6 +773,36 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
 
         for (WebElement option : options) {
             if (option.getAttribute("value").equals(optionValue)) {
+                WebDriverUtils.jGrowl(getDriver(), "Select " + option.getText(), false, "Select " + option.getText() + " from " + name);
+                option.click();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param by
+     * @param optionText
+     * @throws InterruptedException
+     */
+    protected void selectOptionText(By by, String optionText) throws InterruptedException {
+        WebElement select1 = findElement(by);
+        List<WebElement> options = select1.findElements(By.tagName("option"));
+
+        String name = select1.getAttribute("name");
+
+        if (options == null || options.size() == 0) {
+            jiraAwareFail("No options for select "
+                    + select1.toString()
+                    + " was looking for text "
+                    + optionText
+                    + " using "
+                    + by.toString());
+        }
+
+        for (WebElement option : options) {
+            if (option.getText().equals(optionText)) {
                 WebDriverUtils.jGrowl(getDriver(), "Select " + option.getText(), false, "Select " + option.getText() + " from " + name);
                 option.click();
                 break;

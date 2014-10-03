@@ -44,7 +44,7 @@ public class LabsMaintenanceInactivationBlockingAft extends LabsMaintenanceBase 
         waitForElementPresentByXpath("//div//input[@name='document.newMaintainableObject.dataObject.active' and @checked = 'checked']");
         waitAndClickByXpath("//div//input[@name='document.newMaintainableObject.dataObject.active']");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         String errorMessage []={"This document cannot be Routed because this document inactivates a record referenced by other active records."};
         assertTextPresent(errorMessage);
     }

@@ -37,7 +37,8 @@ public abstract class ViewDemoAftBase extends WebDriverLegacyITBase{
      *
      * The DB rice.version (which is where the help urls are stored) seems to be independent from the app.xml, using that value might be better than hardcoding
      */
-    public static final String HELP_URL_RICE_VERSION = "site.kuali.org/rice/2.5.";
+    public static final String VERSION = "2.5.";
+    public static final String HELP_URL_RICE_VERSION = "site.kuali.org/rice/" + VERSION;
 
     protected void assertHelp() throws InterruptedException {
         checkForIncidentReport();
@@ -59,9 +60,11 @@ public abstract class ViewDemoAftBase extends WebDriverLegacyITBase{
             }
         }
 
-        assertTrue(driver.getTitle().contains("Online Help"));
-        assertTrue(driver.getTitle().contains("Kuali Rice 2.5."));
-        assertTrue(driver.getCurrentUrl().contains(HELP_URL_RICE_VERSION));
+        boolean helpOkay = driver.getTitle().contains("Online Help") && driver.getTitle().contains("Kuali Rice " + VERSION)
+                && driver.getCurrentUrl().contains(HELP_URL_RICE_VERSION);
+
+        assertTrue(driver.getTitle() + " " + driver.getCurrentUrl() + " expect to contain Online Help, "
+                + "Kuali Rice " + VERSION + ", and " + HELP_URL_RICE_VERSION, helpOkay);
 
         driver.close();
         driver.switchTo().window(kualiWindowHandle);

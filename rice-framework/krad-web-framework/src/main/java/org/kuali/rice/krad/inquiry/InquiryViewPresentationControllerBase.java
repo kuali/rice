@@ -24,6 +24,7 @@ import org.kuali.rice.krad.uif.view.InquiryView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.web.form.InquiryForm;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -47,7 +48,10 @@ public class InquiryViewPresentationControllerBase extends ViewPresentationContr
     public Set<String> getActionFlags(View view, UifFormBase model) {
         Set<String> actionFlags = super.getActionFlags(view, model);
 
-        if (isExportSupported((InquiryView) model.getView())) {
+        InquiryView inquiryView = (InquiryView) view;
+        InquiryForm inquiryForm = (InquiryForm) model;
+
+        if (isExportSupported(inquiryView, inquiryForm)) {
             actionFlags.add(KRADConstants.KUALI_ACTION_CAN_EXPORT);
         }
 
@@ -60,7 +64,13 @@ public class InquiryViewPresentationControllerBase extends ViewPresentationContr
      *
      * @return boolean true if it supports export, false if not
      */
-    protected boolean isExportSupported(InquiryView view) {
+    protected boolean isExportSupported(InquiryView view, InquiryForm form) {
+        Object dataObject = form.getDataObject();
+
+        if (dataObject == null) {
+            return false;
+        }
+
         DataObjectEntry dataObjectEntry =
                 KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(
                         view.getDataObjectClassName().getName());

@@ -371,7 +371,7 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         // with KRMS_AGENDA_T.INIT_AGENDA_ITM_ID and KRMS_AGENDA_ITM_T.AGENDA_ITM_ID both being non-nullable
         List<AgendaItemBo> agendaItems = agendaBo.getItems();
         List<AgendaItemBo> updatedItems = new ArrayList<AgendaItemBo>();
-        if (getDataObjectService().find(AgendaBo.class,agendaBo.getId()) == null) {
+        if (agendaBo.getId() == null || getDataObjectService().find(AgendaBo.class,agendaBo.getId()) == null) {
             agendaBo.setItems(updatedItems);
             agendaBo.setFirstItem(null);
             agendaBo = getDataObjectService().save(agendaBo);

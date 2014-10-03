@@ -19,8 +19,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
-import org.openqa.selenium.By;
-import org.kuali.rice.testtools.common.JiraAwareFailureUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -53,7 +51,7 @@ public class LabsCustomRuleEventAndDocumentEventMethodInvocationAft extends WebD
 
 //         waitAndClickByXpath("//button[@data-dismissdialogid='ConfirmBlanketApproveDialog' and contains(text(),'OK')]");
          waitAndClickSubmitByText();
-         waitAndClickConfirmationOk();
+         waitAndClickConfirmSubmitOk();
          failOnErrorMessageItem();
          waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
     }

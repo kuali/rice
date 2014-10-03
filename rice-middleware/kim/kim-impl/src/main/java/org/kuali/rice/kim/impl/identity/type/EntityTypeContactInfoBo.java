@@ -67,15 +67,15 @@ public class EntityTypeContactInfoBo extends DataObjectBase implements EntityTyp
     @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false)
     private EntityTypeBo entityType;
 
-    @OneToMany(targetEntity = EntityEmailBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityEmailBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityEmailBo> emailAddresses;
 
-    @OneToMany(targetEntity = EntityPhoneBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityPhoneBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityPhoneBo> phoneNumbers;
 
-    @OneToMany(targetEntity = EntityAddressBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = EntityAddressBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityAddressBo> addresses;
 

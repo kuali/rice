@@ -70,12 +70,17 @@ public class PostProcessorTest extends KEWTestCase {
         XMLUnit.setIgnoreWhitespace(true);
 		WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "testModifyDocumentInPostProcessor");
 		document.saveDocument("");
-		assertEquals("application content should be empty initially", "", document.getApplicationContent());
+        assertEquals("application content should be empty initially", "", document.getApplicationContent());
 		assertTrue("Doc title should be empty initially", StringUtils.isBlank(document.getTitle()));
-		
-		// now route the document, it should through a 2 nodes, then go PROCESSED then FINAL
-		document.route("");
-		assertEquals("Should have transitioned nodes twice", 2, DocumentModifyingPostProcessor.levelChanges);
+
+        document.adHocToPrincipal(ActionRequestType.APPROVE, "AdHoc", "", "2002", "", true);
+		document.complete("");
+        document = WorkflowDocumentFactory.loadDocument("2002", document.getDocumentId());
+
+        // now approve the document, it should through a 2 nodes, then go PROCESSED then FINAL
+        document.approve("");
+
+        assertEquals("Should have transitioned nodes twice", 2, DocumentModifyingPostProcessor.levelChanges);
 		assertTrue("SHould have called the processed status change", DocumentModifyingPostProcessor.processedChange);
 		assertTrue("Document should be final.", document.isFinal());
 		XMLAssert.assertXMLEqual("Application content should have been sucessfully modified.", APPLICATION_CONTENT, document.getApplicationContent());
@@ -129,7 +134,7 @@ public class PostProcessorTest extends KEWTestCase {
 	 * 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
-	@Test public void testGetDocumentIdsToLock() throws Exception {
+	@Test public void RtestGetDocumentIdsToLock() throws Exception {
 		
 		/**
 		 * Let's recreate the original optimistic lock scenario that caused this issue to crop up, essentially:

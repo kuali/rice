@@ -304,7 +304,7 @@ public class CompareFieldCreateModifier extends ComponentModifierBase {
         boolean valueChanged = false;
         for (DataField field : itemFields) {
             String fieldBindingPath = field.getBindingInfo().getBindingPath();
-            if (!fieldBindingPath.endsWith(field.getPropertyName())) {
+            if (field.getPropertyName() != null && field.getPropertyName().length() > 0 && !fieldBindingPath.endsWith(field.getPropertyName())) {
                 fieldBindingPath += "." + field.getPropertyName();
             }
             Object fieldValue = ObjectPropertyUtils.getPropertyValue(model, fieldBindingPath);

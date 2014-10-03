@@ -180,6 +180,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
                     qualifier.setKimAttrDefnId(getKimAttributeDefnId(key));
                     qualifier.setKimTypId(getKimType().getId());
                     qualifier.setGroupId(groupId);
+                    qualifier.setDocumentNumber(getDocumentNumber());
                 }
                 index++;
             }

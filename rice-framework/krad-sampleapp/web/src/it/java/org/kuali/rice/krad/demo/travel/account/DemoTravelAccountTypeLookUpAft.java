@@ -66,17 +66,20 @@ public class DemoTravelAccountTypeLookUpAft extends ViewDemoAftBase {
         waitAndClickByLinkText("CAT");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndClickButtonByText(SEARCH);
+        waitForProgressLoading();
         waitForElementsPresentByXpath("//a[contains(text(),'IAT')]");
         assertElementPresentByXpath("//a[contains(text(),'CAT')]");
         assertElementPresentByXpath("//a[contains(text(),'EAT')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndTypeByName("lookupCriteria[name]","Clearing Account Type");
         waitAndClickButtonByText(SEARCH);
+        waitForProgressLoading();
         waitForElementsPresentByXpath("//span[contains(text(),'Clearing Account Type')]");
         waitAndClickButtonByText(CLEAR_VALUES);
         waitAndTypeByName("lookupCriteria[code]","CAT");
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
         waitAndClickButtonByText(SEARCH);
+        waitForProgressLoading();
         waitForTextPresent("No values match this search.");
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='Y']");
         waitForTextPresent("CAT");
@@ -86,6 +89,7 @@ public class DemoTravelAccountTypeLookUpAft extends ViewDemoAftBase {
     protected void testTravelAccountTypeLookUpXss(String fieldName) throws Exception {
         waitAndTypeByName(fieldName,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText(SEARCH);
+        waitForProgressLoading();
         Thread.sleep(1000);
         if(isAlertPresent()) {
             fail(fieldName + " caused XSS.");

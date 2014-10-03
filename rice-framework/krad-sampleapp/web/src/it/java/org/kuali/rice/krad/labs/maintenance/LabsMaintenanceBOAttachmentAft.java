@@ -34,7 +34,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 
 /**
@@ -75,7 +74,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
         fileUploadSetUp();
         fileIngester();
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
     }
 
@@ -103,7 +102,7 @@ public class LabsMaintenanceBOAttachmentAft extends LabsMaintenanceBase {
 
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
     }
 

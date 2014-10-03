@@ -276,8 +276,8 @@ function markActiveMenuLink() {
  * @param summary - summary to be used in popout
  * @param constraint - constraint to be used in popout
  */
-function setupTextPopout(id, label, summary, constraint, readOnly) {
-    var options = {label: label, summary: summary, constraint: constraint, readOnly: readOnly};
+function setupTextPopout(id, label, summary, constraint) {
+    var options = {label: label, summary: summary, constraint: constraint};
     jQuery("#" + id).initPopoutText(options);
 }
 
@@ -428,7 +428,8 @@ function createDatePicker(controlId, options, disabled) {
         }
         if (disabled === true) {
             datePickerControl.datepicker('disable');
-            datePickerControl.next(".ui-datepicker-trigger").css("cursor", "not-allowed");
+            datePickerControl.next("div").css({"cursor":"not-allowed"}).children(".ui-datepicker-trigger")
+                    .addClass(kradVariables.DISABLED_CLASS).css({"backgroundColor":"#eee"});
         }
     });
 
@@ -1178,7 +1179,13 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
                 dataType: "json",
                 beforeSend: null,
                 complete: null,
-                error: null,
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var responseContents = document.createElement('div');
+                    responseContents.innerHTML = jqXHR.responseText;
+
+                    var kradResponse = new KradResponse(responseContents);
+                    kradResponse.processResponse();
+                },
                 data: queryData,
                 success: successFunction
             });
@@ -1518,7 +1525,13 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
         data: queryData,
         beforeSend: null,
         complete: null,
-        error: null,
+        error: function (jqXHR, textStatus, errorThrown) {
+            var responseContents = document.createElement('div');
+            responseContents.innerHTML = jqXHR.responseText;
+
+            var kradResponse = new KradResponse(responseContents);
+            kradResponse.processResponse();
+        },
         success: function (data) {
             // write out return message (or blank)
             var returnMessageSpan = jQuery("#" + queryFieldId + "_info_message");

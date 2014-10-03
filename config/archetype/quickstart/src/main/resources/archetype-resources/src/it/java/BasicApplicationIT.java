@@ -35,7 +35,8 @@ import static org.junit.Assert.*;
 public class BasicApplicationIT {
     @Test
     public void testBasicApplicationStartup() throws Exception {
-        URL url = new URL("http://localhost:" + getPort() + "/qstest/");
+        final String artifactId = "${artifactId}";
+        URL url = new URL("http://localhost:" + getPort() + "/" + artifactId + "/");
         HttpURLConnection.setFollowRedirects(false);
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -43,11 +44,11 @@ public class BasicApplicationIT {
         assertEquals(url.toString(), 302, connection.getResponseCode());
 
         String redirectUrl = connection.getHeaderField("Location");
-        assertNotNull("Invalid response from qstest application: "
+        assertNotNull("Invalid response from " + artifactId + " application: "
                 + connection.getResponseCode() , redirectUrl);
 
-        boolean validRedirection = redirectUrl.endsWith("qstest/portal.do");
-        assertTrue("Invalid response from qstest application: " + redirectUrl, validRedirection);
+        boolean validRedirection = redirectUrl.endsWith(artifactId + "/portal.do");
+        assertTrue("Invalid response from " + artifactId + " application: " + redirectUrl, validRedirection);
     }
 
     private String getPort() {
@@ -55,6 +56,7 @@ public class BasicApplicationIT {
         if (port == null || port.trim().equals("")) {
             port = "8080";
         }
+
         return port;
     }
 }

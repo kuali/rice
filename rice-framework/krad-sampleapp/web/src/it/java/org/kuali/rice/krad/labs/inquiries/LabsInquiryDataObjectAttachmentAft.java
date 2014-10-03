@@ -56,13 +56,14 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
 
     @Override
     protected void navigate() throws Exception {
-    	navigateToInquiry("Inquiry - Data Object Attachments.");
+    	navigateToInquiry("Inquiry - Data Object Attachments");
     }
 
     protected void testInquiryforDataObjectWithAttachment() throws Exception {
-        createDataObjectAttacmentDocument();
+        String attachmentId = createDataObjectAttacmentDocument();
         driver.navigate().back();
         waitAndClickByLinkText("Travel Attachment Lookup");
+        waitAndTypeByName("lookupCriteria[id]", attachmentId);
         waitAndClickButtonByText("Search");
         waitAndClickLinkContainingText("attachment");
         gotoLightBox();
@@ -71,44 +72,47 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
     }
 
     protected void testInquiryforDataObjectWithAttachmentCollection() throws Exception {
-        createDataObjectAttacmentCollectionDocument();
+        String number = createDataObjectAttacmentCollectionDocument();
         driver.navigate().back();
         waitAndClickByLinkText("Travel Attachment Collection Lookup");
+        waitAndTypeByName("lookupCriteria[number]", number);
         waitAndClickButtonByText("Search");
-        waitAndClickLinkContainingText("Num");
+        waitAndClickLinkContainingText(number);
         gotoLightBox();
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
         waitAndClickButtonByExactText("download attachment");
     }
 
-    protected void createDataObjectAttacmentDocument() throws Exception {
+    protected String createDataObjectAttacmentDocument() throws Exception {
         waitAndClickByLinkText("Create Travel Attachment");
-        waitAndTypeByName("document.documentHeader.documentDescription","Test for Data Object Attachment");
-        String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-        waitAndTypeByName("document.newMaintainableObject.dataObject.id","attachment" + random);
+        String desc = getDescriptionUnique();
+        String attachmentId = "attachment" + uniqueString;
+        waitAndTypeByName("document.documentHeader.documentDescription", desc);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.id",attachmentId);
         waitAndTypeByName("document.newMaintainableObject.dataObject.travelAttachmentGroupNumber","123");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.description","Desc for attachment" + random);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.description", desc);
         fileUploadSetUp();
         fileIngester();
         waitAndClickButtonByText("Submit");
         waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
+        return attachmentId;
     }
 
-    protected void createDataObjectAttacmentCollectionDocument() throws Exception {
+    protected String createDataObjectAttacmentCollectionDocument() throws Exception {
         waitAndClickByLinkText("Create Travel Attachment Collection");
-        waitAndTypeByName("document.documentHeader.documentDescription", "Test for Data Object Attachment Collection");
-        String randomGroup = StringUtils.substring(
-                AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits(), 2, 8);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.number", "Num" + randomGroup);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Name" + randomGroup);
+        String desc = getDescriptionUnique();
+        waitAndTypeByName("document.documentHeader.documentDescription", desc);
+        String number = "Num" + uniqueString.substring(0,6); // number length is not validated, max length is 10
+        waitAndTypeByName("document.newMaintainableObject.dataObject.number", number);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Name" + uniqueString);
         fileUploadSetUp();
 
         if (fileUploadList != null && fileUploadList.size() > 0) {
             for (File file : fileUploadList) {
-                String random = AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
-                waitAndTypeByXpath("//div[@data-label='ID']/input", "attachment" + random);
+                waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.attachments'].id", "attachment" + uniqueString);
                 String path = file.getAbsolutePath().toString();
+                waitIsVisibleByXpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']");
                 driver.findElement(By.xpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']"))
                         .sendKeys(path);
                 System.out.println("In for " + path);
@@ -123,6 +127,7 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
         waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]");
         waitForElementPresentByXpath("//button[contains(text(),'download attachment')]");
         waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
+        return number;
     }
 
     private void fileUploadSetUp() throws Exception {
@@ -236,7 +241,7 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
     }
 
     @Test
-    public void testInquiryforDataObjectWithAttachmentBookmarkNav() throws Exception {
+    public void testInquiryforDataObjectWithAttachmentNav() throws Exception {
         testInquiryforDataObjectWithAttachment();
         passed();
     }
@@ -248,7 +253,7 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
     }
 
     @Test
-    public void testInquiryforDataObjectWithAttachmentCollectionBookmarkNav() throws Exception {
+    public void testInquiryforDataObjectWithAttachmentCollectionNav() throws Exception {
         testInquiryforDataObjectWithAttachmentCollection();
         passed();
     }

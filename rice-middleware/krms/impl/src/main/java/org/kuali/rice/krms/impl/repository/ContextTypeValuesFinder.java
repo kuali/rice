@@ -18,7 +18,6 @@ package org.kuali.rice.krms.impl.repository;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KeyValuesService;
 import org.kuali.rice.krad.uif.control.UifKeyValuesFinderBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -34,29 +33,9 @@ import java.util.Map;
  */
 public class ContextTypeValuesFinder extends UifKeyValuesFinderBase {
 
-    private boolean blankOption;
-
-    /**
-     * @return the blankOption
-     */
-    public boolean isBlankOption() {
-        return this.blankOption;
-    }
-
-    /**
-     * @param blankOption the blankOption to set
-     */
-    public void setBlankOption(boolean blankOption) {
-        this.blankOption = blankOption;
-    }
-
     @Override
     public List<KeyValue> getKeyValues(ViewModel model) {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
-
-        if(blankOption){
-            keyValues.add(new ConcreteKeyValue("", ""));
-        }
 
         // ToDo: Currently we hardcoded any types named "CONTEXT" to be valid with contexts.
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();

@@ -107,8 +107,14 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
 			// Now check to ensure that the same BusinessObjectEntry can still be retrieved by specifying the actual BO class name.
             assertBusinessObjectEntry(dd.getBusinessObjectEntry((String) test[1]), (Class) test[2], (Class) test[3],
                     (String) test[4], (String) test[5]);
+            // Attempt to retrieve a DataObjectEntry that is indexed under the "base" class.
+            assertDataObjectEntry(dd.getDataObjectEntry((String) test[0]), (Class) test[2], (Class) test[3],
+                    (String) test[4], (String) test[5]);
+            // Now check to ensure that the same DataObjectEntry can still be retrieved by specifying the actual BO class name.
+            assertDataObjectEntry(dd.getDataObjectEntry((String) test[1]), (Class) test[2], (Class) test[3],
+                    (String) test[4], (String) test[5]);
 		}
-		
+
 		// Test the ability to retrieve a DocumentEntry by "base" class, using both the full name and the simple name.
         tests = new Object[][] {
             { "RiceTestTransactionalDocument2Parent", "RiceTestTransactionalDocument2",
@@ -221,6 +227,19 @@ public class BaseBOClassAndBaseDocumentClassTest extends KRADTestCase {
         assertEquals("The DD entry does not have the expected base class", boBaseClass, boEntry.getBaseBusinessObjectClass());
         assertEquals("The DD entry does not have the expected title attribute", title, boEntry.getTitleAttribute());
         assertEquals("The DD entry does not have the expected object label", label, boEntry.getObjectLabel());
+    }
+
+    /**
+     * A convenience method for checking if a DataObjectentry represents the correct Data Dictionary entry.
+     *
+     */
+    private void assertDataObjectEntry(DataObjectEntry doEntry, Class doClass, Class doBaseClass, String title, String label) throws Exception {
+        assertNotNull("The DD entry should not be null", doEntry);
+        assertEquals("The DD entry does not represent the " + doClass.getName() + " entry", doClass,
+                doEntry.getDataObjectClass());
+        assertEquals("The DD entry does not have the expected base class", doBaseClass, doEntry.getBaseDataObjectClass());
+        assertEquals("The DD entry does not have the expected title attribute", title, doEntry.getTitleAttribute());
+        assertEquals("The DD entry does not have the expected object label", label, doEntry.getObjectLabel());
     }
 
     /**

@@ -50,7 +50,7 @@ public class LabsMaintenanceExistenceCheckAft extends LabsMaintenanceBase {
         // Enter a nonexistent account type code
         waitAndTypeByName("document.newMaintainableObject.dataObject.accountTypeCode","xxx");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         assertTextPresent("INITIATED");
         waitForTextPresent("Travel Account Type Code: The specified Travel Account Type Code does not exist.");
 
@@ -61,7 +61,7 @@ public class LabsMaintenanceExistenceCheckAft extends LabsMaintenanceBase {
         clearTextByName("document.newMaintainableObject.dataObject.foId");
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId", "xxxx");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         assertTextPresent("INITIATED");
         waitForTextPresent("Fiscal Officer User ID: The specified Fiscal Officer does not exist.");
 
@@ -70,7 +70,7 @@ public class LabsMaintenanceExistenceCheckAft extends LabsMaintenanceBase {
         clearTextByName("document.newMaintainableObject.dataObject.foId");
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId", "fred");
         waitAndClickSubmitByText();
-        waitAndClickConfirmationOk();
+        waitAndClickConfirmSubmitOk();
         assertTextPresent("ENROUTE");
     }
 

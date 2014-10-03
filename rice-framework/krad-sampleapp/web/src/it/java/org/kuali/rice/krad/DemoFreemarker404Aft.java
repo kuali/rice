@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad;
 
-import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 
@@ -40,13 +39,11 @@ public class DemoFreemarker404Aft extends WebDriverLegacyITBase {
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12268
     public void testLookUpConditionalCriteriaBookmark() throws Exception {
         checkForIncidentReport();
     }
 
     @Test
-    @Ignore // https://jira.kuali.org/browse/KULRICE-12268
     public void testLookUpConditionalCriteriaNav() throws Exception {
         checkForIncidentReport();
     }

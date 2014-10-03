@@ -147,7 +147,9 @@ public class PermissionInquirableImpl extends KimInquirableImpl {
 		List<RolePermissionBo> rolePermissions = getDataObjectService().findMatching(RolePermissionBo.class, QueryByCriteria.Builder.forAttribute("permissionId", permissionSearchResultCopy.getId()).build() ).getResults();
 		List<RoleBo> assignedToRoles = new ArrayList<RoleBo>();
 		for(RolePermissionBo rolePermissionImpl: rolePermissions){
-			assignedToRoles.add( getDataObjectService().find(RoleBo.class, rolePermissionImpl.getRoleId()) );
+            if (rolePermissionImpl.isActive())  {
+			    assignedToRoles.add( getDataObjectService().find(RoleBo.class, rolePermissionImpl.getRoleId()) );
+            }
 		}
 		permissionSearchResultCopy.setAssignedToRoles(assignedToRoles);
 		return permissionSearchResultCopy;

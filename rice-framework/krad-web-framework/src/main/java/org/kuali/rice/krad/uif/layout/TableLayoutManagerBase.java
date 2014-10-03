@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.framework.util.ReflectionUtils;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -772,8 +773,20 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             } else {
                 sequenceField = ComponentFactory.getMessageField();
 
-                Message sequenceMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
-                ((MessageField) sequenceField).setMessage(sequenceMessage);
+                String value = null;
+                Field copyField = ComponentUtils.copy(getSequenceFieldPrototype(), idSuffix);
+                java.lang.reflect.Field field = ReflectionUtils.findField(copyField.getClass(), "propertyName", String.class);
+                if (field!=null) {
+                    ReflectionUtils.makeAccessible(field);
+                    String propertyName = (String) ReflectionUtils.getField(field, copyField);
+                    value = ReflectionUtils.getField(currentLine, propertyName, String.class);
+                }
+                if (value==null){
+                    Message sequenceMessage = ComponentUtils.copy(collectionGroup.getAddLineLabel(), idSuffix);
+                    ((MessageField) sequenceField).setMessage(sequenceMessage);
+                } else {
+                    ((MessageField) sequenceField).setMessageText(value);
+                }
 
                 // adjusting add line label to match sequence prototype cells attributes
                 sequenceField.setCellWidth(getSequenceFieldPrototype().getCellWidth());

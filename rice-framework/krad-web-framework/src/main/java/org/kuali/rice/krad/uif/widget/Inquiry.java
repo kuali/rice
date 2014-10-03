@@ -16,14 +16,11 @@
 package org.kuali.rice.krad.uif.widget;
 
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -43,11 +40,8 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
-import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
-import org.kuali.rice.krad.web.form.InquiryForm;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
  * Widget for rendering an Inquiry link or DirectInquiry action field
@@ -124,48 +118,7 @@ public class Inquiry extends WidgetBase {
 
         // used to determine whether a normal or direct inquiry should be enabled
         if (parent instanceof Component) {
-            setParentReadOnly(((Component) parent).getReadOnly());
-        }
-
-        // Do checks for inquiry when read only
-        if (isParentReadOnly()) {
-            if (StringUtils.isBlank(((DataField) parent).getBindingInfo().getBindingPath()) || ((DataField) parent)
-                    .getBindingInfo().getBindingPath().equals("null")) {
-                return;
-            }
-
-            // check if field value is null, if so no inquiry
-            try {
-                Object propertyValue = ObjectPropertyUtils.getPropertyValue(model,
-                        ((DataField) parent).getBindingInfo().getBindingPath());
-
-                if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
-                    return;
-                }
-            } catch (Exception e) {
-                // if we can't get the value just swallow the exception and don't set an inquiry
-                return;
-            }
-
-            View view = ViewLifecycle.getActiveLifecycle().getView();
-            // skips creating inquiry link if same as parent
-            if (view.getViewTypeName() == UifConstants.ViewType.INQUIRY) {
-                DataField dataField = (DataField)parent;
-                InquiryForm inquiryForm = (InquiryForm)model;
-
-                // value of field
-                Object fieldValue = ObjectPropertyUtils.getPropertyValue(ViewModelUtils.getParentObjectForMetadata(
-                        view, model, dataField), dataField.getPropertyName());
-
-                // value of field in request parameter
-                Object parameterValue = inquiryForm.getInitialRequestParameters().get(dataField.getPropertyName());
-
-                // if data classes and field values are equal
-                if (inquiryForm.getDataObjectClassName().equals(dataField.getDictionaryObjectEntry())
-                        && parameterValue != null && fieldValue.equals(parameterValue))  {
-                    return ;
-                }
-            }
+            setParentReadOnly(((Component) parent).getReadOnly().booleanValue());
         }
 
         // Do checks for direct inquiry when editable
@@ -184,9 +137,11 @@ public class Inquiry extends WidgetBase {
             }
         }
 
-        setupLink(model, (DataField) parent);
+        if (parent instanceof DataField) {
+            setupLink(model, (DataField) parent);
+        }
 
-        if (isRender() && !isParentReadOnly() && enableDirectInquiry) {
+        if (isRender() && !isParentReadOnly() && parent instanceof InputField && enableDirectInquiry) {
             ((InputField) parent).addPostInputAddon(directInquiryAction);
         }
     }

@@ -34,40 +34,29 @@ public class LabsInquirySuppressInquiryAft extends LabsInquiryBase {
 
     @Override
     protected void navigate() throws Exception {
-    	navigateToInquiry("Inquiry - Suppress Inquiry.");
+    	navigateToInquiry("Inquiry - Suppress Inquiry");
     }
 
     protected void testInquirySuppressInquiry() throws InterruptedException {
     	waitAndClickByLinkText("Link to demonstrate ability to suppress the automatically generated inquiry link on fields.");
-    	waitAndClickByLinkText("10000");
-        gotoLightBox();
-        String[][] lightBoxLabeledText = {{"Id:", "10000"},
-                 {"Travel Authorization Document:", "10000"},
-                 {"Primary Destination:", "10000"},
-//                 {"Date of Use:", getDateToday()},
-                 {"Breakfast Value:", "10"}, 
-                 {"Lunch Value:", "10"},
-                 {"Dinner Value:", "15"},
-                 {"Amount estimated for incidentals:", "20"},
-                 {"Mileage rate:", "DO"},
-                 {"Number of estimated miles:", "30"}};
-         assertLabeledTextPresent(lightBoxLabeledText);
-         clickCollapseAll();
-         assertLabeledTextNotPresent(lightBoxLabeledText);
-         clickExpandAll();
-         assertLabeledTextPresent(lightBoxLabeledText);
-         waitAndClickLightBoxClose();
-         selectTopFrame();
-         String[][] LabeledText = {{"Id:", "10000"},
-        		 {" Travel Authorization Document","10000"},
-                 {"Primary Destination:", "10000"},
-//                 {"Date of Use:", getDateToday()}
-                 };
-         assertLabeledTextPresent(LabeledText);
-         clickCollapseAll();
-         assertLabeledTextNotPresent(LabeledText);
-         clickExpandAll();
-         assertLabeledTextPresent(LabeledText);      
+
+        String[][] labeledText = {{"Id:", "10000"},
+                                  {"Travel Authorization Document Id:", "10000"},
+                                  {"Primary Destination:", "10000"},
+                                  {"Date of Use:", "/"}, // getDateToday()
+                                  {"Breakfast Value:", "10"},
+                                  {"Lunch Value:", "10"},
+                                  {"Dinner Value:", "15"},
+                                  {"Amount estimated for incidentals:", "20"},
+                                  {"Mileage Rate Name:", "Domestic"},
+                                  {"Mileage Rate:", "0.305"},
+                                  {"Number of estimated miles:", "30"}};
+
+        assertLabeledTextPresent(labeledText);
+        clickCollapseAll();
+        assertLabeledTextNotPresent(labeledText);
+        clickExpandAll();
+        assertLabeledTextPresent(labeledText);
     }
 
     @Test

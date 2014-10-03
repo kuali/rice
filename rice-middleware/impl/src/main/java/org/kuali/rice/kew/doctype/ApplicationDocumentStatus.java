@@ -31,28 +31,27 @@ import javax.persistence.Transient;
 /**
  * Model bean representing the valid application document statuses for a document type
  * An instance of this class represents a single valid status for a given document type.
- * 
+ *
  * The purpose of the Application Document Status is to provide an alternative to the
- * KEW Route Status. Some documents may have a variety of statuses relating to where they are 
- * in their lifecycle.  The application document status provides a means to for a document type to have its 
+ * KEW Route Status. Some documents may have a variety of statuses relating to where they are
+ * in their lifecycle.  The application document status provides a means to for a document type to have its
  * own set of statuses.
- * 
+ *
  * A policy defined in the document type definition for a document determines if the Application
  * Document Status is to be used.  In the document definition, a list of valid application statuses
- * for the document may also be defined.  If the list of valid statuses are not defined, then any status 
+ * for the document may also be defined.  If the list of valid statuses are not defined, then any status
  * value may be assigned by the client.
- * 
- * 
- * @author Dan Seibert
  *
+ * @author Dan Seibert
  */
 @Entity
-@Table(name="KREW_DOC_TYP_APP_DOC_STAT_T")
-public class ApplicationDocumentStatus extends PersistableBusinessObjectBase{
-	private static final long serialVersionUID = -2212481684546954746L;
+@Table(name = "KREW_DOC_TYP_APP_DOC_STAT_T")
+public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
 
-	@EmbeddedId
-	private ApplicationDocumentStatusId applicationDocumentStatusId;
+    private static final long serialVersionUID = -2212481684546954746L;
+
+    @EmbeddedId
+    private ApplicationDocumentStatusId applicationDocumentStatusId;
 
     @Column(name = "SEQ_NO")
     private Integer sequenceNumber;
@@ -74,32 +73,40 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase{
     @Transient
     private String categoryName;
 
+    @Deprecated
+    @Transient
+    private String documentTypeId;
+
+    @Deprecated
+    @Transient
+    private String statusName;
+
     public ApplicationDocumentStatusId getApplicationDocumentStatusId() {
-    	if (this.applicationDocumentStatusId == null) {
-    		this.applicationDocumentStatusId = new ApplicationDocumentStatusId();
-    	}
-		return this.applicationDocumentStatusId;
-	}
+        if (this.applicationDocumentStatusId == null) {
+            this.applicationDocumentStatusId = new ApplicationDocumentStatusId();
+        }
+        return this.applicationDocumentStatusId;
+    }
 
-	public void setApplicationDocumentStatusId(ApplicationDocumentStatusId documentStatusId) {
-		this.applicationDocumentStatusId = documentStatusId;
-	}
+    public void setApplicationDocumentStatusId(ApplicationDocumentStatusId documentStatusId) {
+        this.applicationDocumentStatusId = documentStatusId;
+    }
 
-	public String getDocumentTypeId() {
-		return this.getDocumentType() != null ? getDocumentType().getDocumentTypeId() : "";
-	}
+    public String getDocumentTypeId() {
+        return this.getDocumentType() != null ? getDocumentType().getDocumentTypeId() : "";
+    }
 
-	public void setDocumentTypeId(String documentTypeId) {
-		this.getApplicationDocumentStatusId().setDocumentTypeId(documentTypeId);
-	}
+    public void setDocumentTypeId(String documentTypeId) {
+        this.getApplicationDocumentStatusId().setDocumentTypeId(documentTypeId);
+    }
 
-	public String getStatusName() {
-		return this.getApplicationDocumentStatusId().getStatusName();
-	}
+    public String getStatusName() {
+        return this.getApplicationDocumentStatusId().getStatusName();
+    }
 
-	public void setStatusName(String statusName) {
-		this.getApplicationDocumentStatusId().setStatusName(statusName);
-	}
+    public void setStatusName(String statusName) {
+        this.getApplicationDocumentStatusId().setStatusName(statusName);
+    }
 
     public Integer getSequenceNumber() {
         return sequenceNumber;
@@ -131,5 +138,4 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase{
     public void setCategory(ApplicationDocumentStatusCategory category) {
         this.category = category;
     }
-
 }

@@ -81,20 +81,9 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
         assertIsVisible(By.linkText("A"), " after clicking " + EXPAND_ALL);
     }
 
-    protected void testInquiryLightBox() throws Exception {
-        waitAndClickByLinkText("a14");
-        assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, "");
-    }
-
     @Test
     public void testInquiryCollapseExpandBookmark() throws Exception {
         testCollapseExpand();
-        passed();
-    }
-
-    @Test
-    public void testInquiryLightBoxBookmark() throws Exception {
-        testInquiryLightBox();
         passed();
     }
 
@@ -108,13 +97,6 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
     @Ignore // link removed
     public void testInquiryCollapseExpandNav() throws Exception {
         testCollapseExpand();
-        passed();
-    }
-
-    @Test
-    @Ignore // link removed
-    public void testInquiryLightBoxNav() throws Exception {
-        testInquiryLightBox();
         passed();
     }
 

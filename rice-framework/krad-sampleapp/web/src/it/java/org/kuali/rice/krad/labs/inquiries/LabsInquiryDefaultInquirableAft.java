@@ -40,22 +40,18 @@ public class LabsInquiryDefaultInquirableAft extends LabsInquiryBase {
     protected void testInquiryDefaultInquirable() throws InterruptedException {
     	waitAndClickByLinkText("Travel Account Inquiry");
 
-        // Lightbox
-        waitAndClickLinkContainingText("a14");
-        gotoLightBox();
-        String[][] lightBoxTravelAccountLabeledText = {{"Travel Account Number:", "a14"},
-                                          {"Travel Account Name:", "Travel Account 14"},
-                                          {"Code And Description:", "CAT - Clearing"},
-                                        //{"Subsidized Percent:", ""}, skip field till a good way to handle empty strings is figured out
-                                          };
+        String[][] travelAccountLabeledText = {{"Travel Account Number:", "a14"},
+                                               {"Travel Account Name:", "Travel Account 14"},
+                                               {"Code And Description:", "CAT - Clearing"},
+//                                             {"Subsidized Percent:", ""}, skip field till a good way to handle empty strings is figured out
+                                               {"Date Created:", "/"}}; // getDateToday()
+
         String fiscalOfficer = waitForLabeledText("Fiscal Officer User ID:");
         String fiscalOfficerName = waitForLabeledText("Fiscal Officer Name:");
-        String[][] lightBoxFiscalOfficerLabeledText = {{"Travel Account Number:", "a14"},
-                {"Fiscal Officer User ID:", fiscalOfficer},
-                {"Fiscal Officer Name:", fiscalOfficerName}};
-        assertLabeledTextPresent(lightBoxTravelAccountLabeledText);
-        assertLabeledTextPresent(lightBoxFiscalOfficerLabeledText);
-        
+        String[][] fiscalOfficerLabeledText = {{"Fiscal Officer User ID:", fiscalOfficer},
+                                               {"Fiscal Officer:", fiscalOfficer},
+                                               {"Fiscal Officer Name:", fiscalOfficerName}};
+
         //Not working perfectly as it is working for other pages.
         /*String[][] dataTable = {{"A", "Sub Account A"},
                                 {"B", "Sub Account B"},
@@ -69,22 +65,14 @@ public class LabsInquiryDefaultInquirableAft extends LabsInquiryBase {
                                 {"J", "Sub Account J"}};
         assertDataTableContains(dataTable);*/
 
+        assertLabeledTextPresent(travelAccountLabeledText);
+        assertLabeledTextPresent(fiscalOfficerLabeledText);
         clickCollapseAll();
-        assertLabeledTextNotPresent(lightBoxTravelAccountLabeledText);
-        assertLabeledTextNotPresent(lightBoxFiscalOfficerLabeledText);
+        assertLabeledTextNotPresent(travelAccountLabeledText);
+        assertLabeledTextNotPresent(fiscalOfficerLabeledText);
         clickExpandAll();
-        assertLabeledTextPresent(lightBoxTravelAccountLabeledText);
-        assertLabeledTextPresent(lightBoxFiscalOfficerLabeledText);
-        waitAndClickLightBoxClose();
-        selectTopFrame();
-        assertLabeledTextPresent(lightBoxTravelAccountLabeledText);
-        assertLabeledTextPresent(lightBoxFiscalOfficerLabeledText);
-        clickCollapseAll();
-        assertLabeledTextNotPresent(lightBoxTravelAccountLabeledText);
-        assertLabeledTextNotPresent(lightBoxFiscalOfficerLabeledText);
-        clickExpandAll();
-        assertLabeledTextPresent(lightBoxTravelAccountLabeledText);
-        assertLabeledTextPresent(lightBoxFiscalOfficerLabeledText);
+        assertLabeledTextPresent(travelAccountLabeledText);
+        assertLabeledTextPresent(fiscalOfficerLabeledText);
     }
 
     @Test

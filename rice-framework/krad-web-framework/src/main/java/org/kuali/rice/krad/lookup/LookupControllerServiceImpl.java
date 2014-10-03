@@ -256,17 +256,26 @@ public class LookupControllerServiceImpl extends ControllerServiceImpl implement
     protected Properties buildReturnSelectedParameters(LookupForm lookupForm) {
         Properties parameters = new Properties();
 
+        parameters.setProperty(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.RETURN_METHOD_TO_CALL);
+        parameters.setProperty(KRADConstants.REFRESH_CALLER_TYPE, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
+
+        if (StringUtils.isNotBlank(lookupForm.getView().getId())) {
+            parameters.setProperty(KRADConstants.REFRESH_CALLER, lookupForm.getView().getId());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getDataObjectClassName())) {
+            parameters.setProperty(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());
+        }
+
+        if (StringUtils.isNotBlank(lookupForm.getReturnFormKey())) {
+            parameters.setProperty(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
+        }
+
         String multiValueReturnFieldsParam = getMultiValueReturnFields(lookupForm);
         parameters.setProperty(UifParameters.MULIT_VALUE_RETURN_FILEDS, multiValueReturnFieldsParam);
 
         String selectedLineValues = getSelectedLineValues(lookupForm);
         parameters.setProperty(UifParameters.SELECTED_LINE_VALUES, selectedLineValues);
-
-        parameters.setProperty(KRADConstants.DISPATCH_REQUEST_PARAMETER, KRADConstants.RETURN_METHOD_TO_CALL);
-        parameters.setProperty(UifParameters.FORM_KEY, lookupForm.getReturnFormKey());
-        parameters.setProperty(KRADConstants.REFRESH_CALLER, lookupForm.getView().getId());
-        parameters.setProperty(KRADConstants.REFRESH_CALLER_TYPE, UifConstants.RefreshCallerTypes.MULTI_VALUE_LOOKUP);
-        parameters.setProperty(KRADConstants.REFRESH_DATA_OBJECT_CLASS, lookupForm.getDataObjectClassName());
 
         if (StringUtils.isNotBlank(lookupForm.getQuickfinderId())) {
             parameters.setProperty(UifParameters.QUICKFINDER_ID, lookupForm.getQuickfinderId());

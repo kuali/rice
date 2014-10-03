@@ -72,7 +72,7 @@
                     <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true" p:required="true" p:readOnly="@{!#isAddLine}">
                       <property name="fieldLabel.render" value="false"/>
                     </bean>
-                    <bean parent="Uif-InputField" p:propertyName="travelAccountNumber" p:enableAutoQuickfinder="false" p:defaultValue="@{document.newMaintainableObject.dataObject.number}">
+                    <bean parent="Uif-InputField" p:propertyName="travelAccountNumber" p:enableAutoQuickfinder="false" p:required="false" p:defaultValue="@{document.newMaintainableObject.dataObject.number}">
                       <property name="fieldLabel.render" value="false"/>
                       <property name="hidden" value="true"/>
                       <property name="control">

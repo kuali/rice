@@ -722,6 +722,16 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
             // The field is restricted if it is hidden or read only
             boolean isRestricted = field.isHidden() || Boolean.TRUE.equals(field.getReadOnly()) || field.isApplyMask();
 
+            // If the default value is a sequence number set isRestricted to false since the new sequence number has
+            // already been retrieved.  We don't want to set it to null and fetch it again.
+            Map<String, String> propertyExpressions = field.getPropertyExpressions();
+            if (isRestricted && propertyExpressions.containsKey(UifConstants.ComponentProperties.DEFAULT_VALUE)) {
+                String propertyExpression = propertyExpressions.get(UifConstants.ComponentProperties.DEFAULT_VALUE);
+                if (StringUtils.contains(propertyExpression, UifConstants.SEQUENCE_PREFIX)) {
+                    isRestricted = false;
+                }
+            }
+
             // If just the field (not its containing line) is restricted, clear it out and apply default values
             if (isRestricted && !isLineRestricted(field)) {
                 if (ObjectPropertyUtils.isWritableProperty(model, bindingPath)) {

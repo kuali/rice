@@ -185,7 +185,7 @@
       <list>
         <!-- ex:Demo-DialogGroup-Example6 start-->
         <bean parent="Uif-ActionLink" p:actionLabel="Show Dialog"
-              p:actionScript="showDialog('Demo-DialogGroup-ShowDialog2');"/>
+              p:actionScript="showStaticDialog('Demo-DialogGroup-ShowDialog2');"/>
         <bean id="Demo-DialogGroup-ShowDialog2" parent="Uif-DialogGroup-OkCancel"
               p:headerText="Dialog with Progressive Disclosure" p:dialogCssClass="modal-lg">
           <property name="help">

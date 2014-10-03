@@ -780,6 +780,36 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         }
     }
 
+    /**
+     * Uses Selenium's findElements method which does not throw a test exception if not found.
+     * @param by
+     * @param optionText
+     * @throws InterruptedException
+     */
+    protected void selectOptionText(By by, String optionText) throws InterruptedException {
+        WebElement select1 = findElement(by);
+        List<WebElement> options = select1.findElements(By.tagName("option"));
+
+        String name = select1.getAttribute("name");
+
+        if (options == null || options.size() == 0) {
+            jiraAwareFail("No options for select "
+                    + select1.toString()
+                    + " was looking for text "
+                    + optionText
+                    + " using "
+                    + by.toString());
+        }
+
+        for (WebElement option : options) {
+            if (option.getText().equals(optionText)) {
+                WebDriverUtils.jGrowl(getDriver(), "Select " + option.getText(), false, "Select " + option.getText() + " from " + name);
+                option.click();
+                break;
+            }
+        }
+    }
+
     private WebElement type(By by, String text) {
         WebElement element = findElement(by);
         String name = element.getAttribute("name");

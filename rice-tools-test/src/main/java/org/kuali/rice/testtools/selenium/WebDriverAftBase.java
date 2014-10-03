@@ -1359,6 +1359,20 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         screenshot();
     }
 
+    protected void waitAndTypeLabeledInput(String label, String text) throws InterruptedException {
+        jGrowl("Type " + text + " in input labeled with " + label);
+        waitAndTypeByXpath("//th/label[contains(text(), '" + label
+                + "')]/../following-sibling::*//input", text);
+        screenshot();
+    }
+
+    protected void waitAndSelectLabeled(String label, String text) throws InterruptedException {
+        jGrowl("Select " + text + " labeled with " + label);
+        waitAndSelectBy(By.xpath("//th/label[contains(text(), '" + label
+                + "')]/../following-sibling::*//select"), text);
+        screenshot();
+    }
+
     protected void waitAndClickLightBoxClose() throws InterruptedException {
         jGrowl("Click lightbox close");
         waitAndClickByXpath("//button[contains(text(),'x')]");
@@ -1536,9 +1550,13 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
 
+    protected void waitAndSelectBy(By by, String selectText) throws InterruptedException {
+        waitFor(by, selectText + " not found.");
+        select(by, selectText);
+    }
+
     protected void waitAndSelectByName(String name, String selectText) throws InterruptedException {
-        waitFor(By.name(name), selectText + " not found.");
-        select(By.name(name), selectText);
+        waitAndSelectBy(By.name(name), selectText);
     }
 
     protected WebElement waitAndType(By by, String text) throws InterruptedException {

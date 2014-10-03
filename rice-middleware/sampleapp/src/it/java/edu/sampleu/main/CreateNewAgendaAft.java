@@ -15,6 +15,7 @@
  */
 package edu.sampleu.main;
 
+import org.junit.Before;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -26,7 +27,12 @@ import org.openqa.selenium.By;
  */
 public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
+    protected static final String NAME_LABEL = "Name:";
+    protected static final String NAMESPACE_LABEL = "Namespace:";
+    protected static final String CONTEXT_LABEL = "Context:";
     private boolean useUi = false;
+
+    protected static String[][] inputVerifyDetails;
 
     /**
      * ITUtil.PORTAL + "?channelTitle=Create%20New%20Agenda&channelUrl=" + WebDriverUtils.getBaseUrlString() +
@@ -36,6 +42,18 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL + "?channelTitle=Create%20New%20Agenda&channelUrl=" + WebDriverUtils
             .getBaseUrlString() +"/kr-krad/krmsAgendaEditor?methodToCall=start&dataObjectClassName=org.kuali.rice.krms.impl.ui.AgendaEditor&returnLocation=" +
             AutomatedFunctionalTestUtils.PORTAL_URL + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
+
+    @Before
+    @Override
+    public void testSetUp() {
+        super.testSetUp();
+        inputVerifyDetails = new String[][] {
+                {NAME_LABEL, getDescriptionUnique()},
+                {NAMESPACE_LABEL, "Kuali Rules Test"},
+                {CONTEXT_LABEL, "Context1"}
+        };
+
+    }
 
     @Override
     protected String getBookmarkUrl() {
@@ -49,6 +67,20 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
         assertTrue(isVisible(By.xpath("//button[contains( text(), 'Save')]")));
         assertTrue(isVisible(By.xpath("//button[contains( text(), 'Blanket Approve')]")));
         assertTrue(isVisible(By.xpath("//button[contains( text(), 'Submit')]")));
+    }
+
+    @Override
+    protected void assertRouteStatus(String status) throws InterruptedException {
+        super.assertRouteStatus(status);
+    }
+
+    private void verify(String docId) throws InterruptedException {
+        waitAndClickLinkContainingText(docId);
+
+        driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
+
+        assertLabeledTextPresent(inputVerifyDetails);
+        screenshot();
     }
 
     @Override
@@ -153,15 +185,15 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
     protected void createNewEnterDetails() throws InterruptedException {
         selectFrameIframePortlet();
-        selectByName("document.newMaintainableObject.dataObject.namespace","Kuali Rules Test");
+        waitAndSelectLabeled(NAMESPACE_LABEL, inputVerifyDetails[1][1]);
         inputDetails();
 
         if (useUi) {
-            waitAndClickLabeledQuickFinder("Context:");
+            waitAndClickLabeledQuickFinder(CONTEXT_LABEL);
             waitForProgressLoading();
             gotoIframeByXpath("//iframe");
             waitAndClickSearchByText();
-            waitAndClickReturnValue();
+            waitAndClickReturnValue(); // Context1
             selectTopFrame();
             gotoNestedFrame();
         }
@@ -173,9 +205,9 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
     }
 
     private void inputDetails() throws InterruptedException {
-        waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", getDescriptionUnique());
+        waitAndTypeLabeledInput(NAME_LABEL, inputVerifyDetails[0][1]);
         if (!useUi) {
-            waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
+            waitAndTypeLabeledInput(CONTEXT_LABEL, inputVerifyDetails[2][1]);
         }
     }
 
@@ -205,49 +237,55 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
     @Test
     public void testCreateNewSaveBookmark() throws Exception {
-        testCreateNewSave();
+        verify(testCreateNewSave());
         passed();
     }
 
     @Test
     public void testCreateNewSaveNav() throws Exception {
-        testCreateNewSave();
+        waitAndClickLinkContainingText(testCreateNewSave());
+
+        driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
+
+        assertTextPresent(inputVerifyDetails[0][1]);
+        assertTextPresent(inputVerifyDetails[1][0], inputVerifyDetails[1][1]);
+        assertEquals(inputVerifyDetails[2][1], findElement(By.name("document.newMaintainableObject.dataObject.contextName")).getAttribute("value"));
         passed();
     }
 
     @Test
     public void testCreateNewSaveSubmitBookmark() throws Exception {
-        testCreateNewSaveSubmit();
+        verify(testCreateNewSaveSubmit());
         passed();
     }
 
     @Test
     public void testCreateNewSaveSubmitNav() throws Exception {
-        testCreateNewSaveSubmit();
+        verify(testCreateNewSaveSubmit());
         passed();
     }
 
     @Test
     public void testCreateNewSubmitBookmark() throws Exception {
-        testCreateNewSubmit();
+        verify(testCreateNewSubmit());
         passed();
     }
 
     @Test
     public void testCreateNewSubmitNav() throws Exception {
-        testCreateNewSubmit();
+        verify(testCreateNewSubmit());
         passed();
     }
 
     @Test
     public void testBlanketAppBookmark() throws Exception {
-        testBlanketApprove();
+        verify(testBlanketApprove());
         passed();
     }
 
     @Test
     public void testBlanketAppNav() throws Exception {
-        testBlanketApprove();
+        verify(testBlanketApprove());
         passed();
     }
 }

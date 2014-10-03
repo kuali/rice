@@ -725,6 +725,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
      * @return
      */
     public boolean hasDocError() {
+        acceptAlertIfPresent(); // Agenda
         if (driver.findElements(By.xpath(DIV_ERROR_LOCATOR)).size() > 0) {
             String errorText = driver.findElement(By.xpath(DIV_ERROR_LOCATOR)).getText(); // don't highlight
             if (errorText != null && errorText.contains("error(s) found on page.")) {
@@ -1054,7 +1055,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
         jGrowl("Click Blanket Approve");
         waitAndClickBlanketApproveKns();
-        Thread.sleep(2000);
 
         int attempts = 0;
         while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
@@ -1074,6 +1074,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     protected void waitAndClickBlanketApproveKns() throws InterruptedException {
         waitAndClickByName(BLANKET_APPROVE_NAME,
                 "No blanket approve button does the user " + getUserName() + " have permission?");
+        waitForProgressLoading();
     }
 
     protected void testCancelConfirmation() throws InterruptedException {
@@ -1101,7 +1102,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickConfirmSubmitOk();
         assertTextPresent(new String[]{"Document was successfully submitted.", "ENROUTE"});
         assertDocSearch(docId, "ENROUTE");
-        passed();
     }
 
     protected void testCreateDocType() throws Exception {
@@ -1188,6 +1188,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertDocSearch(docId, "SAVED");
         waitAndClickRouteLogIcon();
         assertRouteStatus("SAVED");
+        back();
         return docId;
     }
 
@@ -1215,6 +1216,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
+        back();
         return docId;
     }
 
@@ -1245,6 +1247,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertDocSearch(docId, "FINAL");
         waitAndClickRouteLogIcon();
         assertRouteStatus("FINAL");
+        back();
         return docId;
     }
 

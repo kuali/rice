@@ -74,6 +74,7 @@
                     </bean>
                     <bean parent="Uif-InputField" p:propertyName="travelAccountNumber" p:enableAutoQuickfinder="false" p:defaultValue="@{document.newMaintainableObject.dataObject.number}">
                       <property name="fieldLabel.render" value="false"/>
+                      <property name="hidden" value="true"/>
                       <property name="control">
                         <bean parent="Uif-HiddenControl" p:cssClasses="subAccount_travelAccountNumber"/>
                       </property>

@@ -196,7 +196,6 @@ public class UifFormBase implements ViewModel {
     @RequestAccessible
     protected Map<String, Object> extensionData;
 
-    protected Map<String, String> queryParameters;
     protected boolean applyDefaultValues;
 
     protected HttpServletRequest request;
@@ -219,7 +218,6 @@ public class UifFormBase implements ViewModel {
         dialogExplanations = new HashMap<String, String>();
         dialogResponses = new HashMap<String,DialogResponse>();
         extensionData = new HashMap<String, Object>();
-        queryParameters = new HashMap<String, String>();
         applyDefaultValues = true;
     }
 
@@ -1390,24 +1388,6 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setExtensionData(Map<String, Object> extensionData) {
         this.extensionData = extensionData;
-    }
-
-    /**
-     * A generic map for query parameters
-     *
-     * @return Map<String, String>
-     */
-    public Map<String, String> getQueryParameters() {
-        return queryParameters;
-    }
-
-    /**
-     * Setter for the generic query parameters
-     *
-     * @param queryParameters
-     */
-    public void setQueryParameters(Map<String, String> queryParameters) {
-        this.queryParameters = queryParameters;
     }
 
     /**

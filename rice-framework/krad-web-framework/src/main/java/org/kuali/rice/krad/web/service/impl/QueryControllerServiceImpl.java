@@ -200,9 +200,9 @@ public class QueryControllerServiceImpl implements QueryControllerService {
         // retrieve query fields from request
         Map<String, String> queryParameters = new HashMap<String, String>();
         for (Object parameterName : request.getParameterMap().keySet()) {
-            if (parameterName.toString().startsWith(UifParameters.QUERY_PARAMETER + ".")) {
-                String fieldName = StringUtils.substringAfter(parameterName.toString(),
-                        UifParameters.QUERY_PARAMETER + ".");
+            if (parameterName.toString().startsWith(UifParameters.QUERY_PARAMETERS)) {
+                String fieldName = StringUtils.substringBetween(parameterName.toString(),
+                        UifParameters.QUERY_PARAMETERS + "[\"", "\"]");
                 String fieldValue = request.getParameter(parameterName.toString());
                 queryParameters.put(fieldName, fieldValue);
             }
@@ -241,9 +241,9 @@ public class QueryControllerServiceImpl implements QueryControllerService {
         // retrieve query fields from request
         Map<String, String> queryParameters = new HashMap<String, String>();
         for (Object parameterName : request.getParameterMap().keySet()) {
-            if (parameterName.toString().startsWith(UifParameters.QUERY_PARAMETER + ".")) {
-                String fieldName = StringUtils.substringAfter(parameterName.toString(),
-                        UifParameters.QUERY_PARAMETER + ".");
+            if (parameterName.toString().startsWith(UifParameters.QUERY_PARAMETERS)) {
+                String fieldName = StringUtils.substringBetween(parameterName.toString(),
+                        UifParameters.QUERY_PARAMETERS + "[\"", "\"]");
                 String fieldValue = request.getParameter(parameterName.toString());
                 queryParameters.put(fieldName, fieldValue);
             }

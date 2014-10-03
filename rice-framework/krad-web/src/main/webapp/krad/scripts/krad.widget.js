@@ -1171,7 +1171,7 @@ function createSuggest(controlId, options, queryFieldId, queryParameters, localS
             }
 
             for (var parameter in queryParameters) {
-                queryData['queryParameters.' + parameter] = coerceValue(queryParameters[parameter]);
+                queryData['queryParameters[\"' + parameter + '\"]'] = coerceValue(queryParameters[parameter]);
             }
 
             jQuery.ajax({
@@ -1509,13 +1509,13 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
 
     var queryParamLength = 0;
     for (var parameter in queryParameters) {
-        queryData['queryParameters.' + queryParameters[parameter]] = coerceValue(parameter);
+        queryData['queryParameters[\"' + queryParameters[parameter] + '\"]'] = coerceValue(parameter);
         queryParamLength++;
     }
 
     if (queryParamLength === 0) {
         for (var parameter in queryMethodArgs) {
-            queryData['queryParameters.' + queryMethodArgs[parameter]] = coerceValue(parameter);
+            queryData['queryParameters[\"' + queryMethodArgs[parameter] + '\"]'] = coerceValue(parameter);
         }
     }
 

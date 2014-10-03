@@ -213,6 +213,9 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
     @Test
     public void testCreateNewCancelBookmark() throws Exception {
+        // Use the UI to populate the context so that the cancel confirmation popups are the same for both the
+        // nav and bookmark tests.
+        useUi = true;
         testCreateNewCancel();
         passed();
     }

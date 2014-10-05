@@ -240,8 +240,8 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     
     protected void testSubAccountOperations() throws Exception {
         waitForElementNotPresent(By.xpath("//button[contains(text(),'Delete')]"));
-        waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","A");
-        waitAndTypeByXpath("//div[@data-label='Sub Account Name']/input","Sub Account A");
+        waitAndTypeLabeledInput("Travel Sub Account Number:", "A");
+        waitAndTypeLabeledInput("Sub Account Name:", "Sub Account A");
         waitAndClickButtonByExactText("Add");
         waitForTextPresent("Duplicate Sub Accounts (Travel Sub Account Number) are not allowed.");
     }

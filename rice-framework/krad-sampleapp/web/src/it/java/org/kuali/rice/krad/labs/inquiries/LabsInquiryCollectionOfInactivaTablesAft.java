@@ -46,6 +46,7 @@ public class LabsInquiryCollectionOfInactivaTablesAft extends LabsInquiryBase {
                 {"Active:", "false"}};
         assertLabeledTextNotPresent(lightBoxLabeledText);
         waitAndClickButtonByText(SHOW_INACTIVE);
+        waitForProgressLoading();
         assertTextPresent(new String [] {"10001","AAA Travel","false"});
         String[][] dataTableBefore = {{"1", "10000", "Value Rentals","true"}};
         String[][] dataTableAfter = {{"1", "10000", "Value Rentals","true"},

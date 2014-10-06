@@ -395,7 +395,8 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
      */
     protected void setupAddLineDialog() {
         if (addWithDialogAction == null) {
-            addWithDialogAction = (Action) ComponentFactory.getNewComponentInstance(ComponentFactory.ADD_WITH_DIALOG_ACTION);
+            addWithDialogAction = (Action) ComponentFactory.getNewComponentInstance(
+                    ComponentFactory.ADD_WITH_DIALOG_ACTION);
         }
 
         String sessionPage = "first";
@@ -409,9 +410,10 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
 
         String actionScript = UifConstants.JsFunctions.WRITE_CURRENT_PAGE_TO_SESSION + "(this, '" + sessionPage + "');";
+
         actionScript = ScriptUtils.appendScript(addWithDialogAction.getActionScript(), actionScript);
-        final String showDialogScript = ScriptUtils.buildFunctionCall(UifConstants.JsFunctions.SHOW_DIALOG, dialogId, propertyName, "0");
-        actionScript = ScriptUtils.appendScript(actionScript, showDialogScript);
+        actionScript = ScriptUtils.appendScript(actionScript, ScriptUtils.buildFunctionCall(
+                UifConstants.JsFunctions.SHOW_DIALOG, dialogId, propertyName));
 
         addWithDialogAction.setActionScript(actionScript);
     }

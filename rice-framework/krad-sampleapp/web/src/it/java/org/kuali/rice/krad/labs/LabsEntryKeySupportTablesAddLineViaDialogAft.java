@@ -41,7 +41,7 @@ public class LabsEntryKeySupportTablesAddLineViaDialogAft extends WebDriverLegac
     protected void testDemoEntryKeySupportTablesAddLineViaDialog() throws InterruptedException {
     	waitAndClickButtonByExactText("Add Line");
     	waitAndTypeByXpath("//div[@class='modal-body']/div[@class='col-md-9']/div/input","1");
-    	waitAndClickButtonByText("Add");
+    	waitAndClickButtonByExactText("Add");
     	waitForTextPresent("Adding Line...");
     }
 

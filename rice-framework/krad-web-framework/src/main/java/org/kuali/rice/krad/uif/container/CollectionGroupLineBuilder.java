@@ -778,6 +778,7 @@ public class CollectionGroupLineBuilder implements Serializable {
                     List<Component> dialogFields = new ArrayList<>(lineDialog.getItems());
                     List<Field> newFields = new ArrayList<Field>();
                     List<Field> newFieldGroups = new ArrayList<Field>();
+                    List<Component> unprocessed = new ArrayList<Component>();
                     int fieldIndex = 0;
                     int subIndex = 0;
 
@@ -812,10 +813,18 @@ public class CollectionGroupLineBuilder implements Serializable {
                             newFieldGroups.add(getNewFieldGroup(fieldGroupPrototype, collectionGroup, lineDialog,
                                     fieldIndex, subIndex, UifPropertyPaths.DIALOG_DATA_OBJECT));
                             subIndex++;
+                        } else {
+                            unprocessed.add(dialogField);
                         }
                         fieldIndex++;
                     }
                     newFields.addAll(newFieldGroups);
+                    List<Field> unprocessedFields = processAnyRemoteFieldsHolder(
+                            lineBuilderContext.getCollectionGroup(), unprocessed);
+                    //adjustFieldBindingAndId(unprocessedFields, UifPropertyPaths.DIALOG_DATA_OBJECT);
+                    adjustFieldId(unprocessedFields);
+                    adjustFieldBinding(unprocessedFields, UifPropertyPaths.DIALOG_DATA_OBJECT);
+                    newFields.addAll(unprocessedFields);
                     lineDialog.setItems(newFields);
                 }
             }

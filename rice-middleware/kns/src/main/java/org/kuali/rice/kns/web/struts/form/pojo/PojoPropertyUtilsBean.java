@@ -72,15 +72,19 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
      */
     public static class LegacyDataAdapterProvider implements CollectionItemClassProvider {
         protected static LegacyDataAdapter legacyDataAdapter = null;
+
         protected static LegacyDataAdapter getLegacyDataAdapter() {
             if (legacyDataAdapter == null) {
                 legacyDataAdapter = KRADServiceLocatorWeb.getLegacyDataAdapter();
             }
+
             return legacyDataAdapter;
         }
+
         @Override
         public Class getCollectionItemClass(Object bean, String property) {
             Map<String, Class> collectionObjectTypes = getLegacyDataAdapter().listCollectionObjectTypes(bean.getClass());
+
             return collectionObjectTypes.get(property);
         }
     }

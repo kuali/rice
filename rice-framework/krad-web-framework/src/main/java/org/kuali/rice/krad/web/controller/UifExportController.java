@@ -184,14 +184,18 @@ public class UifExportController extends UifControllerBase {
     }
 
     /**
-     * Checks if a custom exporter can be applied
+     * Checks if a custom exporter can be applied.
      *
-     * @param dataObjectEntry
-     * @return boolean value is true if a custom exporter is present
+     * @param dataObjectEntry the data dictionary entry for the data object
+     *
+     * @return true if a custom exporter can be found, false otherwise
      */
     protected boolean canApplyCustomExport(DataObjectEntry dataObjectEntry) {
-        Class<? extends Exporter> exporterClass = dataObjectEntry.getExporterClass();
-        return exporterClass != null;
+        if (dataObjectEntry == null) {
+            return false;
+        }
+
+        return dataObjectEntry.getExporterClass() != null;
     }
 
     /**

@@ -83,6 +83,15 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
         screenshot();
     }
 
+    private void verifyInputs(String docId) throws InterruptedException {
+        waitAndClickLinkContainingText(docId);
+
+        driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
+
+        assertLabeledInputTextPresent(inputVerifyDetails);
+        screenshot();
+    }
+
     @Override
     public void checkForDocError() {
         checkForDocErrorKrad();
@@ -240,19 +249,13 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
     @Test
     public void testCreateNewSaveBookmark() throws Exception {
-        verify(testCreateNewSave());
+        verifyInputs(testCreateNewSave());
         passed();
     }
 
     @Test
     public void testCreateNewSaveNav() throws Exception {
-        waitAndClickLinkContainingText(testCreateNewSave());
-
-        driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
-
-        assertTextPresent(inputVerifyDetails[0][1]);
-        assertTextPresent(inputVerifyDetails[1][0], inputVerifyDetails[1][1]);
-        assertEquals(inputVerifyDetails[2][1], findElement(By.name("document.newMaintainableObject.dataObject.contextName")).getAttribute("value"));
+        verifyInputs(testCreateNewSave());
         passed();
     }
 

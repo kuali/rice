@@ -301,6 +301,24 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
         }
     }
 
+    /**
+     * Looks for values in input or select
+     * @param labeledText
+     */
+    protected void assertLabeledInputTextPresent(String[][] labeledText) {
+        boolean allLabeledTextPresent = true;
+        String missingMessage = "";
+        for (int i = 0, s = labeledText.length; i < s; i++) {
+            if (!isLabeledInputTextPresent(labeledText[i][0], labeledText[i][1])) {
+                allLabeledTextPresent = false;
+                missingMessage += "Text: " + labeledText[i][1] + " labeled by: " + labeledText[i][0] + " not present. ";
+            }
+        }
+        if (!allLabeledTextPresent) {
+            jiraAwareFail(missingMessage);
+        }
+    }
+
     protected void assertLabeledTextPresent(String label, String text) {
         if (!isLabeledTextPresent(label, text)) {
             jiraAwareFail("Text: " + text + " labeled by: " + label + " not present");
@@ -450,6 +468,43 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected boolean isLabeledTextPresent(String label, String text) {
         WebElement element = findElement(By.xpath("//tr/th/label[contains(text(), '" + label + "')]/ancestor::tr/td"));
         String labeledText = element.getText().trim();
+        WebDriverUtils.jGrowl(getDriver(), "Is Labeled Text Present", false, "Is text '" + text + "' present for label '"
+                + label + "'? " + labeledText.contains(text) + " saw " + labeledText);
+        return labeledText.contains(text);
+    }
+
+    protected boolean isLabeledInputTextPresent(String label, String text) {
+        String labeledText = "no input or select found";
+        List<WebElement> inputs = getDriver().findElements(By.xpath("//tr/th/label[contains(text(), '" + label + "')]/ancestor::tr/td/div/input"));
+
+        if (inputs.size() > 1) {
+            System.out.println("found more elements in labeled input than expected");
+        }
+
+        if (inputs.size() == 1) {
+            labeledText = inputs.get(0).getAttribute("value").trim();
+            // seeing this on Agenda Context select, value is getting uppercased somewhere...
+            if (labeledText.equals(text.toUpperCase())) {
+                text = text.toUpperCase();
+            }
+
+        } else {
+            inputs = getDriver().findElements(By.xpath("//tr/th/label[contains(text(), '" + label + "')]/ancestor::tr/td/div/select"));
+
+            if (inputs.size() > 1) {
+                System.out.println("found more elements in labeled input than expected");
+            }
+
+            if (inputs.size() == 1) {
+                List<WebElement> options = inputs.get(0).findElements(By.tagName("option"));
+                for (WebElement option : options) {
+                    if (option.getAttribute("selected") != null) {
+                        labeledText = option.getText().trim();
+                    }
+                }
+            }
+        }
+
         WebDriverUtils.jGrowl(getDriver(), "Is Labeled Text Present", false, "Is text '" + text + "' present for label '"
                 + label + "'? " + labeledText.contains(text) + " saw " + labeledText);
         return labeledText.contains(text);

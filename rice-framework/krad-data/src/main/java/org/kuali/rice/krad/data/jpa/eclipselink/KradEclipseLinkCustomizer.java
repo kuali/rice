@@ -215,22 +215,25 @@ public class KradEclipseLinkCustomizer implements SessionCustomizer {
         }
 
         for (ClassDescriptor classDescriptor : descriptors.values()) {
+            List<DatabaseMapping> mappingsToRemove = new ArrayList<DatabaseMapping>();
             List<RemoveMapping> removeMappings = scanForRemoveMappings(classDescriptor);
-            if (!removeMappings.isEmpty()) {
-                List<DatabaseMapping> mappingsToRemove = new ArrayList<DatabaseMapping>();
-                for (RemoveMapping removeMapping : removeMappings) {
-                    if (StringUtils.isBlank(removeMapping.name())) {
-                        throw DescriptorException.attributeNameNotSpecified();
-                    }
-                    DatabaseMapping databaseMapping = classDescriptor.getMappingForAttributeName(removeMapping.name());
-                    if (databaseMapping == null) {
-                        throw DescriptorException.mappingForAttributeIsMissing(removeMapping.name(), classDescriptor);
-                    }
-                    mappingsToRemove.add(databaseMapping);
+
+            for (RemoveMapping removeMapping : removeMappings) {
+                if (StringUtils.isBlank(removeMapping.name())) {
+                    throw DescriptorException.attributeNameNotSpecified();
                 }
-                for (DatabaseMapping mappingToRemove : mappingsToRemove) {
-                    classDescriptor.removeMappingForAttributeName(mappingToRemove.getAttributeName());
+
+                DatabaseMapping databaseMapping = classDescriptor.getMappingForAttributeName(removeMapping.name());
+
+                if (databaseMapping == null) {
+                    throw DescriptorException.mappingForAttributeIsMissing(removeMapping.name(), classDescriptor);
                 }
+
+                mappingsToRemove.add(databaseMapping);
+            }
+
+            for (DatabaseMapping mappingToRemove : mappingsToRemove) {
+                classDescriptor.removeMappingForAttributeName(mappingToRemove.getAttributeName());
             }
         }
     }

@@ -374,8 +374,10 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
         if (!areAllPrimaryKeyAttributesPopulated()) {
             return null;
         }
+
         Map<String, Object> primaryKeyValues = getPrimaryKeyValues();
-        if (getPrimaryKeyValues().size() == 1) {
+
+        if (primaryKeyValues.size() == 1) {
             return primaryKeyValues.values().iterator().next();
         } else {
             return new CompoundKey(primaryKeyValues);
@@ -560,6 +562,7 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
         if (keyValues.size() == 1) {
             return keyValues.values().iterator().next();
         }
+
         return new CompoundKey(keyValues);
     }
 

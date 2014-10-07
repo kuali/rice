@@ -142,7 +142,6 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
 
                 // Since we don't want the operator to be escaped by KRAD. We need to escape the lhs and rhs here
                 // so that we can safely display the parameterString as is.
-
                 sb.append( ScriptUtils.escapeHtml(lhs) ).append(" ").append( opr );
 
                 if (valueDisplay != null) {

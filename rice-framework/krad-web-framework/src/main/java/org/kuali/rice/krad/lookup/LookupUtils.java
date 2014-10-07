@@ -41,7 +41,6 @@ import org.springframework.beans.PropertyAccessorUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -88,6 +87,12 @@ public class LookupUtils {
      */
     public static String retrieveLookupParameterValue(UifFormBase form, HttpServletRequest request,
             Class<?> lookupObjectClass, String propertyName, String parameterName) {
+        // return a null value if it is secure
+        if (KRADUtils.isSecure(propertyName, lookupObjectClass)) {
+            LOG.warn("field name " + propertyName + " is a secure value and not returned in parameter result value");
+            return null;
+        }
+
         String parameterValue = "";
 
         // get literal parameter values first
@@ -105,20 +110,6 @@ public class LookupUtils {
         // get parameter value from form object
         else {
             parameterValue = ObjectPropertyUtils.getPropertyValueAsText(form, parameterName);
-        }
-
-        if (parameterValue != null && lookupObjectClass != null
-                && KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                .attributeValueNeedsToBeEncryptedOnFormsAndLinks(lookupObjectClass, propertyName)) {
-            try {
-                if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                    parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
-                            + EncryptionService.ENCRYPTION_POST_PREFIX;
-                }
-            } catch (GeneralSecurityException e) {
-                LOG.error("Unable to encrypt value for property name: " + propertyName);
-                throw new RuntimeException(e);
-            }
         }
 
         return parameterValue;

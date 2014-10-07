@@ -128,24 +128,26 @@ public class InquirableImpl extends ViewHelperServiceImpl implements Inquirable 
                 keyPropertyValue = keyPropertyValue.toUpperCase();
             }
 
-            // check security on key field
-            if (getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass,
-                    keyPropertyName)) {
+            // check security on field
+            boolean isSecure = KRADUtils.isSecure(keyPropertyName, dataObjectClass);
+
+            if (StringUtils.endsWith(keyPropertyValue, EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                keyPropertyValue = StringUtils.removeEnd(keyPropertyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+                isSecure = true;
+            }
+
+            // decrypt if the value is secure
+            if (isSecure) {
                 try {
-                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
                         keyPropertyValue = getEncryptionService().decrypt(keyPropertyValue);
                     }
                 } catch (GeneralSecurityException e) {
-                    LOG.error("Data object class "
-                            + dataObjectClass
-                            + " property "
-                            + keyPropertyName
-                            + " should have been encrypted, but there was a problem decrypting it.", e);
-                    throw new RuntimeException("Data object class "
-                            + dataObjectClass
-                            + " property "
-                            + keyPropertyName
-                            + " should have been encrypted, but there was a problem decrypting it.", e);
+                    String message = "Data object class " + dataObjectClass + " property " + keyPropertyName
+                            + " should have been encrypted, but there was a problem decrypting it.";
+                    LOG.error(message, e);
+
+                    throw new RuntimeException(message, e);
                 }
             }
 

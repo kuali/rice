@@ -18,7 +18,6 @@ package org.kuali.rice.krad.lookup;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -231,13 +230,26 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 continue;
             }
 
-            if (fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
-                String encryptedValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+            // check security on field
+            boolean isSecure = KRADUtils.isSecure(fieldName, dataObjectClass);
+
+            if (StringUtils.endsWith(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                fieldValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+                isSecure = true;
+            }
+
+            // decrypt if the value is secure
+            if (isSecure) {
                 try {
-                    fieldValue = getEncryptionService().decrypt(encryptedValue);
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        fieldValue = getEncryptionService().decrypt(fieldValue);
+                    }
                 } catch (GeneralSecurityException e) {
-                    throw new RuntimeException("Error decrypting value for business object class " +
-                            getDataObjectClass() + " attribute " + fieldName, e);
+                    String message = "Data object class " + dataObjectClass + " property " + fieldName
+                            + " should have been encrypted, but there was a problem decrypting it.";
+                    LOG.error(message);
+
+                    throw new RuntimeException(message, e);
                 }
             }
 
@@ -738,8 +750,8 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         // build return link title if not already set
         if (StringUtils.isBlank(returnLink.getTitle())) {
-            String linkLabel = getConfigurationService().getPropertyValueAsString(
-                    KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+            String linkLabel = StringUtils.defaultIfBlank(getConfigurationService().getPropertyValueAsString(
+                    KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY), StringUtils.EMPTY);
 
             Map<String, String> returnKeyValues = getReturnKeyValues(lookupView, lookupForm, dataObject);
 
@@ -939,26 +951,40 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         // build action title if not set
         if (StringUtils.isBlank(actionLink.getTitle())) {
-            String objectLabel = "";
-            DataObjectEntry dataObjectEntry = getDataDictionaryService().getDataDictionary().getDataObjectEntry(
-                    getDataObjectClass().getName());
+            List<String> linkLabels = new ArrayList<String>();
 
-            // check to see if there was a data object entry found for the class
-            // if there is a data entry object, then set the object label, else let it be empty string
-            if (dataObjectEntry != null && dataObjectEntry.getObjectLabel() != null) {
-                objectLabel = dataObjectEntry.getObjectLabel();
+            // get the link text
+            String linkText = actionLink.getLinkText();
+
+            // if the link text is available, then add it to the link label
+            if (StringUtils.isNotBlank(linkText)) {
+                linkLabels.add(linkText);
             }
 
-            ConfigurationService service = getConfigurationService();
-            String val = service.getPropertyValueAsString(KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
-            String prependTitleText = actionLink.getLinkText() + " " + objectLabel + " " +
-                    getConfigurationService().getPropertyValueAsString(
-                            KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+            // get the data object label
+            DataObjectEntry dataObjectEntry = getDataDictionaryService().getDataDictionary().getDataObjectEntry(
+                    getDataObjectClass().getName());
+            String dataObjectLabel = dataObjectEntry != null ? dataObjectEntry.getObjectLabel() : null;
 
+            // if the data object label is available, then add it to the link label
+            if (StringUtils.isNotBlank(dataObjectLabel)) {
+                linkLabels.add(dataObjectLabel);
+            }
+
+            // get the prepend text
+            String titleActionUrlPrependText = getConfigurationService().getPropertyValueAsString(
+                    KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+
+            // get the primary keys for the object
             Map<String, String> primaryKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(pkNames, dataObject);
-            String title = KRADUtils.buildAttributeTitleString(prependTitleText, getDataObjectClass(),
-                    primaryKeyValues);
 
+            // if the prepend text is available and there are primary key values, then add it to the link label
+            if (StringUtils.isNotBlank(titleActionUrlPrependText) && !primaryKeyValues.isEmpty()) {
+                linkLabels.add(titleActionUrlPrependText);
+            }
+
+            String linkLabel = StringUtils.defaultIfBlank(StringUtils.join(linkLabels, " "), StringUtils.EMPTY);
+            String title = KRADUtils.buildAttributeTitleString(linkLabel, getDataObjectClass(), primaryKeyValues);
             actionLink.setTitle(title);
         }
     }

@@ -518,14 +518,26 @@ public final class KRADUtils {
             if (requestParameters.get(keyPropertyName) != null) {
                 String keyValue = requestParameters.get(keyPropertyName);
 
-                // Check if this element was encrypted, if it was decrypt it
-                if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                        .attributeValueNeedsToBeEncryptedOnFormsAndLinks(parentObjectClass, keyPropertyName)) {
+                // check security on field
+                boolean isSecure = isSecure(keyPropertyName, parentObjectClass);
+
+                if (StringUtils.endsWith(keyValue, EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                    keyValue = StringUtils.removeEnd(keyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+                    isSecure = true;
+                }
+
+                // decrypt if the value is secure
+                if (isSecure) {
                     try {
-                        keyValue = StringUtils.removeEnd(keyValue, EncryptionService.ENCRYPTION_POST_PREFIX);
-                        keyValue = CoreApiServiceLocator.getEncryptionService().decrypt(keyValue);
+                        if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                            keyValue = CoreApiServiceLocator.getEncryptionService().decrypt(keyValue);
+                        }
                     } catch (GeneralSecurityException e) {
-                        throw new RuntimeException(e);
+                        String message = "Data object class " + parentObjectClass + " property " + keyPropertyName
+                                + " should have been encrypted, but there was a problem decrypting it.";
+                        LOG.error(message);
+
+                        throw new RuntimeException(message, e);
                     }
                 }
 
@@ -537,29 +549,28 @@ public final class KRADUtils {
     }
 
     /**
-     * Builds a Map containing a key/value pair for each property given in the property names list, general
-     * security is checked to determine if the value needs to be encrypted along with applying formatting to
-     * the value
+     * Returns a map containing a key/value pair for each property given in the property names list, ignoring any values
+     * considered to be secure.
      *
-     * @param propertyNames - list of property names to get key/value pairs for
-     * @param dataObject - object instance containing the properties for which the values will be pulled
-     * @return Map<String, String> containing entry for each property name with the property name as the map key
+     * @param propertyNames the list of property names for which to get key/value pairs
+     * @param dataObject the object instance containing the properties for which the values will be pulled
+     *
+     * @return a map containing an entry for each property name with the property name as the map key
      * and the property value as the value
      */
-    public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames,
-            Object dataObject) {
+    public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames, Object dataObject) {
         return getPropertyKeyValuesFromDataObject(propertyNames, Collections.<String>emptyList(), dataObject);
     }
 
     /**
-     * Builds a Map containing a key/value pair for each property given in the property names list, general
-     * security is checked to determine if the value needs to be encrypted along with applying formatting to
-     * the value
+     * Returns a map containing a key/value pair for each property given in the property names list, ignoring any values
+     * considered to be secure, including those in {@code securePropertyNames}.
      *
-     * @param propertyNames - list of property names to get key/value pairs for
-     * @param securePropertyNames - list of secure property names to match for encryption
-     * @param dataObject - object instance containing the properties for which the values will be pulled
-     * @return Map<String, String> containing entry for each property name with the property name as the map key
+     * @param propertyNames the list of property names for which to get key/value pairs
+     * @param securePropertyNames list of additional secure property names to match for encryption
+     * @param dataObject the object instance containing the properties for which the values will be pulled
+     *
+     * @return a map containing an entry for each property name with the property name as the map key
      * and the property value as the value
      */
     public static Map<String, String> getPropertyKeyValuesFromDataObject(List<String> propertyNames,
@@ -573,15 +584,15 @@ public final class KRADUtils {
         // iterate through properties and add a map entry for each
         for (String propertyName : propertyNames) {
             String propertyValue = ObjectPropertyUtils.getPropertyValueAsText(dataObject, propertyName);
+
             if (propertyValue == null) {
                 propertyValue = StringUtils.EMPTY;
             }
 
-            // secure values are not returned
-            if (!isSecure(propertyName, securePropertyNames, dataObject, propertyValue)) {
+            // add the property if it is not secure
+            if (!isSecure(propertyName, securePropertyNames, dataObject.getClass())) {
                 propertyKeyValues.put(propertyName, propertyValue);
             }
-
         }
 
         return propertyKeyValues;
@@ -591,24 +602,32 @@ public final class KRADUtils {
      * Determines whether a property name should be secured, either based on installed sensitive data patterns, a list
      * of secure property name patterns, or attributes in the Data Dictionary.
      *
-     * @param propertyName The property name to check for security
-     * @param securePropertyNames The secure property name patterns to check
-     * @param dataObject The object containing this property
-     * @param propertyValue The value of the property
+     * @param propertyName the property name to check for security
+     * @param dataObjectClass the class of the object containing this property
+     *
      * @return true if the property needs to be secure, false otherwise
      */
-    private static boolean isSecure(String propertyName, List<String> securePropertyNames, Object dataObject,
-            Object propertyValue) {
-        if (propertyValue instanceof String && containsSensitiveDataPatternMatch((String) propertyValue)) {
-            return true;
-        }
+    public static boolean isSecure(String propertyName, Class<?> dataObjectClass) {
+        return isSecure(propertyName, Collections.<String>emptyList(), dataObjectClass);
+    }
 
+    /**
+     * Determines whether a property name should be secured, either based on installed sensitive data patterns, a list
+     * of secure property name patterns, or attributes in the Data Dictionary.
+     *
+     * @param propertyName the property name to check for security
+     * @param securePropertyNames the secure property name patterns to check
+     * @param dataObjectClass the class of the object containing this property
+     *
+     * @return true if the property needs to be secure, false otherwise
+     */
+    public static boolean isSecure(String propertyName, List<String> securePropertyNames, Class<?> dataObjectClass) {
         if (containsSecurePropertyName(propertyName, securePropertyNames)) {
             return true;
         }
 
         return KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObject.getClass(), propertyName);
+                .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass, propertyName);
     }
 
     /**

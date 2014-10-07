@@ -16,13 +16,17 @@
 package org.kuali.rice.krad.uif.widget;
 
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.encryption.EncryptionService;
+import org.kuali.rice.krad.datadictionary.DataObjectEntry;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.messages.MessageService;
@@ -40,6 +44,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
 
@@ -232,39 +237,35 @@ public class Inquiry extends WidgetBase {
         if (isParentReadOnly()) {
             for (Entry<String, String> inquiryParameter : inquiryParams.entrySet()) {
                 String parameterName = inquiryParameter.getKey();
+                String parameterPropertyName = inquiryParameter.getValue();
+                String parameterValue = StringUtils.defaultString(
+                        ObjectPropertyUtils.getPropertyValueAsText(dataObject, parameterName));
 
-                Object parameterValue = ObjectPropertyUtils.getPropertyValue(dataObject, parameterName);
+                // check to see whether the property is secure
+                boolean isSecure = KRADUtils.isSecure(propertyName, dataObject.getClass());
 
-                // TODO: need general format util that uses spring
-                if (parameterValue == null) {
-                    parameterValue = "";
-                } else if (parameterValue instanceof java.sql.Date) {
-                    if (org.kuali.rice.core.web.format.Formatter.findFormatter(parameterValue.getClass()) != null) {
-                        org.kuali.rice.core.web.format.Formatter formatter =
-                                org.kuali.rice.core.web.format.Formatter.getFormatter(parameterValue.getClass());
-                        parameterValue = formatter.format(parameterValue);
-                    }
-                } else {
-                    parameterValue = ObjectPropertyUtils.getPropertyValueAsText(dataObject, parameterName);
+                // add the raw value to the title key values if it is not secure
+                if (!isSecure) {
+                    inquiryKeyValues.put(parameterPropertyName, parameterValue);
                 }
 
-                // Encrypt value if it is a field that has restriction that prevents a value from being shown to
-                // user, because we don't want the browser history to store the restricted attributes value in the URL
-                if (KRADServiceLocatorWeb.getDataObjectAuthorizationService()
-                        .attributeValueNeedsToBeEncryptedOnFormsAndLinks(inquiryObjectClass,
-                                inquiryParameter.getValue())) {
+                // encrypt the value if it is secure
+                if (isSecure) {
                     try {
-                        parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue);
+                        if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                            parameterValue = CoreApiServiceLocator.getEncryptionService().encrypt(parameterValue)
+                                    + EncryptionService.ENCRYPTION_POST_PREFIX;
+                        }
                     } catch (GeneralSecurityException e) {
-                        throw new RuntimeException("Exception while trying to encrypted value for inquiry framework.",
-                                e);
+                        String message = "Unable to encrypt value for property name: " + parameterPropertyName;
+                        LOG.error(message);
+
+                        throw new RuntimeException(message, e);
                     }
                 }
 
-                // add inquiry parameter to URL
-                urlParameters.put(inquiryParameter.getValue(), parameterValue);
-
-                inquiryKeyValues.put(inquiryParameter.getValue(), parameterValue.toString());
+                // add the encrypted value to the URL key values
+                urlParameters.put(parameterPropertyName, parameterValue);
             }
 
             /* build inquiry URL */
@@ -360,27 +361,37 @@ public class Inquiry extends WidgetBase {
             return getTitle();
         }
 
-        String titleText = "";
+        List<String> titleTexts = new ArrayList<String>();
 
+        // get the title prefix
         String titlePrefix = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
                 INQUIRY_TITLE_PREFIX);
+
+        // if the title prefix is available, add it to the title text
         if (StringUtils.isNotBlank(titlePrefix)) {
-            titleText += titlePrefix + " ";
+            titleTexts.add(titlePrefix);
         }
 
-        String objectLabel = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDataObjectEntry(
-                dataObjectClass.getName()).getObjectLabel();
-        if (StringUtils.isNotBlank(objectLabel)) {
-            titleText += objectLabel + " ";
+        // get the data object label
+        DataObjectEntry dataObjectEntry = KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary()
+                .getDataObjectEntry(dataObjectClass.getName());
+        String dataObjectLabel = dataObjectEntry != null ? dataObjectEntry.getObjectLabel() : null;
+
+        // if the data object label is available, then add it to the title text
+        if (StringUtils.isNotBlank(dataObjectLabel)) {
+            titleTexts.add(dataObjectLabel);
         }
 
-        if (StringUtils.isNotBlank(titleText)){
-            String titlePostfix = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
-                    INQUIRY_TITLE_POSTFIX);
-            if (StringUtils.isNotBlank(titlePostfix)) {
-                titleText += titlePostfix + " ";
-            }
+        // get the prepend text configuration
+        String titleUrlPrependText = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString(
+                KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+
+        // if the prepend text is available and there are primary key values, then add it to the link label
+        if (StringUtils.isNotBlank(titleUrlPrependText) && !inquiryKeyValues.isEmpty()) {
+            titleTexts.add(titleUrlPrependText);
         }
+
+        String titleText = StringUtils.defaultIfBlank(StringUtils.join(titleTexts, " "), StringUtils.EMPTY);
 
         return KRADUtils.buildAttributeTitleString(titleText, dataObjectClass, inquiryKeyValues);
    }

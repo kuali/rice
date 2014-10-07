@@ -1125,9 +1125,11 @@ public class DataFieldBase extends FieldBase implements DataField {
                 return false;
             }
 
+            Object propertyValue;
+
             // do not render the inquiry if the field value is null
             try {
-                Object propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
+                propertyValue = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
 
                 if ((propertyValue == null) || StringUtils.isBlank(propertyValue.toString())) {
                     return false;
@@ -1140,23 +1142,13 @@ public class DataFieldBase extends FieldBase implements DataField {
             // do not render the inquiry link if it is the same as its parent
             if (view.getViewTypeName() == UifConstants.ViewType.INQUIRY) {
                 InquiryForm inquiryForm = (InquiryForm) model;
-                String dataObjectClassName = inquiryForm.getDataObjectClassName();
-                String dictionaryObjectEntry = getDictionaryObjectEntry();
+                String[] parameterValues = inquiryForm.getInitialRequestParameters().get(propertyName);
 
-                // check whether the current inquiry is the same as its parent
-                if (StringUtils.equals(dataObjectClassName, dictionaryObjectEntry)) {
-                    String propertyName = getPropertyName();
-
-                    // get the value of field in request parameter
-                    String[] parameterValues = inquiryForm.getInitialRequestParameters().get(propertyName);
-
-                    // get the value of field
-                    Object propertyValue = ObjectPropertyUtils.getPropertyValue(object, propertyName);
-
-                    // do not render the inquiry if the request parameter contains the parent field value
-                    if (ArrayUtils.contains(parameterValues, propertyValue))  {
-                        return false;
-                    }
+                // do not render the inquiry if current data object is the same as its parent and the request parameter
+                // contains the parent field value
+                if (StringUtils.equals(inquiryForm.getDataObjectClassName(), dictionaryObjectEntry)
+                        && ArrayUtils.contains(parameterValues, propertyValue.toString())) {
+                    return false;
                 }
             }
         }

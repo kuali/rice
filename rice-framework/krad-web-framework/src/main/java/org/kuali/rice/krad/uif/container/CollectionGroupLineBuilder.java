@@ -781,9 +781,7 @@ public class CollectionGroupLineBuilder implements Serializable {
                     lineDialog.setItems(items);
                 } else { // user provided dialog items
                     List<Component> dialogFields = new ArrayList<>(lineDialog.getItems());
-                    List<Field> newFields = new ArrayList<Field>();
-                    List<Field> newFieldGroups = new ArrayList<Field>();
-                    List<Component> unprocessed = new ArrayList<Component>();
+                    List<Component> dialogComponents = new ArrayList<>();
                     int fieldIndex = 0;
                     int subIndex = 0;
 
@@ -802,12 +800,14 @@ public class CollectionGroupLineBuilder implements Serializable {
                                 // update the binding info on the custom field
                                 dataField.getBindingInfo().setCollectionPath(group.getBindingInfo().getBindingName());
                             }
+
                             dataField.getBindingInfo().setBindByNamePrefix(UifPropertyPaths.DIALOG_DATA_OBJECT);
-                            newFields.add(dataField);
+                            dialogComponents.add(dataField);
                         } else if (dialogField instanceof FieldGroup) {
                             FieldGroup fieldGroup = (FieldGroup) dialogField;
+
                             if (fieldGroup.getGroup() instanceof CollectionGroup) {
-                                newFieldGroups.add(getNewFieldGroup(fieldGroup, (CollectionGroup) fieldGroup.
+                                dialogComponents.add(getNewFieldGroup(fieldGroup, (CollectionGroup) fieldGroup.
                                         getGroup(), lineDialog, fieldIndex, subIndex, null));
                                 subIndex++;
                             }
@@ -815,20 +815,17 @@ public class CollectionGroupLineBuilder implements Serializable {
                             CollectionGroup collectionGroup = (CollectionGroup) dialogField;
                             FieldGroup fieldGroupPrototype =
                                     lineBuilderContext.getLayoutManager().getSubCollectionFieldGroupPrototype();
-                            newFieldGroups.add(getNewFieldGroup(fieldGroupPrototype, collectionGroup, lineDialog,
+
+                            dialogComponents.add(getNewFieldGroup(fieldGroupPrototype, collectionGroup, lineDialog,
                                     fieldIndex, subIndex, UifPropertyPaths.DIALOG_DATA_OBJECT));
                             subIndex++;
                         } else {
-                            unprocessed.add(dialogField);
+                            ComponentUtils.prefixBindingPath(dialogField, UifPropertyPaths.DIALOG_DATA_OBJECT);
+                            dialogComponents.add(dialogField);
                         }
                         fieldIndex++;
                     }
-                    newFields.addAll(newFieldGroups);
-                    List<Field> unprocessedFields = processAnyRemoteFieldsHolder(
-                            lineBuilderContext.getCollectionGroup(), unprocessed);
-                    adjustFieldBindingAndId(unprocessedFields, UifPropertyPaths.DIALOG_DATA_OBJECT);
-                    newFields.addAll(unprocessedFields);
-                    lineDialog.setItems(newFields);
+                    lineDialog.setItems(dialogComponents);
                 }
             }
         }

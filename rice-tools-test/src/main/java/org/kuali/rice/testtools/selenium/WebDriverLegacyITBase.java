@@ -2786,30 +2786,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickButtonByText("Clear Values");
     }
 
-    protected void waitAndClickConfirmCancelOk() throws InterruptedException {
-        jGrowl("Click OK Confirmation");
-        String xpath = "//div[@data-parent='ConfirmCancelDialog']/button[contains(text(),'OK')]";
-        waitForElementVisibleBy(By.xpath(xpath)).click();
-    }
-
-    protected void waitAndClickConfirmBlanketApproveOk() throws InterruptedException {
-        jGrowl("Click OK Confirmation");
-        String xpath = "//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]";
-        waitForElementVisibleBy(By.xpath(xpath)).click();
-    }
-
-    protected void waitAndClickConfirmSaveOnClose() throws InterruptedException {
-        jGrowl("Click OK Confirmation");
-        waitForElementVisibleBy(By.xpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]"));
-        waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]");
-    }
-
-    protected void waitAndClickConfirmSubmitOk() throws InterruptedException {
-        jGrowl("Click OK Confirmation");
-        String xpath = "//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]";
-        waitForElementVisibleBy(By.xpath(xpath)).click();
-    }
-
     /**
      * {@link #ADMINISTRATION_LINK_TEXT}
      * @param failable
@@ -2823,7 +2799,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickCancel();
         waitAndClickByName("methodToCall.processAnswer.button0");
     }
-
 
     protected void waitAndClickAdHocPersonAdd() throws InterruptedException  {
         jGrowl("Click AdHoc Person add");

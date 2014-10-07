@@ -56,8 +56,7 @@ public class LabsLookupTravelAuthorizationDocumentCloseActionAft extends LabsTra
         driver.switchTo().frame(driver.findElement(By.xpath(xpathExpression)));
 
         // search based on document type
-        jGrowl("Type TravelAuthoriztion in documentTypeName input");
-        getElementByAttributeValue("name", "documentTypeName").sendKeys("TravelAuthorization");
+        waitAndTypeLabeledInput("Document Type:", "TravelAuthorization");
 
         // click the search button
         jGrowl("Click the Search button");
@@ -65,9 +64,9 @@ public class LabsLookupTravelAuthorizationDocumentCloseActionAft extends LabsTra
         waitAndClick(By.xpath(imgXpath));
 
         // click on the first item returned.
-        jGrowl("Click on the first result returned from the search.");
+        jGrowl("Click on the first result in status SAVED returned from the search.");
         String windowHandle = driver.getWindowHandle();
-        waitAndClick(By.xpath("//*[@id=\"row\"]/tbody/tr/td[1]/a"));
+        waitAndClick(By.xpath("//td[contains(text(),'SAVED')]/../td[1]/a"));
 
         // wait for the new window to pop up
         new WebDriverWait(driver, 10).until(new ExpectedCondition<Object>() {
@@ -89,15 +88,8 @@ public class LabsLookupTravelAuthorizationDocumentCloseActionAft extends LabsTra
         // click the close button
         waitAndClickButtonByText("Close", WebDriverUtils.configuredImplicityWait() * 10);
 
-        jGrowl("Click No Confirmation");
-        waitForElementVisibleBy(By.xpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'No')]"));
-        waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'No')]");
+        waitAndClickCancelSaveOnClose();
 
-        waitForPageToLoad();
-
-        assertTextPresent("Development made easy");
+        waitForTextPresent("Development made easy");
     }
-
-
-
 }

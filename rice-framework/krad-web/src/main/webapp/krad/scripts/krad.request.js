@@ -527,7 +527,8 @@ KradRequest.prototype = {
         }
 
         // force full page loading blocking for dialogs being loaded or refreshed
-        if (this.additionalData && this.additionalData.isDialog) {
+        if ((this.additionalData && this.additionalData.isDialog) ||
+                jQuery(this.elementToBlock).is("#" + kradVariables.IDS.DIALOGS + " >, .modal")) {
             this.elementToBlock = null;
         }
 

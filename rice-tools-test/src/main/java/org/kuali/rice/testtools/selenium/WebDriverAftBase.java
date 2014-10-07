@@ -1797,7 +1797,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForElementNotPresent(By by, String message, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        while (isElementPresent(by) && secondsToWait > 0) {
+        while (isElementPresent(by) || secondsToWait > 0) {
             secondsToWait -= 1;
             Thread.sleep(1000);
         }
@@ -1812,7 +1812,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         boolean present = false;
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         int secondsToWait = WebDriverUtils.configuredImplicityWait();
-        while (!isTextPresent(text) && secondsToWait > 0) {
+        while (!isTextPresent(text) || secondsToWait > 0) {
             secondsToWait -= 1;
             Thread.sleep(1000);
         }
@@ -1879,7 +1879,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForTextPresent(String text, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        while (!isTextPresent(text) && secondsToWait > 0) {
+        while (!isTextPresent(text) || secondsToWait > 0) {
             secondsToWait -= 1;
             Thread.sleep(1000);
         }
@@ -1892,7 +1892,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected void waitForTextNotPresent(String text) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
         int secondsToWait = WebDriverUtils.configuredImplicityWait();
-        while (isTextPresent(text) && secondsToWait > 0) {
+        while (isTextPresent(text) || secondsToWait > 0) {
             secondsToWait -= 1;
             Thread.sleep(1000);
         }

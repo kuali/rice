@@ -113,16 +113,20 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
     protected void testLabsLookupDefaultCreateNewBlanketApprove()throws Exception {
         navigateToCreateNew();
 
+        // TODO method that accepts full array
+        // TODO flag requires or determine via UI (*) what is required (could miss changes)
         waitAndTypeLabeledInput("Description:", getDescriptionUnique());
-        waitAndTypeLabeledInput("Travel Account Name:", inputVerifyDetails[0][1]);
+        waitAndTypeLabeledInput(inputVerifyDetails[0][0], inputVerifyDetails[0][1]);
         waitAndTypeLabeledInput("Travel Account Number:", inputVerifyDetails[1][1]);
         waitAndTypeLabeledInput("Fiscal Officer User ID:", inputVerifyDetails[2][1]);
         waitAndClickByXpath("//input[@value='CAT']");
 
+        // TODO convenience method
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']", "My Note " + uniqueString);
         waitAndClickByXpath("//button[@title='Add a Note']");
 
+        // TODO convenience method
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input", "admin");
         waitAndClickAdHocPersonAdd();

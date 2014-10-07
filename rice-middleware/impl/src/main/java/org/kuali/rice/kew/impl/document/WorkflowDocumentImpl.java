@@ -1016,13 +1016,17 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         }
 
         protected void setApplicationContent(String applicationContent) {
-            builder.setApplicationContent(applicationContent);
-            dirty = true;
+            if ( !StringUtils.equals(applicationContent, builder.getApplicationContent() ) ) {
+                builder.setApplicationContent(applicationContent);
+                dirty = true;
+            }
         }
 
         protected void setAttributeContent(String attributeContent) {
-            builder.setAttributeContent(attributeContent);
-            dirty = true;
+            if ( !StringUtils.equals(attributeContent, builder.getAttributeContent() ) ) {
+                builder.setAttributeContent(attributeContent);
+                dirty = true;
+            }
         }
 
         public void setAttributeDefinitions(List<WorkflowAttributeDefinition> attributeDefinitions) {
@@ -1031,8 +1035,10 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         }
 
         public void setSearchableContent(String searchableContent) {
-            builder.setSearchableContent(searchableContent);
-            dirty = true;
+            if ( !StringUtils.equals(searchableContent, builder.getSearchableContent() ) ) {
+                builder.setSearchableContent(searchableContent);
+                dirty = true;
+            }
         }
 
         public void setSearchableDefinitions(List<WorkflowAttributeDefinition> searchableDefinitions) {
@@ -1099,9 +1105,11 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         }
 
         protected void setApplicationDocumentId(String applicationDocumentId) {
-            builder.setApplicationDocumentId(applicationDocumentId);
-            dirty = true;
-            addDirtyField("applicationDocumentId");
+            if ( !StringUtils.equals(applicationDocumentId, builder.getApplicationDocumentId() ) ) {
+                builder.setApplicationDocumentId(applicationDocumentId);
+                dirty = true;
+                addDirtyField("applicationDocumentId");
+            }
         }
 
         protected String getTitle() {
@@ -1109,10 +1117,11 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         }
 
         protected void setTitle(String title) {
-            builder.setTitle(title);
-            dirty = true;
-            addDirtyField("title");
-
+            if ( !StringUtils.equals(title, builder.getTitle() ) ) {
+                builder.setTitle(title);
+                dirty = true;
+                addDirtyField("title");
+            }
         }
 
         protected String getApplicationDocumentStatus() {
@@ -1120,15 +1129,19 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         }
 
         protected void setApplicationDocumentStatus(String applicationDocumentStatus) {
-            builder.setApplicationDocumentStatus(applicationDocumentStatus);
-            dirty = true;
-            addDirtyField("applicationDocumentStatus");
+            if ( !StringUtils.equals(applicationDocumentStatus, builder.getApplicationDocumentStatus() ) ) {
+                builder.setApplicationDocumentStatus(applicationDocumentStatus);
+                dirty = true;
+                addDirtyField("applicationDocumentStatus");
+            }
         }
 
         protected void setVariable(String name, String value) {
-            builder.setVariable(name, value);
-            dirty = true;
-            addDirtyField("var[" + name + "]");
+            if ( !StringUtils.equals(value, builder.getVariableValue(name) ) ) {           
+                builder.setVariable(name, value);
+                dirty = true;
+                addDirtyField("var[" + name + "]");
+            }
         }
 
         protected String getVariableValue(String name) {

@@ -24,11 +24,14 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.action.AdHocToPrincipal;
 import org.kuali.rice.kew.api.action.RequestedActions;
 import org.kuali.rice.kew.api.document.Document;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.impl.document.WorkflowDocumentImpl;
+import org.kuali.rice.kew.impl.document.WorkflowDocumentPrototype;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.api.identity.Person;
@@ -366,6 +369,64 @@ public class AppDocStatusTest extends KEWTestCase {
         assertSearchStatus(documentTypeName, traveler, "Approval in Progress", 1, drhv.getRouteStatusDate().getTime()); // one transition to "Approval in Progress" status around the time of routing
         assertSearchStatus(documentTypeName, traveler, "Submitted", 1, 0); // one document currently in "Submitted" status
         assertSearchStatus(documentTypeName, traveler, "Submitted", 1, drhv.getDateLastModified().getMillis()); // one transition to "Submitted" status around the time of approval
+    }
+    
+    @Test public void testAppDocResetAfterAdHoc() throws Exception {
+        String documentTypeName = "TestAppDocStatusDoc1";
+
+        String initiatorNetworkId = "rkirkend";
+        String approverNetworkId = "bmcgough";
+        String travelerNetworkId = "temay";
+
+        Person initiator = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(initiatorNetworkId);
+        Person approver = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(approverNetworkId);
+        Person traveler = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(travelerNetworkId);
+
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument(initiator.getPrincipalId(), documentTypeName);
+        workflowDocument.setTitle("Routing style");
+        workflowDocument.route("routing this document.");
+
+        //DocumentRouteHeaderValue drhv = KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getDocumentId());
+        
+        // should be in approval status
+        assertAppDocStatuses(workflowDocument.getDocumentId(), new String [] { "Approval in Progress" });
+
+        // approve it out of the "Approval in Progress" state
+        
+        workflowDocument = WorkflowDocumentFactory.loadDocument(approver.getPrincipalId(), workflowDocument.getDocumentId());
+        Document staleWorkflowDocument = KewApiServiceLocator.getWorkflowDocumentService().getDocument(workflowDocument.getDocumentId());
+        
+        assertEquals( "app doc status incorrect before final approval: " + staleWorkflowDocument, "Approval in Progress", staleWorkflowDocument.getApplicationDocumentStatus() );
+
+        RequestedActions actions = workflowDocument.getRequestedActions();
+        assertTrue(actions.isApproveRequested());
+        workflowDocument.approve("destination approval");
+
+
+        // approve it out of the "Approval in Progress" state
+        workflowDocument = WorkflowDocumentFactory.loadDocument(traveler.getPrincipalId(), workflowDocument.getDocumentId());
+        assertEquals( "current app doc status incorrect after 1st approval", "Submitted", workflowDocument.getApplicationDocumentStatus() );
+
+        actions = workflowDocument.getRequestedActions();
+        assertTrue(actions.isApproveRequested());
+        workflowDocument.approve("travel approval");
+
+        workflowDocument = WorkflowDocumentFactory.loadDocument(traveler.getPrincipalId(), workflowDocument.getDocumentId());
+
+        assertEquals( "app doc status in 'stale' WorkflowDocument retrieved before approval should still have original status", "Approval in Progress", staleWorkflowDocument.getApplicationDocumentStatus() );
+        
+        Document newWorkflowDocument = KewApiServiceLocator.getWorkflowDocumentService().getDocument(workflowDocument.getDocumentId());
+        
+        assertEquals( "current API app doc status incorrect after 2nd approval", "Submitted", newWorkflowDocument.getApplicationDocumentStatus() );
+        
+        WorkflowDocumentPrototype prototype = KEWServiceLocator.getWorkflowDocumentPrototype();
+        prototype.init(traveler.getPrincipalId(), staleWorkflowDocument);
+        prototype.setTitle(prototype.getTitle());
+        prototype.adHocToPrincipal(AdHocToPrincipal.Builder.create(ActionRequestType.FYI, null, initiator.getPrincipalId()).build(), "FYI to initiator");
+        
+        workflowDocument = WorkflowDocumentFactory.loadDocument(traveler.getPrincipalId(), workflowDocument.getDocumentId());
+
+        assertEquals( "current app doc status incorrect after adhoc", "Submitted", workflowDocument.getApplicationDocumentStatus() );
     }
 
     /**

@@ -25,6 +25,7 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.ClientSideState;
 import org.kuali.rice.krad.uif.component.Component;
@@ -409,8 +410,11 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         }
 
         // add the dialog id as additional parameters to the actions in the dialog
-        String additionalData = "{ 'actionParameters[selectedCollectionPath]' : '" + propertyName
-                + "', 'actionParameters[selectedLineIndex]' : '0', 'actionParameters[dialogId]' : '" + dialogId + "' }";
+        String additionalData =
+                "{ '" + UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.SELECTED_COLLECTION_PATH + "]' : '"
+                        + propertyName + "', '" + UifPropertyPaths.ACTION_PARAMETERS + "["
+                        + UifParameters.SELECTED_LINE_INDEX + "]' : '0', '" + UifPropertyPaths.ACTION_PARAMETERS + "["
+                        + UifParameters.DIALOG_ID + "]' : '" + dialogId + "' }";
         String actionScript = UifConstants.JsFunctions.WRITE_CURRENT_PAGE_TO_SESSION + "(this, '" + sessionPage + "');";
 
         actionScript = ScriptUtils.appendScript(addWithDialogAction.getActionScript(), actionScript);

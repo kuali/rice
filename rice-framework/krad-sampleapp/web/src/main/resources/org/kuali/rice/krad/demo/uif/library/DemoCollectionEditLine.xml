@@ -281,8 +281,6 @@
     </property>
   </bean>
 
-  <!-- TODO: This example is not included in the list of examples on the page due to KULRICE-13186.
-        Once this issue is resolved, add this example to the list of examples in the drop-down.-->
   <!-- CollectionEditLine quickfinder -->
   <bean id="Demo-CollectionEditLine-Example9" parent="Uif-VerticalBoxSection">
     <property name="items">

@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinition;
 import org.kuali.rice.krms.api.repository.proposition.PropositionDefinitionContract;
@@ -135,11 +136,18 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
             if (parameters != null && parameters.size() == 3) {
                 StringBuilder sb = new StringBuilder();
                 String valueDisplay = getParamValue(parameters.get(1));
-                sb.append(getParamValue(parameters.get(0))).append(" ").append(getParamValue(parameters.get(2)));
+
+                String lhs = getParamValue(parameters.get(0));
+                String opr = getParamValue(parameters.get(2));
+
+                // Since we don't want the operator to be escaped by KRAD. We need to escape the lhs and rhs here
+                // so that we can safely display the parameterString as is.
+
+                sb.append( ScriptUtils.escapeHtml(lhs) ).append(" ").append( opr );
 
                 if (valueDisplay != null) {
                     // !=null and =null operators values will be null and should not be displayed
-                    sb.append(" ").append(valueDisplay);
+                    sb.append(" ").append(ScriptUtils.escapeHtml( valueDisplay ));
                 }
 
                 setParameterDisplayString(sb.toString());

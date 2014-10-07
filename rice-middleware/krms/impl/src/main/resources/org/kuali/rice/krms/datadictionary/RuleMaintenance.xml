@@ -569,7 +569,7 @@
             </bean>
 
             <bean parent="Uif-DataField" p:propertyName="proposition.parameterDisplayString"
-                  p:showLabel="false" p:cssClasses="parameterDisplayString">
+                  p:showLabel="false" p:cssClasses="parameterDisplayString" p:escapeHtmlInPropertyValue="false">
             </bean>
 
             <bean parent="selectedNodeQuickActions"/>

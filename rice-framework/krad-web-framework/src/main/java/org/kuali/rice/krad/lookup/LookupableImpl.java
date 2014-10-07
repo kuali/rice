@@ -34,6 +34,7 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControl;
 import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControlPostData;
@@ -710,6 +711,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             dataReturnValue = ScriptUtils.translateValue(translatedKeyValues);
 
             returnLink.setHref("#");
+
+            String dialogId = lookupForm.getShowDialogId();
+            if (StringUtils.isNotBlank(dialogId)) {
+                returnLink.setHref(returnLink.getHref() + dialogId);
+            }
         } else if (StringUtils.isBlank(returnLink.getHref())) {
             String href = getReturnUrl(lookupView, lookupForm, dataObject);
 
@@ -802,6 +808,47 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         if (StringUtils.isNotBlank(lookupForm.getReferencesToRefresh())) {
             props.put(UifParameters.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
+        }
+
+        // setup action parameters for cases where the lookup request came from another dialog like edit line
+        String selectedCollectionId = null;
+        String selectedCollectionPath = null;
+        String selectedLineIndex = null;
+        if (lookupForm.getInitialRequestParameters() != null) {
+            String[] ids = lookupForm.getInitialRequestParameters().get(UifParameters.SELECTED_COLLECTION_ID);
+            if (ids != null && ids.length > 0) {
+                selectedCollectionId = ids[0];
+            }
+
+            String[] paths = lookupForm.getInitialRequestParameters().get(UifParameters.SELECTED_COLLECTION_PATH);
+            if (paths != null && paths.length > 0) {
+                selectedCollectionPath = paths[0];
+            }
+
+            String[] lines = lookupForm.getInitialRequestParameters().get(UifParameters.SELECTED_LINE_INDEX);
+            if (lines != null && lines.length > 0) {
+                selectedLineIndex = lines[0];
+            }
+        }
+
+        if (StringUtils.isNotBlank(selectedLineIndex)) {
+            props.put(UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.SELECTED_LINE_INDEX + "]",
+                    selectedLineIndex);
+        }
+
+        if (StringUtils.isNotBlank(selectedCollectionId)) {
+            props.put(UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.SELECTED_COLLECTION_ID + "]",
+                    selectedCollectionId);
+        }
+
+        if (StringUtils.isNotBlank(selectedCollectionPath)) {
+            props.put(UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.SELECTED_COLLECTION_PATH + "]",
+                    selectedCollectionPath);
+        }
+
+        String dialogId = lookupForm.getShowDialogId();
+        if (StringUtils.isNotBlank(dialogId)) {
+            props.put(UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.DIALOG_ID + "]", dialogId);
         }
 
         if (StringUtils.isNotBlank(lookupForm.getQuickfinderId())) {

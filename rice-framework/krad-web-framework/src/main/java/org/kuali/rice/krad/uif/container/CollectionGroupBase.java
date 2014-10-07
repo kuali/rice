@@ -34,8 +34,6 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
-import org.kuali.rice.krad.uif.field.Field;
-import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -111,6 +109,7 @@ import java.util.List;
         @BeanTag(name = "maintenanceTableSubCollection-withinSection",
                 parent = "Uif-MaintenanceTableSubCollection-WithinSection")})
 public class CollectionGroupBase extends GroupBase implements CollectionGroup {
+
     private static final long serialVersionUID = -6496712566071542452L;
 
     private Class<?> collectionObjectClass;
@@ -244,7 +243,8 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         if (addWithDialog) {
             // if not defined use default
             if (addLineDialog == null) {
-                addLineDialog = (DialogGroup) ComponentFactory.getNewComponentInstance(ComponentFactory.ADD_LINE_DIALOG);
+                addLineDialog = (DialogGroup) ComponentFactory.getNewComponentInstance(
+                        ComponentFactory.ADD_LINE_DIALOG);
             }
             // assign this group to the layout manager
             ((CollectionLayoutManager) getLayoutManager()).setAddLineGroup(addLineDialog);
@@ -350,8 +350,7 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             ((CollectionLayoutManager) getLayoutManager()).processPagingRequest(model, this);
         }
 
-        if (StringUtils.isNotBlank(this.getId())
-                && viewModel.getViewPostMetadata() != null
+        if (StringUtils.isNotBlank(this.getId()) && viewModel.getViewPostMetadata() != null
                 && viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId()) != null) {
             List<Object> newLines = viewModel.getViewPostMetadata().getAddedCollectionObjects().get(this.getId());
 
@@ -409,11 +408,14 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
             dialogId = dialogId + this.getContainerIdSuffix();
         }
 
+        // add the dialog id as additional parameters to the actions in the dialog
+        String additionalData = "{ 'actionParameters[selectedCollectionPath]' : '" + propertyName
+                + "', 'actionParameters[selectedLineIndex]' : '0', 'actionParameters[dialogId]' : '" + dialogId + "' }";
         String actionScript = UifConstants.JsFunctions.WRITE_CURRENT_PAGE_TO_SESSION + "(this, '" + sessionPage + "');";
 
         actionScript = ScriptUtils.appendScript(addWithDialogAction.getActionScript(), actionScript);
-        actionScript = ScriptUtils.appendScript(actionScript, ScriptUtils.buildFunctionCall(
-                UifConstants.JsFunctions.SHOW_DIALOG, dialogId, propertyName));
+        final String showDialogScript = "showDialog('" + dialogId + "', " + additionalData + ");";
+        actionScript = ScriptUtils.appendScript(actionScript, showDialogScript);
 
         addWithDialogAction.setActionScript(actionScript);
     }
@@ -461,7 +463,8 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
                     UifConstants.PostMetadata.DUPLICATE_LINE_PROPERTY_NAMES, this.getDuplicateLinePropertyNames());
             ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
                     UifConstants.PostMetadata.DUPLICATE_LINE_LABEL_STRING, this.getDuplicateLineLabelString(
-                    this.getDuplicateLinePropertyNames()));
+                            this.getDuplicateLinePropertyNames())
+            );
         }
 
         boolean hasBindingPath = getBindingInfo() != null && getBindingInfo().getBindingPath() != null;
@@ -517,23 +520,15 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     protected String getDuplicateLineLabelString(List<String> duplicateLinePropertyNames) {
         List<String> duplicateLineLabels = new ArrayList<String>();
 
-        List<DataField> fields = new ArrayList<DataField>();
-
-        for (Component addLineItem : getAddLineItems()) {
+        for (Component addLineItem : this.getAddLineItems()) {
             if (addLineItem instanceof DataField) {
-                fields.add((DataField) addLineItem);
-            } else if (addLineItem instanceof FieldGroup) {
-                Group group = ((FieldGroup) addLineItem).getGroup();
-                List<DataField> nestedAddLineItems = ViewLifecycleUtils.getElementsOfTypeDeep(group, DataField.class);
-                fields.addAll(nestedAddLineItems);
-            }
-        }
+                DataField addLineField = (DataField) addLineItem;
 
-        for (DataField field : fields) {
-            if (duplicateLinePropertyNames.contains(field.getPropertyName())) {
-                String label = field.getLabel();
-                String shortLabel = field.getShortLabel();
-                duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
+                if (duplicateLinePropertyNames.contains(addLineField.getPropertyName())) {
+                    String label = addLineField.getLabel();
+                    String shortLabel = addLineField.getShortLabel();
+                    duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
+                }
             }
         }
 
@@ -979,8 +974,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
     /**
      * Setter for the sub collection list
-     *
-     * @param subCollections
      */
     @Override
     public void setSubCollections(List<CollectionGroup> subCollections) {
@@ -1400,8 +1393,6 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
     /**
      * Setter for the total columns
-     *
-     * @param totalColumns
      */
     protected void setTotalColumns(List<String> totalColumns) {
         this.totalColumns = totalColumns;

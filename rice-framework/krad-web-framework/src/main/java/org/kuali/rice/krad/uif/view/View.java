@@ -30,10 +30,12 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
@@ -254,6 +256,14 @@ public class View extends ContainerBase {
             if (StringUtils.isNotBlank(form.getPageId())) {
                 setCurrentPageId(form.getPageId());
             }
+
+            String dialogId = form.getActionParamaterValue(UifParameters.DIALOG_ID);
+            if (StringUtils.isNotBlank(dialogId)) {
+                form.setShowDialogId(dialogId);
+
+                // initialize the view to open the dialog if necessary
+                initializeDialogLoadScript((UifFormBase) model);
+            }
         }
 
         super.performInitialization(model);
@@ -301,6 +311,36 @@ public class View extends ContainerBase {
         }
 
         breadcrumbOptions.setupBreadcrumbs(model);
+    }
+
+    /**
+     * Helper method to set the view's load script to open a dialog.
+     *
+     * @param form the form containing data
+     */
+    protected void initializeDialogLoadScript(UifFormBase form) {
+        // check for edit line dialog action parameters and if present, then show the dialog once page is loaded
+        String selectedCollectionPath = form.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        String selectedLineIndex = form.getActionParamaterValue(UifParameters.SELECTED_LINE_INDEX);
+        String dialogId = form.getShowDialogId();
+
+        if (StringUtils.isNotBlank(dialogId) && StringUtils.isNotBlank(selectedCollectionPath) && StringUtils
+                .isNotBlank(selectedLineIndex)) {
+            String actionScript = "setupImages();";
+            if (StringUtils.startsWith(dialogId, ComponentFactory.EDIT_LINE_DIALOG)) {
+                actionScript +=
+                        "showEditLineDialog('" + dialogId + "', '" + selectedCollectionPath + "', " + selectedLineIndex
+                                + ");";
+            } else {
+                String additionalData = "{ 'actionParameters[selectedCollectionPath]' : '" + selectedCollectionPath
+                        + "', 'actionParameters[selectedLineIndex]' : '0' }";
+                actionScript += "showDialog('" + dialogId + "', " + additionalData + ");";
+            }
+            setOnLoadScript(actionScript);
+        } else if (StringUtils.isNotBlank(dialogId) && !(this instanceof LookupView)) {
+            String actionScript = "setupImages(); showDialog('" + dialogId + "');";
+            setOnLoadScript(actionScript);
+        }
     }
 
     /**

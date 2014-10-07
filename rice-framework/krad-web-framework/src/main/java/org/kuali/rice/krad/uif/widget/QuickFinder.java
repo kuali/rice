@@ -34,6 +34,7 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
+import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
@@ -53,6 +54,7 @@ import org.kuali.rice.krad.util.KRADUtils;
         @BeanTag(name = "quickFinderByScript", parent = "Uif-QuickFinderByScript"),
         @BeanTag(name = "collectionQuickFinder", parent = "Uif-CollectionQuickFinder")})
 public class QuickFinder extends WidgetBase implements LifecycleEventListener {
+
     private static final long serialVersionUID = 3302390972815386785L;
 
     // lookup configuration
@@ -116,13 +118,13 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
 
     /**
      * Inherits readOnly from parent if not explicitly populated.
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
     public void afterEvaluateExpression() {
         super.afterEvaluateExpression();
-        
+
         if (getReadOnly() == null) {
             Component parent = ViewLifecycle.getPhase().getParent();
             setReadOnly(parent == null ? null : parent.getReadOnly());
@@ -151,7 +153,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         if (!isRender()) {
             return;
         }
-        
+
         View view = ViewLifecycle.getActiveLifecycle().getView();
 
         if (parent instanceof InputField) {
@@ -289,7 +291,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             if (!StringUtils.startsWith(toField, bindingInfo.getBindingPathPrefix())) {
                 String adjustedToFieldPath = bindingInfo.getPropertyAdjustedBindingPath(toField);
                 adjustedFieldConversions.put(fromField, adjustedToFieldPath);
-            }  else {
+            } else {
                 adjustedFieldConversions.put(fromField, toField);
             }
         }
@@ -394,8 +396,22 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         quickfinderAction.setId(getId() + UifConstants.IdSuffixes.ACTION);
 
         if (openInDialog) {
-            String lightboxScript = UifConstants.JsFunctions.SHOW_LOOKUP_DIALOG + "(\"" + quickfinderAction.getId()
-                    + "\"," + returnByScript + ",\"" + lookupDialogId + "\");";
+            String lightboxScript = null;
+            String dialogId = null;
+
+            Object superParent = parent.getContext().get(UifConstants.ContextVariableNames.PARENT);
+            if (superParent != null && superParent instanceof DialogGroup) {
+                dialogId = ((DialogGroup) superParent).getId();
+            }
+
+            // let lookup know that it's been called from a dialog by passing its dialog id if present
+            if (StringUtils.isBlank(dialogId)) {
+                lightboxScript = UifConstants.JsFunctions.SHOW_LOOKUP_DIALOG + "(\"" + quickfinderAction.getId() + "\","
+                        + returnByScript + ",\"" + lookupDialogId + "\");";
+            } else {
+                lightboxScript = UifConstants.JsFunctions.SHOW_LOOKUP_DIALOG + "(\"" + quickfinderAction.getId() + "\","
+                        + returnByScript + ",\"" + lookupDialogId + "\",\"" + dialogId + "\");";
+            }
 
             quickfinderAction.setActionScript(lightboxScript);
         }
@@ -403,11 +419,12 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         quickfinderAction.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);
 
         Class dataObjectClass = getDataObjectClass(dataObjectClassName);
-        ModuleService responsibleModuleService = KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(dataObjectClass);
+        ModuleService responsibleModuleService =
+                KRADServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(dataObjectClass);
         if (responsibleModuleService != null && responsibleModuleService.isExternalizable(dataObjectClass)) {
             if (ExternalizableBusinessObject.class.isAssignableFrom(dataObjectClass)) {
-                Class implementationClass = responsibleModuleService.getExternalizableBusinessObjectImplementation(dataObjectClass.asSubclass(
-                        ExternalizableBusinessObject.class));
+                Class implementationClass = responsibleModuleService.getExternalizableBusinessObjectImplementation(
+                        dataObjectClass.asSubclass(ExternalizableBusinessObject.class));
                 if (implementationClass != null) {
                     dataObjectClassName = implementationClass.getName();
                 }
@@ -487,10 +504,10 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
         Action finalQuickfinderAction = (Action) eventComponent;
 
         // add post metadata for focus point when the associated lookup returns
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                UifConstants.PostMetadata.QUICKFINDER_FOCUS_ID, finalQuickfinderAction.getFocusOnIdAfterSubmit());
-        ViewLifecycle.getViewPostMetadata().addComponentPostData(this,
-                UifConstants.PostMetadata.QUICKFINDER_JUMP_TO_ID, finalQuickfinderAction.getJumpToIdAfterSubmit());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.QUICKFINDER_FOCUS_ID,
+                finalQuickfinderAction.getFocusOnIdAfterSubmit());
+        ViewLifecycle.getViewPostMetadata().addComponentPostData(this, UifConstants.PostMetadata.QUICKFINDER_JUMP_TO_ID,
+                finalQuickfinderAction.getJumpToIdAfterSubmit());
     }
 
     /**
@@ -610,7 +627,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      * not be allowed to change the value</p>
      *
      * @return property names (delimited by a comma) whose criteria fields should be read-only on the
-     *         lookup view
+     * lookup view
      */
     @BeanTagAttribute
     public String getReadOnlyLookupFields() {

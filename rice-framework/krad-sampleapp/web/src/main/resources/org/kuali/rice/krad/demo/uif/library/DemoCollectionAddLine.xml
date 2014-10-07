@@ -40,17 +40,17 @@
   </bean>
 
   <!-- CollectionAddLine -->
-  <bean id="Demo-CollectionAddLine-Example1"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionAddLine-Example1" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CollectionAddLine-Example1 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="headerText" value="Default Add Line" />
+          <property name="headerText" value="Default Add Line"/>
           <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
@@ -64,37 +64,43 @@
   </bean>
 
   <!-- CollectionAddLine Lightbox-->
-  <bean id="Demo-CollectionAddLine-Example2"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionAddLine-Example2" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CollectionAddLine-Example2 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="headerText" value="Add With Dialog Top" />
+          <property name="headerText" value="Add With Dialog Top"/>
           <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_2" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_2"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <!-- addWithDialog flag -->
-          <property name="addWithDialog" value="true" />
+          <property name="addWithDialog" value="true"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1" p:required="true"/>
-              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2"/>
+              <bean parent="Uif-InputField" p:label="Field 2" p:propertyName="field2">
+                <property name="quickfinder">
+                  <bean parent="Uif-QuickFinder"
+                        p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                        p:fieldConversions="number:field2"/>
+                </property>
+              </bean>
             </list>
           </property>
         </bean>
 
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="headerText" value="Add With Dialog Bottom" />
+          <property name="headerText" value="Add With Dialog Bottom"/>
           <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_3" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
-          <property name="addWithDialog" value="true" />
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_3"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
+          <property name="addWithDialog" value="true"/>
           <!-- addLinePlacement flag setting placement-->
-          <property name="addLinePlacement" value="BOTTOM" />
+          <property name="addLinePlacement" value="BOTTOM"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
@@ -164,19 +170,19 @@
   </bean>
 
   <!-- CollectionAddLine Blank Line-->
-  <bean id="Demo-CollectionAddLine-Example3"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionAddLine-Example3" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CollectionAddLine-Example3 start-->
         <bean parent="Uif-Disclosure-TableCollectionSection">
-          <property name="headerText" value="Add Blank Line" />
+          <property name="headerText" value="Add Blank Line"/>
           <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_6" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_6"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <!-- renderAddBlankLineButton flag -->
-          <property name="renderAddBlankLineButton" value="true" />
+          <property name="renderAddBlankLineButton" value="true"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
@@ -189,7 +195,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-CollectionAddLine-Example4"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionAddLine-Example4" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CollectionAddLine-Example4 start-->
@@ -200,28 +206,28 @@
                 p:addWithDialog="true" p:layoutManager.renderSequenceField="false">
           <property name="addWithDialogAction">
             <bean parent="Uif-AddWithDialogAction" p:actionLabel="Add Income"
-                  p:iconClass="icon-plus" />
+                  p:iconClass="icon-plus"/>
           </property>
           <property name="items">
             <list>
               <bean parent="Uif-MessageField" p:order="10"
-                    p:messageText="1 [small class='text-muted'](05/14/2014 - 05/13/2015)[/small]" />
+                    p:messageText="1 [small class='text-muted'](05/14/2014 - 05/13/2015)[/small]"/>
               <bean parent="Uif-InputField" p:propertyName="field1"
-                    p:order="20" />
+                    p:order="20"/>
               <bean parent="Uif-InputField" p:propertyName="field2"
-                    p:order="30" />
+                    p:order="30"/>
             </list>
           </property>
           <property name="lineActions">
             <list>
               <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="cancelEdit"
-                    p:hidden="false" p:actionLabel="cancel" p:order="10" />
+                    p:hidden="false" p:actionLabel="cancel" p:order="10"/>
               <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="editLine"
-                    p:hidden="false" p:actionLabel="Edit" p:order="20" />
+                    p:hidden="false" p:actionLabel="Edit" p:order="20"/>
               <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="saveLine"
-                    p:hidden="false" p:actionLabel="Save" p:order="30" />
+                    p:hidden="false" p:actionLabel="Save" p:order="30"/>
               <bean parent="Uif-DeleteLineAction-IconOnly" p:order="40"
-                    p:iconClass="icon-trash" />
+                    p:iconClass="icon-trash"/>
             </list>
           </property>
           <property name="addLineDialog">
@@ -229,27 +235,27 @@
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field3" p:label="field3"
-                        p:order="10" />
+                        p:order="10"/>
                   <bean parent="Uif-InputField" p:propertyName="field1"
-                        p:order="20" />
+                        p:order="20"/>
                   <bean parent="Uif-InputField" p:propertyName="field2"
-                        p:order="30" />
+                        p:order="30"/>
                 </list>
               </property>
               <property name="footer.items">
                 <list>
-                  <bean parent="Uif-AddLineAction-Dialog" p:actionLabel="Add Income" />
-                  <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel" />
+                  <bean parent="Uif-AddLineAction-Dialog" p:actionLabel="Add Income"/>
+                  <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
                 </list>
               </property>
             </bean>
           </property>
           <property name="layoutManager.richTable.templateOptions">
             <map>
-              <entry key="sDom" value="tip" />
-              <entry key="bRetrieve" value="true" />
-              <entry key="bPaginate" value="false" />
-              <entry key="bInfo" value="false" />
+              <entry key="sDom" value="tip"/>
+              <entry key="bRetrieve" value="true"/>
+              <entry key="bPaginate" value="false"/>
+              <entry key="bInfo" value="false"/>
             </map>
           </property>
           <property name="header.lowerGroup">
@@ -258,7 +264,7 @@
                 <list>
                   <bean parent="Uif-Message"
                         p:messageText="Verify and adjust additional program income costs as necessary for this budget."
-                        p:order="10" />
+                        p:order="10"/>
                 </list>
               </property>
             </bean>
@@ -269,7 +275,7 @@
                 <list>
                   <bean parent="Uif-SecondaryActionButton-Mini" p:actionLabel="View Summary"
                         p:actionScript="alert('PropBudget-ProjectIncomePage-Summary')"
-                        p:order="10" />
+                        p:order="10"/>
                 </list>
               </property>
             </bean>
@@ -280,7 +286,7 @@
     </property>
   </bean>
 
-  <bean id="Demo-CollectionAddLine-Example5"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionAddLine-Example5" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CollectionAddLine-Example5 start-->
@@ -292,31 +298,31 @@
           <property name="items">
             <list>
               <bean parent="Uif-MessageField" p:order="10"
-                    p:messageText="1 [small class='text-muted'](05/14/2014 - 05/13/2015)[/small]" />
+                    p:messageText="1 [small class='text-muted'](05/14/2014 - 05/13/2015)[/small]"/>
               <bean parent="Uif-InputField" p:propertyName="field1"
-                    p:order="20" />
+                    p:order="20"/>
               <bean parent="Uif-InputField" p:propertyName="field2"
-                    p:order="30" />
+                    p:order="30"/>
             </list>
           </property>
           <property name="lineActions">
             <list>
               <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="cancelEdit"
-                    p:hidden="false" p:actionLabel="cancel" p:order="10" />
+                    p:hidden="false" p:actionLabel="cancel" p:order="10"/>
               <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="editLine"
-                    p:hidden="false" p:actionLabel="Edit" p:order="20" />
+                    p:hidden="false" p:actionLabel="Edit" p:order="20"/>
               <bean parent="Uif-SecondaryActionButton-Mini" p:methodToCall="saveLine"
-                    p:hidden="false" p:actionLabel="Save" p:order="30" />
+                    p:hidden="false" p:actionLabel="Save" p:order="30"/>
               <bean parent="Uif-DeleteLineAction-IconOnly" p:order="40"
-                    p:iconClass="icon-trash" />
+                    p:iconClass="icon-trash"/>
             </list>
           </property>
           <property name="layoutManager.richTable.templateOptions">
             <map>
-              <entry key="sDom" value="tip" />
-              <entry key="bRetrieve" value="true" />
-              <entry key="bPaginate" value="false" />
-              <entry key="bInfo" value="false" />
+              <entry key="sDom" value="tip"/>
+              <entry key="bRetrieve" value="true"/>
+              <entry key="bPaginate" value="false"/>
+              <entry key="bInfo" value="false"/>
             </map>
           </property>
           <property name="header.lowerGroup">
@@ -325,7 +331,7 @@
                 <list>
                   <bean parent="Uif-Message"
                         p:messageText="Verify and adjust additional program income costs as necessary for this budget."
-                        p:order="10" />
+                        p:order="10"/>
                 </list>
               </property>
             </bean>
@@ -336,7 +342,7 @@
                 <list>
                   <bean parent="Uif-SecondaryActionButton-Mini" p:actionLabel="View Summary"
                         p:actionScript="alert('PropBudget-ProjectIncomePage-Summary')"
-                        p:order="10" />
+                        p:order="10"/>
                 </list>
               </property>
             </bean>
@@ -348,7 +354,7 @@
   </bean>
 
   <!-- CollectionAddLine with Duplicate Property Names -->
-  <bean id="Demo-CollectionAddLine-Example6"  parent="Uif-VerticalBoxSection">
+  <bean id="Demo-CollectionAddLine-Example6" parent="Uif-VerticalBoxSection">
     <property name="items">
       <list>
         <!-- ex:Demo-CollectionAddLine-Example6 start-->
@@ -359,12 +365,12 @@
               <value>field2</value>
             </list>
           </property>
-          <property name="headerText" value="Default Add Line with duplicateLinePropertyNames property configured" />
+          <property name="headerText" value="Default Add Line with duplicateLinePropertyNames property configured"/>
           <property name="collectionObjectClass"
-                    value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1_9" />
-          <property name="layoutManager.generateAutoSequence" value="true" />
-          <property name="layoutManager.richTable.render" value="true" />
+                    value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_9"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
+          <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>

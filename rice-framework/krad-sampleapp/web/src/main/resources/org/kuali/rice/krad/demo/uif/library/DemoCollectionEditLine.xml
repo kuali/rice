@@ -38,6 +38,7 @@
         <ref bean="Demo-CollectionEditLine-Example6"/>
         <ref bean="Demo-CollectionEditLine-Example7"/>
         <ref bean="Demo-CollectionEditLine-Example8"/>
+        <ref bean="Demo-CollectionEditLine-Example9"/>
         <ref bean="Demo-CollectionEditLine-Example10"/>
         <ref bean="Demo-CollectionEditLine-Example11"/>
         <ref bean="Demo-CollectionEditLine-Example12"/>

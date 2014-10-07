@@ -42,6 +42,7 @@ import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControl;
 import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControlPostData;
 import org.kuali.rice.krad.uif.control.TextAreaControl;
 import org.kuali.rice.krad.uif.control.TextControl;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -73,6 +74,7 @@ import org.kuali.rice.krad.util.KRADConstants;
  */
 @BeanTag(name = "lookupView", parent = "Uif-LookupView")
 public class LookupView extends FormView {
+
     private static final long serialVersionUID = 716926008488403616L;
 
     private Class<?> dataObjectClass;
@@ -217,9 +219,11 @@ public class LookupView extends FormView {
 
         // autoTruncateColumns: use system wide lookup result configuration if not specified
         if (this.getResultsGroup().getLayoutManager() instanceof TableLayoutManager) {
-            TableLayoutManager resultsTableLayoutManager = (TableLayoutManager) this.getResultsGroup().getLayoutManager();
+            TableLayoutManager resultsTableLayoutManager =
+                    (TableLayoutManager) this.getResultsGroup().getLayoutManager();
             if (resultsTableLayoutManager.isAutoTruncateColumns() == null) {
-                resultsTableLayoutManager.setAutoTruncateColumns(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
+                resultsTableLayoutManager.setAutoTruncateColumns(
+                        CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
                                 KRADConstants.KRAD_NAMESPACE, KRADConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE,
                                 KRADConstants.SystemGroupParameterNames.AUTO_TRUNCATE_COLUMNS, false));
             }
@@ -242,7 +246,8 @@ public class LookupView extends FormView {
         LookupForm lookupForm = (LookupForm) model;
         String viewId = lookupForm.getViewId();
 
-        Map<String, FilterableLookupCriteriaControlPostData> filterableLookupCriteria = new HashMap<String, FilterableLookupCriteriaControlPostData>();
+        Map<String, FilterableLookupCriteriaControlPostData> filterableLookupCriteria =
+                new HashMap<String, FilterableLookupCriteriaControlPostData>();
 
         List<InputField> fields = ViewLifecycleUtils.getElementsOfTypeDeep(criteriaGroup, InputField.class);
 
@@ -258,10 +263,24 @@ public class LookupView extends FormView {
         }
 
         ViewPostMetadata viewPostMetadata = ViewLifecycle.getViewPostMetadata();
-        viewPostMetadata.addComponentPostData(viewId, UifConstants.PostMetadata.FILTERABLE_LOOKUP_CRITERIA, filterableLookupCriteria);
+        viewPostMetadata.addComponentPostData(viewId, UifConstants.PostMetadata.FILTERABLE_LOOKUP_CRITERIA,
+                filterableLookupCriteria);
 
         if (lookupForm.isReturnByScript()) {
             getAdditionalHiddenValues().put(UifParameters.RETURN_BY_SCRIPT, "true");
+        }
+
+        // if the lookup was called within a dialog then we want to add it to the action's parameters
+        String dialogId = lookupForm.getShowDialogId();
+        if (StringUtils.isNotBlank(dialogId)) {
+            List<Action> actions = ViewLifecycleUtils.getElementsOfTypeDeep(getFooter().getItems(), Action.class);
+
+            for (Action action : actions) {
+                action.addActionParameter(UifParameters.DIALOG_ID, dialogId);
+            }
+        } else {
+            dialogId = lookupForm.getActionParamaterValue(UifParameters.DIALOG_ID);
+            lookupForm.setShowDialogId(dialogId);
         }
     }
 
@@ -288,8 +307,8 @@ public class LookupView extends FormView {
         }
 
         AttributeDefinition attributeDefinition =
-                KRADServiceLocatorWeb.getDataDictionaryService().getAttributeDefinition(
-                        dataObjectClass.getName(), UifPropertyPaths.ACTIVE);
+                KRADServiceLocatorWeb.getDataDictionaryService().getAttributeDefinition(dataObjectClass.getName(),
+                        UifPropertyPaths.ACTIVE);
 
         LookupInputField activeLookupField;
         if (attributeDefinition == null) {
@@ -392,7 +411,6 @@ public class LookupView extends FormView {
      * with a message that can be configured with {@link LookupView#rangedToMessage}</p>
      *
      * @param toDate lookup input field that field group should be build for
-     *
      * @return field group that contains a from and to lookup input field for searching a date range
      *
      * @see LookupView#rangeFieldGroupPrototype
@@ -425,8 +443,7 @@ public class LookupView extends FormView {
                 KRADConstants.LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
         fromDate.getBindingInfo().setBindingName(
                 KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
-        fromDate.setPropertyName(
-                KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
+        fromDate.setPropertyName(KRADConstants.LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX + fromDate.getPropertyName());
         fromDate.setOrder(0);
 
         // add the criteria fields to the field group
@@ -678,6 +695,7 @@ public class LookupView extends FormView {
      * sorting of the search results.
      *
      * @return list of property names valid for the configured data object class
+     *
      * @see LookupView#isDefaultSortAscending()
      */
     @BeanTagAttribute(name = "defaultSortAttributeNames", type = BeanTagAttribute.AttributeType.LISTVALUE)
@@ -697,7 +715,7 @@ public class LookupView extends FormView {
      * on ascending or descending order (default is true, ascending).
      *
      * @return boolean true if ascending sort should be performed, false if descending sort should be
-     *         performed
+     * performed
      */
     @BeanTagAttribute(name = "defaultSortAscending")
     public boolean isDefaultSortAscending() {
@@ -873,5 +891,4 @@ public class LookupView extends FormView {
     public void setAdditionalSecurePropertyNames(List<String> additionalSecurePropertyNames) {
         this.additionalSecurePropertyNames = additionalSecurePropertyNames;
     }
-
 }

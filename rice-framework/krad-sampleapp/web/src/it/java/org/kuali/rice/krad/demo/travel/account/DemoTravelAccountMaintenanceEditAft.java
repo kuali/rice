@@ -253,6 +253,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndClickBlanketApprove();
         jGrowl("Click OK");
         waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
+        acceptAlertIfPresent();
         waitForProgressLoading();
         checkForDocErrorKrad();
 

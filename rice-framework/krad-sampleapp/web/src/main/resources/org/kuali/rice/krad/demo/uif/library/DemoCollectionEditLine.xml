@@ -318,9 +318,27 @@
         <bean id="Demo-CollectionEditLine-Section1" parent="Uif-TableCollectionSection">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection4"/>
+          <property name="addWithDialog" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="true"/>
+          <property name="addLineDialog">
+            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                </list>
+              </property>
+              <property name="footer.items">
+                <list>
+                  <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
+                  <bean parent="Uif-AddLineAction-Dialog" p:actionLabel="Add"/>
+                </list>
+              </property>
+            </bean>
+          </property>
           <property name="layoutManager.rowDetailsGroup">
             <bean parent="Uif-VerticalBoxGroup">
               <property name="items">

@@ -136,8 +136,7 @@ public class CollectionGroupLineBuilder implements Serializable {
 
         List<Field> lineFields = processAnyRemoteFieldsHolder(lineBuilderContext.getCollectionGroup(), lineItems);
 
-        adjustFieldId(lineFields);
-        adjustFieldBinding(lineFields, lineBuilderContext.getBindingPath());
+        adjustFieldBindingAndId(lineFields, lineBuilderContext.getBindingPath());
 
         ContextUtils.updateContextsForLine(lineFields, lineBuilderContext.getCollectionGroup(),
                 lineBuilderContext.getCurrentLine(), lineBuilderContext.getLineIndex(),
@@ -235,51 +234,57 @@ public class CollectionGroupLineBuilder implements Serializable {
     }
 
     /**
-     * Adjusts the id suffixes for all fields and nested child fields.
-     *
-     * @param lineFields list of fields to update
-     */
-    protected void adjustFieldId(List<Field> lineFields) {
-        List<Field> fields = new ArrayList<Field>();
-
-        for (Field lineField : lineFields) {
-            if (lineField instanceof FieldGroup) {
-                Group group = ((FieldGroup) lineField).getGroup();
-                List<Field> nestedLineFields = ViewLifecycleUtils.getElementsOfTypeDeep(group, Field.class);
-                fields.addAll(nestedLineFields);
-            } else {
-                fields.add(lineField);
-            }
-        }
-
-        for (Field field : fields) {
-            ComponentUtils.updateIdWithSuffix(field, lineBuilderContext.getIdSuffix());
-
-            field.setContainerIdSuffix(lineBuilderContext.getIdSuffix());
-        }
-    }
-
-    /**
-     * Adjusts the binding path for the given fields to match the collections path.
+     * Adjusts the binding path for the given fields to match the collections path, and sets the container id
+     * suffix for the fields so all nested components will get their ids adjusted.
      *
      * @param lineFields list of fields to update
      * @param bindingPath binding path to add
      */
-    protected void adjustFieldBinding(List<Field> lineFields, String bindingPath) {
+    protected void adjustFieldBindingAndId(List<Field> lineFields, String bindingPath) {
         for (Field lineField : lineFields) {
-            if (lineField instanceof DataBinding && ((DataBinding) lineField).getBindingInfo().isBindToForm()) {
-                BindingInfo bindingInfo = ((DataBinding) lineField).getBindingInfo();
-                bindingInfo.setCollectionPath(null);
-                bindingInfo.setBindingName(
-                        bindingInfo.getBindingName() + "[" + lineBuilderContext.getLineIndex() + "]");
-            } else {
-                ComponentUtils.prefixBindingPath(lineField, bindingPath);
+            adjustFieldBinding(lineField, bindingPath);
+            adjustFieldId(lineField);
+
+            if (lineField instanceof FieldGroup) {
+                Group group = ((FieldGroup) lineField).getGroup();
+                List<Field> nestedLineFields = ViewLifecycleUtils.getElementsOfTypeDeep(group, Field.class);
+
+                for (Field nestedLineField : nestedLineFields) {
+                    adjustFieldId(nestedLineField);
+                }
             }
         }
 
         if (lineBuilderContext.isBindToForm()) {
             ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, Boolean.valueOf(true));
         }
+    }
+
+    /**
+     * Adjusts the binding path for the given field to match the collections path.
+     *
+     * @param lineField field to update
+     * @param bindingPath binding path to add
+     */
+    protected void adjustFieldBinding(Field lineField, String bindingPath) {
+        if (lineField instanceof DataBinding && ((DataBinding) lineField).getBindingInfo().isBindToForm()) {
+            BindingInfo bindingInfo = ((DataBinding) lineField).getBindingInfo();
+            bindingInfo.setCollectionPath(null);
+            bindingInfo.setBindingName(bindingInfo.getBindingName() + "[" + lineBuilderContext.getLineIndex() + "]");
+        } else {
+            ComponentUtils.prefixBindingPath(lineField, bindingPath);
+        }
+    }
+
+    /**
+     * Adjusts the id suffix for the given field.
+     *
+     * @param lineField field to update
+     */
+    protected void adjustFieldId(Field lineField) {
+        ComponentUtils.updateIdWithSuffix(lineField, lineBuilderContext.getIdSuffix());
+
+        lineField.setContainerIdSuffix(lineBuilderContext.getIdSuffix());
     }
 
     /**
@@ -821,9 +826,7 @@ public class CollectionGroupLineBuilder implements Serializable {
                     newFields.addAll(newFieldGroups);
                     List<Field> unprocessedFields = processAnyRemoteFieldsHolder(
                             lineBuilderContext.getCollectionGroup(), unprocessed);
-                    //adjustFieldBindingAndId(unprocessedFields, UifPropertyPaths.DIALOG_DATA_OBJECT);
-                    adjustFieldId(unprocessedFields);
-                    adjustFieldBinding(unprocessedFields, UifPropertyPaths.DIALOG_DATA_OBJECT);
+                    adjustFieldBindingAndId(unprocessedFields, UifPropertyPaths.DIALOG_DATA_OBJECT);
                     newFields.addAll(unprocessedFields);
                     lineDialog.setItems(newFields);
                 }

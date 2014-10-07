@@ -372,13 +372,18 @@ public class ComponentUtils {
      * @param idSuffix the suffix to be appended
      */
     public static void updateIdWithSuffix(LifecycleElement element, String idSuffix) {
-        if (element != null && !StringUtils.isEmpty(idSuffix)) {
+        if (StringUtils.isBlank(idSuffix)) {
+            return;
+        }
+
+        if (element != null && !StringUtils.endsWith(element.getId(), idSuffix)) {
             element.setId(element.getId() + idSuffix);
         }
 
         if (element instanceof Container) {
             LayoutManager manager = ((Container) element).getLayoutManager();
-            if (manager != null) {
+
+            if (manager != null && !StringUtils.endsWith(manager.getId(), idSuffix)) {
                 manager.setId(manager.getId() + idSuffix);
             }
         }

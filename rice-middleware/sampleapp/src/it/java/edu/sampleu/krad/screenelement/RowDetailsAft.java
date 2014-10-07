@@ -43,6 +43,7 @@ public class RowDetailsAft extends WebDriverLegacyITBase {
     }
     
     private void testRowDetails() throws Exception{
+        waitForProgressLoading();
         waitAndClickByXpath("//a[@id='Demo-RowDetails-Section6_detLink_line0']");
         waitForElementPresentByXpath("//input[@name='field4']");
         waitAndClickByXpath("//a[@id='Demo-RowDetails-Section1_detLink_line0']");

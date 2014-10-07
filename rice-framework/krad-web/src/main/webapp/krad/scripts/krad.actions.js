@@ -293,18 +293,21 @@ function _validateGroupOnly($group) {
  * @param componentId id for the component to create placeholder for and retrieve
  * @param callback function callback to invoke after the component has been retrieved
  * @param additionalData data to add to the retrieve ajax request
+ * @param disableBlocking (optional) whether or not the loading indicator should be shown
  */
-function createPlaceholderAndRetrieve(componentId, callback, additionalData) {
+function createPlaceholderAndRetrieve(componentId, callback, additionalData, disableBlocking) {
     var placeholderSpan = '<span id="' + componentId + '"class="' + kradVariables.CLASSES.PLACEHOLDER +
             '" data-role="' + kradVariables.DATA_ROLES.PLACEHOLDER + '"></span>';
+    additionalData = additionalData || {};
 
+    additionalData.isDialog = true;
     if (jQuery('#' + componentId).length == 0) {
         jQuery('#' + kradVariables.IDS.DIALOGS).append(placeholderSpan);
     } else {
         jQuery('#' + componentId).replaceWith(placeholderSpan);
     }
 
-    retrieveComponent(componentId, undefined, callback, additionalData, true);
+    retrieveComponent(componentId, undefined, callback, additionalData, disableBlocking);
 }
 
 /**

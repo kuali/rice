@@ -42,8 +42,10 @@
  * @param dialogId id for the element to display in a modal
  * @param options (optional) object containing options (including event callbacks)
  * @param modalOptions (optional) options to be passed into the modal widget call
+ * @param disableBlocking (optional) whether or not the loading indicator should be shown for ajax retrieved dialogs,
+ * set this to true when the dialog is known to load quickly
  */
-function showDialog(dialogId, options, modalOptions) {
+function showDialog(dialogId, options, modalOptions, disableBlocking) {
     var $dialog = jQuery('#' + dialogId);
 
     options = options || {};
@@ -61,7 +63,7 @@ function showDialog(dialogId, options, modalOptions) {
             options.alwaysRefresh = false;
 
             showDialog(dialogId, options);
-        }, additionalSubmitData);
+        }, additionalSubmitData, disableBlocking);
 
         return;
     }
@@ -204,7 +206,7 @@ function confirmDialog(confirmText, headerText, options, protoDialogId) {
     if (($protoDialog.length === 0) || $protoDialog.hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
         createPlaceholderAndRetrieve(protoDialogId, function () {
             confirm(confirmText, headerText, options);
-        });
+        }, {}, true);
 
         return;
     }

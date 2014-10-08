@@ -21,10 +21,11 @@ package org.kuali.rice.krad.test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class KRADTestConstants {
-    
+
     public static final String TEST_NAMESPACE_CODE = "TEST";
 
     public static final class TestConstants {
+
         private static final String HOST = "localhost";
         private static final String PORT = "8080";
         public static final String BASE_PATH = "http://" + HOST + ":" + PORT + "/";
@@ -37,17 +38,21 @@ public final class KRADTestConstants {
     }
 
     public static final class DataAttributesConstants {
+
         public static final String PARENT = "parent";
     }
 
     public static final class CssClassNames {
+
         public static final String INPUT_FIELD = "uif-inputField";
         public static final String HORIZONTAL_FIELD_GROUP = "uif-horizontalFieldGroup";
+        public static final String ACTION_COLUMN = "uif-collection-column-action";
         public static final String ADD_LINE_ROW = "uif-collectionAddItem";
         public static final String MODAL_DIALOG_BODY = "modal-body";
         public static final String MODAL_DIALOG_FOOTER = "modal-footer";
         public static final String MODAL_DIALOG_HEADER = "modal-header";
         public static final String ROW_DETAILS_GROUP = "uif-rowDetails";
+        public static final String SUB_COLLECTION = "uif-subCollection";
     }
 
     private KRADTestConstants() {

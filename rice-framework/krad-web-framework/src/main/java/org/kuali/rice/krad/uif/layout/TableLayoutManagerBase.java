@@ -877,13 +877,29 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             }
 
             //details action
-            if (lineField instanceof FieldGroup && ((FieldGroup) lineField).getItems() != null) {
-                for (Component component : ((FieldGroup) lineField).getItems()) {
-                    if (component != null && component instanceof Action && (component.getDataAttributes() != null)
-                            && component.getDataAttributes().get("role") != null && component.getDataAttributes().get(
-                            "role").equals("detailsLink") && StringUtils.isBlank(
-                            ((Action) component).getActionScript())) {
-                        ((Action) component).setActionScript("rowDetailsActionHandler(this,'" + this.getId() + "');");
+            if (lineField instanceof FieldGroup) {
+                FieldGroup lineFieldGroup = (FieldGroup) lineField;
+
+                List<? extends Component> lineFieldItems = lineFieldGroup.getItems();
+                if (lineFieldItems != null) {
+                    for (Component component : lineFieldItems) {
+                        if (component != null && component instanceof Action && (component.getDataAttributes() != null)
+                                && component.getDataAttributes().get("role") != null && component.getDataAttributes()
+                                .get("role").equals("detailsLink") && StringUtils.isBlank(
+                                ((Action) component).getActionScript())) {
+                            ((Action) component).setActionScript(
+                                    "rowDetailsActionHandler(this,'" + this.getId() + "');");
+                        }
+                    }
+                }
+
+                // set the sub-collection field in the details to be read only if its an edit in dialog and not add line
+                if (collectionGroup.isEditWithDialog()) {
+                    if (!isAddLine && lineFieldGroup.getDataAttributes() != null) {
+                        String role = lineFieldGroup.getDataAttributes().get(UifConstants.DataAttributes.ROLE);
+                        if (role != null && role.equals("detailsFieldGroup")) {
+                            lineFieldGroup.setReadOnly(true);
+                        }
                     }
                 }
             }
@@ -1710,11 +1726,6 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
         }
 
         detailsFieldGroup.setReadOnly(collectionGroup.getReadOnly());
-
-        // set the sub-collection field in the details to be read only if its an edit in dialog
-        if (collectionGroup.isEditWithDialog()) {
-            detailsFieldGroup.setReadOnly(true);
-        }
 
         List<Component> theItems = new ArrayList<Component>();
         theItems.add(detailsFieldGroup);

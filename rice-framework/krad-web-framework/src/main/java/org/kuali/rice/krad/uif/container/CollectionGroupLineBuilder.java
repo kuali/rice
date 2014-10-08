@@ -244,15 +244,6 @@ public class CollectionGroupLineBuilder implements Serializable {
         for (Field lineField : lineFields) {
             adjustFieldBinding(lineField, bindingPath);
             adjustFieldId(lineField);
-
-            if (lineField instanceof FieldGroup) {
-                Group group = ((FieldGroup) lineField).getGroup();
-                List<Field> nestedLineFields = ViewLifecycleUtils.getElementsOfTypeDeep(group, Field.class);
-
-                for (Field nestedLineField : nestedLineFields) {
-                    adjustFieldId(nestedLineField);
-                }
-            }
         }
 
         if (lineBuilderContext.isBindToForm()) {
@@ -707,42 +698,56 @@ public class CollectionGroupLineBuilder implements Serializable {
     }
 
     /**
-     * Add additional information to the group and fields in the add line to allow for correct
-     * add control selection.
+     * Add additional information to the fields in the add line to allow for correct add control selection.
+     *
+     * @param lineFields list of fields instances for the line
      */
     protected void setupAddLineControlValidation(List<Field> lineFields) {
+        // don't process for anything but an add line
         if (!lineBuilderContext.isAddLine()) {
             return;
         }
 
-        String selector = "";
-        for (Field field : lineFields) {
-            if (field instanceof InputField) {
-                // sets up - skipping these fields in add area during standard form validation calls
-                // custom addLineToCollection js call will validate these fields manually on an add
-                Control control = ((InputField) field).getControl();
+        // set up skipping fields with the given selectors in add area during standard form validation calls
+        // custom addLineToCollection js call will validate these fields manually on an add
+        List<String> selectors = new ArrayList<String>();
+        String lineFieldSelector = UifConstants.IdSuffixes.CONTROL;
+        String nestedLineFieldSelector = UifConstants.IdSuffixes.ADD_LINE + UifConstants.IdSuffixes.CONTROL;
 
-                if (control != null) {
-                    control.addStyleClass(CssConstants.Classes.IGNORE_VALID);
-                    selector = selector + ",#" + field.getId() + UifConstants.IdSuffixes.CONTROL;
-                }
-            } else if (field instanceof FieldGroup) {
-                List<InputField> fields = ViewLifecycleUtils.getElementsOfTypeDeep(((FieldGroup) field).getGroup(),
-                        InputField.class);
+        // apply changes to and collect selectors from all fields and field groups
+        for (Field lineField : lineFields) {
+            if (lineField instanceof InputField) {
+                setupAddLineControlValidation((InputField) lineField, selectors, lineFieldSelector);
+            } else if (lineField instanceof FieldGroup) {
+                Group group = ((FieldGroup) lineField).getGroup();
+                List<InputField> nestedLineFields = ViewLifecycleUtils.getElementsOfTypeDeep(group, InputField.class);
 
-                for (InputField nestedField : fields) {
-                    Control control = nestedField.getControl();
-
-                    if (control != null) {
-                        control.addStyleClass(CssConstants.Classes.IGNORE_VALID);
-                        selector = selector + ",#" + nestedField.getId() + UifConstants.IdSuffixes.CONTROL;
-                    }
+                for (InputField nestedLineField : nestedLineFields) {
+                    setupAddLineControlValidation(nestedLineField, selectors, nestedLineFieldSelector);
                 }
             }
         }
 
-        lineBuilderContext.getCollectionGroup().addDataAttribute(UifConstants.DataAttributes.ADD_CONTROLS,
-                selector.replaceFirst(",", ""));
+        // add collected selectors to data attributes
+        lineBuilderContext.getCollectionGroup().addDataAttribute(
+                UifConstants.DataAttributes.ADD_CONTROLS, StringUtils.join(selectors, ","));
+    }
+
+    /**
+     * Add additional information to a field in the add line to allow for correct add control selection.
+     *
+     * @param lineField field instance for the line
+     * @param selectors list of selectors
+     * @param suffix id suffix to add
+     */
+    protected void setupAddLineControlValidation(InputField lineField, List<String> selectors, String suffix) {
+        Control control = lineField.getControl();
+
+        // ignore automatic validation and grab the selector for manual validation
+        if (control != null) {
+            control.addStyleClass(CssConstants.Classes.IGNORE_VALID);
+            selectors.add("#" + lineField.getId() + suffix);
+        }
     }
 
     /**

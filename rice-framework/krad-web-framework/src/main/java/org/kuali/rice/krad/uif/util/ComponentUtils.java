@@ -376,14 +376,14 @@ public class ComponentUtils {
             return;
         }
 
-        if (element != null && !StringUtils.endsWith(element.getId(), idSuffix)) {
+        if (element != null) {
             element.setId(element.getId() + idSuffix);
         }
 
         if (element instanceof Container) {
             LayoutManager manager = ((Container) element).getLayoutManager();
 
-            if (manager != null && !StringUtils.endsWith(manager.getId(), idSuffix)) {
+            if (manager != null) {
                 manager.setId(manager.getId() + idSuffix);
             }
         }

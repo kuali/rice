@@ -349,7 +349,7 @@ public final class KRADUtils {
                     String fieldConversionStr = fieldConversions[i];
                     if (StringUtils.isNotBlank(fieldConversionStr)) {
                         if (StringUtils.contains(fieldConversionStr, ":")) {
-                            String[] fieldConversion = StringUtils.split(fieldConversionStr, ":");
+                            String[] fieldConversion = fieldConversionStr.split(":",-1);
                             map.put(fieldConversion[0], fieldConversion[1]);
                         } else {
                             map.put(fieldConversionStr, fieldConversionStr);
@@ -357,7 +357,7 @@ public final class KRADUtils {
                     }
                 }
             } else if (StringUtils.contains(parameter, ":")) {
-                String[] fieldConversion = StringUtils.split(parameter, ":");
+                String[] fieldConversion = parameter.split(":",-1);
                 map.put(fieldConversion[0], fieldConversion[1]);
             } else {
                 map.put(parameter, parameter);

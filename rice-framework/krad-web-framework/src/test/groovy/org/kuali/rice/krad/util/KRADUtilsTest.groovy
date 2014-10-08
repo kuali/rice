@@ -16,9 +16,11 @@
 package org.kuali.rice.krad.util;
 
 import org.junit.Test;
-import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult;
+import org.kuali.rice.krad.datadictionary.validation.result.DictionaryValidationResult
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class KRADUtilsTest {
 
@@ -70,4 +72,79 @@ public class KRADUtilsTest {
         assertTrue("partial last term should return false", !partialLastTermResult);
     }
 
+    @Test
+    public void testConvertStringParameterToMap_OneFieldEmptyValue(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap("field1")
+        assertNotNull(result)
+        assertEquals(1, result.size())
+        assertEquals("field1",result.get("field1"))
+
+    }
+
+    @Test
+    public void testConvertStringParameterToMap_OneFieldOneValue(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap("field1:value1")
+        assertNotNull(result)
+        assertEquals(1, result.size())
+        assertEquals("value1",result.get("field1"))
+
+    }
+
+    @Test
+    public void testConvertStringParameterToMap_OneFieldBlankValue(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap("field1:")
+        assertNotNull(result)
+        assertEquals(1, result.size())
+        assertEquals("",result.get("field1"))
+
+    }
+
+    @Test
+    public void testConvertStringParameterToMap_TowFieldsTwoValues(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap("field1:value1,field2:value2")
+        assertNotNull(result)
+        assertEquals(2, result.size())
+        assertEquals("value1",result.get("field1"))
+        assertEquals("value2",result.get("field2"))
+    }
+
+    @Test
+    public void testConvertStringParameterToMap_TwoFieldsOneBlankValue(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap("field1:value1,field2:")
+        assertNotNull(result)
+        assertEquals(2, result.size())
+        assertEquals("value1",result.get("field1"))
+        assertEquals("",result.get("field2"))
+    }
+
+    @Test
+    public void testConvertStringParameterToMap_TwoFieldsOneEmptyValue(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap("field1:value1,field2")
+        assertNotNull(result)
+        assertEquals(2, result.size())
+        assertEquals("value1",result.get("field1"))
+        assertEquals("field2",result.get("field2"))
+    }
+
+    @Test
+    public void testConvertStringParameterToMap_NullParameter(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap(null)
+        assertNotNull(result)
+        assertEquals(0, result.size())
+    }
+
+    @Test
+    public void testConvertStringParameterToMap_BlankParameter(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap("")
+        assertNotNull(result)
+        assertEquals(0, result.size())
+    }
+
+    @Test
+    public void testConvertStringParameterToMap_TowValuesOneBlankFieldBlankValue(){
+        Map<String, String> result = KRADUtils.convertStringParameterToMap("field1:value1,")
+        assertNotNull(result)
+        assertEquals(1, result.size())
+        assertEquals("value1",result.get("field1"))
+    }
 }

@@ -898,8 +898,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected void submitSuccessfully() throws InterruptedException {
-//        submitSuccessfully(WebDriverUtils.configuredImplicityWait());
-        submitSuccessfully(120); // temp for release as I cannot modify the CI Job
+        submitSuccessfully(WebDriverUtils.configuredImplicityWait());
     }
 
     protected void submitSuccessfully(int loadingSeconds) throws InterruptedException {
@@ -1087,29 +1086,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected void testCancelConfirmation() throws InterruptedException {
         waitAndCancelConfirmation();
-    }
-
-    protected void testCreateNewAgenda() throws Exception {
-        selectFrameIframePortlet();
-        String desc = getDescriptionUnique();
-        String docId = waitForAgendaDocId();
-        selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", desc);
-        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
-        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
-        Thread.sleep(1000);
-        // extra focus and blur to work around KULRICE-11534 Create New Agenda requires two blur events to fully render Type when Context is typed in (first renders label, second renders select)
-        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
-        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
-        waitForElementPresentByName("document.newMaintainableObject.dataObject.agenda.typeId");
-        selectByName("document.newMaintainableObject.dataObject.agenda.typeId", "Campus Agenda");
-        waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
-        waitAndClickSubmitByText();
-        waitAndClickConfirmSubmitOk();
-        assertTextPresent(new String[]{"Document was successfully submitted.", "ENROUTE"});
-        assertDocSearch(docId, "ENROUTE");
     }
 
     protected void testCreateDocType() throws Exception {

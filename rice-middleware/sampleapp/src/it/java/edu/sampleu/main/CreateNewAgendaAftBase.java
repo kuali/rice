@@ -15,7 +15,6 @@
  */
 package edu.sampleu.main;
 
-import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
@@ -48,12 +47,26 @@ public class CreateNewAgendaAftBase extends MainTmplMthdSTNavBase{
         return "Create New Agenda";
     }
 
-    public void testCreateNewAgendaBookmark(JiraAwareFailable failable) throws Exception {
-        testCreateNewAgenda();
-        passed();
-    }
-    public void testCreateNewAgendaNav(JiraAwareFailable failable) throws Exception {
-        testCreateNewAgenda();
-        passed();
+    protected void testCreateNewAgenda() throws Exception {
+        selectFrameIframePortlet();
+        String desc = getDescriptionUnique();
+        String docId = waitForAgendaDocId();
+        waitAndSelectLabeled("Namespace:", "Kuali Rules Test");
+        waitAndTypeLabeledInput("Name:", desc);
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
+        waitAndTypeLabeledInput("Context:", "Context1");
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
+        Thread.sleep(1000);
+        // extra focus and blur to work around KULRICE-11534 Create New Agenda requires two blur events to fully render Type when Context is typed in (first renders label, second renders select)
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
+        Thread.sleep(500);
+        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
+        waitForElementPresentByName("document.newMaintainableObject.dataObject.agenda.typeId");
+        waitAndSelectLabeled("Type:", "Campus Agenda");
+        waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
+        waitAndTypeLabeledInput("Campus:", "BL");
+        waitAndTypeLabeledInput("label:", "Type label for " + desc);
+        submitSuccessfully();
+        assertDocSearch(docId, "FINAL");
     }
 }

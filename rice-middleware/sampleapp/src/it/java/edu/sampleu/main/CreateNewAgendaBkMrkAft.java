@@ -29,6 +29,7 @@ public class CreateNewAgendaBkMrkAft extends CreateNewAgendaAftBase {
 
     @Test
     public void testCreateNewAgendaBookmark() throws Exception {
-        testCreateNewAgendaBookmark(this);
+        testCreateNewAgenda();
+        passed();
     }
 }

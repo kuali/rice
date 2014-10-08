@@ -147,16 +147,8 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Travel Account Edit"+RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent", "42");
-        waitAndClickBlanketApprove();
+        clickBlanketApproveAndEditDocAgain();
 
-        //click on confirmation message
-        waitAndClickConfirmBlanketApproveOk();
-        acceptAlertIfPresent();
-        waitForProgressLoading();
-        checkForDocErrorKrad();
-        waitAndClickDemoLink();
-        acceptAlertIfPresent();
-        waitAndClickByLinkText("Travel Account Maintenance (Edit)");
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.subsidizedPercent' and @value='42']")) {
             jiraAwareFail("BlanketApprove was not successful. subsidizedPercent should be 42");
         }
@@ -250,17 +242,7 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.documentHeader.documentDescription", "Edit Fiscal Officer to " + newUser + " "  + RandomStringUtils.randomAlphabetic(2));
         clearTextByName("document.newMaintainableObject.dataObject.foId");
         waitAndTypeByName("document.newMaintainableObject.dataObject.foId", newUser);
-        waitAndClickBlanketApprove();
-        jGrowl("Click OK");
-        waitAndClickByXpath("//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]");
-        acceptAlertIfPresent();
-        waitForProgressLoading();
-        checkForDocErrorKrad();
-
-        // Redirected to Home page after Blanket Approve https://jira.kuali.org/browse/KULRICE-13042
-        waitAndClickDemoLink();
-        acceptAlertIfPresent();
-        waitAndClickByLinkText("Travel Account Maintenance (Edit)");
+        clickBlanketApproveAndEditDocAgain();
 
         if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.foId' and @value='" + newUser + "']")) {
             jiraAwareFail("Fiscal Officer Not Changed to " + newUser);
@@ -290,6 +272,21 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	assertTextPresent(requiredMessage);
     	waitForElementPresentByXpath("//div[@data-label='Date Created']");
     	waitAndTypeByName("document.newMaintainableObject.dataObject.name","Travel Account 14");
+    }
+
+    private void clickBlanketApproveAndEditDocAgain() throws Exception{
+        waitAndClickBlanketApprove();
+
+        //click on confirmation message
+        waitAndClickConfirmBlanketApproveOk();
+        acceptAlertIfPresent();
+        waitForProgressLoading();
+        checkForDocErrorKrad();
+
+        // Redirected to Home page after Blanket Approve https://jira.kuali.org/browse/KULRICE-13042
+        waitAndClickDemoLink();
+        acceptAlertIfPresent();
+        waitAndClickByLinkText("Travel Account Maintenance (Edit)");
     }
 
     @Test

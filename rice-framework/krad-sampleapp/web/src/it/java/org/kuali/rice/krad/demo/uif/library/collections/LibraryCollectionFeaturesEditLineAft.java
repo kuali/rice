@@ -59,6 +59,8 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
             " tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-header button.close";
     public static final String EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR =
             " tbody tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-body input:not([type='hidden'])";
+    public static final String EDIT_DIALOG_LOOKUP_CSS_SELECTOR =
+            " tbody tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-body .input-group-btn > button";
     public static final String EDIT_DIALOG_CSS_SELECTOR =
             " tbody tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-body";
     public static final String ROW_DETAILS_LINK_CSS_SELECTOR =
@@ -103,7 +105,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
      */
     protected void testDefaultEditLine() throws Exception {
         testAllFeatures("Demo-CollectionEditLine-Example1", 1, 1, false, false, false,
-                SubCollectionType.NO_SUB_COLLECTION);
+                SubCollectionType.NO_SUB_COLLECTION, -1);
     }
 
     /**
@@ -112,7 +114,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     protected void testCustomDialogEditLine1() throws Exception {
         waitAndSelectByName("exampleShown", "Custom Dialog Edit Line 1");
         testAllFeatures("Demo-CollectionEditLine-Example2", 1, 1, false, false, false,
-                SubCollectionType.NO_SUB_COLLECTION);
+                SubCollectionType.NO_SUB_COLLECTION, -1);
     }
 
     /**
@@ -121,7 +123,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     protected void testCustomDialogEditLine2() throws Exception {
         waitAndSelectByName("exampleShown", "Custom Dialog Edit Line 2");
         testAllFeatures("Demo-CollectionEditLine-Example3", 2, 1, false, false, false,
-                SubCollectionType.NO_SUB_COLLECTION);
+                SubCollectionType.NO_SUB_COLLECTION, -1);
     }
 
     /**
@@ -130,7 +132,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     protected void testCustomDialogLineActionEditLine() throws Exception {
         waitAndSelectByName("exampleShown", "Custom Dialog Line Action Edit Line");
         testAllFeatures("Demo-CollectionEditLine-Example4", 2, 2, false, false, false,
-                SubCollectionType.NO_SUB_COLLECTION);
+                SubCollectionType.NO_SUB_COLLECTION, -1);
     }
 
     /**
@@ -139,7 +141,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     protected void testCustomDialogSaveActionEditLine() throws Exception {
         waitAndSelectByName("exampleShown", "Custom Dialog Save Action Edit Line");
         testAllFeatures("Demo-CollectionEditLine-Example5", 2, 2, true, false, false,
-                SubCollectionType.NO_SUB_COLLECTION);
+                SubCollectionType.NO_SUB_COLLECTION, -1);
     }
 
     /**
@@ -148,7 +150,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     protected void testReadOnlyEditLine() throws Exception {
         waitAndSelectByName("exampleShown", "ReadOnly Edit Line");
         testAllFeatures("Demo-CollectionEditLine-Example6", 2, 1, false, true, false,
-                SubCollectionType.NO_SUB_COLLECTION);
+                SubCollectionType.NO_SUB_COLLECTION, -1);
     }
 
     /**
@@ -165,7 +167,16 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     protected void testEditAuthorizationEditLineLineAuthorization() throws Exception {
         waitAndSelectByName("exampleShown", "Edit Authorization Edit Line (line authorization)");
         testAllFeatures("Demo-CollectionEditLine-Example8", 1, 1, false, false, true,
-                SubCollectionType.NO_SUB_COLLECTION);
+                SubCollectionType.NO_SUB_COLLECTION, -1);
+    }
+
+    /**
+     * Method to check edit line's lookup from edit dialog.
+     */
+    protected void testLookup() throws Exception {
+        waitAndSelectByName("exampleShown", "Lookup Collection Edit Line");
+        testAllFeatures("Demo-CollectionEditLine-Example9", 2, 2, false, false, false,
+                SubCollectionType.NO_SUB_COLLECTION, 1);
     }
 
     /**
@@ -173,7 +184,8 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
      */
     protected void testRowDetailsGroup() throws Exception {
         waitAndSelectByName("exampleShown", "Row Details Edit Line");
-        testAllFeatures("Demo-CollectionEditLine-Example10", 1, 1, false, false, false, SubCollectionType.ROW_DETAILS);
+        testAllFeatures("Demo-CollectionEditLine-Example10", 1, 1, false, false, false, SubCollectionType.ROW_DETAILS,
+                -1);
     }
 
     /**
@@ -182,7 +194,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     protected void testSubCollection() throws Exception {
         waitAndSelectByName("exampleShown", "SubCollection Edit Line");
         testAllFeatures("Demo-CollectionEditLine-Example11", 1, 1, false, false, false,
-                SubCollectionType.SUB_COLLECTION);
+                SubCollectionType.SUB_COLLECTION, -1);
     }
 
     /**
@@ -197,6 +209,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         testReadOnlyEditLine();
         testEditAuthorizationEditLineCollectionReadOnly();
         testEditAuthorizationEditLineLineAuthorization();
+        testLookup();
         testRowDetailsGroup();
         testSubCollection();
     }
@@ -211,14 +224,16 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
      * @param readOnly whether we are doing a readOnly
      * @param auth whether it is an authorization check
      * @param subCollectionType the type of sub-collection
+     * @param lookupFieldToEditIndex the index of the lookup field
      */
     protected void testAllFeatures(String exampleId, int lineFieldToEditIndex, int dialogFieldToEditIndex,
-            boolean custom, boolean readOnly, boolean auth, SubCollectionType subCollectionType) throws Exception {
+            boolean custom, boolean readOnly, boolean auth, SubCollectionType subCollectionType,
+            int lookupFieldToEditIndex) throws Exception {
         waitFor(By.cssSelector("jQuery('#" + exampleId + "')"));
         verifyCollectionRowFieldsAreNonEditable(exampleId);
         verifyAddLineAndDeleteLineStillWork(exampleId, readOnly, subCollectionType);
         verifyEditInDialogWorks(exampleId, lineFieldToEditIndex, dialogFieldToEditIndex, custom, auth,
-                subCollectionType, readOnly);
+                subCollectionType, readOnly, lookupFieldToEditIndex);
     }
 
     /**
@@ -231,9 +246,11 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
      * @param auth whether it is an authorization check
      * @param subCollectionType the type of sub-collection
      * @param readOnly whether we are doing a readOnly
+     * @param lookupFieldToEditIndex the index of the lookup field
      */
     protected void verifyEditInDialogWorks(String exampleId, int lineFieldToEditIndex, int dialogFieldToEditIndex,
-            boolean custom, boolean auth, SubCollectionType subCollectionType, boolean readOnly) throws Exception {
+            boolean custom, boolean auth, SubCollectionType subCollectionType, boolean readOnly,
+            int lookupFieldToEditIndex) throws Exception {
         int rowElementsSize = 0;
 
         // sub-collection rows don't have edit buttons
@@ -269,15 +286,15 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         if (subCollectionType == SubCollectionType.NO_SUB_COLLECTION) {
             // verify dialog fields match line fields on save
             verifyDialogEdit(exampleId, lineFieldToEditIndex, dialogFieldToEditIndex, true, false, custom, index,
-                    readOnly);
+                    readOnly, lookupFieldToEditIndex);
 
             // verify dialog fields match line fields on don't save
             verifyDialogEdit(exampleId, lineFieldToEditIndex, dialogFieldToEditIndex, false, false, custom, index,
-                    readOnly);
+                    readOnly, lookupFieldToEditIndex);
 
             // verify dialog fields match line fields on close
             verifyDialogEdit(exampleId, lineFieldToEditIndex, dialogFieldToEditIndex, false, true, custom, index,
-                    readOnly);
+                    readOnly, lookupFieldToEditIndex);
         } else {
             // verify dialog fields and dialog sub-collection fields match those of line fields and line
             // sub-collection fields on save
@@ -547,9 +564,11 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
      * @param custom where it is a custom dialog
      * @param rowIndex the index of the row to edit
      * @param readOnly whether we are doing a readOnly
+     * @param lookupFieldToEditIndex the index of the lookup field
      */
     protected void verifyDialogEdit(String exampleId, int lineFieldToEditIndex, int dialogFieldToEditIndex,
-            boolean save, boolean close, boolean custom, int rowIndex, boolean readOnly) throws Exception {
+            boolean save, boolean close, boolean custom, int rowIndex, boolean readOnly, int lookupFieldToEditIndex)
+            throws Exception {
         String tableRowsCssSelector = "#" + exampleId + TABLE_ROWS_CSS_SELECTOR;
 
         // get the values of the line fields in the given row
@@ -567,6 +586,52 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
                 "#" + exampleId + EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR));
         if (custom && !save) {
             fieldValue = inputElements.get(dialogFieldToEditIndex - 1).getAttribute("value");
+        }
+
+        // check if there is a lookup first
+        if (lookupFieldToEditIndex >= 0) {
+            WebElement lookup = waitFor(By.cssSelector(EDIT_DIALOG_LOOKUP_CSS_SELECTOR));
+            lookup.click();
+
+            // switch to the lookup dialog iframe
+            WebElement lookupDialogFrame = waitFor(By.cssSelector("#Uif-DialogGroup-Lookup iframe"));
+            getDriver().switchTo().frame(lookupDialogFrame);
+
+            List<WebElement> buttons = findElements(By.cssSelector(".uif-footer button"));
+
+            WebElement searchButton = buttons.get(2);
+            searchButton.click();
+            waitForProgressLoading();
+
+            List<WebElement> searchResults = findElements(By.cssSelector(
+                    ".uif-lookupPage section table > tbody > tr > td.uif-collection-column-action a"));
+
+            // pick a random result row (except the last 2 cause they are garbage)
+            int searchResultIndex = RandomUtils.nextInt(searchResults.size());
+
+            List<WebElement> searchResultValues = findElements(By.cssSelector(
+                    ".uif-lookupPage section table > tbody > tr > td.sorting_1 a"));
+
+            WebElement searchResultPickedAnchor = searchResults.get(searchResultIndex);
+            WebElement searchResultPicked = searchResultValues.get(searchResultIndex);
+
+            String resultValue = searchResultPicked.getText();
+            searchResultPickedAnchor.click();
+
+            // switch back to the parent frame
+            getDriver().switchTo().defaultContent();
+
+            // wait for the edit line dialog to re-appear
+            waitFor(By.cssSelector("#" + exampleId + EDIT_DIALOG_CSS_SELECTOR));
+            inputElements = findElements(By.cssSelector("#" + exampleId + EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR));
+            verifyDialogField(inputElements.get(lookupFieldToEditIndex - 1), "", resultValue);
+            if (save) {
+                if (lookupFieldToEditIndex == 1) {
+                    field1Value = resultValue;
+                } else if (lookupFieldToEditIndex == 2) {
+                    field2Value = resultValue;
+                }
+            }
         }
 
         // verify and/or edit the fields individually
@@ -735,8 +800,6 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         WebElement buttonElement = findElement(By.cssSelector(addLineActionCssSelector));
         buttonElement.click();
         waitForProgressAddingLine();
-        //        assertIsVisible(By.cssSelector("#" + exampleId + " .uif-newCollectionItem"),
-        //                "Added collection item is not visible.");
         waitFor(By.cssSelector("#" + exampleId + " .uif-newCollectionItem"));
         List<WebElement> fields = null;
 

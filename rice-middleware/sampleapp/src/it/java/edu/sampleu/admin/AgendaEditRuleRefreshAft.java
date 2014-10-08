@@ -77,17 +77,17 @@ public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
                 "Does user have edit permissions?");
         waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']");
         waitAndClickButtonByText("Edit Rule");
-        waitForTextPresent("Campus Code = Revelle AND Campus Code = Warren AND Campus Code = Muir");
+        waitForTextPresent("Campus Code = Muir AND Campus Code = Revelle AND Campus Code = Warren");
 
         waitAndSelectBy(By.xpath("//div[@id='RuleEditorView-Tree_tree']/ul/li/ul/li[2]/div/div/select"), "OR");
-        waitForTextPresent("Campus Code = Revelle OR Campus Code = Warren OR Campus Code = Muir");
+        waitForTextPresent("Campus Code = Muir OR Campus Code = Revelle OR Campus Code = Warren");
         Select select = new Select(driver.findElement(By.xpath(
                 "//div[@id='RuleEditorView-Tree_tree']/ul/li/ul/li[4]/div/div/select")));
         String selectedOption = select.getFirstSelectedOption().getText();
         assertEquals("The second drop down should also be OR", "OR", selectedOption);
 
         waitAndSelectBy(By.xpath("//div[@id='RuleEditorView-Tree_tree']/ul/li/ul/li[4]/div/div/select"), "AND");
-        waitForTextPresent("Campus Code = Revelle AND Campus Code = Warren AND Campus Code = Muir");
+        waitForTextPresent("Campus Code = Muir AND Campus Code = Revelle AND Campus Code = Warren");
         Select select2 = new Select(driver.findElement(By.xpath(
                 "//div[@id='RuleEditorView-Tree_tree']/ul/li/ul/li[2]/div/div/select")));
         String selectedOption2 = select2.getFirstSelectedOption().getText();

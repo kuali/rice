@@ -556,6 +556,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         if (driver != null) {
             if (WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
                 try {
+                    acceptAlertIfPresent();
                     driver.close();
                 } catch (NoSuchWindowException nswe) {
                     System.out.println("NoSuchWindowException closing WebDriver " + nswe.getMessage());

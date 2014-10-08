@@ -2100,10 +2100,14 @@
               </inlinemediaobject></para>
           </listitem>
           <listitem xml:id="LRF7">
-            <para>To display the maintenance links (create new, edit, copy, delete) on non
-              maintenance documents the <emphasis role="keyword">renderMaintenanceLinks</emphasis>
-              on the LookupForm needs to be set. Note, the quickfinder logic in the framework
-              automatically determines wether to show the return links or the maintenance links.<inlinemediaobject>
+            <para>To override the default display of the maintenance links (create new, edit, copy,
+              delete) the <emphasis role="keyword">renderMaintenanceLinks</emphasis> on the LookupForm
+              needs to be set. To override the default display of the return link the
+              <emphasis role="keyword">renderReturnLink</emphasis> on the LookupForm needs tso be set.
+              Note that the quickfinder logic in the framework automatically determines whether to show
+              the return links or the maintenance links. These overrides are recommended in situations
+              where the automatic logic is not working, like when a KRAD lookup is being performed from
+              a KNS form.<inlinemediaobject>
                 <imageobject>
                   <imagedata fileref="../images/badge-manualconv.png" contentdepth="15"/>
                 </imageobject>

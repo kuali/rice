@@ -301,12 +301,12 @@
           </property>
         </bean>
         <bean id="LabsMenuMaintenance-Row6-Col3" parent="KradSampleAppDemo-DemoGroup"
-              p:dataAttributes="type:maintenanceEdit" p:render="false">
+              p:dataAttributes="type:maintenanceEdit" p:render="true">
           <property name="items">
           <list>
-            <bean parent="Uif-Link" p:linkText="Maintenance Sample - "
+            <bean parent="Uif-Link" p:linkText="Maintenance Sample - Drop down page actions"
                   p:href="kradsampleapp?viewId=KradMaintenanceSample-PageR6C3"/>
-            <bean parent="Uif-Message" p:messageText="Maintenance Document"/>
+            <bean parent="Uif-Message" p:messageText="Demonstrates drop down page actions."/>
           </list>
           </property>
         </bean>

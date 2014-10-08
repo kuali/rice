@@ -74,6 +74,80 @@
                     p:propertyName="travelCompanyId"
                     p:defaultValue="@{ #sequence('TRVL_CO_ID_S') }" />
               <bean parent="Uif-InputField" p:propertyName="travelCompanyName"/>
+              <bean parent="Uif-CheckboxInputField" p:propertyName="active"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="TravelCompany-DropDownAction-MaintenanceView" parent="Uif-MaintenanceView">
+    <property name="headerText" value="Travel Company Maintenance"/>
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelCompany"/>
+    <property name="viewName" value="TravelCompany-DropDownAction-MaintenanceHelpView"/>
+    <property name="items">
+      <list merge="true">
+        <bean parent="Uif-MaintenanceGridSection">
+          <property name="headerText" value="Company Information"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-DataField"
+                    p:propertyName="travelCompanyId"
+                    p:defaultValue="@{ #sequence('TRVL_CO_ID_S') }" />
+              <bean parent="Uif-InputField" p:propertyName="travelCompanyName">
+                <property name="required" value="true"/>
+              </bean>
+              <bean parent="Uif-CheckboxInputField" p:propertyName="active"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="page.footer">
+      <bean parent="TravelCompany-DropDownAction-PageFooter"/>
+    </property>
+  </bean>
+
+  <bean id="TravelCompany-DropDownAction-PageFooter" parent="Uif-FooterBase" p:render="@{!#view.superUserView}" >
+    <property name="items">
+      <list>
+        <bean parent="Uif-DropdownToggleMenu" p:toggleText="Actions"  p:align="right" p:order="50">
+          <property name="menuItems">
+            <list>
+              <bean parent="Uif-MenuAction" p:actionLabel="Reload"  p:methodToCall="reload"
+                    p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]}"/>
+              <bean parent="Uif-MenuAction" p:actionLabel="Cancel" p:methodToCall="cancel"
+                    p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}">
+                <property name="confirmationDialog">
+                  <bean id="ConfirmCancelDialog" parent="Uif-DialogGroup-OkCancel"
+                        p:promptText="Are you sure you want to cancel?"/>
+                </property>
+              </bean>
+              <bean parent="Uif-MenuAction" p:actionLabel="Blanket Approve" p:methodToCall="blanketApprove"
+                    p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE]}"
+                    p:performClientSideValidation="true">
+                <property name="confirmationDialog">
+                  <bean id="ConfirmBlanketApproveDialog" parent="Uif-DialogGroup-OkCancel"
+                        p:promptText="Are you sure you want to blanket approve this and make the document final?"/>
+                </property>
+              </bean>
+              <bean parent="Uif-MenuAction" p:methodToCall="route" p:actionLabel="Submit"
+                    p:performClientSideValidation="false"  p:preSubmitCall="return isRouteToComplete(kradRequest);"
+                    p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}" p:defaultEnterKeyAction="true">
+                <property name="confirmationDialog">
+                  <bean id="ConfirmSubmitDialog" parent="Uif-DialogGroup" p:style="top:70%"
+                        p:promptText="Are you sure you want to submit this document and send it into routing?">
+                    <property name="headerText" value="Please Confirm to Continue"/>
+                    <property name="footer.items">
+                      <list>
+                        <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
+                        <bean parent="Uif-DialogConfirmButton" p:actionLabel="OK" p:performClientSideValidation="false"/>
+                      </list>
+                    </property>
+                  </bean>
+                 </property>
+              </bean>
             </list>
           </property>
         </bean>

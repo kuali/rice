@@ -82,6 +82,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
     static final String BOOL1 = "bool1";
     static final String BOOL2 = "bool2";
     static final String NULL_FACT = "nullFact";
+    static final String ATTRIBUTE1 = "Attribute1";
 
     //    // Services needed for creation:
     protected TermBoService termBoService;

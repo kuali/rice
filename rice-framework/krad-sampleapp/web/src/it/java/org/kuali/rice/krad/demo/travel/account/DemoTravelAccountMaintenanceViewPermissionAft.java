@@ -91,8 +91,8 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
 
     protected void testTravelAccountMaintenanceViewPermissionT1() throws Exception {
         createAndRouteDoc("erin");
-        waitForElementNotPresent(By.xpath("//a/span[contains(text(),'Notes and Attachments')]"));
-        waitForElementNotPresent(By.xpath("//button[contains(text(),'Delete')]"));
+        waitForElementNotPresent(By.xpath("//a/span[contains(text(),'Notes and Attachments')]"), 2);
+        waitForElementNotPresent(By.xpath("//button[contains(text(),'Delete')]"), 0);
         assertTextNotPresent("Bonzo!");
         assertTextNotPresent("attachment.oth");
         waitAndClickButtonByText("Approve");
@@ -107,6 +107,14 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
         waitAndClickButtonByText("Approve");
     }
 
+    protected void testTravelAccountMaintenanceViewPermissionT3() throws Exception {
+        createAndRouteDoc("admin");
+
+        assertTextPresent("Bonzo!");
+        assertTextPresent("attachment.oth");
+        waitForElementNotPresent(By.xpath("//button[contains(text(),'Download Attachment')]"), 0);
+    }
+    
     @Test
     public void testDemoTravelAccountViewPermissionT2Bookmark() throws Exception {
         testTravelAccountMaintenanceViewPermissionT2();
@@ -131,4 +139,16 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
         passed();
     }
 
+    @Test
+    public void testDemoTravelAccountViewPermissionT3Bookmark() throws Exception {
+        testTravelAccountMaintenanceViewPermissionT3();
+        passed();
+    }
+
+    @Test
+    public void testDemoTravelAccountViewPermissionT3Nav() throws Exception {
+        testTravelAccountMaintenanceViewPermissionT3();
+        passed();
+    }
+    
 }

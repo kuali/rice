@@ -17,11 +17,12 @@ package org.kuali.rice.krad;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DemoFreemarker404Aft extends WebDriverLegacyITBase {
+public class Demo404Aft extends WebDriverLegacyITBase {
 
     /**
      * /kr-krad/lab
@@ -41,10 +42,13 @@ public class DemoFreemarker404Aft extends WebDriverLegacyITBase {
     @Test
     public void testLookUpConditionalCriteriaBookmark() throws Exception {
         checkForIncidentReport();
+        screenshot();
     }
 
     @Test
     public void testLookUpConditionalCriteriaNav() throws Exception {
+        open(WebDriverUtils.getBaseUrlString() + getBookmarkUrl());
         checkForIncidentReport();
+        screenshot();
     }
 }

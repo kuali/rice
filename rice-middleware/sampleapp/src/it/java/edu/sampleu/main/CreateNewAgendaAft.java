@@ -88,6 +88,7 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
         driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
 
+        waitIsVisible(By.xpath("//tr/th/label[contains(text(), '" + CONTEXT_LABEL + "')]"));
         assertLabeledInputTextPresent(inputVerifyDetails);
         screenshot();
     }

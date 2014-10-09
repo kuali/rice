@@ -474,7 +474,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     }
 
     protected boolean isLabeledInputTextPresent(String label, String text) {
-        String labeledText = "no input or select found";
+        String labeledText = "no input or select found no text returned";
         List<WebElement> inputs = getDriver().findElements(By.xpath("//tr/th/label[contains(text(), '" + label + "')]/ancestor::tr/td/div/input"));
 
         if (inputs.size() > 1) {

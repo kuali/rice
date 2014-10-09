@@ -24,6 +24,7 @@ public class IdentityPersonLookUpEditNavAft extends IdentityPersonLookUpEditAftB
 
     @Test
     public void testIdentityPersonLookUpEditNav() throws Exception {
-        testIdentityPersonLookUpEditNav(this);
+        testIdentityPersonLookUpEdit();
+        passed();
     }
 }

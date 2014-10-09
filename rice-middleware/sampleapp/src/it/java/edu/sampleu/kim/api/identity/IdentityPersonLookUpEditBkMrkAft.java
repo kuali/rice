@@ -29,6 +29,7 @@ public class IdentityPersonLookUpEditBkMrkAft extends IdentityPersonLookUpEditAf
 
     @Test
     public void testIdentityPersonLookUpEditBookmark() throws Exception {
-        testIdentityPersonLookUpEditBookmark(this);
+        testIdentityPersonLookUpEdit();
+        passed();
     }
 }

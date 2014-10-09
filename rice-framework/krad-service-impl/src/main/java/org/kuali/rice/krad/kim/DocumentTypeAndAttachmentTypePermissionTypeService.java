@@ -21,6 +21,7 @@ import org.kuali.rice.kim.impl.permission.PermissionBo;
 import org.kuali.rice.krad.kim.DocumentTypePermissionTypeServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,18 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends Document
 		// now, filter the list to just those for the current document
 		matchingPermissions = super.performPermissionMatches(requestedDetails,
 				matchingPermissions);
+		
+		// if we have more than one permission for the document, then we need to check if any have an attachment type code
+		// if so, we throw away the "less specific" one without an attachment type code
+		if ( matchingPermissions.size() > 1 ) {
+			Iterator<Permission> permIter = matchingPermissions.iterator();
+			while ( permIter.hasNext() ) {
+				if ( !permIter.next().getAttributes().containsKey(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE) ) {
+					permIter.remove();
+				}
+			}
+		}
+		
 		return matchingPermissions;
 	}
 }

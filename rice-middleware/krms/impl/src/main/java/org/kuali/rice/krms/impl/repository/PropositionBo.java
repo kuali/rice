@@ -144,6 +144,10 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
                 // so that we can safely display the parameterString as is.
                 sb.append( ScriptUtils.escapeHtml(lhs) ).append(" ").append( opr );
 
+                if (opr != null && (opr.equals("!=null") || opr.equals("=null"))){
+                    valueDisplay = null;
+                }
+
                 if (valueDisplay != null) {
                     // !=null and =null operators values will be null and should not be displayed
                     sb.append(" ").append(ScriptUtils.escapeHtml( valueDisplay ));

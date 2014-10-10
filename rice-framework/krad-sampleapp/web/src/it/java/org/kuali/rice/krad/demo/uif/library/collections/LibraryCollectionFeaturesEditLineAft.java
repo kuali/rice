@@ -563,7 +563,8 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
      * @param custom where it is a custom dialog
      * @param rowIndex the index of the row to edit
      * @param readOnly whether we are doing a readOnly
-     * @param lookupFieldToEditIndex the index of the lookup field
+     * @param lookupFieldToEditIndex the index of the lookup field (this can be -1 which means there is no lookup
+     * configured on any field)
      */
     protected void verifyDialogEdit(String exampleId, int lineFieldToEditIndex, int dialogFieldToEditIndex,
             boolean save, boolean close, boolean custom, int rowIndex, boolean readOnly, int lookupFieldToEditIndex)

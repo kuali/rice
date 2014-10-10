@@ -748,6 +748,9 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // add data attribute for attaching event handlers on the return links
         returnLink.addDataAttribute(UifConstants.DataAttributes.RETURN, dataReturnValue);
 
+        returnLink.setOnClickScript(
+                "setupImages();showLoading('Returning result...',jQuery('#Uif-DialogGroup-Lookup'));");
+
         // build return link title if not already set
         if (StringUtils.isBlank(returnLink.getTitle())) {
             String linkLabel = StringUtils.defaultIfBlank(getConfigurationService().getPropertyValueAsString(

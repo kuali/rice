@@ -24,15 +24,11 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.field.MessageField;
-import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
-import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -182,9 +178,13 @@ public class DialogGroup extends GroupBase {
             addDataAttribute(UifConstants.DataAttributes.DIALOG_RESPONSE_HANDLER, this.onDialogResponseScript);
         }
 
+        String script = "jQuery.unblockUI();";
         if (StringUtils.isNotBlank(this.onShowDialogScript)) {
-            addDataAttribute(UifConstants.DataAttributes.DIALOG_SHOW_HANDLER, this.onShowDialogScript);
+            this.onShowDialogScript = script + this.onShowDialogScript;
+        } else {
+            this.onShowDialogScript = script;
         }
+        addDataAttribute(UifConstants.DataAttributes.DIALOG_SHOW_HANDLER, this.onShowDialogScript);
 
         if (StringUtils.isNotBlank(this.onHideDialogScript)) {
             addDataAttribute(UifConstants.DataAttributes.DIALOG_HIDE_HANDLER, this.onHideDialogScript);

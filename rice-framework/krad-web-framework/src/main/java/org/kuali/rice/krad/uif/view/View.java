@@ -338,7 +338,9 @@ public class View extends ContainerBase {
             }
             setOnLoadScript(actionScript);
         } else if (StringUtils.isNotBlank(dialogId) && !(this instanceof LookupView)) {
-            String actionScript = "setupImages(); showDialog('" + dialogId + "');";
+            String actionScript =
+                    "jQuery.unblockUI();setupImages();showLoading('Loading...', window.document);showDialog('"
+                            + dialogId + "');";
             setOnLoadScript(actionScript);
         }
     }

@@ -542,12 +542,10 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             additionalCssClasses.clear();
         }
 
-        if (cssClasses != null) {
-            cssClasses.clear();
-        } else {
-            cssClasses = Collections.emptyList();
-        }
-        cssClasses.addAll(finalCssClasses);
+        // need to do this since cssClasses may be unmodifiable
+        List<String> newCssClasses = new ArrayList<>();
+        newCssClasses.addAll(finalCssClasses);
+        cssClasses = newCssClasses;
 
         // add the method to call as an available method
         if (StringUtils.isNotBlank(methodToCallOnRefresh)) {

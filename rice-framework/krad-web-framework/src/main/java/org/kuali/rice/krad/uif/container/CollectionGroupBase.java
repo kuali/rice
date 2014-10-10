@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.component.KeepExpression;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -524,15 +525,23 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
     protected String getDuplicateLineLabelString(List<String> duplicateLinePropertyNames) {
         List<String> duplicateLineLabels = new ArrayList<String>();
 
-        for (Component addLineItem : this.getAddLineItems()) {
-            if (addLineItem instanceof DataField) {
-                DataField addLineField = (DataField) addLineItem;
+        List<DataField> fields = new ArrayList<DataField>();
 
-                if (duplicateLinePropertyNames.contains(addLineField.getPropertyName())) {
-                    String label = addLineField.getLabel();
-                    String shortLabel = addLineField.getShortLabel();
-                    duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
-                }
+        for (Component addLineItem : getAddLineItems()) {
+            if (addLineItem instanceof DataField) {
+                fields.add((DataField) addLineItem);
+            } else if (addLineItem instanceof FieldGroup) {
+                Group group = ((FieldGroup) addLineItem).getGroup();
+                List<DataField> nestedAddLineItems = ViewLifecycleUtils.getElementsOfTypeDeep(group, DataField.class);
+                fields.addAll(nestedAddLineItems);
+            }
+        }
+
+        for (DataField field : fields) {
+            if (duplicateLinePropertyNames.contains(field.getPropertyName())) {
+                String label = field.getLabel();
+                String shortLabel = field.getShortLabel();
+                duplicateLineLabels.add(StringUtils.isNotBlank(label) ? label : shortLabel);
             }
         }
 

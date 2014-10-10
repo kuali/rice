@@ -22,6 +22,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -57,8 +58,10 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
     private Integer sequenceNumber;
 
     @ManyToOne
-    @JoinColumn(name = "CAT_NM", referencedColumnName = "CAT_NM")
-    @PrimaryKeyJoinColumn(name = "DOC_TYP_ID", referencedColumnName = "DOC_TYP_ID")
+    @JoinColumns( {
+            @JoinColumn(name = "CAT_NM", referencedColumnName = "CAT_NM"),
+            @JoinColumn(name = "DOC_TYP_ID", referencedColumnName = "DOC_TYP_ID", updatable = false, insertable = false)
+    })
     private ApplicationDocumentStatusCategory category;
 
     @MapsId("documentTypeId")
@@ -120,7 +123,7 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
         if (getCategory() == null) {
             return null;
         }
-        return getCategory().getCategoryName();
+        return getCategory().getApplicationDocumentStatusCategoryId().getCategoryName();
     }
 
     public DocumentType getDocumentType() {

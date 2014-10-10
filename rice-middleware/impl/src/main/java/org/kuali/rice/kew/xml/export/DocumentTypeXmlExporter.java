@@ -140,14 +140,13 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         	renderer.renderTextElement(docTypeElement, NOTIFICATION_FROM_ADDRESS, documentType.getActualNotificationFromAddress());
         }
         renderer.renderBooleanElement(docTypeElement, ACTIVE, documentType.getActive(), true);
-        exportApplicationStatuses(docTypeElement, documentType.getValidApplicationStatuses());
+        exportApplicationStatuses(docTypeElement, documentType);
         exportPolicies(docTypeElement, documentType.getDocumentTypePolicies());
         exportAttributes(docTypeElement, documentType.getDocumentTypeAttributes());
         exportSecurity(docTypeElement, documentType.getDocumentTypeSecurityXml());
       	if (!StringUtils.isBlank(documentType.getRoutingVersion())) {
       		renderer.renderTextElement(docTypeElement, ROUTING_VERSION, documentType.getRoutingVersion());
       	}
-      	exportApplicationStatusCategories(docTypeElement, documentType);
       	ProcessDefinitionBo process = null;
       	if (documentType.getProcesses().size() > 0) {
       	    process = (ProcessDefinitionBo)documentType.getProcesses().get(0);
@@ -159,12 +158,38 @@ public class DocumentTypeXmlExporter implements XmlExporter {
       	}
     }
 
-    private void exportApplicationStatuses(Element parent, Collection validApplicationStatuses) {
-        if (!validApplicationStatuses.isEmpty()) {
-            Element validApplicationStatusesElement = renderer.renderElement(parent, APP_DOC_STATUSES);
-            for (Iterator iterator = validApplicationStatuses.iterator(); iterator.hasNext();) {
-                ApplicationDocumentStatus status = (ApplicationDocumentStatus) iterator.next();
-                renderer.renderTextElement(validApplicationStatusesElement, STATUS, status.getStatusName());
+    private void exportApplicationStatuses(Element parent, DocumentType documentType) {
+        List<ApplicationDocumentStatusCategory> appDocStatCategories = documentType.getApplicationStatusCategories();
+        List<ApplicationDocumentStatus> appDocStats = documentType.getValidApplicationStatuses();
+
+        if (appDocStatCategories != null && !appDocStatCategories.isEmpty()) {
+            Element appDocStatCategoriesElement = renderer.renderElement(parent, APP_DOC_STATUSES);
+
+            for (ApplicationDocumentStatusCategory appDocStatCategory : appDocStatCategories) {
+                Element appStatusCatElement = renderer.renderElement(appDocStatCategoriesElement, CATEGORY);
+                appStatusCatElement.setAttribute(NAME, appDocStatCategory.getCategoryName().trim());
+
+                if (appDocStats != null) {
+                    for (ApplicationDocumentStatus appDocStat : appDocStats) {
+                        if (StringUtils.equals(appDocStat.getCategoryName(), appDocStatCategory.getCategoryName())) {
+                            renderer.renderTextElement(appStatusCatElement, STATUS, appDocStat.getStatusName());
+                        }
+                    }
+                }
+            }
+
+            for (ApplicationDocumentStatus appDocStat : appDocStats) {
+                if (StringUtils.isEmpty(appDocStat.getCategoryName())) {
+                    renderer.renderTextElement(appDocStatCategoriesElement, STATUS, appDocStat.getStatusName());
+                }
+            }
+        } else {
+            if (!appDocStats.isEmpty()) {
+                Element validApplicationStatusesElement = renderer.renderElement(parent, APP_DOC_STATUSES);
+
+                for (ApplicationDocumentStatus appDocStat : appDocStats) {
+                    renderer.renderTextElement(validApplicationStatusesElement, STATUS, appDocStat.getStatusName());
+                }
             }
         }
     }
@@ -208,35 +233,6 @@ public class DocumentTypeXmlExporter implements XmlExporter {
           throw new WorkflowRuntimeException("Error parsing doctype security XML.");
         }
       }
-    }
-
-    private void exportApplicationStatusCategories(Element parent, DocumentType documentType) {
-        List<ApplicationDocumentStatusCategory> appDocStatCategories = documentType.getApplicationStatusCategories();
-        List<ApplicationDocumentStatus> appDocStats = documentType.getValidApplicationStatuses();
-
-        if (appDocStatCategories != null && !appDocStatCategories.isEmpty()) {
-            Element appDocStatCategoriesElement = renderer.renderElement(parent, APP_DOC_STATUSES);
-            for (Iterator iterator = appDocStatCategories.iterator(); iterator.hasNext();) {
-                ApplicationDocumentStatusCategory appDocStatCategory = (ApplicationDocumentStatusCategory) iterator.next();
-                Element appStatusCatElement = renderer.renderElement(appDocStatCategoriesElement, CATEGORY);
-                appStatusCatElement.setAttribute(NAME, appDocStatCategory.getCategoryName().trim());
-                if(appDocStats != null) {
-                    for (Iterator iterator2 = appDocStats.iterator(); iterator2.hasNext();) {
-                        ApplicationDocumentStatus appDocStat = (ApplicationDocumentStatus) iterator2.next();
-                        if  (StringUtils.equals(appDocStat.getCategoryName(), appDocStatCategory.getCategoryName())) {
-                            renderer.renderTextElement(appStatusCatElement, STATUS, appDocStat.getStatusName());
-                        }
-                    }
-                }
-            }
-
-            for (Iterator iterator = appDocStats.iterator(); iterator.hasNext();) {
-                ApplicationDocumentStatus appDocStat = (ApplicationDocumentStatus) iterator.next();
-                if  (StringUtils.isEmpty(appDocStat.getCategoryName())) {
-                    renderer.renderTextElement(appDocStatCategoriesElement, STATUS, appDocStat.getStatusName());
-                }
-            }
-        }
     }
 
     private void exportRouteData(Element parent, DocumentType documentType, List flattenedNodes, boolean hasDefaultExceptionWorkgroup) {
@@ -317,6 +313,11 @@ public class DocumentTypeXmlExporter implements XmlExporter {
         if (node.getNextNodes().size() == 1) {
             RouteNode nextNode = (RouteNode)node.getNextNodes().get(0);
             renderer.renderAttribute(simpleElement, NEXT_NODE, nextNode.getRouteNodeName());
+
+            if (node.getNextDocumentStatus() != null) {
+                renderer.renderAttribute(simpleElement, NEXT_APP_DOC_STATUS, node.getNextDocumentStatus());
+            }
+
             exportNodeGraph(parent, nextNode, splitJoinContext);
         }
     }
@@ -345,6 +346,11 @@ public class DocumentTypeXmlExporter implements XmlExporter {
             if (joinNode.getNextNodes().size() == 1) {
                 RouteNode nextNode = (RouteNode)joinNode.getNextNodes().get(0);
                 renderer.renderAttribute(splitElement, NEXT_NODE, nextNode.getRouteNodeName());
+
+                if (node.getNextDocumentStatus() != null) {
+                    renderer.renderAttribute(splitElement, NEXT_APP_DOC_STATUS, node.getNextDocumentStatus());
+                }
+
                 exportNodeGraph(parent, nextNode, splitJoinContext);
             }
         }

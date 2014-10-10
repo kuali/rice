@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.kuali.rice.krad.uif.UifConstants;
@@ -880,7 +879,6 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         passed();
     }
 
-    @Ignore
     @Test
     public void testCollectionFeaturesEditLineNav() throws Exception {
         this.waitSeconds = FIVE_SECOND_WAIT_TIME;

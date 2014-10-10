@@ -252,7 +252,7 @@ public class DataDictionary {
         timer.stop();
 
         // the UIF defaulting must be done before the UIF indexing but after the main DD data object indexing
-        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.ENABLE_VIEW_AUTOGENERATION)) {
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.ENABLE_VIEW_AUTOGENERATION, false)) {
             timer.start("UIF Defaulting");
             generateMissingInquiryDefinitions();
             generateMissingLookupDefinitions();

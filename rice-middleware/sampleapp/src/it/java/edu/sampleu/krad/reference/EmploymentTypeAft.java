@@ -92,6 +92,7 @@ public class EmploymentTypeAft extends WebDriverLegacyITBase {
 
     protected void clickSearch() throws InterruptedException {
         waitAndClickSearchByText();
+        waitForProgressLoading();
     }
 
     @Test

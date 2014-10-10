@@ -878,8 +878,12 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected void saveSuccessfully() throws InterruptedException {
+        saveSuccessfully(WebDriverUtils.configuredImplicityWait() * 4);
+    }
+
+    protected void saveSuccessfully(int secondsToWait) throws InterruptedException {
         waitAndClickSaveByText();
-        waitForProgressSaving();
+        waitForProgressSaving(secondsToWait);
         checkForDocErrorKrad();
         waitForTextPresent("Document was successfully saved.");
     }
@@ -898,7 +902,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected void submitSuccessfully() throws InterruptedException {
-        submitSuccessfully(WebDriverUtils.configuredImplicityWait());
+        submitSuccessfully(WebDriverUtils.configuredImplicityWait() * 4);
     }
 
     protected void submitSuccessfully(int loadingSeconds) throws InterruptedException {

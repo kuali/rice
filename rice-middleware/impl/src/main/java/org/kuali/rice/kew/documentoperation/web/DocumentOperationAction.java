@@ -52,6 +52,7 @@ import org.kuali.rice.kew.engine.node.service.BranchService;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
+import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -192,7 +193,12 @@ public class DocumentOperationAction extends KewKualiAction {
 		if (KewApiConstants.UPDATE.equals(routeHeaderOp)) {
 			setRouteHeaderTimestamps(docForm);
 			DocumentRouteHeaderValue dHeader = docForm.getRouteHeader();
-			String initials=docForm.getInitialNodeInstances();
+            List<Note> docNotes = KEWServiceLocator.getNoteService().getNotesByDocumentId(dHeader.getDocumentId());
+
+            if (docNotes != null && !docNotes.isEmpty()) {
+                dHeader.setNotes(docNotes);
+            }
+            String initials=docForm.getInitialNodeInstances();
 			List<RouteNodeInstance> lInitials = new ArrayList<RouteNodeInstance>();
 			if (StringUtils.isNotEmpty(initials)){ 
 				StringTokenizer tokenInitials=new StringTokenizer(initials,",");
@@ -226,8 +232,15 @@ public class DocumentOperationAction extends KewKualiAction {
 					actionRequest.setCreateDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(createDateParamName)).getTime()));
 					actionRequest.setCreateDateString(RiceConstants.getDefaultDateFormat().format(actionRequest.getCreateDate()));
 					actionRequest.setDocumentId(docForm.getRouteHeader().getDocumentId());
-					actionRequest.setParentActionRequest(getActionRequestService().findByActionRequestId(actionRequest.getParentActionRequestId()));
-					actionRequest.setActionTaken(getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId()));
+
+                    if (StringUtils.isNotBlank(actionRequest.getParentActionRequestId())) {
+                        actionRequest.setParentActionRequest(getActionRequestService().findByActionRequestId(actionRequest.getParentActionRequestId()));
+                    }
+
+                    if (StringUtils.isNotBlank(actionRequest.getActionTakenId())) {
+					    actionRequest.setActionTaken(getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId()));
+                    }
+
 					if (actionRequest.getNodeInstance() != null && actionRequest.getNodeInstance().getRouteNodeInstanceId() == null) {
 						actionRequest.setNodeInstance(null);
 					} else if (actionRequest.getNodeInstance() != null && actionRequest.getNodeInstance().getRouteNodeInstanceId() != null) {

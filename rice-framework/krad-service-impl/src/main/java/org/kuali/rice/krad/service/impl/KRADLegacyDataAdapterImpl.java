@@ -1264,9 +1264,15 @@ public class KRADLegacyDataAdapterImpl implements LegacyDataAdapter {
     @Override
     public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> documentClass, List<String> ids) {
         List<T> documents = new ArrayList<T>();
+
         for (String id : ids) {
-            documents.add(findByDocumentHeaderId(documentClass, id));
+            T document = findByDocumentHeaderId(documentClass, id);
+
+            if (document != null) {
+                documents.add(document);
+            }
         }
+
         return documents;
     }
 

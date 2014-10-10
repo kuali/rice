@@ -18,9 +18,11 @@ package org.kuali.rice.krad.uif.component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -523,30 +525,36 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         // put together all css class names for this component, in order
-        List<String> finalCssClasses = new ArrayList<String>();
+        Set<String> finalCssClasses = new LinkedHashSet<>();
 
-        if (this.libraryCssClasses != null && (!ViewLifecycle.isActive() || ViewLifecycle.getView()
-                .isUseLibraryCssClasses())) {
+        if (libraryCssClasses != null && (!ViewLifecycle.isActive() || ViewLifecycle.getView().isUseLibraryCssClasses())) {
             finalCssClasses.addAll(libraryCssClasses);
+            libraryCssClasses.clear();
         }
 
-        if (this.cssClasses != null) {
+        if (cssClasses != null) {
             finalCssClasses.addAll(cssClasses);
+            cssClasses.clear();
         }
 
-        if (this.additionalCssClasses != null) {
+        if (additionalCssClasses != null) {
             finalCssClasses.addAll(additionalCssClasses);
+            additionalCssClasses.clear();
         }
 
-        cssClasses = finalCssClasses;
+        if (cssClasses != null) {
+            cssClasses.clear();
+        } else {
+            cssClasses = Collections.emptyList();
+        }
+        cssClasses.addAll(finalCssClasses);
 
         // add the method to call as an available method
         if (StringUtils.isNotBlank(methodToCallOnRefresh)) {
             ViewLifecycle.getViewPostMetadata().addAvailableMethodToCall(methodToCallOnRefresh);
         }
 
-        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && StringUtils.isNotBlank(
-                methodToCallOnRefresh)) {
+        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && StringUtils.isNotBlank(methodToCallOnRefresh)) {
             ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(methodToCallOnRefresh);
         }
     }
@@ -1050,6 +1058,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
     @Override
     public void setCssClasses(List<String> cssClasses) {
         checkMutable(true);
+
         if (cssClasses == null) {
             this.cssClasses = Collections.emptyList();
         } else {

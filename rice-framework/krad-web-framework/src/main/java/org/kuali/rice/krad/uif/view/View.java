@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -36,6 +28,8 @@ import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
@@ -43,6 +37,8 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.element.BreadcrumbItem;
+import org.kuali.rice.krad.uif.element.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.element.HeadLink;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.MetaTag;
@@ -51,8 +47,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.element.BreadcrumbItem;
-import org.kuali.rice.krad.uif.element.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.CopyUtils;
@@ -71,6 +65,14 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -326,6 +328,23 @@ public class View extends ContainerBase {
 
         if (StringUtils.isNotBlank(dialogId) && StringUtils.isNotBlank(selectedCollectionPath) && StringUtils
                 .isNotBlank(selectedLineIndex)) {
+            // the line index and the collection path need adjusted to account for nested collections within a
+            // dialog because the dialog is shown per the root collection, but the index and path are per
+            // the nested sub-collection
+            String originalLineIndex = StringUtils.substring(dialogId, dialogId.length() - 1);
+            if (!selectedLineIndex.equals(originalLineIndex)) {
+                selectedLineIndex = originalLineIndex;
+            }
+
+            // adjust the collection path to point to the root collection rather than the sub-collection
+            if (selectedCollectionPath.contains(UifPropertyPaths.DIALOG_DATA_OBJECT)) {
+                String collectionId = StringUtils.substring(dialogId, dialogId.indexOf("_") + 1, dialogId.lastIndexOf(
+                        "_"));
+                BindingInfo bindingInfo = (BindingInfo) form.getViewPostMetadata().getComponentPostMetadata(
+                        collectionId).getData("bindingInfo");
+                selectedCollectionPath = bindingInfo.getBindingPath();
+            }
+
             String actionScript = "setupImages();";
             if (StringUtils.startsWith(dialogId, ComponentFactory.EDIT_LINE_DIALOG)) {
                 actionScript +=

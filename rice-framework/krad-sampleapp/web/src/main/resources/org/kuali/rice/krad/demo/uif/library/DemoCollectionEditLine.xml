@@ -522,6 +522,11 @@
               p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
               p:required="true">
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:field2"/>
+          </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>

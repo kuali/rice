@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.bo.DataObjectRelationship;
 import org.kuali.rice.krad.bo.ExternalizableBusinessObject;
@@ -36,6 +31,7 @@ import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.element.Action;
+import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -44,6 +40,11 @@ import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Widget for navigating to a lookup from a field (called a quickfinder).
@@ -399,9 +400,25 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             String lightboxScript = null;
             String dialogId = null;
 
+            // set the quickfinder's dialog id when invoked from within a dialog
+            // this accounts for the quickfinder being on the dialog field in which case the dialog is the parent, and
+            // for the quickfinder being in a nested sub-collection in the dialog in which case the dialog is the
+            // quickfinder's parent's (the nested sub-collection) parent
             Object superParent = parent.getContext().get(UifConstants.ContextVariableNames.PARENT);
-            if (superParent != null && superParent instanceof DialogGroup) {
-                dialogId = ((DialogGroup) superParent).getId();
+            if (superParent != null) {
+                if (superParent instanceof DialogGroup) {
+                    dialogId = ((DialogGroup) superParent).getId();
+                } else if (superParent instanceof CollectionGroup) {
+                    CollectionGroup parentCollection = (CollectionGroup) superParent;
+                    superParent = parentCollection.getContext().get(UifConstants.ContextVariableNames.PARENT);
+                    if (superParent instanceof FieldGroup) {
+                        FieldGroup parentFieldGroup = (FieldGroup) superParent;
+                        superParent = parentFieldGroup.getContext().get(UifConstants.ContextVariableNames.PARENT);
+                        if (superParent instanceof DialogGroup) {
+                            dialogId = ((DialogGroup) superParent).getId();
+                        }
+                    }
+                }
             }
 
             // let lookup know that it's been called from a dialog by passing its dialog id if present

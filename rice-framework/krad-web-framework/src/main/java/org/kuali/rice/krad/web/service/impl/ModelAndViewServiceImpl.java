@@ -294,10 +294,13 @@ public class ModelAndViewServiceImpl implements ModelAndViewService {
             View view = form.getView();
             if (view == null) {
                 LOG.warn("View in form was null: " + form);
-                if (!form.isJsonRequest())
+
+                if (!form.isJsonRequest()) {
                     throw new IllegalStateException("View in form was null: " + form);
-                else
+                }
+                else {
                     return;
+                }
             }
 
             Map<String, String> parameterMap = KRADUtils.translateRequestParameterMap(request.getParameterMap());

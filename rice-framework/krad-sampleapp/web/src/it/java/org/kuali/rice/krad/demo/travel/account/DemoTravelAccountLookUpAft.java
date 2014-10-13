@@ -155,7 +155,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD, "a4");
         waitAndClickButtonByText(SEARCH);
         waitAndClickByLinkText("edit");
-        waitAndTypeByName("document.documentHeader.documentDescription","Case Constraint Test");
+        waitAndTypeLabeledInput("Description:", getDescriptionUnique());
 
         //save to check the binding is correctly applied subsequent times KULRICE-12638
         waitAndClickButtonByText("Save");
@@ -163,6 +163,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
         waitForIsTextPresent("Document was successfully saved.");
 
         //remove the subsidized percent
+        jGrowl("Clear subsidized percent");
         findElement(By.xpath("/html/body/form/div/div[2]/main/section[2]/div/table/tbody/tr[7]/td[2]/div/input")).clear();
         waitAndClickButtonByText("Save");
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
@@ -187,18 +188,21 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     	waitAndClickByLinkText("edit");
     	waitAndTypeByName("document.documentHeader.documentDescription","Document Locking Description");
         String documentId = getText(By.xpath("//div[@data-label='Document Number']"));
-    	waitAndClickByLinkText("Ad Hoc Recipients");
-        waitAndClickAdHocPersonAdd();
+
+        waitAndClickByLinkText("Ad Hoc Recipients");
+
+        waitAndClickAdHocGroupAddQuickFinder();
+        gotoLightBox();
+        waitAndClickButtonByText(SEARCH);
+        waitAndClickByLinkText("return value");
+        waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
+
+        waitAndClickAdHocPersonAddQuickFinder();
     	gotoLightBox();
     	waitAndClickButtonByText(SEARCH);
     	waitAndClickByLinkText("return value");
-//        waitAndClickByLinkText("Ad Hoc Recipients");
     	waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-        waitAndClickAdHocGroupAdd();
-    	gotoLightBox();
-    	waitAndClickButtonByText(SEARCH);
-    	waitAndClickByLinkText("return value");
-    	waitAndClickByXpath("//button[@id='CollectionGroup_AdHocWorkgroup_add']");
+
         waitAndClickSubmitByText();
         waitAndClickConfirmSubmitOk();
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);

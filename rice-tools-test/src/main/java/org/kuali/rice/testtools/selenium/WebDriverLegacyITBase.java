@@ -2783,11 +2783,15 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     protected void waitAndClickAdHocPersonAdd() throws InterruptedException  {
         jGrowl("Click AdHoc Person add");
         waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-//        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/fieldset/div/button");
     }
 
-    protected void waitAndClickAdHocGroupAdd() throws InterruptedException  {
-        jGrowl("Click AdHoc Group add");
+    protected void waitAndClickAdHocPersonAddQuickFinder() throws InterruptedException  {
+        jGrowl("Click AdHoc Person quickfinder");
+        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button");
+    }
+
+    protected void waitAndClickAdHocGroupAddQuickFinder() throws InterruptedException  {
+        jGrowl("Click AdHoc Group quickfinder");
         waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button");
     }
 

@@ -268,6 +268,8 @@ public class View extends ContainerBase {
             }
         }
 
+        initializeDialogReclocationScript();
+
         super.performInitialization(model);
 
         assert this == ViewLifecycle.getView();
@@ -355,13 +357,23 @@ public class View extends ContainerBase {
                         + "', 'actionParameters[selectedLineIndex]' : '0' }";
                 actionScript += "showDialog('" + dialogId + "', " + additionalData + ");";
             }
-            setOnLoadScript(actionScript);
+            setOnLoadScript(ScriptUtils.appendScript(getOnLoadScript(), actionScript));
         } else if (StringUtils.isNotBlank(dialogId) && !(this instanceof LookupView)) {
             String actionScript =
                     "jQuery.unblockUI();setupImages();showLoading('Loading...', window.document);showDialog('"
                             + dialogId + "');";
-            setOnLoadScript(actionScript);
+            setOnLoadScript(ScriptUtils.appendScript(getOnLoadScript(), actionScript));
         }
+    }
+
+    /**
+     * Without this script dialogs might be associated with a non visible action (i.e. inside a dropdown menu).  This
+     * would cause the dialog not being displayed.  To ensure that all dialog are able to be displayed the DIVs of the
+     * dialogs are moved to a common location.
+     */
+    protected void initializeDialogReclocationScript() {
+        String dialogRelocationScript = "jQuery('.modal').appendTo('#Uif-Dialogs');";
+        setOnLoadScript(ScriptUtils.appendScript(getOnLoadScript(), dialogRelocationScript));
     }
 
     /**

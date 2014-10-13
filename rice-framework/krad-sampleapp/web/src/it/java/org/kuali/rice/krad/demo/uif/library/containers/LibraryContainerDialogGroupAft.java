@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.krad.demo.uif.library.containers;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -160,6 +163,26 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example14']/a");
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-ShowLargeDialog']/div/div/div[@data-parent='Demo-DialogGroup-ShowLargeDialog']/button[contains(text(),'OK')]");
     }
+
+    protected void testContainerDialogGroupDestroyDialogOnHidden() throws Exception {
+        WebElement exampleAnchorElement = findElement(By.cssSelector("a[id^='Demo-DialogGroup-Example15']"));
+        exampleAnchorElement.click();
+        WebElement dialog = findElement(By.cssSelector(
+                "section[id='Demo-DialogGroup-DestroyDialogOnHidden'] > div.modal-dialog"));
+        assertTrue("Dialog should not be visisble on page load.", !dialog.isDisplayed());
+        WebElement dialogLink = findElement(By.cssSelector("section[id='Demo-DialogGroup-Example15'] > a"));
+        dialogLink.click();
+        dialog = waitForElementVisibleBy(By.cssSelector(
+                "section[id='Demo-DialogGroup-Example15'] > section[id='Demo-DialogGroup-DestroyDialogOnHidden']"));
+        WebElement anyButton = dialog.findElement(By.cssSelector("button:first-of-type"));
+        anyButton.click();
+        try {
+            dialog = waitAndGetElementByAttributeValue("id", "Demo-DialogGroup-DestroyDialogOnHidden");
+            fail("Dialog should not be present.");
+        } catch (NoSuchElementException exception) {
+            passed();
+        }
+    }
     
     protected void testContainerDialogGroupAll() throws Exception {
     	testContainerDialogGroupConfirmAction();
@@ -175,8 +198,9 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	testContainerDialogGroupDialogReuse();
 //    	testContainerDialogGroupSmallDialog(); // fails when run with others, test below
     	testContainerDialogGroupLargeDialog();
+        testContainerDialogGroupDestroyDialogOnHidden();
     }
-    
+
     @Test
     public void testContainerDialogGroupBookmark() throws Exception {
     	testContainerDialogGroupAll();
@@ -222,6 +246,18 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     @Test
     public void testContainerDialogGroupSmallDialogNav() throws Exception {
         testContainerDialogGroupSmallDialog();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupDestroyDialogOnHiddenBookmark() throws Exception {
+        testContainerDialogGroupDestroyDialogOnHidden();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupDestroyDialogOnHiddenNav() throws Exception {
+        testContainerDialogGroupDestroyDialogOnHidden();
         passed();
     }
 }

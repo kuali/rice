@@ -41,11 +41,15 @@
  *
  * @param dialogId id for the element to display in a modal
  * @param options (optional) object containing options (including event callbacks)
+ * @param modalOptions (optional) options to be passed into the modal widget call
+ * @param disableBlocking (optional) whether or not the loading indicator should be shown for ajax retrieved dialogs,
+ * set this to true when the dialog is known to load quickly
  */
-function showDialog(dialogId, options) {
+function showDialog(dialogId, options, modalOptions, disableBlocking) {
     var $dialog = jQuery('#' + dialogId);
 
     options = options || {};
+    modalOptions = modalOptions || {};
 
     // if dialog contents are not present, or always refresh is set we need to make the call to retrieve
     if (($dialog.length === 0) || $dialog.hasClass(kradVariables.CLASSES.PLACEHOLDER) || options.alwaysRefresh) {
@@ -59,7 +63,7 @@ function showDialog(dialogId, options) {
             options.alwaysRefresh = false;
 
             showDialog(dialogId, options);
-        }, additionalSubmitData);
+        }, additionalSubmitData, disableBlocking);
 
         return;
     }
@@ -74,7 +78,21 @@ function showDialog(dialogId, options) {
     _bindShowDialogHandlers($dialog, options.showHandler);
     _bindHideDialogHandlers($dialog, options.hideHandler);
 
-    $dialog.modal();
+    $dialog.modal(modalOptions);
+}
+
+/**
+ * Opens a static version of a dialog (does not close when clicked out)
+ *
+ * @param dialogId id for the element to display in a modal
+ * @param options (optional) object containing options (including event callbacks)
+ * @param modalOptions (optional) options to be passed into the modal widget call
+ */
+function showStaticDialog(dialogId, options, modalOptions) {
+    modalOptions = modalOptions || {};
+    jQuery.extend(modalOptions, {backdrop: 'static'});
+
+    showDialog(dialogId, options, modalOptions);
 }
 
 /**
@@ -145,6 +163,9 @@ function dismissDialog(dialogId, $action) {
     }
 
     $dialog.modal('hide');
+
+    // Make sure the background is removed for modals that may have been replaced
+    ensureDialogBackdropRemoved();
 }
 
 /**
@@ -185,7 +206,7 @@ function confirmDialog(confirmText, headerText, options, protoDialogId) {
     if (($protoDialog.length === 0) || $protoDialog.hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
         createPlaceholderAndRetrieve(protoDialogId, function () {
             confirm(confirmText, headerText, options);
-        });
+        }, {}, true);
 
         return;
     }
@@ -356,8 +377,9 @@ function handleServerDialogResponse(event) {
  *
  * @param url the url of the iframe
  * @param dialogId id of dialog to use, if not set Uif-DialogGroup-Iframe will be used
+ * @param modalOptions options to be passed into the modal widget call
  */
-function openIframeDialog(url, dialogId) {
+function openIframeDialog(url, dialogId, modalOptions) {
     if (!dialogId) {
         dialogId = kradVariables.MODAL.IFRAME_MODAL;
     }
@@ -417,7 +439,7 @@ function openIframeDialog(url, dialogId) {
 
     };
 
-    showDialog(dialogId, dialogOptions);
+    showDialog(dialogId, dialogOptions, modalOptions);
 }
 
 /**

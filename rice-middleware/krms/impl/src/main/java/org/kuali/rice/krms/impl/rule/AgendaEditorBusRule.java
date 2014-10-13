@@ -27,6 +27,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
@@ -143,6 +144,15 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
         boolean isValid = true;
 
         try {
+            if (agendaEditor.getAgenda().getContextId() == null) {
+                ContextDefinition context = getContextBoService().getContextByNameAndNamespace(
+                        agendaEditor.getContextName(), agendaEditor.getNamespace());
+
+                if (context != null) {
+                    agendaEditor.getAgenda().setContextId(context.getId());
+                }
+            }
+
             if (getContextBoService().getContextByContextId(agendaEditor.getAgenda().getContextId()) == null) {
                 this.putFieldError(KRMSPropertyConstants.Agenda.CONTEXT, "error.agenda.invalidContext");
                 isValid = false;

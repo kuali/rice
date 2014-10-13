@@ -130,7 +130,6 @@ public class TravelAccount extends DataObjectBase implements Serializable {
     }
 
     public Person getFiscalOfficer() {
-        // KULRICE-12849.  Must be an existing person in KIM
         if ((fiscalOfficer == null) || !StringUtils.equals(fiscalOfficer.getPrincipalId(), getFoId())) {
             fiscalOfficer = KimApiServiceLocator.getPersonService().getPerson(getFoId());
 
@@ -144,6 +143,10 @@ public class TravelAccount extends DataObjectBase implements Serializable {
         }
 
         return fiscalOfficer;
+    }
+
+    public void setFiscalOfficer(Person fiscalOfficer) {
+        this.fiscalOfficer = fiscalOfficer;
     }
 
     public String getFoId() {

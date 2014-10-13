@@ -139,6 +139,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
      */
     protected void testAddBlankLine() throws Exception {
         waitAndClickByLinkText("Add Blank Line");
+        waitForProgressLoading();
         waitAndClickById("Collections-AddBlankLine-TableTop_del_line0"); // the line withe asdf1, etc.
         waitForProgressLoading();
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
@@ -221,6 +222,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testAddViaLightbox() throws Exception {
         waitAndClickByLinkText("Add Via Lightbox");
+        waitForProgressLoading();
         Integer preValue= Integer.parseInt(driver.findElement(By.xpath("//fieldset/div/div[2]/p")).getText());
         waitAndClickButtonByText("Add Line");
         waitForProgressAddingLine();

@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.sessionpolicy;
 
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -43,11 +44,7 @@ public class LabsSessionPolicyRedirectHomeAft extends LabsSessionPolicyBase {
     	assertElementPresentByXpath("//button[contains(text(),'NonAjax Request')]");
     	waitAndClickByXpath("//button[contains(text(),'Kill Session')]");
     	waitAndClickByXpath("//button[contains(text(),'Ajax Request')]");
-    	Thread.sleep(3000);
-    	if(isElementPresentByXpath("//button[contains(text(),'Ajax Request')]"))
-    	{
-    		fail("Session not cleared out properly.");
-    	}
+        waitForElementNotPresent(By.xpath("//button[contains(text(),'Ajax Request')]"), "Session not cleared out properly.");
     }
 
     @Test

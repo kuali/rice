@@ -19,6 +19,8 @@ import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 
 /**
  * test that repeated ajax refreshes work
@@ -66,7 +68,30 @@ public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
             }
             waitAndClick("button.kr-refresh-button");
         }
-        passed();
+    }
+
+    protected void testAgendaEditRuleCompoundOperation() throws Exception {
+        selectFrameIframePortlet();
+        waitAndClickSearchByText();
+        waitAndClickByXpath("//a[@title='edit Agenda Definition with Agenda Id=T1001']",
+                "Does user have edit permissions?");
+        waitAndClickByXpath("//li/a[@class='agendaNode ruleNode']");
+        waitAndClickButtonByText("Edit Rule");
+        waitForTextPresent("Campus Code = Muir AND Campus Code = Revelle AND Campus Code = Warren");
+
+        waitAndSelectBy(By.xpath("//div[@id='RuleEditorView-Tree_tree']/ul/li/ul/li[2]/div/div/select"), "OR");
+        waitForTextPresent("Campus Code = Muir OR Campus Code = Revelle OR Campus Code = Warren");
+        Select select = new Select(driver.findElement(By.xpath(
+                "//div[@id='RuleEditorView-Tree_tree']/ul/li/ul/li[4]/div/div/select")));
+        String selectedOption = select.getFirstSelectedOption().getText();
+        assertEquals("The second drop down should also be OR", "OR", selectedOption);
+
+        waitAndSelectBy(By.xpath("//div[@id='RuleEditorView-Tree_tree']/ul/li/ul/li[4]/div/div/select"), "AND");
+        waitForTextPresent("Campus Code = Muir AND Campus Code = Revelle AND Campus Code = Warren");
+        Select select2 = new Select(driver.findElement(By.xpath(
+                "//div[@id='RuleEditorView-Tree_tree']/ul/li/ul/li[2]/div/div/select")));
+        String selectedOption2 = select2.getFirstSelectedOption().getText();
+        assertEquals("The first drop down should also be AND", "AND", selectedOption2);
     }
 
     /**
@@ -75,6 +100,7 @@ public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
     @Test
     public void testAgendaEditRuleRefreshBookmark() throws Exception {
         testAgendaEditRuleRefresh();
+        passed();
     }
 
     /**
@@ -83,6 +109,25 @@ public class AgendaEditRuleRefreshAft extends WebDriverLegacyITBase {
     @Test
     public void testAgendaEditRuleRefreshNav() throws Exception {
         testAgendaEditRuleRefresh();
+        passed();
+    }
+
+    /**
+     * test to verify that compound operations are set correctly when changed.
+     */
+    @Test
+    public void testAgendaEditRuleCompoundOperationBookmark() throws Exception {
+        testAgendaEditRuleCompoundOperation();
+        passed();
+    }
+
+    /**
+     * test to verify that compound operations are set correctly when changed.
+     */
+    @Test
+    public void testAgendaEditRuleCompoundOperationNav() throws Exception {
+        testAgendaEditRuleCompoundOperation();
+        passed();
     }
 }
 

@@ -29,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -36,12 +37,14 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.persistence.annotations.OptimisticLocking;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.CopyOption;
+import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsTypeRepositoryService;
 
 /**
  * Agenda Item business object
@@ -59,7 +62,13 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
     public static final String COPY_OF_TEXT = "Copy of ";
 
     public static final String AGENDA_ITEM_SEQ_NAME = "KRMS_AGENDA_ITM_S";
-    static final RepositoryBoIncrementer agendaItemIdIncrementer = new RepositoryBoIncrementer(AGENDA_ITEM_SEQ_NAME);
+
+    static RepositoryBoIncrementer agendaItemIdIncrementer = new RepositoryBoIncrementer(AGENDA_ITEM_SEQ_NAME);
+
+    @Transient
+    private transient DataObjectService dataObjectService = null;
+    @Transient
+    private transient KrmsTypeRepositoryService krmsTypeRepositoryService = null;
 
     @PortableSequenceGenerator(name = AGENDA_ITEM_SEQ_NAME)
     @GeneratedValue(generator = AGENDA_ITEM_SEQ_NAME)
@@ -144,7 +153,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
             if (!CollectionUtils.isEmpty(getRule().getActions())) {
                 resultBuilder.append("   [");
                 ActionBo action = getRule().getActions().get(0);
-                KrmsTypeDefinition krmsTypeDefn = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService().getTypeById(action.getTypeId());
+                KrmsTypeDefinition krmsTypeDefn = getKrmsTypeRepositoryService().getTypeById(action.getTypeId());
                 resultBuilder.append(krmsTypeDefn.getName());
                 resultBuilder.append(": ");
                 resultBuilder.append(action.getName());
@@ -417,7 +426,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
      */
     public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda, Map<String, RuleBo> oldRuleIdToNew, Map<String, AgendaItemBo> oldAgendaItemIdToNew, List<AgendaItemBo> copiedAgendaItems, final String dts) {
         // Use deepCopy and update all the ids.
-        AgendaItemBo copiedAgendaItem = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
+        AgendaItemBo copiedAgendaItem = getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
         copiedAgendaItem.setId(agendaItemIdIncrementer.getNewId());
         copiedAgendaItem.setAgendaId(copiedAgenda.getId());
         oldAgendaItemIdToNew.put(this.getId(), copiedAgendaItem);
@@ -462,5 +471,29 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
             }
         }
         return copiedAgendaItem;
+    }
+
+    public DataObjectService getDataObjectService() {
+        if (dataObjectService == null) {
+            dataObjectService = KradDataServiceLocator.getDataObjectService();
+        }
+
+        return dataObjectService;
+    }
+
+    public void setDataObjectService(DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
+    public KrmsTypeRepositoryService getKrmsTypeRepositoryService() {
+        if (krmsTypeRepositoryService == null) {
+            krmsTypeRepositoryService = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
+        }
+
+        return krmsTypeRepositoryService;
+    }
+
+    public void setKrmsTypeRepositoryService(KrmsTypeRepositoryService dataObjectService) {
+        this.krmsTypeRepositoryService = dataObjectService;
     }
 }

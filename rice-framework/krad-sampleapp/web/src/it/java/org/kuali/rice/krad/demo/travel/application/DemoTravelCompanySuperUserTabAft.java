@@ -91,10 +91,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
                 "//div[@data-parent=\"Uif-AdHocPersonCollection\"]/div/span[contains(text(), 'user1']");
         waitAndClickByLinkText("Ad Hoc Recipients");
 
-        waitAndClickSubmitByText();
-        waitAndClickConfirmSubmitOk();
-        waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 8);
-        waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
+        submitSuccessfully(WebDriverUtils.configuredImplicityWait() * 8);
     }
 
     protected void travelAccountCreateDocumentWith2Adhoc() throws Exception {
@@ -117,10 +114,7 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
                 "//div[@data-parent=\"Uif-AdHocPersonCollection\"]/div/span[contains(text(), 'user2']");
         waitAndClickByLinkText("Ad Hoc Recipients");
 
-        waitAndClickSubmitByText();
-        waitAndClickConfirmSubmitOk();
-        waitForProgress("Loading...", WebDriverUtils.configuredImplicityWait() * 16);
-        waitForTextPresent("Document was successfully submitted.", WebDriverUtils.configuredImplicityWait() * 2);
+        submitSuccessfully(WebDriverUtils.configuredImplicityWait() * 16);
     }
 
     protected void testTravelAccountSuperUserApprove() throws Exception {

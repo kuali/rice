@@ -22,10 +22,15 @@ import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinitionContract;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
+import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
+import org.kuali.rice.krms.impl.repository.ActionBo;
 import org.kuali.rice.krms.impl.repository.AgendaBo;
 import org.kuali.rice.krms.impl.repository.AgendaItemBo;
+import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.util.CollectionUtils;
 
@@ -328,10 +333,78 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
     // methods left to test:
     //
     // deleteAgendaItem
-    // updateAgendaItem
     // updateAgenda
     // deleteAgenda
     // createAgendaItem
+
+    @Test
+    public void testUpdateAgendaItem() {
+        ContextDefinition context = getContextRepository().getContextByNameAndNamespace(CONTEXT1, NAMESPACE1);
+        assertNotNull("context " + CONTEXT1 + " not found", context);
+        AgendaDefinition agenda = getAgendaBoService().getAgendaByNameAndContextId(AGENDA1, context.getId());
+        assertNotNull("agenda " + AGENDA1 + " not found", agenda);
+        AgendaItemDefinition agendaItem = getAgendaBoService().getAgendaItemById(agenda.getFirstItemId());
+        assertNotNull("agenda item " + agenda.getFirstItemId() + " not found", agendaItem);
+
+        KrmsAttributeDefinition attributeDefinition = getKrmsAttributeDefinitionService().createAttributeDefinition(
+                KrmsAttributeDefinition.Builder.create(null, ATTRIBUTE1, NAMESPACE1).build());
+        KrmsAttributeDefinitionBo attributeDefinitionBo = KrmsAttributeDefinitionBo.from(attributeDefinition);
+
+        // verify the agenda item
+        AgendaItemBo agendaItemBo = AgendaItemBo.from(agendaItem);
+        assertNotNull("agenda item null", agendaItemBo);
+        List<ActionBo> agendaItemActionBos = agendaItemBo.getRule().getActions();
+        assertEquals("incorrect number of agenda item rule actions found", 1, agendaItemActionBos.size());
+        ActionBo agendaItemActionBo = agendaItemActionBos.get(0);
+        assertTrue("agenda item rule action attributes found", agendaItemActionBo.getAttributes().isEmpty());
+        assertTrue("agenda item rule action attributes found", agendaItemActionBo.getAttributeBos().isEmpty());
+
+        // verify the child agenda item
+        AgendaItemBo alwaysBo = agendaItemBo.getAlways();
+        assertNotNull("always agenda item null", alwaysBo);
+        List<ActionBo> alwaysActionBos = alwaysBo.getRule().getActions();
+        assertEquals("incorrect number of always agenda item rule actions found", 1, alwaysActionBos.size());
+        ActionBo alwaysActionBo = alwaysActionBos.get(0);
+        assertTrue("always agenda item rule action attributes found", alwaysActionBo.getAttributes().isEmpty());
+        assertTrue("always agenda item rule action attributes found", alwaysActionBo.getAttributeBos().isEmpty());
+
+        // add agenda item attribute
+        ActionAttributeBo agendaItemActionAttributeBo = new ActionAttributeBo();
+        agendaItemActionAttributeBo.setAction(agendaItemActionBo);
+        agendaItemActionAttributeBo.setAttributeDefinition(attributeDefinitionBo);
+        agendaItemActionAttributeBo.setValue("testAgendaItem");
+        agendaItemActionBo.setAttributeBos(Arrays.asList(agendaItemActionAttributeBo));
+
+        // add child agenda item attribute
+        ActionAttributeBo whenAlwaysActionAttributeBo = new ActionAttributeBo();
+        whenAlwaysActionAttributeBo.setAction(alwaysActionBo);
+        whenAlwaysActionAttributeBo.setAttributeDefinition(attributeDefinitionBo);
+        whenAlwaysActionAttributeBo.setValue("testAlwaysAgendaItem");
+        alwaysActionBo.setAttributeBos(Arrays.asList(whenAlwaysActionAttributeBo));
+
+        // update the agenda item
+        AgendaItemDefinition updatedAgendaItem
+                = getAgendaBoService().updateAgendaItem(AgendaItemDefinition.Builder.create(agendaItemBo).build());
+
+        // verify the updated agenda item
+        AgendaItemBo updatedAgendaItemBo = AgendaItemBo.from(updatedAgendaItem);
+        assertNotNull("updated agenda item null", updatedAgendaItemBo);
+        List<ActionBo> updatedAgendaItemActionBos = updatedAgendaItemBo.getRule().getActions();
+        assertEquals("incorrect number of updated agenda item rule actions found", 1, updatedAgendaItemActionBos.size());
+        ActionBo updatedAgendaItemActionBo = updatedAgendaItemActionBos.get(0);
+        assertEquals("incorrect number of updated agenda item rule action attributes found", 1, updatedAgendaItemActionBo.getAttributes().size());
+        assertEquals("incorrect number of updated agenda item rule action attributes found", 1, updatedAgendaItemActionBo.getAttributeBos().size());
+
+        // verify the updated child agenda item
+        AgendaItemBo updatedAlwaysBo = updatedAgendaItemBo.getAlways();
+        assertNotNull("updated always agenda item null", updatedAlwaysBo);
+        List<ActionBo> updatedAlwaysActionBos = updatedAlwaysBo.getRule().getActions();
+        assertEquals("incorrect number of updated always agenda item rule actions found", 1, updatedAlwaysActionBos.size());
+        ActionBo updatedAlwaysActionBo = updatedAlwaysActionBos.get(0);
+        assertEquals("incorrect number of updated always agenda item rule action attributes found", 1, updatedAlwaysActionBo.getAttributes().size());
+        assertEquals("incorrect number of updated always agenda item rule action attributes found", 1, updatedAlwaysActionBo.getAttributeBos().size());
+    }
+
     @Test
     public void testAgendaCrud() {
         String namespace = getNamespaceByContextName(CONTEXT1);

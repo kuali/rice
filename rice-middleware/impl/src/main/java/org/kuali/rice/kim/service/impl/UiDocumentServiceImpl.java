@@ -1844,6 +1844,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                     EntityDefault entity = principalIdToEntityMap.get(member.getMemberId());
                     if ( entity != null ) {
                         pndMember.setMemberName(entity.getPrincipals().get(0).getPrincipalName());
+
                         if ( entity.getName() != null ) {
                             pndMember.setMemberFullName(entity.getName().getFirstName() + " " + entity.getName().getLastName());
                         }

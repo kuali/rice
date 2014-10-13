@@ -70,6 +70,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         checkForIncidentReport();
         selectTopFrame();
     }
+
     @Test
     public void testBasicDocSearchBookmark() throws Exception {
         createAndSaveDoc();
@@ -81,7 +82,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='clear saved searches search']");
         waitAndTypeByName("documentTypeName", "DocumentTypeDocument");
         waitAndTypeByName("initiatorPrincipalName", "admin");
-        waitAndTypeByName("documentId", docId);
+        waitAndTypeLabeledInput("Document Id:", docId);
         //waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "10/01/2010");
         //waitAndTypeByName("dateCreated", "10/13/2010");
         waitAndClickMethodToCallSearchButton();
@@ -125,7 +126,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='basic search']", "DocSearchAft.testDetailedDocSearch");
         //waitAndTypeByName("documentTypeName", parentName);
         waitAndTypeByName("initiatorPrincipalName", "admin");
-        waitAndTypeByName("documentId", docId);
+        waitAndTypeLabeledInput("Document Id:", docId);
         //waitAndTypeByName("rangeLowerBoundKeyPrefix_dateCreated", "10/01/2010");
         //waitAndTypeByName("dateCreated", "10/13/2010");
         assertElementPresentByName("approverPrincipalName", "Approver input field is not there in the detailed search");
@@ -161,6 +162,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//div[@class='lookupcreatenew']/input[@alt='superuser search']");
         waitForElementPresentByXpath("//div[@class='lookupcreatenew']/input[@alt='non-superuser search']",
                 "DocSearchAft.testSuperUserSearch");
+        waitAndTypeLabeledInput("Document Id:", docId);
         waitAndClickMethodToCallSearchButton();
         Thread.sleep(3000);
         selectFrameIframePortlet();
@@ -178,7 +180,7 @@ public class DocSearchAft extends WebDriverLegacyITBase {
         waitAndClickByName("methodToCall.approve", "approve button does not exist on the page");
         jGrowl("Click Cancel Button");
         waitAndClickByXpath("//a[@href='DocumentSearch.do']/img[@alt='cancel']");
-        waitAndTypeByName("documentId", docId);
+        waitAndTypeLabeledInput("Document Id:", docId);
         waitAndClickMethodToCallSearchButton();
         waitForPageToLoad();
         assertEquals("FINAL", driver.findElement(By.xpath("//table[@id='row']/tbody/tr[1]/td[4]")).getText());

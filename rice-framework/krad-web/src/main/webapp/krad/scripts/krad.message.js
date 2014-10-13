@@ -100,6 +100,11 @@ function showLoading(loadingMessage, elementToBlock, replaceElement, options) {
         loadingMessage = getMessage(kradVariables.MESSAGE_LOADING);
     }
 
+    // There is a very rare case where the message can be null - unknown cause
+    if (!loadingMessage || loadingMessage === "null") {
+        loadingMessage = "Loading...";
+    }
+
     loadingContent = loadingContent.attr("alt", loadingMessage).get(0).outerHTML + " " + loadingMessage;
 
     if (elementToBlock && elementToBlock.length) {

@@ -24,6 +24,7 @@ public class CreateNewAgendaNavAft extends CreateNewAgendaAftBase {
 
     @Test
     public void testCreateNewAgendaNav() throws Exception {
-        testCreateNewAgendaNav(this);
+        testCreateNewAgenda();
+        passed();
     }
 }

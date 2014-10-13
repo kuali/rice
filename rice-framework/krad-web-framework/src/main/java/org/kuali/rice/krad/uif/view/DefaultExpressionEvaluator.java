@@ -479,6 +479,13 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
 
         String expression = propertyExpressions.get(propertyName);
 
+        // If the property name is a default value which grabs a new sequence number don't evaluate the expression
+        // since a new sequence number has already been retrieved.
+        if (StringUtils.equals(propertyName, UifConstants.ComponentProperties.DEFAULT_VALUE) &&
+                StringUtils.contains(expression, UifConstants.SEQUENCE_PREFIX)) {
+            return;
+        }
+
         // check whether expression should be evaluated or property should retain the expression
         if (CopyUtils.fieldHasAnnotation(expressionConfigurable.getClass(), propertyName, KeepExpression.class)) {
             // set expression as property value to be handled by the component

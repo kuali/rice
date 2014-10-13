@@ -556,6 +556,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         if (driver != null) {
             if (WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
                 try {
+                    acceptAlertIfPresent();
                     driver.close();
                 } catch (NoSuchWindowException nswe) {
                     System.out.println("NoSuchWindowException closing WebDriver " + nswe.getMessage());
@@ -1081,8 +1082,8 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             Thread.sleep(1000);
             String contents = driver.getPageSource();
             AutomatedFunctionalTestUtils.failOnInvalidUserName(userName, contents, failable);
-            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Login",
-                "Login failure", failable);
+            AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), "Login", "Login failure",
+                    failable);
         }
     }
 
@@ -1274,8 +1275,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         } catch (Throwable t) {
             System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
             t.printStackTrace();
-            System.out.println("Throwable "
-                    + t.getMessage()
+            System.out.println("Throwable " + t.getMessage()
                     + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");
         }
     }
@@ -1345,11 +1345,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitAndClickLabeledLink(String label, String linkText) throws InterruptedException {
         jGrowl("Click link " + linkText + " labeled with " + label);
-        waitAndClick(By.xpath("//th/label[contains(text(), '"
-                + label
-                + "')]/../following-sibling::*/div/span/a[contains(text(), '"
-                + linkText
-                + "')]"));
+        waitAndClick(By.xpath(
+                "//th/label[contains(text(), '" + label + "')]/../following-sibling::*/div/span/a[contains(text(), '"
+                        + linkText + "')]"));
     }
 
     protected void waitAndClickLabeledQuickFinder(String label) throws InterruptedException {
@@ -1361,15 +1359,13 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitAndTypeLabeledInput(String label, String text) throws InterruptedException {
         jGrowl("Type " + text + " in input labeled with " + label);
-        waitAndTypeByXpath("//th/label[contains(text(), '" + label
-                + "')]/../following-sibling::*//input", text);
+        waitAndTypeByXpath("//th/label[contains(text(), '" + label + "')]/../following-sibling::*//input", text);
         screenshot();
     }
 
     protected void waitAndSelectLabeled(String label, String text) throws InterruptedException {
         jGrowl("Select " + text + " labeled with " + label);
-        waitAndSelectBy(By.xpath("//th/label[contains(text(), '" + label
-                + "')]/../following-sibling::*//select"), text);
+        waitAndSelectBy(By.xpath("//th/label[contains(text(), '" + label + "')]/../following-sibling::*//select"), text);
         screenshot();
     }
 
@@ -1448,6 +1444,38 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         for(WebElement ele : elements){
             ele.click();
         }
+    }
+
+    protected void waitAndClickConfirmCancelOk() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        String xpath = "//div[@data-parent='ConfirmCancelDialog']/button[contains(text(),'OK')]";
+        waitForElementVisibleBy(By.xpath(xpath)).click();
+    }
+
+    protected void waitAndClickConfirmBlanketApproveOk() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        String xpath = "//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]";
+        waitForElementVisibleBy(By.xpath(xpath)).click();
+    }
+
+    protected void waitAndClickConfirmSaveOnClose() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        waitForElementVisibleBy(By.xpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]"));
+        waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]");
+    }
+
+    protected void waitAndClickCancelSaveOnClose() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        waitForElementVisibleBy(By.xpath(
+                "//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'No')]"));
+        waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'No')]");
+    }
+
+
+    protected void waitAndClickConfirmSubmitOk() throws InterruptedException {
+        jGrowl("Click OK Confirmation");
+        String xpath = "//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]";
+        waitForElementVisibleBy(By.xpath(xpath)).click();
     }
 
     protected void waitAndClickDropDown(String dropDownText) throws InterruptedException {
@@ -1761,16 +1789,25 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void waitForElementNotPresent(By by, int secondsToWait) throws InterruptedException {
+        waitForElementNotPresent(by, this.getClass().getSimpleName(), secondsToWait);
+    }
+
+    protected void waitForElementNotPresent(By by, String message) throws InterruptedException {
+        waitForElementNotPresent(by, this.getClass().getSimpleName(), WebDriverUtils.configuredImplicityWait());
+    }
+
+    protected void waitForElementNotPresent(By by, String message, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        while (isElementPresent(by) && secondsToWait > 0) {
+        while (isElementPresent(by) || secondsToWait > 0) {
             secondsToWait -= 1;
             Thread.sleep(1000);
         }
         if (isElementPresent(by)) {
-            jiraAwareFail(by + " is still present");
+            jiraAwareFail(by + " is still present " + message);
         }
         driver.manage().timeouts().implicitlyWait(waitSeconds, TimeUnit.SECONDS);
     }
+
 
     protected boolean waitForIsTextPresent(String text) throws InterruptedException {
         boolean present = false;

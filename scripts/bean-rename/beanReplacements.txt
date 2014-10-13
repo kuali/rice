@@ -242,7 +242,7 @@ clientSideJs,actionScript
 labelKey,messageKey
 showMaintenanceLinks,renderMaintenanceLinks
 suppressActions,renderResultActions
-hideReturnLinks,renderReturnLink
+hideReturnLink,renderReturnLink
 renderSearchButtons,renderCriteriaActions
 readOnlySearchFields,readOnlyLookupFields
 Uif-InputField-LabelTop,Uif-InputField

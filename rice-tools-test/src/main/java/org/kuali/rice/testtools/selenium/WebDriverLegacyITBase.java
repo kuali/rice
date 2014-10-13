@@ -658,6 +658,14 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         blanketApproveAssert(docId);
     }
 
+    protected void blanketApproveSuccessfully() throws InterruptedException {
+        waitAndClickBlanketApprove();
+        waitAndClickConfirmBlanketApproveOk();
+        acceptAlertIfPresent(); // LabsLookupDefaultCreateNewBlanketApproveAft
+        waitForProgressLoading();
+        checkForDocErrorKrad();
+        waitForTextPresent("Document was successfully approved.");
+    }
 
     protected void failOnErrorMessageItem() {
         failOnErrorMessageItem(this.getClass().getName());
@@ -870,8 +878,12 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected void saveSuccessfully() throws InterruptedException {
+        saveSuccessfully(WebDriverUtils.configuredImplicityWait() * 4);
+    }
+
+    protected void saveSuccessfully(int secondsToWait) throws InterruptedException {
         waitAndClickSaveByText();
-        waitForProgressSaving();
+        waitForProgressSaving(secondsToWait);
         checkForDocErrorKrad();
         waitForTextPresent("Document was successfully saved.");
     }
@@ -890,8 +902,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     }
 
     protected void submitSuccessfully() throws InterruptedException {
-//        submitSuccessfully(WebDriverUtils.configuredImplicityWait());
-        submitSuccessfully(120); // temp for release as I cannot modify the CI Job
+        submitSuccessfully(WebDriverUtils.configuredImplicityWait() * 4);
     }
 
     protected void submitSuccessfully(int loadingSeconds) throws InterruptedException {
@@ -1079,29 +1090,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     protected void testCancelConfirmation() throws InterruptedException {
         waitAndCancelConfirmation();
-    }
-
-    protected void testCreateNewAgenda() throws Exception {
-        selectFrameIframePortlet();
-        String desc = getDescriptionUnique();
-        String docId = waitForAgendaDocId();
-        selectByName("document.newMaintainableObject.dataObject.namespace", "Kuali Rules Test");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name", desc);
-        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.contextName", "Context1");
-        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
-        Thread.sleep(1000);
-        // extra focus and blur to work around KULRICE-11534 Create New Agenda requires two blur events to fully render Type when Context is typed in (first renders label, second renders select)
-        fireEvent("document.newMaintainableObject.dataObject.contextName", "focus");
-        fireEvent("document.newMaintainableObject.dataObject.contextName", "blur");
-        waitForElementPresentByName("document.newMaintainableObject.dataObject.agenda.typeId");
-        selectByName("document.newMaintainableObject.dataObject.agenda.typeId", "Campus Agenda");
-        waitForElementPresentByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.customAttributesMap[Campus]", "BL");
-        waitAndClickSubmitByText();
-        waitAndClickConfirmSubmitOk();
-        assertTextPresent(new String[]{"Document was successfully submitted.", "ENROUTE"});
-        assertDocSearch(docId, "ENROUTE");
     }
 
     protected void testCreateDocType() throws Exception {
@@ -2778,30 +2766,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickButtonByText("Clear Values");
     }
 
-    protected void waitAndClickConfirmCancelOk() throws InterruptedException {
-        jGrowl("Click OK Confirmation");
-        String xpath = "//div[@data-parent='ConfirmCancelDialog']/button[contains(text(),'OK')]";
-        waitForElementVisibleBy(By.xpath(xpath)).click();
-    }
-
-    protected void waitAndClickConfirmBlanketApproveOk() throws InterruptedException {
-        jGrowl("Click OK Confirmation");
-        String xpath = "//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]";
-        waitForElementVisibleBy(By.xpath(xpath)).click();
-    }
-
-    protected void waitAndClickConfirmSaveOnClose() throws InterruptedException {
-        jGrowl("Click OK Confirmation");
-        waitForElementVisibleBy(By.xpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]"));
-        waitAndClickByXpath("//div[@data-parent='ConfirmSaveOnCloseDialog']/button[contains(text(),'Yes')]");
-    }
-
-    protected void waitAndClickConfirmSubmitOk() throws InterruptedException {
-        jGrowl("Click OK Confirmation");
-        String xpath = "//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'OK')]";
-        waitForElementVisibleBy(By.xpath(xpath)).click();
-    }
-
     /**
      * {@link #ADMINISTRATION_LINK_TEXT}
      * @param failable
@@ -2816,10 +2780,10 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickByName("methodToCall.processAnswer.button0");
     }
 
-
     protected void waitAndClickAdHocPersonAdd() throws InterruptedException  {
         jGrowl("Click AdHoc Person add");
-        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/div/button");
+        waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
+//        waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/fieldset/div/button");
     }
 
     protected void waitAndClickAdHocGroupAdd() throws InterruptedException  {

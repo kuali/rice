@@ -67,6 +67,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
                     return AgendaBo.to(input);
                 };
             };
+
     private DataObjectService dataObjectService;
     private KrmsAttributeDefinitionService attributeDefinitionService;
 
@@ -86,7 +87,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         }
 
         AgendaBo agendaBo = from(agenda);
-        agendaBo = dataObjectService.save(agendaBo, PersistenceOption.FLUSH);
+        agendaBo = getDataObjectService().save(agendaBo, PersistenceOption.FLUSH);
         return to(agendaBo);
     }
 
@@ -101,7 +102,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
         // must already exist to be able to update
         final String agendaIdKey = agenda.getId();
-        final AgendaBo existing = dataObjectService.find(AgendaBo.class, agendaIdKey);
+        final AgendaBo existing = getDataObjectService().find(AgendaBo.class, agendaIdKey);
         if (existing == null) {
             throw new IllegalStateException("the agenda does not exist: " + agenda);
         }
@@ -121,16 +122,16 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         // move over AgendaBo members that don't get populated from AgendaDefinition
         boToUpdate.setItems(existing.getItems());
         if (StringUtils.isNotBlank(agenda.getFirstItemId())) {
-            boToUpdate.setFirstItem(dataObjectService.find(AgendaItemBo.class, agenda.getFirstItemId()));
+            boToUpdate.setFirstItem(getDataObjectService().find(AgendaItemBo.class, agenda.getFirstItemId()));
         }
 
         // delete any old, existing attributes
         Map<String, String> fields = new HashMap<String, String>(1);
         fields.put("agenda.id", toUpdate.getId());
-        deleteMatching(dataObjectService, AgendaAttributeBo.class, fields);
+        deleteMatching(getDataObjectService(), AgendaAttributeBo.class, fields);
 
         // update new agenda and create new attributes
-        AgendaBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+        AgendaBo updatedData = getDataObjectService().save(boToUpdate, PersistenceOption.FLUSH);
 
         return to(updatedData);
     }
@@ -140,17 +141,17 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         if (agendaId == null) {
             throw new RiceIllegalArgumentException("agendaId is null");
         }
-        final AgendaBo bo = dataObjectService.find(AgendaBo.class, agendaId);
+        final AgendaBo bo = getDataObjectService().find(AgendaBo.class, agendaId);
         if (bo == null) {
             throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);
         }
 
         List<AgendaItemDefinition> agendaItems = this.getAgendaItemsByAgendaId(bo.getId());
         for (AgendaItemDefinition agendaItem : agendaItems) {
-            dataObjectService.delete(AgendaItemBo.from(agendaItem));
+            getDataObjectService().delete(AgendaItemBo.from(agendaItem));
         }
 
-        dataObjectService.delete(bo);
+        getDataObjectService().delete(bo);
     }
 
     /**
@@ -161,7 +162,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         if (StringUtils.isBlank(agendaId)) {
             throw new RiceIllegalArgumentException("agenda id is null or blank");
         }
-        AgendaBo bo = dataObjectService.find(AgendaBo.class, agendaId);
+        AgendaBo bo = getDataObjectService().find(AgendaBo.class, agendaId);
         return to(bo);
     }
 
@@ -181,7 +182,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         map.put("name", name);
         map.put("contextId", contextId);
 
-        AgendaBo myAgenda = findSingleMatching(dataObjectService, AgendaBo.class, map);
+        AgendaBo myAgenda = findSingleMatching(getDataObjectService(), AgendaBo.class, map);
         return to(myAgenda);
     }
 
@@ -195,7 +196,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         }
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("contextId", contextId);
-        List<AgendaBo> bos = findMatching(dataObjectService, AgendaBo.class, map);
+        List<AgendaBo> bos = findMatching(getDataObjectService(), AgendaBo.class, map);
 
         return convertAgendaBosToImmutables(bos);
     }
@@ -217,22 +218,22 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
         AgendaItemBo bo = AgendaItemBo.from(agendaItem);
         if (StringUtils.isNotBlank(agendaItem.getRuleId()) && agendaItem.getRule() == null ) {
-            bo.setRule(dataObjectService.find(RuleBo.class, agendaItem.getRuleId()));
+            bo.setRule(getDataObjectService().find(RuleBo.class, agendaItem.getRuleId()));
         }
 
         if (StringUtils.isNotBlank(agendaItem.getAlwaysId()) && agendaItem.getAlways() == null ) {
-            bo.setAlways(dataObjectService.find(AgendaItemBo.class, agendaItem.getAlwaysId()));
+            bo.setAlways(getDataObjectService().find(AgendaItemBo.class, agendaItem.getAlwaysId()));
         }
 
         if (StringUtils.isNotBlank(agendaItem.getWhenTrueId()) && agendaItem.getWhenTrue() == null ) {
-            bo.setWhenTrue(dataObjectService.find(AgendaItemBo.class, agendaItem.getWhenTrueId()));
+            bo.setWhenTrue(getDataObjectService().find(AgendaItemBo.class, agendaItem.getWhenTrueId()));
         }
 
         if (StringUtils.isNotBlank(agendaItem.getWhenFalseId()) && agendaItem.getWhenFalse() == null ) {
-            bo.setWhenFalse(dataObjectService.find(AgendaItemBo.class, agendaItem.getWhenFalseId()));
+            bo.setWhenFalse(getDataObjectService().find(AgendaItemBo.class, agendaItem.getWhenFalseId()));
         }
 
-        bo = dataObjectService.save(bo, PersistenceOption.FLUSH);
+        bo = getDataObjectService().save(bo, PersistenceOption.FLUSH);
         return AgendaItemBo.to(bo);
     }
 
@@ -259,41 +260,8 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         }
 
         AgendaItemBo aiBo = AgendaItemBo.from(toUpdate);
-        updateActionAttributes(aiBo);
-        final AgendaItemBo updatedData = dataObjectService.save(aiBo, PersistenceOption.FLUSH);
+        final AgendaItemBo updatedData = getDataObjectService().save(aiBo, PersistenceOption.FLUSH);
         return AgendaItemBo.to(updatedData);
-    }
-
-    private void updateActionAttributes(AgendaItemBo aiBo) {
-        if (aiBo.getRule() != null) {
-            updateActionAttributes(aiBo.getRule().getActions());
-        }
-        if (aiBo.getWhenTrue() != null) {
-            updateActionAttributes(aiBo.getWhenTrue());
-        }
-        if (aiBo.getWhenFalse() != null) {
-            updateActionAttributes(aiBo.getWhenFalse());
-        }
-        if (aiBo.getAlways() != null) {
-            updateActionAttributes(aiBo.getAlways());
-        }
-    }
-
-    private void updateActionAttributes(List<ActionBo> actionBos) {
-        for (ActionBo action : actionBos) {
-            for (ActionAttributeBo aa : action.getAttributeBos()) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("actionId", action.getId());
-                Collection<ActionAttributeBo> aaBos = findMatching(dataObjectService, ActionAttributeBo.class, map);
-
-                for (ActionAttributeBo aaBo : aaBos) {
-                    if (StringUtils.equals(aaBo.getAttributeDefinitionId(), aa.getAttributeDefinitionId())) {
-                        aa.setId(aaBo.getId());
-                        aa.setVersionNumber(aaBo.getVersionNumber());
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -347,7 +315,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
             throw new RiceIllegalArgumentException("agenda item id is null or blank");
         }
 
-        AgendaItemBo bo = dataObjectService.find(AgendaItemBo.class, id);
+        AgendaItemBo bo = getDataObjectService().find(AgendaItemBo.class, id);
 
         return AgendaItemBo.to(bo);
     }
@@ -359,7 +327,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         }
         List<AgendaItemDefinition> results = null;
 
-        Collection<AgendaItemBo> bos = findMatching(dataObjectService, AgendaItemBo.class, Collections.singletonMap(
+        Collection<AgendaItemBo> bos = findMatching(getDataObjectService(), AgendaItemBo.class, Collections.singletonMap(
                 "agendaId", agendaId));
 
         if (CollectionUtils.isEmpty(bos)) {
@@ -379,7 +347,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
 
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("typeId", typeId);
-        List<AgendaBo> bos = findMatching(dataObjectService, AgendaBo.class, map);
+        List<AgendaBo> bos = findMatching(getDataObjectService(), AgendaBo.class, map);
 
         return convertAgendaBosToImmutables(bos);
     }
@@ -396,7 +364,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("typeId", typeId);
         map.put("contextId", contextId);
-        Collection<AgendaBo> bos = findMatching(dataObjectService, AgendaBo.class, map);
+        Collection<AgendaBo> bos = findMatching(getDataObjectService(), AgendaBo.class, map);
 
         return convertAgendaBosToImmutables(bos);
     }
@@ -423,7 +391,7 @@ public class AgendaBoServiceImpl implements AgendaBoService {
             throw new RiceIllegalArgumentException("agendaItemId must not be blank or null");
         }
 
-        deleteMatching(dataObjectService, AgendaItemBo.class, Collections.singletonMap("id", agendaItemId));
+        deleteMatching(getDataObjectService(), AgendaItemBo.class, Collections.singletonMap("id", agendaItemId));
     }
 
     private List<AgendaItemDefinition> findAgendaItemsForAgendas(List<AgendaDefinition> agendaDefinitions) {
@@ -465,33 +433,6 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         }
 
         return results;
-    }
-
-    protected DataObjectService getDataObjectService() {
-        if (dataObjectService == null) {
-            dataObjectService = KRADServiceLocator.getDataObjectService();
-        }
-        return dataObjectService;
-    }
-
-    /**
-     * Sets the dataObjectService attribute value.
-     *
-     * @param dataObjectService The dataObjectService to set.
-     */
-    public void setDataObjectService(final DataObjectService dataObjectService) {
-        this.dataObjectService = dataObjectService;
-    }
-
-    protected KrmsAttributeDefinitionService getAttributeDefinitionService() {
-        if (attributeDefinitionService == null) {
-            attributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
-        }
-        return attributeDefinitionService;
-    }
-
-    public void setAttributeDefinitionService(KrmsAttributeDefinitionService attributeDefinitionService) {
-        this.attributeDefinitionService = attributeDefinitionService;
     }
 
     /**
@@ -578,4 +519,49 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         }
         return attributes;
     }
+
+    /**
+     * Gets the {@link DataObjectService}.
+     *
+     * @return the {@link DataObjectService}
+     */
+    public DataObjectService getDataObjectService() {
+        if (dataObjectService == null) {
+            dataObjectService = KRADServiceLocator.getDataObjectService();
+        }
+
+        return dataObjectService;
+    }
+
+    /**
+     * Sets the {@link DataObjectService}.
+     *
+     * @param dataObjectService the {@link DataObjectService} to set
+     */
+    public void setDataObjectService(final DataObjectService dataObjectService) {
+        this.dataObjectService = dataObjectService;
+    }
+
+    /**
+     * Gets the {@link KrmsAttributeDefinitionService}.
+     *
+     * @return the {@link KrmsAttributeDefinitionService}
+     */
+    public KrmsAttributeDefinitionService getAttributeDefinitionService() {
+        if (attributeDefinitionService == null) {
+            attributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
+        }
+
+        return attributeDefinitionService;
+    }
+
+    /**
+     * Sets the {@link KrmsAttributeDefinitionService}.
+     *
+     * @param attributeDefinitionService the {@link KrmsAttributeDefinitionService} to set
+     */
+    public void setAttributeDefinitionService(KrmsAttributeDefinitionService attributeDefinitionService) {
+        this.attributeDefinitionService = attributeDefinitionService;
+    }
+
 }

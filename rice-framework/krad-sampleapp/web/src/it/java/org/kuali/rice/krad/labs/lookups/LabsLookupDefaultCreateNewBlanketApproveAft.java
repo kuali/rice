@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.labs.lookups;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.openqa.selenium.By;
@@ -31,7 +32,36 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
      * /kr-krad/lookup?methodToCall=start&viewId=LabsLookup-DefaultView&hideReturnLink=true
      */
     public static final String BOOKMARK_URL = "/kr-krad/lookup?methodToCall=start&viewId=LabsLookup-DefaultView&hideReturnLink=true";
-    
+
+    protected String[][] inputVerifyDetails;
+
+    @Before
+    @Override
+    public void testSetUp() {
+        super.testSetUp();
+        getDescriptionUnique(); // init uniqueString
+        inputVerifyDetails = new String[][]{
+                {"Travel Account Name:", uniqueString},
+                {"Travel Account Number:", "z" + uniqueString.substring(4, 13)},
+                {"Fiscal Officer User ID:", "fran"},
+                {"Fiscal Officer:", "fran"},
+                {"Fiscal Officer Name:", "fran"},
+                {"Code And Description:", "CAT - Clearing"}
+        };
+    }
+
+    @Override
+    protected void blanketApproveSuccessfully() throws InterruptedException {
+        waitAndClickBlanketApprove();
+        waitAndClickConfirmBlanketApproveOk();
+        acceptAlertIfPresent(); // LabsLookupDefaultCreateNewBlanketApproveAft
+        waitForProgressLoading();
+// Blanket submit has been updated to go to the hub page so error messages and doc state are no longer testable
+//        checkForDocErrorKrad();
+//        waitForTextPresent("Document was successfully approved.");
+    }
+
+
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -43,95 +73,112 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
     }
 
     @Override
+    protected String getDescriptionUnique() {
+        // "z" + to keep these at the bottom of the search results so as not to interfere with other AFTs.
+        if (uniqueString == null) {
+            uniqueString = "z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
+        }
+        return getDescriptionBase() + " " + uniqueString;
+    }
+
+    @Override
     protected void navigate() throws Exception {
         navigateToLookup("Lookup Default");
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveBookmark() throws Exception {
-        String account = uniqueAccount();
-        testLabsLookupDefaultCreateNewBlanketApprove(account);
+        testLabsLookupDefaultCreateNewBlanketApprove();
         passed();
-    }
-
-    private String uniqueAccount() {
-        return "z" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomCharsNot9Digits();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountBookmark() throws Exception {
-        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(uniqueAccount());
+        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount();
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveNav() throws Exception {
-        testLabsLookupDefaultCreateNewBlanketApprove(uniqueAccount());
+        testLabsLookupDefaultCreateNewBlanketApprove();
         passed();
     }
 
     @Test
     public void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccountNav() throws Exception {
-        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(uniqueAccount());
+        testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount();
         passed();
     }
 
-    protected void testLabsLookupDefaultCreateNewBlanketApprove(String account)throws Exception {
+    protected void testLabsLookupDefaultCreateNewBlanketApprove()throws Exception {
         navigateToCreateNew();
-        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created " + account);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.name",account);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
-//        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012"); // no longer input field
+
+        // TODO method that accepts full array
+        // TODO flag requires or determine via UI (*) what is required (could miss changes)
+        waitAndTypeLabeledInput("Description:", getDescriptionUnique());
+        waitAndTypeLabeledInput(inputVerifyDetails[0][0], inputVerifyDetails[0][1]);
+        waitAndTypeLabeledInput("Travel Account Number:", inputVerifyDetails[1][1]);
+        waitAndTypeLabeledInput("Fiscal Officer User ID:", inputVerifyDetails[2][1]);
         waitAndClickByXpath("//input[@value='CAT']");
 
+        // TODO convenience method
         waitAndClickByLinkText("Notes and Attachments (0)");
-        waitAndTypeByXpath("//textarea[@maxlength='800']","My Note " + account);
+        waitAndTypeByXpath("//textarea[@maxlength='800']", "My Note " + uniqueString);
         waitAndClickByXpath("//button[@title='Add a Note']");
+
+        // TODO convenience method
         waitAndClickByLinkText("Ad Hoc Recipients");
-        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
+        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input", "admin");
         waitAndClickAdHocPersonAdd();
         waitForTextPresent("admin, admin");
-        waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-        waitAndClickBlanketApprove();
-//        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
 
-// Blanket submit has been updated to go to the hub page so error messages and doc state are no longer testable
-//        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {
-//            failOnDocErrors();
-//        }
-//
-//        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
+        blanketApproveSuccessfully();
+
+        // search based on name and verify
+        open(getBaseUrlString() + LabsLookupDefaultAft.BOOKMARK_URL);
+        waitAndTypeLabeledInput("Travel Account Name:", inputVerifyDetails[0][1]);
+        waitAndClickSearchByText();
+        waitForProgressLoading();
+        waitAndClickLinkContainingText(inputVerifyDetails[1][1]); // "Travel Account Number:"
+        waitForProgressLoading();
+        gotoLightBox();
+        assertLabeledTextPresent(inputVerifyDetails);
     }
 
-    protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount(String account)throws Exception {
+    protected void testLabsLookupDefaultCreateNewBlanketApproveWithSubAccount()throws Exception {
         navigateToCreateNew();
-        waitAndTypeByName("document.documentHeader.documentDescription","Labs Default LookUp Created " + account);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.number", account);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.name", account);
-        waitAndTypeByName("document.newMaintainableObject.dataObject.foId","fran");
-//        waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "01/01/2012"); // no longer an input field
+
+        waitAndTypeLabeledInput("Description:", getDescriptionUnique());
+        waitAndTypeLabeledInput("Travel Account Name:", inputVerifyDetails[0][1]);
+        waitAndTypeLabeledInput("Travel Account Number:", inputVerifyDetails[1][1]);
+        waitAndTypeLabeledInput("Fiscal Officer User ID:", inputVerifyDetails[2][1]);
         waitAndClickByXpath("//input[@value='CAT']");
 
-        waitAndTypeByXpath("//div[@data-label='Travel Sub Account Number']/input","1");
-        waitAndTypeByXpath("//div[@data-label='Sub Account Name']/input","Sub Account");
+        waitAndTypeLabeledInput("Travel Sub Account Number:", uniqueString.substring(0,7) + "sa");
+        waitAndTypeLabeledInput("Sub Account Name:", "Sub Account " + uniqueString);
         waitAndClickButtonByText("Add");
 
         waitAndClickByLinkText("Notes and Attachments (0)");
-        waitAndTypeByXpath("//textarea[@maxlength='800']","My Note " + account);
+        waitAndTypeByXpath("//textarea[@maxlength='800']", "My Note " + uniqueString);
         waitAndClickByXpath("//button[@title='Add a Note']");
+
         waitAndClickByLinkText("Ad Hoc Recipients");
-        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input","admin");
+        waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input", "admin");
         waitAndClickAdHocPersonAdd();
         waitForTextPresent("admin, admin");
-        waitAndClickByXpath("//button[@id='Uif-AdHocPersonCollection_add']");
-        waitAndClickBlanketApprove();
-//        waitForElementPresent("img[src*=\"info.png\"]"); // Loading to quick?
-// Blanket approve now redirects to the hub so error messagea and doc status are no longer testable https://jira.kuali.org/browse/KULRICE-11463
-//        if (isElementPresentByXpath("//li[@class='uif-errorMessageItem']")) {
-//            failOnDocErrors();
-//        }
-//
-//        assertTextPresent(new String[] {"Document was successfully approved.", "ENROUTE"});
+
+        blanketApproveSuccessfully();
+
+        // search based on name and verify
+        open(getBaseUrlString() + LabsLookupDefaultAft.BOOKMARK_URL);
+        waitAndTypeLabeledInput("Travel Account Name:", inputVerifyDetails[0][1]);
+        waitAndClickSearchByText();
+        waitForProgressLoading();
+        waitAndClickLinkContainingText(inputVerifyDetails[1][1]); // "Travel Account Number:"
+        waitForProgressLoading();
+        gotoLightBox();
+        assertLabeledTextPresent(inputVerifyDetails);
+        // Travel Sub Account Number should be uppercased via UI
+        assertTextPresent(new String[]{(uniqueString.substring(0,7) + "sa").toUpperCase(), "Sub Account " + uniqueString});
     }
 }

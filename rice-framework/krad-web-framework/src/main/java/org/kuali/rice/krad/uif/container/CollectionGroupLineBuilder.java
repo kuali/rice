@@ -238,26 +238,44 @@ public class CollectionGroupLineBuilder implements Serializable {
      * suffix for the fields so all nested components will get their ids adjusted.
      *
      * @param lineFields list of fields to update
+     * @param bindingPath binding path to add
      */
     protected void adjustFieldBindingAndId(List<Field> lineFields, String bindingPath) {
-        for (Field field : lineFields) {
-            if (field instanceof DataBinding && ((DataBinding) field).getBindingInfo().isBindToForm()) {
-                BindingInfo bindingInfo = ((DataBinding) field).getBindingInfo();
-                bindingInfo.setCollectionPath(null);
-                bindingInfo.setBindingName(
-                        bindingInfo.getBindingName() + "[" + lineBuilderContext.getLineIndex() + "]");
-            } else {
-                ComponentUtils.prefixBindingPath(field, bindingPath);
-            }
-
-            ComponentUtils.updateIdWithSuffix(field, lineBuilderContext.getIdSuffix());
-
-            field.setContainerIdSuffix(lineBuilderContext.getIdSuffix());
+        for (Field lineField : lineFields) {
+            adjustFieldBinding(lineField, bindingPath);
+            adjustFieldId(lineField);
         }
 
         if (lineBuilderContext.isBindToForm()) {
             ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, Boolean.valueOf(true));
         }
+    }
+
+    /**
+     * Adjusts the binding path for the given field to match the collections path.
+     *
+     * @param lineField field to update
+     * @param bindingPath binding path to add
+     */
+    protected void adjustFieldBinding(Field lineField, String bindingPath) {
+        if (lineField instanceof DataBinding && ((DataBinding) lineField).getBindingInfo().isBindToForm()) {
+            BindingInfo bindingInfo = ((DataBinding) lineField).getBindingInfo();
+            bindingInfo.setCollectionPath(null);
+            bindingInfo.setBindingName(bindingInfo.getBindingName() + "[" + lineBuilderContext.getLineIndex() + "]");
+        } else {
+            ComponentUtils.prefixBindingPath(lineField, bindingPath);
+        }
+    }
+
+    /**
+     * Adjusts the id suffix for the given field.
+     *
+     * @param lineField field to update
+     */
+    protected void adjustFieldId(Field lineField) {
+        ComponentUtils.updateIdWithSuffix(lineField, lineBuilderContext.getIdSuffix());
+
+        lineField.setContainerIdSuffix(lineBuilderContext.getIdSuffix());
     }
 
     /**
@@ -680,42 +698,56 @@ public class CollectionGroupLineBuilder implements Serializable {
     }
 
     /**
-     * Add additional information to the group and fields in the add line to allow for correct
-     * add control selection.
+     * Add additional information to the fields in the add line to allow for correct add control selection.
+     *
+     * @param lineFields list of fields instances for the line
      */
     protected void setupAddLineControlValidation(List<Field> lineFields) {
+        // don't process for anything but an add line
         if (!lineBuilderContext.isAddLine()) {
             return;
         }
 
-        String selector = "";
-        for (Field field : lineFields) {
-            if (field instanceof InputField) {
-                // sets up - skipping these fields in add area during standard form validation calls
-                // custom addLineToCollection js call will validate these fields manually on an add
-                Control control = ((InputField) field).getControl();
+        // set up skipping fields with the given selectors in add area during standard form validation calls
+        // custom addLineToCollection js call will validate these fields manually on an add
+        List<String> selectors = new ArrayList<String>();
+        String lineFieldSelector = UifConstants.IdSuffixes.CONTROL;
+        String nestedLineFieldSelector = UifConstants.IdSuffixes.ADD_LINE + UifConstants.IdSuffixes.CONTROL;
 
-                if (control != null) {
-                    control.addStyleClass(CssConstants.Classes.IGNORE_VALID);
-                    selector = selector + ",#" + field.getId() + UifConstants.IdSuffixes.CONTROL;
-                }
-            } else if (field instanceof FieldGroup) {
-                List<InputField> fields = ViewLifecycleUtils.getElementsOfTypeDeep(((FieldGroup) field).getGroup(),
-                        InputField.class);
+        // apply changes to and collect selectors from all fields and field groups
+        for (Field lineField : lineFields) {
+            if (lineField instanceof InputField) {
+                setupAddLineControlValidation((InputField) lineField, selectors, lineFieldSelector);
+            } else if (lineField instanceof FieldGroup) {
+                Group group = ((FieldGroup) lineField).getGroup();
+                List<InputField> nestedLineFields = ViewLifecycleUtils.getElementsOfTypeDeep(group, InputField.class);
 
-                for (InputField nestedField : fields) {
-                    Control control = nestedField.getControl();
-
-                    if (control != null) {
-                        control.addStyleClass(CssConstants.Classes.IGNORE_VALID);
-                        selector = selector + ",#" + nestedField.getId() + UifConstants.IdSuffixes.CONTROL;
-                    }
+                for (InputField nestedLineField : nestedLineFields) {
+                    setupAddLineControlValidation(nestedLineField, selectors, nestedLineFieldSelector);
                 }
             }
         }
 
-        lineBuilderContext.getCollectionGroup().addDataAttribute(UifConstants.DataAttributes.ADD_CONTROLS,
-                selector.replaceFirst(",", ""));
+        // add collected selectors to data attributes
+        lineBuilderContext.getCollectionGroup().addDataAttribute(
+                UifConstants.DataAttributes.ADD_CONTROLS, StringUtils.join(selectors, ","));
+    }
+
+    /**
+     * Add additional information to a field in the add line to allow for correct add control selection.
+     *
+     * @param lineField field instance for the line
+     * @param selectors list of selectors
+     * @param suffix id suffix to add
+     */
+    protected void setupAddLineControlValidation(InputField lineField, List<String> selectors, String suffix) {
+        Control control = lineField.getControl();
+
+        // ignore automatic validation and grab the selector for manual validation
+        if (control != null) {
+            control.addStyleClass(CssConstants.Classes.IGNORE_VALID);
+            selectors.add("#" + lineField.getId() + suffix);
+        }
     }
 
     /**
@@ -754,8 +786,7 @@ public class CollectionGroupLineBuilder implements Serializable {
                     lineDialog.setItems(items);
                 } else { // user provided dialog items
                     List<Component> dialogFields = new ArrayList<>(lineDialog.getItems());
-                    List<Field> newFields = new ArrayList<Field>();
-                    List<Field> newFieldGroups = new ArrayList<Field>();
+                    List<Component> dialogComponents = new ArrayList<>();
                     int fieldIndex = 0;
                     int subIndex = 0;
 
@@ -774,12 +805,14 @@ public class CollectionGroupLineBuilder implements Serializable {
                                 // update the binding info on the custom field
                                 dataField.getBindingInfo().setCollectionPath(group.getBindingInfo().getBindingName());
                             }
+
                             dataField.getBindingInfo().setBindByNamePrefix(UifPropertyPaths.DIALOG_DATA_OBJECT);
-                            newFields.add(dataField);
+                            dialogComponents.add(dataField);
                         } else if (dialogField instanceof FieldGroup) {
                             FieldGroup fieldGroup = (FieldGroup) dialogField;
+
                             if (fieldGroup.getGroup() instanceof CollectionGroup) {
-                                newFieldGroups.add(getNewFieldGroup(fieldGroup, (CollectionGroup) fieldGroup.
+                                dialogComponents.add(getNewFieldGroup(fieldGroup, (CollectionGroup) fieldGroup.
                                         getGroup(), lineDialog, fieldIndex, subIndex, null));
                                 subIndex++;
                             }
@@ -787,16 +820,23 @@ public class CollectionGroupLineBuilder implements Serializable {
                             CollectionGroup collectionGroup = (CollectionGroup) dialogField;
                             FieldGroup fieldGroupPrototype =
                                     lineBuilderContext.getLayoutManager().getSubCollectionFieldGroupPrototype();
-                            newFieldGroups.add(getNewFieldGroup(fieldGroupPrototype, collectionGroup, lineDialog,
+
+                            dialogComponents.add(getNewFieldGroup(fieldGroupPrototype, collectionGroup, lineDialog,
                                     fieldIndex, subIndex, UifPropertyPaths.DIALOG_DATA_OBJECT));
                             subIndex++;
+                        } else {
+                            ComponentUtils.prefixBindingPath(dialogField, UifPropertyPaths.DIALOG_DATA_OBJECT);
+                            dialogComponents.add(dialogField);
                         }
                         fieldIndex++;
                     }
-                    newFields.addAll(newFieldGroups);
-                    lineDialog.setItems(newFields);
+                    lineDialog.setItems(dialogComponents);
                 }
             }
+
+            // override the css of input groups within the dialog to fix quickfinder formatting issue
+            lineDialog.setOnShowDialogScript(
+                    "jQuery('#" + lineDialog.getId() + " .input-group').css('width', 'auto');");
         }
 
         // set all collection fields and sub-collection fields to readOnly

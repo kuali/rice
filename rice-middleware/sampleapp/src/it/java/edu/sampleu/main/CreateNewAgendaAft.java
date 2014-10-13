@@ -79,7 +79,18 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
         driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
 
+        waitIsVisible(By.xpath("//tr/th/label[contains(text(), '" + CONTEXT_LABEL + "')]"));
         assertLabeledTextPresent(inputVerifyDetails);
+        screenshot();
+    }
+
+    private void verifyInputs(String docId) throws InterruptedException {
+        waitAndClickLinkContainingText(docId);
+
+        driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
+
+        waitIsVisible(By.xpath("//tr/th/label[contains(text(), '" + CONTEXT_LABEL + "')]"));
+        assertLabeledInputTextPresent(inputVerifyDetails);
         screenshot();
     }
 
@@ -213,6 +224,9 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
     @Test
     public void testCreateNewCancelBookmark() throws Exception {
+        // Use the UI to populate the context so that the cancel confirmation popups are the same for both the
+        // nav and bookmark tests.
+        useUi = true;
         testCreateNewCancel();
         passed();
     }
@@ -237,19 +251,13 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
     @Test
     public void testCreateNewSaveBookmark() throws Exception {
-        verify(testCreateNewSave());
+        verifyInputs(testCreateNewSave());
         passed();
     }
 
     @Test
     public void testCreateNewSaveNav() throws Exception {
-        waitAndClickLinkContainingText(testCreateNewSave());
-
-        driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
-
-        assertTextPresent(inputVerifyDetails[0][1]);
-        assertTextPresent(inputVerifyDetails[1][0], inputVerifyDetails[1][1]);
-        assertEquals(inputVerifyDetails[2][1], findElement(By.name("document.newMaintainableObject.dataObject.contextName")).getAttribute("value"));
+        verifyInputs(testCreateNewSave());
         passed();
     }
 

@@ -69,7 +69,7 @@ jQuery(document).ready(function () {
  *        or via a server post
  * @param lookupDialogId(optional) id of dialog to use, if not set Uif-DialogGroup-Iframe will be used
  */
-function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialogId) {
+function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialogId, dialogId) {
     jQuery(function () {
         var data = {};
         var submitData = jQuery("#" + quickfinderActionId).data(kradVariables.SUBMIT_DATA);
@@ -99,6 +99,10 @@ function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialo
             data['actionParameters[methodToCall]'] = "start";
             data['actionParameters[flow]'] = "start";
             data['actionParameters[returnFormKey]'] = jQuery("#" + kradVariables.FORM_INFO_ID).children("input[name='formKey']").val();
+
+            if (dialogId) {
+                data['actionParameters[dialogId]'] = dialogId;
+            }
 
             var lookupParameters = data['actionParameters[lookupParameters]'];
             if (lookupParameters !== "" && typeof lookupParameters !== "undefined") {

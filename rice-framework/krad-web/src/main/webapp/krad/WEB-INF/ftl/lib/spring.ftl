@@ -433,7 +433,7 @@ expression=>${status.expression}<br>
 -->
 <#macro checkSelected value>
     <#if stringStatusValue?is_number && stringStatusValue?string == value>selected="selected"</#if>
-    <#if stringStatusValue?is_string && stringStatusValue == value>selected="selected"</#if>
+    <#if stringStatusValue?is_string && (stringStatusValue == value || stringStatusValue == value?html)>selected="selected"</#if>
 </#macro>
 
 <#--

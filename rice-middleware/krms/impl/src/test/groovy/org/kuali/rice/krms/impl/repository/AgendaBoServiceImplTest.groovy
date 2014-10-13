@@ -20,11 +20,21 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
+import org.kuali.rice.core.api.criteria.QueryByCriteria
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
+import org.kuali.rice.core.api.resourceloader.ResourceLoader
 import org.kuali.rice.krad.bo.PersistableBusinessObject
 import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition
+import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition
 import org.kuali.rice.krms.framework.engine.Agenda
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException
+import org.kuali.rice.core.api.exception.RiceIllegalStateException
+import org.kuali.rice.ksb.api.bus.ServiceBus
+
+import javax.xml.namespace.QName
 
 import static org.kuali.rice.krms.impl.repository.RepositoryTestUtils.*;
 
@@ -36,6 +46,7 @@ class AgendaBoServiceImplTest {
 
 	private static final String NAMESPACE = "KRMS_TEST"
 	private static final String AGENDA_ID_1 = "AGENDAID001"
+    private static final String AGENDA_ID_2 = "AGENDAID002"
 	private static final String AGENDA_NAME = "Agenda1"
 	private static final String TYPE_ID = "1234XYZ"
 	private static final String CONTEXT_ID_1 = "CONTEXT-001"
@@ -52,6 +63,7 @@ class AgendaBoServiceImplTest {
 	
 	private static AgendaDefinition TEST_NEW_AGENDA_DEF;
 	private static AgendaDefinition TEST_EXISTING_AGENDA_DEF;
+    private static AgendaDefinition TEST_EXISTING_AGENDA_DEF2;
 	private static AgendaBo TEST_AGENDA_BO;
 	
 	private static AgendaDefinition TEST_AGENDA_ITEM_DEF;
@@ -86,7 +98,14 @@ class AgendaBoServiceImplTest {
 		builder.setVersionNumber( VERSION_NUMBER_1 )
 		builder.setAttributes(myAttrs);
 		TEST_EXISTING_AGENDA_DEF = builder.build()
-		
+
+        // create existing definition (with id and version number)
+        builder = AgendaDefinition.Builder.create(AGENDA_ID_2, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
+        builder.setFirstItemId(AGENDA_ITEM_ID_1)
+        builder.setVersionNumber( VERSION_NUMBER_1 )
+        builder.setAttributes(myAttrs);
+        TEST_EXISTING_AGENDA_DEF2 = builder.build()
+
 		// create Agenda bo
 		TEST_AGENDA_BO = new AgendaBo()
 		TEST_AGENDA_BO.setId( AGENDA_ID_1 )
@@ -153,7 +172,7 @@ class AgendaBoServiceImplTest {
 	@Test
 	public void test_getAgendaByAgendaId_empty_id() {
 		shouldFail(IllegalArgumentException.class) {
-			new AgendaBoServiceImpl().getAgendaByAgendaId("")
+            new AgendaBoServiceImpl().getAgendaByAgendaId("")
 		}
 	}
 
@@ -163,8 +182,23 @@ class AgendaBoServiceImplTest {
 			new AgendaBoServiceImpl().getAgendaByAgendaId(null)
 		}
 	}
-	
-	@Test
+
+    @Test
+    public void test_getAgendaItemsByAgendaId_empty_id() {
+        shouldFail(IllegalArgumentException.class) {
+            new AgendaBoServiceImpl().getAgendaItemsByAgendaId("")
+        }
+    }
+
+    @Test
+    public void test_getAgendaItemsByAgendaId_null_id() {
+        shouldFail(IllegalArgumentException.class) {
+            new AgendaBoServiceImpl().getAgendaItemsByAgendaId(null)
+        }
+    }
+
+
+    @Test
 	public void test_getAgendaByNameAndContextId() {
 		mockDataObjectService.demand.findMatching(1..1) {clazz, map -> buildQueryResults([TEST_AGENDA_BO]) }
 		DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
@@ -336,7 +370,7 @@ class AgendaBoServiceImplTest {
   }
 
   @Test
-  void test_updateAgenda_success() {
+  void test_updateAgenda_success1() {
         mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
         mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO.getFirstItem() }
 		mockDataObjectService.demand.deleteMatching(1) { clazz, map -> }
@@ -364,4 +398,458 @@ class AgendaBoServiceImplTest {
 		mockDataObjectService.verify(dataObjectService)
   }
 
+    @Test
+    void testUpdateAgendaSuccess2() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO.getFirstItem() }
+        mockDataObjectService.demand.deleteMatching(1) { clazz, map -> }
+        mockDataObjectService.demand.save { bo, po ->
+            ((AgendaBo)bo).setId("1");
+            return bo;
+        }
+
+        mockAttributeDefinitionService.demand.findAttributeDefinitionsByType { String typeId ->
+            [KrmsAttributeDefinition.Builder.create(ADB1).build(), KrmsAttributeDefinition.Builder.create(ADB2).build()] };
+        KrmsAttributeDefinitionService attributeDefinitionService = mockAttributeDefinitionService.proxyDelegateInstance();
+
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        service.setAttributeDefinitionService(attributeDefinitionService)
+
+        KrmsAttributeDefinitionService kads = new KrmsAttributeDefinitionServiceImpl();
+        kads.setDataObjectService(dataObjectService)
+        KrmsRepositoryServiceLocator.setKrmsAttributeDefinitionService(kads)
+
+        def updatedData = service.updateAgenda(TEST_EXISTING_AGENDA_DEF2)
+
+        Assert.assertNotNull("Data should not be null coming from AgendaBoService updateAgenda", updatedData)
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testDeleteAgendaNullParameter() {
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        shouldFail(IllegalArgumentException.class) {
+            service.deleteAgenda(null)
+        }
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testDeleteAgendaNullFind() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> null }
+        def dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        shouldFail(IllegalStateException.class) {
+            service.deleteAgenda(TEST_AGENDA_BO.getId())
+        }
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testDeleteAgendaSuccessReturnsList() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([getAgendaItemBo("A","B","C", null)])}
+        mockDataObjectService.demand.delete(1..1) { bo -> return null }
+        mockDataObjectService.demand.delete(1..1) { bo -> return null }
+        def dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        service.deleteAgenda(TEST_AGENDA_BO.getId())
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testDeleteAgendaSuccessReturnsNoList() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([]) }
+        mockDataObjectService.demand.delete(1..1) { bo -> return null }
+        def dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        service.deleteAgenda(TEST_AGENDA_BO.getId())
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testCreateAgendaItemNullParameter() {
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        shouldFail(IllegalArgumentException.class) {
+            service.createAgendaItem(null)
+        }
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testCreateAgendaItemAlreadyFound() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        AgendaItemDefinition data = getAgendItemDefinitionBuilder()
+        shouldFail(IllegalStateException.class) {
+            service.createAgendaItem(data)
+        }
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testCreateAgendaItemSuccess() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> null }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getRuleBo() }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.save { bo, po -> return bo; }
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        AgendaItemDefinition data = getAgendItemDefinitionBuilder2("A")
+        service.createAgendaItem(data)
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testUpdateAgendaItemNullParameter() {
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        shouldFail(IllegalArgumentException.class) {
+            service.updateAgendaItem(null)
+        }
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testUpdateAgendaItemAlreadyFound() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> null }
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        AgendaItemDefinition data = getAgendItemDefinitionBuilder()
+        shouldFail(IllegalStateException.class) {
+            service.updateAgendaItem(data)
+        }
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testUpdateAgendaItemSuccessSameIds() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A", "B", "C", null) }
+        mockDataObjectService.demand.save { bo, po -> return bo; }
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        AgendaItemDefinition data = getAgendItemDefinitionBuilder2("C")
+        service.updateAgendaItem(data)
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testUpdateAgendaItemSuccessDifferentIds() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A", "B", "C", null) }
+        mockDataObjectService.demand.save { bo, po -> return bo; }
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        AgendaItemDefinition data = getAgendItemDefinitionBuilder2("A")
+        service.updateAgendaItem(data)
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testAddAgendaItemNullParameter() {
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        shouldFail(RiceIllegalArgumentException.class) {
+            service.addAgendaItem(null,"A",false)
+        }
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testAddAgendaItemAlreadyFound() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> null }
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        AgendaItemDefinition data = getAgendItemDefinitionBuilder()
+        shouldFail(IllegalStateException.class) {
+            service.addAgendaItem(data,"A",false)
+        }
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testAddAgendaItemSuccessIdNonNullParentIdNull() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> null }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getRuleBo() }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.save { bo, po -> return bo; }
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        AgendaItemDefinition data = getAgendItemDefinitionBuilder2("A")
+        service.addAgendaItem(data,null,false)
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testAddAgendaItemSuccessIdNonNullParentIdNonNull() {
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A", "B", "C", null) }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> null }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getRuleBo() }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        mockDataObjectService.demand.save { bo, po -> return bo; }
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A", "B", "C", null) }
+        mockDataObjectService.demand.save { bo, po -> return bo; }
+        def boService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(boService)
+        AgendaItemDefinition data = getAgendItemDefinitionBuilder2("A")
+        service.addAgendaItem(data,"A",false)
+        mockDataObjectService.verify(boService)
+    }
+
+    @Test
+    void testGetAgendasByTypeNullParameter() {
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([TEST_AGENDA_BO]) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        shouldFail(RiceIllegalArgumentException) {
+            service.getAgendasByType(null)
+        }
+    }
+
+    @Test
+    void testGetAgendasByTypeNonNullParameter(){
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([TEST_AGENDA_BO])}
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        List<AgendaDefinition> result = service.getAgendasByType("TYPE")
+        Assert.assertNotNull(result)
+        Assert.assertEquals(1L, result.size())
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testGetAgendasByTypeAndContextNullParameter1() {
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([TEST_AGENDA_BO]) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        shouldFail(RiceIllegalArgumentException) {
+            service.getAgendasByTypeAndContext(null,"B")
+        }
+    }
+
+    @Test
+    void testGetAgendasByTypeAndContextNullParameter2() {
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([TEST_AGENDA_BO]) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        shouldFail(RiceIllegalArgumentException) {
+            service.getAgendasByTypeAndContext("A",null)
+        }
+    }
+
+    @Test
+    void testGetAgendasByTypeAndContextNonNullParameter() {
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([TEST_AGENDA_BO]) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        List<AgendaDefinition> result = service.getAgendasByTypeAndContext("A","B")
+        Assert.assertNotNull(result)
+        Assert.assertEquals(1L, result.size())
+    }
+
+    @Test
+    void testGetAgendaItemsByTypeNoList(){
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([]) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        List<AgendaItemDefinition> result = service.getAgendaItemsByType("A")
+        Assert.assertNotNull(result)
+        Assert.assertEquals(0L, result.size())
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testGetAgendaItemsByTypeBigList(){
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO]) }
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null)]) }
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([getAgendaItemBo("A","B","C",null)]) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        List<AgendaItemDefinition> result = service.getAgendaItemsByType("A")
+        Assert.assertNotNull(result)
+        Assert.assertEquals(22L, result.size())
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testGetAgendaItemByIdBlankParameter(){
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        shouldFail(RiceIllegalArgumentException) {
+            AgendaItemDefinition result = service.getAgendaItemById("")
+        }
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testGetAgendaItemByIdNullParameter(){
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        shouldFail(RiceIllegalArgumentException) {
+            AgendaItemDefinition result = service.getAgendaItemById(null)
+        }
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+
+    @Test
+    void testGetAgendaItemById(){
+        mockDataObjectService.demand.find(1..1) { clazz, id -> getAgendaItemBo("A","B","C",null) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        AgendaItemDefinition  result = service.getAgendaItemById("A")
+        Assert.assertNotNull(result)
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testGetAgendaItemsByContext(){
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO]) }
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null)]) }
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([getAgendaItemBo("A","B","C",null)]) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        List<AgendaItemDefinition> result = service.getAgendaItemsByContext("A")
+        Assert.assertNotNull(result)
+        Assert.assertEquals(22L, result.size())
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testGetAgendaItemsByTypeAndContext(){
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO,TEST_AGENDA_BO]) }
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null),getAgendaItemBo("A","B","C",null)]) }
+        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([getAgendaItemBo("A","B","C",null)]) }
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        List<AgendaItemDefinition> result = service.getAgendaItemsByTypeAndContext("A","B")
+        Assert.assertNotNull(result)
+        Assert.assertEquals(22L, result.size())
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    @Test
+    void testDeleteAgendaItemNullParameter(){
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        shouldFail(RiceIllegalArgumentException) {
+            service.deleteAgendaItem(null)
+        }
+    }
+
+    @Test
+    void testDeleteAgendaItemBlankParameter(){
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        shouldFail(RiceIllegalArgumentException) {
+            service.deleteAgendaItem("")
+        }
+    }
+
+    @Test
+    void testDeleteAgendaItem(){
+        mockDataObjectService.demand.deleteMatching(1) { type, queryByCriteria -> return null}
+        DataObjectService dataObjectService = mockDataObjectService.proxyDelegateInstance()
+        AgendaBoService service = new AgendaBoServiceImpl()
+        service.setDataObjectService(dataObjectService)
+        service.deleteAgendaItem("A")
+        mockDataObjectService.verify(dataObjectService)
+    }
+
+    private RuleBo getRuleBo(){
+        RuleBo value = new RuleBo()
+        value.setId("A")
+        value.setName("B")
+        value.setNamespace("B")
+        return value
+    }
+
+    private AgendaItemDefinition getAgendItemDefinitionBuilder2(String id) {
+        AgendaItemDefinition.Builder itemDefinition = AgendaItemDefinition.Builder.create(id, "B")
+        itemDefinition.setRuleId("C")
+        itemDefinition.setSubAgendaId("D")
+        itemDefinition.setWhenTrueId("E")
+        itemDefinition.setWhenFalseId("F")
+        itemDefinition.setAlwaysId("G")
+        itemDefinition.setRuleId("A")
+        itemDefinition.setRule(null)
+        itemDefinition.setSubAgenda(new AgendaDefinition.Builder("M", "N", "O", "P"))
+        itemDefinition.setWhenTrue(null)
+        itemDefinition.setWhenTrueId("Q")
+        itemDefinition.setWhenFalse(null)
+        itemDefinition.setWhenFalseId("S")
+        itemDefinition.setAlways(null)
+        itemDefinition.setAlwaysId("U")
+        itemDefinition.setVersionNumber(0L);
+        return itemDefinition.build();
+    }
+
+    private AgendaItemDefinition getAgendItemDefinitionBuilder() {
+        AgendaItemDefinition.Builder itemDefinition = AgendaItemDefinition.Builder.create("A", "B")
+        itemDefinition.setRuleId("C")
+        itemDefinition.setSubAgendaId("D")
+        itemDefinition.setWhenTrueId("E")
+        itemDefinition.setWhenFalseId("F")
+        itemDefinition.setAlwaysId("G")
+        itemDefinition.setRule(new RuleDefinition.Builder("H", "I", "J", "K", "L"))
+        itemDefinition.setSubAgenda(new AgendaDefinition.Builder("M", "N", "O", "P"))
+        itemDefinition.setWhenTrue(new AgendaItemDefinition.Builder("Q", "R"))
+        itemDefinition.setWhenFalse(new AgendaItemDefinition.Builder("S", "T"))
+        itemDefinition.setAlways(new AgendaItemDefinition.Builder("U", "V"))
+        itemDefinition.setVersionNumber(0L);
+        return itemDefinition.build();
+    }
+
+    private AgendaItemBo getAgendaItemBo(String agendaId, String sunAgendaId, String id, RuleBo rule) {
+        AgendaItemBo obj = new AgendaItemBo();
+        obj.setAgendaId(agendaId);
+        obj.setId(id);
+        obj.setVersionNumber(0L);
+        obj.setRule(rule);
+        obj.setSubAgendaId(sunAgendaId);
+        obj.setWhenTrue(null);
+        obj.setWhenFalse(null);
+        obj.setAlways(null);
+        return obj;
+    }
 }

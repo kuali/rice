@@ -55,7 +55,7 @@ public class LabsLookupDefaultAft extends LabsLookupBase {
         waitAndTypeByName("lookupCriteria[number]","a1*");
         waitAndTypeByName("lookupCriteria[name]","Travel *");
         waitAndClickSearch3();
-        assertTextPresent(new String[] {"Travel Account 14", "a14"});
+        assertTextPresent(new String[] {"Travel Account 10", "a10"});
         waitAndClickButtonByText("Clear Values");
         waitAndClickSearch3();
         assertTextPresent(new String[] {"Travel Account 1", "a1"});

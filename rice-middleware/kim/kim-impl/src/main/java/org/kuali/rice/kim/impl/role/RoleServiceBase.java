@@ -104,6 +104,7 @@ abstract class RoleServiceBase {
      */
     protected Map<String, String> convertQualifierKeys(Map<String, String> qualification, Map<String, String> validAttributeIds) {
         Map<String, String> convertedQualification = new HashMap<String, String>();
+
         if (qualification != null && CollectionUtils.isNotEmpty(qualification.entrySet())) {
             for (Map.Entry<String, String> entry : qualification.entrySet()) {
                 String attributeId = validAttributeIds.get(entry.getKey());
@@ -112,6 +113,7 @@ abstract class RoleServiceBase {
                 }
             }
         }
+
         return convertedQualification;
     }
 
@@ -143,9 +145,11 @@ abstract class RoleServiceBase {
                 criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds) );
             }
         }
+
         if ( StringUtils.isNotBlank(principalId) ) {
             criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId) );
         }
+
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()));
 
         Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
@@ -160,6 +164,7 @@ abstract class RoleServiceBase {
         if (CollectionUtils.isEmpty(groupIds)) {
             return new ArrayList<RoleMemberBo>();
         }
+
         List<RoleMemberBo> coll = getDataObjectService().findMatching( RoleMemberBo.class,
                 QueryByCriteria.Builder.fromPredicates(
                         PredicateFactory.equal(KIMPropertyConstants.RoleMember.ROLE_ID, roleId),
@@ -167,11 +172,13 @@ abstract class RoleServiceBase {
                         PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds) ) ).getResults();
         List<RoleMemberBo> results = new ArrayList<RoleMemberBo>(coll.size());
         DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
+
         for (RoleMemberBo rm : coll) {
             if (rm.isActive(now)) {
                 results.add(rm);
             }
         }
+
         return results;
     }
 
@@ -192,6 +199,7 @@ abstract class RoleServiceBase {
         if (roleIds == null || roleIds.isEmpty()) {
             roleIds = Collections.emptyList();
         }
+
         if (groupIds == null || groupIds.isEmpty()) {
             groupIds = Collections.emptyList();
         }
@@ -239,6 +247,7 @@ abstract class RoleServiceBase {
         if (CollectionUtils.isNotEmpty(roleIds)) {
             criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds) );
         }
+
         if (CollectionUtils.isNotEmpty(groupIds)) {
             criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds) );
         }
@@ -259,6 +268,7 @@ abstract class RoleServiceBase {
         if (CollectionUtils.isNotEmpty(roleIds)) {
             criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds) );
         }
+
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()));
 
         Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
@@ -276,13 +286,17 @@ abstract class RoleServiceBase {
         if (CollectionUtils.isNotEmpty(roleIds)) {
             criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds) );
         }
+
         List<Predicate> principalPredicates = new ArrayList<Predicate>(2);
         principalPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()));
+
         if ( StringUtils.isNotBlank(principalId) ) {
             principalPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId));
         }
+
         List<Predicate> groupPredicates = new ArrayList<Predicate>(2);
         groupPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()));
+
         if (CollectionUtils.isNotEmpty(groupIds)) {
             groupPredicates.add(PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds));
         }
@@ -445,9 +459,11 @@ abstract class RoleServiceBase {
                     QueryByCriteria.Builder.fromPredicates(
                             PredicateFactory.in(KIMPropertyConstants.Delegation.ROLE_ID, roleIds),
                             PredicateFactory.equal(KIMPropertyConstants.Delegation.ACTIVE, Boolean.TRUE) ) ).getResults();
+
             for (DelegateTypeBo delegateBo : coll) {
                 results.put(delegateBo.getDelegationId(), delegateBo);
             }
+
             return results;
         }
 
@@ -481,6 +497,7 @@ abstract class RoleServiceBase {
         } else {
             return Collections.emptyList(); // no principal ID - abort
         }
+
         criteria.add( PredicateFactory.equal(KIMPropertyConstants.DelegationMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()));
 
         if (delegationIds != null && !delegationIds.isEmpty()) {
@@ -490,6 +507,7 @@ abstract class RoleServiceBase {
         List<DelegateMemberBo> coll = getDataObjectService().findMatching(DelegateMemberBo.class, QueryByCriteria.Builder.fromPredicates(criteria) ).getResults();
         ArrayList<DelegateMemberBo> results = new ArrayList<DelegateMemberBo>(coll.size());
         DateTime now = new DateTime( getDateTimeService().getCurrentTimestamp().getTime() );
+
         for (DelegateMemberBo rm : coll) {
             if (rm.isActive(now)) {
                 results.add(rm);
@@ -527,6 +545,7 @@ abstract class RoleServiceBase {
         if (StringUtils.isBlank(memberId)) {
             return null;
         }
+
         if (MemberType.PRINCIPAL.getCode().equals(memberTypeCode)) {
             return getIdentityService().getPrincipal(memberId);
         } else if (MemberType.GROUP.getCode().equals(memberTypeCode)) {
@@ -534,6 +553,7 @@ abstract class RoleServiceBase {
         } else if (MemberType.ROLE.getCode().equals(memberTypeCode)) {
             return getRoleBo(memberId);
         }
+
         return null;
     }
 
@@ -541,15 +561,19 @@ abstract class RoleServiceBase {
         if (member == null) {
             return "";
         }
+
         if (member instanceof Principal) {
             return ((Principal) member).getPrincipalName();
         }
+
         if (member instanceof Group) {
             return ((Group) member).getName();
         }
+
         if (member instanceof Role) {
             return ((Role) member).getName();
         }
+
         return member.toString();
     }
 
@@ -557,6 +581,7 @@ abstract class RoleServiceBase {
         if (StringUtils.isBlank(roleId)) {
             return null;
         }
+
         return getDataObjectService().find(RoleBo.class, roleId);
     }
 
@@ -564,6 +589,7 @@ abstract class RoleServiceBase {
         if (StringUtils.isBlank(roleId)) {
             return null;
         }
+
         return getDataObjectService().find(RoleBoLite.class, roleId);
     }
 
@@ -584,12 +610,14 @@ abstract class RoleServiceBase {
                 secondaryDelegate = delegate;
             }
         }
+
         if (secondaryDelegate == null) {
             secondaryDelegate = new DelegateTypeBo();
             secondaryDelegate.setRoleId(roleId);
             secondaryDelegate.setDelegationType(DelegationType.SECONDARY);
             secondaryDelegate.setKimTypeId(roleBo.getKimTypeId());
         }
+
         return secondaryDelegate;
     }
 
@@ -601,12 +629,14 @@ abstract class RoleServiceBase {
                 primaryDelegate = delegate;
             }
         }
+
         if (primaryDelegate == null) {
             primaryDelegate = new DelegateTypeBo();
             primaryDelegate.setRoleId(roleId);
             primaryDelegate.setDelegationType(DelegationType.PRIMARY);
             primaryDelegate.setKimTypeId(roleBo.getKimTypeId());
         }
+
         return primaryDelegate;
     }
 
@@ -616,6 +646,7 @@ abstract class RoleServiceBase {
                 return rm;
             }
         }
+
         return null;
     }
 
@@ -632,6 +663,7 @@ abstract class RoleServiceBase {
         if (roleId == null) {
             return new ArrayList<DelegateTypeBo>();
         }
+
         return getStoredDelegationImplsForRoleIds(Collections.singletonList(roleId));
 
     }
@@ -641,10 +673,12 @@ abstract class RoleServiceBase {
                 || StringUtils.isBlank(roleName)) {
             return null;
         }
+
         Map<String, Object> criteria = new HashMap<String, Object>(3);
         criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
         criteria.put(KimConstants.UniqueKeyConstants.NAME, roleName);
         criteria.put(KRADPropertyConstants.ACTIVE, Boolean.TRUE);
+
         QueryResults<RoleBo> results =
                 getDataObjectService().findMatching(RoleBo.class, QueryByCriteria.Builder.andAttributes(criteria).build());
         if (results.getResults().isEmpty()) {
@@ -653,6 +687,7 @@ abstract class RoleServiceBase {
             throw new NonUniqueResultException("Finding a role by name should return a unique role, "
                     + "but encountered multiple. namespaceCode='" + namespaceCode + "', name='" + roleName +"'");
         }
+
         return results.getResults().get(0);
     }
 
@@ -661,10 +696,12 @@ abstract class RoleServiceBase {
                 || StringUtils.isBlank(roleName)) {
             return null;
         }
+
         Map<String, Object> criteria = new HashMap<String, Object>(3);
         criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
         criteria.put(KimConstants.UniqueKeyConstants.NAME, roleName);
         criteria.put(KRADPropertyConstants.ACTIVE, Boolean.TRUE);
+
         QueryResults<RoleBoLite> results =
                 getDataObjectService().findMatching(RoleBoLite.class, QueryByCriteria.Builder.andAttributes(criteria).build());
         if (results.getResults().isEmpty()) {
@@ -673,16 +710,18 @@ abstract class RoleServiceBase {
             throw new NonUniqueResultException("Finding a role by name should return a unique role, "
                     + "but encountered multiple. namespaceCode='" + namespaceCode + "', name='" + roleName +"'");
         }
+
         return results.getResults().get(0);
     }
 
     protected List<RoleMember> doAnyMemberRecordsMatchByExactQualifier( RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier ) {
         List<RoleMemberBo> roleMemberBos = getRoleMembersByExactQualifierMatch(role, memberId, daoActionToTake, qualifier);
         List<RoleMember> roleMembers = new ArrayList<RoleMember>();
-        if(CollectionUtils.isNotEmpty(roleMemberBos)) {
+        if (CollectionUtils.isNotEmpty(roleMemberBos)) {
             for (RoleMemberBo bo : roleMemberBos) {
                 roleMembers.add(RoleMemberBo.to(bo));
             }
+
             return roleMembers;
         }
 
@@ -692,9 +731,9 @@ abstract class RoleServiceBase {
     protected List<RoleMemberBo> getRoleMembersByExactQualifierMatch(RoleEbo role, String memberId, RoleDaoAction daoActionToTake, Map<String, String> qualifier) {
         List<RoleMemberBo> rms = new ArrayList<RoleMemberBo>();
         RoleTypeService roleTypeService = getRoleTypeService( role.getId() );
-        if(roleTypeService != null) {
+        if (roleTypeService != null) {
             List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
-            if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+            if (CollectionUtils.isNotEmpty(attributesForExactMatch)) {
                 switch (daoActionToTake) {
                     case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
                         rms = getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(role.getId()), Collections.singletonList(memberId), populateQualifiersForExactMatch(qualifier, attributesForExactMatch));
@@ -716,6 +755,7 @@ abstract class RoleServiceBase {
 
             }
         }
+
         return rms;
     }
 
@@ -726,6 +766,7 @@ abstract class RoleServiceBase {
                 return RoleMemberBo.to(rm);
             }
         }
+
         return null;
     }
 
@@ -742,6 +783,7 @@ abstract class RoleServiceBase {
                 }
             }
         }
+
         return false;
     }
 
@@ -753,12 +795,13 @@ abstract class RoleServiceBase {
      */
     protected RoleTypeService getRoleTypeService(String roleId) {
         RoleBoLite roleBo = getRoleBoLite(roleId);
-        if(roleBo != null){
+        if (roleBo != null){
             KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
             if (roleType != null) {
                 return getRoleTypeService(roleType);
             }
         }
+
         return KimImplServiceLocator.getDefaultRoleTypeService();
     }
 
@@ -797,6 +840,7 @@ abstract class RoleServiceBase {
                 return (RoleTypeService) KimImplServiceLocator.getService("kimNoMembersRoleTypeService");
             }
         }
+
         return KimImplServiceLocator.getDefaultRoleTypeService();
     }
 
@@ -809,6 +853,7 @@ abstract class RoleServiceBase {
                 }
             }
         }
+
         return qualifiersForExactMatch;
     }
 
@@ -953,6 +998,7 @@ abstract class RoleServiceBase {
         if (responsibilityInternalService == null) {
             responsibilityInternalService = KimImplServiceLocator.getResponsibilityInternalService();
         }
+
         return responsibilityInternalService;
     }
 
@@ -968,6 +1014,7 @@ abstract class RoleServiceBase {
         if ( dataObjectService == null ) {
             dataObjectService = KradDataServiceLocator.getDataObjectService();
         }
+
         return dataObjectService;
     }
 
@@ -979,6 +1026,7 @@ abstract class RoleServiceBase {
         if ( dateTimeService == null ) {
             dateTimeService = CoreApiServiceLocator.getDateTimeService();
         }
+
         return dateTimeService;
     }
 
@@ -987,7 +1035,7 @@ abstract class RoleServiceBase {
     }
     public void notifyOnMemberRemoval(RoleMember member) {
         RoleBoLite roleBo = getRoleBoLite(member.getRoleId());
-        if(roleBo != null) {
+        if (roleBo != null) {
             KimType roleType = KimTypeBo.to(roleBo.getKimRoleType());
             if (roleType != null) {
                 String serviceName = roleType.getServiceName();
@@ -996,15 +1044,17 @@ abstract class RoleServiceBase {
                     try {
                         // Check service version for compatibility since this was added in 2.1.2
                         boolean validVersion = false;
+
                         List<ServiceInfo> serviceInfos = KsbApiServiceLocator.getServiceRegistry().getOnlineServicesByName(QName.valueOf(serviceName));
                         for(ServiceInfo serviceInfo : serviceInfos) {
                             String version = serviceInfo.getServiceVersion();
-                            if(StringUtils.isNotBlank(version) && version.compareTo("2.1.2") >= 0) {
+                            if (StringUtils.isNotBlank(version) && version.compareTo("2.1.2") >= 0) {
                                 validVersion = true;
                                 break;
                             }
                         }
-                        if(validVersion) {
+
+                        if (validVersion) {
                             service = (KimTypeService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(QName.valueOf(serviceName));
                             if (service != null && service instanceof RoleTypeService) {
                                 ((RoleTypeService) service).roleMemberRemoved(member);

@@ -519,10 +519,17 @@ KradRequest.prototype = {
 
     // sets up the component or page blocking for an ajax request
     _setupBlocking: function (options) {
+
         // initialize element to block if necessary
         if (!this.elementToBlock && !this.disableBlocking &&
                 (this.ajaxReturnType == kradVariables.RETURN_TYPE_UPDATE_COMPONENT) && this.refreshId) {
             this.elementToBlock = jQuery("#" + this.refreshId);
+        }
+
+        // force full page loading blocking for dialogs being loaded or refreshed
+        if ((this.additionalData && this.additionalData.isDialog) ||
+                jQuery(this.elementToBlock).is("#" + kradVariables.IDS.DIALOGS + " >, .modal")) {
+            this.elementToBlock = null;
         }
 
         // create a reference to the request for ajax callbacks

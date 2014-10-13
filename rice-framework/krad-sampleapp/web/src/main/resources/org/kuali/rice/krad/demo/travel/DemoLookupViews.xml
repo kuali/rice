@@ -204,10 +204,35 @@
 
   <bean id="LookupSampleView-StackedLookupResultsCollectionSection" parent="Uif-StackedCollectionSection"
         p:id="uLookupSampleViewStackedLookupResults">
-    <property name="renderAddLine" value="false"/>
+    <property name="showInactiveLines" value="true"/>
     <property name="propertyName" value="lookupResults"/>
     <property name="headerText" value="Lookup Results"/>
     <property name="header.cssClasses" value="uif-hideHeaderText"/>
+    <property name="validationMessages.displayHeaderMessageSummary" value="false"/>
+    <property name="renderLineActions" value="@{#view.renderResultActions}"/>
+    <property name="renderAddLine" value="false"/>
+    <property name="header.lowerGroup">
+      <bean parent="Uif-VerticalBoxGroup"/>
+    </property>
+    <property name="lineActions">
+      <list>
+        <bean parent="Uif-Lookup-MaintenanceEditLink" p:order="10"/>
+        <bean parent="Uif-Lookup-MaintenanceCopyLink" p:order="20"/>
+        <bean parent="Uif-Lookup-MaintenanceDeleteLink" p:order="30"/>
+        <bean parent="Uif-Lookup-MaintenanceReturnLink"/>
+      </list>
+    </property>
+    <property name="dataAttributes">
+      <map merge="true">
+        <entry key="lookupresultscount" value="@{#form.lookupResults ne null ? #form.lookupResults.size() : 0}"/>
+        <entry key="selectedlinecount" value="@{#form.selectedLookupResultsCache.size()}"/>
+      </map>
+    </property>
+    <property name="validationMessages.additionalKeysToMatch">
+      <list merge="true">
+        <value>LookupResultMessages</value>
+      </list>
+    </property>
   </bean>
 
 

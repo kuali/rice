@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.krad.uif.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.krad.datadictionary.DataDictionary;
@@ -30,10 +22,14 @@ import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.datadictionary.state.StateMapping;
 import org.kuali.rice.krad.datadictionary.validator.ValidationTrace;
 import org.kuali.rice.krad.datadictionary.validator.Validator;
+import org.kuali.rice.krad.lookup.LookupView;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.UifConstants.ViewType;
+import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
 import org.kuali.rice.krad.uif.component.ReferenceCopy;
@@ -41,6 +37,8 @@ import org.kuali.rice.krad.uif.component.RequestParameter;
 import org.kuali.rice.krad.uif.container.ContainerBase;
 import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.container.PageGroup;
+import org.kuali.rice.krad.uif.element.BreadcrumbItem;
+import org.kuali.rice.krad.uif.element.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.element.HeadLink;
 import org.kuali.rice.krad.uif.element.Header;
 import org.kuali.rice.krad.uif.element.MetaTag;
@@ -49,8 +47,6 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
-import org.kuali.rice.krad.uif.element.BreadcrumbItem;
-import org.kuali.rice.krad.uif.element.BreadcrumbOptions;
 import org.kuali.rice.krad.uif.util.ClientValidationUtils;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.CopyUtils;
@@ -69,6 +65,14 @@ import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -254,6 +258,14 @@ public class View extends ContainerBase {
             if (StringUtils.isNotBlank(form.getPageId())) {
                 setCurrentPageId(form.getPageId());
             }
+
+            String dialogId = form.getActionParamaterValue(UifParameters.DIALOG_ID);
+            if (StringUtils.isNotBlank(dialogId)) {
+                form.setShowDialogId(dialogId);
+
+                // initialize the view to open the dialog if necessary
+                initializeDialogLoadScript((UifFormBase) model);
+            }
         }
 
         super.performInitialization(model);
@@ -301,6 +313,55 @@ public class View extends ContainerBase {
         }
 
         breadcrumbOptions.setupBreadcrumbs(model);
+    }
+
+    /**
+     * Helper method to set the view's load script to open a dialog.
+     *
+     * @param form the form containing data
+     */
+    protected void initializeDialogLoadScript(UifFormBase form) {
+        // check for edit line dialog action parameters and if present, then show the dialog once page is loaded
+        String selectedCollectionPath = form.getActionParamaterValue(UifParameters.SELECTED_COLLECTION_PATH);
+        String selectedLineIndex = form.getActionParamaterValue(UifParameters.SELECTED_LINE_INDEX);
+        String dialogId = form.getShowDialogId();
+
+        if (StringUtils.isNotBlank(dialogId) && StringUtils.isNotBlank(selectedCollectionPath) && StringUtils
+                .isNotBlank(selectedLineIndex)) {
+            // the line index and the collection path need adjusted to account for nested collections within a
+            // dialog because the dialog is shown per the root collection, but the index and path are per
+            // the nested sub-collection
+            String originalLineIndex = StringUtils.substring(dialogId, dialogId.length() - 1);
+            if (!selectedLineIndex.equals(originalLineIndex)) {
+                selectedLineIndex = originalLineIndex;
+            }
+
+            // adjust the collection path to point to the root collection rather than the sub-collection
+            if (selectedCollectionPath.contains(UifPropertyPaths.DIALOG_DATA_OBJECT)) {
+                String collectionId = StringUtils.substring(dialogId, dialogId.indexOf("_") + 1, dialogId.lastIndexOf(
+                        "_"));
+                BindingInfo bindingInfo = (BindingInfo) form.getViewPostMetadata().getComponentPostMetadata(
+                        collectionId).getData("bindingInfo");
+                selectedCollectionPath = bindingInfo.getBindingPath();
+            }
+
+            String actionScript = "setupImages();";
+            if (StringUtils.startsWith(dialogId, ComponentFactory.EDIT_LINE_DIALOG)) {
+                actionScript +=
+                        "showEditLineDialog('" + dialogId + "', '" + selectedCollectionPath + "', " + selectedLineIndex
+                                + ");";
+            } else {
+                String additionalData = "{ 'actionParameters[selectedCollectionPath]' : '" + selectedCollectionPath
+                        + "', 'actionParameters[selectedLineIndex]' : '0' }";
+                actionScript += "showDialog('" + dialogId + "', " + additionalData + ");";
+            }
+            setOnLoadScript(actionScript);
+        } else if (StringUtils.isNotBlank(dialogId) && !(this instanceof LookupView)) {
+            String actionScript =
+                    "jQuery.unblockUI();setupImages();showLoading('Loading...', window.document);showDialog('"
+                            + dialogId + "');";
+            setOnLoadScript(actionScript);
+        }
     }
 
     /**

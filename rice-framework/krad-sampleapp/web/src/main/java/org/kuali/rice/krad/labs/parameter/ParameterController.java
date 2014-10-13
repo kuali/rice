@@ -53,7 +53,7 @@ public class ParameterController extends UifControllerBase {
         Parameter parameter = null;
 
         if (StringUtils.isNotBlank(applicationId) && StringUtils.isNotBlank(namespaceCode)
-            && StringUtils.isNotBlank(componentCode) && StringUtils.isBlank(parameterName)) {
+            && StringUtils.isNotBlank(componentCode) && StringUtils.isNotBlank(parameterName)) {
             ParameterKey key = ParameterKey.create(applicationId, namespaceCode, componentCode, parameterName);
             parameter = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameter(key);
         }

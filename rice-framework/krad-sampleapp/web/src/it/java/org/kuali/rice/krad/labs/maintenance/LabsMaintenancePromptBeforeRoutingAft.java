@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs.maintenance;
 
 import org.junit.Test;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -39,17 +40,25 @@ public class LabsMaintenancePromptBeforeRoutingAft extends LabsMaintenanceBase {
     }
 
     protected void testMaintenancePromptBeforeRouting() throws InterruptedException {
-        String desc = getDescriptionUnique();
-    	waitAndTypeByName("document.documentHeader.documentDescription",desc);
-    	waitAndTypeByName("document.newMaintainableObject.dataObject.number",uniqueString);
-    	waitAndTypeByName("document.newMaintainableObject.dataObject.name","Travel Account 14"+uniqueString);
+        // fill out the document
+    	waitAndTypeByName("document.documentHeader.documentDescription", getDescriptionUnique());
+    	waitAndTypeByName("document.newMaintainableObject.dataObject.number", uniqueString);
+    	waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Travel Account 14" + uniqueString);
     	waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT']");
-    	waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName","fred");
-    	waitAndTypeByName("document.newMaintainableObject.dataObject.createDate","04/09/2014");
-    	waitAndClickSubmitByText();
-        waitAndClickByXpath("//div[@data-parent='ConfirmSubmitDialog']/button[contains(text(),'Cancel')]");
+    	waitAndTypeByName("document.newMaintainableObject.dataObject.fiscalOfficer.principalName", "fred");
+    	waitAndTypeByName("document.newMaintainableObject.dataObject.createDate", "04/09/2014");
+
+        // submit and click OK on the first dialog (default to all documents)
         waitAndClickSubmitByText();
-        waitAndClickConfirmSubmitOk(); //It is getting Incident Report at the moment, so cannot check the functionality now.
+        waitAndClickConfirmSubmitOk();
+
+        // click Yes on the next dialog (specific to this document)
+        waitAndClickByXpath("//div[@data-parent='TravelAccount-RouteConfirmationDialog']/button[contains(text(),'Yes')]");
+
+        // verify successful submit
+        waitForProgressLoading(WebDriverUtils.configuredImplicityWait());
+        Thread.sleep(500);
+        checkForDocError();
         checkForDocErrorKrad();
         waitForTextPresent("Document was successfully submitted.");
     }

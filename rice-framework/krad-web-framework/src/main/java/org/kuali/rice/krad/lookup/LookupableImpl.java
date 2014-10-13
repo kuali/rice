@@ -18,7 +18,6 @@ package org.kuali.rice.krad.lookup;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.search.SearchOperator;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
@@ -34,6 +33,7 @@ import org.kuali.rice.krad.service.LookupService;
 import org.kuali.rice.krad.service.ModuleService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.control.Control;
 import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControl;
 import org.kuali.rice.krad.uif.control.FilterableLookupCriteriaControlPostData;
@@ -230,13 +230,26 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
                 continue;
             }
 
-            if (fieldValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
-                String encryptedValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+            // check security on field
+            boolean isSecure = KRADUtils.isSecure(fieldName, dataObjectClass);
+
+            if (StringUtils.endsWith(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX)) {
+                fieldValue = StringUtils.removeEnd(fieldValue, EncryptionService.ENCRYPTION_POST_PREFIX);
+                isSecure = true;
+            }
+
+            // decrypt if the value is secure
+            if (isSecure) {
                 try {
-                    fieldValue = getEncryptionService().decrypt(encryptedValue);
+                    if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                        fieldValue = getEncryptionService().decrypt(fieldValue);
+                    }
                 } catch (GeneralSecurityException e) {
-                    throw new RuntimeException("Error decrypting value for business object class " +
-                            getDataObjectClass() + " attribute " + fieldName, e);
+                    String message = "Data object class " + dataObjectClass + " property " + fieldName
+                            + " should have been encrypted, but there was a problem decrypting it.";
+                    LOG.error(message);
+
+                    throw new RuntimeException(message, e);
                 }
             }
 
@@ -710,6 +723,11 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
             dataReturnValue = ScriptUtils.translateValue(translatedKeyValues);
 
             returnLink.setHref("#");
+
+            String dialogId = lookupForm.getShowDialogId();
+            if (StringUtils.isNotBlank(dialogId)) {
+                returnLink.setHref(returnLink.getHref() + dialogId);
+            }
         } else if (StringUtils.isBlank(returnLink.getHref())) {
             String href = getReturnUrl(lookupView, lookupForm, dataObject);
 
@@ -730,10 +748,13 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
         // add data attribute for attaching event handlers on the return links
         returnLink.addDataAttribute(UifConstants.DataAttributes.RETURN, dataReturnValue);
 
+        returnLink.setOnClickScript(
+                "setupImages();showLoading('Returning result...',jQuery('#Uif-DialogGroup-Lookup'));");
+
         // build return link title if not already set
         if (StringUtils.isBlank(returnLink.getTitle())) {
-            String linkLabel = getConfigurationService().getPropertyValueAsString(
-                    KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+            String linkLabel = StringUtils.defaultIfBlank(getConfigurationService().getPropertyValueAsString(
+                    KRADConstants.Lookup.TITLE_RETURN_URL_PREPENDTEXT_PROPERTY), StringUtils.EMPTY);
 
             Map<String, String> returnKeyValues = getReturnKeyValues(lookupView, lookupForm, dataObject);
 
@@ -802,6 +823,47 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         if (StringUtils.isNotBlank(lookupForm.getReferencesToRefresh())) {
             props.put(UifParameters.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
+        }
+
+        // setup action parameters for cases where the lookup request came from another dialog like edit line
+        String selectedCollectionId = null;
+        String selectedCollectionPath = null;
+        String selectedLineIndex = null;
+        if (lookupForm.getInitialRequestParameters() != null) {
+            String[] ids = lookupForm.getInitialRequestParameters().get(UifParameters.SELECTED_COLLECTION_ID);
+            if (ids != null && ids.length > 0) {
+                selectedCollectionId = ids[0];
+            }
+
+            String[] paths = lookupForm.getInitialRequestParameters().get(UifParameters.SELECTED_COLLECTION_PATH);
+            if (paths != null && paths.length > 0) {
+                selectedCollectionPath = paths[0];
+            }
+
+            String[] lines = lookupForm.getInitialRequestParameters().get(UifParameters.SELECTED_LINE_INDEX);
+            if (lines != null && lines.length > 0) {
+                selectedLineIndex = lines[0];
+            }
+        }
+
+        if (StringUtils.isNotBlank(selectedLineIndex)) {
+            props.put(UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.SELECTED_LINE_INDEX + "]",
+                    selectedLineIndex);
+        }
+
+        if (StringUtils.isNotBlank(selectedCollectionId)) {
+            props.put(UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.SELECTED_COLLECTION_ID + "]",
+                    selectedCollectionId);
+        }
+
+        if (StringUtils.isNotBlank(selectedCollectionPath)) {
+            props.put(UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.SELECTED_COLLECTION_PATH + "]",
+                    selectedCollectionPath);
+        }
+
+        String dialogId = lookupForm.getShowDialogId();
+        if (StringUtils.isNotBlank(dialogId)) {
+            props.put(UifPropertyPaths.ACTION_PARAMETERS + "[" + UifParameters.DIALOG_ID + "]", dialogId);
         }
 
         if (StringUtils.isNotBlank(lookupForm.getQuickfinderId())) {
@@ -892,26 +954,40 @@ public class LookupableImpl extends ViewHelperServiceImpl implements Lookupable 
 
         // build action title if not set
         if (StringUtils.isBlank(actionLink.getTitle())) {
-            String objectLabel = "";
-            DataObjectEntry dataObjectEntry = getDataDictionaryService().getDataDictionary().getDataObjectEntry(
-                    getDataObjectClass().getName());
+            List<String> linkLabels = new ArrayList<String>();
 
-            // check to see if there was a data object entry found for the class
-            // if there is a data entry object, then set the object label, else let it be empty string
-            if (dataObjectEntry != null && dataObjectEntry.getObjectLabel() != null) {
-                objectLabel = dataObjectEntry.getObjectLabel();
+            // get the link text
+            String linkText = actionLink.getLinkText();
+
+            // if the link text is available, then add it to the link label
+            if (StringUtils.isNotBlank(linkText)) {
+                linkLabels.add(linkText);
             }
 
-            ConfigurationService service = getConfigurationService();
-            String val = service.getPropertyValueAsString(KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
-            String prependTitleText = actionLink.getLinkText() + " " + objectLabel + " " +
-                    getConfigurationService().getPropertyValueAsString(
-                            KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+            // get the data object label
+            DataObjectEntry dataObjectEntry = getDataDictionaryService().getDataDictionary().getDataObjectEntry(
+                    getDataObjectClass().getName());
+            String dataObjectLabel = dataObjectEntry != null ? dataObjectEntry.getObjectLabel() : null;
 
+            // if the data object label is available, then add it to the link label
+            if (StringUtils.isNotBlank(dataObjectLabel)) {
+                linkLabels.add(dataObjectLabel);
+            }
+
+            // get the prepend text
+            String titleActionUrlPrependText = getConfigurationService().getPropertyValueAsString(
+                    KRADConstants.Lookup.TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+
+            // get the primary keys for the object
             Map<String, String> primaryKeyValues = KRADUtils.getPropertyKeyValuesFromDataObject(pkNames, dataObject);
-            String title = KRADUtils.buildAttributeTitleString(prependTitleText, getDataObjectClass(),
-                    primaryKeyValues);
 
+            // if the prepend text is available and there are primary key values, then add it to the link label
+            if (StringUtils.isNotBlank(titleActionUrlPrependText) && !primaryKeyValues.isEmpty()) {
+                linkLabels.add(titleActionUrlPrependText);
+            }
+
+            String linkLabel = StringUtils.defaultIfBlank(StringUtils.join(linkLabels, " "), StringUtils.EMPTY);
+            String title = KRADUtils.buildAttributeTitleString(linkLabel, getDataObjectClass(), primaryKeyValues);
             actionLink.setTitle(title);
         }
     }

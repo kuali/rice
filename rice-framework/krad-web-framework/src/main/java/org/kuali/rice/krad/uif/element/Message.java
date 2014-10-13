@@ -24,6 +24,7 @@ import org.kuali.rice.krad.datadictionary.validator.Validator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.ComponentUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.MessageStructureUtils;
@@ -37,8 +38,7 @@ import java.util.regex.Pattern;
  * Encapsulates a text message to be displayed
  *
  * <p>
- * The <code>Message</code> is used to display static text in the user
- * interface
+ * The <code>Message</code> is used to display static text in the user interface
  * </p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -71,7 +71,7 @@ public class Message extends ContentElementBase {
     }
 
     /**
-     * Message perfom apply model parses message text for rich text functionality if the messageText contains
+     * Message perform apply model parses message text for rich text functionality if the messageText contains
      * [ or ] special characters
      *
      * {@inheritDoc}
@@ -87,7 +87,7 @@ public class Message extends ContentElementBase {
                 (messageComponentStructure == null || messageComponentStructure.isEmpty())) {
             richMessage = true;
 
-            // Check to see if message contains pontential block elements (non-inline)
+            // Check to see if message contains potential block elements (non-inline)
             Matcher matcher = blockElementCheck.matcher(messageText);
             containsBlockElements = matcher.find();
 
@@ -99,7 +99,7 @@ public class Message extends ContentElementBase {
                     this.getInlineComponents(), ViewLifecycle.getView(), parseComponents);
         } else if (messageText != null && messageText.contains("<") && messageText.contains(">")) {
             // Straight inline html case
-            // Check to see if message contains pontential block elements (non-inline)
+            // Check to see if message contains potential block elements (non-inline)
             Matcher matcher = blockElementCheck.matcher(messageText);
             containsBlockElements = matcher.find();
 
@@ -165,7 +165,7 @@ public class Message extends ContentElementBase {
      * <li>[link=&lt;href src&gt;][/link] - an easier way to create an anchor that will open in a new page to the
      * href specified after =</li>
      * <li>[action=&lt;href src&gt;][/action] - create an action link inline without having to specify a component by
-     * id or index.  The options for this are as follows and MUST be in a comma seperated list in the order specified
+     * id or index.  The options for this are as follows and MUST be in a comma separated list in the order specified
      * (specify 1-4 always in this order):
      * <ul>
      * <li>methodToCall(String)</li>
@@ -246,7 +246,7 @@ public class Message extends ContentElementBase {
      * when using rich message functionality.
      *
      * <p>The structure represents the parsed messageText when not set. Normally this structure is setup by the Message
-     * class and <b>SHOULD NOT BE SET</b> in xml, unless full control over the structure is needed.  </p>
+     * class and <b>SHOULD NOT BE SET</b> in xml, unless full control over the structure is needed.</p>
      *
      * @return list of components which represent the message structure
      */
@@ -269,12 +269,13 @@ public class Message extends ContentElementBase {
      *
      * <p>inlineComponents is only used when the message is using rich message functionality.  A message
      * with [0] will reference component at index 0 of this list and insert it at that place in the message,
-     * and likewise [1] will reference item 1, etc.  If the index referenced is out of bounds (or list doesnt exist),
+     * and likewise [1] will reference item 1, etc.  If the index referenced is out of bounds (or list doesn't exist),
      * an error will be thrown during message parse.</p>
      *
      * @return the inlineComponents to be filled in at indexes referenced by [n] in the message
      */
     @BeanTagAttribute
+    @ViewLifecycleRestriction(exclude = { UifConstants.ViewPhases.APPLY_MODEL, UifConstants.ViewPhases.FINALIZE })
     public List<Component> getInlineComponents() {
         return inlineComponents;
     }

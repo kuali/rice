@@ -52,16 +52,6 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
         return "Person";
     }
    
-    public void testIdentityPersonLookUpEditBookmark(JiraAwareFailable failable) throws Exception {
-        testIdentityPersonLookUpEdit();
-        passed();
-    }
-
-    public void testIdentityPersonLookUpEditNav(JiraAwareFailable failable) throws Exception {
-        testIdentityPersonLookUpEdit();
-        passed();
-    }
-    
     public void testIdentityPersonLookUpEdit() throws Exception {
         String randomSalary = RandomStringUtils.randomNumeric(6);
         String randomMiddleName = RandomStringUtils.randomAlphabetic(6);;
@@ -144,7 +134,7 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
         }
 
         waitAndClickByName("methodToCall.route");
-        assertTextPresent("Document was successfully submitted.");
+        waitForTextPresent("Document was successfully submitted.");
 
         selectTopFrame();
         waitAndClickAdministration();
@@ -156,7 +146,7 @@ public abstract class IdentityPersonLookUpEditAftBase extends AdminTmplMthdAftNa
         waitAndClickByXpath("//a[@title='edit Person withPrincipal ID=fran ']");
         waitAndClickByName("methodToCall.showAllTabs");
 
-        assertTextPresent("1," + StringUtils.substring(randomSalary, 0, 3) + ","
+        waitForTextPresent("1," + StringUtils.substring(randomSalary, 0, 3) + ","
                 + StringUtils.substring(randomSalary, 3, 6) + ".00");
         assertTextPresent(randomMiddleName);
         assertTextPresent(randomAddress);

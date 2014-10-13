@@ -164,9 +164,11 @@ public abstract class AbstractBoTest extends KRMSTestCase {
     }
 
     public KrmsTypeRepositoryService getKrmsTypeRepository() {
-        if (krmsTypeRepository == null ) {
-            krmsTypeRepository = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
-        }
         return krmsTypeRepository;
     }
+
+    public KrmsAttributeDefinitionService getKrmsAttributeDefinitionService() {
+        return krmsAttributeDefinitionService;
+    }
+
 }

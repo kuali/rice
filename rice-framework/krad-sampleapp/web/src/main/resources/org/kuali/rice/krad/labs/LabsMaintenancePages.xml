@@ -381,11 +381,13 @@
     <property name="page.items">
       <list>
         <bean id="KradMaintenanceSampleItems-PageR6C3" parent="Uif-VerticalBoxSection"
-              p:headerText="Demo of a sample maintenance page"
-              p:instructionalText="This is a placeholder content to replaced">
+              p:headerText="Demo of a drop down page actions"
+              p:instructionalText="The document route actions are performed via a drop down list.   Each action causes a
+                                   verification dialog to confirm the action to be taken.">
           <property name="items">
             <list>
-
+              <bean parent="Uif-Link" p:linkText="Travel Company Maintenance Sample - Drop down page actions"
+                    p:href="maintenance?methodToCall=start&amp;dataObjectClassName=edu.sampleu.travel.dataobject.TravelCompany&amp;viewId=TravelCompany-DropDownAction-MaintenanceView"/>
             </list>
           </property>
         </bean>

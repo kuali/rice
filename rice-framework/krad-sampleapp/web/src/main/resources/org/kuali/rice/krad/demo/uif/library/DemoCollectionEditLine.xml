@@ -38,6 +38,7 @@
         <ref bean="Demo-CollectionEditLine-Example6"/>
         <ref bean="Demo-CollectionEditLine-Example7"/>
         <ref bean="Demo-CollectionEditLine-Example8"/>
+        <ref bean="Demo-CollectionEditLine-Example9"/>
         <ref bean="Demo-CollectionEditLine-Example10"/>
         <ref bean="Demo-CollectionEditLine-Example11"/>
         <ref bean="Demo-CollectionEditLine-Example12"/>
@@ -84,6 +85,18 @@
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:label="Field 1" p:propertyName="field1"/>
+                  <bean parent="Uif-InputField" p:propertyName="field8">
+                    <property name="control">
+                      <bean parent="Uif-FileControl" p:size="30"/>
+                    </property>
+                  </bean>
+                  <bean parent="Uif-MessageField">
+                    <property name="message">
+                      <bean parent="Uif-Message">
+                        <property name="messageText" value="Hello Dearie!"/>
+                      </bean>
+                    </property>
+                  </bean>
                 </list>
               </property>
             </bean>
@@ -268,8 +281,6 @@
     </property>
   </bean>
 
-  <!-- TODO: This example is not included in the list of examples on the page due to KULRICE-13186.
-        Once this issue is resolved, add this example to the list of examples in the drop-down.-->
   <!-- CollectionEditLine quickfinder -->
   <bean id="Demo-CollectionEditLine-Example9" parent="Uif-VerticalBoxSection">
     <property name="items">
@@ -307,9 +318,27 @@
         <bean id="Demo-CollectionEditLine-Section1" parent="Uif-TableCollectionSection">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection4"/>
+          <property name="addWithDialog" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="true"/>
+          <property name="addLineDialog">
+            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                </list>
+              </property>
+              <property name="footer.items">
+                <list>
+                  <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
+                  <bean parent="Uif-AddLineAction-Dialog" p:actionLabel="Add"/>
+                </list>
+              </property>
+            </bean>
+          </property>
           <property name="layoutManager.rowDetailsGroup">
             <bean parent="Uif-VerticalBoxGroup">
               <property name="items">
@@ -363,9 +392,27 @@
         <bean id="Demo-CollectionEditLine-Section2" parent="Uif-TableCollectionSection">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection5"/>
+          <property name="addWithDialog" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
+          <property name="addLineDialog">
+            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                </list>
+              </property>
+              <property name="footer.items">
+                <list>
+                  <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
+                  <bean parent="Uif-AddLineAction-Dialog" p:actionLabel="Add"/>
+                </list>
+              </property>
+            </bean>
+          </property>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"
@@ -418,7 +465,25 @@
           <property name="propertyName" value="collection7"/>
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
+          <property name="addWithDialog" value="true"/>
           <property name="editWithDialog" value="true"/>
+          <property name="addLineDialog">
+            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+              <property name="items">
+                <list>
+                  <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
+                  <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
+                  <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
+                </list>
+              </property>
+              <property name="footer.items">
+                <list>
+                  <bean parent="Uif-DialogDismissButton" p:actionLabel="Cancel"/>
+                  <bean parent="Uif-AddLineAction-Dialog" p:actionLabel="Add"/>
+                </list>
+              </property>
+            </bean>
+          </property>
           <property name="editLineDialogPrototype">
             <bean parent="Uif-EditLineDialog">
               <property name="items">
@@ -457,6 +522,11 @@
               p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
               p:required="true">
+          <property name="quickfinder">
+            <bean parent="Uif-QuickFinder"
+                  p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                  p:fieldConversions="number:field2"/>
+          </property>
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>

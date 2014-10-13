@@ -106,6 +106,7 @@ public final class XmlConstants {
     public static final String MANDATORY_ROUTE = "mandatoryRoute";
     public static final String ROUTE_MODULE = "routeModule";
     public static final String NEXT_NODE = "nextNode";
+    public static final String NEXT_APP_DOC_STATUS = "nextAppDocStatus";
     public static final String APP_DOC_STATUSES = "validApplicationStatuses";
     public static final String STATUS = "status";
     public static final String CATEGORY = "category";

@@ -632,17 +632,22 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      */
     protected int generateRandomInteger(String prefix, String rangeSpec) {
         String[] range = rangeSpec.split("-");
+
         if (range.length != 2) {
             throw new IllegalArgumentException("Invalid range specifier: " + rangeSpec);
         }
+
         int from = Integer.parseInt(range[0].trim());
         int to = Integer.parseInt(range[1].trim());
+
         if (from > to) {
             int tmp = from;
             from = to;
             to = tmp;
         }
+
         int num;
+
         // not very random huh...
         if (from == to) {
             num = from;
@@ -650,6 +655,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         } else {
             num = from + RANDOM.nextInt((to - from) + 1);
         }
+
         return num;
     }
 

@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -77,6 +76,11 @@ public class LookupControllerServiceImpl extends ControllerServiceImpl implement
             if (redirectModelAndView != null) {
                 return redirectModelAndView;
             }
+        }
+
+        String dialogId = request.getParameter(UifParameters.DIALOG_ID);
+        if (dialogId != null) {
+            lookupForm.setShowDialogId(dialogId);
         }
 
         return super.start(lookupForm);

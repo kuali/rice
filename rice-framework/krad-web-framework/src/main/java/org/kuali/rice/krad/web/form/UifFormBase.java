@@ -54,6 +54,7 @@ import java.util.UUID;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UifFormBase implements ViewModel {
+
     private static final long serialVersionUID = 8432543267099454434L;
 
     @RequestAccessible
@@ -174,6 +175,10 @@ public class UifFormBase implements ViewModel {
     // dialog fields
     @RequestAccessible
     @SessionTransient
+    protected String showDialogId;
+
+    @RequestAccessible
+    @SessionTransient
     protected String returnDialogId;
 
     @RequestAccessible
@@ -196,7 +201,6 @@ public class UifFormBase implements ViewModel {
     @RequestAccessible
     protected Map<String, Object> extensionData;
 
-    protected Map<String, String> queryParameters;
     protected boolean applyDefaultValues;
 
     protected HttpServletRequest request;
@@ -217,9 +221,8 @@ public class UifFormBase implements ViewModel {
         selectedLookupResultsCache = new HashSet<String>();
         addedCollectionItems = new ArrayList<Object>();
         dialogExplanations = new HashMap<String, String>();
-        dialogResponses = new HashMap<String,DialogResponse>();
+        dialogResponses = new HashMap<String, DialogResponse>();
         extensionData = new HashMap<String, Object>();
-        queryParameters = new HashMap<String, String>();
         applyDefaultValues = true;
     }
 
@@ -230,7 +233,8 @@ public class UifFormBase implements ViewModel {
     public void preBind(HttpServletRequest request) {
         String formKeyParam = request.getParameter(UifParameters.FORM_KEY);
         if (StringUtils.isNotBlank(formKeyParam)) {
-            UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(UifParameters.FORM_MANAGER);
+            UifFormManager uifFormManager = (UifFormManager) request.getSession().getAttribute(
+                    UifParameters.FORM_MANAGER);
 
             // retrieves the session form and updates the request from with the session transient attributes
             uifFormManager.updateFormWithSession(this, formKeyParam);
@@ -275,7 +279,7 @@ public class UifFormBase implements ViewModel {
                 clientStateJSON = StringUtils.replace(clientStateJSON, "\\'", "\"");
                 clientStateJSON = StringUtils.replace(clientStateJSON, "\\[", "[");
                 clientStateJSON = StringUtils.replace(clientStateJSON, "\\]", "]");
-                clientStateJSON = StringUtils.replace(clientStateJSON, "'",  "\"");
+                clientStateJSON = StringUtils.replace(clientStateJSON, "'", "\"");
 
                 ObjectMapper mapper = new ObjectMapper();
                 try {
@@ -473,8 +477,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Set the current HistoryFlow for this form
-     *
-     * @param historyFlow
      */
     public void setHistoryFlow(HistoryFlow historyFlow) {
         this.historyFlow = historyFlow;
@@ -493,8 +495,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Set the current HistoryManager
-     *
-     * @param historyManager
      */
     public void setHistoryManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
@@ -515,8 +515,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Set the flowKey
-     *
-     * @param flowKey
      */
     public void setFlowKey(String flowKey) {
         this.flowKey = flowKey;
@@ -534,8 +532,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Set the requestUrl
-     *
-     * @param requestUrl
      */
     public void setRequestUrl(String requestUrl) {
         this.requestUrl = requestUrl;
@@ -553,8 +549,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Set the requestParameters
-     *
-     * @param requestParameters
      */
     public void setInitialRequestParameters(Map<String, String[]> requestParameters) {
         this.initialRequestParameters = requestParameters;
@@ -622,8 +616,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Setter for the method to call
-     *
-     * @param methodToCall
      */
     public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
@@ -763,8 +755,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Setter for the client state
-     *
-     * @param clientStateForSyncing
      */
     public void setClientStateForSyncing(Map<String, Object> clientStateForSyncing) {
         this.clientStateForSyncing = clientStateForSyncing;
@@ -791,7 +781,7 @@ public class UifFormBase implements ViewModel {
      * across multiple pages.
      * The value in the cache is preserved in the session across multiple requests. This allows for the
      * server side paging of results to retain the user choices as they move through the pages.
-     * 
+     *
      * @return set of identifiers
      */
     public Set<String> getSelectedLookupResultsCache() {
@@ -800,8 +790,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Sets the lookup result selection cache values
-     *
-     * @param selectedLookupResultsCache
      */
     public void setSelectedLookupResultsCache(Set<String> selectedLookupResultsCache) {
         this.selectedLookupResultsCache = selectedLookupResultsCache;
@@ -824,8 +812,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Setter for the form's session key
-     *
-     * @param formKey
      */
     public void setFormKey(String formKey) {
         this.formKey = formKey;
@@ -843,8 +829,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Set the requestedFormKey
-     *
-     * @param requestedFormKey
      */
     public void setRequestedFormKey(String requestedFormKey) {
         this.requestedFormKey = requestedFormKey;
@@ -861,8 +845,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Setter for the request redirect indicator
-     *
-     * @param requestRedirected
      */
     public void setRequestRedirected(boolean requestRedirected) {
         this.requestRedirected = requestRedirected;
@@ -879,8 +861,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Setter for the form's attachment file
-     *
-     * @param attachmentFile
      */
     public void setAttachmentFile(MultipartFile attachmentFile) {
         this.attachmentFile = attachmentFile;
@@ -1078,8 +1058,6 @@ public class UifFormBase implements ViewModel {
      * form dirty from a server call, so it must be changed to false when the form is no longer considered dirty.
      * The krad save Action and navigate methodToCall resets this flag back to false, but any other setting of
      * this flag must be managed by custom configuration/methods, if custom dirtyForm management is needed.</p>
-     *
-     * @param dirtyForm
      */
     public void setDirtyForm(boolean dirtyForm) {
         this.dirtyForm = dirtyForm;
@@ -1087,11 +1065,9 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Set the dirtyForm flag using a String that will be converted to boolean
-     *
-     * @param dirtyForm
      */
     public void setDirtyForm(String dirtyForm) {
-        if(dirtyForm != null){
+        if (dirtyForm != null) {
             this.dirtyForm = Boolean.parseBoolean(dirtyForm);
         }
     }
@@ -1113,8 +1089,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Setter for the rendered within lightbox indicator
-     *
-     * @param renderedInDialog
      */
     public void setRenderedInDialog(boolean renderedInDialog) {
         this.renderedInDialog = renderedInDialog;
@@ -1293,6 +1267,21 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
+     * For cases where the request was triggered from within a dialog, we want to show that dialog,
+     * identified by this id, again.
+     */
+    public String getShowDialogId() {
+        return showDialogId;
+    }
+
+    /**
+     * @see UifFormBase#getShowDialogId()
+     */
+    public void setShowDialogId(String dialogId) {
+        this.showDialogId = dialogId;
+    }
+
+    /**
      * Used by the dialog framework to set the dialog id for a return dialog call (when the server has
      * triggered a dialog).
      *
@@ -1393,24 +1382,6 @@ public class UifFormBase implements ViewModel {
     }
 
     /**
-     * A generic map for query parameters
-     *
-     * @return Map<String, String>
-     */
-    public Map<String, String> getQueryParameters() {
-        return queryParameters;
-    }
-
-    /**
-     * Setter for the generic query parameters
-     *
-     * @param queryParameters
-     */
-    public void setQueryParameters(Map<String, String> queryParameters) {
-        this.queryParameters = queryParameters;
-    }
-
-    /**
      * Http servlet request instance for the current request being processed.
      *
      * @return HttpServletRequest instance
@@ -1441,8 +1412,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * Setter for the newly added item list
-     *
-     * @param addedCollectionItems
      */
     public void setAddedCollectionItems(List addedCollectionItems) {
         this.addedCollectionItems = addedCollectionItems;
@@ -1469,8 +1438,6 @@ public class UifFormBase implements ViewModel {
      * <p>The data object serves as a placeholder for temporary properties that might be used within a dialog. The
      * purpose of placeholder is to provide a separation between the dialog object and the underlying object for use
      * in cases like object manipulation.</p>
-     *
-     * @return
      */
     public Object getDialogDataObject() {
         return dialogDataObject;
@@ -1478,8 +1445,6 @@ public class UifFormBase implements ViewModel {
 
     /**
      * @see UifFormBase#getDialogDataObject()
-     *
-     * @param dataObject
      */
     public void setDialogDataObject(Object dataObject) {
         this.dialogDataObject = dataObject;
@@ -1488,10 +1453,10 @@ public class UifFormBase implements ViewModel {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append( getClass().getSimpleName() ).append(" [viewId=").append(this.viewId).append(", viewName=").append(this.viewName)
-                .append(", viewTypeName=").append(this.viewTypeName).append(", pageId=").append(this.pageId)
-                .append(", methodToCall=").append(this.methodToCall).append(", formKey=").append(this.formKey)
-                .append(", requestedFormKey=").append(this.requestedFormKey).append("]");
+        builder.append(getClass().getSimpleName()).append(" [viewId=").append(this.viewId).append(", viewName=").append(
+                this.viewName).append(", viewTypeName=").append(this.viewTypeName).append(", pageId=").append(
+                this.pageId).append(", methodToCall=").append(this.methodToCall).append(", formKey=").append(
+                this.formKey).append(", requestedFormKey=").append(this.requestedFormKey).append("]");
         return builder.toString();
     }
 }

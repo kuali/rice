@@ -74,12 +74,29 @@ public class LibraryCollectionFeaturesServerPagingAft extends WebDriverLegacyITB
         waitAndClickByLinkText("Last");
         assertTextPresent("999");
     }
+
+    protected void testCollectionFeaturesStackedCollectionWithNextPager() throws Exception {
+        selectByName("exampleShown","Stacked Collection with NextPager");
+        waitAndTypeByName("newCollectionLines['collection4'].field1","Z");
+        waitAndTypeByName("newCollectionLines['collection4'].field2","999");
+        waitAndTypeByName("newCollectionLines['collection4'].field3","999");
+        waitAndTypeByName("newCollectionLines['collection4'].field4","999");
+        waitAndClickByXpath("//div[@data-parent='Demo-CollectionServerPaging-Example4']/section/div/button[contains(text(),'Add')]");
+        waitForElementPresentByXpath("//input[@value='Z']");
+        waitForElementPresentByXpath("//input[@value='999']");
+        waitForElementPresentByXpath("//li[@class='previous disabled']");
+        waitAndClickByXpath("//a[contains(text(),'Next →')]");
+        waitForElementPresentByXpath("//li[@class='previous']");
+        waitAndClickByXpath("//a[contains(text(),'← Previous')]");
+        waitForElementPresentByXpath("//li[@class='previous disabled']");
+    }
     
     @Test
     public void testCollectionFeaturesServerPagingBookmark() throws Exception {
         testCollectionFeaturesServerPagingRichTableCollection();
         testCollectionFeaturesServerPagingStackedCollection();
         testCollectionFeaturesServerPagingBasicTableCollection();
+        testCollectionFeaturesStackedCollectionWithNextPager();
         passed();
     }
 
@@ -88,6 +105,7 @@ public class LibraryCollectionFeaturesServerPagingAft extends WebDriverLegacyITB
         testCollectionFeaturesServerPagingRichTableCollection();
         testCollectionFeaturesServerPagingStackedCollection();
         testCollectionFeaturesServerPagingBasicTableCollection();
+        testCollectionFeaturesStackedCollectionWithNextPager();
         passed();
     }  
 }

@@ -210,7 +210,7 @@ function initRuleTree(componentId){
 
             jq("select").filter(function() {
                 return this.id.match(
-                        new RegExp(onChangeElementId.replace(/^(\d+_node_)(\d+)(_.*)$/, '^$1\\d+$3$$'))
+                        new RegExp(onChangeElementId.replace(/^([^_\W]+_node_)(\d+)(_.*)$/, '^$1\\d+$3$$'))
                 );
             }).val(jq(this).val());
 

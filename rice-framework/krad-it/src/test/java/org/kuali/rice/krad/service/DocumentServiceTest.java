@@ -19,7 +19,9 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.DocumentBase;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
+import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.AccountRequestDocument;
@@ -29,6 +31,7 @@ import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -156,4 +159,52 @@ public class DocumentServiceTest extends KRADTestCase {
         assertEquals( "The message set by the business rule must match the test message.",
                 "org.kuali.rice.krad.test.document.AccountRules" + "()", msgs.get( 0 ).toString() );
     }
+
+    /**
+     * Tests getting documents by a list of document numbers.
+     *
+     * @throws Exception for any test issues
+     */
+    @Test
+    public void testGetDocumentsByListOfDocumentHeaderIds_Default() throws Exception {
+        Document document1 = KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountMaintenanceDocument");
+        Document document2 = KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountMaintenanceDocument");
+
+        RuleEventImpl documentEvent1 = new RuleEventImpl(document1);
+        documentEvent1.setName("saving document 1");
+        RuleEventImpl documentEvent2 = new RuleEventImpl(document2);
+        documentEvent2.setName("saving document 2");
+
+        Document savedDocument1 = KRADServiceLocatorWeb.getDocumentService().saveDocument(document1, documentEvent1);
+        Document savedDocument2 = KRADServiceLocatorWeb.getDocumentService().saveDocument(document2, documentEvent2);
+
+        String documentNumber1 = savedDocument1.getDocumentNumber();
+        String documentNumber2 = savedDocument2.getDocumentNumber();
+
+        List<Document> documents = KRADServiceLocatorWeb.getDocumentService().getDocumentsByListOfDocumentHeaderIds(
+                MaintenanceDocumentBase.class, Arrays.asList(documentNumber1, documentNumber2));
+
+        assertEquals("wrong number of documents found", 2, documents.size());
+
+        for (Document document : documents) {
+            assertNotNull("document was null", document);
+        }
+    }
+
+    /**
+     * Tests getting documents by a list of document numbers which don't exist.
+     *
+     * @throws Exception for any test issues
+     */
+    @Test
+    public void testGetDocumentsByListOfDocumentHeaderIds_MissingDocuments() throws Exception {
+        String fakeDocumentNumber1 = "1234";
+        String fakeDocumentNumber2 = "5678";
+
+        List<Document> documents = KRADServiceLocatorWeb.getDocumentService().getDocumentsByListOfDocumentHeaderIds(
+                MaintenanceDocumentBase.class, Arrays.asList(fakeDocumentNumber1, fakeDocumentNumber2));
+
+        assertTrue("documents found", documents.isEmpty());
+    }
+
 }

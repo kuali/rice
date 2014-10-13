@@ -54,6 +54,7 @@ public class DemoTravelMileageLookUpAft extends ViewDemoAftBase {
     	waitAndTypeByName("lookupCriteria[mileageRateCd]","a*");
     	waitAndTypeByName("lookupCriteria[mileageRateName]","a*");
     	waitAndClickButtonByText(SEARCH);
+        waitForProgressLoading();
     	waitForTextPresent("No values match this search.");
     	waitForTextPresent("You have entered the primary key for this table (Id) in the search criteria. Since these fields can be used to uniquely identify a row in this table, the other search criteria entered will be ignored.");
         waitForTextPresent("Lookup Results: 2 messages");
@@ -66,6 +67,7 @@ public class DemoTravelMileageLookUpAft extends ViewDemoAftBase {
     	waitAndClickButtonByText(CLEAR_VALUES);
     	waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='N']");
     	waitAndClickButtonByText(SEARCH);
+        waitForProgressLoading();
     	waitForTextPresent("No values match this search.");
         waitForTextNotPresent("Lookup Results: 1 messages");
         //No value present so asserting the message.
@@ -77,6 +79,7 @@ public class DemoTravelMileageLookUpAft extends ViewDemoAftBase {
     protected void testTravelMileageLookUpPreserveLockingKeysOnCopy() throws Exception {
         waitAndTypeByName("lookupCriteria[mileageRateId]","10000");
         waitAndClickButtonByText(SEARCH);
+        waitForProgressLoading();
         waitAndClickByLinkText("copy");
         waitForElementPresentByXpath("//a[contains(text(),'10000')]");
         waitForElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.mileageRateId' and @value='10000']");

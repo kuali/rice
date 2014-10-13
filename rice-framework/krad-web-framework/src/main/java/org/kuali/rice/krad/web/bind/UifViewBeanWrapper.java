@@ -18,17 +18,14 @@ package org.kuali.rice.krad.web.bind;
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.lifecycle.ViewPostMetadata;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.web.form.UifFormBase;
-import org.omg.CORBA.Request;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.NullValueInNestedPathException;
 import org.springframework.beans.PropertyAccessorUtils;
@@ -39,7 +36,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.beans.PropertyDescriptor;
 import java.beans.PropertyEditor;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -422,24 +418,27 @@ public class UifViewBeanWrapper extends UifBeanWrapper {
      * @return String decrypted property value (or original value if not secure)
      */
     protected String decryptValueIfNecessary(String propertyName, String propertyValue) {
-        String decryptedPropertyValue = propertyValue;
+        // check security on field
+        boolean isSecure = isSecure(getWrappedClass(), propertyName);
 
-        if (propertyValue.endsWith(EncryptionService.ENCRYPTION_POST_PREFIX)) {
+        if (org.apache.commons.lang.StringUtils.endsWith(propertyValue, EncryptionService.ENCRYPTION_POST_PREFIX)) {
             propertyValue = org.apache.commons.lang.StringUtils.removeEnd(propertyValue,
                     EncryptionService.ENCRYPTION_POST_PREFIX);
+            isSecure = true;
         }
 
-        if (isSecure(getWrappedClass(), propertyName)) {
+        // decrypt if the value is secure
+        if (isSecure) {
             try {
                 if (CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                    decryptedPropertyValue = CoreApiServiceLocator.getEncryptionService().decrypt(propertyValue);
+                    propertyValue = CoreApiServiceLocator.getEncryptionService().decrypt(propertyValue);
                 }
             } catch (GeneralSecurityException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        return decryptedPropertyValue;
+        return propertyValue;
     }
 
     /**
@@ -450,8 +449,7 @@ public class UifViewBeanWrapper extends UifBeanWrapper {
      * @return boolean true if the property is secure, false if not
      */
     protected boolean isSecure(Class<?> wrappedClass, String propertyPath) {
-        if (KRADServiceLocatorWeb.getDataObjectAuthorizationService().attributeValueNeedsToBeEncryptedOnFormsAndLinks(
-                wrappedClass, propertyPath)) {
+        if (KRADUtils.isSecure(propertyPath, wrappedClass)) {
             return true;
         }
 

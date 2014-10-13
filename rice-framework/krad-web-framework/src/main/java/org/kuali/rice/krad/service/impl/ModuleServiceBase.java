@@ -106,7 +106,8 @@ public class ModuleServiceBase extends RemoteModuleServiceBase implements Module
 
     @Override
     public boolean isExternalizableBusinessObjectLookupable(Class boClass) {
-        return KRADServiceLocatorWeb.getLegacyDataAdapter().hasLocalLookup(boClass);
+        Class<? extends ExternalizableBusinessObject> implementationClass = getExternalizableBusinessObjectImplementation(boClass);
+        return KRADServiceLocatorWeb.getLegacyDataAdapter().hasLocalLookup(implementationClass);
     }
 
     @Override

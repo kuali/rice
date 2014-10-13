@@ -237,7 +237,7 @@
   </bean>
 
   <bean id="Uif-EditLineDialog" parent="Uif-DialogGroup" p:headerText="Edit Line Dialog">
-    <property name="destroyContentsOnClose" value="true"/>
+    <property name="destroyDialogOnHidden" value="true"/>
   </bean>
 
 </beans>

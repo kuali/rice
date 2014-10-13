@@ -73,8 +73,9 @@ public class DialogGroup extends GroupBase {
     private String onDialogResponseScript;
     private String onShowDialogScript;
     private String onHideDialogScript;
+    private String onHiddenDialogScript;
 
-    private boolean destroyContentsOnClose;
+    private boolean destroyDialogOnHidden;
 
     /**
      * Default Constructor.
@@ -188,6 +189,18 @@ public class DialogGroup extends GroupBase {
 
         if (StringUtils.isNotBlank(this.onHideDialogScript)) {
             addDataAttribute(UifConstants.DataAttributes.DIALOG_HIDE_HANDLER, this.onHideDialogScript);
+        }
+
+        if (StringUtils.isBlank(this.onHiddenDialogScript)) {
+            this.onHiddenDialogScript = "";
+        }
+
+        if (destroyDialogOnHidden) {
+            this.onHiddenDialogScript += "destroyDialog('" + getId() + "');";
+        }
+
+        if (StringUtils.isNotBlank(this.onHiddenDialogScript)) {
+            addDataAttribute(UifConstants.DataAttributes.DIALOG_HIDDEN_HANDLER, this.onHiddenDialogScript);
         }
 
         // Dialogs do not have a visual "parent" on the page so remove this data attribute
@@ -344,9 +357,9 @@ public class DialogGroup extends GroupBase {
     }
 
     /**
-     * Script that will get invoked when the dialog group is hidden.
+     * Script that will get invoked when the dialog group receives a hide event.
      *
-     * @return js code to execute when the dialog is hidden
+     * @return js code to execute when the dialog receives a hide event
      */
     public String getOnHideDialogScript() {
         return onHideDialogScript;
@@ -360,18 +373,34 @@ public class DialogGroup extends GroupBase {
     }
 
     /**
-     * Flag to indicate whether the contents of the dialog should be destroyed on close.
+     * Script that will get invoked once the dialog group is hidden.
      *
-     * @return boolean to destroy contents
+     * @return js code to execute when the dialog is hidden
      */
-    public boolean isDestroyContentsOnClose() {
-        return destroyContentsOnClose;
+    public String getOnHiddenDialogScript() {
+        return onHiddenDialogScript;
     }
 
     /**
-     * @see DialogGroup#isDestroyContentsOnClose()
+     * @see DialogGroup#getOnHiddenDialogScript()
      */
-    public void setDestroyContentsOnClose(boolean destroyContentsOnClose) {
-        this.destroyContentsOnClose = destroyContentsOnClose;
+    public void setOnHiddenDialogScript(String onHiddenDialogScript) {
+        this.onHiddenDialogScript = onHiddenDialogScript;
+    }
+
+    /**
+     * Flag to indicate whether the contents of the dialog should be destroyed on hidden.
+     *
+     * @return boolean to destroy contents
+     */
+    public boolean isDestroyDialogOnHidden() {
+        return destroyDialogOnHidden;
+    }
+
+    /**
+     * @see DialogGroup#isDestroyDialogOnHidden()
+     */
+    public void setDestroyDialogOnHidden(boolean destroyDialogOnHidden) {
+        this.destroyDialogOnHidden = destroyDialogOnHidden;
     }
 }

@@ -77,6 +77,7 @@ function showDialog(dialogId, options, modalOptions, disableBlocking) {
     _attachDialogResponseHandler(dialogId, $dialog, options.responseHandler, options.responseEventData);
     _bindShowDialogHandlers($dialog, options.showHandler);
     _bindHideDialogHandlers($dialog, options.hideHandler);
+    _bindHiddenDialogHandlers($dialog, options.hiddenHandler);
 
     $dialog.modal(modalOptions);
 }
@@ -166,6 +167,21 @@ function dismissDialog(dialogId, $action) {
 
     // Make sure the background is removed for modals that may have been replaced
     ensureDialogBackdropRemoved();
+}
+
+/**
+ * Invoked to destroy the contents of a modal dialog.
+ *
+ * @param dialogId the id of the dialog to be destroyed
+ */
+function destroyDialog(dialogId) {
+    var $dialog = jQuery('#' + dialogId);
+
+    if (!$dialog) {
+        return;
+    }
+
+    $dialog.remove();
 }
 
 /**
@@ -333,6 +349,30 @@ function _bindHideDialogHandlers($dialog, hideHandler) {
     if (hideHandler) {
         $dialog.unbind(kradVariables.EVENTS.HIDE_MODAL);
         $dialog.bind(kradVariables.EVENTS.HIDE_MODAL, hideHandler);
+    }
+}
+
+/**
+ * Registers any configured hidden handlers for the dialog response event.
+ *
+ * <p>If the hidden handler is passed in it will be registered for the event. If not, a check is also made
+ * on the dialog for existence of a hidden handler data attribute. If found, the attribute is wrapped in a
+ * event handler function and registered for the hidden dialog event</p>
+ *
+ * @param $dialog jQuery object for the dialog to register the handler for
+ * @param hiddenHandler hidden event handler that was initially passed into the show dialog call
+ * @private
+ * @see krad.utilty#wrapAsHandler
+ */
+function _bindHiddenDialogHandlers($dialog, hiddenHandler) {
+    // check for a hidden handler defined on the dialog group itself
+    if (!hiddenHandler && $dialog.is("[" + kradVariables.ATTRIBUTES.DATA_HIDDEN_HANDLER + "]")) {
+        hiddenHandler = wrapAsHandler($dialog.attr(kradVariables.ATTRIBUTES.DATA_HIDDEN_HANDLER));
+    }
+
+    if (hiddenHandler) {
+        $dialog.unbind(kradVariables.EVENTS.HIDDEN_MODAL);
+        $dialog.bind(kradVariables.EVENTS.HIDDEN_MODAL, hiddenHandler);
     }
 }
 

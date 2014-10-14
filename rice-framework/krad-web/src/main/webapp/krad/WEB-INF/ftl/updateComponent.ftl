@@ -23,10 +23,5 @@
         <#-- show added growls -->
         <@krad.script value="${KualiForm.growlScript!}" component=KualiForm.updateComponent/>
 
-        <#-- set form dirty on page load -->
-        <@krad.script value="jQuery(document).on(kradVariables.PAGE_LOAD_EVENT, function(){
-                   dirtyFormState.setDirty(${KualiForm.dirtyForm?string});});"
-        component=KualiForm.updateComponent/>
-
     </div>
 </html>

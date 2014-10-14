@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.labs;
 
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.web.controller.MethodAccessible;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
 import org.kuali.rice.krad.web.service.FileControllerService;
@@ -79,4 +80,13 @@ public class KradLabsController extends UifControllerBase {
         return refresh(uifForm);
     }
 
+    @MethodAccessible
+    @RequestMapping(params = "methodToCall=dialogMessage")
+    public ModelAndView dialogMessage(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+                HttpServletRequest request, HttpServletResponse response)  throws Exception {
+        GlobalVariables.getMessageMap().putError("HierarchyMessages", "serverTestError");
+        GlobalVariables.getMessageMap().putError("inputField1", "serverTestError");
+        // Hook method for saving individual fields
+        return getModelAndView(form);
+    }
 }

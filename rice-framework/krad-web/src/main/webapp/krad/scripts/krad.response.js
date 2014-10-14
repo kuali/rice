@@ -170,6 +170,8 @@ KradResponse.prototype = {
             if (displayedModal) {
                 var innerComponentContent = jQuery(componentContent).html();
                 $componentInDom.html(innerComponentContent);
+                var relatedContent = jQuery(componentContent).filter("input[data-for='" + id + "']");
+                $componentInDom.append(relatedContent);
             }
             else {
                 $componentInDom.replaceWith(componentContent);
@@ -199,6 +201,10 @@ KradResponse.prototype = {
 
             // runs scripts on the span or div with id
             runHiddenScripts(id);
+
+            if (displayedModal) {
+                writeMessagesForGroup(id, getValidationData($componentInDom, true), true);
+            }
 
             // Only for table layout collections. Keeps collection on same page.
             var currentPage = retrieveFromSession(id + ":currentPageRichTable");

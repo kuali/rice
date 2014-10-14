@@ -45,62 +45,94 @@ public class DocumentRefreshQueueTest extends KEWTestCase {
         loadXmlFile("ActionRequestsConfig.xml");
     }
 
-    @Test public void testDocumentRequeueSingleNode() throws Exception {
-       WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), SeqSetup.DOCUMENT_TYPE_NAME);
-       document.route("");
-       document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId());
-       assertTrue(document.isEnroute());
-       List<ActionRequest> requests = document.getRootActionRequests();
-       assertEquals("Should be 2 requests.", 2, requests.size());
-       // save off request ids
+    private static final String SEQ_DOCUMENT_TYPE_NAME = "DRSeqDocType";
+    private static final String PAR_DOCUMENT_TYPE_NAME = "DRParDocType";
 
-       Set<String> requestIds = new HashSet<String>();
-       for (ActionRequest request : requests) {
-    	   requestIds.add(request.getId());
-       }
+    /**
+     * Tests document requeueing at a single node.
+     *
+     * @throws Exception encountered during testing
+     */
+    @Test
+    public void testDocumentRequeueSingleNode() throws Exception {
+        requeueDocument(SEQ_DOCUMENT_TYPE_NAME);
+    }
 
-       DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getDocumentId());
-       DocumentRefreshQueue documentRequeuer = KewApiServiceLocator.getDocumentRequeuerService(documentH.getDocumentType().getApplicationId(), documentH.getDocumentId(), 0);
-       documentRequeuer.refreshDocument(document.getDocumentId());
+    /**
+     * Tests document requeueing at multiple nodes.
+     *
+     * @throws Exception encountered during testing
+     */
+    @Test
+    public void testDocumentRequeueMultipleNodes() throws Exception {
+        requeueDocument(PAR_DOCUMENT_TYPE_NAME);
+    }
 
-       document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("bmcgough"), document.getDocumentId());
-       assertTrue(document.isEnroute());
-       requests = document.getRootActionRequests();
-       assertEquals("Should be 2 requests.", 2, requests.size());
-       for (ActionRequest requestVO : requests) {
-           assertTrue("Request ids should be different.", !requestIds.contains(requestVO.getId()));
-       }
-       assertTrue(document.isApprovalRequested());
-       document.approve("");
+    /**
+     * Runs the tests for requeing the document, which should be the same no matter whether it has a single or multiple
+     * nodes.
+     *
+     * @param documentTypeName the document type name of the document to create to test
+     */
+    private void requeueDocument(String documentTypeName) {
+        String initiatorPrincipalId = getPrincipalIdForName("ewestfal");
+        String firstApproverPrincipalId = getPrincipalIdForName("bmcgough");
+        String secondApproverPrincipalId = getPrincipalIdForName("rkirkend");
 
-       // now there should just be a pending request to ryan, let's requeue again, because of force action = false we should still
-       // have only one pending request to ryan
-       documentRequeuer.refreshDocument(document.getDocumentId());
-       document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId());
-       assertTrue(document.isEnroute());
-       requests = document.getRootActionRequests();
-       assertEquals("Should be 2 requests.", 2, requests.size());
-       // there should only be one pending request to rkirkend
-       boolean pendingToRkirkend = false;
-        for (ActionRequest requestVO : requests)
-        {
-            if (requestVO.getPrincipalId().equals(getPrincipalIdForName("rkirkend")) && requestVO.isActivated())
-            {
-                assertFalse("rkirkend has too many requests!", pendingToRkirkend);
-                pendingToRkirkend = true;
-            } else
-            {
-                assertTrue("previous request to all others should be done.", requestVO.isDone());
+        // Create and route a document
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(initiatorPrincipalId, documentTypeName);
+        String documentNumber = document.getDocumentId();
+        document.route("");
+        document = WorkflowDocumentFactory.loadDocument(initiatorPrincipalId, documentNumber);
+        assertTrue(document.isEnroute());
+        assertEquals("Should be 2 requests.", 2, document.getRootActionRequests().size());
+
+        // Get all of the request ids from the initial action requests
+        Set<String> initialRequestIds = new HashSet<String>();
+
+        for (ActionRequest request : document.getRootActionRequests()) {
+            initialRequestIds.add(request.getId());
+        }
+
+        // Requeue the document
+        DocumentRouteHeaderValue documentRouteHeader
+                = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentNumber);
+        DocumentRefreshQueue documentRequeuer = KewApiServiceLocator.getDocumentRequeuerService(
+                documentRouteHeader.getDocumentType().getApplicationId(), documentNumber, 0);
+        documentRequeuer.refreshDocument(documentNumber);
+
+        // Load the document for the first approver, check its state, and approve
+        document = WorkflowDocumentFactory.loadDocument(firstApproverPrincipalId, documentNumber);
+        assertTrue(document.isEnroute());
+        assertEquals("Should be 2 requests.", 2, document.getRootActionRequests().size());
+
+        for (ActionRequest request : document.getRootActionRequests()) {
+            assertTrue("Request ids should be different.", !initialRequestIds.contains(request.getId()));
+        }
+
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+
+        // Requeue the document again
+        documentRequeuer.refreshDocument(document.getDocumentId());
+
+        // Load the document for the second approver and make sure that there is only one request to the second approver
+        document = WorkflowDocumentFactory.loadDocument(secondApproverPrincipalId, documentNumber);
+        assertTrue(document.isEnroute());
+        assertEquals("Should be 2 requests.", 2, document.getRootActionRequests().size());
+
+        boolean pendingToSecondApprover = false;
+
+        for (ActionRequest request : document.getRootActionRequests()) {
+            if (request.getPrincipalId().equals(secondApproverPrincipalId) && request.isActivated()) {
+                assertFalse("Second approver has too many requests.", pendingToSecondApprover);
+                pendingToSecondApprover = true;
+            } else {
+                assertTrue("Previous requests to all others should be done.", request.isDone());
             }
         }
-       assertTrue(document.isApprovalRequested());
-   }
 
-   private class SeqSetup {
-       public static final String DOCUMENT_TYPE_NAME = "DRSeqDocType";
-       public static final String ADHOC_NODE = "AdHoc";
-       public static final String WORKFLOW_DOCUMENT_NODE = "WorkflowDocument";
-       public static final String WORKFLOW_DOCUMENT_2_NODE = "WorkflowDocument2";
-   }
+        assertTrue(document.isApprovalRequested());
+    }
 
 }

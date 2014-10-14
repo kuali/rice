@@ -525,6 +525,7 @@ public class UifConstants {
         public static final String DIALOG_RESPONSE_HANDLER = "response_handler";
         public static final String DIALOG_SHOW_HANDLER = "show_handler";
         public static final String DIALOG_HIDE_HANDLER = "hide_handler";
+        public static final String DIALOG_HIDDEN_HANDLER = "hidden_handler";
         public static final String INLINE_EDIT = "inline_edit";
         public static final String DETACHED = "detached";
     }

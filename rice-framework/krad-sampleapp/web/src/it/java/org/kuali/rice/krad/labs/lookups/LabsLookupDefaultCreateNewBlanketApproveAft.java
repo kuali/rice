@@ -18,10 +18,6 @@ package org.kuali.rice.krad.labs.lookups;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

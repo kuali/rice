@@ -42,6 +42,7 @@
         <ref bean="Demo-DialogGroup-Example12"/>
         <ref bean="Demo-DialogGroup-Example13"/>
         <ref bean="Demo-DialogGroup-Example14"/>
+        <ref bean="Demo-DialogGroup-Example15"/>
       </list>
     </property>
   </bean>
@@ -519,5 +520,26 @@
       </list>
     </property>
   </bean>
+
+  <!-- ex:Demo-DialogGroup-Example15 start-->
+  <bean id="Demo-DialogGroup-Example15" parent="Uif-VerticalBoxSection" p:headerText="Destroy Dialog on Hidden"
+        p:instructionalText="Dialog used to demonstrate the destroyDialogOnHidden option. The dialog is present when
+        the page loads. When the dialog is closed, a hidden event is triggered afterwards which destroys the dialog
+        and its contents.">
+    <property name="items">
+      <list>
+        <bean parent="Uif-ActionLink" p:actionLabel="Show Dialog"
+              p:actionScript="showDialog('Demo-DialogGroup-DestroyDialogOnHidden');"/>
+        <bean id="Demo-DialogGroup-DestroyDialogOnHidden" parent="Uif-DialogGroup-OkCancel"
+              p:headerText="Destroy Dialog On Hidden" p:dialogCssClass="modal-sm">
+          <property name="destroyDialogOnHidden" value="true"/>
+          <property name="items">
+            <bean parent="Uif-Message" p:messageText="Close me!" p:id="Destroy"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  <!-- ex:Demo-DialogGroup-Example15 end-->
 
 </beans>

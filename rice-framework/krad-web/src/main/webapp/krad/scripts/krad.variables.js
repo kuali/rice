@@ -36,6 +36,7 @@ JavascriptKradVariables.prototype = {
         DATA_RESPONSE_HANDLER: "data-response_handler",
         DATA_SHOW_HANDLER: "data-show_handler",
         DATA_HIDE_HANDLER: "data-hide_handler",
+        DATA_HIDDEN_HANDLER: "data-hidden_handler",
         DATA_ROLE: "data-role",
         DISMISS_DIALOG_OPTION: "data-dismissdialogoption",
         DIALOG_ID: "data-dismissdialogid"

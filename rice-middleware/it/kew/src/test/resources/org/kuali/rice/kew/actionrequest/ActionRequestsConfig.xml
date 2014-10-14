@@ -140,8 +140,8 @@
 		<documentType>
 			<name>DRSeqDocType</name>
 			<parent>DRDocType</parent>
-			<description>DRSeqDocType</description>
-			<label>SeqDocType</label>
+			<description>Document Refresh Sequential Document Type</description>
+			<label>DRSeqDocType</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
 			<docHandler>_blank</docHandler>
 			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
@@ -175,6 +175,57 @@
 				</requests>
 			</routeNodes>
 		</documentType>
+    <documentType>
+      <name>DRParDocType</name>
+      <parent>DRDocType</parent>
+      <description>Document Refresh Parallel Document Type</description>
+      <label>DRParDocType</label>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+      <docHandler>_blank</docHandler>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+      <active>true</active>
+      <policies>
+        <policy>
+          <name>DEFAULT_APPROVE</name>
+          <value>false</value>
+        </policy>
+      </policies>
+      <routePaths>
+        <routePath>
+          <start name="AdHoc" nextNode="AdHocSplit" />
+          <split name="AdHocSplit">
+            <branch name="AdHocSplit1">
+              <requests name="WorkflowDocument" nextNode="AdHocJoin" />
+            </branch>
+            <branch name="AdHocSplit2">
+              <requests name="WorkflowDocument2" nextNode="AdHocJoin" />
+            </branch>
+            <join name="AdHocJoin" />
+          </split>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="AdHoc">
+          <activationType>P</activationType>
+        </start>
+        <split name="AdHocSplit">
+          <activationType>P</activationType>
+        </split>
+        <requests name="WorkflowDocument">
+          <activationType>P</activationType>
+          <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
+        </requests>
+        <requests name="WorkflowDocument2">
+          <activationType>P</activationType>
+          <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
+        </requests>
+        <join name="AdHocJoin">
+          <activationType>P</activationType>
+        </join>
+      </routeNodes>
+    </documentType>
 
 		<!-- DocumentType for the ActionRequestServiceTest -->
 		<documentType>

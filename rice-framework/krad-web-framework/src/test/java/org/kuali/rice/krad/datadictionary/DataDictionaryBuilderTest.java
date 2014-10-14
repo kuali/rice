@@ -46,7 +46,7 @@ public class DataDictionaryBuilderTest {
 
 	static final String PACKAGE_KRA_ROUTINGFORM = "org/kuali/module/kra/routingform/datadictionary/";
 
-	static final String TESTPACKAGE_INVALID = "org/kuali/rice/krad/datadictionary/test/invalid/";
+	static final String TESTPACKAGE_INVALID = "org/kuali/rice/krad/datadictionary/";
 
 	DataDictionary dd = null;
 
@@ -104,23 +104,11 @@ public class DataDictionaryBuilderTest {
 		assertTrue(failedAsExpected);
 	}
 
-	@Test
-	public final void testDataDictionaryBuilder_invalidXml() throws Exception {
-		String INPUT_FILE = TESTPACKAGE_INVALID + "InvalidXml.xml";
-
-		boolean failedAsExpected = false;
-
-		try {
-			dd.addConfigFileLocation("KR-SAP", INPUT_FILE);
-			dd.parseDataDictionaryConfigurationFiles( false );
-		} catch (DataDictionaryException e) {
-			failedAsExpected = true;
-		} catch (Exception e) {
-            LOG.error("Error loading DD files", e);
-		    fail("Data Dictionary file load failed but with wrong exception type '" + e.getClass().getName() + "'");
-		}
-
-		assertTrue(failedAsExpected);
+	@Test(expected = DataDictionaryException.class)
+	public void testDataDictionaryBuilder_ValidFileInvalidXML() throws Exception {
+		String INPUT_FILE = TESTPACKAGE_INVALID + "InvalidXml1.xml";
+		dd.addConfigFileLocation("KR-SAP", INPUT_FILE);
+		dd.parseDataDictionaryConfigurationFiles(false);
 	}
 
 	@Test

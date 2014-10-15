@@ -40,15 +40,18 @@ public class LabsSubCollectionAddLineAft extends WebDriverLegacyITBase {
 
     protected void testSubCollectionAddLine() throws InterruptedException {
         waitAndClickByXpath("/html/body/form/div/div[2]/main/section/div/button");
-        waitAndTypeByXpath("/html/body/form/div/div[2]/main/section/div/section/div/div/div[1]/div[2]/div/input","test1");
-        waitAndClickByXpath("/html/body/form/div/div[2]/main/section/div/section/div/div/div[2]/button[2]");
+        waitAndTypeByName("newCollectionLines['collection5'].field1", "test1");
+        waitAndClickButtonByExactText("Add");
         waitForElementPresentByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[1]/td/div/input[@value='test1']");
 
+        // TODO input by field name (similar to waitAndTypeLabeledInput
         waitAndTypeByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div/div[1]/input","test2");
+        jGrowl("Type test2 into second field");
         waitAndClickByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div/div[2]/button");
         waitForElementPresentByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[1]/input[@value='test2']");
 
-        waitAndClickByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[2]/fieldset/section/div/button");
+        waitAndClickButtonByText("Add Line"); // first add line button
+        jGrowl("Verify column added");
         waitForElementPresentByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[2]/fieldset/section/div/div/table/tbody/tr/td[2]/div/input");
         waitForElementPresentByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[2]/fieldset/section/div/div/table/tbody/tr/td[3]/div/input");
         waitForElementPresentByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[2]/fieldset/section/div/div/table/tbody/tr/td[4]/div/input");

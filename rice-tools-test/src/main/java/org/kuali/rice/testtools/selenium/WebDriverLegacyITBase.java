@@ -915,31 +915,6 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitForTextPresent("Document was successfully submitted.");
     }
 
-    // TODO delete after AddingNameSpaceAbstractSmokeTestBase migration
-    protected void testAddingNamespace() throws Exception {
-        testAddingNamespace(this);
-    }
-
-    // TODO move method to AddingNameSpaceAbstractSmokeTestBase after locators are extracted
-    protected void testAddingNamespace(JiraAwareFailable failable) throws Exception {
-        selectFrameIframePortlet();
-        waitAndCreateNew();
-        waitForElementPresentByXpath(SAVE_XPATH_2, "save button does not exist on the page");
-
-        //Enter details for Namespace.
-        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Adding PEANUTS");
-        waitAndTypeByXpath("//*[@id='document.documentHeader.explanation']", "I want to add PEANUTS to test KIM");
-        waitAndTypeByXpath(DOC_CODE_XPATH, "PEANUTS");
-        waitAndTypeByXpath("//input[@id='document.newMaintainableObject.name']", "The Peanuts Gang");
-        checkByXpath("//input[@id='document.newMaintainableObject.active']");
-        waitAndClickByXpath(SAVE_XPATH_2);
-        waitForElementPresentByXpath(SAVE_SUCCESSFUL_XPATH, "Document is not saved successfully");
-
-        //checks it is saved and initiator is admin.
-        assertEquals(DOC_STATUS_SAVED, findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[1]/td[2]")).getText());
-        assertEquals("admin", findElement(By.xpath("//table[@class='headerinfo']/tbody/tr[2]/td[1]/a")).getText());
-    }
-
     protected void testAddingBrownGroup() throws Exception {
         selectFrameIframePortlet();
         waitAndCreateNew();

@@ -834,9 +834,6 @@ public class CollectionGroupLineBuilder implements Serializable {
                 }
             }
 
-            // override the css of input groups within the dialog to fix quickfinder formatting issue
-            lineDialog.setOnShowDialogScript(
-                    "jQuery('#" + lineDialog.getId() + " .input-group').css('width', 'auto');");
         }
 
         // set all collection fields and sub-collection fields to readOnly

@@ -134,6 +134,8 @@
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=LabsAppContainerFixed"/>
                           <bean parent="Uif-Link" p:linkText="KimLinks Demo" p:target="_self"
                                 p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-KimLinks"/>
+                          <bean parent="Uif-Link" p:linkText="Non-Dev Mode Examples" p:target="_self"
+                                p:href="@{#ConfigProperties['krad.url']}/labs?viewId=Lab-NonDevMode"/>
                         </list>
                       </property>
                     </bean>

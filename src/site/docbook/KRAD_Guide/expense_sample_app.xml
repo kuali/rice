@@ -1,0 +1,1344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+     <title>A Sample Application</title>
+    <para>This chapter contains steps for building a small sample application.  </para>
+    <section>
+        <title>The Development Environment</title>
+        <para>Developing a Rice application is essentially no different than other J2EE
+            applications. Any tool that can be used for creating J2EE apps can be used for a Rice
+            app. Essentially Rice is a set of libraries that are used with your project (like many
+            other libraries a J2EE app includes) and configured for your needs. Your development
+            environment will most likely consist of a Rice standalone server and an Integrated
+            Development Environment (IDE) that can assist in editing and compiling your code. </para>
+        <para>We recommend that you first follow the instructions in the <link xlink:href="IG.html">Installation Guide</link> to get your server up and running. That will ensure that
+            you have Java, Maven, and a database installed which are crucial to have for working
+            with Rice. Please follow the instructions in the <link xlink:href="IG.html#install_sw">Install and Configure Required Software</link> and <link xlink:href="IG.html#Rice_DB">Building the Rice Database</link> sections of the
+            installation guide before continuing. </para>
+        <para>The Integrated Development Environment (IDE) you will use to develop the source code
+            and resources for your project. It can be a simple text editor if you want, however it
+            is recommended to use one of the Java IDE tools available. Of these Eclipse, Intellij,
+            and NetBeans are the most popular in today's market. Any of these will be fine for
+            developing a Rice project. </para>
+    </section>
+    <section>
+        <title> New Project Setup </title>
+        <para>Now let's look at creating a new Rice enabled project named <emphasis role="keyword">expense</emphasis>. This is a client application that builds off of Rice as
+            middleware. We will use Maven to create a project from a quickstart archetype.</para>
+        <para>Start up a console (on Windows you can use the PowerShell) and change into the
+            directory where you want to put your project (e.g. <code>/java/projects</code>). There
+            are two ways you can create this project: in interactive mode or in automated mode. In
+            order to interact with the build process and enter options as they come up, run the
+            following command:
+            <programlisting>mvn archetype:generate -DarchetypeGroupId=org.kuali.rice
+                       -DarchetypeArtifactId=rice-archetype-quickstart
+                       -DarchetypeVersion=${rice.version}</programlisting>
+            Alternatively, in order to enter all the options in one go, run the following command
+            for Oracle:
+            <programlisting>mvn archetype:generate -DarchetypeGroupId=org.kuali.rice
+                       -DarchetypeArtifactId=rice-archetype-quickstart
+                       -DarchetypeVersion=${rice.version}
+                       -DgroupId=org.kuali.rice
+                       -DartifactId=expense
+                       -Dversion=1.0-SNAPSHOT
+                       -Dpackage=org.kuali.rice.krad
+                       -Ddatasource_ojb_platform=Oracle
+                       -Ddatasource_url=jdbc:oracle:thin:@localhost:1521:XE
+                       -Ddatasource_username=RICE
+                       -Ddatasource_password=RICE</programlisting>
+            or the following command for MySQL:
+            <programlisting>mvn archetype:generate -DarchetypeGroupId=org.kuali.rice
+                       -DarchetypeArtifactId=rice-archetype-quickstart
+                       -DarchetypeVersion=${rice.version}
+                       -DgroupId=org.kuali.rice
+                       -DartifactId=expense
+                       -Dversion=1.0-SNAPSHOT
+                       -Dpackage=org.kuali.rice.krad
+                       -Ddatasource_ojb_platform=MySQL
+                       -Ddatasource_url=jdbc:mysql://localhost/ricedev
+                       -Ddatasource_username=RICE
+                       -Ddatasource_password=RICE</programlisting>
+            changing the options where needed. </para>
+    </section>
+    <section>
+        <title>Project Structure and Configuration Files</title>
+        <para>The result of running the quickstart archetype is a new Maven-based Rice client
+            project. This includes the directory structures for building out your application, along
+            with the necessary configuration files. This includes the Maven <code>pom.xml</code>
+            file and the <code>src</code> directory, which has the standard Maven directory
+            breakdown: <itemizedlist>
+                <listitem>
+                    <code>src/main/java</code> - Contains Java source code </listitem>
+                <listitem>
+                    <code>src/main/resources</code> - Contains resource files (config files, spring
+                    beans) </listitem>
+                <listitem>
+                    <code>src/main/webapp</code> - Contains application web content (images, CSS
+                    files, scripts) </listitem>
+                <listitem>
+                    <code>src/test/java</code> - Contains unit tests </listitem>
+                <listitem>
+                    <code>src/it/java</code> - Contains integration tests </listitem>
+            </itemizedlist>
+        </para>
+        <para>As a part of the installation process, some files are modified or created to match the
+            options specified above. <table frame="all" tabstyle="striped">
+                <title>Created Files</title>
+                <tgroup cols="2">
+                    <colspec colname="c1" colnum="1" colwidth="1.0*"/>
+                    <colspec colname="c2" colnum="2" colwidth="1.0*"/>
+                    <thead>
+                        <row>
+                            <entry>File</entry>
+                            <entry>Description</entry>
+                        </row>
+                    </thead>
+                    <tbody>
+                        <row>
+                            <entry><code>src/main/resources/org/kuali/rice/krad/BootStrapConfig.xml</code></entry>
+                            <entry>Generated configuration file to use for running your
+                                application.</entry>
+                        </row>
+                        <row>
+                            <entry><code>src/main/resources/org/kuali/rice/krad/BootStrapSpringBeans.xml</code></entry>
+                            <entry>XML file for your Spring beans</entry>
+                        </row>
+                        <row>
+                            <entry><code>src/main/webapp/WEB-INF/web.xml</code></entry>
+                            <entry>Standard web deployment descriptor for J2EE applications</entry>
+                        </row>
+                    </tbody>
+                </tgroup>
+            </table>
+        </para>
+        <para>These example classes are generated, although are not used in the sample app, and can be deleted.</para>
+            <itemizedlist>
+                <listitem>
+                    <para>src/main/java/org/kuali/rice/krad/AdditionProductServiceImpl.java</para>
+                </listitem>
+                <listitem>
+                    <para>src/main/java/org/kuali/rice/krad/MultiplicationProductServiceImpl.java</para>
+                </listitem>
+                <listitem>
+                    <para>src/main/java/org/kuali/rice/krad/ProductService.java</para>
+                </listitem>
+                <listitem>
+                    <para>src/test/java/org/kuali/rice/krad/AbstractProductServiceImplTest.java</para>
+                </listitem>
+                <listitem>
+                    <para>src/test/java/org/kuali/rice/krad/AdditionProductServiceImplTest.java</para>
+                </listitem>
+                <listitem>
+                    <para>src/test/java/org/kuali/rice/krad/MultiplicationProductServiceImplTest.java</para>
+                </listitem>
+            </itemizedlist>
+    </section>
+    
+    <section>
+        <title>Importing into Eclipse and Starting the App</title>
+        <para> Now we have our project setup and are ready to begin development. Note at this
+            point that the application is completely runnable. We could do a maven deploy, copy
+            the generated war to our tomcat server, and start up the application. However we are
+            going to first import our project to an IDE so that we will be ready to further
+            develop the application code. We will use Eclipse as an example here. </para>
+        <para> When Eclipse starts up for the first time, it will ask you to choose a workspace.
+            This is a directory that Eclipse places newly created projects, and will also read
+            current projects from. A standard within the community is to use
+            <code>/java/projects</code> for your working space. Note you can select the
+            checkbox to use the directory as your default and Eclipse will not prompt on the
+            next startup. </para>
+            <tip>
+                <title>Memory</title>
+                <para>It is generally needed and recommended to allocate additional JVM memory for
+                    your IDE. This will largely depend on how much the IDE needs and what your
+                    system can handle. The settings below are for a machine with 4g of memory. For
+                    Eclipse, allocating additional memory can be done by opening up the file named
+                        <code>eclipse.ini</code> that exists in the root installation directory. At
+                    the end of the file you specify VM arguments as follows: <itemizedlist>
+                        <listitem>
+                            <para>vmargs</para>
+                        </listitem>
+                        <listitem>
+                            <para>Xms40m</para>
+                        </listitem>
+                        <listitem>
+                            <para>Xmx512m</para>
+                        </listitem>
+                    </itemizedlist>
+                </para>
+            </tip>
+            <para> When working with Eclipse for the first time, there are additional plugins you
+                will likely want to get. None of these are required by Rice and depend on your
+                institutional development environment and how you plan to create your project.
+                However, most projects today use SVN or GIT for source code control. Therefore an
+                additional Eclipse plugin is needed for communicating with the repository. Also if
+                you have chosen to use Maven (or used the create project script) the Eclipse Maven
+                plugin will be very useful as well. </para>
+            <para>To bring a new project into eclipse, select the File-Import menu option. This
+                should bring up a dialog as show in the example below. </para>
+            <figure>
+                <title>Import New Project Eclipse</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/newProjectEclipse.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para> For the import source select 'Existing Projects info Workspace'. This should
+                bring up a dialog that looks like the example below. </para>
+            <figure>
+                <title>Selecting Project Eclipse</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/KRAD_Guide/importProjectsEclipse.png"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para> Here click the 'Browse' button to locate the directory for the project. After
+                selecting the project location click the 'Finish' button. Eclipse will then import
+                the project contents and you are ready to begin coding! </para>
+            <para> To run our project we again have many options. One of these is to deploy to an
+                external servlet container such as Tomcat. Using the Eclipse Web Tools platform, we
+                can configure a Tomcat server and control all the deployments, startups, and
+                shutdowns from Eclipse. </para>
+            <para> Another approach is to use a Jetty Server. Rice provides a JettyServer class that
+                can be used to launch Jetty and host an application. To use this we just need to
+                create an Eclipse launch configuration which will run the server as a Java main
+                class, and provide arguments for the deployment (such as context, web app location
+                and so on).  </para>
+            <para>Once deployed, if you are using HTTP port 8080, and an "application context" of
+                    <emphasis role="keyword">expense</emphasis>, you should be able to display the
+                "Rice Portal" in your web browser via ... </para>
+            <para><link xlink:href="http://localhost:8080/expense/portal.do"/></para>
+            <para>When you connect at the above link, you'll see a login screen. Login with the ID
+                <emphasis role="keyword">admin</emphasis>. No password is required.  The Rice Portal
+            should like look ...</para>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/view_rice_portal.png"/>
+                </imageobject>
+            </inlinemediaobject></para>
+    </section>
+    <section>
+        <title>Setup for KRAD Development</title>
+            <para>Addtional configuration information is required for the KRAD framework to find
+            resources for our module (such as data dictionary files, package prefixes, and resource
+            bundles) along with other metadata about our module. We could choose to have one module
+            for our whole application, or break into many modules (if using maven each KRAD module
+            generally corresponds with a maven module).</para>
+        <para>Edit the file ...</para>
+        <para>src/main/resources/org/kuali/rice/BootStrapSpringBeans.xml</para>
+        <para>... and remove these lines near the bottom, as they will not be used ...</para>
+        <programlisting linenumbering="numbered">
+           &lt;!--an application specific service-->/&gt;
+           &lt;bean id="productService" class="org.kuali.rice.MultiplicationProductServiceImpl" /&gt;
+        </programlisting>
+        <para>In the place where the above lines were deleted, add ...</para>
+            <programlisting linenumbering="numbered">
+    &lt;!-- KRAD JPA configuration --&gt;
+    &lt;import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" /&gt;
+    &lt;import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" /&gt;
+
+    &lt;alias alias="kradApplicationDataSource" name="riceDataSource" /&gt;
+    &lt;bean id="jpaPersistenceUnitName" class="java.lang.String"&gt;
+        &lt;constructor-arg value="expenseAccountApp" /&gt;
+    &lt;/bean&gt;
+
+    &lt;util:list id="jpaPackagesToScan"&gt;
+        &lt;value&gt;org.kuali.rice.krad.expense.dataobject&lt;/value&gt;
+    &lt;/util:list&gt;
+
+    &lt;util:list id="managedClassNames" /&gt;
+    &lt;util:list id="additionalMetadataProviders" /&gt;
+    &lt;util:list id="springMetadataFileLocations" /&gt;
+
+    &lt;bean id="expenseAccountModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration"&gt;
+        &lt;property name="namespaceCode" value="KR-SAP"/&gt;
+        &lt;property name="initializeDataDictionary" value="true"/&gt;
+        &lt;property name="dataDictionaryPackages"&gt;
+            &lt;list>
+                &lt;value&gt;classpath:org/kuali/rice/krad/expense&lt;value&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+        &lt;property name="packagePrefixes"&gt;
+            &lt;list&gt;
+                &lt;value>org.kuali.rice.krad.expense&lt;value&gt;
+            &lt;/list&gt;
+        &lt;/propert&gt;
+        &lt;property name="providers"&gt;
+            &lt;list&gt;
+                &lt;ref bean="jpaPersistenceProvider"/&gt;
+                &lt;ref bean="metadataProvider"/&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+            </programlisting>
+        <para>... to get ... </para>
+        <programlisting>
+    &lt;bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"&gt;
+        &lt;property name="properties" value="#{bootstrapConfig.properties}" /&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id="bootstrapConfig" class="org.kuali.rice.core.impl.config.property.ConfigFactoryBean"&gt;
+        &lt;property name="configLocations"&gt;
+            &lt;list&gt;
+                &lt;value&gt;classpath:org/kuali/rice/BootStrapConfig.xml&lt;/value&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+	
+    &lt;bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"&gt;
+        &lt;property name="staticMethod" value="org.kuali.rice.core.impl.config.property.ConfigInitializer.initialize" /&gt;
+        &lt;property name="arguments"&gt;
+            &lt;list&gt;&lt;ref bean="bootstrapConfig"/>&lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/&gt;
+    &lt;import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/&gt;
+    &lt;import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/&gt;
+
+    &lt;!-- KRAD JPA configuration --&gt;
+    &lt;import resource="classpath:org/kuali/rice/krad/config/KRADDependentModuleCommonImports.xml" /&gt;
+    &lt;import resource="classpath:org/kuali/rice/krad/config/KRADSpringBeans-jpa-common.xml" /&gt;
+
+    &lt;alias alias="kradApplicationDataSource" name="riceDataSource" /&gt;
+    &lt;bean id="jpaPersistenceUnitName" class="java.lang.String"&gt;
+        &lt;constructor-arg value="expenseAccountApp" /&gt;
+    &lt;/bean&gt;
+
+    &lt;util:list id="jpaPackagesToScan"&gt;
+        &lt;value&gt;org.kuali.rice.krad.expense.dataobject&lt;/value&gt;
+    &lt;/util:list&gt;
+
+    &lt;util:list id="managedClassNames" /&gt;
+    &lt;util:list id="additionalMetadataProviders" /&gt;
+    &lt;util:list id="springMetadataFileLocations" /&gt;
+
+    &lt;bean id="expenseAccountModuleConfiguration" class="org.kuali.rice.krad.bo.ModuleConfiguration"&gt;
+        &lt;property name="namespaceCode" value="KR-SAP"/&gt;
+        &lt;property name="initializeDataDictionary" value="true"/&gt;
+        &lt;property name="dataDictionaryPackages"&gt;
+            &lt;list>
+                &lt;value&gt;classpath:org/kuali/rice/krad/expense&lt;value&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+        &lt;property name="packagePrefixes"&gt;
+            &lt;list&gt;
+                &lt;value>org.kuali.rice.krad.expense&lt;value&gt;
+            &lt;/list&gt;
+        &lt;/propert&gt;
+        &lt;property name="providers"&gt;
+            &lt;list&gt;
+                &lt;ref bean="jpaPersistenceProvider"/&gt;
+                &lt;ref bean="metadataProvider"/&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+ &lt;/beans&gt;
+        </programlisting>
+        <para>Some things configured above are ...</para>
+        <itemizedlist>
+            <listitem>
+                <para>The module's namespace</para>
+            </listitem>
+            <listitem>
+                <para>The Data Dictionary files to load</para>
+            </listitem>
+            <listitem>
+                <para>The package prefix of data objects in this module</para>
+            </listitem>
+            <listitem>
+                <para>The JPA metadata providers</para>
+            </listitem>
+        </itemizedlist>        
+            <para>Note in particular here the <emphasis role="bold">
+                dataDictionaryPackages</emphasis> property. This is where the framework will pick
+            up data dictionary files for loading. We can specify individual files or directories. If
+            a directory is given, then XML files added to that directory will automatically get
+            picked up and loaded on application startup. </para>
+    </section>
+    <section>
+        <title>Sample App Tables</title>
+        <para>For the <emphasis role="keyword">expense</emphasis> sample app, we'll use two
+            tables.</para>
+        <para>This table, named EXP_ACCT, holds expense account information.</para>
+        <programlisting>
+CREATE TABLE EXP_ACCT (
+  ACCT_NUM varchar(10) NOT NULL,
+  OBJ_ID varchar(36) NOT NULL,
+  VER_NBR decimal(8,0) NOT NULL,
+  ACCT_NAME varchar(40),
+  ACCT_DESC varchar(60),
+  PRIMARY KEY (ACCT_NUM)
+) ;
+        </programlisting>
+        <para>This table, named EXP_SUB_ACCT, holds expense sub account information, and uses a
+            foreign key constraint to the EXP_ACCT table above.</para>
+        <programlisting>
+CREATE TABLE EXP_SUB_ACCT (
+  ACCT_NUM varchar(10) NOT NULL,
+  SUB_ACCT varchar(10) NOT NULL,
+  OBJ_ID varchar(36) NOT NULL,
+  VER_NBR decimal(8,0) NOT NULL,
+  SUB_ACCT_NAME varchar(40),
+  PRIMARY KEY (ACCT_NUM, SUB_ACCT),
+  CONSTRAINT EXP_SUB_ACCT_TR1 FOREIGN KEY (ACCT_NUM) REFERENCES EXP_ACCT (ACCT_NUM)
+);            
+        </programlisting>
+        <para>Add a few records to the EXP_ACCT table. The following uses syntax for MySQL. For
+            Oracle replace <emphasis role="keyword">UUID()</emphasis> with <emphasis role="keyword"
+                >SYS_GUID()</emphasis>.</para>
+        <programlisting>
+INSERT INTO EXP_ACCT (ACCT_NUM, OBJ_ID, VER_NBR, ACCT_NAME, ACCT_DESC)
+VALUES ('e1', UUID(), '1', 'Car', 'Expenses for car'),
+('e2', UUID(), '1', 'Truck', 'Expenses for truck'),
+('e3', UUID(), '1', 'Motorcycle', 'Expenses for motorcycle');            
+        </programlisting>
+        <para>Add a few records to the EXP_SUB_ACCT table. The following uses syntax for MySQL. For
+            Oracle replace <emphasis role="keyword">UUID()</emphasis> with <emphasis role="keyword"
+                >SYS_GUID()</emphasis>.</para>
+        <programlisting>
+INSERT INTO EXP_SUB_ACCT (ACCT_NUM, SUB_ACCT, OBJ_ID, VER_NBR, SUB_ACCT_NAME)
+VALUES ('e1', 'A', UUID(), '1', 'Sub Account 1'),
+('e1', 'B', UUID(), '1', 'Sub Account 2'),
+('e2', 'A', UUID(), '1', 'Sub Account 1'),
+('e2', 'B', UUID(), '1', 'Sub Account 2'),
+('e3', 'A', UUID(), '1', 'Sub Account 1'),
+('e3', 'B', UUID(), '1', 'Sub Account 2');
+        </programlisting>
+    </section>
+    <section>
+        <title>Data Objects</title>
+        <para>Add <emphasis role="keyword">expense.dataobject</emphasis> to the package <emphasis
+                role="keyword">org.rice.krad</emphasis>, to get the package <emphasis role="keyword"
+                >org.rice.krad.expense.dataobject</emphasis>. The resuling directory structure is
+            ...</para>
+        <para>src/main/java/org/kuali/rice/krad/expense/dataobject</para>
+        <para>Create ... </para>
+        <para>src/main/java/org/kuali/rice/krad/expense/dataobject/ExpenseAccount.java </para>
+        <para>... and have it contain ...</para>
+        <programlisting>
+package org.kuali.rice.krad.expense.dataobject;
+
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.provider.annotation.Description;
+import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
+import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+import org.kuali.rice.krad.data.provider.annotation.UifValidCharactersConstraintBeanName;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name="EXP_ACCT")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
+public class ExpenseAccount extends DataObjectBase implements Serializable {
+
+    private static final long serialVersionUID = -8739303391609093875L;
+
+    @Id
+    @Column(name="ACCT_NUM",length=10)
+    @Label("Expense Account Number")
+    @UifValidCharactersConstraintBeanName("AlphaNumericPatternConstraint")
+    private String number;
+
+    @Column(name="ACCT_NAME",length=40)
+    @Label("Expense Account Name")
+    private String name;
+
+    @Column(name="ACCT_DESC",length=60)
+    @Label("Expense Account Description")
+    private String description;
+
+    @OneToMany(fetch= FetchType.EAGER, orphanRemoval=true, cascade= {CascadeType.ALL}, mappedBy = "account")
+    protected List&lt;ExpenseSubAccount/&gt; subAccounts;
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List&lt;ExpenseSubAccount/&gt; getSubAccounts() {
+        if(subAccounts == null) {
+            subAccounts = new ArrayList&lt;ExpenseSubAccount/&gt;();
+        }
+        return subAccounts;
+    }
+
+    public void setSubAccounts(List&lt;ExpenseSubAccount/&gt; subAccounts) {
+        this.subAccounts = subAccounts;
+    }
+
+}
+        </programlisting>
+        <para>The <emphasis role="keyword">ExpenseAccount</emphasis> class provides a way to read and
+            write data via JPA.  It also allows KRAD to create a few types of built-in web pages
+            called KRAD "views".</para>
+         <para>The annotations <emphasis role="keyword">@Entity, @Table, @Id, @Column</emphasis> and
+                <emphasis role="keyword">@OneToMany</emphasis> are JPA annotations.</para> 
+         <para>The <emphasis role="keyword">@Entity</emphasis> annotation tells JPA it can use the
+                <emphasis role="keyword">ExpenseAccount</emphasis> class to read and write to the
+            database.</para>
+        <para>The <emphasis role="keyword">@Table</emphasis> annotation tells JPA to use the table
+            named EXP_ACCT with the <emphasis role="keyword">ExpenseAccount</emphasis> class.</para>
+        <para>The <emphasis role="keyword">@Column</emphasis> annotation maps a field to a column
+            name. The <emphasis role="keyword">number</emphasis> field is mapped to the column named
+                <emphasis role="keyword">ACCT_NUM</emphasis> in the <emphasis role="keyword"
+                >EXP_ACCT</emphasis> table. The field <emphasis role="keyword">name</emphasis> is
+            mapped to the column <emphasis role="keyword">ACCT_NAME</emphasis>, and the field
+                <emphasis role="keyword">description</emphasis> is mapped to the column <emphasis
+                role="keyword">ACCT_DESC</emphasis>,</para>
+        <para>The <emphasis role="keyword">@Id</emphasis> annotation specifies that the <emphasis
+                role="keyword">number</emphasis> field, which is mapped to the column <emphasis
+                role="keyword">ACCT_NUM</emphasis>, is a primary key.</para>
+        <para>The <emphasis role="keyword">@OneToMany</emphasis> annotation tells JPA that the
+                <emphasis role="keyword">List&lt;ExpenseSubAccount> subAccounts</emphasis> field is
+            a relationship to a JPA annotated class named <emphasis role="keyword"
+                >ExpenseSubAccount</emphasis> (which we will create below), and that this
+            relationship is done via a field in <emphasis role="keyword"
+                >ExpenseSubAccount</emphasis> named <emphasis role="keyword">account</emphasis>. The
+                <emphasis role="keyword">subAccounts</emphasis> field is a collection, which allows
+            multiple <emphasis role="keyword">ExpenseSubAccount</emphasis> objects to be associated
+            with a single expense account. </para>
+        <para><emphasis role="keyword">@UifAutoCreateViews</emphasis>, <emphasis role="keyword">@Label</emphasis>,  and <emphasis role="keyword">@UifValidCharactersConstraintBeanName</emphasis> are KRAD annotations. </para>
+        <para>The <emphasis role="keyword">@UifAutoCreateViews</emphasis> annotation allows KRAD to
+            automatically generate an <emphasis role="keyword">Inquiry</emphasis> view and a
+                <emphasis role="keyword">Lookup</emphasis> view. An Inquiry view is a web page built
+            into KRAD which displays the results of a search specified in a URL parameter. A Lookup
+            View is a forms based web page built into KRAD which allows the user to do searches
+            interactively, and display the results. </para>
+        <para>For each <emphasis role="keyword">String</emphasis> field in the <emphasis
+                role="keyword">ExpenseAccount</emphasis> class, KRAD can generate a corresponding
+            static text field (for an Inquiry View) or text input field (for a Lookup View). The
+                <emphasis role="keyword">@Label</emphasis> annotation allows KRAD to generate a
+            label associated with the generated static text or text input field. The <emphasis
+                role="keyword">@Label</emphasis> annotation is applied to the fields <emphasis
+                role="keyword">number</emphasis>, <emphasis role="keyword">name</emphasis>, and
+                <emphasis role="keyword">description</emphasis>.</para>
+        <para>The <emphasis role="keyword">@UifValidCharactersConstraintBeanName</emphasis>
+            annotation tells KRAD to only allow alphanumeric characters to be entered in the text
+            input field generated for the field <emphasis role="keyword">number</emphasis>.</para>
+        <para>Now create ...</para>
+        <para>src/main/java/org/kuali/rice/krad/expense/dataobject/ExpenseSubAccount.java</para>
+        <para>... and have it contain ...</para>
+      <programlisting>
+package org.kuali.rice.krad.expense.dataobject;
+
+import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.provider.annotation.ForceUppercase;
+import org.kuali.rice.krad.data.provider.annotation.Label;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
+import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViews;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name="EXP_SUB_ACCT")
+@UifAutoCreateViews({UifAutoCreateViewType.INQUIRY, UifAutoCreateViewType.LOOKUP})
+public class ExpenseSubAccount extends DataObjectBase {
+
+    private static final long serialVersionUID = 4768156680246084251L;
+
+    @Id
+    @Column(name = "ACCT_NUM",length = 10)
+    @Label("Expense Account Number")
+    @NotNull
+    private String expenseAccountNumber;
+
+    @Id
+    @Column(name="SUB_ACCT",length=10)
+    @Label("Expense Sub Account Number")
+    @NotNull
+    private String subAccount;
+
+    @Column(name="SUB_ACCT_NAME",length=40)
+    @Label("Expense Sub Account Name")
+    @NotNull
+    private String subAccountName;
+
+    @ManyToOne
+    @JoinColumn(name = "ACCT_NUM" ,insertable=false, updatable=false)
+    ExpenseAccount account;
+
+    public String getExpenseAccountNumber() {
+        return this.expenseAccountNumber;
+    }
+
+    public void setExpenseAccountNumber(String travelAccountNumber) {
+        this.expenseAccountNumber = travelAccountNumber;
+    }
+
+    public String getSubAccount() {
+        return this.subAccount;
+    }
+
+    public void setSubAccount(String subAccount) {
+        this.subAccount = subAccount;
+    }
+
+    public String getSubAccountName() {
+        return this.subAccountName;
+    }
+
+    public void setSubAccountName(String subAccountName) {
+        this.subAccountName = subAccountName;
+    }
+
+    public ExpenseAccount getAccount() {
+        return this.account;
+    }
+
+    public void setAccount(ExpenseAccount account) {
+        this.account = account;
+    }
+
+}
+      </programlisting>
+      <para>The <emphasis role="keyword">ExpenseSubAccount</emphasis> class also uses JPA and KRAD
+            annotations.</para> 
+          <para><emphasis role="keyword">@Entity</emphasis> specifies that the <emphasis
+                role="keyword">ExpenseSubAccount</emphasis> class can be used by JPA. <emphasis
+                role="keyword">@Table</emphasis> specifies that the table used is <emphasis
+                role="keyword">EXP_SUB_ACCT</emphasis>. <emphasis role="keyword">@Id</emphasis>
+            specifies that the fields <emphasis role="keyword">expenseAccountNumber</emphasis> and
+                <emphasis role="keyword">subAccount</emphasis> are primary keys.  The fields
+                <emphasis role="keyword">expenseAccountNumber</emphasis>, <emphasis role="keyword"
+                >subAccount</emphasis>, and <emphasis role="keyword">subAccountName</emphasis> are
+            mapped to their respective columns via <emphasis role="keyword"
+            >@Column</emphasis>.</para>
+        <para>The JPA annotation <emphasis role="keyword">@JoinColum</emphasis> tells JPA that the
+            column <emphasis role="keyword">ACCT_NUM</emphasis> is a foreign key constraint which
+            which references <emphasis role="keyword">ExpenseAccount</emphasis>.  This parallels the
+            foreign key constraint set up between the <emphasis role="keyword"
+                >EXP_SUB_ACCT</emphasis> and <emphasis role="keyword">EXP_ACCT</emphasis> tables.  </para>
+        <para>The JPA annotation <emphasis role="keyword">@ManyToOne</emphasis> designates that one
+            or more <emphasis role="keyword">ExpenseSubAccount </emphasis> objects can be in the in
+                <emphasis role="keyword">List&lt;ExpenseSubAccount>subAccounts</emphasis> field
+            contained in the <emphasis role="keyword">ExpenseAccount</emphasis> object.  That is, one
+            or more expense sub account records can be associated with a single expense account.  In
+            the <emphasis role="keyword">ExpenseAccount</emphasis> class, the <emphasis role="keyword"
+                >@OneToMany</emphasis> annotation is part of establishing this relationship.</para>
+        <para>The KRAD <emphasis role="keyword">@Label</emphasis> annotation is used on the fields
+                <emphasis role="keyword">expenseAccountNumber</emphasis>, <emphasis role="keyword"
+                >subAccount</emphasis> and <emphasis role="keyword">subAccountName</emphasis>.</para>
+        <para>With the <emphasis role="keyword">ExpenseAccount</emphasis>and <emphasis
+                role="keyword">ExpenseSubAccount</emphasis> classes created, we are ready to create
+            a KRAD <emphasis role="keyword">Inquiry View</emphasis>.</para>
+    </section>
+        <section>
+            <title>Inquiry View</title>
+            <para>An Inquiry View is a forms based web page built into KRAD. An Inquiry View can be
+            specified using XML, or KRAD can generate a default Inquiry View without using
+            XML.</para>
+        <para>We will create Inquiry Views using both methods, using the <emphasis role="keyword"
+                >ExpenseAccount</emphasis> and <emphasis role="keyword">ExpenseSubAccount</emphasis>
+            classes.</para>
+            <section>
+                <title>Using a Generated Inquiry View</title>
+                <para>KRAD can generate a default Inquiry View by using the KRAD annotations in the
+                    <emphasis role="keyword">ExpenseAccount</emphasis> and <emphasis role="keyword"
+                        >ExpenseSubAccount</emphasis> classes. </para>
+                <para>Build and deploy.  All we have to do is specify the <emphasis role="keyword"
+                    >ExpenseAccount</emphasis> class as a URL parameter in the HTTP request
+                    ...</para>
+                <para>
+                    <link
+                        xlink:href="http://localhost:8080/expense/kr-krad/inquiry?number=e1&amp;dataObjectClassName=org.kuali.rice.krad.expense.dataobject.ExpenseAccount"
+                    /></para>
+                <para>At the login screen, use the ID <emphasis role="keyword">admin</emphasis>. No
+                password is required. You should a see a web page like ...</para>
+                <para>
+                    <inlinemediaobject>
+                        <imageobject>
+                            <imagedata fileref="../images/view_inquiry_generated.png"/>
+                        </imageobject>
+                    </inlinemediaobject></para>
+                <para>In the above URL, the <emphasis role="keyword">ExpenseAccount</emphasis> data
+                    object is specified in the URL parameter ...</para>
+                <para><emphasis role="keyword"
+                    >dataObjectClassName=org.kuali.rice.expense.dataobject.ExpenseAccount</emphasis></para>
+                <para>The URL parameter ...</para>
+                <para><emphasis role="keyword">number=e1</emphasis></para>
+                <para>... tells KRAD to search for the expense account number <emphasis role="keyword"
+                    >e1</emphasis>, and display the data for that account. Since there is a
+                    relationship to the <emphasis role="keyword">ExpenseSubAccount</emphasis> class, sub
+                    accounts for <emphasis role="keyword">e1</emphasis> are displayed.</para>
+                <para>In the above URL, <emphasis role="keyword">inquiry</emphasis> specifies that
+                KRAD should use a Spring MVC controller named <emphasis role="keyword"
+                    >inquiry</emphasis>. This controller is built into KRAD, and knows how to do
+                searches using URL parameters.</para>
+            </section>
+            <section>
+                <title>Specifying an Inquiry View with XML</title>
+                <para>By specifying an Inquiry View using XML, we have more control over what the
+                    web page looks like. </para>
+            <para>Add a directory named <emphasis role="keyword">expense</emphasis> to <emphasis role="keyword">src/main/resources/org/kuali/rice/krad</emphasis>, to get
+                ...</para>
+            <para>src/main/resources/org/kuali/rice/krad</para>
+            <para>Create ...</para>
+            <para>src/main/resources/org/kuali/rice/krad/expense/ExpenseAccountInquiryView.xml</para>
+            <para>... and have it contain ...</para>
+            <programlisting>
+&lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
+
+  &lt;bean id="ExpenseAccountInquiryView" parent="Uif-InquiryView"&gt;
+    &lt;property name="headerText" value="Expense Account - Inquiry View"/&gt;
+    &lt;property name="viewName" value="ExpenseAccountInquiryView"/&gt;
+    &lt;property name="dataObjectClassName" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;
+    &lt;property name="items"&gt;
+      &lt;list&gt;
+        &lt;bean parent="Uif-Disclosure-GridSection"&gt;
+          &lt;property name="headerText" value="Expenses Accounts"/&gt;
+          &lt;property name="items"&gt;
+            &lt;list&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="number"/&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="name"/&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="description"/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+        &lt;/bean&gt;
+
+        &lt;bean id="ExpenseAccountResults" parent="Uif-Disclosure-TableCollectionSection"&gt;
+          &lt;property name="headerText" value="Sub Accounts"/&gt;
+          &lt;property name="collectionObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseSubAccount"/&gt;
+          &lt;property name="propertyName" value="subAccounts"/&gt;
+          &lt;property name="items"&gt;
+            &lt;list&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="expenseAccountNumber"/&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="subAccount"/&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="subAccountName"/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+        &lt;/bean&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean>&gt;
+
+  &lt;bean id="ExpenseDataObjectEntry" parent="DataObjectEntry"&gt;
+    &lt;property name="dataObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="ExpenseSubDataObjectEntry" parent="DataObjectEntry"&gt;
+    &lt;property name="dataObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseSubAccount"/&gt;
+  &lt;/bean&gt;
+
+&lt;/beans&gt;
+            </programlisting>
+            <para>This file tells KRAD what fields will be displayed on the web page, what "data
+            objects" to use, and some additional information needed to construct the Inquiry
+            View.</para>
+            <para>KRAD knows this is an Inquiry View because the bean <emphasis role="keyword"
+                >id="ExpenseAccountInquiryView"</emphasis> has <emphasis role="keyword"
+                >parent="Uif-InquiryView"</emphasis> ...</para>
+            <para>
+                <programlisting>
+  &lt;bean id="ExpenseAccountInquiryView" parent="Uif-InquiryView"&gt;                    
+                </programlisting>
+            </para>
+              <para>KRAD maps the "bean id" to a <emphasis role="keyword">viewId</emphasis>. The
+                    <emphasis role="keyword">viewId</emphasis> will get used as a URL parameter
+                (which we'll see below).</para>
+            <para>The data object to use is specified by ...</para>
+            <programlisting>
+  &lt;property name="dataObjectClassName" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;                
+            </programlisting>
+            <para> ... which is the <emphasis role="keyword">ExpenseAccount</emphasis> class.</para>
+                <para> The header on the web page is spcified by ...</para>
+                <para>
+                    <programlisting>
+    &lt;property name="headerText" value="Expense Account - Inquiry View"/&gt;
+                    </programlisting>
+                </para>
+            <para>The following section maps fields in the <emphasis role="keyword"
+                >ExpenseAccount</emphasis> class to static text fields on the Inquiry View. This is
+            done by setting the <emphasis role="keyword">propertyName</emphasis> field on a <emphasis
+                role="keyword">Uif-DataField</emphasis> bean. </para>
+            <para>
+                <programlisting>
+              &lt;bean parent="Uif-DataField" p:propertyName="number"/&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="name"/&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="description"/&gt;                    
+                </programlisting>
+            </para>
+            <para>Nested inside bean id <emphasis role="keyword">ExpenseAccountInquiryView</emphasis>
+                is ...</para>
+            <programlisting>
+        &lt;bean id="ExpenseAccountResults" parent="Uif-Disclosure-TableCollectionSection"&gt;
+            </programlisting>
+            <para> ... which specifies what fields will be displayed for sub accounts.</para>
+            <para>The data object for this is specified by ...</para>
+            <programlisting>
+          &lt;property name="collectionObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseSubAccount"/&gt;
+            </programlisting>
+            <para> The following section maps fields in the <emphasis role="keyword"
+                >ExpenseSubAccount</emphasis> class to static text fields on the Inquiry
+            View.</para>
+            <para>
+                <programlisting>
+              &lt;bean parent="Uif-DataField" p:propertyName="expenseAccountNumber"/&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="subAccount"/&gt;
+              &lt;bean parent="Uif-DataField" p:propertyName="subAccountName"/&gt;                    
+                </programlisting>
+            </para>
+            <para> Each data object also needs to be specifed as a bean. </para>
+            <programlisting>
+  &lt;bean id="ExpenseDataObjectEntry" parent="DataObjectEntry"&gt;
+    &lt;property name="dataObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="ExpenseSubDataObjectEntry" parent="DataObjectEntry"&gt;
+    &lt;property name="dataObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseSubAccount"/&gt;
+  &lt;/bean&gt;                
+            </programlisting>
+            <para><para>Build and deploy, and you should be able to see the Inquiry View at ... </para>
+                <link
+                    xlink:href="http://localhost:8080/expense/kr-krad/inquiry?number=e1&amp;viewId=ExpenseAccountInquiryView"
+                /></para>
+            <para>As before, at the login screen, use the ID <emphasis role="keyword"
+                >admin</emphasis>. No password is required.  You should see a web page like ...</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_inquiry.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Each sub account has a link. Clicking on the <emphasis role="keyword">A</emphasis>
+                link in the <emphasis role="keyword">Expense Sub Account Number</emphasis> column
+                will show ... </para>
+            <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/view_inquiry_subaccount.png"/>
+                </imageobject>
+            </inlinemediaobject></para>
+            <para>The URL we used ...</para>
+            <para>
+            <link
+                xlink:href="http://localhost:8080/expense/kr-krad/inquiry?number=e1&amp;viewId=ExpenseAccountInquiryView"
+            /></para>
+            <para>... has the URL parameter <emphasis role="keyword">number=e1</emphasis>. This tells
+                KRAD to display the expense account which has the number <emphasis role="keyword"
+                    >e1</emphasis>, and its associated sub accounts. </para>
+            <para>The URL parameter <emphasis role="keyword"
+                    >viewId=ExpenseAccountInquiryView</emphasis> tells KRAD to use a view that has
+                an "id" of <emphasis role="keyword">ExpenseAccountInquiryView</emphasis>. This is
+                specified in the file <emphasis role="keyword"
+                    >ExpenseAccountInquiryView.xml</emphasis> as ...</para>
+            <programlisting>
+  &lt;bean id="ExpenseAccountInquiryView" parent="Uif-InquiryView"&gt;
+            </programlisting>
+            </section>
+        </section>
+        <section>
+            <title>Lookup View</title>
+            <para>A Lookup View is a forms based web page built into KRAD which allows interactive
+            searching. </para>
+            <para>To create a Lookup View, create the file ...</para>
+            <para>src/main/resources/org/kuali/rice/krad/expense/ExpenseAccountLookupView.xml</para>
+            <para>... and have it contain ...</para>
+            <programlisting>
+&lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
+
+  &lt;bean id="ExpenseAccountLookupView" parent="Uif-LookupView"&gt;
+    &lt;property name="viewName" value="ExpenseAccountLookupView"/&gt;
+    &lt;property name="headerText" value="Expense Account - Lookup View"/&gt;
+    &lt;property name="dataObjectClassName" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;
+    &lt;property name="criteriaFields"&gt;
+      &lt;list>
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/&gt;
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/&gt;
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="description"/&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="resultFields"&gt;
+      &lt;list&gt;
+        &lt;bean parent="Uif-DataField" p:propertyName="number"/&gt;
+        &lt;bean parent="Uif-DataField" p:propertyName="name"/&gt;
+        &lt;bean parent="Uif-DataField" p:propertyName="description"/&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+
+&lt;/beans&gt;                
+            </programlisting>
+            <para>KRAD knows this is a Lookup View because the bean <emphasis role="keyword"
+                >id="ExpenseAccountLookupview</emphasis> has <emphasis role="keyword"
+                >parent="Uif-LookupView"</emphasis>...</para>
+            <para>
+                <programlisting>
+  &lt;bean id="ExpenseAccountLookupView" parent="Uif-LookupView"&gt;
+                </programlisting>
+            </para>
+            <para>The data object used is the <emphasis role="keyword">ExpenseAccount</emphasis>,
+            which is the same class used with the Inquiry View. </para>
+            <para>
+                <programlisting>
+    &lt;property name="dataObjectClassName" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;    
+                </programlisting>
+            </para>
+            <para>The following section maps the fields in the <emphasis role="keyword"
+                >ExpenseAccount</emphasis> class to text input fields which will contain the search criteria.</para>
+            <para>
+                <programlisting>
+    &lt;property name="criteriaFields"&gt;
+      &lt;list&gt;
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="number"/&gt;
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/&gt;
+        &lt;bean parent="Uif-LookupCriteriaInputField" p:propertyName="description"/&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;                    
+                </programlisting>
+            </para>
+            <para>This section maps the fields in the <emphasis role="keyword"
+                >ExpenseAccount</emphasis> class to static text fields containing the results of the
+            search.</para>
+            <para>
+                <programlisting>
+    &lt;property name="resultFields"&gt;
+      &lt;list&gt;
+        &lt;bean parent="Uif-DataField" p:propertyName="number"/&gt;
+        &lt;bean parent="Uif-DataField" p:propertyName="name"/&gt;
+        &lt;bean parent="Uif-DataField" p:propertyName="description"/&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;                
+                </programlisting>
+            </para>
+            <para>Build and deploy, and you should be able to see the Lookup View at ... </para>
+            <para>
+                <link
+                    xlink:href="http://localhost:8080/expense/kr-krad/lookup?viewId=ExpenseAccountLookupView"/>                
+            </para>
+            <para>As before, at the login screen, use the ID <emphasis role="keyword"
+                    >admin</emphasis>. No password is required. You should see a web page like
+                ...</para>
+            <para><inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_lookup.png"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+            <para>Pressing the <emphasis role="keyword">Search</emphasis> button will show all the
+            expense account records.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_lookup_results.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Clicking the <emphasis role="keyword">e1</emphasis> link will bring up additional
+            information on the e1 expense account.</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_lookup_lightbox.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Clicking the <emphasis role="keyword">A</emphasis> link in the <emphasis
+                role="keyword">Expense Sub Account Number</emphasis> column shows that sub account
+            ...</para>
+            <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata fileref="../images/view_lookup_subaccount.png"/>
+                </imageobject>
+            </inlinemediaobject></para>
+            <para>The URL we used ...</para>
+            <para><link
+                xlink:href="http://localhost:8080/expense/kr-krad/lookup?viewId=ExpenseAccountLookupView"/>                
+            </para>
+            <para>... has the URL parameter <emphasis role="keyword"
+                >viewId=ExpenseAccountLookupView</emphasis>, which is the "id" of our Lookup
+            View.</para>
+        </section>
+        <section>
+            <title>Maintenance View</title>
+            <para>A Maintenance View is a forms based web page built into KRAD which allows new
+            expense accounts to be created, and existing expense accounts to be modified.</para>
+            <section>
+                <title>Rice Configuration for a Maintenance View</title>
+            <para>Before a Maintenance View can be used, additional Rice configuration is required.
+                We will need to ...<itemizedlist>
+                    <listitem>
+                        <para>Add two new <emphasis role="keyword">document types</emphasis> to the
+                                <emphasis role="keyword">document hierarchy</emphasis></para>
+                    </listitem>
+                    <listitem>
+                        <para>Create a new <emphasis role="keyword">KIM permission</emphasis></para>
+                    </listitem>
+                    <listitem>
+                        <para>Assign the new KIM permission to an existing KIM <emphasis
+                                role="keyword">role</emphasis>,</para>
+                    </listitem>
+                </itemizedlist></para>
+            <para>Create a file named <emphasis role="keyword">ExpenseDocument.xml</emphasis>. This
+                file does not need to be located in the project directory, as it is Rice
+                configuration information that is not part of the <emphasis role="keyword"
+                    >Expense</emphasis> project. <emphasis role="keyword"
+                    >ExpenseDocument.xml</emphasis> should contain...</para>
+            <para>
+                <programlisting>
+&lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData"&gt;
+  &lt;documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType"v
+    &lt;documentType&gt;
+      &lt;name&gt;ExpenseDocument&lt;/name&gt;
+      &lt;parent&gt;RiceDocument&lt;/parent&gt;
+      &lt;description&gt;Parent Document Type for all Expense Documents&lt;/description&gt;
+      &lt;label&gt;Expense Document&lt;/label&gt;
+      &lt;active&gt;true&lt;/active&gt;
+      &lt;routingVersion&gt;2&lt;/routingVersion&gt;
+    &lt;/documentType&gt;
+  &lt;/documentTypes&gt;
+&lt;/data&gt;
+                </programlisting>
+            </para>
+            <para>Create a file named <emphasis role="keyword"
+                    >ExpenseAccountMaintenanceDocument.xml</emphasis>. This also does not need to be
+                located in the project directory. <emphasis role="keyword"
+                    >ExpenseAccountMaintenanceDocument.xml</emphasis> should contain...</para>
+            <programlisting>&lt;data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  &lt;documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType"&gt;
+    &lt;documentType&gt;
+      &lt;name&gt;ExpenseAccountMaintenanceDocument&lt;/name&gt;
+      &lt;parent&gt;ExpenseDocument&lt;/parent&gt;
+      &lt;description&gt;Create a New Expense Account Maintenance Document&lt;/description&gt;
+      &lt;label&gt;Expense Account Maintenance Document&lt;/label>
+      &lt;routingVersion&gt;2&lt;/routingVersion>
+    &lt;/documentType&gt;
+  &lt;/documentTypes&gt;
+&lt;/data&gt;
+            </programlisting>
+            
+            <para>Now deploy the web app and connect to <emphasis role="keyword">Rice
+                    Portal</emphasis> at ...</para>
+            <para>
+                <link xlink:href="http://localhost:8080/expense/portal.do"/>                
+            </para>
+            <para>As before, login with the ID <emphasis role="keyword">admin</emphasis>. (No
+                password required.) Click on the <emphasis role="keyword">Administration</emphasis>
+                tab, then click on the link <emphasis role="keyword">XML Ingester</emphasis>. You
+                should see ...</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_xml_ingester.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>On the top row of the form, click <emphasis role="keyword">Choose File</emphasis>,
+                and select <emphasis role="keyword">ExpenseDocument.xml</emphasis> from the location
+                where it is saved. On the second row of the form, click <emphasis role="keyword"
+                    >Choose File</emphasis>, and select <emphasis role="keyword"
+                    >ExpenseAccountMaintenacneDocument.xml</emphasis> from the location where it is
+                saved. Then click <emphasis role="keyword">upload xml data</emphasis>. You should see
+                ...</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_xml_ingested.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Now click on the <emphasis role="keyword">Administration</emphasis> tab, and then
+                click on the link named <emphasis role="keyword">Permission</emphasis>. In the upper
+                right hand corner of the screen, click the button named <emphasis role="keyword"
+                    >create new</emphasis>. This will take you to a form where a new KIM permission
+                can be created, which should look like ...</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_kim_permission_before.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Not all the form fields need to be filled out. Here are the ones we need to fill
+                in ...</para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Description:  Initiate Expense Document Permission</para>
+                    </listitem>
+                    <listitem>
+                        <para>Template:  KR-SYS : Initiate Document</para>
+                    </listitem>
+                    <listitem>
+                        <para>Permission Namespace:  KR-SAP - Sample App</para>
+                    </listitem>
+                    <listitem>
+                        <para>Permission Name:  Initiate Expense Document</para>
+                    </listitem>
+                    <listitem>
+                        <para>Permission Details:  documentTypeName=ExpenseDocument</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>The form should now look like ...</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_kim_permission_after.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Now click the <emphasis role="keyword">blanket approve</emphasis> button.</para>
+            <para>Next up we have to assign the KIM permission we just created to an existing KIM
+                role. We will use the KIM role named <emphasis role="keyword">Sampele App
+                    Users</emphasis>. To add the KIM permission to this KIM role, click on the
+                    <emphasis role="keyword">Administration</emphasis> tab, then click on the link
+                named <emphasis role="keyword">Role</emphasis>, and then click the <emphasis
+                    role="keyword">search</emphasis> button. This will display all of the KIM roles,
+                and should look like...</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_role_list.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Click the link named <emphasis role="keyword">edit</emphasis> for the role which
+                contains the Role Name <emphasis role="keyword">Sample App Users</emphasis>. You'll
+                get a long form, with lots-o-fields. However, we only need to work with this section
+                of the form ...</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_role_add_before.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>In the <emphasis role="keyword">Add Pemission ID</emphasis> text input field,
+                enter <emphasis role="keyword">10003</emphasis>, which is the ID of the permission
+                we just created. (There is a way to search for this permission, by pressing the
+                magnifying glass icon next to the text input field, although we'll go with this
+                shortcut.) Click the <emphasis role="keyword">add</emphasis> button, and you should
+                see the new permission appear in the bottom row of this section ...</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_role_add_after.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>Near the top of the form, fill in the <emphasis role="keyword"
+                    >Description</emphasis> field. Any text can be used here, but we will use
+                    <emphasis role="keyword">Add Initiate Expense Document Permission</emphasis>. Now
+                scroll to the bottom of the form, and click the <emphasis role="keyword">blanket
+                    approve</emphasis> button.</para>
+            <para>The Rice configuration needed to use a Maintenance View is now in place. </para>
+            </section>
+            <section>
+                <title>Creating the Maintenance View</title>
+            <para>Create the file ... </para>
+            <para>src/main/resources/org/kuali/rice/krad/expense/ExpenseAccountMaintenanceView.xml </para>
+            <para>... and have it contain ... </para>
+            <para>
+                <programlisting>
+&lt;beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"&gt;
+  
+  &lt;bean id="ExpenseAccountMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
+    &lt;property name="dataObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;
+    &lt;property name="documentTypeName" value="ExpenseAccountMaintenanceDocument"/&gt;
+    &lt;property name="lockingKeys"&gt;
+      &lt;list&gt;
+        &lt;value&gt;number&lt;/value&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+
+  &lt;bean id="ExpenseAccountMaintenanceView" parent="Uif-MaintenanceView"&gt;
+    &lt;property name="headerText" value="Expense Account - Maintenance View"/&gt;
+    &lt;property name="title" value="Expense Account Maintenance"/&gt;
+    &lt;property name="dataObjectClassName" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;
+    &lt;property name="items"&gt;
+      &lt;list merge="true"&gt;
+        &lt;bean parent="Uif-MaintenanceGridSection"&gt;
+          &lt;property name="headerText" value="Account Information"/&gt;
+          &lt;property name="items"&gt;
+            &lt;list&gt;
+              &lt;bean parent="Uif-InputField" p:propertyName="number"/&gt;
+              &lt;bean parent="Uif-InputField" p:propertyName="name"/&gt;
+              &lt;bean parent="Uif-InputField" p:propertyName="description"/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+        &lt;/bean&gt;
+        &lt;bean parent="Uif-MaintenanceStackedCollectionSection"&gt;
+          &lt;property name="headerText" value="Sub Accounts"/&gt;
+          &lt;property name="collectionObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseSubAccount"/&gt;
+          &lt;property name="propertyName" value="subAccounts"/&gt;
+          &lt;property name="items"&gt;
+            &lt;list&gt;
+              &lt;bean parent="Uif-InputField" p:propertyName="subAccount" p:readOnly="@{!#isAddLine}"/&gt;
+              &lt;bean parent="Uif-InputField" p:propertyName="subAccountName" p:readOnly="@{!#isAddLine}"/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+          &lt;property name="duplicateLinePropertyNames"&gt;
+            &lt;list&gt;
+              &lt;value&gt;subAccount&lt;/value&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+          &lt;property name="lineActions"&gt;
+            &lt;list&gt;
+              &lt;bean parent="Uif-DeleteLineAction" p:render="@{isAddedCollectionItem(#line)}"/&gt;
+              &lt;bean parent="Uif-SaveLineAction"/&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+          &lt;property name="layoutManager.summaryTitle" value="Sub Account"/&gt;
+          &lt;property name="layoutManager.summaryFields"&gt;
+            &lt;list&gt;
+              &lt;value&gt;subAccount&lt;/value&gt;
+            &lt;/list&gt;
+          &lt;/property&gt;
+        &lt;/bean&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+
+&lt;/beans&gt;                    
+                </programlisting>
+            </para>
+                <para>To create a Maintenance View, KRAD needs to have a <emphasis role="keyword"
+                    >Maintenance Document</emphasis> specified ...</para>
+                <para>
+                    <programlisting>
+  &lt;bean id="ExpenseAccountMaintenanceDocument" parent="uifMaintenanceDocumentEntry"&gt;
+    &lt;property name="dataObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;
+    &lt;property name="documentTypeName" value="ExpenseAccountMaintenanceDocument"/&gt;
+    &lt;property name="lockingKeys"&gt;
+      &lt;list&gt;
+        &lt;value&gt;number&lt;/value&gt;
+      &lt;/list&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+                    </programlisting>
+                </para>
+            <para>KRAD knows this is a Maintenance View due to the line ...</para>
+                <para>
+                    <programlisting>
+  &lt;bean id="ExpenseAccountMaintenanceView" parent="Uif-MaintenanceView"&gt;
+                    </programlisting>
+                </para>
+            <para>The data object is specified for the Maintenance View by ...</para>
+                <para>
+                    <programlisting>
+    &lt;property name="dataObjectClassName" value="org.kuali.rice.krad.expense.dataobject.ExpenseAccount"/&gt;
+                    </programlisting>
+                </para>
+            <para>There can be one or more sub accounts associated with a single expense account, so
+                the <emphasis role="keyword">ExpenseSubAccount</emphasis> data object is specified as
+                part of a KRAD collection named <emphasis role="keyword"
+                    >Uif_MaintenanceStackCollectionSection</emphasis>...</para>
+                <para>
+                    <programlisting>
+        &lt;bean parent="Uif-MaintenanceStackedCollectionSection"&gt;
+          &lt;property name="headerText" value="Sub Accounts"/&gt;
+          &lt;property name="collectionObjectClass" value="org.kuali.rice.krad.expense.dataobject.ExpenseSubAccount"/&gt;
+                    </programlisting>
+                </para>
+            <para>Build and deploy. You should be able to see the Maintenance View at ... </para>
+            <para>
+                <link
+                    xlink:href="http://localhost:8080/expense/kr-krad/maintenance?methodToCall=start&amp;dataObjectClassName=org.kuali.rice.krad.expense.dataobject.ExpenseAccount"
+                /></para>
+            <para>... which should look like ... </para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_maintenance_before.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+            <para>To create a new expense account, fill out these fields in the form ... </para>
+            <para>
+                <itemizedlist>
+                    <listitem>
+                        <para>Description:  Tricycle Expense Account</para>
+                    </listitem>
+                    <listitem>
+                        <para>Expense Account Number:  e4</para>
+                    </listitem>
+                    <listitem>
+                        <para>Expense Account Name:  Tricycle expenses</para>
+                    </listitem>
+                    <listitem>
+                        <para>Expense Account Description:  Huge amount of money for titanium
+                            tricycles.</para>
+                    </listitem>
+                    <listitem>
+                        <para>Expense Sub Account Number:  A</para>
+                    </listitem>
+                    <listitem>
+                        <para>Sub Account Name:  Titanium polishing</para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+            <para>The form should now look like ... </para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_maintenance_after.png"/>
+                    </imageobject>
+                </inlinemediaobject>
+            </para>
+            <para>Press the <emphasis role="keyword">Blanket Approve</emphasis> button. You will get
+                a dialog box saying <emphasis role="keyword">Please Confirm to Continue</emphasis>.
+                Click <emphasis role="keyword">OK</emphasis>. Now if you go back to the Lookup View
+                we did earlier, at ...</para>
+            <para>
+                <link
+                    xlink:href="http://localhost:8080/expense/kr-krad/lookup?viewId=ExpenseAccountLookupView"/>                
+            </para>
+            <para>... and click the <emphasis role="keyword">Search</emphasis> button, you'll see the
+                new expense account listed ...</para>
+            <para>
+                <inlinemediaobject>
+                    <imageobject>
+                        <imagedata fileref="../images/view_lookup_final.png"/>
+                    </imageobject>
+                </inlinemediaobject></para>
+                <para>Because we have configured a Maintenance View, there are now <emphasis
+                    role="keyword">edit</emphasis> and <emphasis role="keyword">copy</emphasis> links
+                for each row in the Lookup View.</para>
+
+            </section>
+        </section>
+    
+</chapter>

@@ -22,6 +22,7 @@
   </info>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/about_krad.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/getting_started.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/expense_sample_app.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/data_objects.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/data_dictionary.xml"/>
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="../KRAD_Guide/intro_to_uif.xml"/>

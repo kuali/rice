@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.bo;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.ClassUtils;
 
 import java.lang.reflect.Field;
 
@@ -36,19 +37,20 @@ public abstract class BusinessObjectBase implements BusinessObject {
     @Override
 	public String toString() {
         class BusinessObjectToStringBuilder extends ReflectionToStringBuilder {
+
             private BusinessObjectToStringBuilder(Object object) {
                 super(object);
             }
 
+            @Override
             public boolean accept(Field field) {
-                if (BusinessObject.class.isAssignableFrom(field.getType())) {
-                    return false;
-                }
-                return super.accept(field);
+                return String.class.isAssignableFrom(field.getType())
+                        || ClassUtils.isPrimitiveOrWrapper(field.getType());
             }
-        };
-        ReflectionToStringBuilder toStringBuilder = new BusinessObjectToStringBuilder(this);
-        return toStringBuilder.toString();
+
+        }
+
+        return new BusinessObjectToStringBuilder(this).toString();
     }
 
 }

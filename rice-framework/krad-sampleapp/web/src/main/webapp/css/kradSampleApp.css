@@ -289,6 +289,12 @@
     width: 700px;
 }
 
+.demo-quickfinder-actionLnk {
+    position: relative;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
 /** Component Exhibit *********************************************************************/
 
 #ComponentLibrary-TabGroup{

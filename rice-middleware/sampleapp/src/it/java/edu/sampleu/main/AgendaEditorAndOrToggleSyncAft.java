@@ -15,12 +15,10 @@
  */
 package edu.sampleu.main;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
-import org.openqa.selenium.By;
 
 /**
  * test that checks that rules can be added to agendas

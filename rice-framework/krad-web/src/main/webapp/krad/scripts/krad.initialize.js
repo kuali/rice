@@ -671,7 +671,9 @@ function initFieldHandlers() {
     // capture leaving a text expand window and force focus back on the control
     jQuery(document).on("focusout", ".fancybox-skin", function () {
         buttonHovered = false;
-        $currentControl.focus();
+        if ($currentControl != undefined) {
+            $currentControl.focus();
+        }
     });
 
     time(false, "field-handlers");

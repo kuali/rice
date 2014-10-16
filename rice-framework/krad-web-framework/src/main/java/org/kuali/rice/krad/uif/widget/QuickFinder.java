@@ -40,6 +40,7 @@ import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -421,6 +422,19 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
                 }
             }
 
+            // if the dialog id is still blank, then look in the initial request parameters in case this was
+            // a request from a nested component (i.e., an action invoked as a result of another action)
+            if (StringUtils.isBlank(dialogId)) {
+                UifFormBase form = (UifFormBase) model;
+                Map<String, String[]> requestParameters = form.getInitialRequestParameters();
+                if (requestParameters != null) {
+                    String[] dialogIds = requestParameters.get(UifParameters.DIALOG_ID);
+                    if (dialogIds != null && dialogIds.length > 0) {
+                        dialogId = dialogIds[0];
+                    }
+                }
+            }
+
             // let lookup know that it's been called from a dialog by passing its dialog id if present
             if (StringUtils.isBlank(dialogId)) {
                 lightboxScript = UifConstants.JsFunctions.SHOW_LOOKUP_DIALOG + "(\"" + quickfinderAction.getId() + "\","
@@ -428,6 +442,10 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             } else {
                 lightboxScript = UifConstants.JsFunctions.SHOW_LOOKUP_DIALOG + "(\"" + quickfinderAction.getId() + "\","
                         + returnByScript + ",\"" + lookupDialogId + "\",\"" + dialogId + "\");";
+
+                // also add the dialog id to the action parameters so that even other nested components have it
+                // no matter the depth of the nodes
+                quickfinderAction.addActionParameter(UifParameters.DIALOG_ID, dialogId);
             }
 
             quickfinderAction.setActionScript(lightboxScript);

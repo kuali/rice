@@ -64,15 +64,15 @@ public class LibraryWidgetsDatePickerAft extends LibraryBase {
     public void testWidgetsDatePickerBookmark() throws Exception {
         testWidgetsDatePickerDefault();
         testWidgetsDatePickerWidget();
-        driver.close();
         passed();
+        driver.close();
     }
 
     @Test
     public void testWidgetsDatePickerNav() throws Exception {
         testWidgetsDatePickerDefault();
         testWidgetsDatePickerWidget();
-        driver.close();
         passed();
+        driver.close();
     }
 }

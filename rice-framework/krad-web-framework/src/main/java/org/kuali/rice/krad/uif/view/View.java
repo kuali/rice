@@ -1743,7 +1743,7 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute
     @ViewLifecycleRestriction(value = UifConstants.ViewPhases.FINALIZE,
-            condition = "!ajaxRequest || (ajaxReturnType eq 'update-view')")
+            condition = "!ajaxRequest || (ajaxReturnType eq 'update-view') || (ajaxReturnType eq 'update-page')")
     public List<Group> getDialogs() {
         if (dialogs == Collections.EMPTY_LIST && isMutable(true)) {
             dialogs = new LifecycleAwareList<Group>(this);

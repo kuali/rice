@@ -20,6 +20,7 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -39,8 +40,9 @@ public class RuleAttributeBo extends BaseAttributeBo implements Serializable {
     @Column(name = "RULE_ATTR_ID")
     private String id;
 
-    @Column(name = "RULE_ID")
-    private String ruleId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RULE_ID")
+    private RuleBo rule;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "ATTR_DEFN_ID", referencedColumnName = "ATTR_DEFN_ID")
@@ -55,12 +57,12 @@ public class RuleAttributeBo extends BaseAttributeBo implements Serializable {
         this.attributeDefinition = attributeDefinition;
     }
 
-    public String getRuleId() {
-        return ruleId;
+    public RuleBo getRule() {
+        return rule;
     }
 
-    public void setRuleId(String ruleId) {
-        this.ruleId = ruleId;
+    public void setRule(RuleBo rule) {
+        this.rule = rule;
     }
 
     @Override

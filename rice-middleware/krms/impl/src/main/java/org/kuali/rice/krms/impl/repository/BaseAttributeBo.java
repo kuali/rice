@@ -21,6 +21,7 @@ import org.kuali.rice.krms.api.repository.BaseAttributeContract;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import java.io.Serializable;
 
 /**
  * This class contains the common elements of a KRMS attribute.
@@ -32,8 +33,9 @@ import javax.persistence.Version;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @MappedSuperclass
-public abstract class BaseAttributeBo implements BaseAttributeContract, Versioned {
+public abstract class BaseAttributeBo implements BaseAttributeContract, Versioned, Serializable {
 
+    private static final long serialVersionUID = 3820684124163057591L;
     @Column(name="ATTR_VAL")
     private String value;
 

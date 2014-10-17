@@ -453,7 +453,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         RuleAttributeBo ruleType = new RuleAttributeBo();
         ruleType.setAttributeDefinition(KrmsAttributeDefinitionBo.from(ruleBits.attribDef));
         ruleType.setValue(ruleBits.typeAttribBuilder.getTypeId());
-        ruleType.setRuleId(rule.getId());
+        ruleType.setRule(rule);
         rule.getAttributeBos().add(ruleType);
 
         rule = getDataObjectService().save(rule, PersistenceOption.FLUSH);

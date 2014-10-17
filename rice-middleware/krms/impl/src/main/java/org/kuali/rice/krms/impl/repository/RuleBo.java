@@ -95,14 +95,18 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
     @Version
     private Long versionNumber;
 
-    @ManyToOne(targetEntity = PropositionBo.class, fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @ManyToOne(targetEntity = PropositionBo.class, fetch = FetchType.LAZY,
+            cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "PROP_ID", referencedColumnName = "PROP_ID")
     private PropositionBo proposition;
 
-    @OneToMany(mappedBy = "rule", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(orphanRemoval = true, mappedBy = "rule", fetch = FetchType.LAZY,
+            cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID")
     private List<ActionBo> actions;
 
-    @OneToMany(targetEntity = RuleAttributeBo.class, fetch = FetchType.LAZY, cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(orphanRemoval = true, mappedBy = "rule", fetch = FetchType.LAZY,
+            cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "RULE_ID", referencedColumnName = "RULE_ID")
     private List<RuleAttributeBo> attributeBos;
 
@@ -175,7 +179,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
             for (Map.Entry<String, String> attr : attributes.entrySet()) {
                 KrmsAttributeDefinition attributeDefinition = attributeDefinitionsByName.get(attr.getKey());
                 RuleAttributeBo attributeBo = new RuleAttributeBo();
-                attributeBo.setRuleId(this.getId());
+                attributeBo.setRule(this);
                 attributeBo.setValue(attr.getValue());
                 attributeBo.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attributeDefinition));
                 attributeBos.add(attributeBo);
@@ -381,7 +385,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         for (Map.Entry<String, String> entry : im.getAttributes().entrySet()) {
             KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().getKrmsAttributeBo(entry.getKey(), im.getNamespace());
             attributeBo = new RuleAttributeBo();
-            attributeBo.setRuleId(im.getId());
+            attributeBo.setRule(RuleBo.from(im));
             attributeBo.setAttributeDefinition(attrDefBo);
             attributeBo.setValue(entry.getValue());
             attributeBo.setAttributeDefinition(attrDefBo);
@@ -407,8 +411,8 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         newProp.setRuleId(newRule.getId());
         newRule.setProposition(newProp);
 
-        newRule.setAttributeBos(copyRuleAttributes(existing));
-        newRule.setActions(copyRuleActions(existing, newRule.getId()));
+        newRule.setAttributeBos(copyRuleAttributes(existing, newRule));
+        newRule.setActions(copyRuleActions(existing, newRule));
 
         return newRule;
     }
@@ -430,13 +434,13 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         return copiedRule;
     }
 
-    public static List<RuleAttributeBo> copyRuleAttributes(RuleBo existing) {
+    public static List<RuleAttributeBo> copyRuleAttributes(RuleBo existing, RuleBo newRule) {
         List<RuleAttributeBo> newAttributes = new ArrayList<RuleAttributeBo>();
 
         for (RuleAttributeBo attr : existing.getAttributeBos()) {
             RuleAttributeBo newAttr = new RuleAttributeBo();
             newAttr.setId(ruleAttributeIdIncrementer.getNewId());
-            newAttr.setRuleId(attr.getRuleId());
+            newAttr.setRule(newRule);
             newAttr.setAttributeDefinition(attr.getAttributeDefinition());
             newAttr.setValue(attr.getValue());
             newAttributes.add(newAttr);
@@ -445,13 +449,13 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         return newAttributes;
     }
 
-    public static List<ActionAttributeBo> copyActionAttributes(ActionBo existing) {
+    public static List<ActionAttributeBo> copyActionAttributes(ActionBo existing, ActionBo newAction) {
         List<ActionAttributeBo> newAttributes = new ArrayList<ActionAttributeBo>();
 
         for (ActionAttributeBo attr : existing.getAttributeBos()) {
             ActionAttributeBo newAttr = new ActionAttributeBo();
             newAttr.setId(actionAttributeIdIncrementer.getNewId());
-            newAttr.setAction(existing);
+            newAttr.setAction(newAction);
             newAttr.setAttributeDefinition(attr.getAttributeDefinition());
             newAttr.setValue(attr.getValue());
             newAttributes.add(newAttr);
@@ -460,19 +464,19 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         return newAttributes;
     }
 
-    public static List<ActionBo> copyRuleActions(RuleBo existing, String ruleId) {
+    public static List<ActionBo> copyRuleActions(RuleBo existing, RuleBo newRule) {
         List<ActionBo> newActionList = new ArrayList<ActionBo>();
 
         for (ActionBo action : existing.getActions()) {
             ActionBo newAction = new ActionBo();
             newAction.setId(actionIdIncrementer.getNewId());
-            newAction.setRule(existing);
+            newAction.setRule(newRule);
             newAction.setDescription(action.getDescription());
             newAction.setName(action.getName());
             newAction.setNamespace(action.getNamespace());
             newAction.setTypeId(action.getTypeId());
             newAction.setSequenceNumber(action.getSequenceNumber());
-            newAction.setAttributeBos(copyActionAttributes(action));
+            newAction.setAttributeBos(copyActionAttributes(action, newAction));
             newActionList.add(newAction);
         }
 

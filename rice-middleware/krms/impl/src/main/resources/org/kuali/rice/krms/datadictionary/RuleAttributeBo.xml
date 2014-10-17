@@ -59,7 +59,7 @@
     <property name="controlField">
       <bean parent="Uif-TextControl" p:size="20"/>
     </property>
-    <property name="name" value="ruleId"/>
+    <property name="name" value="rule"/>
     <property name="label" value="Rule Id"/>
   </bean>  
   

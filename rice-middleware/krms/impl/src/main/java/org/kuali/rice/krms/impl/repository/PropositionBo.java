@@ -81,7 +81,8 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     private String propositionTypeCode;
 
     @PrivateOwned
-    @OneToMany(mappedBy = "proposition", cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(orphanRemoval = true, targetEntity = PropositionParameterBo.class, mappedBy = "proposition",
+            cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
     @OrderBy("sequenceNumber")
     private List<PropositionParameterBo> parameters = new ArrayList<PropositionParameterBo>();
 

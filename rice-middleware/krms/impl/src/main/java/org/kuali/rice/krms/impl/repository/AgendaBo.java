@@ -83,12 +83,12 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
     @Version
     private Long versionNumber;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "agenda", cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(orphanRemoval = true, mappedBy = "agenda", targetEntity = AgendaAttributeBo.class,
+            cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "AGENDA_ID", referencedColumnName = "AGENDA_ID", insertable = true, updatable = true)
     private Set<AgendaAttributeBo> attributeBos;
 
-    @OneToMany(orphanRemoval = true, targetEntity = AgendaItemBo.class,
-            cascade = { CascadeType.REFRESH})
+    @OneToMany(orphanRemoval = true, targetEntity = AgendaItemBo.class, cascade = { CascadeType.REFRESH})
     @JoinColumn(name = "AGENDA_ID", referencedColumnName = "AGENDA_ID", insertable = false, updatable = false)
     private List<AgendaItemBo> items;
 

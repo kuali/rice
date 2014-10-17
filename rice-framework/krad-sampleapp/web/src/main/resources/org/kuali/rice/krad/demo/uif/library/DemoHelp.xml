@@ -53,16 +53,7 @@
                 </property>
               </bean>
 
-              <bean id="Demo-Help-Field2" parent="Uif-InputField" p:propertyName="inputField2">
-                <property name="help">
-                  <bean parent="Uif-Help"/>
-                </property>
-                <property name="control">
-                  <bean parent="Uif-TextControl"/>
-                </property>
-              </bean>
-
-              <bean id="Demo-Help-Field3" parent="Uif-InputField" p:propertyName="inputField3">
+              <bean id="Demo-Help-Field2" parent="Uif-InputField" p:labelLeft="true" p:propertyName="inputField2">
                 <property name="help">
                   <bean parent="Uif-Help"/>
                 </property>

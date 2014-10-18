@@ -172,15 +172,15 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
         assertTrue("Dialog should not be visisble on page load.", !dialog.isDisplayed());
         WebElement dialogLink = findElement(By.cssSelector("section[id='Demo-DialogGroup-Example15'] > a"));
         dialogLink.click();
+        waitForProgressLoading();
         dialog = waitForElementVisibleBy(By.cssSelector(
                 "section[id='Demo-DialogGroup-Example15'] > section[id='Demo-DialogGroup-DestroyDialogOnHidden']"));
         WebElement anyButton = dialog.findElement(By.cssSelector("button:first-of-type"));
         anyButton.click();
         try {
             dialog = waitAndGetElementByAttributeValue("id", "Demo-DialogGroup-DestroyDialogOnHidden");
-            fail("Dialog should not be present.");
+            assertFalse("Dialog should not be present.", dialog.isDisplayed());
         } catch (NoSuchElementException exception) {
-            passed();
         }
     }
     

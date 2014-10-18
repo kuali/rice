@@ -62,7 +62,6 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         selectByName("document.newMaintainableObject.dataObject.agendaItemLine.rule.propositionTree.rootElement.children[0].children[3].data.proposition.compoundOpCode","OR");
         waitForTextNotPresent("( Campus Code = Muir AND Campus Code = Revelle AND Campus Code = Warren )");
         waitForTextPresent("( Campus Code = Muir OR Campus Code = Revelle OR Campus Code = Warren )");
-        passed();
     }
 
     protected void testAgendaEditorEditRuleAddActionsBlank() throws Exception {
@@ -85,7 +84,6 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
-        passed();
     }
 
     protected void testAgendaEditorEditRuleAddActionsKrmsActionResolverType() throws Exception {
@@ -95,6 +93,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         this.navigate();
         testFillRequiredDetails("KrmsActionResolverType");
         waitForTextPresent("INITIATED");
+        checkForDocErrorKrad();
         waitAndClickButtonByExactText("Save");
         waitForTextPresent("SAVED");
         waitForTextPresent(" Document was successfully saved.");
@@ -111,7 +110,6 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
-        passed();
     }
 
     protected void testAgendaEditorEditRuleAddActionsNotifyPeopleFlow() throws Exception {
@@ -137,7 +135,6 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
-        passed();
     }
 
     protected void testAgendaEditorEditRuleAddActionsRouteToPeopleFlow() throws Exception {
@@ -163,7 +160,6 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
-        passed();
     }
 
     protected void testAgendaEditorEditRuleAddActionsValidationAction() throws Exception {
@@ -189,7 +185,6 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
-        passed();
     }
 
     private void testFillRequiredDetails(String selectValue) throws Exception{
@@ -219,8 +214,31 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
      * test AndOrToggleSync
      */
     @Test
+    public void testAgendaEditorAndOrToggleSyncBookmark() throws Exception {
+        testAgendaEditorAndOrToggleSync();
+        passed();
+    }
+
+    /**
+     * test AndOrToggleSync
+     */
+    @Test
     public void testAgendaEditorAndOrToggleSyncNav() throws Exception {
         testAgendaEditorAndOrToggleSync();
+        passed();
+    }
+
+    /**
+     * test AndOrToggleSync
+     */
+    @Test
+    public void testAgendaEditorAddActionsBookmark() throws Exception {
+        testAgendaEditorEditRuleAddActionsBlank();
+        testAgendaEditorEditRuleAddActionsKrmsActionResolverType();
+        testAgendaEditorEditRuleAddActionsNotifyPeopleFlow();
+        testAgendaEditorEditRuleAddActionsRouteToPeopleFlow();
+        testAgendaEditorEditRuleAddActionsValidationAction();
+        passed();
     }
 
     /**
@@ -233,6 +251,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         testAgendaEditorEditRuleAddActionsNotifyPeopleFlow();
         testAgendaEditorEditRuleAddActionsRouteToPeopleFlow();
         testAgendaEditorEditRuleAddActionsValidationAction();
+        passed();
     }
 }
 

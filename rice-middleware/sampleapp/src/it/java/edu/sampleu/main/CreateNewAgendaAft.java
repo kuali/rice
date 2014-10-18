@@ -103,6 +103,7 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
     protected void waitAndClickBlanketApproveKns() throws InterruptedException {
         waitAndClickBlanketApprove();
         waitAndClickConfirmBlanketApproveOk();
+        acceptAlertIfPresent();
         waitForProgressLoading();
     }
 

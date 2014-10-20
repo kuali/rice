@@ -378,5 +378,10 @@ public class UITestObject implements Serializable {
     public void setDate2(Date date2) {
         this.date2 = date2;
     }
+
+    // add static method to be used in library
+    static public String getStaticData() {
+        return "test";
+    }
 }
 

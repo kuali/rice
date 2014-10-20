@@ -128,6 +128,10 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
 
             if (request != null) {
                 roleMemberRequests.add(request);
+
+                if (hasPeopleFlowDelegates) {
+                    generateDelegationToRoleRequests(context, request, member, Collections.<String, String>emptyMap());
+                }
             }
         } else {
             // we may have multiple maps of role qualifiers, so we'll add a request for each map
@@ -137,6 +141,10 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
 
                 if (request != null) {
                     roleMemberRequests.add(request);
+
+                    if (hasPeopleFlowDelegates) {
+                        generateDelegationToRoleRequests(context, request, member, roleQualifiers);
+                    }
                 }
             }
         }
@@ -193,9 +201,10 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
 
         for (PeopleFlowDelegate delegate : member.getDelegates()) {
             for (ActionRequestValue memberRequest : memberRequests) {
-                if (MemberType.ROLE == delegate.getMemberType()) {
-                    generateDelegationToRoleRequests(context, memberRequest, member, delegate);
-                } else {
+
+                // role delegations already created in generateRequestsForRoleMember
+                // in order to include member role qualifiers
+                if (MemberType.ROLE != delegate.getMemberType()) {
                     generateDelegationToNonRoleRequest(context, memberRequest, member, delegate);
                 }
             }
@@ -284,25 +293,20 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
      * @param context the context for request generation
      * @param parentRequest an action request that was generated for the given member
      * @param member the PeopleFlow member, which should contain the given delegate
-     * @param delegate the delegate, assumed to be of MemberType ROLE, to generate a request to
+     * @param roleQualifier member's qualifier
      */
-    protected void generateDelegationToRoleRequests(Context context,
-            ActionRequestValue parentRequest, PeopleFlowMember member, PeopleFlowDelegate delegate) {
+    protected void generateDelegationToRoleRequests(Context context, ActionRequestValue parentRequest,
+            PeopleFlowMember member, Map<String, String> roleQualifier) {
 
-        List<Map<String, String>> roleQualifierList = loadRoleQualifiers(context, delegate.getMemberId());
-        Role role = getRoleService().getRole(delegate.getMemberId());
+        for (PeopleFlowDelegate delegate : member.getDelegates()) {
 
-        if (role == null) {
-            throw new IllegalStateException("Failed to locate a role with the given role id of '" +
-                    delegate.getMemberId() + "'");
-        }
+            if (MemberType.ROLE.equals(delegate.getMemberType())) {
+                Role delegateRole = getRoleService().getRole(delegate.getMemberId());
 
-        if (CollectionUtils.isEmpty(roleQualifierList)) {
-            addKimRoleDelegateRequest(context, parentRequest, member, delegate, role,
-                    Collections.<String, String>emptyMap());
-        } else {
-            for (Map<String, String> roleQualifiers : roleQualifierList) {
-                addKimRoleDelegateRequest(context, parentRequest, member, delegate, role, roleQualifiers);
+                if (delegateRole != null) {
+                    addKimRoleDelegateRequest(context, parentRequest, member, delegate, delegateRole,
+                            roleQualifier);
+                }
             }
         }
     }
@@ -541,6 +545,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
          * Lazily loads and caches the {@code PeopleFlowTypeService} (if necessary) and returns it.
          */
         PeopleFlowTypeService getPeopleFlowTypeService() {
+
             if (peopleFlowTypeServiceLoaded) {
                 return this.peopleFlowTypeService;
             }

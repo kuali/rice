@@ -88,7 +88,7 @@ public class LibraryClientResponsivenessDisableAft extends WebDriverLegacyITBase
         waitAndTypeByName("inputField13","disable");
         assertElementPresentByXpath("//button[contains(text(),'Action Button (keyUp)') and @class='btn btn-primary uif-action uif-boxLayoutHorizontalItem disabled']");
         fireEvent("inputField13", "blur");
-        typeTab();
+        typeTab(); // not triggering on Selenium Safari
         assertElementPresentByXpath("//button[contains(text(),'Action Button (change)') and @class='btn btn-primary uif-action uif-boxLayoutHorizontalItem disabled']");
      }
     

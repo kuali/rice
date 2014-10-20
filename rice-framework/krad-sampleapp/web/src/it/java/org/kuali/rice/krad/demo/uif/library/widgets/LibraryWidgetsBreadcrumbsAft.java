@@ -101,7 +101,12 @@ public class LibraryWidgetsBreadcrumbsAft extends LibraryBase {
     protected void testWidgetsBreadcrumbBreadcrumbLabel() throws Exception {
         waitAndClickByLinkText("Breadcrumb Label");
         waitAndClickByLinkText("Override Breadcrumb Label");
-        assertNewWindow("6", "Breadcrumb Label");
+        waitForPageToLoad();
+        switchToWindow(TARGET_PAGE_TITLE);
+        assertTrue("Breadcrumb label", driver.getCurrentUrl().contains(TARGET_URL_CHECK + "6"));
+        assertTextPresent("View (avalue1)");
+        driver.close();
+        switchToWindow(START_PAGE_TITLE);
     }
 
     protected void testWidgetsBreadcrumbHomewardPath() throws Exception {

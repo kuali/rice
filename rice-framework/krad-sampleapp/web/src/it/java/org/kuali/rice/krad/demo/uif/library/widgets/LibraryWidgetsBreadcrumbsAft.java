@@ -185,6 +185,7 @@ public class LibraryWidgetsBreadcrumbsAft extends LibraryBase {
         testWidgetsBreadcrumbHomewardPath();
         testWidgetsBreadcrumbPathBased();
         testWidgetsBreadcrumbOverrides();
+        passed();
         driver.close();
     }
 

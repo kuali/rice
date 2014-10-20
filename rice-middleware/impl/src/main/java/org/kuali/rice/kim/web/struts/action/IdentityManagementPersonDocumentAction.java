@@ -523,11 +523,11 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        	attrDefinition = key;
 	        	qualifier.setKimAttrDefnId(attrHelper.getKimAttributeDefnId(attrDefinition));
 	        	qualifier.setAttrVal(attrHelper.getAttributeValue(roleMemberAttributes, attrDefinition.getAttributeField().getName()));
-	        	newDelegationMember.setMemberId(personDocument.getPrincipalId());
-	        	newDelegationMember.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
+	           	newDelegationMember.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
 	        	newDelegationMember.getQualifiers().add(qualifier);
 	        }
 	        //newDelegationMember.setAttributeEntry(getUiDocumentService().getAttributeEntries(newDelegationMember.getAttributesHelper().getDefinitions())));
+            newDelegationMember.setMemberId(personDocument.getPrincipalId());
 	        personDocument.getDelegationMembers().add(newDelegationMember);
 	        personDocumentForm.setNewDelegationMember(new RoleDocumentDelegationMember());
         }

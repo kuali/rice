@@ -297,6 +297,10 @@ public class LookupControllerServiceImpl extends ControllerServiceImpl implement
             parameters.setProperty(KRADConstants.REFERENCES_TO_REFRESH, lookupForm.getReferencesToRefresh());
         }
 
+        if (StringUtils.isNotBlank(lookupForm.getShowDialogId())) {
+            parameters.setProperty(UifParameters.DIALOG_ID, lookupForm.getShowDialogId());
+        }
+
         return parameters;
     }
 

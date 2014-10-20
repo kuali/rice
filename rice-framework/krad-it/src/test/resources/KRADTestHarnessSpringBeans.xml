@@ -114,6 +114,7 @@
     <property name="packagePrefixes" value="org.kuali.rice.krad.test.document"/>
     <property name="dataDictionaryPackages">
       <list>
+        <value>classpath:org/kuali/rice/krad/test/document/DocumentTypeEBO.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/Account.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountExtension.xml</value>
         <value>classpath:org/kuali/rice/krad/test/document/AccountMaintenanceDocument.xml</value>

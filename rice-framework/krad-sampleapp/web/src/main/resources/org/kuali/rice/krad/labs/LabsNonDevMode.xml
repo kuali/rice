@@ -1,0 +1,122 @@
+<!--
+  ~ Copyright 2006-2014 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="Lab-NonDevMode" parent="Uif-FormView">
+    <property name="headerText" value="Non-Dev Mode Examples"/>
+    <property name="cssClasses">
+      <list merge="true">
+        <value>demo-componentLibView</value>
+      </list>
+    </property>
+    <property name="singlePageView" value="true"/>
+    <property name="page">
+      <bean parent="Uif-Page">
+        <property name="items">
+          <list>
+            <ref bean="Lab-CreateSuggestNonDevMode-Example"/>
+            <ref bean="Lab-OptionsFinderSpringELNonDevMode-Example"/>
+          </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="Lab-CreateSuggestNonDevMode-Example" parent="Uif-VerticalBoxSection">
+    <property name="headerText" value="Create Suggest"/>
+    <property name="instructionalText"
+              value="The components in this example are only rendered in production environment.
+              See JIRA KULRICE-12644 for more details."/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-VerticalBoxSubSection" p:render="@{#isProductionEnvironment()}">
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="inputField1" p:conditionalRefresh="@{booleanField1}"
+                    p:refreshWhenChangedPropertyNames="booleanField1" p:label="Field with suggest">
+                <property name="control">
+                  <bean parent="Uif-DropdownControl"
+                        p:cssClasses="new_rdl_components, validDaysStartimeComboForStandardTimeSlot"/>
+                </property>
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues" p:blankOption="true"/>
+                </property>
+                <property name="propertyReplacers">
+                  <list>
+                    <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="control"
+                          p:condition="@{booleanField1}">
+                      <property name="replacement">
+                        <bean parent="Uif-LargeTextControl" p:size="20"
+                              p:cssClasses="input-sm, new_rdl_components, validDaysStartimeComboForStandardTimeSlot uif-dropDown"/>
+                      </property>
+                    </bean>
+                    <bean parent="Uif-ConditionalBeanPropertyReplacer" p:propertyName="suggest"
+                          p:condition="@{booleanField1}">
+                      <property name="replacement">
+                        <bean parent="Uif-Suggest" p:render="true" p:retrieveAllSuggestions="true">
+                          <property name="suggestQuery">
+                            <bean parent="Uif-AttributeQueryConfig" p:queryMethodInvokerConfig.staticMethod=
+                                    "org.kuali.rice.krad.demo.uif.components.ComponentSuggestClass.getAllLanguages"/>
+                          </property>
+                          <property name="templateOptions">
+                            <map>
+                              <entry key="minLength" value="0"/>
+                              <entry key="delay" value="0"/>
+                            </map>
+                          </property>
+                        </bean>
+                      </property>
+                    </bean>
+                  </list>
+                </property>
+              </bean>
+              <!-- refresh when the checkbox is in a checked state -->
+              <bean parent="Uif-InputField" p:label="Show/Hide" p:propertyName="booleanField1">
+                <property name="control">
+                  <bean parent="Uif-CheckboxControl" p:checkboxLabel="Field is refreshed when the checkbox is checked"/>
+                </property>
+              </bean>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-OptionsFinderSpringELNonDevMode-Example" parent="Uif-VerticalBoxSection">
+    <property name="headerText" value="Options Finder Spring EL"/>
+    <property name="instructionalText" value="This example was originally created to test a behavior in non-dev mode,
+    but it was eventually discovered that the problem existed also in dev mode, so this example should be rendered
+    in either modes. See JIRA KULRICE-13885 for more details."/>
+    <property name="items">
+      <list>
+        <bean parent="Uif-InputField" p:propertyName="inputField3" p:width="auto">
+          <property name="control">
+            <bean parent="Uif-DropdownControl"/>
+          </property>
+          <property name="optionsFinder">
+            <bean class="org.kuali.rice.krad.demo.uif.options.SimpleTestKeyValues"
+                  p:blankOption="#{T(java.lang.Math).random() >= 0.0 ? false : true}"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+</beans>

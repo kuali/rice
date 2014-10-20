@@ -71,20 +71,17 @@
           <property name="headerText" value="Table Layout"/>
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
-          <property name="propertyName" value="collection1"/>
+          <property name="propertyName" value="collection1_2"/>
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-DataField" p:propertyName="int1"/>
-              <bean parent="Uif-LinkField" p:href="http://msn.com/" p:linkText="@{#lp.field1}" p:sortAs="numeric"/>
-              <bean parent="Uif-DataField" p:propertyName="date1Str"/>
-              <bean parent="Uif-DataField" p:propertyName="date1Str" p:sortAs="kuali_date"/>
+              <bean parent="Uif-LinkField" p:label="Field 1 as Link" p:href="http://msn.com/" p:linkText="@{#lp.field1}" p:sortAs="numeric"/>
+              <bean parent="Uif-DataField" p:label="Date 1 Str Not Sorted" p:propertyName="date1Str"/>
+              <bean parent="Uif-DataField" p:label="Date 1 Str Sorted" p:propertyName="date1Str" p:sortAs="kuali_date"/>
               <bean parent="Uif-InputField" p:label="Field 1 Not Sorted" p:propertyName="field1"/>
               <bean parent="Uif-InputField" p:label="Field 2 Numeric Sort" p:propertyName="field2" p:sortAs="numeric"/>
-              <bean parent="Uif-InputField" p:label="Date 1" p:propertyName="date1"/>
-              <bean parent="Uif-InputField" p:label="Date 1 String Not Sorted" p:propertyName="date1Str"/>
-              <bean parent="Uif-InputField" p:label="Date 1 String Date Sorted" p:propertyName="date1Str"
-                    p:sortAs="kuali_date"/>
+              <bean parent="Uif-InputField" p:label="Date1" p:propertyName="date1"/>
+              <bean parent="Uif-InputField" p:label="Date 1 Str Sorted" p:propertyName="date1Str" p:sortAs="kuali_date"/>
             </list>
           </property>
         </bean>
@@ -101,7 +98,7 @@
           <property name="headerText" value="Table Layout"/>
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
-          <property name="propertyName" value="collection1"/>
+          <property name="propertyName" value="collection1_3"/>
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
@@ -167,7 +164,7 @@
           <property name="headerText" value="Table Layout" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="propertyName" value="collection1_4" />
           <property name="layoutManager.renderSequenceField" value="false" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="renderAddLine" value="false" />
@@ -200,7 +197,7 @@
           <property name="headerText" value="Table Layout" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="propertyName" value="collection1_5" />
           <property name="layoutManager.renderSequenceField" value="true" />
           <property name="layoutManager.richTable.render" value="true" />
           <property name="renderAddLine" value="false" />
@@ -233,7 +230,7 @@
           <property name="headerText" value="Table Layout" />
           <property name="collectionObjectClass"
                     value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
-          <property name="propertyName" value="collection1" />
+          <property name="propertyName" value="collection1_6" />
           <property name="layoutManager.generateAutoSequence" value="false"/>
           <property name="layoutManager.sequencePropertyName" value="date1"/>
           <property name="layoutManager.sequenceFieldPrototype">

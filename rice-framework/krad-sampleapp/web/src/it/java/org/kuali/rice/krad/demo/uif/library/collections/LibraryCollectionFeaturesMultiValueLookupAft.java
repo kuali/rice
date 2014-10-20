@@ -57,9 +57,15 @@ public class LibraryCollectionFeaturesMultiValueLookupAft extends WebDriverLegac
         waitAndClickByValue("IAT:Travel Account 1:a1");
         assertButtonDisabledByText("return selected");
 
+        waitAndClickByName("selectedCollectionLines['lookupResults']");
+
         waitAndClickButtonByText("return selected");
         Thread.sleep(3000);
-        assertTextPresent("a1"); // TODO better assertion once NullPointer is resolved
+        assertTextPresent("a1");
+
+        assertEquals("IAT", waitAndGetAttributeByName("emptyCollection[0].field1", "value"));
+        assertEquals("Travel Account 1", waitAndGetAttributeByName("emptyCollection[0].field2", "value"));
+        assertEquals("a1", waitAndGetAttributeByName("emptyCollection[0].field3", "value"));
     }
 
     private void lightBoxLookupAddMultipleLines() throws InterruptedException {

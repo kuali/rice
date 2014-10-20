@@ -80,8 +80,9 @@
           		<th>&nbsp;</th> 
           		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${delegationMemberAttributes.roleMemberId}" noColon="true" /> 
             	<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${delegationMemberAttributes.activeFromDate}" noColon="true" /> 
-            	<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${delegationMemberAttributes.activeToDate}" noColon="true" /> 
-	           	<c:if test="${!readOnly}">	
+            	<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${delegationMemberAttributes.activeToDate}" noColon="true" />
+              <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${delegationMemberAttributes.delegationTypeCode}" noColon="true" />
+              <c:if test="${!readOnly}">
 	              	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 	          	</c:if>	
           	</tr>             	

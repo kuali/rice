@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin.workflow;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -37,6 +38,8 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Document%20Operation&channelUrl="+ WebDriverUtils
             .getBaseUrlString()+"/kew/DocumentOperation.do";
 
+    private static String documentId = null;
+
     @Override
     protected String getBookmarkUrl() {
         return BOOKMARK_URL;
@@ -48,13 +51,38 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Document Operation");
     }
 
-    protected void testDocumentOperation() throws Exception {
+    protected void testCreateDocument() throws Exception {
+        waitForPageToLoad();
+        waitAndClickAdministration();
+        waitAndClickByLinkText("Document Type");
         selectFrameIframePortlet();
-        waitAndTypeByName("documentId","2381");
-        waitAndClickByName("methodToCall.getDocument");
-        waitForElementPresentByXpath("//input[@src='images/buttonsmall_save.gif']");
-        assertTextPresent(new String[] {"Document Actions", "Queue Document", "Queue Action Invocation", "Document ID:",
-                "2443", "Route Node Instance ID:", "2443"});
+        waitAndClickByXpath("//a[@title='Create a new record']");
+        selectFrameIframePortlet();
+        String randomString = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        documentId = getTextByXpath("//table[@summary='document header: general information']/tbody/tr/td");
+        waitAndTypeByName("document.documentHeader.documentDescription",randomString);
+        waitAndTypeByName("document.newMaintainableObject.name",randomString);
+        waitAndTypeByName("document.newMaintainableObject.label","Label "+randomString);
+        waitAndClickByName("methodToCall.route");
+        waitForTextPresent("Document was successfully submitted.");
+        selectParentWindow();
+        waitAndClickAdministration();
+        acceptAlertIfPresent();
+        waitForPageToLoad();
+        waitAndClickByLinkText("Document Operation");
+    }
+
+    protected void testDocumentOperation() throws Exception {
+        waitForPageToLoad();
+        selectFrameIframePortlet();
+        if(documentId!=null) {
+            waitAndTypeByName("documentId", documentId);
+            waitAndClickByName("methodToCall.getDocument");
+            waitForElementPresentByXpath("//input[@src='images/buttonsmall_save.gif']");
+            assertTextPresent(
+                    new String[] {"Document Actions", "Queue Document", "Queue Action Invocation", "Document ID:",
+                            documentId});
+        }
     }
 
     /**
@@ -141,18 +169,19 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         jGrowl("Document id is: " + docId);
         jGrowl("Click Edoc Lite Save Button.");
         waitAndClickByXpath("//*[@id=\"edoclite\"]/table[3]/tbody/tr/td/input[2]");
-
         return docId;
     }
 
     @Test
     public void testDocumentOperationBookmark() throws Exception {
+        testCreateDocument();
         testDocumentOperation();
         passed();
     }
 
     @Test
     public void testDocumentOperationNav() throws Exception {
+        testCreateDocument();
         testDocumentOperation();
         passed();
     }

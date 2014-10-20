@@ -50,7 +50,10 @@ public class LabsSubCollectionAddLineAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div/div[2]/button");
         waitForElementPresentByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[1]/input[@value='test2']");
 
-        waitAndClickButtonByText("Add Line"); // first add line button
+//        waitAndClickButtonByText("Add Line"); // first add line button
+        jGrowl("Click Add Line Button");
+        waitAndClickByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[2]/fieldset/section/div/button");
+
         jGrowl("Verify column added");
         waitForElementPresentByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[2]/fieldset/section/div/div/table/tbody/tr/td[2]/div/input");
         waitForElementPresentByXpath("/html/body/form/div/div[2]/main/section/div/div[1]/table/tbody/tr[2]/td/div/fieldset/section/div/div[2]/div[2]/fieldset/section/div/div/table/tbody/tr/td[3]/div/input");

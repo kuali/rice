@@ -274,7 +274,7 @@ public final class WebRuleUtils {
    		RuleTemplateBo ruleTemplate = rule.getRuleTemplate();
    		Map<String, String> fieldNameMap = new HashMap<String, String>();
    		// refetch rule template from service because after persistence in KNS, it comes back without any rule template attributes
-   		if (ruleTemplate != null) {
+   		if (ruleTemplate != null && ruleTemplate.getId() != null) {
    			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getId());
    			if (ruleTemplate != null) {
    				List<RuleTemplateAttributeBo> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();

@@ -81,7 +81,7 @@
                   p:fieldConversions="number:inputField14">
               <property name="quickfinderAction">
                 <bean parent="Uif-ActionLink" p:methodToCall="performLookup" p:actionLabel="Search Now"
-                      p:focusOnIdAfterSubmit="NEXT_INPUT" p:wrapperCssClasses="input-group-msg"/>
+                      p:focusOnIdAfterSubmit="NEXT_INPUT" p:additionalCssClasses="demo-quickfinder-actionLnk"/>
               </property>
             </bean>
           </property>

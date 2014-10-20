@@ -29,7 +29,7 @@ public interface RuleDelegationDAO {
     public void delete(String ruleDelegationId);
     public RuleDelegationBo findByRuleDelegationId(String ruleDelegationId);
     public List<RuleDelegationBo> findByResponsibilityIdWithCurrentRule(String responsibiliytId);
-    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
-    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, String delegationType, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
+    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleId, String ruleTemplateId, String ruleDescription, String workgroupId, String principalId, String delegationType, Boolean activeInd, Map extensionValues, String workflowIdDirective);
+    public List<RuleDelegationBo> search(String parentRuleBaseVaueId, String parentResponsibilityId, String docTypeName, String ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String principalId, String delegationType, Boolean activeInd, Map extensionValues, Collection actionRequestCodes);
 
 }

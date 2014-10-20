@@ -719,8 +719,8 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
         String bindingPath = field.getBindingInfo().getBindingPath();
 
         if (StringUtils.contains(bindingPath, KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
-            // The field is restricted if it is hidden or masked
-            boolean isRestricted = field.isHidden() || field.isApplyMask();
+            // The field is restricted if it is hidden or read only or masked
+            boolean isRestricted = field.isHidden() || Boolean.TRUE.equals(field.getReadOnly()) || field.isApplyMask();
 
             // If the default value is a sequence number set isRestricted to false since the new sequence number has
             // already been retrieved.  We don't want to set it to null and fetch it again.

@@ -1098,6 +1098,19 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             headerLabel.setLabelText(field.getLabel());
         }
 
+        if (field.getExpressionGraph() != null && field.getExpressionGraph().containsKey("label")) {
+            if (headerLabel.getExpressionGraph() == null) {
+                headerLabel.setExpressionGraph(new HashMap<String, String>());
+            }
+            headerLabel.getExpressionGraph().put("labelText", field.getExpressionGraph().get("label"));
+            field.getExpressionGraph().remove("label");
+            if (headerLabel.getPropertyExpressions() == null) {
+                headerLabel.setPropertyExpressions(new HashMap<String, String>());
+            }
+            headerLabel.getPropertyExpressions().put("labelText", field.getPropertyExpressions().get("label"));
+            field.getPropertyExpressions().remove("label");
+        }
+
         headerLabel.setInlineComponents(field.getFieldLabel().getInlineComponents());
 
         headerLabel.setRowSpan(field.getRowSpan());
@@ -2133,8 +2146,7 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             }
             if (!validTable) {
                 String currentValues[] = {"rowDetailsGroup =" + getRowDetailsGroup(), "richTable =" + getRichTable()};
-                tracer.createError("If rowDetailsGroup is set richTable must be set and its render true",
-                        currentValues);
+                tracer.createError("If rowDetailsGroup is set richTable must be set and its render true", currentValues);
             }
         }
     }

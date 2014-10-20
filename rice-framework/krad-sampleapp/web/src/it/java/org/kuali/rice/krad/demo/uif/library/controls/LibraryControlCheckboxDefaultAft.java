@@ -20,6 +20,7 @@ import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -52,6 +53,13 @@ public class LibraryControlCheckboxDefaultAft extends LibraryBase {
         assertTrue(isCheckedById("ST-DemoCheckboxControlExample1-Input1_control"));
     }
 
+    protected void actionSendKeysArrowDown(String id) {
+        Actions actions = new Actions(driver);
+        actions.moveToElement(driver.findElement(By.id(id)));
+        actions.click();
+        actions.sendKeys(Keys.ARROW_DOWN);
+        actions.build().perform();
+    }
 
     @Test
     public void testCheckboxControlDefaultBookmark() throws Exception {
@@ -285,7 +293,7 @@ public class LibraryControlCheckboxDefaultAft extends LibraryBase {
 
         // backspace input1 and remove focus from input1 (by doing an arrow down on the div)
         driver.findElement(By.id("ST-DemoCheckboxControlExample8-Input1_control")).sendKeys(Keys.BACK_SPACE);
-        driver.findElement(By.id("Demo-CheckboxControl-Example8")).sendKeys(Keys.ARROW_DOWN);
+        actionSendKeysArrowDown("Demo-CheckboxControl-Example8");
 
         // check that checkbox controls is visible, not selected and disabled
         assertTrue(isVisibleById("ST-DemoCheckboxControlExample8-Input2_control"));
@@ -294,7 +302,7 @@ public class LibraryControlCheckboxDefaultAft extends LibraryBase {
 
         // type "Hello" in input1 and remove focus from input1 (by doing an arrow down on the div)
         driver.findElement(By.id("ST-DemoCheckboxControlExample8-Input1_control")).sendKeys("Hello");
-        driver.findElement(By.id("Demo-CheckboxControl-Example8")).sendKeys(Keys.ARROW_DOWN);
+        actionSendKeysArrowDown("Demo-CheckboxControl-Example8");
 
         // check that checkbox controls is visible, not selected and enabled
         assertTrue(isVisibleById("ST-DemoCheckboxControlExample8-Input2_control"));
@@ -329,7 +337,9 @@ public class LibraryControlCheckboxDefaultAft extends LibraryBase {
 
         // backspace input1 and remove focus from input1 (by doing an arrow down on the checkbox)
         driver.findElement(By.id("ST-DemoCheckboxControlExample9-Input1_control")).sendKeys(Keys.BACK_SPACE);
-        driver.findElement(By.id("Demo-CheckboxControl-Example9")).sendKeys(Keys.ARROW_DOWN);
+        // chrome is giving a WebDriverException: unknown error: cannot focus element error here, when not using Actions
+//        driver.findElement(By.id("Demo-CheckboxControl-Example9")).sendKeys(Keys.ARROW_DOWN);
+        actionSendKeysArrowDown("ST-DemoCheckboxControlExample9-Input1_control");
 
         // check that checkbox controls is visible, not selected and enabled
         assertTrue(isVisibleById("ST-DemoCheckboxControlExample9-Input2_control"));
@@ -338,7 +348,9 @@ public class LibraryControlCheckboxDefaultAft extends LibraryBase {
 
         // type "Hello" in input1 and remove focus from input1 (by doing an arrow down on the checkbox)
         driver.findElement(By.id("ST-DemoCheckboxControlExample9-Input1_control")).sendKeys("Hello");
-        driver.findElement(By.id("Demo-CheckboxControl-Example9")).sendKeys(Keys.ARROW_DOWN);
+        // chrome is giving a WebDriverException: unknown error: cannot focus element error here, when not using Actions
+//        driver.findElement(By.id("Demo-CheckboxControl-Example9")).sendKeys(Keys.ARROW_DOWN);
+        actionSendKeysArrowDown("Demo-CheckboxControl-Example9");
 
         // check that checkbox controls is visible, not selected and disabled
         assertTrue(isVisibleById("ST-DemoCheckboxControlExample9-Input2_control"));

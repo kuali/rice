@@ -18,7 +18,6 @@ package org.kuali.rice.krad.demo.uif.library.widgets;
 import org.junit.Test;
 import org.kuali.rice.krad.demo.uif.library.LibraryBase;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -44,8 +43,6 @@ public class LibraryWidgetsHelpAft extends LibraryBase {
     	fireMouseOverEventByXpath("//label[@id='Demo-Help-Field1_label']");
     	waitForElementPresentByXpath("//div[@class='popover top in']");
     	fireMouseOverEventByXpath("//label[@id='Demo-Help-Field2_label']");
-    	waitForElementPresentByXpath("//div[@class='popover top in']");
-    	fireMouseOverEventByXpath("//label[@id='Demo-Help-Field3_label']");
     	waitForElementPresentByXpath("//div[@class='popover top in']");
     	fireMouseOverEventByXpath("//label[@id='Demo-Help-Override-Tooltip_label']");
     	waitForElementPresentByXpath("//div[@class='popover top in']");

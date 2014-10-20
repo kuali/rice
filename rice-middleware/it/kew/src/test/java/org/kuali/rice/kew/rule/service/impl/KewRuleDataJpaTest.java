@@ -152,7 +152,7 @@ public class KewRuleDataJpaTest extends KEWTestCase{
         RuleBaseValues ruleBaseValues = setupRuleBaseValues();
         RuleDelegationBo ruleDelegationBo = setupRuleDelegationBo(ruleBaseValues);
         List<RuleDelegationBo> ruleDelegationBos = KEWServiceLocator.getRuleDelegationService().
-                        findByDelegateRuleId(ruleDelegationBo.getRuleDelegationId());
+                        findByDelegateRuleId(ruleDelegationBo.getDelegateRuleId());
         assertTrue("Rule Delegation Bo fetched by rule id",ruleDelegationBos != null && ruleDelegationBos.size() == 1);
     }
 

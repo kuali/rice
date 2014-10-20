@@ -60,6 +60,9 @@
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:propertyName="field1" p:required="true" p:label="Field 1"/>
+              <bean parent="Uif-InputField" p:propertyName="field1" p:label="@{T(org.kuali.rice.krad.demo.uif.form.UITestObject).getStaticData()}"/>
+              <bean parent="Uif-MessageField" p:label="@{T(org.kuali.rice.krad.demo.uif.form.UITestObject).getStaticData()}" p:messageText="@{T(org.kuali.rice.krad.demo.uif.form.UITestObject).getStaticData()}"/>
+              <bean parent="Uif-MessageField" p:label="@{T(org.kuali.rice.krad.demo.uif.form.UITestObject).getStaticData()}" p:messageText="@{#line.date1Str}"/>
               <bean parent="Uif-InputField" p:propertyName="field2" p:required="false" p:label="Field 2" p:constraintText="Requires Field 1 be filled out">
                 <property name="dependencyConstraints">
                   <list>
@@ -75,7 +78,7 @@
                   </bean>
                 </property>
               </bean>
-              <bean parent="Uif-DataField" p:propertyName="stringList"  p:label="Read-only Sublist"
+              <bean parent="Uif-DataField" p:propertyName="stringList" p:label="Read-only Sublist"
                     p:readOnlyDisplayReplacement="@{#emptyList(#lp.stringList)?'None Available':''}"/>
             </list>
           </property>

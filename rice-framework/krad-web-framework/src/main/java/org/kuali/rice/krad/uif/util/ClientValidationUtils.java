@@ -639,7 +639,7 @@ public class ClientValidationUtils {
                 + "');\n";
 
         String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" +
-                " if(" + booleanStatement + "){ return (this.optional(element) !== false) || (coerceValue('" + ScriptUtils
+                " if(" + booleanStatement + "){ return ((this.optional(element) !== false) || (coerceValue('" + ScriptUtils
                         .escapeName(constraint.getPropertyName()) + "')));}else{return true;} " +
                 "}, \"" + message + "\");";
 

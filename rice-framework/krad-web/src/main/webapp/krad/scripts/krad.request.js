@@ -338,7 +338,7 @@ KradRequest.prototype = {
             var request = this;
 
             // to make sure we do an ajax submit when the hide event is triggered, not before
-            jQuery("#" + this.dismissDialogId).one(kradVariables.EVENTS.HIDDEN_MODAL, function (event) {
+            jQuery("#" + this.dismissDialogId).one(kradVariables.EVENTS.HIDE_MODAL, function (event) {
                 request._submitAjax(data);
             });
 

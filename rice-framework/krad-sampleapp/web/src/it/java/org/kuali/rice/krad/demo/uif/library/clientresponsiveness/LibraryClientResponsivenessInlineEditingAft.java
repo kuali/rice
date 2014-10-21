@@ -141,7 +141,6 @@ public class LibraryClientResponsivenessInlineEditingAft extends WebDriverLegacy
         selectByName("dataField7","Option 2");
         waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example5']/div/div/div/button[@title='Cancel']");
         waitForElementPresent("//section[@id='Demo-InlineEdit-Example5']/div/button[contains(text(),'1')]");
-        
     }
 
     /**
@@ -243,30 +242,36 @@ public class LibraryClientResponsivenessInlineEditingAft extends WebDriverLegacy
     @Test
     public void testClientResponsivenessInlineEditDisclosureWidgetBookmark() throws Exception {
         testClientResponsivenessInlineEditDisclosureWidget();
+        passed();
     }
 
     @Test
     public void testClientResponsivenessInlineEditDisclosureWidgetNav() throws Exception {
         testClientResponsivenessInlineEditDisclosureWidget();
+        passed();
     }
 
     @Test
     public void testClientResponsivenessInlineEditSelectBookmark() throws Exception {
         testClientResponsivenessInlineEditSelect();
+        passed();
     }
 
     @Test
     public void testClientResponsivenessInlineEditSelectNav() throws Exception {
         testClientResponsivenessInlineEditSelect();
+        passed();
     }
 
     @Test
     public void testClientResponsivenessInlineEditPopoverWidgetBookmark() throws Exception {
         testClientResponsivenessInlineEditPopoverWidget();
+        passed();
     }
 
     @Test
     public void testClientResponsivenessInlineEditPopoverWidgetNav() throws Exception {
         testClientResponsivenessInlineEditPopoverWidget();
+        passed();
     }
 }

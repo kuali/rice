@@ -45,6 +45,15 @@ public class UITestObject implements Serializable {
     private String field7;
     private String field8;
 
+    private String dollar1;
+    private String dollar2;
+    private String dollar3;
+    private String dollar4;
+    private String dollar5;
+    private String dollar6;
+    private String dollar7;
+    private String dollar8;
+
     private KualiDecimal feeAmount;
 
     private static int count = 0;
@@ -124,6 +133,11 @@ public class UITestObject implements Serializable {
         this.field2 = field2;
         this.field3 = field3;
         this.field4 = field4;
+
+        this.dollar1 = setCurrency(field1);
+        this.dollar2 = setCurrency(field2);
+        this.dollar3 = setCurrency(field3);
+        this.dollar4 = setCurrency(field4);
     }
 
     public UITestObject(String field1, String field2, String field3, String field4, String field5, String field6) {
@@ -131,6 +145,8 @@ public class UITestObject implements Serializable {
 
         this.field5 = field5;
         this.field6 = field6;
+        this.dollar5 = setCurrency(field5);
+        this.dollar6 = setCurrency(field6);
     }
 
     public UITestObject(String field1, String field2, String field3, String field4, String field5, String field6,
@@ -139,12 +155,42 @@ public class UITestObject implements Serializable {
 
         this.field7 = field7;
         this.field8 = field8;
+        this.dollar7 = setCurrency(field7);
+        this.dollar8 = setCurrency(field8);
     }
 
     public UITestObject(String field1, String field2, String field3, String field4, UITestObject innerObject) {
         this(field1, field2, field3, field4);
 
         this.innerObject = innerObject;
+    }
+
+    private boolean isInteger(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        }
+        catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private String setCurrency(String field) {
+        if (field != null && field.length() > 0 && isInteger(field)) {
+            if (!field.contains("$")) {
+                field = "$" + field ;
+            }
+            if (!field.contains(".00")) {
+                field = field + ".00";
+            }
+        }
+        return field;
+    }
+
+    private String unsetCurrency(String field){
+        field = field.replace("$","");
+        field = field.replace(".00","");
+        return field;
     }
 
     public String getField1() {
@@ -164,16 +210,6 @@ public class UITestObject implements Serializable {
     }
 
     public String getField3() {
-        return this.field3;
-    }
-
-    /**
-     * @return the field3 as a 'dollar' value for testing
-     */
-    public String getDollar3() {
-        if (this.field3 != null && this.field3.length() > 0) {
-            return "$" + this.field3 + ".00";
-        }
         return this.field3;
     }
 
@@ -219,6 +255,78 @@ public class UITestObject implements Serializable {
 
     public void setField8(String field8) {
         this.field8 = field8;
+    }
+
+    public String getDollar1() {
+        return dollar1;
+    }
+
+    public void setDollar1(String dollar1) {
+        this.field1 = unsetCurrency(dollar1);
+        this.dollar1 = setCurrency(dollar1);
+    }
+
+    public String getDollar2() {
+        return dollar2;
+    }
+
+    public void setDollar2(String dollar2) {
+        this.field2 = unsetCurrency(dollar2);
+        this.dollar2 = setCurrency(dollar2);
+    }
+
+    public String getDollar3() {
+        return dollar3;
+    }
+
+    public void setDollar3(String dollar3) {
+        this.field3 = unsetCurrency(dollar3);
+        this.dollar3 = setCurrency(dollar3);
+    }
+
+    public String getDollar4() {
+        return dollar4;
+    }
+
+    public void setDollar4(String dollar4) {
+        this.field4 = unsetCurrency(dollar4);
+        this.dollar4 = setCurrency(dollar4);
+    }
+
+    public String getDollar5() {
+        return dollar5;
+    }
+
+    public void setDollar5(String dollar5) {
+        this.field5 = unsetCurrency(dollar5);
+        this.dollar5 = setCurrency(dollar5);
+    }
+
+    public String getDollar6() {
+        return dollar6;
+    }
+
+    public void setDollar6(String dollar6) {
+        this.field6 = unsetCurrency(dollar6);
+        this.dollar6 = setCurrency(dollar6);
+    }
+
+    public String getDollar7() {
+        return dollar7;
+    }
+
+    public void setDollar7(String dollar7) {
+        this.field7 = unsetCurrency(dollar7);
+        this.dollar7 = setCurrency(dollar7);
+    }
+
+    public String getDollar8() {
+        return dollar8;
+    }
+
+    public void setDollar8(String dollar8) {
+        this.field8 = unsetCurrency(dollar8);
+        this.dollar8 = setCurrency(dollar8);
     }
 
     public KualiDecimal getFeeAmount() {

@@ -1204,12 +1204,20 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
                 }
             }
 
-            if ((!isPassed() && webDriverScreenshotHelper.screenshotOnFailure()) || webDriverScreenshotHelper.screenshotSteps()) {
-                screenshot();
+            try { // saucelabs
+                if ((!isPassed() && webDriverScreenshotHelper.screenshotOnFailure()) || webDriverScreenshotHelper.screenshotSteps()) {
+                    screenshot();
+                }
+            } catch (Throwable t2) {
+                System.out.println("Unable to take failure screenshot " + t2.getMessage());
             }
 
-            if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
-                logout();
+            try { // saucelabs
+                if (isPassed() && WebDriverUtils.dontTearDownPropertyNotSet() && WebDriverUtils.dontTearDownOnFailure(isPassed())) {
+                    logout();
+                }
+            } catch (Throwable t3) {
+                System.out.println("Unable to logout " + t3.getMessage());
             }
 
             WebDriverUtils.tearDown(isPassed(), sessionId, this.toString().trim(), user, getClass().getSimpleName(), testName.getMethodName());

@@ -188,7 +188,7 @@ public class ClientValidationUtils {
         return "\njQuery.validator.addMethod(\""
                 + ScriptUtils.escapeName(key)
                 + "\", function(value, element) {\n "
-                + "return this.optional(element) || /"
+                + "return (this.optional(element) !== false) || /"
                 + regex
                 + "/.test(value);"
                 + "}, \""
@@ -224,7 +224,7 @@ public class ClientValidationUtils {
         return "\njQuery.validator.addMethod(\""
                 + ScriptUtils.escapeName(key)
                 + "\", function(value, element, doCheck) {\n if(doCheck === false){return true;}else{"
-                + "return this.optional(element) || /"
+                + "return (this.optional(element) !== false) || /"
                 + regex
                 + "/.test(value);}"
                 + "}, \""
@@ -639,7 +639,7 @@ public class ClientValidationUtils {
                 + "');\n";
 
         String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" +
-                " if(" + booleanStatement + "){ return (this.optional(element) || (coerceValue('" + ScriptUtils
+                " if(" + booleanStatement + "){ return ((this.optional(element) !== false) || (coerceValue('" + ScriptUtils
                         .escapeName(constraint.getPropertyName()) + "')));}else{return true;} " +
                 "}, \"" + message + "\");";
 
@@ -737,7 +737,7 @@ public class ClientValidationUtils {
         String method = "\njQuery.validator.addMethod(\"" + methodName + "\", function(value, element) {\n" +
                 " if("
                 + booleanStatement
-                + "){return (this.optional(element) || ("
+                + "){return ((this.optional(element) !== false) || ("
                 + getMustOccurStatement(field, mc)
                 + "));}else{return true;}"
                 +

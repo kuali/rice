@@ -102,9 +102,9 @@
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
-              <bean parent="Uif-InputField" p:label="Column 1" p:propertyName="dollar3" p:sortAs="kuali_currency"/>
+              <bean parent="Uif-InputField" p:propertyName="dollar1" p:label="Column 1" p:sortAs="kuali_currency"/>
 
-              <bean parent="Uif-InputField" p:propertyName="dollar3" p:label="Column 2" p:sortAs="kuali_currency">
+              <bean parent="Uif-InputField" p:propertyName="dollar2" p:label="Column 2" p:sortAs="kuali_currency">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="10"/>
                 </property>
@@ -122,7 +122,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="dollar3" p:label="Column 4" >
+              <bean parent="Uif-InputField" p:propertyName="dollar4" p:label="Column 4" >
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="10"/>
                 </property>
@@ -131,7 +131,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="dollar3" p:label="Column 5" p:sortAs="numeric" p:readOnly="@{!#isAddLine}">
+              <bean parent="Uif-InputField" p:propertyName="dollar5" p:label="Column 5" p:sortAs="numeric" p:readOnly="@{!#isAddLine}">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="10"/>
                 </property>
@@ -140,7 +140,7 @@
                 </property>
               </bean>
 
-              <bean parent="Uif-InputField" p:propertyName="feeAmount" p:label="Column 6" p:readOnly="@{!#isAddLine}">
+              <bean parent="Uif-InputField" p:propertyName="dollar6" p:label="Column 6" p:readOnly="@{!#isAddLine}">
                 <property name="control">
                   <bean parent="Uif-TextControl" p:size="10"/>
                 </property>

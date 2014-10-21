@@ -198,7 +198,7 @@ public class LibraryFieldsInputAft extends LibraryBase {
         waitAndClickSearch3();
         waitAndClickReturnValue();
 //        waitAndClickByLinkText("Quickfinder"); // work around for Quickfinder not loaded on return
-        assertElementPresentByXpath("//input[@name='inputField7' and @value='a1']");
+        waitForElementPresentByXpath("//input[@name='inputField7' and @value='a1']");
     }
 
     protected void testInputFieldInquiry() throws Exception {

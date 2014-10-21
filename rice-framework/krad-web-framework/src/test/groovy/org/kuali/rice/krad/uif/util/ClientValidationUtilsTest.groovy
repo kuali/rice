@@ -30,7 +30,7 @@ class ClientValidationUtilsTest {
         // and double backslash should be escaped to \\\\
         def value = 'abc/123\\\\'
         def expected_val = '''jQuery.validator.addMethod("validChar-bindingPath0", function(value, element) {
- return this.optional(element) || /abc\\/123\\\\\\\\/.test(value);}, "NO MESSAGE");'''
+ return (this.optional(element) !== false) || /abc\\/123\\\\\\\\/.test(value);}, "NO MESSAGE");'''
 
         def constraint = new ValidCharactersConstraint(value: value)
         def field = new InputFieldBase(bindingInfo: new BindingInfo(bindingPath: "bindingPath"))
@@ -44,7 +44,7 @@ class ClientValidationUtilsTest {
         // and double backslash should be escaped to \\\\
         def value = 'abc/123\\\\'
         def expected_val = '''jQuery.validator.addMethod("validChar-bindingPath0", function(value, element, doCheck) {
- if(doCheck === false){return true;}else{return this.optional(element) || /abc\\/123\\\\\\\\/.test(value);}}, "NO MESSAGE");'''
+ if(doCheck === false){return true;}else{return (this.optional(element) !== false) || /abc\\/123\\\\\\\\/.test(value);}}, "NO MESSAGE");'''
 
         def constraint = new ValidCharactersConstraint(value: value)
         def field = new InputFieldBase(bindingInfo: new BindingInfo(bindingPath: "bindingPath"))

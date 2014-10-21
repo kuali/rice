@@ -42,6 +42,7 @@ import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.file.FileMetaBlob;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.kuali.rice.krad.web.form.UifFormBase;
 
 /**
@@ -58,6 +59,9 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
     //Fields separated by demonstration type below:
 
     //InputField
+
+    // RequestAccessible is needed on inputField1 for a breadcrumbs demo
+    @RequestAccessible
     private String inputField1;
     private String inputField2;
     private String inputField3;

@@ -83,20 +83,6 @@ public class UifFormManager implements Serializable {
 
         // check if we have too many forms and need to remove an old one
         if (sessionForms.size() > maxNumberOfSessionForms) {
-            // clear all inquiry forms first, temp solution until inquiry forms are not stored in session
-            // TODO: remove once inquiry forms are not required to be in session
-            Set<String> formKeys = new HashSet<String>(sessionForms.keySet());
-            for (String formKey : formKeys) {
-                UifFormBase sessionForm = sessionForms.get(formKey);
-                if ((sessionForm instanceof InquiryForm) && (!formKey.equals(form.getFormKey()))) {
-                    sessionForms.remove(formKey);
-                    accessedFormKeys.remove(formKey);
-                }
-            }
-        }
-
-        // if we still have too many forms clear the oldest form
-        if (sessionForms.size() > maxNumberOfSessionForms) {
             // get the oldest form we have
             String removeFormKey = (String) accessedFormKeys.get(0);
             if (sessionForms.containsKey(removeFormKey)) {

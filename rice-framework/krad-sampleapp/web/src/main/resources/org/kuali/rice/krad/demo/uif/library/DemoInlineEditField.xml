@@ -48,7 +48,7 @@
       <list>
         <!-- ex:Demo-InlineEdit-Example1 start-->
         <bean parent="Uif-InputField" p:label="Inline Edit Field" p:required="true"
-              p:propertyName="dataField6" p:inlineEdit="true"/>
+              p:propertyName="dataField3" p:inlineEdit="true"/>
         <!-- ex:Demo-InlineEdit-Example1 end-->
       </list>
     </property>

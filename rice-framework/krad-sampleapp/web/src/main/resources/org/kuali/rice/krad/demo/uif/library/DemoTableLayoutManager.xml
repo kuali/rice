@@ -51,11 +51,7 @@
         <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection1"/>
-          <property name="layoutManager.sequencePropertyName" value="field1"/>
-          <property name="layoutManager.generateAutoSequence" value ="false"/>
-          <property name="layoutManager.sequenceFieldPrototype">
-            <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
-          </property>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="items">
             <list>
@@ -95,12 +91,7 @@
         <bean parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject" />
           <property name="propertyName" value="collection2" />
-          <property name="layoutManager.sequencePropertyName" value="field1" />
-          <property name="layoutManager.generateAutoSequence" value ="false"/>
-          <property name="layoutManager.sequenceFieldPrototype">
-            <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
-          </property>
-          <property name="layoutManager.sequenceFieldPrototype.width" value="10%" />
+          <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="layoutManager.actionFieldPrototype.width" value="10%" />
           <property name="layoutManager.actionColumnPlacement" value="LEFT" />
           <property name="collectionLookup">
@@ -392,11 +383,7 @@
                     p:layoutManager.numberOfColumns="2" p:layoutManager.suppressLineWrapping="false">
                 <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
                 <property name="propertyName" value="collection1_5"/>
-                <property name="layoutManager.sequencePropertyName" value="field1"/>
-                <property name="layoutManager.generateAutoSequence" value="false"/>
-                <property name="layoutManager.sequenceFieldPrototype">
-                  <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
-                </property>
+                <property name="layoutManager.generateAutoSequence" value="true"/>
                 <property name="layoutManager.richTable.render" value="false"/>
                 <property name="items">
                   <list>

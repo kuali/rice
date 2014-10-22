@@ -242,7 +242,7 @@
         <bean parent="Uif-TableCollectionSection">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection1"/>
-          <property name="layoutManager.sequencePropertyName" value="field1"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="items">
             <list>
@@ -267,7 +267,7 @@
         <bean parent="Uif-TableCollectionSection">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection2"/>
-          <property name="layoutManager.sequencePropertyName" value="field1"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="items">
             <list>
@@ -292,7 +292,7 @@
         <bean parent="Uif-TableCollectionSection">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection3"/>
-          <property name="layoutManager.sequencePropertyName" value="field1"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="items">
             <list>
@@ -316,7 +316,7 @@
         <bean parent="Uif-TableCollectionSection">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection4"/>
-          <property name="layoutManager.sequencePropertyName" value="field1"/>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="items">
             <list>

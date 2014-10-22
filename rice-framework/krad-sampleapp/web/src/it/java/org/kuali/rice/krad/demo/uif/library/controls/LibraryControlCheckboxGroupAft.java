@@ -65,13 +65,48 @@ public class LibraryControlCheckboxGroupAft extends WebDriverLegacyITBase {
         assertTextPresent("\n|");
         waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField4' and @value='2']");
     }
-    
+
+    protected void testLibraryControlCheckboxGroupDirtyValidation() throws Exception {
+        // If checkboxes are selected then the "Form has unsaved data" message should appear when the user attempts
+        // to leave the page.
+        waitAndClickByLinkText("optionsFinder");
+        checkByName("checkboxesField1");
+        waitAndClickByLinkText("File");
+        Thread.sleep(3000);
+        if(isAlertPresent())    {
+            alertAccept();
+        } else {
+            fail("An alert should have popped up to warn the user about unsaved data.");
+        }
+
+        waitForTextPresent("File Control");
+        waitAndClickByLinkText("Checkbox Group");
+        waitAndClickByLinkText("optionsFinder");
+        waitForElementPresentByXpath("//input[@type='checkbox' and @name='checkboxesField1' and @value='1']");
+        waitAndClickByLinkText("File");
+        waitForTextPresent("File Control");
+        if(isAlertPresent())    {
+            fail("No data was changed so there should be no alert.");
+        }
+    }
+
+    protected boolean isAlertPresent() {
+        try {
+            driver.switchTo().alert();
+            return true;
+        }   // try
+        catch (Exception Ex) {
+            return false;
+        }   // catch
+    }
+
     @Test
     public void testControlCheckboxGroupBookmark() throws Exception {
         testLibraryControlCheckboxGroupOptionsFinder();
         testLibraryControlCheckboxGroupKeyValuePairs();
         testLibraryControlCheckboxGroupHorizontal();
         testLibraryControlCheckboxGroupDelimiter();
+        testLibraryControlCheckboxGroupDirtyValidation();
         passed();
     }
 
@@ -81,6 +116,7 @@ public class LibraryControlCheckboxGroupAft extends WebDriverLegacyITBase {
         testLibraryControlCheckboxGroupKeyValuePairs();
         testLibraryControlCheckboxGroupHorizontal();
         testLibraryControlCheckboxGroupDelimiter();
+        testLibraryControlCheckboxGroupDirtyValidation();
         passed();
     }  
 }

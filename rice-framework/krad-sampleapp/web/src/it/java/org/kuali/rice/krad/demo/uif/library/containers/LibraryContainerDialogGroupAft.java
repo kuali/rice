@@ -197,8 +197,8 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
 //    	testContainerDialogGroupValidationInDialog(); // fails when run with others, test below
     	testContainerDialogGroupDialogReuse();
 //    	testContainerDialogGroupSmallDialog(); // fails when run with others, test below
-    	testContainerDialogGroupLargeDialog();
-        testContainerDialogGroupDestroyDialogOnHidden();
+//    	testContainerDialogGroupLargeDialog(); // run below
+//        testContainerDialogGroupDestroyDialogOnHidden(); // run below
     }
 
     @Test
@@ -210,6 +210,18 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     @Test
     public void testContainerDialogGroupNav() throws Exception {
     	testContainerDialogGroupAll();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupLargeDialogBookmark() throws Exception {
+        testContainerDialogGroupLargeDialog();
+        passed();
+    }
+
+    @Test
+    public void testContainerDialogGroupLargeDialogNav() throws Exception {
+        testContainerDialogGroupLargeDialog();
         passed();
     }
 

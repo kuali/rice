@@ -70,7 +70,7 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
     protected void testCollapseExpand() throws InterruptedException {
         waitForElementPresentByClassName("demo-contactInfo");
         assertTextPresent(new String[] {"Travel Account Number:", EXPAND_ALL, COLLAPSE_ALL});
-//        assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, ""); // sub accounts removed
+        assertIsVisibleByXpath(ANCHOR_TITLE_TRAVEL_ACCOUNT, "Expected Travel Sub Accounts");
 
         waitAndClickButtonByText(COLLAPSE_ALL);
         Thread.sleep(2000);
@@ -79,6 +79,26 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
         waitAndClickButtonByText(EXPAND_ALL);
         Thread.sleep(2000);
         assertIsVisible(By.linkText("A"), " after clicking " + EXPAND_ALL);
+    }
+
+    /**
+     * Tests selecting an inquiry inside this inquiry, making sure it can be opened more than once.
+     *
+     * @throws Exception for any test problems
+     */
+    protected void testInquiryNestedInquiry() throws Exception {
+        for (int i = 0; i < 2; i++) {
+            waitAndClickByLinkText("A", "Could not click in iteration " + i);
+            gotoLightBox();
+
+            String[][] formattedLabeledText = {{"Travel Account Number:", "a14"},
+                                               {"Travel Sub Account Number:", "A"},
+                                               {"Sub Account Name:", "Sub Account A"}};
+            assertLabeledTextPresent(formattedLabeledText);
+
+            waitAndClickButtonByText("Close", "Could not click in iteration " + i);
+            selectTopFrame();
+        }
     }
 
     @Test
@@ -90,6 +110,12 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
     @Test
     public void testInquiryBackButtonBookmark() throws Exception {
         testInquiryBackToLoginButton();
+        passed();
+    }
+
+    @Test
+    public void testInquiryNestedInquiryBookmark() throws Exception {
+        testInquiryNestedInquiry();
         passed();
     }
 
@@ -106,4 +132,12 @@ public class DemoTravelAccountInquiryAft extends WebDriverLegacyITBase {
         testInquiryBackButton();
         passed();
     }
+
+    @Test
+    @Ignore // link removed
+    public void testInquiryNestedInquiryNav() throws Exception {
+        testInquiryNestedInquiry();
+        passed();
+    }
+
 }

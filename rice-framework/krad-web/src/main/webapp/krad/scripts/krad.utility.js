@@ -1379,10 +1379,10 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
 
     if (!hasInvalidValues) {
         if (extraData != undefined) {
-            total = window[functionName](values, extraData);
+            total = executeFunctionByName(functionName, window, values, extraData);
         }
         else {
-            total = window[functionName](values);
+            total = executeFunctionByName(functionName, window, values);
         }
     }
     else {
@@ -1486,10 +1486,10 @@ function calculateTotal(totalDiv, start, end, currentColumn, aaData, aiDisplay) 
 
         if (!hasInvalidValues) {
             if (extraData != undefined) {
-                total = window[functionName](values, extraData);
+                total = executeFunctionByName(functionName, window, values, extraData);
             }
             else {
-                total = window[functionName](values);
+                total = executeFunctionByName(functionName, window, values);
             }
         }
         else {
@@ -2665,4 +2665,24 @@ function createTruncateTooltips() {
             }
         });
     });
+}
+
+/**
+ * window[functionName](values, extraData) doesn't support JavaScript namespaced function.  This convenience function
+ * allows the usage of namespaced functions.
+ *
+ * http://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string/
+ *
+ * @param functgionName name of the function to be called
+ * @param context context in which to find the functon
+ */
+function executeFunctionByName(functionName, context) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    var namespaces = functionName.split(".");
+    var func = namespaces.pop();
+    for (var i = 0; i < namespaces.length; i++) {
+        context = context[namespaces[i]];
+    }
+
+    return context[func].apply(context, args);
 }

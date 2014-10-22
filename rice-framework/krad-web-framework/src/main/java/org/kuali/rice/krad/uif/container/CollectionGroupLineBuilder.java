@@ -662,6 +662,16 @@ public class CollectionGroupLineBuilder implements Serializable {
         ContextUtils.pushObjectToContextDeep(subCollectionFields, UifConstants.ContextVariableNames.PARENT_LINE,
                 lineBuilderContext.getCurrentLine());
 
+        // set the parent line on the context of every sub-collection field
+        for (FieldGroup subCollectionField : subCollectionFields) {
+            Group group = subCollectionField.getGroup();
+            if (group != null && group instanceof CollectionGroup) {
+                CollectionGroup collectionGroup1 = (CollectionGroup) group;
+                ContextUtils.pushObjectToContextDeep(collectionGroup1.getItems(),
+                        UifConstants.ContextVariableNames.PARENT_LINE, lineBuilderContext.getCurrentLine());
+            }
+        }
+
         lineBuilderContext.setSubCollectionFields(subCollectionFields);
     }
 

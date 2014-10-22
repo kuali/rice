@@ -164,13 +164,13 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
 
         //remove the subsidized percent
         jGrowl("Clear subsidized percent");
-        findElement(By.xpath("/html/body/form/div/div[2]/main/section[2]/div/table/tbody/tr[7]/td[2]/div/input")).clear();
+        clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndClickButtonByText("Save");
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
         waitForTextPresent("Subsidized Percent: Required");
 
         //re-add the subsidized percent and save
-        waitAndTypeByXpath("/html/body/form/div/div[2]/main/section[2]/div/table/tbody/tr[7]/td[2]/div/input","45");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent","45");
         waitAndClickButtonByText("Save");
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
         waitForIsTextPresent("Document was successfully saved.");

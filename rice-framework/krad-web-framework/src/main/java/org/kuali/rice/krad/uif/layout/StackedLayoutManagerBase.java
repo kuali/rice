@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.krad.uif.layout;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import freemarker.template.utility.StringUtil;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -53,6 +47,11 @@ import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Layout manager that works with {@code CollectionGroup} containers and
@@ -164,6 +163,7 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
         lineContext.put(UifConstants.ContextVariableNames.COLLECTION_GROUP, collectionGroup);
         lineContext.put(UifConstants.ContextVariableNames.IS_ADD_LINE, lineBuilderContext.isAddLine());
         lineContext.put(UifConstants.ContextVariableNames.READONLY_LINE, Boolean.TRUE.equals(collectionGroup.getReadOnly()));
+        lineContext.put(UifConstants.ContextVariableNames.PARENT_LINE, currentLine);
 
         ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
 
@@ -254,6 +254,10 @@ public class StackedLayoutManagerBase extends CollectionLayoutManagerBase implem
         if (lineGroup instanceof DialogGroup == false) {
             stackedGroups.add(lineGroup);
         }
+
+        // we need to add the parent line for each of the items in the group
+        ContextUtils.pushObjectToContextDeep(lineGroup.getItems(), UifConstants.ContextVariableNames.PARENT_LINE,
+                lineBuilderContext.getCurrentLine());
     }
 
     /**

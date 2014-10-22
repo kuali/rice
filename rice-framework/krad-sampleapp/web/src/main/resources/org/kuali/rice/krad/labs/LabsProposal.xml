@@ -394,6 +394,8 @@
                           <bean parent="Uif-InputField" p:propertyName="field2" p:label="Field 2"/>
                           <bean parent="Uif-InputField" p:propertyName="field3" p:label="Field 3"/>
                           <bean parent="Uif-InputField" p:propertyName="field4" p:label="Field 4"/>
+                          <bean parent="Uif-InputField" p:instructionalText="There are @{#parentLine.date1Str} items."
+                                p:propertyName="field5" p:label="Field 5"/>
                         </list>
                       </property>
                     </bean>

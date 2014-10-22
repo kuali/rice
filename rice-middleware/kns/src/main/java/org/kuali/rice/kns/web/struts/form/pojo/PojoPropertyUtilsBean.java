@@ -24,6 +24,7 @@ import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.beanutils.WrapDynaBean;
+import org.apache.commons.beanutils.expression.Resolver;
 import org.apache.commons.collections.FastHashMap;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.web.format.Formatter;
@@ -212,6 +213,47 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
             throw new IllegalArgumentException("No name specified for bean class '" +
                     bean.getClass() + "'");
         }
+
+       // Begin Kuali foundation modification
+
+        Resolver nestedResolver = getResolver();
+
+        // Resolve nested references
+        while (nestedResolver.hasNested(name)) {
+            String next = nestedResolver.next(name);
+            Object nestedBean = null;
+
+            try {
+                nestedBean = getProperty(bean, next);
+
+                // If an object on which we're trying to set a value is null,
+                // 1: get its type
+                // 2: if it's not an interface, create an instance of it and set the property
+                // 2a: if it is an interface, we can't instantiate it, so the property shouldn't be writeable.
+                if (nestedBean == null) {
+
+                    Class propertyType = getPropertyType(bean, next);
+                    if (propertyType != null && !propertyType.isInterface()) {
+                        Object newInstance = ObjectUtils.createNewObjectFromClass(propertyType);
+                        setSimpleProperty(bean, next, newInstance);
+                        nestedBean = getSimpleProperty(bean, next);
+                    } else {
+                        return false;
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                return false;
+            } catch (InvocationTargetException e) {
+                return false;
+            } catch (NoSuchMethodException e) {
+                return false;
+            }
+
+            bean = nestedBean;
+            name = nestedResolver.remove(name);
+        }
+
+        // End Kuali foundation modification
 
         // Remove any subscript from the final name value
         name = getResolver().getProperty(name);

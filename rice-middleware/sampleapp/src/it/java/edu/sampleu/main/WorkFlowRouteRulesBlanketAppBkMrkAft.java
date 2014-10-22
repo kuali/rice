@@ -15,7 +15,6 @@
  */
 package edu.sampleu.main;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -28,7 +27,6 @@ public class WorkFlowRouteRulesBlanketAppBkMrkAft extends WorkFlowRouteRulesBlan
         return BOOKMARK_URL;
     }
 
-    @Ignore // https://jira.kuali.org/browse/KULRICE-13289
     @Test
     public void testWorkFlowRouteRulesBlanketAppBookmark() throws Exception {
         testWorkFlowRouteRulesBlanketAppBookmark(this);

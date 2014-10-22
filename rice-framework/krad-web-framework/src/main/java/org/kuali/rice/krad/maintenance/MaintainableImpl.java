@@ -60,6 +60,7 @@ import org.kuali.rice.krad.uif.view.MaintenanceDocumentView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.form.MaintenanceDocumentForm;
 
 /**
@@ -91,7 +92,8 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
     public Object retrieveObjectForEditOrCopy(MaintenanceDocument document, Map<String, String> dataObjectKeys) {
         Object dataObject = null;
         if ( getDataObjectService().supports(getDataObjectClass())) {
-            dataObject = getDataObjectService().find(getDataObjectClass(), new CompoundKey(dataObjectKeys));
+            Map<String, Object> translatedValues = KRADUtils.coerceRequestParameterTypes(getDataObjectClass(), dataObjectKeys);
+            dataObject = getDataObjectService().find(getDataObjectClass(), new CompoundKey(translatedValues));
         } else {
             try {
                 dataObject = getLegacyDataAdapter().findObjectBySearch(getDataObjectClass(), dataObjectKeys);

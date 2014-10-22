@@ -394,4 +394,23 @@
       </list>
     </property>
   </bean>
+
+  <bean id="KradMaintenanceSample-PageR7C1" parent="KradSampleAppView">
+    <property name="page.headerText" value="Primary Key of Type Long"/>
+    <property name="page.items">
+      <list>
+        <bean id="KradMaintenanceSampleItems-PageR7C1" parent="Uif-VerticalBoxSection"
+              p:headerText="Maintenance Test - Primary Key of Type Long"
+              p:instructionalText="Tests documents with a primary key of Long.">
+          <property name="items">
+            <list>
+              <bean parent="Uif-Link" p:linkText="Maintenance Test - Primary Key of Type Long"
+                    p:href="maintenance?methodToCall=maintenanceEdit&amp;id=2008&amp;dataObjectClassName=org.kuali.rice.edl.impl.bo.EDocLiteDefinition"/>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
 </beans>

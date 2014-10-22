@@ -324,7 +324,7 @@
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="addLineDialog">
-            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+            <bean parent="Uif-AddLineDialog" id="Demo-CollectionEditLine-Example10_dialog" p:headerText="Add Project Income">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
@@ -398,7 +398,7 @@
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="addLineDialog">
-            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+            <bean parent="Uif-AddLineDialog" id="Demo-CollectionEditLine-Example11_dialog" p:headerText="Add Project Income">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
@@ -470,7 +470,7 @@
           <property name="addWithDialog" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="addLineDialog">
-            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+            <bean parent="Uif-AddLineDialog" id="Demo-CollectionEditLine-Example12_dialog" p:headerText="Add Project Income">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>

@@ -119,7 +119,7 @@ public class BoxLayoutManager extends LayoutManagerBase {
                     }
 
                     for (String styleClass : this.getItemStyleClasses()) {
-                        addStyleClass(styleClass);
+                        c.addStyleClass(styleClass);
                     }
 
                     c.addStyleClass("clearfix");

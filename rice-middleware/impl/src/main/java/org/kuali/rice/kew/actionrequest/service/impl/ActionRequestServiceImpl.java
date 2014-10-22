@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.CoreConfigHelper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.criteria.CountFlag;
 import org.kuali.rice.core.api.criteria.Predicate;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
@@ -1024,6 +1025,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 equal(RECIPIENT_TYPE_CD, RecipientType.PRINCIPAL.getCode()),
                 equal(CURRENT_INDICATOR, Boolean.TRUE)
         );
+
+        criteria.setCountFlag(CountFlag.ONLY);
         Integer count = getDataObjectService().findMatching(ActionRequestValue.class, criteria.build()).getTotalRowCount();
         if (count != null && count > 0) {
             return true;

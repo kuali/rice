@@ -19,10 +19,13 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
+import org.kuali.rice.kew.api.action.RecipientType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.Iterator;
@@ -307,6 +310,32 @@ public class ActionRequestScenariosTest extends KEWTestCase {
             assertTrue("Document should be in exception routing", document.isException());
         }
 	}
+
+    /**
+     * Verify that when a principal id has an action request for a document that the doesPrincipalHaveRequest returns true
+     */
+    @Test
+    public void testDoesPrincipalHaveRequest() {
+        ActionRequestValue testActRqstVal = new ActionRequestValue();
+
+        testActRqstVal.setPrincipalId("admin");
+        testActRqstVal.setDocumentId("IT10007");
+        testActRqstVal.setRecipientTypeCd(RecipientType.PRINCIPAL.getCode());
+        testActRqstVal.setCurrentIndicator(Boolean.TRUE);
+        testActRqstVal.setActionRequested("A");
+        testActRqstVal.setPriority(1);
+        testActRqstVal.setResponsibilityId("1");
+        testActRqstVal.setRouteLevel(1);
+        testActRqstVal.setStatus("D");
+
+        ActionRequestValue persistedActRqstVal = KRADServiceLocator.getDataObjectService().save(testActRqstVal,
+                PersistenceOption.FLUSH);
+
+        boolean principaHasRequest =  KEWServiceLocator.getActionRequestService().doesPrincipalHaveRequest(
+                testActRqstVal.getPrincipalId(), testActRqstVal.getDocumentId());
+
+        assertTrue("PrincipalHasRequest should have been true.", principaHasRequest);
+    }
 	
 	/*
 	 * The test was created to test Groups with with the All approve policy

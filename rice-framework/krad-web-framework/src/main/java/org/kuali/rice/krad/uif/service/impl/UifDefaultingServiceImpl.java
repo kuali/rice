@@ -404,6 +404,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
     protected void addAttributesToLookupCriteria( LookupView view, DataObjectEntry dataObjectEntry ) {
         AttributeDefinition activeAttribute = null;
+        
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
             // Check if we have been told not to display this attribute here
             boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_LOOKUP_CRITERIA);
@@ -412,15 +413,18 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             if ( dontDisplay ) {
                 continue;
             }
+            
             if ( attr.getName().equals( KRADPropertyConstants.ACTIVE ) ) {
                 activeAttribute = attr;
                 continue; // leave until the end of the lookup criteria
             }
+            
             LookupInputField field = ComponentFactory.getLookupCriteriaInputField();
             field.setPropertyName(attr.getName());
             field.setLabel(attr.getLabel());
             view.getCriteriaFields().add(field);
         }
+        
         // If there was one, add the active attribute at the end
         if ( activeAttribute != null ) {
             LookupInputField field = ComponentFactory.getLookupCriteriaInputField();
@@ -432,21 +436,26 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
     protected void addAttributesToLookupResults( LookupView view, DataObjectEntry dataObjectEntry ) {
         AttributeDefinition activeAttribute = null;
+        
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
             // Check if we have been told not to display this attribute here
             boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_LOOKUP_RESULT);
             dontDisplay |= (attr.getControlField() instanceof HiddenControl);
+            
             if ( dontDisplay ) {
                 continue;
             }
+            
             if ( attr.getName().equals( KRADPropertyConstants.ACTIVE ) ) {
                 activeAttribute = attr;
                 continue; // leave until the end of the lookup results
             }
+            
             DataField field = ComponentFactory.getDataField();
             field.setPropertyName(attr.getName());
             view.getResultFields().add(field);
         }
+        
         // If there was one, add the active attribute at the end
         if ( activeAttribute != null ) {
             DataField field = ComponentFactory.getDataField();

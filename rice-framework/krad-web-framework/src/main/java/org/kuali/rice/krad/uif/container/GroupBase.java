@@ -260,7 +260,7 @@ public class GroupBase extends ContainerBase implements Group {
             setNestedComponentId(getHelp().getHelpAction(), this.getId() + UifConstants.IdSuffixes.HELP);
         }
 
-        setupValidationScripts(true);
+        setupValidationScripts(false);
     }
 
     /**

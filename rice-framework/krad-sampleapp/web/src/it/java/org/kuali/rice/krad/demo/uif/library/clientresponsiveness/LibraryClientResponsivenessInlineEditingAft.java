@@ -193,11 +193,11 @@ public class LibraryClientResponsivenessInlineEditingAft extends WebDriverLegacy
     	selectByName("exampleShown","Inline Edit in Table Collection");
     	waitForElementPresent("//table/tbody/tr/td/div/button[contains(text(),'1')]");
     	waitAndClickByXpath("//table/tbody/tr/td/div/button");
-        waitAndTypeByName("collection1[3].field1","a");
+        waitAndTypeByName("collection1[0].field1","a");
         waitAndClickByXpath("//table/tbody/tr/td/div/div/div/button[@title='Save']");
         waitForElementPresent("//table/tbody/tr/td/div/button[contains(text(),'1a')]");
         waitAndClickByXpath("//table/tbody/tr/td/div/button");
-        waitAndTypeByName("collection1[3].field1","b");
+        waitAndTypeByName("collection1[0].field1","b");
         waitAndClickByXpath("//table/tbody/tr/td/div/div/div/button[@title='Cancel']");
         waitForElementPresent("//table/tbody/tr/td/div/button[contains(text(),'1a')]");
     }

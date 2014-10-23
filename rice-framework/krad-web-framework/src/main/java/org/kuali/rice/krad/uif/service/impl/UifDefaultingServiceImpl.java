@@ -79,9 +79,12 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         if (camelCasedName.contains(".")) {
             camelCasedName = StringUtils.substringAfterLast(camelCasedName, ".");
         }
+        
         StringBuilder label = new StringBuilder(camelCasedName);
+        
         // upper case the 1st letter
         label.replace(0, 1, label.substring(0, 1).toUpperCase());
+        
         // loop through, inserting spaces when cap
         for (int i = 0; i < label.length(); i++) {
             if (Character.isUpperCase(label.charAt(i)) || Character.isDigit(label.charAt(i)) ) {
@@ -102,6 +105,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 }
             }
         }
+        
         return null;
     }
 
@@ -225,6 +229,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
     @Override
     public ValidCharactersConstraint deriveValidCharactersConstraint(AttributeDefinition attrDef) {
         ValidCharactersConstraint validCharactersConstraint = null;
+        
         // First - see if one was defined in the metadata (provided by krad-data module annotations)
         if (attrDef.getDataObjectAttribute() != null) {
             if (StringUtils.isNotBlank(attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName())) {
@@ -235,6 +240,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 }
             }
         }
+        
         // if not, make an intelligent guess from the data type
         if (validCharactersConstraint == null) {
             if (attrDef.getDataType() != null) {
@@ -258,6 +264,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 }
             }
         }
+        
         // default to UTF8
         if (validCharactersConstraint == null) {
             validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService

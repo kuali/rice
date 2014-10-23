@@ -38,6 +38,7 @@ import org.kuali.rice.krad.util.ObjectUtils;
 
 import java.beans.IndexedPropertyDescriptor;
 import java.beans.IntrospectionException;
+import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -518,6 +519,11 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         try {
             // Resolve nested references
             Object propBean = null;
+
+            // Begin Kuali foundation modification
+            int propertyTypeRetryAttempts = 0;
+            // End Kuali foundation modification
+
             while (true) {
                 int delim = findNextNestedIndex(name);
                 //int delim = name.indexOf(PropertyUtils.NESTED_DELIM);
@@ -540,6 +546,24 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
                 }
                 if (ObjectUtils.isNull(propBean)) {
                     Class propertyType = getPropertyType(bean, next);
+
+                    // Begin Kuali foundation modification
+                    if (propertyType != null && !propertyType.isInterface()) {
+                        Object newInstance = ObjectUtils.createNewObjectFromClass(propertyType);
+                        setSimpleProperty(bean, next, newInstance);
+                        propBean = getSimpleProperty(bean, next);
+                    } else if (propertyType != null && propertyType.isInterface()) {
+                        Introspector.flushFromCaches(bean.getClass());
+                        clearDescriptors();
+
+                        if (propertyTypeRetryAttempts++ >= 5) {
+                            throw new RuntimeException("Unable to determine real type of " + next + " of type " + bean.getClass() + "  after " + propertyTypeRetryAttempts + " attempts");
+                        }
+
+                        continue;
+                    }
+                    // End Kuali foundation modification
+
                     if (propertyType != null) {
                     	Object newInstance = ObjectUtils.createNewObjectFromClass(propertyType);
                         setSimpleProperty(bean, next, newInstance);

@@ -29,9 +29,7 @@ import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.MethodInvokerConfig;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
-import org.kuali.rice.krad.uif.container.DialogGroup;
 import org.kuali.rice.krad.uif.element.Action;
-import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
@@ -399,28 +397,11 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
 
         if (openInDialog) {
             String lightboxScript = null;
-            String dialogId = null;
-
-            // set the quickfinder's dialog id when invoked from within a dialog
-            // this accounts for the quickfinder being on the dialog field in which case the dialog is the parent, and
-            // for the quickfinder being in a nested sub-collection in the dialog in which case the dialog is the
-            // quickfinder's parent's (the nested sub-collection) parent
-            Object superParent = parent.getContext().get(UifConstants.ContextVariableNames.PARENT);
-            if (superParent != null) {
-                if (superParent instanceof DialogGroup) {
-                    dialogId = ((DialogGroup) superParent).getId();
-                } else if (superParent instanceof CollectionGroup) {
-                    CollectionGroup parentCollection = (CollectionGroup) superParent;
-                    superParent = parentCollection.getContext().get(UifConstants.ContextVariableNames.PARENT);
-                    if (superParent instanceof FieldGroup) {
-                        FieldGroup parentFieldGroup = (FieldGroup) superParent;
-                        superParent = parentFieldGroup.getContext().get(UifConstants.ContextVariableNames.PARENT);
-                        if (superParent instanceof DialogGroup) {
-                            dialogId = ((DialogGroup) superParent).getId();
-                        }
-                    }
-                }
+            String actionScript = quickfinderAction.getActionScript();
+            if (actionScript == null) {
+                actionScript = "";
             }
+            String dialogId = quickfinderAction.getActionParameter(UifParameters.DIALOG_ID);
 
             // if the dialog id is still blank, then look in the initial request parameters in case this was
             // a request from a nested component (i.e., an action invoked as a result of another action)
@@ -448,7 +429,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
                 quickfinderAction.addActionParameter(UifParameters.DIALOG_ID, dialogId);
             }
 
-            quickfinderAction.setActionScript(lightboxScript);
+            quickfinderAction.setActionScript(actionScript + lightboxScript);
         }
 
         quickfinderAction.addActionParameter(UifParameters.BASE_LOOKUP_URL, baseLookupUrl);

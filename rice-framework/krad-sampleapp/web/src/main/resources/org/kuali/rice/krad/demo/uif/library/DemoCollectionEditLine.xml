@@ -31,18 +31,18 @@
               value="org.kuali.rice.krad.demo.uif.controller.DemoCollectionEditLinePresentationController"/>
     <property name="demoGroups">
       <list>
-        <!--<ref bean="Demo-CollectionEditLine-Example1"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example2"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example3"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example4"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example5"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example6"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example7"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example8"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example9"/>-->
-        <!--<ref bean="Demo-CollectionEditLine-Example10"/>-->
+        <ref bean="Demo-CollectionEditLine-Example1"/>
+        <ref bean="Demo-CollectionEditLine-Example2"/>
+        <ref bean="Demo-CollectionEditLine-Example3"/>
+        <ref bean="Demo-CollectionEditLine-Example4"/>
+        <ref bean="Demo-CollectionEditLine-Example5"/>
+        <ref bean="Demo-CollectionEditLine-Example6"/>
+        <ref bean="Demo-CollectionEditLine-Example7"/>
+        <ref bean="Demo-CollectionEditLine-Example8"/>
+        <ref bean="Demo-CollectionEditLine-Example9"/>
+        <ref bean="Demo-CollectionEditLine-Example10"/>
         <ref bean="Demo-CollectionEditLine-Example11"/>
-        <!--<ref bean="Demo-CollectionEditLine-Example12"/>-->
+        <ref bean="Demo-CollectionEditLine-Example12"/>
       </list>
     </property>
   </bean>
@@ -324,7 +324,7 @@
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="true"/>
           <property name="addLineDialog">
-            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+            <bean parent="Uif-AddLineDialog" id="Demo-CollectionEditLine-Example10_dialog" p:headerText="Add Project Income">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
@@ -398,7 +398,7 @@
           <property name="layoutManager.renderSequenceField" value="false"/>
           <property name="layoutManager.richTable.render" value="false"/>
           <property name="addLineDialog">
-            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+            <bean parent="Uif-AddLineDialog" id="Demo-CollectionEditLine-Example11_dialog" p:headerText="Add Project Income">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>
@@ -470,7 +470,7 @@
           <property name="addWithDialog" value="true"/>
           <property name="editWithDialog" value="true"/>
           <property name="addLineDialog">
-            <bean parent="Uif-AddLineDialog" p:headerText="Add Project Income">
+            <bean parent="Uif-AddLineDialog" id="Demo-CollectionEditLine-Example12_dialog" p:headerText="Add Project Income">
               <property name="items">
                 <list>
                   <bean parent="Uif-InputField" p:propertyName="field1" p:label="Field 1"/>

@@ -994,7 +994,7 @@ div#Demo-TableLayoutGrouping-View input[type="text"]{
     width: 10em;
 }
 
-div#Demo-BoxLayoutManager-View .demo-borderBottom{
+.demo-borderBottom{
     border-bottom: 1px solid green !important;
     padding-bottom: 5px;
 }

@@ -782,8 +782,8 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
             String addInDialogButtonCssSelector = "#" + exampleId + " button:first-of-type";
             WebElement addInDialogButton = findElement(By.cssSelector(addInDialogButtonCssSelector));
             addInDialogButton.click();
-            addFieldsCssSelector = "#" + exampleId + " .modal-body .uif-inputField input:not([type='hidden'])";
-            addLineActionCssSelector = "#" + exampleId + " .modal-footer button[id$='_add']";
+            addFieldsCssSelector = "#" + exampleId  + "_dialog" +  " .modal-body .uif-inputField input:not([type='hidden'])";
+            addLineActionCssSelector = "#" + exampleId  + "_dialog" +  " .modal-footer button[id$='_add']";
         } else {
             addFieldsCssSelector = "#" + exampleId + ADD_FIELDS_CSS_SELECTOR;
             addLineActionCssSelector = "#" + exampleId + ADD_BUTTON_CSS_SELECTOR;

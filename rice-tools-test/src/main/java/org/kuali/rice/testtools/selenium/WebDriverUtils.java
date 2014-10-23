@@ -340,7 +340,11 @@ public class WebDriverUtils {
     public static void acceptAlertIfPresent(WebDriver driver) {
         if (WebDriverUtils.isAlertPresent(driver)) {
             System.out.println("Alert present " + WebDriverUtils.alertText(driver));
-            alertAccept(driver);
+            try {
+                alertAccept(driver);
+            } catch (Exception e) {
+                // Don't fail on alert exception
+            }
         }
     }
 

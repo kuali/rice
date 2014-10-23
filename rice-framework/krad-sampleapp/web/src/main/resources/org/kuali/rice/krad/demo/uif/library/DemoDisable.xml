@@ -246,11 +246,7 @@
         <bean parent="Uif-TableCollectionGroup" p:layoutManager.numberOfColumns="4">
           <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
           <property name="propertyName" value="collection1"/>
-          <property name="layoutManager.sequencePropertyName" value="field1"/>
-          <property name="layoutManager.generateAutoSequence" value ="false"/>
-          <property name="layoutManager.sequenceFieldPrototype">
-            <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
-          </property>
+          <property name="layoutManager.generateAutoSequence" value="true"/>
           <property name="items">
             <list>
               <bean parent="Uif-InputField" p:label="Disable/Enable" p:propertyName="field2" p:required="true">

@@ -183,15 +183,13 @@ DirtyFormState.prototype = {
         //assume dirty
         var fieldDirty = true;
 
-        //basic input
-        if (control.defaultValue != undefined && control.value == control.defaultValue) {
-            fieldDirty = false;
-        }
         //checkbox or radio
-        else if ((control.type == "checkbox" || control.type == "radio")
-                && control.defaultChecked != undefined && control.checked == control.defaultChecked) {
-            fieldDirty = false;
+        if (control.type == "checkbox" || control.type == "radio") {
+            if (control.defaultChecked != undefined && control.checked == control.defaultChecked) {
+                fieldDirty = false;
+            }
         }
+
         //select
         else if (control.options != undefined) {
             fieldDirty = false;
@@ -214,6 +212,11 @@ DirtyFormState.prototype = {
                 fieldDirty = false;
             }
 
+        }
+
+        //basic input
+        else if (control.defaultValue != undefined && control.value == control.defaultValue) {
+            fieldDirty = false;
         }
 
         return fieldDirty;

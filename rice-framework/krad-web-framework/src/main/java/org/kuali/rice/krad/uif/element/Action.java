@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.element;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -408,8 +409,11 @@ public class Action extends ContentElementBase {
         addActionDataSettingsValue(actionDataAttributes, dataDefaults,
                 UifConstants.ActionDataAttributes.PERFORM_DIRTY_VALIDATION, Boolean.toString(
                 this.performDirtyValidation));
-        addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.FIELDS_TO_SEND,
-                ScriptUtils.translateValue(this.fieldsToSend));
+
+        if (CollectionUtils.isNotEmpty(fieldsToSend)) {
+            addActionDataSettingsValue(actionDataAttributes, dataDefaults, UifConstants.ActionDataAttributes.FIELDS_TO_SEND,
+                    ScriptUtils.translateValue(this.fieldsToSend));
+        }
 
         if (confirmationDialog != null) {
             addDataAttribute(UifConstants.ActionDataAttributes.CONFIRM_DIALOG_ID, confirmationDialog.getId());

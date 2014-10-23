@@ -48,7 +48,7 @@
       <list>
         <!-- ex:Demo-InlineEdit-Example1 start-->
         <bean parent="Uif-InputField" p:label="Inline Edit Field" p:required="true"
-              p:propertyName="dataField6" p:inlineEdit="true"/>
+              p:propertyName="dataField3" p:inlineEdit="true"/>
         <!-- ex:Demo-InlineEdit-Example1 end-->
       </list>
     </property>
@@ -184,11 +184,7 @@
   <bean id="Demo-InlineEdit-Example8" parent="Uif-Disclosure-TableCollectionSection" p:layoutManager.numberOfColumns="4" p:headerText="Inline Edit in Table Collection">
     <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
     <property name="propertyName" value="collection1"/>
-    <property name="layoutManager.sequencePropertyName" value="field1"/>
-    <property name="layoutManager.generateAutoSequence" value ="false"/>
-    <property name="layoutManager.sequenceFieldPrototype">
-      <bean parent="Uif-InputField" p:propertyName="field1" p:readOnly="true"/>
-    </property>
+    <property name="layoutManager.generateAutoSequence" value="true"/>
     <property name="layoutManager.richTable.render" value="true"/>
     <property name="items">
       <list>

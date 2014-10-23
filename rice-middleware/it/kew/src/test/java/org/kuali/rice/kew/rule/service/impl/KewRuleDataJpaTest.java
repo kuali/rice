@@ -189,6 +189,7 @@ public class KewRuleDataJpaTest extends KEWTestCase{
         ruleDelegationBo.setGroupReviewerName("Testing");
         ruleDelegationBo.setPersonReviewer("blah");
         ruleDelegationBo.setDelegationRuleBaseValues(ruleBaseValues);
+        ruleDelegationBo.setDelegateRuleId(ruleBaseValues.getId());
         ruleDelegationBo.setResponsibilityId("1234");
 
         return KRADServiceLocator.getDataObjectService().save(ruleDelegationBo);

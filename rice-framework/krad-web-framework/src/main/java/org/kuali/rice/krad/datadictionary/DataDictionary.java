@@ -239,12 +239,15 @@ public class DataDictionary {
         // Unlike the Spring post processor, we will only call for these operations on the
         // "top-level" beans and have them call post processing actions on embedded DD objects, if needed
         timer.start("DD Post Processing");
+        
         for (DataObjectEntry entry : ddBeans.getBeansOfType(DataObjectEntry.class).values()) {
             entry.dataDictionaryPostProcessing();
         }
+        
         for (DocumentEntry entry : ddBeans.getBeansOfType(DocumentEntry.class).values()) {
             entry.dataDictionaryPostProcessing();
         }
+        
         timer.stop();
 
         timer.start("Data Dictionary Indexing");

@@ -15,7 +15,14 @@
  */
 package org.kuali.rice.krad.data.metadata.impl;
 
-import com.google.common.annotations.Beta;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.metadata.DataObjectAttributeRelationship;
@@ -24,13 +31,7 @@ import org.kuali.rice.krad.data.metadata.DataObjectRelationship;
 import org.kuali.rice.krad.data.metadata.MetadataMergeAction;
 import org.kuali.rice.krad.data.provider.annotation.UifAutoCreateViewType;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.common.annotations.Beta;
 
 /**
  * Base implementation class for the metadata related to the data object as a whole.
@@ -144,9 +145,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (primaryKeyAttributeNames != null) {
 			return primaryKeyAttributeNames;
 		}
+
 		if (embedded != null) {
 			return embedded.getPrimaryKeyAttributeNames();
 		}
+
 		return Collections.emptyList();
 	}
 
@@ -159,6 +162,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (primaryKeyAttributeNames == null) {
 			primaryKeyAttributeNames = Collections.emptyList();
 		}
+
 		this.primaryKeyAttributeNames = Collections.unmodifiableList( primaryKeyAttributeNames );
 	}
 
@@ -171,14 +175,17 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (businessKeyAttributeNames != null) {
 			return businessKeyAttributeNames;
 		}
+
 		// Otherwise, if we have an explicit PK, use that
 		if (primaryKeyAttributeNames != null) {
 			return primaryKeyAttributeNames;
 		}
+
 		// If neither has been set, go up the chain
 		if (embedded != null) {
 			return embedded.getBusinessKeyAttributeNames();
 		}
+
 		return Collections.emptyList();
 	}
 
@@ -191,6 +198,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (businessKeyAttributeNames == null) {
 			businessKeyAttributeNames = Collections.emptyList();
 		}
+
 		this.businessKeyAttributeNames = Collections.unmodifiableList(businessKeyAttributeNames);
 	}
 
@@ -210,6 +218,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (primaryDisplayAttributeName == null && !getBusinessKeyAttributeNames().isEmpty()) {
 			primaryDisplayAttributeName = getBusinessKeyAttributeNames().get(getBusinessKeyAttributeNames().size() - 1);
 		}
+
 		return primaryDisplayAttributeName;
 		// Notes for potential use cases if deemed necessary to implement.
 		// Since the last field of the PK does not generally change between
@@ -261,25 +270,31 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		List<DataObjectAttribute> sorted = new ArrayList<DataObjectAttribute>(attributes.size());
 		Map<String, DataObjectAttribute> keyedAttributes = new HashMap<String, DataObjectAttribute>(attributes.size());
 		Map<String, List<DataObjectAttribute>> inheritedAttributes = new HashMap<String, List<DataObjectAttribute>>();
+
 		for (DataObjectAttribute attr : attributes) {
 			if (attr.isInherited()) {
 				List<DataObjectAttribute> inheritedByProperty = inheritedAttributes.get(attr
 						.getInheritedFromParentAttributeName());
+
 				if (inheritedByProperty == null) {
 					inheritedByProperty = new ArrayList<DataObjectAttribute>();
 					inheritedAttributes.put(attr.getInheritedFromParentAttributeName(), inheritedByProperty);
 				}
+
 				inheritedByProperty.add(attr);
 			} else {
 				keyedAttributes.put(attr.getName(), attr);
 			}
 		}
+
 		for (Field f : getType().getDeclaredFields()) {
 			DataObjectAttribute attr = keyedAttributes.get(f.getName());
+
 			if (attr != null) {
 				sorted.add(attr);
 				keyedAttributes.remove(f.getName());
 			}
+
 			if (inheritedAttributes.containsKey(f.getName())) {
 				sorted.addAll(inheritedAttributes.get(f.getName()));
 			}
@@ -299,22 +314,12 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (attributes != null && embedded == null) {
 			return orderAttributesByDefinedOrder(attributes);
 		}
+
 		if (embedded != null) {
 			return orderAttributesByDefinedOrder(mergeLists(embedded.getAttributes(), attributes));
 		}
+
 		return Collections.emptyList();
-		// if (mergedAttributes != null) {
-		// return mergedAttributes;
-		// }
-		// // We have a local list and no overrides - return the existing list
-		// if (attributes != null && embedded == null) {
-		// mergedAttributes = orderAttributesByDefinedOrder(attributes);
-		// } else if (embedded != null) {
-		// mergedAttributes = orderAttributesByDefinedOrder(mergeLists(embedded.getAttributes(), attributes));
-		// } else {
-		// mergedAttributes = Collections.emptyList();
-		// }
-		// return mergedAttributes;
 	}
 
     /**
@@ -330,6 +335,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (attributes == null) {
 			attributes = Collections.emptyList();
 		}
+
 		this.attributes = Collections.unmodifiableList(attributes);
 		mergedAttributes = null;
 		attributeMap = new HashMap<String, DataObjectAttribute>(attributes.size());
@@ -342,6 +348,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 					&& attr.getMergeAction() != MetadataMergeAction.NO_OVERRIDE) {
 				attributeMap.put(attr.getName(), attr);
 			}
+
 			// since the attribute will still exist in the embedded metadata, we need to put a block in on the standard
 			// cascade
 			if (attr.getMergeAction() == MetadataMergeAction.REMOVE) {
@@ -359,9 +366,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (collections != null && embedded == null) {
 			return collections;
 		}
+
 		if (embedded != null) {
 			return mergeLists(embedded.getCollections(), collections);
 		}
+
 		return Collections.emptyList();
 	}
 
@@ -379,6 +388,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 			this.collections = null;
 			return;
 		}
+
 		this.collections = Collections.unmodifiableList(collections);
 		collectionMap = new HashMap<String, DataObjectCollection>(collections.size());
 		removedCollectionNames = new ArrayList<String>();
@@ -390,6 +400,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 					&& coll.getMergeAction() != MetadataMergeAction.NO_OVERRIDE) {
 				collectionMap.put(coll.getName(), coll);
 			}
+
 			// since the attribute will still exist in the embedded metadata, we need to put a block in on the standard
 			// cascade
 			if (coll.getMergeAction() == MetadataMergeAction.REMOVE) {
@@ -407,9 +418,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (relationships != null && embedded == null) {
 			return relationships;
 		}
+
 		if (embedded != null) {
 			return mergeLists(embedded.getRelationships(), relationships);
 		}
+
 		return Collections.emptyList();
 	}
 
@@ -430,11 +443,13 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 			attributeToRelationshipMap = null;
 			return;
 		}
+
 		this.relationships = Collections.unmodifiableList(relationships);
 		relationshipMap = new HashMap<String, DataObjectRelationship>(relationships.size());
 		attributeToRelationshipMap = new HashMap<String, List<DataObjectRelationship>>();
 		lastAttributeToRelationshipMap = new HashMap<String, DataObjectRelationship>(relationships.size());
 		removedRelationshipNames = new ArrayList<String>();
+
 		// Builds maps to link attribute names to their relationships
 		for (DataObjectRelationship rel : relationships) {
 			// This is not quite correct - we really only want to not add the NO_OVERRIDE items if they are
@@ -444,12 +459,14 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 					&& rel.getMergeAction() != MetadataMergeAction.NO_OVERRIDE) {
 				// related object attribute name
 				relationshipMap.put(rel.getName(), rel);
+
 				// last attribute in list linking the objects
 				if (!rel.getAttributeRelationships().isEmpty()) {
 					DataObjectAttributeRelationship relAttr = rel.getAttributeRelationships().get(
 							rel.getAttributeRelationships().size() - 1);
 					lastAttributeToRelationshipMap.put(relAttr.getParentAttributeName(), rel);
 				}
+
 				// all relationships relating to an attribute
 				for (DataObjectAttributeRelationship relAttr : rel.getAttributeRelationships()) {
 					List<DataObjectRelationship> rels = attributeToRelationshipMap
@@ -461,6 +478,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 					rels.add(rel);
 				}
 			}
+
 			// since the attribute will still exist in the embedded metadata, we need to put a block in on the standard
 			// cascade
 			if (rel.getMergeAction() == MetadataMergeAction.REMOVE) {
@@ -480,11 +498,14 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (attributeName == null) {
 			return null;
 		}
+
 		DataObjectAttribute attribute = null;
+
 		// attempt to get it from the local attribute map (if any attributed defined locally)
 		if (attributes != null) {
 			attribute = attributeMap.get(attributeName);
 		}
+
 		// if we don't find one, but we have an embedded metadata object, check it
 		if (attribute == null && embedded != null) {
 			attribute = embedded.getAttribute(attributeName);
@@ -494,6 +515,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 				attribute = null;
 			}
 		}
+
 		return attribute;
 	}
 
@@ -505,11 +527,14 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (collectionName == null) {
 			return null;
 		}
+
 		DataObjectCollection collection = null;
+
 		// attempt to get it from the local attribute map (if any attributed defined locally)
 		if (collections != null) {
 			collection = collectionMap.get(collectionName);
 		}
+
 		// if we don't find one, but we have an embedded metadata object, check it
 		if (collection == null && embedded != null) {
 			collection = embedded.getCollection(collectionName);
@@ -519,6 +544,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 				collection = null;
 			}
 		}
+
 		return collection;
 	}
 
@@ -530,11 +556,14 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (relationshipName == null) {
 			return null;
 		}
+
 		DataObjectRelationship relationship = null;
+
 		// attempt to get it from the local attribute map (if any attributed defined locally)
 		if (relationships != null) {
 			relationship = relationshipMap.get(relationshipName);
 		}
+
 		// if we don't find one, but we have an embedded metadata object, check it
 		if (relationship == null && embedded != null) {
 			relationship = embedded.getRelationship(relationshipName);
@@ -544,6 +573,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 				relationship = null;
 			}
 		}
+
 		return relationship;
 	}
 
@@ -553,34 +583,40 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 	@Override
 	public List<DataObjectRelationship> getRelationshipsInvolvingAttribute(String attributeName) {
 		// somewhat complex, since it returns a list of all possible relationships
-		//
 		if (StringUtils.isBlank(attributeName)) {
 			return null;
 		}
+
 		Map<Object, DataObjectRelationship> relationships = new HashMap<Object, DataObjectRelationship>();
 		// Look locally
 		if (attributeToRelationshipMap != null && attributeToRelationshipMap.containsKey(attributeName)) {
 			for (DataObjectRelationship rel : attributeToRelationshipMap.get(attributeName)) {
 				Object mergeKey = rel.getName();
+
 				if (rel instanceof MetadataCommonInternal) {
 					mergeKey = ((MetadataCommonInternal) rel).getUniqueKeyForMerging();
 				}
+
 				relationships.put(mergeKey, rel);
 			}
 		}
+
 		// now, if we have an embedded object, look for matching ones, but exclude if the relationship is the same
 		// as that means it was overridden by this bean
 		if (embedded != null) {
 			for (DataObjectRelationship rel : embedded.getRelationshipsInvolvingAttribute(attributeName)) {
 				Object mergeKey = rel.getName();
+
 				if (rel instanceof MetadataCommonInternal) {
 					mergeKey = ((MetadataCommonInternal) rel).getUniqueKeyForMerging();
 				}
+
 				if (!relationships.containsKey(mergeKey)) {
 					relationships.put(mergeKey, rel);
 				}
 			}
 		}
+
 		return new ArrayList<DataObjectRelationship>(relationships.values());
 	}
 
@@ -593,15 +629,19 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (StringUtils.isBlank(attributeName)) {
 			return null;
 		}
+
 		DataObjectRelationship relationship = null;
+
 		// Look locally
 		if (lastAttributeToRelationshipMap != null) {
 			relationship = lastAttributeToRelationshipMap.get(attributeName);
 		}
+
 		// if nothing found local, recurse into the embedded provider
 		if (relationship == null && embedded != null) {
 			relationship = embedded.getRelationshipByLastAttributeInRelationship(attributeName);
 		}
+
 		return relationship;
 	}
 
@@ -692,9 +732,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (supportsOptimisticLocking != null) {
 			return supportsOptimisticLocking;
 		}
+
 		if (embedded != null) {
 			return embedded.isSupportsOptimisticLocking();
 		}
+
 		return false;
 	}
 
@@ -716,6 +758,7 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (getAutoCreateUifViewTypes() == null) {
 			return false;
 		}
+
 		return getAutoCreateUifViewTypes().contains(viewType)
 				|| getAutoCreateUifViewTypes().contains(UifAutoCreateViewType.ALL);
 	}
@@ -729,9 +772,11 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 		if (autoCreateUifViewTypes != null) {
 			return autoCreateUifViewTypes;
 		}
+
 		if (embedded != null) {
 			return embedded.getAutoCreateUifViewTypes();
 		}
+
 		return null;
 	}
 

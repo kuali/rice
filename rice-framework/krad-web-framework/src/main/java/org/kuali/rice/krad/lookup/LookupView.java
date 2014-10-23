@@ -190,7 +190,7 @@ public class LookupView extends FormView {
         if (!multipleValuesSelect) {
             // if coming from a quickfinder we will show the return URL
             if ((lookupForm.getInitialRequestParameters() != null) && lookupForm.getInitialRequestParameters()
-                    .containsKey(UifParameters.QUICKFINDER_ID)) {
+                    .containsKey(UifParameters.CONVERSION_FIELDS)) {
                 returnLinkAllowed = true;
             } else {
                 maintenanceLinksAllowed = true;

@@ -135,7 +135,7 @@ public class LibraryFieldsDataAft extends LibraryBase {
 
     protected void testDataFieldAppendPropertyWithField() throws Exception {
         String valueText = textValueUnderTest("Demo-DataField-Example8", "DataField 1");
-        assertTrue(valueText.contains("1001 *-* My Book Title"));
+        assertTrue(valueText.contains("1001 *-* My Inline Book Title"));
     }
 
     protected void testDataFieldApplyFullMask() throws Exception {

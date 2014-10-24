@@ -150,7 +150,10 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
                 configurableWithExpression = (UifDictionaryBean) nestedObject;
             }
 
-            configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
+            // only add the expression if it can be set on the configurable
+            if (ObjectPropertyUtils.isWritableProperty(configurableWithExpression, adjustedPropertyName)) {
+                configurableWithExpression.getPropertyExpressions().put(adjustedPropertyName, expression);
+            }
         }
     }
 

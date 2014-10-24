@@ -34,6 +34,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -192,6 +193,11 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         fieldValues.remove(KRADConstants.DOC_NUM);
 
         QueryByCriteria criteria = getRoleCriteria(fieldValues);
+
+        if(criteria == null) {
+            // The getRoleCriteria method will return null if there is a criteria which will return zero rows
+            return Collections.emptyList();
+        }
 
         List<Role> results = KimApiServiceLocator.getRoleService().findRoles(criteria).getResults();
         List<RoleBo> roles = new ArrayList<RoleBo>(results.size());
@@ -359,6 +365,14 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		return UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+docTypeAction, parameters)+hrefPart;
 	}
 
+    /**
+     * This method will generate a QueryByCriteria which locates the roles
+     * matching the criteria passed into the fieldValues parameter, or null if
+     * the search would return zero results.
+     * @param fieldValues A Map of the desired criteria to use when finding roles
+     * @return A QueryByCriteria object which can be used to locate matching
+     * roles in the database or null if the search would yield zero results
+     */
     public QueryByCriteria getRoleCriteria(Map<String, String> fieldValues) {
         List<Predicate> criteria = new ArrayList<Predicate>();
 
@@ -377,6 +391,11 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
                     }
                 } else {
                     Collection<String> roleIds = getRoleIdsForPrincipalName(lookupValue);
+
+                    if(CollectionUtils.isEmpty(roleIds)) {
+                        return null;
+                    }
+
                     criteria.add( in(KimConstants.PrimaryKeyConstants.ID, roleIds) );
                 }
             }
@@ -393,13 +412,31 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 //            setupAttrCriteria(criteria, criteriaMap.get(ROLE_MEMBER_ATTRIBUTE_CRITERIA), kimTypeId);
 //        }
         if (!criteriaMap.get(PERMISSION_CRITERIA).isEmpty()) {
-            criteria.add( in(KimConstants.PrimaryKeyConstants.ID, getPermissionRoleIds(criteriaMap.get(PERMISSION_CRITERIA))) );
+            Collection<String> permissionRoleIds = getPermissionRoleIds(criteriaMap.get(PERMISSION_CRITERIA));
+
+            if(CollectionUtils.isEmpty(permissionRoleIds)) {
+                return null;
+            }
+
+            criteria.add( in(KimConstants.PrimaryKeyConstants.ID, permissionRoleIds) );
         }
         if (!criteriaMap.get(RESPONSIBILITY_CRITERIA).isEmpty()) {
-            criteria.add( in(KimConstants.PrimaryKeyConstants.ID, getResponsibilityRoleIds(criteriaMap.get(RESPONSIBILITY_CRITERIA))) );
+            Collection<String> responsibilityRoleIds = getResponsibilityRoleIds(criteriaMap.get(RESPONSIBILITY_CRITERIA));
+
+            if(CollectionUtils.isEmpty(responsibilityRoleIds)) {
+                return null;
+            }
+
+            criteria.add( in(KimConstants.PrimaryKeyConstants.ID, responsibilityRoleIds) );
         }
         if (!criteriaMap.get(GROUP_CRITERIA).isEmpty()) {
-            criteria.add( in(KimConstants.PrimaryKeyConstants.ID, getGroupCriteriaRoleIds(criteriaMap.get(GROUP_CRITERIA))) );
+            Collection<String> groupCriteriaRoleIds = getGroupCriteriaRoleIds(criteriaMap.get(GROUP_CRITERIA));
+
+            if(CollectionUtils.isEmpty(groupCriteriaRoleIds)) {
+                return null;
+            }
+
+            criteria.add( in(KimConstants.PrimaryKeyConstants.ID, groupCriteriaRoleIds) );
         }
 
         return QueryByCriteria.Builder.fromPredicates(criteria);
@@ -457,9 +494,6 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
             if (roleMbr.isActive( now ) ) {
                 roleIds.add(roleMbr.getRoleId());
             }
-        }
-        if (roleIds.isEmpty()) {
-            return Collections.singletonList("NOTFOUND");  // this forces a blank return.
         }
 
         return roleIds;
@@ -557,10 +591,6 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
             roleIds.addAll( KimApiServiceLocator.getPermissionService().getRoleIdsForPermission(permission.getNamespaceCode(), permission.getName()) );
         }
 
-        if (roleIds.isEmpty()) {
-            roleIds.add("NOTFOUND"); // this forces a blank return.
-        }
-
         return roleIds;
     }
 
@@ -592,10 +622,6 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         Set<String> roleIds = new HashSet<String>();
         for (Responsibility responsibility : responsibilities) {
             roleIds.addAll(KimApiServiceLocator.getResponsibilityService().getRoleIdsForResponsibility(responsibility.getId()));
-        }
-
-        if (roleIds.isEmpty()) {
-            roleIds.add("NOTFOUND"); // this forces a blank return.
         }
 
         return roleIds;

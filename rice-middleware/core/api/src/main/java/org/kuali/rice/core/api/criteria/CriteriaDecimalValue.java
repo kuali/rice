@@ -64,7 +64,9 @@ public final class CriteriaDecimalValue implements CriteriaValue<BigDecimal> {
     /**
      * Since BigDecimal is not technically immutable we defensively copy when needed.
      *
-     * see Effective Java 2nd ed. page 79 for details.
+     * <p>
+     * See Effective Java 2nd ed. page 79 for details.
+     * </p>
      *
      * @param val the big decimal to check
      * @return the safe BigDecimal

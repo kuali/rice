@@ -83,7 +83,9 @@ public final class CriteriaKualiDecimalValue implements CriteriaValue<KualiDecim
     /**
      * Since KualiDecimal is not technically immutable we defensively copy when needed.
      *
-     * see Effective Java 2nd ed. page 79 for details.
+     * <p>
+     * See Effective Java 2nd ed. page 79 for details.
+     * </p>
      *
      * @param val the KualiDecimal to check
      * @return the safe BigDecimal

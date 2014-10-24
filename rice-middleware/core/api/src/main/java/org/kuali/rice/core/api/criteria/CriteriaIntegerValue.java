@@ -64,7 +64,9 @@ public final class CriteriaIntegerValue implements CriteriaValue<BigInteger> {
     /**
      * Since BigInteger is not technically immutable we defensively copy when needed.
      *
-     * see Effective Java 2nd ed. page 79 for details.
+     * <p>
+     * See Effective Java 2nd ed. page 79 for details.
+     * </p>
      *
      * @param val the big integer to check
      * @return the safe BigInteger

@@ -15,25 +15,6 @@
  */
 package org.kuali.rice.core.api.criteria;
 
-/**
- * Created by sona on 3/4/14.
- */
-/*
- * Copyright 2006-2014 The Kuali Foundation
- *
- * Licensed under the Educational Community License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.opensource.org/licenses/ecl2.php
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -46,7 +27,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 import java.math.BigDecimal;
-
 
 /**
  * A CriteriaValue which stores {@link org.kuali.rice.core.api.util.type.KualiPercent} information in the form of a
@@ -104,7 +84,9 @@ public final class CriteriaKualiPercentValue implements CriteriaValue<KualiPerce
     /**
      * Since KualiPercent is not technically immutable we defensively copy when needed.
      *
-     * see Effective Java 2nd ed. page 79 for details.
+     * <p>
+     * See Effective Java 2nd ed. page 79 for details.
+     * </p>
      *
      * @param val the KualiPercent to check
      * @return the safe BigDecimal

@@ -590,12 +590,13 @@ public class TableLayoutManagerBase extends CollectionLayoutManagerBase implemen
             expressionEvaluator.evaluatePropertyExpression(view, lineField.getContext(), lineField,
                     UifPropertyPaths.READ_ONLY, true);
 
-            if ((lineField instanceof DataField) && (this.isAutoTruncateColumns())) {
+            if (lineField instanceof DataField && this.isAutoTruncateColumns() != null && this.isAutoTruncateColumns()
+                    .equals(Boolean.TRUE)) {
                 lineField.addStyleClass(CssConstants.Classes.TRUNCATE);
             }
         }
 
-        if (this.isAutoTruncateColumns()) {
+        if (this.isAutoTruncateColumns() != null && this.isAutoTruncateColumns().equals(Boolean.TRUE)) {
             String onReadyScript = collectionGroup.getOnDocumentReadyScript();
             if (StringUtils.isBlank(onReadyScript)) {
                 onReadyScript = "";

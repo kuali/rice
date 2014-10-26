@@ -56,9 +56,11 @@ public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFa
 				&& !jpaProperties.containsKey(PersistenceUnitProperties.TARGET_SERVER)) {
             jpaProperties.put(PersistenceUnitProperties.TARGET_SERVER, JtaTransactionController.class.getName());
         }
+
 		if (!jpaProperties.containsKey(PersistenceUnitProperties.SESSION_CUSTOMIZER)) {
 			jpaProperties.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, KradEclipseLinkCustomizer.class.getName());
 		}
+
 		if (!jpaProperties.containsKey(PersistenceUnitProperties.CACHE_SHARED_DEFAULT)) {
 			jpaProperties.put(PersistenceUnitProperties.CACHE_SHARED_DEFAULT, "false");
 		}

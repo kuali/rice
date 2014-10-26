@@ -350,6 +350,10 @@ public class RichTable extends WidgetBase {
                         + ","
                         + targets(colIndex)
                         + "},");
+
+                // the sequence field needs to still be sorted when initially loaded
+                templateOptions.put(UifConstants.TableToolsKeys.AASORTING, "[[" + colIndex + ",'asc']]");
+
                 colIndex++;
 
                 if (actionIndex == 2 && actionFieldVisible) {

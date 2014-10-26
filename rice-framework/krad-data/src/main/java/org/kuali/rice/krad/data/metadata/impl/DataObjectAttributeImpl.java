@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.krad.data.metadata.impl;
 
-import com.google.common.annotations.Beta;
+import java.beans.PropertyEditor;
+import java.util.Collections;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.krad.data.metadata.DataObjectAttribute;
 import org.kuali.rice.krad.data.provider.annotation.UifDisplayHint;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
 
-import java.beans.PropertyEditor;
-import java.util.Collections;
-import java.util.Set;
+import com.google.common.annotations.Beta;
 
 /**
  * Base implementation class for attribute metadata for data object classes.
@@ -80,9 +81,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (displayAttributeName != null) {
 			return displayAttributeName;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getDisplayAttributeName();
 		}
+
 		return getName();
 	}
 
@@ -95,6 +98,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (StringUtils.isBlank(displayAttributeName)) {
 			displayAttributeName = null;
 		}
+
 		this.displayAttributeName = displayAttributeName;
 	}
 
@@ -106,9 +110,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (caseInsensitive != null) {
 			return caseInsensitive;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.isCaseInsensitive();
 		}
+
 		return false;
 	}
 
@@ -129,9 +135,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (forceUppercase != null) {
 			return forceUppercase;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.isForceUppercase();
 		}
+
 		return false;
 	}
 
@@ -153,9 +161,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (propertyEditor != null) {
 			return propertyEditor;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getPropertyEditor();
 		}
+
 		return null;
 	}
 
@@ -176,9 +186,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (validValues != null) {
 			return validValues;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getValidValues();
 		}
+
 		return null;
 	}
 
@@ -199,9 +211,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (dataType != null) {
 			return dataType;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getDataType();
 		}
+
 		return DataType.STRING;
 	}
 
@@ -265,9 +279,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (maxLength != null) {
 			return maxLength;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getMaxLength();
 		}
+
 		return null;
 	}
 
@@ -300,6 +316,7 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 					new Throwable("Throw-away Throwable for tracing purposes."));
 			return;
 		}
+
 		this.embeddedAttribute = embeddedAttribute;
 		setEmbeddedCommonMetadata(embeddedAttribute);
 	}
@@ -312,9 +329,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (required != null) {
 			return required;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.isRequired();
 		}
+
 		return false;
 	}
 
@@ -336,9 +355,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (validCharactersConstraintBeanName != null) {
 			return validCharactersConstraintBeanName;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getValidCharactersConstraintBeanName();
 		}
+
 		return validCharactersConstraintBeanName;
 	}
 
@@ -360,9 +381,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (owningType != null) {
 			return owningType;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getOwningType();
 		}
+
 		return null;
 	}
 
@@ -383,9 +406,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (persisted != null) {
 			return persisted;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.isPersisted();
 		}
+
 		return true;
 	}
 
@@ -406,7 +431,8 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (type != null) {
             return type;
         }
-        return String.class;
+
+		return String.class;
 	}
 
     /**
@@ -426,9 +452,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (inheritedFromType != null) {
 			return inheritedFromType;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getInheritedFromType();
 		}
+
 		return null;
 	}
 
@@ -449,9 +477,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (inheritedFromAttributeName != null) {
 			return inheritedFromAttributeName;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getInheritedFromAttributeName();
 		}
+
 		return null;
 	}
 
@@ -472,9 +502,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (inheritedFromParentAttributeName != null) {
 			return inheritedFromParentAttributeName;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getInheritedFromParentAttributeName();
 		}
+
 		return null;
 	}
 
@@ -537,9 +569,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (sensitive != null) {
 			return sensitive;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.isSensitive();
 		}
+
 		return false;
 	}
 
@@ -561,9 +595,11 @@ public class DataObjectAttributeImpl extends MetadataCommonBase implements DataO
 		if (displayHints != null) {
 			return displayHints;
 		}
+
 		if (embeddedAttribute != null) {
 			return embeddedAttribute.getDisplayHints();
 		}
+
 		return Collections.emptySet();
 	}
 

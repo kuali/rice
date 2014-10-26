@@ -239,12 +239,15 @@ public class DataDictionary {
         // Unlike the Spring post processor, we will only call for these operations on the
         // "top-level" beans and have them call post processing actions on embedded DD objects, if needed
         timer.start("DD Post Processing");
+        
         for (DataObjectEntry entry : ddBeans.getBeansOfType(DataObjectEntry.class).values()) {
             entry.dataDictionaryPostProcessing();
         }
+        
         for (DocumentEntry entry : ddBeans.getBeansOfType(DocumentEntry.class).values()) {
             entry.dataDictionaryPostProcessing();
         }
+        
         timer.stop();
 
         timer.start("Data Dictionary Indexing");
@@ -268,29 +271,36 @@ public class DataDictionary {
 
     protected void generateMissingInquiryDefinitions() {
         Collection<InquiryView> inquiryViewBeans = ddBeans.getBeansOfType(InquiryView.class).values();
+        
         // Index all the inquiry views by the data object class so we can find them easily below
         Map<Class<?>,InquiryView> defaultViewsByDataObjectClass = new HashMap<Class<?>, InquiryView>();
+        
         for ( InquiryView view : inquiryViewBeans ) {
             if ( view.getViewName().equals(UifConstants.DEFAULT_VIEW_NAME) ) {
                 defaultViewsByDataObjectClass.put(view.getDataObjectClassName(), view);
             }
         }
+        
         for (DataObjectEntry entry : ddBeans.getBeansOfType(DataObjectEntry.class).values()) {
             // if an inquiry already exists, just ignore - we only default if none exist
             if ( defaultViewsByDataObjectClass.containsKey(entry.getDataObjectClass())) {
                 continue;
             }
+            
             // We only generate the inquiry if the metadata says to
             if ( entry.getDataObjectMetadata() == null ) {
                 continue;
             }
+            
             if ( !entry.getDataObjectMetadata().shouldAutoCreateUifViewOfType(UifAutoCreateViewType.INQUIRY)) {
                 continue;
             }
+            
             // no inquiry exists and we want one to, create one
             if ( LOG.isInfoEnabled() ) {
                 LOG.info( "Generating Inquiry View for : " + entry.getDataObjectClass() );
             }
+            
             String inquiryBeanName = entry.getDataObjectClass().getSimpleName()+"-InquiryView-default";
 
             InquiryView inquiryView = KRADServiceLocatorWeb.getUifDefaultingService().deriveInquiryViewFromMetadata(entry);

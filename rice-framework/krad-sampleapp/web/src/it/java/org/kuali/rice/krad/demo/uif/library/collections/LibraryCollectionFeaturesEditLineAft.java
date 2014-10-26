@@ -209,8 +209,8 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         testEditAuthorizationEditLineCollectionReadOnly();
         testEditAuthorizationEditLineLineAuthorization();
         testLookup();
-        testRowDetailsGroup();
-        testSubCollection();
+//        testRowDetailsGroup(); // tested separately
+//        testSubCollection(); // tested separately
     }
 
     /**
@@ -572,6 +572,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         String tableRowsCssSelector = "#" + exampleId + TABLE_ROWS_CSS_SELECTOR;
 
         // get the values of the line fields in the given row
+        Thread.sleep(1000); // avoid cache change by going to quick
         List<WebElement> spanElements = findVisibleElements(By.cssSelector(tableRowsCssSelector)).get(rowIndex - 1).
                 findElements(By.cssSelector(" div.uif-inputField > span"));
         String field1Value = spanElements.get(0).getText();
@@ -579,6 +580,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         String fieldValue = spanElements.get(lineFieldToEditIndex - 1).getText();
 
         // open the edit line dialog
+        Thread.sleep(1000); // avoid cache change by going to quick
         openEditLineDialog(exampleId, rowIndex);
 
         // get the original values of the input fields
@@ -884,6 +886,34 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     public void testCollectionFeaturesEditLineNav() throws Exception {
         this.waitSeconds = FIVE_SECOND_WAIT_TIME;
         testCollectionFeaturesEditLine();
+        passed();
+    }
+
+    @Test
+    public void testRowDetailsGroupBookmark() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testRowDetailsGroup();
+        passed();
+    }
+
+    @Test
+    public void testRowDetailsGroupNav() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testRowDetailsGroup();
+        passed();
+    }
+
+    @Test
+    public void testSubCollectionBookmark() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testSubCollection();
+        passed();
+    }
+
+    @Test
+    public void testSubCollectionNav() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testSubCollection();
         passed();
     }
 }

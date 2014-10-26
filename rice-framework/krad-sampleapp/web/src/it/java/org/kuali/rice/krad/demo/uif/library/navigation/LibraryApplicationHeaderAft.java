@@ -44,6 +44,7 @@ public class LibraryApplicationHeaderAft extends LibraryNavigationBase {
         waitAndClickByLinkText("Fluid Application Header");
         switchToWindow("Kuali :: Default Application Header");
         waitForElementPresentByXpath("//h1/span");
+        assertElementPresentByXpath("//header[@class='container-fluid uif-viewHeader uif-header' and @data-header_for='Demo-AppHeader-View1']");
         waitForTextPresent("Fluid Application Header");
         selectParentWindow();
     }
@@ -53,6 +54,7 @@ public class LibraryApplicationHeaderAft extends LibraryNavigationBase {
         waitAndClickByLinkText("Fixed Application Header");
         switchToWindow("Kuali :: Default Application Header");
         waitForElementPresentByXpath("//h1/span");
+        assertElementPresentByXpath("//header[@class='container uif-viewHeader uif-header' and @data-header_for='Demo-AppHeader-View2']");
         waitForTextPresent("Fixed Application Header");
         selectParentWindow();
     }

@@ -79,9 +79,12 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
         if (camelCasedName.contains(".")) {
             camelCasedName = StringUtils.substringAfterLast(camelCasedName, ".");
         }
+        
         StringBuilder label = new StringBuilder(camelCasedName);
+        
         // upper case the 1st letter
         label.replace(0, 1, label.substring(0, 1).toUpperCase());
+        
         // loop through, inserting spaces when cap
         for (int i = 0; i < label.length(); i++) {
             if (Character.isUpperCase(label.charAt(i)) || Character.isDigit(label.charAt(i)) ) {
@@ -102,6 +105,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 }
             }
         }
+        
         return null;
     }
 
@@ -225,6 +229,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
     @Override
     public ValidCharactersConstraint deriveValidCharactersConstraint(AttributeDefinition attrDef) {
         ValidCharactersConstraint validCharactersConstraint = null;
+        
         // First - see if one was defined in the metadata (provided by krad-data module annotations)
         if (attrDef.getDataObjectAttribute() != null) {
             if (StringUtils.isNotBlank(attrDef.getDataObjectAttribute().getValidCharactersConstraintBeanName())) {
@@ -235,6 +240,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 }
             }
         }
+        
         // if not, make an intelligent guess from the data type
         if (validCharactersConstraint == null) {
             if (attrDef.getDataType() != null) {
@@ -258,6 +264,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
                 }
             }
         }
+        
         // default to UTF8
         if (validCharactersConstraint == null) {
             validCharactersConstraint = (ValidCharactersConstraint) dataDictionaryService
@@ -404,6 +411,7 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
     protected void addAttributesToLookupCriteria( LookupView view, DataObjectEntry dataObjectEntry ) {
         AttributeDefinition activeAttribute = null;
+        
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
             // Check if we have been told not to display this attribute here
             boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_LOOKUP_CRITERIA);
@@ -412,15 +420,18 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
             if ( dontDisplay ) {
                 continue;
             }
+            
             if ( attr.getName().equals( KRADPropertyConstants.ACTIVE ) ) {
                 activeAttribute = attr;
                 continue; // leave until the end of the lookup criteria
             }
+            
             LookupInputField field = ComponentFactory.getLookupCriteriaInputField();
             field.setPropertyName(attr.getName());
             field.setLabel(attr.getLabel());
             view.getCriteriaFields().add(field);
         }
+        
         // If there was one, add the active attribute at the end
         if ( activeAttribute != null ) {
             LookupInputField field = ComponentFactory.getLookupCriteriaInputField();
@@ -432,21 +443,26 @@ public class UifDefaultingServiceImpl implements UifDefaultingService {
 
     protected void addAttributesToLookupResults( LookupView view, DataObjectEntry dataObjectEntry ) {
         AttributeDefinition activeAttribute = null;
+        
         for ( AttributeDefinition attr : dataObjectEntry.getAttributes() ) {
             // Check if we have been told not to display this attribute here
             boolean dontDisplay = hasHintOfType(attr.getDataObjectAttribute(), UifDisplayHintType.NO_LOOKUP_RESULT);
             dontDisplay |= (attr.getControlField() instanceof HiddenControl);
+            
             if ( dontDisplay ) {
                 continue;
             }
+            
             if ( attr.getName().equals( KRADPropertyConstants.ACTIVE ) ) {
                 activeAttribute = attr;
                 continue; // leave until the end of the lookup results
             }
+            
             DataField field = ComponentFactory.getDataField();
             field.setPropertyName(attr.getName());
             view.getResultFields().add(field);
         }
+        
         // If there was one, add the active attribute at the end
         if ( activeAttribute != null ) {
             DataField field = ComponentFactory.getDataField();

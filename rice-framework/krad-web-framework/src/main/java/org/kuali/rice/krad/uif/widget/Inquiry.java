@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.krad.uif.widget;
 
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -47,6 +39,14 @@ import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.UrlFactory;
+
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
 
 /**
  * Widget for rendering an Inquiry link or DirectInquiry action field
@@ -343,7 +343,11 @@ public class Inquiry extends WidgetBase {
             onClickScript.append("\");");
 
             directInquiryAction.setPerformDirtyValidation(false);
-            directInquiryAction.setActionScript(onClickScript.toString());
+            String actionScript = "";
+            if (StringUtils.isNotEmpty(directInquiryAction.getActionScript())) {
+                actionScript += directInquiryAction.getActionScript();
+            }
+            directInquiryAction.setActionScript(actionScript + onClickScript.toString());
 
             setRender(true);
         }

@@ -17,6 +17,7 @@ package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -66,11 +67,11 @@ public class LibraryClientResponsivenessInlineEditingAft extends WebDriverLegacy
     protected void testClientResponsivenessInlineEditTextField() throws Exception {
     	waitForElementPresent("//section[@id='Demo-InlineEdit-Example1']/div/button[contains(text(),'My InLine Book Title')]");
     	waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example1']/div/button");
-        waitAndTypeByName("dataField3","1");
+        waitAndTypeByXpath("//div[@data-parent='Demo-InlineEdit-Example1']/div/input[@name='dataField3']", "1");
         waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example1']/div/div/div/button[@title='Save']");
         waitForElementPresent("//section[@id='Demo-InlineEdit-Example1']/div/button[contains(text(),'My Inline Book Title1')]");
         waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example1']/div/button");
-        waitAndTypeByName("dataField3","a");
+        waitAndTypeByXpath("//div[@data-parent='Demo-InlineEdit-Example1']/div/input[@name='dataField3']", "a");
         waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example1']/div/div/div/button[@title='Cancel']");
         waitForElementPresent("//section[@id='Demo-InlineEdit-Example1']/div/button[contains(text(),'My Inline Book Title1')]");
     }
@@ -83,11 +84,11 @@ public class LibraryClientResponsivenessInlineEditingAft extends WebDriverLegacy
     	selectByName("exampleShown","Inline Edit Text Field w Complex Markup");
     	waitForElementPresent("//section[@id='Demo-InlineEdit-Example2']/div/button[contains(text(),'My Book Title')]");
     	waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example2']/div/button");
-        waitAndTypeByName("dataField6","a");
+        waitAndTypeByXpath("//div[@data-parent='Demo-InlineEdit-Example2']/div/input[@name='dataField6']", "a");
         waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example2']/div/div/div/button[@title='Save']");
         waitForElementPresent("//section[@id='Demo-InlineEdit-Example2']/div/button[contains(text(),'My Book Titlea')]");
         waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example2']/div/button");
-        waitAndTypeByName("dataField6","b");
+        waitAndTypeByXpath("//div[@data-parent='Demo-InlineEdit-Example2']/div/input[@name='dataField6']", "b");
         waitAndClickByXpath("//section[@id='Demo-InlineEdit-Example2']/div/div/div/button[@title='Cancel']");
         waitForElementPresent("//section[@id='Demo-InlineEdit-Example2']/div/button[contains(text(),'My Book Titlea')]");
     }
@@ -193,11 +194,11 @@ public class LibraryClientResponsivenessInlineEditingAft extends WebDriverLegacy
     	selectByName("exampleShown","Inline Edit in Table Collection");
     	waitForElementPresent("//table/tbody/tr/td/div/button[contains(text(),'1')]");
     	waitAndClickByXpath("//table/tbody/tr/td/div/button");
-        waitAndTypeByName("collection1[3].field1","a");
+        waitAndTypeByName("collection1[0].field1","a");
         waitAndClickByXpath("//table/tbody/tr/td/div/div/div/button[@title='Save']");
         waitForElementPresent("//table/tbody/tr/td/div/button[contains(text(),'1a')]");
         waitAndClickByXpath("//table/tbody/tr/td/div/button");
-        waitAndTypeByName("collection1[3].field1","b");
+        waitAndTypeByName("collection1[0].field1","b");
         waitAndClickByXpath("//table/tbody/tr/td/div/div/div/button[@title='Cancel']");
         waitForElementPresent("//table/tbody/tr/td/div/button[contains(text(),'1a')]");
     }

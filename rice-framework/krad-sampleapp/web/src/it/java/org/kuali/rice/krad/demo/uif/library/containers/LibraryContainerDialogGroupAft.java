@@ -173,8 +173,7 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
         WebElement dialogLink = findElement(By.cssSelector("section[id='Demo-DialogGroup-Example15'] > a"));
         dialogLink.click();
         waitForProgressLoading();
-        dialog = waitForElementVisibleBy(By.cssSelector(
-                "section[id='Demo-DialogGroup-Example15'] > section[id='Demo-DialogGroup-DestroyDialogOnHidden']"));
+        dialog = waitForElementVisibleBy(By.cssSelector("section[id='Demo-DialogGroup-DestroyDialogOnHidden']"));
         WebElement anyButton = dialog.findElement(By.cssSelector("button:first-of-type"));
         anyButton.click();
         try {

@@ -371,35 +371,41 @@ abstract public class DataDictionaryEntryBase extends DictionaryBeanBase impleme
         embedMetadata();
         if (relationships != null) {
             relationshipMap.clear();
+            
             for (RelationshipDefinition relationship : relationships) {
                 if (relationship == null) {
                     LOG.warn("Skipping invalid (null) relationshipDefinition on " + this);
                     continue;
                 }
+                
                 String relationshipName = relationship.getObjectAttributeName();
                 if (StringUtils.isBlank(relationshipName)) {
                     LOG.warn("Skipping invalid relationshipDefinition with blank relationshipName on " + this);
                     continue;
                 }
+                
                 relationship.setSourceClass(getEntryClass());
                 relationshipMap.put(relationshipName, relationship);
             }
         }
 
         //Populate attributes with nested attribute definitions
-        if (complexAttributes != null) {
+        if (complexAttributes != null) {            
             for (ComplexAttributeDefinition complexAttribute : complexAttributes) {
                 if ( complexAttribute != null ) {
                     addNestedAttributes(complexAttribute, complexAttribute.getName());
                 }
             }
         }
+        
         for (AttributeDefinition definition : getAttributes()) {
             definition.dataDictionaryPostProcessing();
         }
+        
         for (CollectionDefinition definition : getCollections()) {
             definition.dataDictionaryPostProcessing();
         }
+        
         for (RelationshipDefinition definition : getRelationships()) {
             definition.dataDictionaryPostProcessing();
         }

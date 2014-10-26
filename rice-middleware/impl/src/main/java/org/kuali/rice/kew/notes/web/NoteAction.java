@@ -21,6 +21,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.notes.Attachment;
@@ -35,9 +36,12 @@ import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
@@ -59,6 +63,7 @@ import java.util.List;
 public class NoteAction extends KewKualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NoteAction.class);
+    private DataObjectService dataObjectService;
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -176,6 +181,8 @@ public class NoteAction extends KewKualiAction {
         noteForm.setShowEdit("no");
         noteForm.setNoteIdNumber(null);
         retrieveNoteList(request, noteForm);
+        flushDocumentHeaderCache();
+
         return start(mapping, form, request, response);
     }
 
@@ -221,6 +228,7 @@ public class NoteAction extends KewKualiAction {
 //            List allNotes = getNoteService().getNotesByDocumentId(noteForm.getDocId());
 
             CustomNoteAttribute customNoteAttribute = null;
+            flushDocumentHeaderCache();
             DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(noteForm.getDocId());
 
             List<Note> allNotes = routeHeader.getNotes();
@@ -267,6 +275,9 @@ public class NoteAction extends KewKualiAction {
             } else if (noteForm.getNoteList().size() == 0) {
                 noteForm.setShowAdd(Boolean.FALSE);
             }
+
+            EntityManager entityManager = (EntityManager) GlobalResourceLoader.getService("rice.kew.entityManager");
+            entityManager.detach(routeHeader);
         }
     }
 
@@ -327,7 +338,21 @@ public class NoteAction extends KewKualiAction {
     private RouteHeaderService getRouteHeaderService() {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
+
     private static UserSession getUserSession() {
         return GlobalVariables.getUserSession();
     }
+
+    public DataObjectService getDataObjectService() {
+        if(dataObjectService == null) {
+            dataObjectService = KRADServiceLocator.getDataObjectService();
+        }
+
+        return dataObjectService;
+    }
+
+    private void flushDocumentHeaderCache() {
+        getDataObjectService().flush(DocumentRouteHeaderValue.class);
+    }
+
 }

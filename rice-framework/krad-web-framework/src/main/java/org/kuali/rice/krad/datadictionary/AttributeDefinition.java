@@ -502,6 +502,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
         if ( attributeSecurity != null ) {
             return attributeSecurity;
         }
+        
         // If we have an embedded attribute definition and this attribute is
         // listed as "sensitive", then set the field to be masked by default on the UI
         if ( getDataObjectAttribute() != null ) {
@@ -512,6 +513,7 @@ public class AttributeDefinition extends AttributeDefinitionBase implements Case
                 attributeSecurity = attrSec;
             }
         }
+        
         return attributeSecurity;
     }
 

@@ -3,11 +3,32 @@
 /*
  * Adding this .container override to fix the little sliver of gray on the left side
  * of the page. This might cause issues elsewhere, but for now it's a temporary fix.
+ *
+ * The media queries were added to fix the issue seen with fixed headers due to .container being overridden.
+ * They can be removed if the .container override is removed.
 */
 
 .container {
   padding-left: 15px;
   padding-right: 0;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
 }
 
 /* *** */

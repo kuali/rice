@@ -124,19 +124,14 @@ public class ObjectUtilsTest extends KRADTestCase {
         values.put("nestedImpl.value", "value");
 
         FieldUtils.populateBusinessObjectFromMap(nestedBo, values);
-
         assertNotNull(nestedBo.nested);
 
         nestedBo.nested = null;
         values.clear();
         values.put("nestedIntf.value", "value");
 
-        try {
-            FieldUtils.populateBusinessObjectFromMap(nestedBo, values);
-            fail("Expected to throw NestedNullException due to attempt to instantiate interface");
-        } catch (NestedNullException nne) {
-            // expected
-        }
+        FieldUtils.populateBusinessObjectFromMap(nestedBo, values);
+        assertNull(nestedBo.nested);
 
         BOContainingPerson bo = new BOContainingPerson();
         values.clear();

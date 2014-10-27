@@ -150,6 +150,20 @@ KradResponse.prototype = {
 
         var component = jQuery("#" + id + "_update", content);
 
+        // is the new component now required
+        var nowRequired = jQuery(".required", component).size() > 0;
+
+        // get the old label
+        var oldLabel = jQuery("#" + id + "_label");
+
+        // if found then remove any required indicators and then add/readd back
+        if(oldLabel) {
+            oldLabel.find("span." + kradVariables.REQUIRED_MESSAGE_CLASS).remove();
+            if (nowRequired) {
+                oldLabel.append("<span class='" + kradVariables.REQUIRED_MESSAGE_CLASS + "'>*</span>");
+            }
+        }
+
         // special label handling, if any
         var theLabel = jQuery("[data-label_for='" + id + "']", component);
         if (jQuery(".displayWith-" + id).length && theLabel.length) {

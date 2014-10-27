@@ -26,6 +26,7 @@ import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.DataBinding;
 import org.kuali.rice.krad.uif.component.DelayedCopy;
+import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -33,6 +34,7 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -43,6 +45,7 @@ import org.kuali.rice.krad.uif.widget.Scrollpane;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -118,6 +121,8 @@ import java.util.Set;
         @BeanTag(name = "maintenanceVerticalSubSection", parent = "Uif-MaintenanceVerticalBoxSubSection")})
 public class GroupBase extends ContainerBase implements Group {
     private static final long serialVersionUID = 7953641325356535509L;
+
+    public static enum ACTION_VALIDATION_COMPONENTS {QUICKFINDER, INQUIRY, COLLECTION}
 
     private String fieldBindByNamePrefix;
     private String fieldBindingObjectPath;
@@ -260,27 +265,28 @@ public class GroupBase extends ContainerBase implements Group {
             setNestedComponentId(getHelp().getHelpAction(), this.getId() + UifConstants.IdSuffixes.HELP);
         }
 
-        setupValidationScripts(false);
+        // set up action validation scripts to avoid bind errors
+        setupValidationScripts(ACTION_VALIDATION_COMPONENTS.QUICKFINDER, ACTION_VALIDATION_COMPONENTS.INQUIRY);
     }
 
     /**
      * Helper method to set the validation action scripts for widgets (at the very least, quickfinders, and currently,
      * at the most, inquiries also).
      *
-     * @param quickFindersOnly whether to process only quickfinders
+     * @param componentsToValidate the list of components with actions to validate
      */
-    protected void setupValidationScripts(boolean quickFindersOnly) {
-        List<InputField> inputFieldsWithWidgets = new ArrayList<InputField>();
+    protected void setupValidationScripts(ACTION_VALIDATION_COMPONENTS... componentsToValidate) {
+        List<ACTION_VALIDATION_COMPONENTS> componentsList = Arrays.asList(componentsToValidate);
+        List<InputField> inputFieldsWithActionsToValidate = new ArrayList<InputField>();
         List<InputField> allInputFields = new ArrayList<InputField>();
         for (Component component : getItems()) {
             if (component instanceof InputField) {
                 InputField inputField = (InputField) component;
                 QuickFinder quickFinder = inputField.getQuickfinder();
                 Inquiry inquiry = inputField.getInquiry();
-                if (quickFinder != null) {
-                    inputFieldsWithWidgets.add(inputField);
-                } else if (inquiry != null && !quickFindersOnly) {
-                    inputFieldsWithWidgets.add(inputField);
+                if ((quickFinder != null && componentsList.contains(ACTION_VALIDATION_COMPONENTS.QUICKFINDER)) || (
+                        inquiry != null && componentsList.contains(ACTION_VALIDATION_COMPONENTS.INQUIRY))) {
+                    inputFieldsWithActionsToValidate.add(inputField);
                 }
                 allInputFields.add(inputField);
             }
@@ -288,53 +294,61 @@ public class GroupBase extends ContainerBase implements Group {
 
         // for all input fields with widgets we want to set their action script to validate the other
         // fields in this group that the widgets are effected by
-        for (InputField widgetInputField : inputFieldsWithWidgets) {
-            List<String> controlsToValidate = new ArrayList<String>();
+        for (InputField widgetInputField : inputFieldsWithActionsToValidate) {
+            QuickFinder quickFinder = widgetInputField.getQuickfinder();
+            Inquiry inquiry = widgetInputField.getInquiry();
+            String script = buildInputFieldValidationActionScript(allInputFields, Arrays.asList(
+                    widgetInputField.getId()));
 
-            for (InputField inputField : allInputFields) {
-                if (!StringUtils.equals(inputField.getId(), widgetInputField.getId())
-                        && inputField.getValidCharactersConstraint() != null
-                        && inputField.getValidCharactersConstraint().getApplyClientSide() != null
-                        && inputField.getValidCharactersConstraint().getApplyClientSide() == Boolean.TRUE) {
-                    controlsToValidate.add(inputField.getId() + UifConstants.IdSuffixes.CONTROL);
-                }
+            // quickfinders
+            if (componentsList.contains(ACTION_VALIDATION_COMPONENTS.QUICKFINDER) && quickFinder != null) {
+                Action quickFinderAction = quickFinder.getQuickfinderAction();
+                script = ScriptUtils.appendScript(script, quickFinderAction.getActionScript());
+                quickFinderAction.setActionScript(script);
             }
 
-            // set the action scripts and set them on quickfinders and/or inquiries
-            if (!controlsToValidate.isEmpty()) {
-                String script = "var control;var allValid=true;";
-                for (String controlToValidate : controlsToValidate) {
-                    script += "control=jQuery('#" + controlToValidate
-                            + "');if(jQuery(control).val()){allValid=allValid&&validateFieldValue(control);}";
-                }
-                script += "if(allValid == 0){return;}control = null;";
-
-                QuickFinder quickFinder = widgetInputField.getQuickfinder();
-                Inquiry inquiry = widgetInputField.getInquiry();
-
-                // quickfinders
-                if (quickFinder != null) {
-                    String actionScript = quickFinder.getQuickfinderAction().getActionScript();
-                    if (StringUtils.isNotEmpty(actionScript)) {
-                        actionScript = script + actionScript;
-                    } else {
-                        actionScript = script;
-                    }
-                    quickFinder.getQuickfinderAction().setActionScript(actionScript);
-                }
-
-                // inquiries
-                if (!quickFindersOnly && inquiry != null) {
-                    String actionScript = inquiry.getDirectInquiryAction().getActionScript();
-                    if (StringUtils.isNotEmpty(actionScript)) {
-                        actionScript = script + actionScript;
-                    } else {
-                        actionScript = script;
-                    }
-                    inquiry.getDirectInquiryAction().setActionScript(actionScript);
-                }
+            // inquiries
+            if (componentsList.contains(ACTION_VALIDATION_COMPONENTS.INQUIRY) && inquiry != null) {
+                Action directInquiryAction = inquiry.getDirectInquiryAction();
+                script = ScriptUtils.appendScript(script, directInquiryAction.getActionScript());
+                directInquiryAction.setActionScript(script);
             }
         }
+    }
+
+    /**
+     * Helper method to build action script for input fields with actions that depend on the validation of
+     * other input fields in the same group.
+     *
+     * @param allInputFields all other input fields that might have validation constraints
+     * @param excludedFields fields that shouldn't be part of the validation script
+     */
+    protected String buildInputFieldValidationActionScript(List<InputField> allInputFields,
+            List<String> excludedFields) {
+        List<String> controlsToValidate = new ArrayList<String>();
+
+        for (InputField inputField : allInputFields) {
+            if ((excludedFields == null || !excludedFields.contains(inputField.getId()))
+                    && inputField.getValidCharactersConstraint() != null
+                    && inputField.getValidCharactersConstraint().getApplyClientSide() != null
+                    && inputField.getValidCharactersConstraint().getApplyClientSide() == Boolean.TRUE) {
+                controlsToValidate.add(inputField.getId() + UifConstants.IdSuffixes.CONTROL);
+                controlsToValidate.add(
+                        inputField.getId() + UifConstants.IdSuffixes.ADD_LINE + UifConstants.IdSuffixes.CONTROL);
+            }
+        }
+
+        // set the action scripts and set them on quickfinders and/or inquiries
+        String script = "";
+        if (!controlsToValidate.isEmpty()) {
+            script = "var control;var allValid=true;";
+            for (String controlToValidate : controlsToValidate) {
+                script += "control=jQuery('#" + controlToValidate
+                        + "');if(jQuery(control).val()){allValid=allValid&&validateFieldValue(control);}";
+            }
+            script += "if(allValid == 0){return;}control = null;";
+        }
+        return script;
     }
 
     /**
@@ -548,5 +562,4 @@ public class GroupBase extends ContainerBase implements Group {
         return disclosure != null && disclosure.isAjaxRetrievalWhenOpened() && (!disclosure.isRender() || !disclosure
                 .isDefaultOpen());
     }
-
 }

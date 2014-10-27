@@ -36,6 +36,7 @@ import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.element.Message;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.FieldGroup;
+import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.layout.CollectionLayoutManager;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -384,9 +385,44 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
 
         pushCollectionGroupToReference();
 
+        // set up action validation scripts to avoid bind errors
+        List<Component> allComponents = new ArrayList<Component>(getItems());
+        allComponents.addAll(getAddLineItems());
+        List<Component> allActionComponents = new ArrayList<Component>(getLineActions());
+        allActionComponents.addAll(getAddLineActions());
+        setupLineActionValidationScripts(allComponents, allActionComponents);
+
         // if rendering the collection group, build out the lines
         if (isRender()) {
             getCollectionGroupBuilder().build(view, model, this);
+        }
+    }
+
+    /**
+     * Helper method to set action validation script for every action component provided to validate every
+     * input field component.
+     *
+     * @param components the components with input fields
+     * @param actionComponents the components with actions
+     */
+    protected void setupLineActionValidationScripts(List<Component> components, List<Component> actionComponents) {
+        List<InputField> inputFields = new ArrayList<InputField>();
+        for (Component component : components) {
+            if (component instanceof InputField) {
+                inputFields.add((InputField) component);
+            }
+        }
+
+        String script = buildInputFieldValidationActionScript(inputFields, null);
+        for (Component actionComponent : actionComponents) {
+            if (actionComponent instanceof Action) {
+                Action action = (Action) actionComponent;
+                String onClickScript = action.getOnClickScript();
+                if (StringUtils.isNotEmpty(onClickScript)) {
+                    script = ScriptUtils.appendScript(script, onClickScript);
+                }
+                action.setOnClickScript(script);
+            }
         }
     }
 

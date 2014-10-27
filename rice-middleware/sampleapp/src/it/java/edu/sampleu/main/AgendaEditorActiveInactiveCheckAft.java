@@ -51,6 +51,7 @@ public class AgendaEditorActiveInactiveCheckAft extends WebDriverLegacyITBase {
 
     protected void testAgendaEditorActiveInactiveCheck() throws Exception {
         String uniqueText = RandomStringUtils.randomAlphabetic(9).toUpperCase();
+        String uniqueRuleText = RandomStringUtils.randomAlphabetic(9).toUpperCase();
 
         //Add Inactive & Verify
         selectFrameIframePortlet();
@@ -60,6 +61,8 @@ public class AgendaEditorActiveInactiveCheckAft extends WebDriverLegacyITBase {
         waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name",uniqueText+"Inactive");
         waitAndTypeByName("document.newMaintainableObject.dataObject.contextName","Context1");
         waitAndClickByName("document.newMaintainableObject.dataObject.agenda.active");
+        copyRuleFromExisting(uniqueText);
+        selectFrameIframePortlet();
         waitAndClickByXpath("//button[contains(text(),'Submit')]");
         waitAndClickConfirmSubmitOk();
         waitForTextPresent("Document was successfully submitted.");
@@ -79,6 +82,8 @@ public class AgendaEditorActiveInactiveCheckAft extends WebDriverLegacyITBase {
         selectByName("document.newMaintainableObject.dataObject.namespace","Kuali Rules Test");
         waitAndTypeByName("document.newMaintainableObject.dataObject.agenda.name",uniqueText+"Active");
         waitAndTypeByName("document.newMaintainableObject.dataObject.contextName","Context1");
+        copyRuleFromExisting(uniqueRuleText);
+        selectFrameIframePortlet();
         waitAndClickByXpath("//button[contains(text(),'Submit')]");
         waitAndClickConfirmSubmitOk();
         waitForTextPresent("Document was successfully submitted.");
@@ -103,6 +108,23 @@ public class AgendaEditorActiveInactiveCheckAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//input[@name='lookupCriteria[active]' and @value='']");
         waitAndClickButtonByExactText("Search");
         waitForTextPresent(uniqueText+"Inactive");
+    }
+
+    protected void copyRuleFromExisting(String ruleName) throws Exception {
+        waitAndClickButtonByExactText("Add Rule");
+        selectFrameIframePortlet();
+        waitAndClickById("copyRuleName_quickfinder_act");
+        gotoLightBox();
+        waitAndClickButtonByText("Search");
+        waitAndClickLinkContainingText("return value");
+        selectFrameIframePortlet();
+        waitAndClickButtonByExactText("Copy Rule");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.agendaItemLine.rule.name",ruleName);
+        if(!isElementPresentByXpath("//input[@name='document.newMaintainableObject.dataObject.agendaItemLine.rule.name' and @value='"+ruleName+"']")) {
+            waitAndTypeByName("document.newMaintainableObject.dataObject.agendaItemLine.rule.name",ruleName);
+        }
+        waitAndClickButtonByExactText("Add Rule");
+        waitForElementPresentByXpath("//a[@class='ruleTreeNode simplePropositionNode']/p");
     }
 
     /**

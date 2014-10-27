@@ -62,6 +62,12 @@ KradResponse.prototype = {
         var page = jQuery("[data-role='Page']", pageUpdate);
         var viewContent = jQuery("#" + kradVariables.VIEW_CONTENT_WRAPPER);
 
+        // remove any already existing matching dialogs from the view
+        jQuery('.modal', page).each(function() {
+                    jQuery('#' + this.id, viewContent.parent()).remove();
+                }
+        );
+
         page.hide();
 
         // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
@@ -77,6 +83,9 @@ KradResponse.prototype = {
 
         // Removes traces of dialog if one was destroyed by the refresh
         ensureDialogBackdropRemoved();
+
+        // move all dialogs to dialog section
+        jQuery('.modal').appendTo('#Uif-Dialogs');
 
         // remove detached dialogs
         jQuery("[data-detached='true']").remove();

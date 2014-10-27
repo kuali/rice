@@ -225,8 +225,8 @@
   <bean id="Demo-InputField-Example14" parent="Uif-VerticalBoxSection" p:headerText="Input Addons">
     <property name="items">
       <list>
-        <!-- ex:Demo-InputField-Example14 start-->
-        <bean parent="Uif-InputField" p:label="Message Addon" p:propertyName="inputField14">
+        <!-- ex:Demo-InputField-Example22 start-->
+        <bean parent="Uif-InputField" p:label="Message Addon" p:propertyName="inputField22">
           <property name="postInputCssClasses" value="input-group-addon"/>
           <property name="postInputAddons">
             <list>
@@ -234,14 +234,14 @@
             </list>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:label="Button Addon" p:propertyName="inputField15">
+        <bean parent="Uif-InputField" p:label="Button Addon" p:propertyName="inputField23">
           <property name="postInputAddons">
             <list>
                  <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-search"/>
             </list>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:label="Multiple Addons" p:propertyName="inputField16">
+        <bean parent="Uif-InputField" p:label="Multiple Addons" p:propertyName="inputField24">
           <property name="postInputAddons">
             <list>
               <bean parent="Uif-SecondaryActionButton" p:iconClass="icon-facebook3"/>
@@ -250,7 +250,7 @@
             </list>
           </property>
         </bean>
-        <!-- ex:Demo-InputField-Example14 end-->
+        <!-- ex:Demo-InputField-Example22 end-->
       </list>
     </property>
   </bean>

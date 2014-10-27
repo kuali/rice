@@ -72,7 +72,7 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndTypeByName("newCollectionLines['collection1_2'].field1", "");
         waitAndTypeByName("newCollectionLines['collection1_2'].field2", "");
         fireMouseOverEventByName("newCollectionLines['collection1_2'].field1");
-        waitForElementPresent("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs' and @style='margin: 0px 0px 0px 72.16666662693024px; opacity: 1; top: 61px; left: 834px; position: absolute; display: block;']");
+        waitIsVisible("//div[@class='jquerybubblepopup jquerybubblepopup-kr-error-cs' and @style='margin: 0px 0px 0px 72.16666662693024px; opacity: 1; top: 61px; left: 834px; position: absolute; display: block;']");
         waitAndTypeByName("newCollectionLines['collection1_2'].field1", "42");
         waitAndTypeByName("newCollectionLines['collection1_2'].field2", "55");
         jGrowl("Click Add");

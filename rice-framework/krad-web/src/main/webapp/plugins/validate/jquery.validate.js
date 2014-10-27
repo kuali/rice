@@ -710,7 +710,8 @@ $.extend($.validator, {
 		},
 
 		optional: function(element) {
-			return !$.validator.methods.required.call(this, $.trim(element.value), element) && "dependency-mismatch";
+			/* Kuali customization */
+			return !$.validator.methods.required.call(this, $.trim(element.value), element);// && "dependency-mismatch";
 		},
 
 		startRequest: function(element) {

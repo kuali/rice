@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
+import org.junit.Ignore;
 import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -277,6 +278,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
             passed();
         }
 
+        @Ignore("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
         @Test
         public void testTravelAccountLookUpDocumentLockingBookmark() throws Exception {
             testTravelAccountLookUpDocumentLocking();
@@ -289,12 +291,14 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
             passed();
         }
 
+        @Ignore("https://jira.kuali.org/browse/KULRICE-13967 AFT Failure DemoTravelAccountLookUpAft testTravelAccountLookupCaseConstraint Selenium clear stopped working")
         @Test
         public void testTravelAccountLookupCaseConstraintBookmark() throws Exception {
             testTravelAccountLookupCaseConstraint();
             passed();
         }
 
+        @Ignore("https://jira.kuali.org/browse/KULRICE-13967 AFT Failure DemoTravelAccountLookUpAft testTravelAccountLookupCaseConstraint Selenium clear stopped working")
         @Test
         public void testTravelAccountLookupCaseConstraintNav() throws Exception {
             testTravelAccountLookupCaseConstraint();

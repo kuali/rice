@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.application;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
@@ -315,12 +316,14 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
         passed();
     }
 
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13330 AFT Failure DemoTravelAuthorizationPessimisticLockingAft.testPessimisticLockingOnRoute full lock is not present in CI")
     @Test
     public void testPessimisticLockingOnRouteBookmark() throws Exception {
         testPessimisticLockingOnRoute();
         passed();
     }
 
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13330 AFT Failure DemoTravelAuthorizationPessimisticLockingAft.testPessimisticLockingOnRoute full lock is not present in CI")
     @Test
     public void testPessimisticLockingOnRouteNav() throws Exception {
         testPessimisticLockingOnRoute();
@@ -339,6 +342,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
         passed();
     }
 
+    @Ignore ("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     @Test
     public void testPessimisticLockingUnlockingOnApproveBookmark() throws Exception {
         testPessimisticLockingUnlockingOnApprove();
@@ -375,6 +379,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
         passed();
     }
 
+    @Ignore ("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     @Test
     public void testPessimisticLockingUnlockingOnAcknowledgeBookmark() throws Exception {
         testPessimisticLockingUnlockingOnAcknowledge();

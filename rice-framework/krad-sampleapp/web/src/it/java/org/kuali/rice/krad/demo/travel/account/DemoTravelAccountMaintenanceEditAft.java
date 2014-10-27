@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
+import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.openqa.selenium.By;
 import org.apache.commons.lang.RandomStringUtils;
@@ -342,16 +343,21 @@ public class DemoTravelAccountMaintenanceEditAft extends WebDriverLegacyITBase {
     	testSubAccountOperations();
         passed();
     }
+
     @Test
     public void testDemoTravelAccountMaintenanceSubAccountOperationsNav() throws Exception {
         testSubAccountOperations();
         passed();
     }
+
+    @Ignore ("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     @Test
     public void testTravelAccountMaintenanceEditBlanketApproveAdHocCompleteBookmark() throws Exception {
         testTravelAccountMaintenanceEditBlanketApproveAdHocComplete();
         passed();
     }
+
+    @Ignore ("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     @Test
     public void testTravelAccountMaintenanceEditBlanketApproveAdHocCompleteNav() throws Exception {
         testTravelAccountMaintenanceEditBlanketApproveAdHocComplete();

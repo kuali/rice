@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad;
 
+import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -39,12 +40,14 @@ public class Demo404Aft extends WebDriverLegacyITBase {
     	//No need for navigation as we just need to test Freemarker Error on BAD URL.
     }
 
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13912 AFT Failure Incident Report instead of 404 for bad urls")
     @Test
     public void testLookUpConditionalCriteriaBookmark() throws Exception {
         checkForIncidentReport();
         screenshot();
     }
 
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13912 AFT Failure Incident Report instead of 404 for bad urls")
     @Test
     public void testLookUpConditionalCriteriaNav() throws Exception {
         open(WebDriverUtils.getBaseUrlString() + getBookmarkUrl());

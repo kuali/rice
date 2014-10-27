@@ -444,6 +444,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         // get the added line fields and make sure the values match the add line
         List<WebElement> dialogSubCollectionAddedLineRows = findElements(By.cssSelector(
                 dialogSubCollectionAddedLineFieldsCssSelector));
+        assertTrue("Dialog rows count is 0", dialogSubCollectionAddedLineRows.size() > 0);
         List<WebElement> dialogSubCollectionAddedLineRowFields = dialogSubCollectionAddedLineRows.get(0).
                 findElements(By.cssSelector(" td > div.uif-inputField > input:not([type='hidden'])"));
         index = 1;
@@ -783,6 +784,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         if (subCollectionType != SubCollectionType.NO_SUB_COLLECTION) {
             String addInDialogButtonCssSelector = "#" + exampleId + " button:first-of-type";
             WebElement addInDialogButton = findElement(By.cssSelector(addInDialogButtonCssSelector));
+            jGrowl("Click add in dialog button");
             addInDialogButton.click();
             addFieldsCssSelector = "#" + exampleId  + "_dialog" +  " .modal-body .uif-inputField input:not([type='hidden'])";
             addLineActionCssSelector = "#" + exampleId  + "_dialog" +  " .modal-footer button[id$='_add']";
@@ -795,11 +797,13 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
 
         int index = 1;
         for (WebElement addField : addFields) {
+            jGrowl("Type in " + addField.getAttribute("name") + " " + randomString + index);
             addField.sendKeys(randomString + index);
             index++;
         }
 
         WebElement buttonElement = findElement(By.cssSelector(addLineActionCssSelector));
+        jGrowl("Click add line");
         buttonElement.click();
         waitForProgressAddingLine();
         waitFor(By.cssSelector("#" + exampleId + " .uif-newCollectionItem"));

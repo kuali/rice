@@ -48,6 +48,7 @@ public class DemoTravelAccountBulkUpdateEditAft extends WebDriverLegacyITBase {
        waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.updateFieldValues[accountTypeCode]' and @value='IAT']");
        waitAndClickByXpath("//div[@data-label='Travel Account Number']/div/div/button");
        gotoLightBox();
+       waitAndTypeLabeledInput("Travel Account Number:", "a*");
        waitAndClickButtonByExactText(SEARCH);
        String assertContent [] = {"a11","EAT - Expense","a12","EAT - Expense","a13","CAT - Clearing"};
        assertTextPresent(assertContent);

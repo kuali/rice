@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.application;
 
+import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 
@@ -150,6 +151,7 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
     	waitAndClickByLinkText(RETURN_VALUE);
     }
     
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     @Test
     public void testTravelAccountAuthorizationSubmitNav() throws Exception {
         testTravelAccountAuthorizationSubmit();
@@ -162,6 +164,7 @@ public class DemoTravelAccountAuthorizationAft extends WebDriverLegacyITBase {
         passed();
     }
 
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     @Test
     public void testTravelAccountAuthorizationSubmitBookmark() throws Exception {
     	testTravelAccountAuthorizationSubmit();

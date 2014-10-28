@@ -59,14 +59,9 @@
                          ${field.readOnlyDisplayReplacement}
                     <#else>
                         <#-- display actual field value -->
-                        <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
-
-                        <#-- check escape flag -->
-                        <#if field.escapeHtmlInPropertyValue>
-                            ${(spring.status.value?default(""))?html}
-                        <#else>
-                            ${(spring.status.value?default(""))}
-                        </#if>
+                        <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
+                                             htmlEscape=field.escapeHtmlInPropertyValue/>
+                        ${(spring.status.value?default(""))}
 
                         <#-- add display suffix value if set -->
                         <#if field.readOnlyDisplaySuffix?has_content>
@@ -116,14 +111,9 @@
                             ${field.readOnlyDisplayReplacement}
                        <#else>
                            <#-- display actual field value -->
-                           <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
-
-                           <#-- check escape flag -->
-                           <#if field.escapeHtmlInPropertyValue>
-                               ${(spring.status.value?default(""))?html}
-                           <#else>
-                               ${(spring.status.value?default(""))}
-                           </#if>
+                           <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
+                                                htmlEscape=field.escapeHtmlInPropertyValue/>
+                           ${(spring.status.value?default(""))}
 
                            <#-- add display suffix value if set -->
                            <#if field.readOnlyDisplaySuffix?has_content>

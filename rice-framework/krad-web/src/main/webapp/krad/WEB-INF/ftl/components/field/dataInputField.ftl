@@ -72,12 +72,12 @@
             </#local>
 
             <#if field.multiLineReadOnlyDisplay>
-                <#local readOnlyDisplay="<pre class='no-pad-bkgd-bor'>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
+                <#local readOnlyDisplay="<pre>${readOnlyDisplay?trim}</pre>"/>
             </#if>
 
             <#-- render inquiry if enabled -->
             <#if field.inquiry?has_content && field.inquiry.render>
-                <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
+                <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay?trim}"
                   readOnly=field.readOnly/>
             <#else>
                 ${readOnlyDisplay}
@@ -124,7 +124,7 @@
                </#local>
 
                <#if field.multiLineReadOnlyDisplay>
-                   <#local readOnlyDisplay="<pre class='no-pad-bkgd-bor'>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
+                   <#local readOnlyDisplay="<pre>${readOnlyDisplay?trim}</pre>"/>
                </#if>
 
                <span id="${field.id}_control" class="uif-readOnlyContent">

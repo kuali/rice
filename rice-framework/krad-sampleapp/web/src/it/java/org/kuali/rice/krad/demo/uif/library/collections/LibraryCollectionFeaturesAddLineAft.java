@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.collections;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -81,12 +82,39 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitForElementPresentByXpath("//input[@name='collection1_2[0].field2' and @value='55']");
     }
 
+    protected void testCollectionFeaturesAddLineWithDialogAndCustomActions() throws Exception {
+        selectByName("exampleShown","Add Line Example 4");
+
+        // Add Income Cancel
+        waitAndClickByXpath("//section[@data-parent='Demo-CollectionAddLine-Example4']/button/span[@class='icon-plus']");
+        waitAndTypeByName("newCollectionLines['collection1_7'].field3","999");
+        waitAndTypeByName("newCollectionLines['collection1_7'].field1","999");
+        waitAndTypeByName("newCollectionLines['collection1_7'].field2","999");
+        waitAndClickByXpath("//section[@style='display: block;']/div/div/div[@class='modal-footer']/button[contains(text(),'Cancel')]");
+        waitForElementNotPresent(By.xpath("//section[@style='display: block;']"));
+        waitForElementNotPresent(By.xpath("//input[@value='999']"));
+
+        //Add Income and Verify
+        waitAndClickByXpath("//section[@data-parent='Demo-CollectionAddLine-Example4']/button/span[@class='icon-plus']");
+        waitAndTypeByName("newCollectionLines['collection1_7'].field3","999");
+        waitAndTypeByName("newCollectionLines['collection1_7'].field1","999");
+        waitAndTypeByName("newCollectionLines['collection1_7'].field2","999");
+        waitAndClickByXpath("//section[@style='display: block;']/div/div/div[@class='modal-footer']/button[contains(text(),'Cancel')]");
+        waitForElementPresentByXpath("//input[@value='999']");
+
+        //Trash Check
+        waitAndClickByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutHorizontalItem icon-trash']");
+        waitForElementNotPresent(By.xpath("//input[@value='999']"));
+        waitForTextPresent("You have deleted an item from Project Income.");
+    }
+
     @Test
     public void testCollectionFeaturesAddLineBookmark() throws Exception {
         testCollectionFeaturesDefaultAddLine();
         testCollectionFeaturesDefaultAddLineDuplicatePropertyName();
         testCollectionFeaturesDefaultAddBlankLine();
         testCollectionFeaturesDefaultAddViaLightbox();
+        testCollectionFeaturesAddLineWithDialogAndCustomActions();
         passed();
     }
 
@@ -96,6 +124,7 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         testCollectionFeaturesDefaultAddLineDuplicatePropertyName();
         testCollectionFeaturesDefaultAddBlankLine();
         testCollectionFeaturesDefaultAddViaLightbox();
+        testCollectionFeaturesAddLineWithDialogAndCustomActions();
         passed();
     }
 

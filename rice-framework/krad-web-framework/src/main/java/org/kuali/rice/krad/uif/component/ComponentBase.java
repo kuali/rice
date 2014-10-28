@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.krad.uif.component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
@@ -34,7 +25,10 @@ import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifConstants.ViewStatus;
 import org.kuali.rice.krad.uif.control.ControlBase;
+import org.kuali.rice.krad.uif.field.DataField;
+import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.layout.CssGridSizes;
+import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -42,13 +36,26 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
+import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
+import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewIndex;
+import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Base implementation of Component which other component implementations should extend.
@@ -189,6 +196,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private String excludeIf;
     private String excludeUnless;
+
+    private boolean omitFromFormPost;
 
     public ComponentBase() {
         super();
@@ -554,6 +563,34 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && StringUtils.isNotBlank(methodToCallOnRefresh)) {
             ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(methodToCallOnRefresh);
+        }
+    }
+
+    /**
+     * Helper method that removes a list of fields from form data.
+     *
+     * @param model the form data
+     * @param fields the fields to remove
+     */
+    protected void removeItemsFromFormPost(Object model, List<Field> fields) {
+        for (Field field : fields) {
+            removeItemFromFormPost(model, field);
+        }
+    }
+
+    /**
+     * Helper method that removes the field data from form data.
+     *
+     * @param model the form data
+     * @param field the field to remove
+     */
+    protected void removeItemFromFormPost(Object model, Field field) {
+        if (field instanceof DataField) {
+            DataField dataField = (DataField) field;
+            UifFormBase form = (UifFormBase) model;
+            Map<String, String[]> viewRequestParameters = form.getInitialRequestParameters();
+            //viewRequestParameters.remove(dataField.getPropertyName());
+            viewRequestParameters.remove(dataField.getBindingInfo().getBindingPath());
         }
     }
 
@@ -2661,5 +2698,19 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             String currentValues[] = {"conditionalRefresh =" + getConditionalRefresh()};
             tracer.createError("conditionalRefresh must follow the Spring EL @{} format", currentValues);
         }
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.container.Field#isOmitFromFormPost()
+     */
+    public boolean isOmitFromFormPost() {
+        return omitFromFormPost;
+    }
+
+    /**
+     * @see #isOmitFromFormPost()
+     */
+    public void setOmitFromFormPost(boolean omitFromFormPost) {
+        this.omitFromFormPost = omitFromFormPost;
     }
 }

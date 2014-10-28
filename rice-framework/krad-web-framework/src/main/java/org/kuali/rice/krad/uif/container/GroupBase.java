@@ -31,6 +31,7 @@ import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.util.ExpressionUtils;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
@@ -267,6 +268,11 @@ public class GroupBase extends ContainerBase implements Group {
 
         // set up action validation scripts to avoid bind errors
         setupValidationScripts(ACTION_VALIDATION_COMPONENTS.QUICKFINDER, ACTION_VALIDATION_COMPONENTS.INQUIRY);
+
+        if (isOmitFromFormPost()) {
+            List<Field> fields = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), Field.class);
+            removeItemsFromFormPost(model, fields);
+        }
     }
 
     /**

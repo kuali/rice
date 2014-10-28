@@ -1315,4 +1315,16 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      */
     String getExcludeUnless();
 
+    /**
+     * Whether to omit fields from form post unless they are explicitly specified by the
+     * {@link org.kuali.rice.krad.uif.element.Action#fieldsToSend} property.
+     *
+     * @return whether fields will be omitted from form post
+     */
+    boolean isOmitFromFormPost();
+
+    /**
+     * @see #isOmitFromFormPost()
+     */
+    void setOmitFromFormPost(boolean omitFromFormPost);
 }

@@ -209,7 +209,8 @@
     </property>
   </bean>
 
-  <bean id="LabsInquiry-PerDiemSections-NoInquiry" parent="LabsInquiry-PerDiemSections">
+  <bean id="LabsInquiry-PerDiemSections-NoInquiry" parent="Uif-InquiryView">
+    <property name="dataObjectClassName" value="edu.sampleu.travel.dataobject.TravelPerDiemExpense"/>
     <property name="headerText" value="No Inquiry on primary destination"/>
     <property name="viewName" value="LabsInquiry-PerDiemSections-NoInquiry"/>
     <property name="items">
@@ -218,10 +219,9 @@
           <property name="headerText" value="Account Information"/>
           <property name="items">
             <list>
-
                 <bean parent="Uif-DataField" p:propertyName="travelPerDiemExpenseId"/>
-                <bean parent="Uif-DataField" p:propertyName="travelAuthorizationDocumentId"/>
-                <bean parent="Uif-DataField" p:propertyName="travelDestinationId">
+                <bean parent="Uif-DataField" p:propertyName="travelAuthorizationDocument.documentNumber"/>
+                <bean parent="Uif-DataField" p:propertyName="travelDestination.travelDestinationId">
                   <property name="inquiry">
                     <bean parent="Uif-Inquiry">
                       <property name="render" value="false"/>
@@ -229,8 +229,13 @@
                   </property>
                 </bean>
                 <bean parent="Uif-DataField" p:propertyName="perDiemDate"/>
-              </list>
-
+                <bean parent="Uif-DataField" p:propertyName="breakfastValue"/>
+                <bean parent="Uif-DataField" p:propertyName="lunchValue"/>
+                <bean parent="Uif-DataField" p:propertyName="dinnerValue"/>
+                <bean parent="Uif-DataField" p:propertyName="incidentalsValue"/>
+                <bean parent="Uif-DataField" p:propertyName="mileageRate.mileageRateCd"/>
+                <bean parent="Uif-DataField" p:propertyName="estimatedMileage"/>
+                </list>
           </property>
         </bean>
       </list>

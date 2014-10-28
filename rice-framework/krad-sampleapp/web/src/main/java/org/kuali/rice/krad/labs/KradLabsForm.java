@@ -155,6 +155,7 @@ public class KradLabsForm extends UifFormBase {
     private List<UITestObject> collection1_7 = new ArrayList<UITestObject>();
     private List<UITestObject> collection1_8 = new ArrayList<UITestObject>();
     private List<UITestObject> collection1_9 = new ArrayList<UITestObject>();
+    private List<UITestObject> collection1_10 = new ArrayList<UITestObject>();
     private List<UITestObject> collection2 = new ArrayList<UITestObject>();
     private List<UITestObject> collection3 = new ArrayList<UITestObject>();
     private List<UITestObject> collection4 = new ArrayList<UITestObject>();
@@ -230,6 +231,7 @@ public class KradLabsForm extends UifFormBase {
         collection1_7.addAll(collection1);
         collection1_8.addAll(collection1);
         collection1_9.addAll(collection1);
+        collection1_10.addAll(collection1);
 
         getCollection2().add(new UITestObject("A", "B", "C", "D"));
         getCollection2().add(new UITestObject("1", "2", "3", "4"));
@@ -1114,6 +1116,14 @@ public class KradLabsForm extends UifFormBase {
 
     public void setCollection1_9(List<UITestObject> collection1_9) {
         this.collection1_9 = collection1_9;
+    }
+
+    public List<UITestObject> getCollection1_10() {
+        return collection1_10;
+    }
+
+    public void setCollection1_10(List<UITestObject> collection1_10) {
+        this.collection1_10 = collection1_10;
     }
 
     public List<UITestObject> getCollection2() {

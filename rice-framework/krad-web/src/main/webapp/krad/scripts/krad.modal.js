@@ -62,7 +62,7 @@ function showDialog(dialogId, options, modalOptions, disableBlocking) {
             // set to false for the callback so we don't keep requesting the dialog
             options.alwaysRefresh = false;
 
-            showDialog(dialogId, options);
+            showDialog(dialogId, options, modalOptions);
         }, additionalSubmitData, disableBlocking);
 
         return;

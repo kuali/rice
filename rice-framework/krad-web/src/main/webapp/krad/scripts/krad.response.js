@@ -62,6 +62,12 @@ KradResponse.prototype = {
         var page = jQuery("[data-role='Page']", pageUpdate);
         var viewContent = jQuery("#" + kradVariables.VIEW_CONTENT_WRAPPER);
 
+        // remove any already existing matching dialogs from the view
+        jQuery('.modal', page).each(function() {
+                    jQuery('#' + this.id, viewContent.parent()).remove();
+                }
+        );
+
         page.hide();
 
         // give a selector that will avoid the temporary iframe used to hold ajax responses by the jquery form plugin
@@ -77,6 +83,9 @@ KradResponse.prototype = {
 
         // Removes traces of dialog if one was destroyed by the refresh
         ensureDialogBackdropRemoved();
+
+        // move all dialogs to dialog section
+        jQuery('.modal').appendTo('#Uif-Dialogs');
 
         // remove detached dialogs
         jQuery("[data-detached='true']").remove();
@@ -140,6 +149,20 @@ KradResponse.prototype = {
         hideTooltips($componentInDom);
 
         var component = jQuery("#" + id + "_update", content);
+
+        // is the new component now required
+        var nowRequired = jQuery(".required", component).size() > 0;
+
+        // get the old label
+        var oldLabel = jQuery("#" + id + "_label");
+
+        // if found then remove any required indicators and then add/readd back
+        if(oldLabel) {
+            oldLabel.find("span." + kradVariables.REQUIRED_MESSAGE_CLASS).remove();
+            if (nowRequired) {
+                oldLabel.append("<span class='" + kradVariables.REQUIRED_MESSAGE_CLASS + "'>*</span>");
+            }
+        }
 
         // special label handling, if any
         var theLabel = jQuery("[data-label_for='" + id + "']", component);

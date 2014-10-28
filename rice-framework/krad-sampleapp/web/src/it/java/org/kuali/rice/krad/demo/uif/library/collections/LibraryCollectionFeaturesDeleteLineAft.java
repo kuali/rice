@@ -24,7 +24,7 @@ import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 public class LibraryCollectionFeaturesDeleteLineAft extends WebDriverLegacyITBase {
 
     /**
-     * /kr-krad/kradsampleapp?viewId=Demo-CollectionAddLineView
+     * /kr-krad/kradsampleapp?viewId=Demo-CollectionDeleteLineView
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionDeleteLineView";
 

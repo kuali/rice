@@ -285,6 +285,9 @@ public class GroupBase extends ContainerBase implements Group {
         List<ACTION_VALIDATION_COMPONENTS> componentsList = Arrays.asList(componentsToValidate);
         List<InputField> inputFieldsWithActionsToValidate = new ArrayList<InputField>();
         List<InputField> allInputFields = new ArrayList<InputField>();
+
+        // get all the components with quickfinder and inquiry (Note: for now only these 2 widgets are required
+        // to be supported but in future this could include possibly others if needed, and therefore the enum)
         for (Component component : getItems()) {
             if (component instanceof InputField) {
                 InputField inputField = (InputField) component;
@@ -328,19 +331,22 @@ public class GroupBase extends ContainerBase implements Group {
      *
      * @param allInputFields all other input fields that might have validation constraints
      * @param excludedFields fields that shouldn't be part of the validation script
+     * @return the validation action script
      */
     protected String buildInputFieldValidationActionScript(List<InputField> allInputFields,
             List<String> excludedFields) {
         List<String> controlsToValidate = new ArrayList<String>();
 
         for (InputField inputField : allInputFields) {
-            if ((excludedFields == null || !excludedFields.contains(inputField.getId()))
-                    && inputField.getValidCharactersConstraint() != null
-                    && inputField.getValidCharactersConstraint().getApplyClientSide() != null
-                    && inputField.getValidCharactersConstraint().getApplyClientSide() == Boolean.TRUE) {
+            if ((excludedFields == null || !excludedFields.contains(inputField.getId())) && validateInputField(
+                    inputField)) {
                 controlsToValidate.add(inputField.getId() + UifConstants.IdSuffixes.CONTROL);
-                controlsToValidate.add(
-                        inputField.getId() + UifConstants.IdSuffixes.ADD_LINE + UifConstants.IdSuffixes.CONTROL);
+
+                // in cases of collection groups we also want to account for add line
+                if (this instanceof CollectionGroup) {
+                    controlsToValidate.add(
+                            inputField.getId() + UifConstants.IdSuffixes.ADD_LINE + UifConstants.IdSuffixes.CONTROL);
+                }
             }
         }
 
@@ -355,6 +361,21 @@ public class GroupBase extends ContainerBase implements Group {
             script += "if(allValid == 0){return;}control = null;";
         }
         return script;
+    }
+
+    /**
+     * Helper method to determine whether the given input field needs validated or not.
+     *
+     * @param inputField the field to check for validation
+     * @return whether validation should be done
+     */
+    protected boolean validateInputField(InputField inputField) {
+        if (inputField.getValidCharactersConstraint() != null
+                && inputField.getValidCharactersConstraint().getApplyClientSide() != null
+                && inputField.getValidCharactersConstraint().getApplyClientSide() == Boolean.TRUE) {
+            return true;
+        }
+        return false;
     }
 
     /**

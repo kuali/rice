@@ -1930,7 +1930,21 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) 
 
         var id = jQuery("[name='" + escapeName(requiredName) + "']").attr("id");
         id = getAttributeId(id);
-        var label = jQuery("[data-label_for='" + id + "']");
+
+        var label;
+        // this check if for use in collections with 'old' and 'new' listings
+        // in these cases the 'new' id will be like xxx_comp1
+        // however the label is setup for the 'old' control and will be like xxx_comp0
+        // therefore strip off the '_comp' portion and search for a label that 'contains' the new id
+        if (id.indexOf('_comp') > 0) {
+            id = id.substring(0, id.indexOf('_comp'));
+            label = jQuery("label[data-label_for*='" + id + "']");
+        }
+        else {
+            label = jQuery("label[data-label_for='" + id + "']");
+        }
+
+        // get what to use for the required indicator
         var indicator;
         if (id) {
             indicator = label.data("req_indicator");
@@ -1939,13 +1953,13 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) 
             }
         }
 
-        //check right now if it satisfies the condition, only if an indicator is not shown
-        //(indicators that are shown stay shown for this check, as the server or another check must have shown them)
-        if (label.find("uif-requiredMessage").length == 0) {
+        // check right now if it satisfies the condition, only if an indicator is not shown
+        // (indicators that are shown stay shown for this check, as the server or another check must have shown them)
+        if (label.find(kradVariables.REQUIRED_MESSAGE_CLASS).length == 0) {
             checkForRequiredness(requiredName, booleanFunction, indicator);
         }
 
-        //also check condition when corresponding control is changed
+        // also check condition when corresponding control is changed
         jQuery("[name='" + escapeName(controlName) + "']").change(function () {
             checkForRequiredness(requiredName, booleanFunction, indicator);
         });
@@ -1966,17 +1980,34 @@ function setupShowReqIndicatorCheck(controlName, requiredName, booleanFunction) 
  */
 function checkForRequiredness(requiredName, booleanFunction, indicator) {
     var requiredControl = jQuery("[name='" + escapeName(requiredName) + "']");
-    var label = jQuery("label[for='" + requiredControl.attr("id") + "']");
+    var id = requiredControl.attr("id");
+
+    var label;
+    // this check if for use in collections with 'old' and 'new' listings
+    // in these cases the 'new' id will be like xxx_comp1
+    // however the label is setup for the 'old' control and will be like xxx_comp0
+    // therefore strip off the '_comp' portion and search for a label that 'contains' the new id
+    if (id.indexOf('_comp') > 0) {
+        id = getAttributeId(id);
+        id = id.substring(0, id.indexOf('_comp'));
+        label = jQuery("label[data-label_for*='" + id + "']");
+    }
+    else {
+        label = jQuery("label[data-label_for='" + id + "']");
+    }
+
     if (indicator != null && indicator.length) {
         if (booleanFunction()) {
-            if (label.find(".uif-requiredMessage").length == 0) {
-                label.append("<span class='uif-requiredMessage'>" + indicator + "</span>");
+            // add required span, aria, and css class
+            if (label.find("." + kradVariables.REQUIRED_MESSAGE_CLASS).length == 0) {
+                label.append("<span class='" + kradVariables.REQUIRED_MESSAGE_CLASS + "'>" + indicator + "</span>");
             }
             requiredControl.attr("aria-required", "true");
             requiredControl.addClass("required");
         }
         else {
-            label.find(".uif-requiredMessage").remove();
+            // remove required span, set aria, and remove css class
+            label.find("." + kradVariables.REQUIRED_MESSAGE_CLASS).remove();
             requiredControl.attr("aria-required", "false");
             requiredControl.removeClass("required");
         }

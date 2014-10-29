@@ -570,7 +570,8 @@ public class CollectionGroupBuilder implements Serializable {
         String addLinePath = collectionGroup.getAddLineBindingInfo().getBindingPath();
         Object addLine = ObjectPropertyUtils.getPropertyValue(model, addLinePath);
 
-        ContextUtils.updateContextsForLine(lineActionComponents, collectionGroup, addLine, -1, lineSuffix);
+        ContextUtils.updateContextForLine(collectionGroup.getAddLineDialog(), collectionGroup, addLine, -1, lineSuffix);
+        ContextUtils.updateContextsForLine(actions, collectionGroup, addLine, -1, lineSuffix);
 
         return lineActionComponents;
     }

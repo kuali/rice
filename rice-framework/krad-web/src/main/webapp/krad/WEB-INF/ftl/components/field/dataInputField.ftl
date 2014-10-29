@@ -59,14 +59,9 @@
                          ${field.readOnlyDisplayReplacement}
                     <#else>
                         <#-- display actual field value -->
-                        <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
-
-                        <#-- check escape flag -->
-                        <#if field.escapeHtmlInPropertyValue>
-                            ${(spring.status.value?default(""))?html}
-                        <#else>
-                            ${(spring.status.value?default(""))}
-                        </#if>
+                        <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
+                                             htmlEscape=field.escapeHtmlInPropertyValue/>
+                        ${(spring.status.value?default(""))}
 
                         <#-- add display suffix value if set -->
                         <#if field.readOnlyDisplaySuffix?has_content>
@@ -77,12 +72,12 @@
             </#local>
 
             <#if field.multiLineReadOnlyDisplay>
-                <#local readOnlyDisplay="<pre class='no-pad-bkgd-bor'>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
+                <#local readOnlyDisplay="<pre>${readOnlyDisplay?trim}</pre>"/>
             </#if>
 
             <#-- render inquiry if enabled -->
             <#if field.inquiry?has_content && field.inquiry.render>
-                <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay}"
+                <@krad.template component=field.inquiry componentId="${field.id}" body="${readOnlyDisplay?trim}"
                   readOnly=field.readOnly/>
             <#else>
                 ${readOnlyDisplay}
@@ -116,14 +111,9 @@
                             ${field.readOnlyDisplayReplacement}
                        <#else>
                            <#-- display actual field value -->
-                           <@spring.bind path="KualiForm.${field.bindingInfo.bindingPath}"/>
-
-                           <#-- check escape flag -->
-                           <#if field.escapeHtmlInPropertyValue>
-                               ${(spring.status.value?default(""))?html}
-                           <#else>
-                               ${(spring.status.value?default(""))}
-                           </#if>
+                           <@spring.bindEscaped path="KualiForm.${field.bindingInfo.bindingPath}"
+                                                htmlEscape=field.escapeHtmlInPropertyValue/>
+                           ${(spring.status.value?default(""))}
 
                            <#-- add display suffix value if set -->
                            <#if field.readOnlyDisplaySuffix?has_content>
@@ -134,7 +124,7 @@
                </#local>
 
                <#if field.multiLineReadOnlyDisplay>
-                   <#local readOnlyDisplay="<pre class='no-pad-bkgd-bor'>${readOnlyDisplay?trim?replace(' ','&nbsp;')}</pre>"/>
+                   <#local readOnlyDisplay="<pre>${readOnlyDisplay?trim}</pre>"/>
                </#if>
 
                <span id="${field.id}_control" class="uif-readOnlyContent">

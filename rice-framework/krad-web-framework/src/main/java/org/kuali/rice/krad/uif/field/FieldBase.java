@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
-import org.kuali.rice.krad.datadictionary.parse.BeanTags;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.component.ComponentBase;
@@ -161,6 +160,10 @@ public class FieldBase extends ComponentBase implements Field {
                 this.addDataAttribute(UifConstants.DataAttributes.LABEL, MessageStructureUtils.translateStringMessage(
                         this.getFieldLabel().getLabelText()));
             }
+        }
+
+        if (isOmitFromFormPost()) {
+            removeItemFromFormPost(model, this);
         }
     }
 

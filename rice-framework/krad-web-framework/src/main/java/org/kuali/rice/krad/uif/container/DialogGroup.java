@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.uif.container;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
@@ -85,6 +86,7 @@ public class DialogGroup extends GroupBase {
      */
     public DialogGroup() {
         super();
+        setOmitFromFormPost(true);
     }
 
     /**
@@ -214,6 +216,26 @@ public class DialogGroup extends GroupBase {
 
         // Dialogs do not have a visual "parent" on the page so remove this data attribute
         this.getDataAttributes().remove(UifConstants.DataAttributes.PARENT);
+
+        // initialize dialog footer's actions fields to send when not set
+        Group footer = getFooter();
+        if (isOmitFromFormPost() && footer != null) {
+            List<Component> footerComponents = new ArrayList<Component>(footer.getItems());
+            for (Component component : footerComponents) {
+                if (component instanceof Action) {
+                    Action action = (Action) component;
+                    List<String> fieldsToSend = action.getFieldsToSend();
+                    if (CollectionUtils.isEmpty(fieldsToSend)) {
+                        // fields to send not set so omit data on form
+                        if (fieldsToSend == null) {
+                            fieldsToSend = new ArrayList<String>();
+                        }
+                        fieldsToSend.add(getId());
+                        action.setFieldsToSend(fieldsToSend);
+                    }
+                }
+            }
+        }
     }
 
     /**

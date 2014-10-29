@@ -15,17 +15,21 @@
  */
 package edu.sampleu.main;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
-
+import org.openqa.selenium.By;
+import static edu.sampleu.main.PeopleFlowCreateNewAftBase.PeopleFlowDocInfo;
 /**
  * test that checks that rules can be added to agendas
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
+    public static final String PEOPLE_FLOW_LINK_TEXT = "People Flow";
     public static final String BOOKMARK_URL =
             AutomatedFunctionalTestUtils.PORTAL
                     + "?channelTitle=Agenda%20Lookup&channelUrl="
@@ -36,6 +40,89 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
                     + "&returnLocation="
                     + AutomatedFunctionalTestUtils.PORTAL_URL
                     + AutomatedFunctionalTestUtils.HIDE_RETURN_LINK;
+
+    public static final String ID_TEXT = "T1001";
+
+    private String getPeopleFlowId() throws Exception {
+        selectParentWindow();
+        waitAndClickMainMenu();
+        waitAndClickByLinkText(PEOPLE_FLOW_LINK_TEXT);
+        waitForPageToLoad();
+
+        PeopleFlowDocInfo docInfo = peopleFlowCreateNew();
+        jGrowl("people flow id is created");
+
+        selectParentWindow();
+        waitAndClickMainMenu();
+        waitAndClickByLinkText(PEOPLE_FLOW_LINK_TEXT);
+        waitForPageToLoad();
+        jGrowl("ready to search people flow");
+
+        selectFrameIframePortlet();
+        selectByName("lookupCriteria[namespaceCode]", "KUALI - Kuali Systems");
+        waitClearAndType("lookupCriteria[name]", docInfo.getName());
+        waitAndClickByXpath("//button[contains(text(),'Search')]");
+        waitForTextPresent("edit");
+        jGrowl("search people flow search complete");
+
+        String id = getTextByXpath("(//span[contains(@id,'line0_control')])[1]");
+        assertTrue(id != null);
+        jGrowl("people flow id is " + id);
+
+        selectParentWindow();
+        waitAndClickMainMenu();
+        waitAndClickByLinkText(AGENDA_LOOKUP_LINK_TEXT);
+        waitForPageToLoad();
+
+        return id;
+    }
+
+    private PeopleFlowDocInfo peopleFlowCreateNew() throws Exception {
+        selectFrameIframePortlet();
+
+        waitAndClickByLinkText("Create New");
+        String peopleFlowNamespace = "KUALI - Kuali Systems";
+        String peopleFlowName = "Document Name" + AutomatedFunctionalTestUtils.createUniqueDtsPlusTwoRandomChars();
+
+        //Save docId
+        waitForElementPresentByXpath("//div[@data-label='Document Number']/span");
+        String docId = getTextByXpath("//div[@data-label='Document Number']/span");
+        assertTrue(docId != null);
+        jGrowlSticky("Doc Id is " + docId);
+
+        clearTextByName("document.documentHeader.documentDescription");
+        waitAndTypeByName("document.documentHeader.documentDescription", "Description for Document");
+        waitAndSelectByName("document.newMaintainableObject.dataObject.namespaceCode", peopleFlowNamespace);
+        clearTextByName("document.newMaintainableObject.dataObject.name");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", peopleFlowName);
+
+        jGrowl("Add Member kr");
+        clearTextByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "kr");
+        findElement(By.name("newCollectionLines['document.newMaintainableObject.dataObject.members'].forceAction")).click();
+        waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
+        Thread.sleep(3000);
+        checkForIncidentReport();
+
+        jGrowl("Add Member admin");
+        clearTextByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].priority");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].priority", "2");
+        clearTextByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName");
+        waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.members'].memberName", "admin");
+        waitAndClick(By.cssSelector("button[data-loadingmessage='Adding Line...']"));
+        Thread.sleep(3000);
+
+        waitAndClickButtonByExactText("Save");
+        waitForTextPresent("SAVED");
+        waitForTextPresent(" Document was successfully saved.");
+
+        waitAndClickButtonByExactText("Submit");
+        waitAndClickConfirmSubmitOk();
+        waitForTextPresent("ENROUTE");
+        waitForTextPresent("Document was successfully submitted.");
+
+        return new PeopleFlowDocInfo(docId, peopleFlowNamespace, peopleFlowName);
+    }
 
     @Override
     protected String getBookmarkUrl() {
@@ -50,7 +137,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
 
     protected void testAgendaEditorAndOrToggleSync() throws Exception {
         selectFrameIframePortlet();
-        waitAndTypeByName("lookupCriteria[name]","SimpleAgendaCompoundProp");
+        waitClearAndType("lookupCriteria[name]", "SimpleAgendaCompoundProp");
         waitAndClickByXpath("//button[contains(text(),'Search')]");
         waitAndClickByXpath("//a[contains(text(),'edit')]");
         selectFrameIframePortlet();
@@ -66,7 +153,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
 
     protected void testAgendaEditorEditRuleAddActionsBlank() throws Exception {
         //Save & Submit
-        testFillRequiredDetails("");
+        testFillRequiredDetails("",null);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Save");
         waitForTextPresent("SAVED");
@@ -79,8 +166,8 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         //Blanket Approve
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("");
+        navigate();
+        testFillRequiredDetails("",null);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
@@ -90,10 +177,9 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         //Save & Submit
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("KrmsActionResolverType");
+        navigate();
+        testFillRequiredDetails("KrmsActionResolverType",null);
         waitForTextPresent("INITIATED");
-        checkForDocErrorKrad();
         waitAndClickButtonByExactText("Save");
         waitForTextPresent("SAVED");
         waitForTextPresent(" Document was successfully saved.");
@@ -105,19 +191,19 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         //Blanket Approve
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("KrmsActionResolverType");
+        navigate();
+        testFillRequiredDetails("KrmsActionResolverType",null);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
     }
 
-    protected void testAgendaEditorEditRuleAddActionsNotifyPeopleFlow() throws Exception {
+    protected void testAgendaEditorEditRuleAddActionsNotifyPeopleFlow(String peopleFlowId) throws Exception {
         //Save & Submit
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("Notify PeopleFlow");
+        navigate();
+        testFillRequiredDetails("Notify PeopleFlow",peopleFlowId);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Save");
         waitForTextPresent("SAVED");
@@ -130,19 +216,19 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         //Blanket Approve
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("Notify PeopleFlow");
+        navigate();
+        testFillRequiredDetails("Notify PeopleFlow",peopleFlowId);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
     }
 
-    protected void testAgendaEditorEditRuleAddActionsRouteToPeopleFlow() throws Exception {
+    protected void testAgendaEditorEditRuleAddActionsRouteToPeopleFlow(String peopleFlowId) throws Exception {
         //Save & Submit
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("Route to PeopleFlow");
+        navigate();
+        testFillRequiredDetails("Route to PeopleFlow",peopleFlowId);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Save");
         waitForTextPresent("SAVED");
@@ -155,8 +241,8 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         //Blanket Approve
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("Route to PeopleFlow");
+        navigate();
+        testFillRequiredDetails("Route to PeopleFlow",peopleFlowId);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
@@ -166,8 +252,8 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         //Save & Submit
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("Validation Action");
+        navigate();
+        testFillRequiredDetails("Validation Action",null);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Save");
         waitForTextPresent("SAVED");
@@ -180,76 +266,77 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         //Blanket Approve
         selectParentWindow();
         waitAndClickMainMenu();
-        this.navigate();
-        testFillRequiredDetails("Validation Action");
+        navigate();
+        testFillRequiredDetails("Validation Action",null);
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
     }
 
-    private void testFillRequiredDetails(String selectValue) throws Exception{
+    private void testFillRequiredDetails(String selectValue,String peopleFlowId) throws Exception {
         selectFrameIframePortlet();
-        waitAndTypeByName("lookupCriteria[id]","10000");
+        waitClearAndType("lookupCriteria[id]", ID_TEXT);
         waitAndClickByXpath("//button[contains(text(),'Search')]");
         waitAndClickByXpath("//a[contains(text(),'edit')]");
         selectFrameIframePortlet();
         waitAndClickByXpath("//a[@class='agendaNode ruleNode']");
         waitAndClickByXpath("//button[contains(text(),'Edit Rule')]");
         selectFrameIframePortlet();
-        selectByName("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId",selectValue);
+        selectByName("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId", selectValue);
+
+        if (selectValue.equals("KrmsActionResolverType") || selectValue.equalsIgnoreCase("Validation Action")){
+            waitClearAndType("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.name", "ActionName");
+        }
+
         waitForElementPresentByXpath("document.newMaintainableObject.dataObject.customRuleActionAttributesMap[peopleFlowId]");
+
         if(selectValue.equalsIgnoreCase("Notify PeopleFlow") || selectValue.equalsIgnoreCase("Route to PeopleFlow")){
-            waitAndTypeByName("document.newMaintainableObject.dataObject.customRuleActionAttributesMap[peopleFlowId]","10000");
-            waitAndTypeByName("document.newMaintainableObject.dataObject.customRuleActionAttributesMap[peopleFlowName]","Document Name1412916151718sz");
-            waitAndTypeByName("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.name","test");
+            waitClearAndType("document.newMaintainableObject.dataObject.customRuleActionAttributesMap[peopleFlowId]", peopleFlowId);
+            waitClearAndType("document.newMaintainableObject.dataObject.customRuleActionAttributesMap[peopleFlowName]", "Document Name1412916151718sz");
+            waitClearAndType("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.name", "test");
         }else if(selectValue.equalsIgnoreCase("Validation Action")) {
             waitAndClickByName("document.newMaintainableObject.dataObject.customRuleActionAttributesMap[actionTypeCode]");
-            waitAndTypeByName("document.newMaintainableObject.dataObject.customRuleActionAttributesMap[actionMessage]","This is msg");
+            waitClearAndType("document.newMaintainableObject.dataObject.customRuleActionAttributesMap[actionMessage]","This is msg");
         }
         waitAndClickButtonByExactText("Update Rule");
         acceptAlertIfPresent();
     }
 
-    /**
-     * test AndOrToggleSync
-     */
+    protected void waitClearAndType(String name, String value) throws Exception {
+        clearTextByName(name);
+        waitAndTypeByName(name,value);
+    }
+
     @Test
     public void testAgendaEditorAndOrToggleSyncBookmark() throws Exception {
         testAgendaEditorAndOrToggleSync();
         passed();
     }
 
-    /**
-     * test AndOrToggleSync
-     */
     @Test
     public void testAgendaEditorAndOrToggleSyncNav() throws Exception {
         testAgendaEditorAndOrToggleSync();
         passed();
     }
 
-    /**
-     * test AndOrToggleSync
-     */
     @Test
     public void testAgendaEditorAddActionsBookmark() throws Exception {
+        String peopleFlowId = getPeopleFlowId();
         testAgendaEditorEditRuleAddActionsBlank();
         testAgendaEditorEditRuleAddActionsKrmsActionResolverType();
-        testAgendaEditorEditRuleAddActionsNotifyPeopleFlow();
-        testAgendaEditorEditRuleAddActionsRouteToPeopleFlow();
+        testAgendaEditorEditRuleAddActionsNotifyPeopleFlow(peopleFlowId);
+        testAgendaEditorEditRuleAddActionsRouteToPeopleFlow(peopleFlowId);
         testAgendaEditorEditRuleAddActionsValidationAction();
         passed();
     }
 
-    /**
-     * test AndOrToggleSync
-     */
     @Test
     public void testAgendaEditorAddActionsNav() throws Exception {
+        String peopleFlowId = getPeopleFlowId();
         testAgendaEditorEditRuleAddActionsBlank();
         testAgendaEditorEditRuleAddActionsKrmsActionResolverType();
-        testAgendaEditorEditRuleAddActionsNotifyPeopleFlow();
-        testAgendaEditorEditRuleAddActionsRouteToPeopleFlow();
+        testAgendaEditorEditRuleAddActionsNotifyPeopleFlow(peopleFlowId);
+        testAgendaEditorEditRuleAddActionsRouteToPeopleFlow(peopleFlowId);
         testAgendaEditorEditRuleAddActionsValidationAction();
         passed();
     }

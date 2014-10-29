@@ -19,6 +19,15 @@ import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.internal.Coordinates;
+import org.openqa.selenium.internal.Locatable;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -94,21 +103,26 @@ public class DemoLookUpConditionalCriteriaAft extends ViewDemoAftBase {
         waitAndClickSearch3();
 
         // verify auto truncate is enabled
+        jGrowl("Verifying auto truncate is enabled");
         assertTrue(getElementByAttributeValue("id", "resultsName_line0").getAttribute("class").contains("uif-truncate"));
 
         // verify text not truncated
+        jGrowl("Verifying text is not truncated");
         assertEquals("Travel Account 3", getElementByAttributeValue("id", "resultsName_line0_control").getText());
 
         // verify tooltip not present
+        jGrowl("Fire MouseOver event to show tooltip, and validate tooltip is not present");
         fireMouseOverEventById("resultsName_line0_control");
         assertTrue(waitForElementPresent("[class='popover top in']") == null);
 
+        jGrowl("Resizing the window to 560 by 600");
         driver.manage().window().setSize(new Dimension(560, 600));
 
         // cannot verify that the text is truncated since DOM always returns the original
         // text and not what's displayed :{
 
         // verify tooltip present
+        jGrowl("Fire MouseOver event to show tooltip, and validate tooltip is present");
         fireMouseOverEventById("resultsName_line0_control");
         waitForToolTipTextPresent("Travel Account 3");
     }

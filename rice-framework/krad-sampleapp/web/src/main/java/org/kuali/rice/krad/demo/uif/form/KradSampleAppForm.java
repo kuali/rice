@@ -232,6 +232,8 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     private String documentNumber;
 
+    private String travelAccountAttributeName;
+
     private List<TravelAccount> travelAccounts = new ArrayList<TravelAccount>();
 
     private List<FileMetaBlob> files = new ArrayList<FileMetaBlob>();
@@ -1652,6 +1654,17 @@ public class KradSampleAppForm extends UifFormBase implements Serializable {
 
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
+    }
+
+    public String getTravelAccountAttributeName() {
+        if (travelAccountAttributeName == null) {
+            return "subsidizedPercent";
+        }
+        return travelAccountAttributeName;
+    }
+
+    public void setTravelAccountAttributeName(String travelAccountAttributeName) {
+        this.travelAccountAttributeName = travelAccountAttributeName;
     }
 
     public List<TravelAccount> getTravelAccounts() {

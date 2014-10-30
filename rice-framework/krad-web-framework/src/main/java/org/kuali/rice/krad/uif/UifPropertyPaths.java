@@ -41,6 +41,7 @@ public class UifPropertyPaths {
     public static final String DIALOGS = "dialogs";
     public static final String DIALOG_DATA_OBJECT = "dialogDataObject";
     public static final String DIALOG_EXPLANATIONS = "dialogExplanations";
+    public static final String DICTIONARY_ATTR_NAME = "dictionaryAttributeName";
     public static final String DOCUMENT_ID = "documentId";
     public static final String EXPRESSION_GRAPH = "expressionGraph";
     public static final String HIDDEN = "hidden";

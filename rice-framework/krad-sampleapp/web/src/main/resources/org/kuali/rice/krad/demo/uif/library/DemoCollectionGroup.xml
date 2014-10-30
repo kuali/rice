@@ -35,6 +35,7 @@
         <ref bean="Demo-CollectionGroup-Readonly2"/>
         <ref bean="Demo-CollectionGroup-Readonly3"/>
         <ref bean="Demo-CollectionGroup-Example2"/>
+        <ref bean="Demo-CollectionGroup-Example3"/>
       </list>
     </property>
   </bean>
@@ -285,4 +286,29 @@
     </property>
   </bean>
 
+  <bean id="Demo-CollectionGroup-Example3" parent="Uif-VerticalBoxSection">
+    <property name="items">
+      <list>
+        <!-- ex:Demo-CollectionGroup-Example3 start-->
+        <bean parent="Uif-InputField" p:propertyName="inputField1"
+              p:dictionaryObjectEntry="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+              p:dictionaryAttributeName="@{#dp.travelAccountAttributeName}" />
+
+        <bean parent="Uif-Disclosure-TableCollectionSection">
+          <property name="headerText" value="The second column in this table is Field 4 with the dictionaryAttributeName specified as an expression"/>
+          <property name="collectionObjectClass" value="org.kuali.rice.krad.demo.uif.form.UITestObject"/>
+          <property name="propertyName" value="collection1_4"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:label="Field 3" p:propertyName="field3"/>
+              <bean parent="Uif-InputField" p:propertyName="field4"
+                    p:dictionaryObjectEntry="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"
+                    p:dictionaryAttributeName="@{#lp.travelAccountAttributeName}" />
+            </list>
+          </property>
+        </bean>
+        <!-- ex:Demo-CollectionGroup-Example3 end-->
+      </list>
+    </property>
+  </bean>
 </beans>

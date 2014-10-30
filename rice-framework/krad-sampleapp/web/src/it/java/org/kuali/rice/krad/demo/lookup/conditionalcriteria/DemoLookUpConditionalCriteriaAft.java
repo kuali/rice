@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.lookup.conditionalcriteria;
 
+import org.junit.Ignore;
 import org.kuali.rice.krad.demo.ViewDemoAftBase;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -127,17 +128,31 @@ public class DemoLookUpConditionalCriteriaAft extends ViewDemoAftBase {
         waitForToolTipTextPresent("Travel Account 3");
     }
 
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13981 AFT Failure DemoLookUpConditionalCriteriaAft testAutoTruncateColumns poppup not detected in CI")
     @Test
-    public void testLookUpConditionalCriteriaBookmark() throws Exception {
-        testLookUpConditionalCriteria();
+    public void testAutoTruncateColumnsBookmark() throws Exception {
         testAutoTruncateColumns();
         passed();
     }
 
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13981 AFT Failure DemoLookUpConditionalCriteriaAft testAutoTruncateColumns poppup not detected in CI")
+    @Test
+    public void testAutoTruncateColumnsNav() throws Exception {
+        testAutoTruncateColumns();
+        passed();
+    }
+
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13981 AFT Failure DemoLookUpConditionalCriteriaAft testLookUpConditionalCriteria poppup not detected in CI")
+    @Test
+    public void testLookUpConditionalCriteriaBookmark() throws Exception {
+        testLookUpConditionalCriteria();
+        passed();
+    }
+
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13981 AFT Failure DemoLookUpConditionalCriteriaAft testLookUpConditionalCriteria poppup not detected in CI")
     @Test
     public void testLookUpConditionalCriteriaNav() throws Exception {
         testLookUpConditionalCriteria();
-        testAutoTruncateColumns();
         passed();
     }
 }

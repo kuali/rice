@@ -100,12 +100,12 @@ public class LibraryClientResponsivenessEventsAft extends WebDriverLegacyITBase 
     }  
     
     private void testClientResponsivenessEventsAll() throws Exception {
-//    	testClientResponsivenessEventsClick();
+    	testClientResponsivenessEventsClick();
     	testClientResponsivenessEventsChangeFocusBlur();
-//    	testClientResponsivenessEventsMouseEvent();
-//    	testClientResponsivenessEventsMouseEventOnButtons();
-//    	testClientResponsivenessEventsGroupAndSectionEvents();
-//    	testClientResponsivenessEventsOnKeyPressUpDown();
+    	testClientResponsivenessEventsMouseEvent();
+    	testClientResponsivenessEventsMouseEventOnButtons();
+    	testClientResponsivenessEventsGroupAndSectionEvents();
+    	testClientResponsivenessEventsOnKeyPressUpDown();
     	passed();
     }
 }

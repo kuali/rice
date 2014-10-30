@@ -67,14 +67,14 @@ function initializeSessionTimers(warningInterval, timeoutInterval) {
  * Shows the session timeout warning dialog, invoked by the session warning timer
  */
 function showSessionTimeoutWarning() {
-    showLightboxComponent(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
+    showStaticDialog(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
 }
 
 /**
  * Shows the session timeout dialog, invoked by the session timer
  */
 function showSessionTimeout() {
-    showLightboxComponent(kradVariables.SESSION_TIMEOUT_DIALOG);
+    showStaticDialog(kradVariables.SESSION_TIMEOUT_DIALOG);
 }
 
 /**
@@ -118,7 +118,7 @@ function resetSessionTimers() {
  * @param event instance of the dialog response event, contains the value for the response input
  */
 function handleTimeoutWarningResponse(event) {
-    closeLightbox();
+    dismissDialog(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
 
     if (event.value == 'continue') {
         var response = invokeServerListener(kradVariables.KEEP_SESSION_ALIVE_METHOD_TO_CALL);
@@ -146,7 +146,7 @@ function handleTimeoutWarningResponse(event) {
  * @param event instance of the dialog response event, contains the value for the response input
  */
 function handleTimeoutResponse(event) {
-    closeLightbox();
+    dismissDialog(kradVariables.SESSION_TIMEOUT_DIALOG);
 
     broadcastSessionDialogResponse('okay');
 }
@@ -173,9 +173,11 @@ function checkForSessionUpdate(event) {
     // if the user responded to a session dialog in another page, we need to reset the timers (in the case of continue)
     // and close the session dialogs for this page if any are displaying
     if (event.key == 'sessionDialogResponse') {
-        if ((activeDialogId == kradVariables.SESSION_TIMEOUT_WARNING_DIALOG)
-                || (activeDialogId == kradVariables.SESSION_TIMEOUT_DIALOG)) {
-            closeLightbox();
+        if (activeDialogId == kradVariables.SESSION_TIMEOUT_WARNING_DIALOG) {
+            dismissDialog(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
+        }
+        else if (activeDialogId == kradVariables.SESSION_TIMEOUT_DIALOG) {
+            dismissDialog(kradVariables.SESSION_TIMEOUT_DIALOG);
         }
 
         if (event.newValue == 'continue') {

@@ -200,7 +200,7 @@
     </property>
     <property name="availableResponses">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="okay" p:value="Okay"/>
+        <bean parent="Uif-KeyLabelPair" p:key="okay" p:value="OK"/>
       </list>
     </property>
     <property name="onDialogResponseScript" value="handleTimeoutResponse(e);"/>

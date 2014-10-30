@@ -120,6 +120,14 @@
               </bean>
               <bean parent="Uif-InputField" p:propertyName="field6"
                     p:order="60" p:required="true">
+                <property name="optionsFinder">
+                  <bean class="org.kuali.rice.krad.demo.uif.options.FoodKeyValuesFinder">
+                    <property name="addBlankOption" value="false"/>
+                  </bean>
+                </property>
+                <property name="control">
+                  <bean parent="Uif-DropdownControl"/>
+                </property>
                 <property name="quickfinder">
                   <bean parent="Uif-QuickFinder"
                         p:dataObjectClassName="org.kuali.rice.krad.demo.travel.dataobject.TravelAccount"

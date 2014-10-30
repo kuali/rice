@@ -165,12 +165,6 @@ public class DialogGroup extends GroupBase {
 
             getFooter().setItems(footerItems);
         }
-
-        List<QuickFinder> quickFinders = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), QuickFinder.class);
-        for (QuickFinder quickFinder : quickFinders) {
-            Action quickFinderAction = quickFinder.getQuickfinderAction();
-            quickFinderAction.addActionParameter(UifParameters.DIALOG_ID, getId());
-        }
     }
 
     /**
@@ -235,6 +229,12 @@ public class DialogGroup extends GroupBase {
                     }
                 }
             }
+        }
+
+        List<QuickFinder> quickFinders = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), QuickFinder.class);
+        for (QuickFinder quickFinder : quickFinders) {
+            Action quickFinderAction = quickFinder.getQuickfinderAction();
+            quickFinderAction.addActionParameter(UifParameters.DIALOG_ID, getId());
         }
     }
 

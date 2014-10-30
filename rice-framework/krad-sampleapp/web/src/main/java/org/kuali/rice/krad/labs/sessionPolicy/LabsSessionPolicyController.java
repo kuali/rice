@@ -60,8 +60,8 @@ public class LabsSessionPolicyController extends KradLabsController {
             HttpServletRequest request, HttpServletResponse response) {
 
         // for testing purposes set the session timeout to three minutes
-        request.getSession().setMaxInactiveInterval(120000);
-        ((KradLabsForm) form).setSessionTimeoutInterval(120000);
+        request.getSession().setMaxInactiveInterval(360);
+        ((KradLabsForm) form).setSessionTimeoutInterval(360);
 
         return getModelAndView(form);
     }

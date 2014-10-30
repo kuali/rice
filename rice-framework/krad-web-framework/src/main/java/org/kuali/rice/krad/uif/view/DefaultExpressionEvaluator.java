@@ -72,6 +72,8 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
     private static Method getName;
     private static Method getParam;
     private static Method getParamAsBoolean;
+    private static Method getParamAsInteger;
+    private static Method getParamAsDouble;
     private static Method hasPerm;
     private static Method hasPermDtls;
     private static Method hasPermTmpl;
@@ -91,6 +93,10 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
             getParam = ExpressionFunctions.class.getDeclaredMethod("getParam",
                     new Class[] {String.class, String.class, String.class});
             getParamAsBoolean = ExpressionFunctions.class.getDeclaredMethod("getParamAsBoolean",
+                    new Class[] {String.class, String.class, String.class});
+            getParamAsInteger = ExpressionFunctions.class.getDeclaredMethod("getParamAsInteger",
+                    new Class[] {String.class, String.class, String.class});
+            getParamAsDouble = ExpressionFunctions.class.getDeclaredMethod("getParamAsDouble",
                     new Class[] {String.class, String.class, String.class});
             hasPerm = ExpressionFunctions.class.getDeclaredMethod("hasPerm", new Class[] {String.class, String.class});
             hasPermDtls = ExpressionFunctions.class.getDeclaredMethod("hasPermDtls",
@@ -654,6 +660,8 @@ public class DefaultExpressionEvaluator implements ExpressionEvaluator {
         context.registerFunction("getName", getName);
         context.registerFunction("getParam", getParam);
         context.registerFunction("getParamAsBoolean", getParamAsBoolean);
+        context.registerFunction("getParamAsInteger", getParamAsInteger);
+        context.registerFunction("getParamAsDouble", getParamAsDouble);
         context.registerFunction("hasPerm", hasPerm);
         context.registerFunction("hasPermDtls", hasPermDtls);
         context.registerFunction("hasPermTmpl", hasPermTmpl);

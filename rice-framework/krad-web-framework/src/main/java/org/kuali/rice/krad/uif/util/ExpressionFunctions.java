@@ -173,6 +173,46 @@ public class ExpressionFunctions {
     }
 
     /**
+     * Retrieves the value of the parameter identified with the given namespace, component, and name and converts
+     * to a Integer
+     *
+     * @param namespaceCode namespace code for the parameter to retrieve
+     * @param componentCode component code for the parameter to retrieve
+     * @param parameterName name of the parameter to retrieve
+     * @return Boolean value of parameter as a Integer or null if parameter does not exist
+     */
+    public static Integer getParamAsInteger(String namespaceCode, String componentCode, String parameterName) {
+        String param = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(namespaceCode,
+                        componentCode, parameterName);
+        if (param == null) {
+            return null;
+        }
+
+        return Integer.valueOf(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(namespaceCode,
+                componentCode, parameterName));
+    }
+
+    /**
+     * Retrieves the value of the parameter identified with the given namespace, component, and name and converts
+     * to a Double
+     *
+     * @param namespaceCode namespace code for the parameter to retrieve
+     * @param componentCode component code for the parameter to retrieve
+     * @param parameterName name of the parameter to retrieve
+     * @return Boolean value of parameter as a Double or null if parameter does not exist
+     */
+    public static Double getParamAsDouble(String namespaceCode, String componentCode, String parameterName) {
+        String param = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(namespaceCode,
+                        componentCode, parameterName);
+        if (param == null) {
+            return null;
+        }
+
+        return Double.valueOf(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(namespaceCode,
+                componentCode, parameterName));
+    }
+
+    /**
      * Indicates whether the current user has the permission identified by the given namespace and permission name
      *
      * @param namespaceCode namespace code for the permission to check

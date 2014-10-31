@@ -991,7 +991,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
      * </pre>
      *
      * The desired behavior is that the delegate defined in the PeopleFlow gets the requests, overriding the KIM
-     * delegate which gets ignored.  Since the delegation type is 'secondary', both ppfTestRole2 and ppfTestRole2 get
+     * delegate which gets ignored.  Since the delegation type is 'secondary', both ppfTestRole1 and ppfTestRole2 get
      * requests.
      */
     @Test
@@ -1155,11 +1155,11 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
             assertApproveRequested(document, user1, user2, testuser1, testuser2);
             assertApproveNotRequested(document, user3, testuser3, ewestfal);
 
-            // approve as testuser1 who a member of ppfTestRole3
+            // approve as user1 who a member of ppfTestRole3
             document.switchPrincipal(user1);
             document.approve("");
 
-            // approve as testuser2 who is the second member of ppfTestRole3
+            // approve as user2 who is the second member of ppfTestRole3
             document.switchPrincipal(user2);
             document.approve("");
 
@@ -1295,7 +1295,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
             assertApproveRequested(document, user1, user2, testuser1, testuser2);
             assertApproveNotRequested(document, user3, testuser3, ewestfal);
 
-            // approve as testuser1 who a member of ppfTestRole4
+            // approve as user1 who a member of ppfTestRole3
             document.switchPrincipal(user1);
             document.approve("");
 
@@ -1348,7 +1348,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
             assertApproveRequested(document, user2, testuser1, testuser2);
             assertApproveNotRequested(document, user1);
 
-            // approve as testuser1 who is a member of ppfTestRole3
+            // approve as user2 who is a member of ppfTestRole3
             document.switchPrincipal(user2);
             document.approve("");
 
@@ -1736,7 +1736,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         assertTrue("Document should be enroute.", document.isEnroute());
 
         // should have 1 root requests which is a role request with 2 children, one a principal request to the "admin"
-        // prinicipal, and one a group request to the WorkflowAdmin group
+        // principal, and one a group request to the WorkflowAdmin group
         List<ActionRequest> rootActionRequests = document.getRootActionRequests();
         assertEquals(1, rootActionRequests.size());
         ActionRequest roleRequest = rootActionRequests.get(0);
@@ -1808,7 +1808,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         assertTrue("Document should be enroute.", document.isEnroute());
 
         // should have 1 root requests which is a role request with 2 children, one a principal request to the "admin"
-        // prinicipal, and one a group request to the WorkflowAdmin group
+        // principal, and one a group request to the WorkflowAdmin group
         List<ActionRequest> rootActionRequests = document.getRootActionRequests();
         assertEquals(1, rootActionRequests.size());
         ActionRequest roleRequest = rootActionRequests.get(0);

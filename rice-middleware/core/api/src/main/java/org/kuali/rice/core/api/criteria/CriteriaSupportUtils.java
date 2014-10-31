@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlElements;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
+import org.kuali.rice.core.api.util.type.KualiInteger;
 import org.kuali.rice.core.api.util.type.KualiPercent;
 
 /**
@@ -181,6 +182,8 @@ final class CriteriaSupportUtils {
             return new CriteriaKualiPercentValue((KualiPercent)object);
         } else if (object instanceof KualiDecimal) {
             return new CriteriaKualiDecimalValue((KualiDecimal)object);
+        } else if (object instanceof KualiInteger) {
+            return new CriteriaKualiIntegerValue((KualiInteger)object);
         } else if (object instanceof PropertyPath) {
             return new CriteriaPropertyPathValue((PropertyPath)object);
         } else if (object instanceof CriteriaValue) {

@@ -43,7 +43,7 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Transactional
+@Transactional(readOnly=true)
 public class ComponentServiceImpl implements ComponentService {
 
     private static final Logger LOG = Logger.getLogger(ComponentServiceImpl.class);
@@ -120,6 +120,7 @@ public class ComponentServiceImpl implements ComponentService {
     }
 
     @Override
+    @Transactional
     public void publishDerivedComponents(String componentSetId, List<Component> components) {
         if (StringUtils.isBlank(componentSetId)) {
             throw new RiceIllegalArgumentException("componentSetId was a null or blank value");
@@ -228,10 +229,10 @@ public class ComponentServiceImpl implements ComponentService {
         this.componentSetDao = componentSetDao;
     }
 
-
     public DataObjectService getDataObjectService() {
         return dataObjectService;
     }
+
     @Required
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;

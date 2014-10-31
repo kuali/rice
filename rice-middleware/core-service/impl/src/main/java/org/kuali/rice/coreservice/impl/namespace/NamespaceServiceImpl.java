@@ -29,7 +29,9 @@ import org.kuali.rice.coreservice.api.namespace.NamespaceService;
 import org.kuali.rice.krad.data.CompoundKey;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly=true)
 public class NamespaceServiceImpl implements NamespaceService {
     private DataObjectService dataObjectService;
 

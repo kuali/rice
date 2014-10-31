@@ -377,7 +377,7 @@
               p:required="true">
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:label="SubField 3"
-              p:render="@{#parentLine.subList.size() &lt; 2}"/>
+              p:render="@{#parentLine == null ? false : #parentLine.subList.size() &lt; 2}"/>
         <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
               p:required="true"/>
       </list>
@@ -443,13 +443,13 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1"
-              p:label="SubCollection @{#parentLine.subList.size()} SubField 1"
+              p:label="SubCollection @{#parentLine == null ? 0 : #parentLine.subList.size()} SubField 1"
               p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field2" p:label="@{#parentLine.subList.size()}"
               p:required="true">
         </bean>
         <bean parent="Uif-InputField" p:propertyName="field3" p:required="true" p:label="SubField 3"
-              p:render="@{#parentLine.subList.size() &lt; 2}"/>
+              p:render="@{#parentLine == null ? false : #parentLine.subList.size() &lt; 2}"/>
         <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
               p:required="true" p:instructionalText="This sub-collection has @{#parentLine.subList.size()} lines."/>
       </list>
@@ -521,7 +521,7 @@
     <property name="items">
       <list>
         <bean parent="Uif-InputField" p:propertyName="field1"
-              p:label="SubCollection @{#parentLine.subList.size()} SubField 1"
+              p:label="SubCollection @{#parentLine == null ? 0 : #parentLine.subList.size()} SubField 1"
               p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field2" p:label="SubField 2"
               p:required="true">
@@ -534,7 +534,7 @@
         <bean parent="Uif-InputField" p:propertyName="field3" p:label="SubField 3"
               p:required="true"/>
         <bean parent="Uif-InputField" p:propertyName="field4" p:label="SubField 4"
-              p:required="true" p:instructionalText="This sub-collection has @{#parentLine.subList.size()} lines."/>
+              p:required="true" p:instructionalText="This sub-collection has @{#parentLine == null ? 0 : #parentLine.subList.size()} lines."/>
       </list>
     </property>
   </bean>

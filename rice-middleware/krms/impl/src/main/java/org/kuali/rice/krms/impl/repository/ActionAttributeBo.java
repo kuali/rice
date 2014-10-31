@@ -39,7 +39,7 @@ public class ActionAttributeBo extends BaseAttributeBo implements Serializable {
     @Column(name = "ACTN_ATTR_DATA_ID")
     private String id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ACTN_ID")
     private ActionBo action;
 

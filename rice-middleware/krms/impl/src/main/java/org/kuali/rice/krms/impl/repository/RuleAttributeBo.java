@@ -40,7 +40,7 @@ public class RuleAttributeBo extends BaseAttributeBo implements Serializable {
     @Column(name = "RULE_ATTR_ID")
     private String id;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RULE_ID")
     private RuleBo rule;
 

@@ -71,7 +71,7 @@ public class ActionBo implements ActionDefinitionContract, Versioned, Serializab
     @Column(name = "TYP_ID")
     private String typeId;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RULE_ID")
     private RuleBo rule;
 

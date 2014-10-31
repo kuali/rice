@@ -152,6 +152,7 @@ public class AgendaInquiryController  extends InquiryController {
         }
 
         agendaEditor.setCustomRuleActionAttributesMap(agendaEditor.getAgendaItemLineRuleAction().getAttributes());
+        agendaEditor.setCustomRuleAttributesMap(agendaEditor.getAgendaItemLine().getRule().getAttributes());
     }
 
     /**

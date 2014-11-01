@@ -269,9 +269,10 @@ public class GroupBase extends ContainerBase implements Group {
         // set up action validation scripts to avoid bind errors
         setupValidationScripts(ACTION_VALIDATION_COMPONENTS.QUICKFINDER, ACTION_VALIDATION_COMPONENTS.INQUIRY);
 
-        if (isOmitFromFormPost()) {
-            List<Field> fields = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), Field.class);
-            removeItemsFromFormPost(model, fields);
+        // set the fields in the group to omit their data on form post according to its own value
+        List<Field> fields = ViewLifecycleUtils.getElementsOfTypeDeep(getItems(), Field.class);
+        for (Field field : fields) {
+            field.setOmitFromFormPost(isOmitFromFormPost());
         }
     }
 

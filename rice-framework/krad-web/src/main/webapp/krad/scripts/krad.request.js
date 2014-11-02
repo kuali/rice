@@ -389,7 +389,7 @@ KradRequest.prototype = {
         // create a reference to the request for ajax callbacks
         var request = this;
 
-        // if we aren't limiting the fields to send then send the whole form
+        // if we aren't limiting the fields to send then send the whole form unless a field is explicitly set to omit
         if (!request.fieldsToSend || request.fieldsToSend.length === 0) {
             var submitOptions = {
                 data: data,
@@ -399,6 +399,22 @@ KradRequest.prototype = {
 
                 error: function (jqXHR, textStatus) {
                     request._processError(jqXHR, textStatus, request);
+                },
+                beforeSubmit: function (arr, $form, options) {
+                    var omitElements = jQuery("[data-omit='true']");
+
+                    jQuery(omitElements).each(function (index, value) {
+                        var name = jQuery(value).attr('name');
+                        var dataIndex;
+                        jQuery(arr).each(function (ind, val) {
+                            if (val.name == name) {
+                                dataIndex = ind;
+                            }
+                        });
+                        if (dataIndex) {
+                            arr.splice(dataIndex, 1);
+                        }
+                    });
                 }
             };
 

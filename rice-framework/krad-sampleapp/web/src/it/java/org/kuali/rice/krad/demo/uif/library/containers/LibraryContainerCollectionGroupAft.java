@@ -59,12 +59,22 @@ public class LibraryContainerCollectionGroupAft extends WebDriverLegacyITBase {
         	JiraAwareFailureUtils.fail("Add Line present in readonly", this);
         }
     }
+
+    protected void testLibraryContainerCollectionGroupDictionaryAttributeSpecified() throws Exception {
+        selectByName("exampleShown","Table Layout with specified dictionaryAttributeName");
+        waitForTextPresent("Subsidized Percent");
+        waitForTextPresent("##.##");
+
+        waitForTextPresent("Travel Account Number *");
+        waitForTextPresent("Must not be more than 10 characters");
+    }
     
     @Test
     public void testContainerCollectionGroupBookmark() throws Exception {
         testLibraryContainerCollectionGroupTableLayout();
         testLibraryContainerCollectionGroupStackedLayout();
         testLibraryContainerCollectionGroupTableLayoutReadOnly();
+        testLibraryContainerCollectionGroupDictionaryAttributeSpecified();
         passed();
     }
 
@@ -73,6 +83,7 @@ public class LibraryContainerCollectionGroupAft extends WebDriverLegacyITBase {
         testLibraryContainerCollectionGroupTableLayout();
         testLibraryContainerCollectionGroupStackedLayout();
         testLibraryContainerCollectionGroupTableLayoutReadOnly();
+        testLibraryContainerCollectionGroupDictionaryAttributeSpecified();
         passed();
     }  
 }

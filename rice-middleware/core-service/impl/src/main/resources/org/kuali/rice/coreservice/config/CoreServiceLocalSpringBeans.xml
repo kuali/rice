@@ -184,9 +184,6 @@
     </property>
     <property name="beanNames">
       <list>
-        <idref local="namespaceService" />
-        <idref local="componentService" />
-        <idref local="parameterRepositoryService" />
         <idref local="styleService" />
         <idref local="styleRepositoryService" />
         <idref local="styleXmlLoader" />

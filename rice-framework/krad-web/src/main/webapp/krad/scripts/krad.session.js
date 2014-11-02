@@ -51,12 +51,12 @@ function logoutUser() {
  * notifications from other windows about any updates or session dialog responses
  * </p>
  *
- * @param warningInterval number of milliseconds until timeout warning should be given
- * @param timeoutInterval number of milliseconds until timeout dialog should be shown
+ * @param warningInterval number of seconds until timeout warning should be given
+ * @param timeoutInterval number of seconds until timeout dialog should be shown
  */
 function initializeSessionTimers(warningInterval, timeoutInterval) {
-    sessionWarningTimer = new KradTimer(showSessionTimeoutWarning, warningInterval);
-    sessionTimeoutTimer = new KradTimer(showSessionTimeout, timeoutInterval);
+    sessionWarningTimer = new KradTimer(showSessionTimeoutWarning, warningInterval * 1000);
+    sessionTimeoutTimer = new KradTimer(showSessionTimeout, timeoutInterval * 1000);
 
     broadcastSessionUpdate();
 
@@ -67,14 +67,15 @@ function initializeSessionTimers(warningInterval, timeoutInterval) {
  * Shows the session timeout warning dialog, invoked by the session warning timer
  */
 function showSessionTimeoutWarning() {
-    showLightboxComponent(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
+    showStaticDialog(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
 }
 
 /**
  * Shows the session timeout dialog, invoked by the session timer
  */
 function showSessionTimeout() {
-    showLightboxComponent(kradVariables.SESSION_TIMEOUT_DIALOG);
+    dismissDialog(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
+    showStaticDialog(kradVariables.SESSION_TIMEOUT_DIALOG);
 }
 
 /**
@@ -118,9 +119,9 @@ function resetSessionTimers() {
  * @param event instance of the dialog response event, contains the value for the response input
  */
 function handleTimeoutWarningResponse(event) {
-    closeLightbox();
+    dismissDialog(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
 
-    if (event.value == 'continue') {
+    if (event.response == 'continue') {
         var response = invokeServerListener(kradVariables.KEEP_SESSION_ALIVE_METHOD_TO_CALL);
         if (response.status == kradVariables.SUCCESS_RESPONSE) {
             resetSessionTimers();
@@ -128,7 +129,7 @@ function handleTimeoutWarningResponse(event) {
 
         broadcastSessionDialogResponse('continue');
     }
-    else if (event.value == 'logout') {
+    else if (event.response == 'logout') {
         broadcastSessionDialogResponse('logout');
 
         logoutUser();
@@ -146,7 +147,7 @@ function handleTimeoutWarningResponse(event) {
  * @param event instance of the dialog response event, contains the value for the response input
  */
 function handleTimeoutResponse(event) {
-    closeLightbox();
+    dismissDialog(kradVariables.SESSION_TIMEOUT_DIALOG);
 
     broadcastSessionDialogResponse('okay');
 }
@@ -173,9 +174,11 @@ function checkForSessionUpdate(event) {
     // if the user responded to a session dialog in another page, we need to reset the timers (in the case of continue)
     // and close the session dialogs for this page if any are displaying
     if (event.key == 'sessionDialogResponse') {
-        if ((activeDialogId == kradVariables.SESSION_TIMEOUT_WARNING_DIALOG)
-                || (activeDialogId == kradVariables.SESSION_TIMEOUT_DIALOG)) {
-            closeLightbox();
+        if (activeDialogId == kradVariables.SESSION_TIMEOUT_WARNING_DIALOG) {
+            dismissDialog(kradVariables.SESSION_TIMEOUT_WARNING_DIALOG);
+        }
+        else if (activeDialogId == kradVariables.SESSION_TIMEOUT_DIALOG) {
+            dismissDialog(kradVariables.SESSION_TIMEOUT_DIALOG);
         }
 
         if (event.newValue == 'continue') {

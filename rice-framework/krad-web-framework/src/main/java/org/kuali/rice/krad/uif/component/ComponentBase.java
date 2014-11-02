@@ -28,7 +28,6 @@ import org.kuali.rice.krad.uif.control.ControlBase;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
 import org.kuali.rice.krad.uif.layout.CssGridSizes;
-import org.kuali.rice.krad.uif.lifecycle.ComponentPostMetadata;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecyclePhase;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
@@ -36,13 +35,10 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleUtils;
 import org.kuali.rice.krad.uif.modifier.ComponentModifier;
 import org.kuali.rice.krad.uif.util.LifecycleAwareMap;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
-import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
-import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewIndex;
-import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.widget.Tooltip;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -70,6 +66,7 @@ import java.util.Set;
  */
 @BeanTag(name = "componentBase", parent = "Uif-ComponentBase")
 public abstract class ComponentBase extends UifDictionaryBeanBase implements Component {
+
     private static final long serialVersionUID = -4449335748129894350L;
 
     private String id;
@@ -243,10 +240,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     public void checkMutable(boolean legalDuringInitialization) {
         if (UifConstants.ViewStatus.CACHED.equals(viewStatus)) {
-            ViewLifecycle.reportIllegalState("Cached component "
-                    + getClass()
-                    + " "
-                    + getId()
+            ViewLifecycle.reportIllegalState("Cached component " + getClass() + " " + getId()
                     + " is immutable, use copy() to get a mutable instance");
             return;
         }
@@ -256,10 +250,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         }
 
         if (UifConstants.ViewStatus.CREATED.equals(viewStatus) && !legalDuringInitialization) {
-            ViewLifecycle.reportIllegalState("View has not been fully initialized, attempting to change component "
-                    + getClass()
-                    + " "
-                    + getId());
+            ViewLifecycle.reportIllegalState(
+                    "View has not been fully initialized, attempting to change component " + getClass() + " "
+                            + getId());
             return;
         }
     }
@@ -283,6 +276,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      * </p>
      *
      * @return view status
+     *
      * @see org.kuali.rice.krad.uif.UifConstants.ViewStatus
      */
     public String getViewStatus() {
@@ -516,14 +510,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             }
 
             timerScript = (null == timerScript) ? "" : timerScript;
-            timerScript = "refreshComponentUsingTimer('"
-                    + this.id
-                    + "','"
-                    + this.methodToCallOnRefresh
-                    + "',"
-                    + refreshTimer
-                    + ");"
-                    + timerScript;
+            timerScript =
+                    "refreshComponentUsingTimer('" + this.id + "','" + this.methodToCallOnRefresh + "'," + refreshTimer
+                            + ");" + timerScript;
 
             setOnDocumentReadyScript(timerScript);
         }
@@ -536,7 +525,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         // put together all css class names for this component, in order
         Set<String> finalCssClasses = new LinkedHashSet<>();
 
-        if (libraryCssClasses != null && (!ViewLifecycle.isActive() || ViewLifecycle.getView().isUseLibraryCssClasses())) {
+        if (libraryCssClasses != null && (!ViewLifecycle.isActive() || ViewLifecycle.getView()
+                .isUseLibraryCssClasses())) {
             finalCssClasses.addAll(libraryCssClasses);
             libraryCssClasses.clear();
         }
@@ -561,36 +551,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
             ViewLifecycle.getViewPostMetadata().addAvailableMethodToCall(methodToCallOnRefresh);
         }
 
-        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && StringUtils.isNotBlank(methodToCallOnRefresh)) {
+        if ((isRender() || StringUtils.isNotBlank(getProgressiveRender())) && StringUtils.isNotBlank(
+                methodToCallOnRefresh)) {
             ViewLifecycle.getViewPostMetadata().addAccessibleMethodToCall(methodToCallOnRefresh);
-        }
-    }
-
-    /**
-     * Helper method that removes a list of fields from form data.
-     *
-     * @param model the form data
-     * @param fields the fields to remove
-     */
-    protected void removeItemsFromFormPost(Object model, List<Field> fields) {
-        for (Field field : fields) {
-            removeItemFromFormPost(model, field);
-        }
-    }
-
-    /**
-     * Helper method that removes the field data from form data.
-     *
-     * @param model the form data
-     * @param field the field to remove
-     */
-    protected void removeItemFromFormPost(Object model, Field field) {
-        if (field instanceof DataField) {
-            DataField dataField = (DataField) field;
-            UifFormBase form = (UifFormBase) model;
-            Map<String, String[]> viewRequestParameters = form.getInitialRequestParameters();
-            //viewRequestParameters.remove(dataField.getPropertyName());
-            viewRequestParameters.remove(dataField.getBindingInfo().getBindingPath());
         }
     }
 
@@ -1061,8 +1024,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Set the libraryCssClasses
-     *
-     * @param libraryCssClasses
      */
     public void setLibraryCssClasses(List<String> libraryCssClasses) {
         checkMutable(true);
@@ -1183,8 +1144,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the finalize method
-     *
-     * @param finalizeMethodToCall
      */
     public void setFinalizeMethodToCall(String finalizeMethodToCall) {
         checkMutable(true);
@@ -1202,8 +1161,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the finalize additional arguments list
-     *
-     * @param finalizeMethodAdditionalArguments
      */
     public void setFinalizeMethodAdditionalArguments(List<Object> finalizeMethodAdditionalArguments) {
         checkMutable(true);
@@ -1221,8 +1178,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the method invoker instance
-     *
-     * @param finalizeMethodInvoker
      */
     public void setFinalizeMethodInvoker(MethodInvokerConfig finalizeMethodInvoker) {
         checkMutable(true);
@@ -1498,8 +1453,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the component's order
-     *
-     * @param order
      */
     public void setOrder(int order) {
         checkMutable(true);
@@ -2174,8 +2127,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
      */
     @Override
     public String getAdditionalComponentsToRefreshJs() {
-        if (additionalComponentsToRefreshJs == null
-                && additionalComponentsToRefresh != null
+        if (additionalComponentsToRefreshJs == null && additionalComponentsToRefresh != null
                 && !additionalComponentsToRefresh.isEmpty()) {
             additionalComponentsToRefreshJs = ScriptUtils.convertStringListToJsArray(
                     this.getAdditionalComponentsToRefresh());
@@ -2236,8 +2188,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for refreshTimer
-     *
-     * @param refreshTimer
      */
     public void setRefreshTimer(int refreshTimer) {
         checkMutable(true);
@@ -2288,8 +2238,6 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     /**
      * Setter for the controller method to call for a refresh or disclosure action on this component
-     *
-     * @param methodToCallOnRefresh
      */
     public void setMethodToCallOnRefresh(String methodToCallOnRefresh) {
         checkMutable(true);
@@ -2440,11 +2388,9 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         for (Map.Entry<String, String> data : getScriptDataAttributes().entrySet()) {
             if (data != null && data.getValue() != null) {
-                script = ScriptUtils.appendScript(script, "dataComponent.data('"
-                        + data.getKey()
-                        + "',"
-                        + ScriptUtils.convertToJsValue(data.getValue())
-                        + ");");
+                script = ScriptUtils.appendScript(script,
+                        "dataComponent.data('" + data.getKey() + "'," + ScriptUtils.convertToJsValue(data.getValue())
+                                + ");");
             }
         }
 
@@ -2620,10 +2566,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         // Check for invalid characters in the components id
         if (getId() != null) {
-            if (getId().contains("'")
-                    || getId().contains("\"")
-                    || getId().contains("[]")
-                    || getId().contains(".")
+            if (getId().contains("'") || getId().contains("\"") || getId().contains("[]") || getId().contains(".")
                     || getId().contains("#")) {
                 String currentValues[] = {"id = " + getId()};
                 tracer.createError("Id contains invalid characters", currentValues);
@@ -2659,11 +2602,8 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
         // Check for un-executable data resets when no refresh option is set
         if (getMethodToCallOnRefresh() != null || isResetDataOnRefresh()) {
-            if (!isProgressiveRenderAndRefresh()
-                    && !isRefreshedByAction()
-                    && !isProgressiveRenderViaAJAX()
-                    && !StringUtils.isNotEmpty(conditionalRefresh)
-                    && !(refreshTimer > 0)) {
+            if (!isProgressiveRenderAndRefresh() && !isRefreshedByAction() && !isProgressiveRenderViaAJAX()
+                    && !StringUtils.isNotEmpty(conditionalRefresh) && !(refreshTimer > 0)) {
                 String currentValues[] = {"methodToCallONRefresh = " + getMethodToCallOnRefresh(),
                         "resetDataONRefresh = " + isResetDataOnRefresh(),
                         "progressiveRenderAndRefresh = " + isProgressiveRenderAndRefresh(),

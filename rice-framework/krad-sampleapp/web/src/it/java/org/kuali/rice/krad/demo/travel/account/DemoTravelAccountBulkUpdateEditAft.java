@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
+import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.junit.Test;
 
@@ -69,6 +70,7 @@ public class DemoTravelAccountBulkUpdateEditAft extends WebDriverLegacyITBase {
     }
 
     @Test
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     public void testTravelAccountBulkUpdateEditBookmark() throws Exception {
         testTravelAccountBulkUpdateEdit();
         passed();

@@ -83,7 +83,7 @@ import com.google.common.collect.Sets;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Transactional
+@Transactional(readOnly = true)
 public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryAware {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JpaPersistenceProvider.class);
@@ -181,6 +181,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public <T> T save(final T dataObject, final PersistenceOption... options) {
         return doWithExceptionTranslation(new Callable<T>() {
             @Override
@@ -276,6 +277,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public void delete(final Object dataObject) {
         doWithExceptionTranslation(new Callable<Object>() {
             @Override
@@ -306,6 +308,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public <T> void deleteMatching(final Class<T> type, final QueryByCriteria queryByCriteria) {
         doWithExceptionTranslation(new Callable<Object>() {
             @Override
@@ -325,6 +328,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public <T> void deleteAll(final Class<T> type) {
         doWithExceptionTranslation(new Callable<Object>() {
             @Override
@@ -344,6 +348,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional
 	public <T> T copyInstance(final T dataObject, CopyOption... options) {
 		final CopyGroup copyGroup = new CopyGroup();
 		if (ArrayUtils.contains(options, CopyOption.RESET_PK_FIELDS)) {

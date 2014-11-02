@@ -30,6 +30,7 @@ import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,12 +39,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Transactional(readOnly = true)
 public final class ParameterRepositoryServiceImpl implements ParameterRepositoryService {
     private static final String SUB_PARAM_SEPARATOR = "=";
 
     private DataObjectService dataObjectService;
 
-    @Override 
+    @Override
+    @Transactional
     public Parameter createParameter(Parameter parameter) {
         if (parameter == null) {
             throw new RiceIllegalArgumentException("parameter is null");
@@ -61,6 +64,7 @@ public final class ParameterRepositoryServiceImpl implements ParameterRepository
     } 
 
     @Override
+    @Transactional
     public Parameter updateParameter(Parameter parameter) {
         if (parameter == null) {
             throw new RiceIllegalArgumentException("parameter is null");

@@ -407,6 +407,10 @@ public class View extends ContainerBase {
             theme.configureThemeDefaults();
         }
 
+        if (sessionPolicy != null) {
+            ViewLifecycle.getExpressionEvaluator().evaluateExpressionsOnConfigurable(view, sessionPolicy, getContext());
+        }
+
         //handle parentLocation breadcrumb chain
         parentLocation.constructParentLocationBreadcrumbItems(view, model, view.getContext());
     }
@@ -469,18 +473,18 @@ public class View extends ContainerBase {
             // warning minutes gives us the time before the timeout occurs to give the warning,
             // so we need to determine how long that should be from the session start
             int sessionTimeoutInterval = ((UifFormBase) model).getSessionTimeoutInterval();
-            int sessionWarningMilliseconds = (sessionPolicy.getTimeoutWarningSeconds() * 1000);
+            int sessionWarningSeconds = sessionPolicy.getTimeoutWarningSeconds();
 
-            if (sessionWarningMilliseconds >= sessionTimeoutInterval) {
+            if (sessionWarningSeconds >= sessionTimeoutInterval) {
                 throw new RuntimeException(
                         "Time until giving the session warning should be less than the session timeout. Session Warning is "
-                                + sessionWarningMilliseconds
-                                + "ms, session timeout is "
+                                + sessionWarningSeconds
+                                + "s, session timeout is "
                                 + sessionTimeoutInterval
-                                + "ms.");
+                                + "s.");
             }
 
-            int sessionWarningInterval = sessionTimeoutInterval - sessionWarningMilliseconds;
+            int sessionWarningInterval = sessionTimeoutInterval - sessionWarningSeconds;
 
             onReadyScript = ScriptUtils.appendScript(onReadyScript, ScriptUtils.buildFunctionCall(
                     UifConstants.JsFunctions.INITIALIZE_SESSION_TIMERS, sessionWarningInterval,

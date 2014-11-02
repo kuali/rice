@@ -45,6 +45,8 @@ public class UITestObject implements Serializable {
     private String field7;
     private String field8;
 
+    private String travelAccountAttributeName;
+
     private String dollar1;
     private String dollar2;
     private String dollar3;
@@ -255,6 +257,17 @@ public class UITestObject implements Serializable {
 
     public void setField8(String field8) {
         this.field8 = field8;
+    }
+
+    public String getTravelAccountAttributeName() {
+        if (travelAccountAttributeName == null) {
+            return "number";
+        }
+        return travelAccountAttributeName;
+    }
+
+    public void setTravelAccountAttributeName(String travelAccountAttributeName) {
+        this.travelAccountAttributeName = travelAccountAttributeName;
     }
 
     public String getDollar1() {

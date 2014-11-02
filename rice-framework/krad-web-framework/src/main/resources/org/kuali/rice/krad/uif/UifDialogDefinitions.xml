@@ -170,10 +170,13 @@
 
   <bean id="Uif-SessionTimeoutWarning-DialogGroup" parent="Uif-DialogGroup">
     <property name="headerText" value="Still there?"/>
+    <property name="header.upperGroup">
+      <null/>
+    </property>
     <property name="promptText">
       <value>
-        [b]Due to inactivity, you will be logged out in [div id="UifTimeoutCountdown"]60[/div] minute(s).[/b][br]
-        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000.00} minutes
+        [b] Due to inactivity, you will be logged out in [div id="UifTimeoutCountdown"]60[/div].[/b][br]
+        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60.00} minutes
         of inactivity.
       </value>
     </property>
@@ -190,20 +193,23 @@
 
   <bean id="Uif-SessionTimeout-DialogGroup" parent="Uif-DialogGroup">
     <property name="headerText" value="Logged out"/>
+    <property name="header.upperGroup">
+      <null/>
+    </property>
     <property name="promptText">
       <value>
         [b]You have been logged out due to inactivity.[/b][br]
-        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60000.00} minutes
+        For your security, work sessions are automatically logged out after @{sessionTimeoutInterval / 60.00} minutes
         of inactivity.
         Return to the&amp;nbsp;[0].
       </value>
     </property>
     <property name="availableResponses">
       <list>
-        <bean parent="Uif-KeyLabelPair" p:key="okay" p:value="Okay"/>
+        <bean parent="Uif-KeyLabelPair" p:key="okay" p:value="OK"/>
       </list>
     </property>
-    <property name="onDialogResponseScript" value="handleTimeoutResponse(e);"/>
+    <property name="onDialogResponseScript" value="handleTimeoutResponse(e);redirect('@{#ConfigProperties['application.url']}');"/>
     <property name="prompt.inlineComponents">
       <list>
         <bean parent="Uif-ActionLink" p:actionLabel="home screen"

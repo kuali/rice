@@ -386,6 +386,7 @@ public class DemoTravelAuthorizationPessimisticLockingAft extends WebDriverLegac
         passed();
     }
 
+    @Ignore ("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     @Test
     public void testPessimisticLockingUnlockingOnAcknowledgeNav() throws Exception {
         testPessimisticLockingUnlockingOnAcknowledge();

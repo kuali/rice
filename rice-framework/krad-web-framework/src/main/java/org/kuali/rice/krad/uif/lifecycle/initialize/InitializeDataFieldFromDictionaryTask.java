@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.InputField;
@@ -26,9 +28,11 @@ import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.ComponentFactory;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.util.KRADConstants;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -51,7 +55,7 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
     /**
      * Sets properties of the <code>InputField</code> (if blank) to the corresponding attribute
      * entry in the data dictionary
-     * 
+     *
      * {@inheritDoc}
      */
     @Override
@@ -63,56 +67,87 @@ public class InitializeDataFieldFromDictionaryTask extends ViewLifecycleTaskBase
         String dictionaryAttributeName = field.getDictionaryAttributeName();
         String dictionaryObjectEntry = field.getDictionaryObjectEntry();
 
-        // if entry given but not attribute name, use field name as attribute name
-        if (StringUtils.isNotBlank(dictionaryObjectEntry) && StringUtils.isBlank(dictionaryAttributeName)) {
-            dictionaryAttributeName = field.getPropertyName();
-        }
+        Map<String, String> propertyExpressions = field.getPropertyExpressions();
 
-        // if dictionary entry and attribute set, attempt to find definition
-        if (StringUtils.isNotBlank(dictionaryAttributeName) && StringUtils.isNotBlank(dictionaryObjectEntry)) {
-            attributeDefinition = KRADServiceLocatorWeb.getDataDictionaryService()
-                    .getAttributeDefinition(dictionaryObjectEntry, dictionaryAttributeName);
-        }
+        if (dictionaryAttributeName == null && propertyExpressions.containsKey(UifPropertyPaths.DICTIONARY_ATTR_NAME)) {
+            ExpressionEvaluator expressionEvaluator = ViewLifecycle.getExpressionEvaluator();
+            dictionaryAttributeName = propertyExpressions.get(UifPropertyPaths.DICTIONARY_ATTR_NAME);
 
-        // if definition not found, recurse through path
-        if (attributeDefinition == null) {
-            BindingInfo fieldBindingInfo = field.getBindingInfo();
-            String collectionPath = fieldBindingInfo.getCollectionPath();
+            if (dictionaryAttributeName.contains(UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX)) {
+                dictionaryAttributeName = dictionaryAttributeName.replace(UifConstants.DEFAULT_PATH_BIND_ADJUST_PREFIX,
+                        "");
+            } else if (dictionaryAttributeName.contains(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX)) {
+                // It is not possible to add both the collection and index to the context at this time.  Until
+                // the dictionaryAttributeName expression can be properly evaluated, get the attribute definition for
+                // the field by looking at the first item in the collection if an item exists.
 
-            String propertyPath;
-            if (StringUtils.isNotBlank(collectionPath)) {
-                StringBuilder propertyPathBuilder = new StringBuilder();
+                List<Object> collection = ObjectPropertyUtils.getPropertyValue(ViewLifecycle.getModel(),
+                       field.getBindingInfo().getCollectionPath());
 
-                String bindingObjectPath = fieldBindingInfo.getBindingObjectPath();
-                if (StringUtils.isNotBlank(bindingObjectPath)) {
-                    propertyPathBuilder.append(bindingObjectPath).append('.');
+                if (!collection.isEmpty()) {
+                    dictionaryAttributeName = dictionaryAttributeName.replace(UifConstants.LINE_PATH_BIND_ADJUST_PREFIX,
+                            field.getBindingInfo().getCollectionPath() + "[0].");
+                } else {
+                    dictionaryAttributeName = null;
                 }
-
-                propertyPathBuilder.append(collectionPath).append('.');
-
-                String bindByNamePrefix = fieldBindingInfo.getBindByNamePrefix();
-                if (StringUtils.isNotBlank(bindByNamePrefix)) {
-
-                    // fix for both collectionPath and bindByNamePrefix being set,
-                    // wherein the bindByNamePrefix contains the collectionPath
-                    if(!bindByNamePrefix.startsWith(collectionPath)) {
-                        propertyPathBuilder.append(bindByNamePrefix).append('.');
-                    }
-                }
-
-                propertyPathBuilder.append(fieldBindingInfo.getBindingName());
-                propertyPath = propertyPathBuilder.toString();
-
-            } else {
-                propertyPath = field.getBindingInfo().getBindingPath();
             }
 
-            attributeDefinition = findNestedDictionaryAttribute(propertyPath);
+            dictionaryAttributeName = (String) expressionEvaluator.evaluateExpression(field.getContext(),
+                    dictionaryAttributeName);
         }
 
-        // if a definition was found, initialize field from definition
-        if (attributeDefinition != null) {
-            field.copyFromAttributeDefinition(attributeDefinition);
+        if (!(dictionaryAttributeName == null && propertyExpressions.containsKey(UifPropertyPaths.DICTIONARY_ATTR_NAME))) {
+
+            // if entry given but not attribute name, use field name as attribute name
+            if (StringUtils.isNotBlank(dictionaryObjectEntry) && StringUtils.isBlank(dictionaryAttributeName)) {
+                dictionaryAttributeName = field.getPropertyName();
+            }
+
+            // if dictionary entry and attribute set, attempt to find definition
+            if (StringUtils.isNotBlank(dictionaryAttributeName) && StringUtils.isNotBlank(dictionaryObjectEntry)) {
+                attributeDefinition = KRADServiceLocatorWeb.getDataDictionaryService().getAttributeDefinition(
+                        dictionaryObjectEntry, dictionaryAttributeName);
+            }
+
+            // if definition not found, recurse through path
+            if (attributeDefinition == null) {
+                BindingInfo fieldBindingInfo = field.getBindingInfo();
+                String collectionPath = fieldBindingInfo.getCollectionPath();
+
+                String propertyPath;
+                if (StringUtils.isNotBlank(collectionPath)) {
+                    StringBuilder propertyPathBuilder = new StringBuilder();
+
+                    String bindingObjectPath = fieldBindingInfo.getBindingObjectPath();
+                    if (StringUtils.isNotBlank(bindingObjectPath)) {
+                        propertyPathBuilder.append(bindingObjectPath).append('.');
+                    }
+
+                    propertyPathBuilder.append(collectionPath).append('.');
+
+                    String bindByNamePrefix = fieldBindingInfo.getBindByNamePrefix();
+                    if (StringUtils.isNotBlank(bindByNamePrefix)) {
+
+                        // fix for both collectionPath and bindByNamePrefix being set,
+                        // wherein the bindByNamePrefix contains the collectionPath
+                        if (!bindByNamePrefix.startsWith(collectionPath)) {
+                            propertyPathBuilder.append(bindByNamePrefix).append('.');
+                        }
+                    }
+
+                    propertyPathBuilder.append(fieldBindingInfo.getBindingName());
+                    propertyPath = propertyPathBuilder.toString();
+                } else {
+                    propertyPath = field.getBindingInfo().getBindingPath();
+                }
+
+                attributeDefinition = findNestedDictionaryAttribute(propertyPath);
+            }
+
+            // if a definition was found, initialize field from definition
+            if (attributeDefinition != null) {
+                field.copyFromAttributeDefinition(attributeDefinition);
+            }
         }
 
         // if control still null, assign default

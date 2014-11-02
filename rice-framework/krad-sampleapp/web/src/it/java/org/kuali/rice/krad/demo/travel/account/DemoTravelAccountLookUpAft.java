@@ -160,27 +160,27 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
 
         //save to check the binding is correctly applied subsequent times KULRICE-12638
         waitAndClickButtonByText("Save");
-        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
-        waitForIsTextPresent("Document was successfully saved.");
+        waitForProgressSaving(WebDriverUtils.configuredImplicityWait() * 10);
+        waitForTextPresent("Document was successfully saved.");
 
         //remove the subsidized percent
         jGrowl("Clear subsidized percent");
         clearTextByName("document.newMaintainableObject.dataObject.subsidizedPercent");
         waitAndClickButtonByText("Save");
-        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
+        waitForProgressSaving(WebDriverUtils.configuredImplicityWait() * 10);
         waitForTextPresent("Subsidized Percent: Required");
 
         //re-add the subsidized percent and save
         waitAndTypeByName("document.newMaintainableObject.dataObject.subsidizedPercent","45");
         waitAndClickButtonByText("Save");
-        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
-        waitForIsTextPresent("Document was successfully saved.");
+        waitForProgressSaving(WebDriverUtils.configuredImplicityWait() * 10);
+        waitForTextPresent("Document was successfully saved.");
 
         //submit successfully
         waitAndClickSubmitByText();
         waitAndClickConfirmSubmitOk();
         waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
-        waitForIsTextPresent("Document was successfully submitted.");
+        waitForTextPresent("Document was successfully submitted.");
     }
 
     private void testTravelAccountLookUpDocumentLocking() throws Exception {
@@ -285,20 +285,19 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
             passed();
         }
 
+        @Ignore("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
         @Test
         public void testTravelAccountLookUpDocumentLockingNav() throws Exception {
             testTravelAccountLookUpDocumentLocking();
             passed();
         }
 
-        @Ignore("https://jira.kuali.org/browse/KULRICE-13967 AFT Failure DemoTravelAccountLookUpAft testTravelAccountLookupCaseConstraint Selenium clear stopped working")
         @Test
         public void testTravelAccountLookupCaseConstraintBookmark() throws Exception {
             testTravelAccountLookupCaseConstraint();
             passed();
         }
 
-        @Ignore("https://jira.kuali.org/browse/KULRICE-13967 AFT Failure DemoTravelAccountLookUpAft testTravelAccountLookupCaseConstraint Selenium clear stopped working")
         @Test
         public void testTravelAccountLookupCaseConstraintNav() throws Exception {
             testTravelAccountLookupCaseConstraint();

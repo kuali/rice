@@ -82,7 +82,7 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//div[@id = 'Uif-Dialogs']//button[contains(text(), 'Add')]");
 
         // assert that an error message is shown
-        waitIsVisible("div[data-label = 'Field 1'] li[class = 'uif-errorMessageItem-field]");
+        waitIsVisible("div[data-label = 'Field 1'] li[class = 'uif-errorMessageItem-field']");
 
         // add some values to the collection via the dialog
         waitAndTypeByName("newCollectionLines['collection1_3'].field1", "42");

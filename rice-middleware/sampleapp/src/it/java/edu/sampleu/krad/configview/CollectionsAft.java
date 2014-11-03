@@ -144,13 +144,13 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitForProgressLoading();
         waitAndClickByXpath("//button[contains(.,'Add Line')]");
         waitForProgressLoading();
-        waitForElementPresentByName("list1[0].field1");
+        waitForElementPresentByName("list7[0].field1");
         assertTableLayout();
         waitForProgressAddingLine();
-        assertEquals("", waitAndGetAttributeByName("list1[0].field1", "value"));
-        assertEquals("", waitAndGetAttributeByName("list1[0].field2", "value"));
-        assertEquals("", waitAndGetAttributeByName("list1[0].field3", "value"));
-        assertEquals("", waitAndGetAttributeByName("list1[0].field4", "value"));
+        assertEquals("", waitAndGetAttributeByName("list7[0].field1", "value"));
+        assertEquals("", waitAndGetAttributeByName("list7[0].field2", "value"));
+        assertEquals("", waitAndGetAttributeByName("list7[0].field3", "value"));
+        assertEquals("", waitAndGetAttributeByName("list7[0].field4", "value"));
     }
 
     private void testSum() throws InterruptedException {
@@ -242,15 +242,15 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Column Sequence");
         acceptAlert();
         waitForProgressLoading();
-        waitAndTypeByName("newCollectionLines['list1'].field1", "1");
-        waitAndTypeByName("newCollectionLines['list1'].field2", "1");
-        waitAndTypeByName("newCollectionLines['list1'].field3", "1");
-        waitAndTypeByName("newCollectionLines['list1'].field4", "1");
+        waitAndTypeByName("newCollectionLines['list12'].field1", "1");
+        waitAndTypeByName("newCollectionLines['list12'].field2", "1");
+        waitAndTypeByName("newCollectionLines['list12'].field3", "1");
+        waitAndTypeByName("newCollectionLines['list12'].field4", "1");
         waitAndClick(By.id("Collections-ColumnSequence-TableDefault_add"));
         waitForProgressAddingLine();
 
         //Check if row has been added really or not
-        testIfRowHasBeenAdded();
+        testIfRowHasBeenAdded("list12");
 
         //Check for the added if delete is present or not
         assertTrue(getClass().toString(), isElementPresentByXpath("//div[@id='Collections-ColumnSequence-TableDefault_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/button"));
@@ -260,15 +260,15 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Save Row");
         acceptAlert();
         waitForProgressLoading();
-        waitAndTypeByName("newCollectionLines['list1'].field1", "1");
-        waitAndTypeByName("newCollectionLines['list1'].field2", "1");
-        waitAndTypeByName("newCollectionLines['list1'].field3", "1");
-        waitAndTypeByName("newCollectionLines['list1'].field4", "1");
+        waitAndTypeByName("newCollectionLines['list15'].field1", "1");
+        waitAndTypeByName("newCollectionLines['list15'].field2", "1");
+        waitAndTypeByName("newCollectionLines['list15'].field3", "1");
+        waitAndTypeByName("newCollectionLines['list15'].field4", "1");
         clickAdd();
         waitForProgressAddingLine();
 
         //Check if row has been added really or not
-        testIfRowHasBeenAdded();
+        testIfRowHasBeenAdded("list15");
 
         //Check for the added if delete is present or not
         assertTrue(getClass().toString(), isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/button"));
@@ -280,15 +280,15 @@ public class CollectionsAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//button[contains(.,'Add')]");
     }
 
-    protected void testIfRowHasBeenAdded() throws Exception {
+    protected void testIfRowHasBeenAdded(String whichList) throws Exception {
         //Check if row has been added really or not
-        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field1", "value"));
-        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field2", "value"));
-        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field3", "value"));
-        assertEquals("", waitAndGetAttributeByName("newCollectionLines['list1'].field4", "value"));
-        assertEquals("1", waitAndGetAttributeByName("list1[0].field1", "value"));
-        assertEquals("1", waitAndGetAttributeByName("list1[0].field2", "value"));
-        assertEquals("1", waitAndGetAttributeByName("list1[0].field3", "value"));
-        assertEquals("1", waitAndGetAttributeByName("list1[0].field4", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['" + whichList + "'].field1", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['" + whichList + "'].field2", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['" + whichList + "'].field3", "value"));
+        assertEquals("", waitAndGetAttributeByName("newCollectionLines['" + whichList + "'].field4", "value"));
+        assertEquals("1", waitAndGetAttributeByName(whichList + "[0].field1", "value"));
+        assertEquals("1", waitAndGetAttributeByName(whichList + "[0].field2", "value"));
+        assertEquals("1", waitAndGetAttributeByName(whichList + "[0].field3", "value"));
+        assertEquals("1", waitAndGetAttributeByName(whichList + "[0].field4", "value"));
     }
 }

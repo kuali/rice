@@ -471,10 +471,11 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         addCollectionPostMetadata();
 
         // set fields to send if adding with dialog
-        if (this.addWithDialog && this.addLineDialog != null && this.addLineDialog.getFooter() != null) {
+        if (addWithDialog && addLineDialog != null && addLineDialog.getFooter() != null) {
             List<String> fieldsToSend = new ArrayList<String>();
-            fieldsToSend.add("#" + this.addLineDialog.getId());
-            for (Component cmpnt : this.addLineDialog.getFooter().getItems()) {
+            fieldsToSend.add("#" + addLineDialog.getId());
+
+            for (Component cmpnt : addLineDialog.getFooter().getItems()) {
                 if (cmpnt instanceof  Action) {
                     ((Action)cmpnt).setFieldsToSend(fieldsToSend);
                 }

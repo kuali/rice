@@ -159,15 +159,19 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     public void bind(ServletRequest request) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
             for (String key : request.getParameterMap().keySet()) {
                 LOG.debug(key + "=>" + request.getParameterMap().get(key));
             }
+
             LOG.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
             LOG.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+
             for (String name : Collections.list(request.getParameterNames())) {
                 LOG.debug(name + "=>" + request.getParameter(name));
             }
+
             LOG.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         }
 

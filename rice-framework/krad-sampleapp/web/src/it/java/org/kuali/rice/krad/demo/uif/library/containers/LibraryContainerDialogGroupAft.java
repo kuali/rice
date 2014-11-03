@@ -104,12 +104,12 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     
     protected void testContainerDialogGroupDialogEvents() throws Exception {
     	waitAndClickByLinkText("Dialog Events");
+        waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example7']/button");
+        waitAndClickByXpath("//section[@id='Demo-DialogGroup-DialogEvents']/div/div/div[@data-parent='Demo-DialogGroup-DialogEvents']/button[contains(text(),'Continue')]");
+        acceptAlertIfPresent();
+        acceptAlertIfPresent();
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example7']/button");
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-DialogEvents']/div/div/div[@data-parent='Demo-DialogGroup-DialogEvents']/button[contains(text(),'Log out')]");
-    	acceptAlertIfPresent();
-    	acceptAlertIfPresent();
-    	waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example7']/button");
-    	waitAndClickByXpath("//section[@id='Demo-DialogGroup-DialogEvents']/div/div/div[@data-parent='Demo-DialogGroup-DialogEvents']/button[contains(text(),'Continue')]");
     	acceptAlertIfPresent();
     	acceptAlertIfPresent();
     }

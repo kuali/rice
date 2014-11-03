@@ -372,7 +372,7 @@ function validateAddLine(collectionGroupId) {
     var collectionGroup = jQuery("#" + collectionGroupId);
     var addControls = collectionGroup.data(kradVariables.ADD_CONTROLS);
 
-    var controlsToValidate = jQuery(addControls, collectionGroup);
+    var controlsToValidate = jQuery(addControls, jQuery("[data-role='View']"));
 
     var valid = validateLineFields(controlsToValidate, false);
     if (!valid) {

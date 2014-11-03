@@ -189,7 +189,6 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	testContainerDialogGroupGetDialogResponse2();
     	testContainerDialogGroupShowDialog1();
     	testContainerDialogGroupShowDialog2();
-    	testContainerDialogGroupDialogEvents();
         testContainerDialogGroupServerDialog1();
 //      testContainerDialogGroupServerDialog2(); // fails when run with others, test below
     	testContainerDialogGroupAjaxRetrieval();
@@ -198,6 +197,7 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
 //    	testContainerDialogGroupSmallDialog(); // fails when run with others, test below
 //    	testContainerDialogGroupLargeDialog(); // run below
 //        testContainerDialogGroupDestroyDialogOnHidden(); // run below
+        testContainerDialogGroupDialogEvents(); // run last as it logs out via dialog
     }
 
     @Test

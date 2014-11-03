@@ -103,7 +103,7 @@ public class LabsInquiryDataObjectAttachmentAft extends LabsInquiryBase {
         waitAndClickByLinkText("Create Travel Attachment Collection");
         String desc = getDescriptionUnique();
         waitAndTypeByName("document.documentHeader.documentDescription", desc);
-        String number = "Num" + uniqueString.substring(0,6); // number length is not validated, max length is 10
+        String number = "Num" + uniqueString.substring(6, 13); // number length is not validated, max length is 10
         waitAndTypeByName("document.newMaintainableObject.dataObject.number", number);
         waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Name" + uniqueString);
         fileUploadSetUp();

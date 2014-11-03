@@ -113,7 +113,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         Thread.sleep(3000);
 
         waitAndClickButtonByExactText("Save");
-        waitForTextPresent("SAVED");
+        waitForTextPresent("SAVED", WebDriverUtils.configuredImplicityWait() * 4);
         waitForTextPresent(" Document was successfully saved.");
 
         waitAndClickButtonByExactText("Submit");

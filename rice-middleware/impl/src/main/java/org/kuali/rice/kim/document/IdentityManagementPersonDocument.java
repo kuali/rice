@@ -43,6 +43,7 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -362,7 +363,13 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
                 }
                 for (KimDocumentRoleQualifier qualifier : rolePrncpl.getQualifiers()) {
                     qualifier.setDocumentNumber(getDocumentNumber());
+                    qualifier.setRoleMemberId(rolePrncpl.getRoleMemberId());
                     qualifier.setKimTypId(role.getKimTypeId());
+                }
+                for (KimDocumentRoleResponsibilityAction responsibilityAction : rolePrncpl.getRoleRspActions()) {
+                    responsibilityAction.setDocumentNumber(getDocumentNumber());
+                    responsibilityAction.setRoleMemberId(rolePrncpl.getRoleMemberId());
+                    responsibilityAction.setRoleResponsibilityId("*");
                 }
             }
         }

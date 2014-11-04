@@ -578,6 +578,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
                     if (StringUtils.isBlank(roleRespAction.getRoleResponsibilityActionId())) {
                         DataFieldMaxValueIncrementer incrementer = MaxValueIncrementerFactory.getIncrementer(KimImplServiceLocator.getDataSource(), KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S);
                         roleRespAction.setRoleResponsibilityActionId(incrementer.nextStringValue());
+                        roleRespAction.setDocumentNumber(getDocumentNumber());
                     }
                     roleRespAction.setRoleMemberId(member.getRoleMemberId());
                     roleRespAction.setDocumentNumber(getDocumentNumber());
@@ -608,6 +609,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
                     if (delegation.getDelegationId().equals(member.getDelegationId()) && delegation.getDelegationTypeCode().equals(member.getDelegationTypeCode())) {
                         for (RoleDocumentDelegationMemberQualifier qualifier : member.getQualifiers()) {
                             qualifier.setKimTypId(getKimType().getId());
+                            qualifier.setDocumentNumber(getDocumentNumber());
                         }
                     } else {
                         membersToRemove.add(member);

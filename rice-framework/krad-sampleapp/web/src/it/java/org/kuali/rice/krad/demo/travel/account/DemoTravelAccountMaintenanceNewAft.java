@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.demo.travel.account;
 
+import org.junit.Ignore;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
@@ -210,6 +211,7 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         passed();
     }
 
+    @Ignore("https://jira.kuali.org/browse/KULRICE-13357 AFT Failures Dialogs on CI")
     @Test
     public void testDemoTravelAccountMaintenanceNewNav() throws Exception {
         testTravelAccountMaintenanceNew();

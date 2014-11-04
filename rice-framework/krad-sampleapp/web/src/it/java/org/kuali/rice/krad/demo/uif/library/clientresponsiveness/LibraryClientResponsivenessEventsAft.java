@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.clientresponsiveness;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,7 +58,7 @@ public class LibraryClientResponsivenessEventsAft extends WebDriverLegacyITBase 
     protected void testClientResponsivenessEventsChangeFocusBlur() throws Exception {
     	waitAndClickByLinkText("OnChange, OnFocus, OnBlur Examples");
     	selectByName("inputField6","Yellow");
-    	waitForElementPresentByXpath("//div[@id='Demo-Events-Example2A' and @style='background-color: rgb(255, 255, 0);']");
+    	waitForElementVisibleBy(By.xpath("//div[@id='Demo-Events-Example2A' and @style='background-color: rgb(255, 255, 0);']"));
     	fireEvent("inputField7", "focus");
     }
     

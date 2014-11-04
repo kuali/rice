@@ -296,8 +296,8 @@
                   <bean class="org.kuali.rice.krad.keyvalues.AdHocActionRequestCodesValuesFinder"/>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="recipientNamespaceCode" p:label="Namespace Code"/>
-              <bean parent="Uif-InputField" p:propertyName="recipientName" p:label="Name">
+              <bean parent="Uif-InputField" p:propertyName="recipientNamespaceCode" p:label="Namespace Code" p:required="true"/>
+              <bean parent="Uif-InputField" p:propertyName="recipientName" p:label="Name" p:required="true">
                 <property name="control">
                   <bean parent="Uif-KimGroupControl" p:groupIdPropertyName="id"
                         p:namespaceCodePropertyName="recipientNamespaceCode"/>

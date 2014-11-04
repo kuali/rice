@@ -170,6 +170,7 @@
 
   <bean id="Collections-AddBlankLine-TableTop" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout With Add Blank line TOP (default)"/>
+    <property name="propertyName" value="list7" />
     <property name="renderAddBlankLineButton" value="true"/>
   </bean>
 
@@ -183,6 +184,7 @@
 
   <bean id="Collections-AddBlankLine-StackTop" parent="Collections-Base-StackLayout">
     <property name="headerText" value="Stack Layout With Add Blank line TOP (default)"/>
+    <property name="propertyName" value="list8" />
     <property name="renderAddBlankLineButton" value="true"/>
   </bean>
 
@@ -198,13 +200,14 @@
 
   <bean id="Collections-AddViaLightbox-TableTop" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout Add Via Lightbox TOP"/>
+    <property name="propertyName" value="list9" />
     <property name="addWithDialog" value="true"/>
     <property name="layoutManager.separateAddLine" value="true"/>
   </bean>
 
   <bean id="Collections-AddViaLightbox-TableBottom" parent="Collections-AddViaLightbox-TableTop">
     <property name="headerText" value="Table Layout With Add Via Lightbox BOTTOM"/>
-    <property name="propertyName" value="list2"/>
+    <property name="propertyName" value="list10"/>
     <property name="addLinePlacement" value="BOTTOM"/>
   </bean>
 
@@ -212,6 +215,7 @@
 
   <bean id="Collections-AddViaLightbox-StackTop" parent="Collections-Base-StackLayout">
     <property name="headerText" value="Stack Layout With Add Via Lightbox TOP"/>
+    <property name="propertyName" value="list11" />
     <property name="addWithDialog" value="true"/>
   </bean>
 
@@ -225,17 +229,18 @@
 
   <bean id="Collections-ColumnSequence-TableDefault" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout Action Column Default"/>
+    <property name="propertyName" value="list12" />
   </bean>
 
   <bean id="Collections-ColumnSequence-TableLeft" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout Action Column Left"/>
-    <property name="propertyName" value="list2"/>
+    <property name="propertyName" value="list13"/>
     <property name="layoutManager.actionColumnPlacement" value="LEFT"/>
   </bean>
 
   <bean id="Collections-ColumnSequence-TableThird" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout Action Column 3"/>
-    <property name="propertyName" value="list3"/>
+    <property name="propertyName" value="list14"/>
     <property name="layoutManager.actionColumnPlacement" value="3"/>
   </bean>
 
@@ -244,6 +249,7 @@
 
   <bean id="Collections-SaveRow-Table" parent="Collections-Base-TableLayout">
     <property name="headerText" value="Table Layout With Save Row"/>
+    <property name="propertyName" value="list15" />
     <property name="renderSaveLineActions" value="true"/>
   </bean>
 
@@ -252,7 +258,7 @@
   <bean id="Collections-SaveRow-Stack" parent="Collections-Base-StackLayout">
     <property name="headerText" value="Stack Layout With Save Row"/>
     <property name="renderSaveLineActions" value="true"/>
-    <property name="propertyName" value="list2"/>
+    <property name="propertyName" value="list16"/>
   </bean>
 
 </beans>

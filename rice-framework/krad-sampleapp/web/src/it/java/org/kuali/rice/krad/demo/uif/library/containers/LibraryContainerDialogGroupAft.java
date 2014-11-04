@@ -104,12 +104,12 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     
     protected void testContainerDialogGroupDialogEvents() throws Exception {
     	waitAndClickByLinkText("Dialog Events");
+        waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example7']/button");
+        waitAndClickByXpath("//section[@id='Demo-DialogGroup-DialogEvents']/div/div/div[@data-parent='Demo-DialogGroup-DialogEvents']/button[contains(text(),'Continue')]");
+        acceptAlertIfPresent();
+        acceptAlertIfPresent();
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example7']/button");
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-DialogEvents']/div/div/div[@data-parent='Demo-DialogGroup-DialogEvents']/button[contains(text(),'Log out')]");
-    	acceptAlertIfPresent();
-    	acceptAlertIfPresent();
-    	waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example7']/button");
-    	waitAndClickByXpath("//section[@id='Demo-DialogGroup-DialogEvents']/div/div/div[@data-parent='Demo-DialogGroup-DialogEvents']/button[contains(text(),'Continue')]");
     	acceptAlertIfPresent();
     	acceptAlertIfPresent();
     }
@@ -189,7 +189,6 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     	testContainerDialogGroupGetDialogResponse2();
     	testContainerDialogGroupShowDialog1();
     	testContainerDialogGroupShowDialog2();
-    	testContainerDialogGroupDialogEvents();
         testContainerDialogGroupServerDialog1();
 //      testContainerDialogGroupServerDialog2(); // fails when run with others, test below
     	testContainerDialogGroupAjaxRetrieval();
@@ -198,6 +197,7 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
 //    	testContainerDialogGroupSmallDialog(); // fails when run with others, test below
 //    	testContainerDialogGroupLargeDialog(); // run below
 //        testContainerDialogGroupDestroyDialogOnHidden(); // run below
+        testContainerDialogGroupDialogEvents(); // run last as it logs out via dialog
     }
 
     @Test

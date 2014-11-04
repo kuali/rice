@@ -469,6 +469,18 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         super.performFinalize(model, parent);
 
         addCollectionPostMetadata();
+
+        // set fields to send if adding with dialog
+        if (addWithDialog && addLineDialog != null && addLineDialog.getFooter() != null) {
+            List<String> fieldsToSend = new ArrayList<String>();
+            fieldsToSend.add("#" + addLineDialog.getId());
+
+            for (Component cmpnt : addLineDialog.getFooter().getItems()) {
+                if (cmpnt instanceof  Action) {
+                    ((Action)cmpnt).setFieldsToSend(fieldsToSend);
+                }
+            }
+        }
     }
 
     /**

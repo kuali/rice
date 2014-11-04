@@ -211,6 +211,17 @@ public class UifComponentsTestForm extends UifFormBase {
     private List<UITestObject> list4 = new ArrayList<UITestObject>();
     private List<UITestObject> list5 = new ArrayList<UITestObject>();
     private List<UITestObject> list6 = new ArrayList<UITestObject>();
+    private List<UITestObject> list7 = new ArrayList<UITestObject>();
+    private List<UITestObject> list8 = new ArrayList<UITestObject>();
+    private List<UITestObject> list9 = new ArrayList<UITestObject>();
+    private List<UITestObject> list10 = new ArrayList<UITestObject>();
+    private List<UITestObject> list11 = new ArrayList<UITestObject>();
+    private List<UITestObject> list12 = new ArrayList<UITestObject>();
+    private List<UITestObject> list13 = new ArrayList<UITestObject>();
+    private List<UITestObject> list14 = new ArrayList<UITestObject>();
+    private List<UITestObject> list15 = new ArrayList<UITestObject>();
+    private List<UITestObject> list16 = new ArrayList<UITestObject>();
+    private List<UITestObject> list17 = new ArrayList<UITestObject>();
     private List<UITestObject> emptyList = new ArrayList<UITestObject>();
     private List<UITestObject> groupedList1 = new ArrayList<UITestObject>();
     private List<UITestObject> groupedList2 = new ArrayList<UITestObject>();
@@ -317,6 +328,18 @@ public class UifComponentsTestForm extends UifFormBase {
         list5.get(1).getSubList().add(new UITestObject("a", "s", "D", "F"));
         list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
         list5.get(1).getSubList().get(1).getSubList().add(new UITestObject("b23", "3", "3", "3"));
+
+        list7 = new ArrayList(list1);
+        list8 = new ArrayList(list3);
+        list9 = new ArrayList(list1);
+        list10 = new ArrayList(list2);
+        list11 =  new ArrayList(list3);
+        list12 = new ArrayList(list1);
+        list13 = new ArrayList(list2);
+        list14 = new ArrayList(list3);
+        list15 = new ArrayList(list1);
+        list16 = new ArrayList(list2);
+        list17 = new ArrayList(list4);
 
         groupedList1.add(new UITestObject("A", "100", "200", "300"));
         groupedList1.add(new UITestObject("A", "101", "200", "300"));
@@ -1523,6 +1546,94 @@ public class UifComponentsTestForm extends UifFormBase {
      */
     public void setList4(List<UITestObject> list4) {
         this.list4 = list4;
+    }
+
+    public List<UITestObject> getList7() {
+        return list7;
+    }
+
+    public void setList7(List<UITestObject> list7) {
+        this.list7 = list7;
+    }
+
+    public List<UITestObject> getList8() {
+        return list8;
+    }
+
+    public void setList8(List<UITestObject> list8) {
+        this.list8 = list8;
+    }
+
+    public List<UITestObject> getList9() {
+        return list9;
+    }
+
+    public void setList9(List<UITestObject> list9) {
+        this.list9 = list9;
+    }
+
+    public List<UITestObject> getList10() {
+        return list10;
+    }
+
+    public void setList10(List<UITestObject> list10) {
+        this.list10 = list10;
+    }
+
+    public List<UITestObject> getList11() {
+        return list11;
+    }
+
+    public void setList11(List<UITestObject> list11) {
+        this.list11 = list11;
+    }
+
+    public List<UITestObject> getList12() {
+        return list12;
+    }
+
+    public void setList12(List<UITestObject> list12) {
+        this.list12 = list12;
+    }
+
+    public List<UITestObject> getList13() {
+        return list13;
+    }
+
+    public void setList13(List<UITestObject> list13) {
+        this.list13 = list13;
+    }
+
+    public List<UITestObject> getList14() {
+        return list14;
+    }
+
+    public void setList14(List<UITestObject> list14) {
+        this.list14 = list14;
+    }
+
+    public List<UITestObject> getList15() {
+        return list15;
+    }
+
+    public void setList15(List<UITestObject> list15) {
+        this.list15 = list15;
+    }
+
+    public List<UITestObject> getList16() {
+        return list16;
+    }
+
+    public void setList16(List<UITestObject> list16) {
+        this.list16 = list16;
+    }
+
+    public List<UITestObject> getList17() {
+        return list17;
+    }
+
+    public void setList17(List<UITestObject> list17) {
+        this.list17 = list17;
     }
 
     /**

@@ -64,7 +64,7 @@ KradResponse.prototype = {
 
         // remove any already existing matching dialogs from the view
         jQuery('.modal', page).each(function() {
-                    jQuery('#' + this.id, viewContent.parent()).remove();
+                    jQuery('#' + this.id, jQuery("[data-role='View']")).remove();
                 }
         );
 
@@ -150,6 +150,12 @@ KradResponse.prototype = {
 
         var component = jQuery("#" + id + "_update", content);
 
+        // remove any already existing matching dialogs from the view
+        jQuery('.modal', component).each(function() {
+                    jQuery('#' + this.id, jQuery("[data-role='View']")).remove();
+                }
+        );
+
         // is the new component now required
         var nowRequired = jQuery(".required", component).size() > 0;
 
@@ -202,6 +208,9 @@ KradResponse.prototype = {
 
             // Removes traces of dialog if one was destroyed by the refresh
             ensureDialogBackdropRemoved();
+
+            // move all dialogs to dialog section
+            jQuery('.modal').appendTo('#Uif-Dialogs');
 
             $componentInDom = jQuery("#" + id);
 

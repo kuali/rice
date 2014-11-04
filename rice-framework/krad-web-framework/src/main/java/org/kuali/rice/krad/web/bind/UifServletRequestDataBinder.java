@@ -158,21 +158,17 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
     @Override
     public void bind(ServletRequest request) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+            LOG.debug("Request Parameters from getParameterMap:");
 
             for (String key : request.getParameterMap().keySet()) {
-                LOG.debug(key + "=>" + request.getParameterMap().get(key));
+                LOG.debug("\t" + key + "=>" + request.getParameterMap().get(key));
             }
 
-            LOG.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
-            LOG.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+            LOG.debug("Request Parameters from getParameter:");
 
             for (String name : Collections.list(request.getParameterNames())) {
-                LOG.debug(name + "=>" + request.getParameter(name));
+                LOG.debug("\t" + name + "=>" + request.getParameter(name));
             }
-
-            LOG.debug("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         }
 
         UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();

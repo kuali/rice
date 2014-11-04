@@ -25,6 +25,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -76,7 +77,9 @@ public class TermSpecificationBo implements TermSpecificationDefinitionContract,
             inverseJoinColumns = { @JoinColumn(name = "CTGRY_ID", referencedColumnName = "CTGRY_ID") })
     private List<CategoryBo> categories = new ArrayList<CategoryBo>();
 
-    @OneToMany(orphanRemoval = true, mappedBy = "termSpecification")
+    @OneToMany(orphanRemoval = true, mappedBy = "termSpecification", fetch = FetchType.LAZY,
+            cascade = { CascadeType.REFRESH, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST })
+    @JoinColumn(name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID")
     private List<ContextValidTermBo> contextValidTerms = new ArrayList<ContextValidTermBo>();
 
     @Transient

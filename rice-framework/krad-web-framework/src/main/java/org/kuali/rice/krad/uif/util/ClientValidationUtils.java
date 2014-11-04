@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.view.FormView;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.widget.DatePicker;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.UifFormBase;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -171,6 +172,20 @@ public class ClientValidationUtils {
      * @return js validator.addMethod script
      */
     public static String getRegexMethod(InputField field, ValidCharactersConstraint validCharactersConstraint) {
+        return getRegexMethod(field, validCharactersConstraint, true);
+    }
+
+    /**
+     * Returns the add method jquery validator call for the regular expression stored in
+     * validCharactersConstraint.
+     *
+     * @param field input field
+     * @param validCharactersConstraint constraint providing the regex
+     * @param escape whether to escape key or not
+     * @return js validator.addMethod script
+     */
+    public static String getRegexMethod(InputField field, ValidCharactersConstraint validCharactersConstraint,
+            boolean escape) {
         String message = generateMessageText(validCharactersConstraint.getMessageNamespaceCode(),
                 validCharactersConstraint.getMessageComponentCode(), validCharactersConstraint.getMessageKey(),
                 validCharactersConstraint.getValidationMessageParams());
@@ -185,8 +200,7 @@ public class ClientValidationUtils {
             regex = regex.replace("/", "\\/");
         }
 
-        return "\njQuery.validator.addMethod(\""
-                + ScriptUtils.escapeName(key)
+        return "\njQuery.validator.addMethod(\"" + (escape ? ScriptUtils.escapeName(key) : key)
                 + "\", function(value, element) {\n "
                 + "return (this.optional(element) !== false) || /"
                 + regex
@@ -980,8 +994,11 @@ public class ClientValidationUtils {
             if (validCharactersConstraint != null && validCharactersConstraint.getApplyClientSide()) {
                 if (StringUtils.isNotEmpty(validCharactersConstraint.getValue())) {
                     // set regex value takes precedence
-                    addScriptToPage(view, field, ClientValidationUtils.getRegexMethod(field,
-                            validCharactersConstraint));
+                    String script = ClientValidationUtils.getRegexMethod(field, validCharactersConstraint, false);
+                    if (((UifFormBase) model).getRequestJsonTemplate() == UifConstants.TableToolsValues.JSON_TEMPLATE) {
+                        script = script.replaceAll("\\.", "\\\\u002e");
+                    }
+                    addScriptToPage(view, field, script);
                     field.getControl().addStyleClass(
                             "validChar-" + field.getBindingInfo().getBindingPath() + methodKey);
                     methodKey++;

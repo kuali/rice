@@ -131,8 +131,15 @@ public class AgendaEditorActiveInactiveCheckAft extends WebDriverLegacyITBase {
      * test ActiveInactive Check
      */
     @Test
+    public void testAgendaEditorActiveInactiveCheckBookmark() throws Exception {
+        testAgendaEditorActiveInactiveCheck();
+    }
+
+    /**
+     * test ActiveInactive Check
+     */
+    @Test
     public void testAgendaEditorActiveInactiveCheckNav() throws Exception {
         testAgendaEditorActiveInactiveCheck();
     }
 }
-

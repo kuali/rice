@@ -108,43 +108,63 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
     }
 
     protected void testCollectionFeaturesAddLineWithCustomActions() throws Exception {
-        selectByName("exampleShown","Collection Add Line with Custom Actions");
+        selectByName("exampleShown", "Collection Add Line with Custom Actions");
 
-        // Add Income Verify
-        waitAndTypeByName("newCollectionLines['collection1_8'].field1","999");
-        waitAndTypeByName("newCollectionLines['collection1_8'].field2","999");
-        waitAndClickByXpath("//section[@data-parent='Demo-CollectionAddLine-Example5']/div/table/tbody/tr/td[4]/div/fieldset/div/button[contains(text(),'Add')]");
-        waitForElementPresentByXpath("//input[@value='999']");
+        // add some values to the collection via the dialog
+        waitAndTypeByName("newCollectionLines['collection1_8'].field1", "999");
+        waitAndTypeByName("newCollectionLines['collection1_8'].field2", "999");
+        jGrowl("Click Add button.");
+        waitAndClickByXpath("//section[@data-parent='Demo-CollectionAddLine-Example5']//button[contains(text(),'Add')]");
 
-        //Trash Check
-        waitAndClickByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutHorizontalItem icon-trash']");
-        waitForElementNotPresent(By.xpath("//input[@value='999']"));
+        // assert that the values have been added
+        waitForElementPresent("input[name = 'collection1_8[0].field1'][value = '999']");
+        waitForElementPresent("input[name = 'collection1_8[0].field2'][value = '999']");
+
+        // delete the added line from the collection
+        jGrowl("Click Trash button.");
+        waitAndClick("#Demo-CollectionAddLine-Example5 button.icon-trash");
+
+        // assert that the values have been deleted and that the message shows
+        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_8[0].field1'][value = '999']"));
+        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_8[0].field2'][value = '999']"));
         waitForTextPresent("You have deleted an item from Project Income.");
     }
 
     protected void testCollectionFeaturesAddLineWithDialogAndCustomActions() throws Exception {
-        selectByName("exampleShown","Collection Add Line with Dialog and Custom Actions");
+        selectByName("exampleShown", "Collection Add Line with Dialog and Custom Actions");
 
-        // Add Income Cancel
-        waitAndClickByXpath("//section[@data-parent='Demo-CollectionAddLine-Example6']/button/span[@class='icon-plus']");
-        waitAndTypeByName("newCollectionLines['collection1_8'].field3","999");
-        waitAndTypeByName("newCollectionLines['collection1_8'].field1","999");
-        waitAndTypeByName("newCollectionLines['collection1_8'].field2","999");
-        waitAndClickByXpath("//section[@style='display: block;']/div/div/div[@class='modal-footer']/button[contains(text(),'Cancel')]");
-        waitForElementNotPresent(By.xpath("//section[@style='display: block;']"));
-        waitForElementNotPresent(By.xpath("//input[@value='999']"));
+        // add some values to the dialog and cancel
+        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6']//button/text()[contains(., 'Add Income')]/..");
+        waitAndTypeByName("newCollectionLines['collection1_9'].field1", "999");
+        waitAndTypeByName("newCollectionLines['collection1_9'].field2", "999");
+        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6-AddLineDialog']//button[contains(text(),'Cancel')]");
 
-        //Add Income and Verify
-        waitAndClickByXpath("//section[@data-parent='Demo-CollectionAddLine-Example6']/button/span[@class='icon-plus']");
-        waitAndTypeByName("newCollectionLines['collection1_8'].field3","999");
-        waitAndTypeByName("newCollectionLines['collection1_8'].field1","999");
-        waitAndTypeByName("newCollectionLines['collection1_8'].field2","999");
-        waitAndClickByXpath("//section[@style='display: block;']/div/div/div[@class='modal-footer']/button[contains(text(),'Cancel')]");
-        waitForElementPresentByXpath("//input[@value='999']");
+        // assert that the values have not been added to the collection
+        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field1'][value = '999']"));
+        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field2'][value = '999']"));
 
-        //Trash Check
-        waitAndClickByXpath("//button[@class='btn btn-default btn-xs uif-action uif-boxLayoutHorizontalItem icon-trash']");
-        waitForElementNotPresent(By.xpath("//input[@value='999']"));
+        // add some values to the collection via the dialog
+        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6']//button/text()[contains(., 'Add Income')]/..");
+        waitForElementPresentByName("newCollectionLines['collection1_9'].field1");
+        clearTextByName("newCollectionLines['collection1_9'].field1");
+        waitAndTypeByName("newCollectionLines['collection1_9'].field1", "999");
+        waitForElementPresentByName("newCollectionLines['collection1_9'].field2");
+        clearTextByName("newCollectionLines['collection1_9'].field2");
+        waitAndTypeByName("newCollectionLines['collection1_9'].field2", "999");
+        jGrowl("Click Add Income button.");
+        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6-AddLineDialog']//button[contains(text(), 'Add Income')]");
+
+        // assert that the values have been added
+        waitForElementPresent("input[name = 'collection1_9[0].field1'][value = '999']");
+        waitForElementPresent("input[name = 'collection1_9[0].field2'][value = '999']");
+
+        // delete the added line from the collection
+        jGrowl("Click Trash button.");
+        waitAndClick("#Demo-CollectionAddLine-Example6 button.icon-trash");
+
+        // assert that the values have been deleted and that the message shows
+        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field1'][value = '999']"));
+        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field2'][value = '999']"));
         waitForTextPresent("You have deleted an item from Project Income.");
     }
 

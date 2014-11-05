@@ -412,7 +412,7 @@
           </property>
           <property name="addLineDialog">
             <bean id="Demo-CollectionAddLine-Example7-AddLineDialog" parent="Uif-AddLineDialog" p:headerText="Add Project Income"
-                  p:refreshWhenChangedPropertyNames="#lp.field1">
+                  p:refreshWhenChangedPropertyNames="#lp.field1" p:omitFromFormPost="false">
               <property name="footer.items">
                 <list>
                   <bean parent="Uif-AddLineAction-Dialog" p:actionLabel="Add Income"

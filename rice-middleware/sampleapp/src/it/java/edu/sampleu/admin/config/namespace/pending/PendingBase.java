@@ -139,14 +139,11 @@ public abstract class PendingBase extends AdminTmplMthdAftNavBase {
         switchToWindow("Kuali Portal Index");
         waitAndClickDocSearch();
         selectFrameIframePortlet();
-        waitAndTypeByName("documentId",docId);
+        waitAndTypeByName("documentId", docId);
         waitAndClickByXpath(SEARCH_XPATH);
-        if(!isTextPresent("No values match this search.")) {
-            waitAndClickByLinkText(docId);
-            switchToWindow("Kuali :: Namespace");
-        } else {
-            fail("Previous Document may have routing problem so the latest Document is not able to submit correctly.");
-        }
+        waitForTextPresent("One item retrieved.", "Previous Document may have routing problem so the latest Document is not able to submit correctly.");
+        waitAndClickByLinkText(docId);
+        switchToWindow("Kuali :: Namespace");
         return docId;
     }
 

@@ -111,7 +111,6 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         	personDocumentForm.setPrincipalId(principalId);
         }
         forward = super.execute(mapping, form, request, response);
-        
         personDocumentForm.setCanModifyEntity(getUiDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
         EntityDefault origEntity = null;
         if(personDocumentForm.getPersonDocument()!=null) {
@@ -172,7 +171,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 			}
         }
 	}
-	
+
 	/***
 	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
 	 */
@@ -421,6 +420,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         		roleRspAction.setRoleResponsibilityId("*");
         		// not linked to a role responsibility - so we set the referenced object to null
         		roleRspAction.setRoleResponsibility(null);
+                roleRspAction.setDocumentNumber(role.getDocumentNumber());
+
         		if(rolePrncpl.getRoleRspActions()==null || rolePrncpl.getRoleRspActions().isEmpty()){
         			if(rolePrncpl.getRoleRspActions()==null) {
 						rolePrncpl.setRoleRspActions(new ArrayList<KimDocumentRoleResponsibilityAction>());

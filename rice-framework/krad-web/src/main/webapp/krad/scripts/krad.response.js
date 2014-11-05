@@ -151,8 +151,15 @@ KradResponse.prototype = {
         var component = jQuery("#" + id + "_update", content);
 
         // remove any already existing matching dialogs from the view
-        jQuery('.modal', component).each(function() {
-                    jQuery('#' + this.id, jQuery("[data-role='View']")).remove();
+        jQuery('.modal', component).each(function () {
+                    var tmp = jQuery('#' + this.id, jQuery("[data-role='View']"));
+                    var isPlaceHolder = tmp.hasClass(kradVariables.CLASSES.PLACEHOLDER);
+                    var displayedModal = isDisplayedModal($componentInDom);
+
+                    // do not remove placeholders or displayedModals
+                    if (!isPlaceHolder && !displayedModal) {
+                        tmp.remove();
+                    }
                 }
         );
 

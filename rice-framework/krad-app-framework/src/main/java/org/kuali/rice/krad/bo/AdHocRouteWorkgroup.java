@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.krad.bo;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -39,6 +42,9 @@ public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
     @Transient
     private String recipientName;
 
+    @Transient
+    private Group group;
+
     /**
      * Sets type to {@link #WORKGROUP_TYPE}.
      */
@@ -55,6 +61,16 @@ public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
     }
 
     @Override
+    public void setId(String id) {
+        super.setId(id);
+
+        if (StringUtils.isNotBlank(id)) {
+            group = KimApiServiceLocator.getGroupService().getGroup(id);
+            setGroup(group);
+        }
+    }
+
+    @Override
     public String getName() {
         return "";
     }
@@ -68,6 +84,20 @@ public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
     }
 
     /**
+     * Setter for {@link #getRecipientNamespaceCode()}.
+     *
+     * @param recipientNamespaceCode recipient namespace code
+     */
+    public void setRecipientNamespaceCode(String recipientNamespaceCode) {
+        this.recipientNamespaceCode = recipientNamespaceCode;
+
+        if (StringUtils.isNotBlank(recipientNamespaceCode) && StringUtils.isNotBlank(recipientName)) {
+            group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(recipientNamespaceCode, recipientName);
+            setGroup(group);
+        }
+    }
+
+    /**
      * Gets recipient name.
      *
      * @return recipient name
@@ -77,20 +107,28 @@ public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
     }
 
     /**
-     * Setter for {@link #getRecipientNamespaceCode()}.
-     *
-     * @param recipientNamespaceCode recipient namespace code
-     */
-    public void setRecipientNamespaceCode(String recipientNamespaceCode) {
-        this.recipientNamespaceCode = recipientNamespaceCode;
-    }
-
-    /**
      * Setter for {@link #recipientName}.
      *
      * @param recipientName recipient name
      */
     public void setRecipientName(String recipientName) {
         this.recipientName = recipientName;
+
+        if (StringUtils.isNotBlank(recipientNamespaceCode) && StringUtils.isNotBlank(recipientName)) {
+            group = KimApiServiceLocator.getGroupService().getGroupByNamespaceCodeAndName(recipientNamespaceCode, recipientName);
+            setGroup(group);
+        }
     }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+        this.id = group != null ? group.getId() : null;
+        this.recipientNamespaceCode = group != null ? group.getNamespaceCode() : null;
+        this.recipientName = group != null ? group.getName() : null;
+    }
+
 }

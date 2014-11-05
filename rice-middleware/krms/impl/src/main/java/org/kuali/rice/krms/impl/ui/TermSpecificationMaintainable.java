@@ -88,7 +88,6 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     @Override
     public void processAfterEdit(MaintenanceDocument document, Map<String, String[]> requestParameters) {
         super.processAfterEdit(document, requestParameters);
-        copyContextsOldToNewBo(document);
         document.getDocumentHeader().setDocumentDescription("Edited Term Specification Document");
     }
 
@@ -96,6 +95,7 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> requestParameters) {
         super.processAfterCopy(document, requestParameters);
         copyContextsOldToNewBo(document);
+        setNewContextValidTermsNewBO(document);
     }
 
     /**
@@ -113,6 +113,14 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         newTermSpec.setContexts(new ArrayList<ContextBo>());
         for (ContextBo contextBo : oldTermSpec.getContexts()) {
             newTermSpec.getContexts().add(contextBo);
+        }
+    }
+
+    private void setNewContextValidTermsNewBO(MaintenanceDocument document) {
+        TermSpecificationBo newTermSpec = (TermSpecificationBo) document.getNewMaintainableObject().getDataObject();
+        for (ContextValidTermBo contextValidTermBo : newTermSpec.getContextValidTerms()) {
+            contextValidTermBo.setId(null);
+            contextValidTermBo.setTermSpecification(newTermSpec);
         }
     }
 
@@ -173,13 +181,14 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     @Override
     public void processCollectionDeleteLine(ViewModel viewModel, String collectionId, String collectionPath,
             int lineIndex) {
-        super.processCollectionDeleteLine(viewModel, collectionId, collectionPath, lineIndex);
-
         List collection = ObjectPropertyUtils.getPropertyValue(viewModel, collectionPath);
         Object deletedItem = collection.get(lineIndex);
 
         // we only want to do our custom processing if a context has been deleted
-        if (deletedItem == null || !(deletedItem instanceof ContextBo)) { return; }
+        if (deletedItem == null || !(deletedItem instanceof ContextBo)) {
+            super.processCollectionDeleteLine(viewModel, collectionId, collectionPath, lineIndex);
+            return;
+        }
 
         ContextBo context = (ContextBo) deletedItem;
         TermSpecificationBo termSpec = getDataObjectFromForm(viewModel);
@@ -194,6 +203,8 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
                 contextValidTermListIter.remove();
             }
         }
+
+        super.processCollectionDeleteLine(viewModel, collectionId, collectionPath, lineIndex);
     }
 
     /**
@@ -215,6 +226,18 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     @Override
     public Class getDataObjectClass() {
         return TermSpecificationBo.class;
+    }
+
+    @Override
+    public void setDataObject(Object object) {
+        List<ContextBo> copiedContexts = new ArrayList<>();
+
+        for (ContextBo context : ((TermSpecificationBo) object).getContexts()) {
+            copiedContexts.add(ContextBo.from(ContextDefinition.Builder.create( context).build()));
+        };
+
+        ((TermSpecificationBo) object).setContexts(copiedContexts);
+        super.setDataObject(object);
     }
 
     /**

@@ -19,7 +19,6 @@ import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -46,7 +45,7 @@ public class ContextValidTermBo implements Serializable {
     @Transient
     private Boolean prereq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "TERM_SPEC_ID", referencedColumnName = "TERM_SPEC_ID")
     private TermSpecificationBo termSpecification;
 

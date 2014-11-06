@@ -126,9 +126,12 @@ public class AdHocRouteWorkgroup extends AdHocRouteRecipient {
 
     public void setGroup(Group group) {
         this.group = group;
-        this.id = group != null ? group.getId() : null;
-        this.recipientNamespaceCode = group != null ? group.getNamespaceCode() : null;
-        this.recipientName = group != null ? group.getName() : null;
+
+        if (group != null) {
+            this.id = group.getId();
+            this.recipientNamespaceCode = group.getNamespaceCode();
+            this.recipientName = group.getName();
+        }
     }
 
 }

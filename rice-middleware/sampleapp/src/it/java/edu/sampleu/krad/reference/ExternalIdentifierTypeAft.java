@@ -83,7 +83,7 @@ public class ExternalIdentifierTypeAft extends WebDriverLegacyITBase {
         waitAndClickClearValues();
 
         //Search by Name Filter
-        waitAndTypeByName("lookupCriteria[name]","LOGON");
+        waitAndTypeByName("lookupCriteria[name]","Logon ID");
         clickSearch();
         String[] assertSearchResultForTypeName = {"LOGON", "Logon ID", "01","true"};
         assertTextPresent(assertSearchResultForTypeName);

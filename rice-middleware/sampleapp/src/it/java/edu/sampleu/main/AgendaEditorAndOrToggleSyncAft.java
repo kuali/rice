@@ -141,7 +141,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//button[contains(text(),'Search')]");
         waitAndClickByXpath("//a[contains(text(),'edit')]");
         selectFrameIframePortlet();
-        waitAndClickByXpath("//a/p[contains(text(),'CmpdTestRule: For testing compound props')]");
+        waitAndClickByXpath("//a/div[contains(text(),'CmpdTestRule: For testing compound props')]");
         waitAndClickByXpath("//button[contains(text(),'Edit Rule')]");
         selectFrameIframePortlet();
         waitForTextPresent("( Campus Code = Muir AND Campus Code = Revelle AND Campus Code = Warren )");

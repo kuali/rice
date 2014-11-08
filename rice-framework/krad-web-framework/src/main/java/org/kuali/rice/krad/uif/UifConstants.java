@@ -528,6 +528,8 @@ public class UifConstants {
         public static final String DIALOG_HIDDEN_HANDLER = "hidden_handler";
         public static final String INLINE_EDIT = "inline_edit";
         public static final String DETACHED = "detached";
+        public static final String OMIT_FROM_POST = "omit";
+        public static final String OMIT_GROUP_FROM_POST = "omit_group";
     }
 
     public static final String JS_REGEX_SPECIAL_CHARS = new String("$[\\^.|?*+()");

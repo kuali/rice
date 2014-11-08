@@ -24,8 +24,8 @@
   <bean id="Uif-DialogBase" parent="Uif-DialogBase-parentBean"/>
   <bean id="Uif-DialogBase-parentBean" abstract="true" class="org.kuali.rice.krad.uif.container.DialogGroup"
         parent="Uif-CssGridSection" p:hidden="true" p:role="dialog" p:ariaAttributes="hidden:true"
-        p:forceSessionPersistence="true">
-    <property name="template" value="/krad/WEB-INF/ftl/components/group/dialogGroup.ftl"/>
+        p:forceSessionPersistence="true" p:omitFromFormPost="true">
+  <property name="template" value="/krad/WEB-INF/ftl/components/group/dialogGroup.ftl"/>
     <property name="templateName" value="uif_dialogGroup"/>
     <property name="libraryCssClasses">
       <list>

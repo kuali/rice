@@ -389,6 +389,35 @@ KradRequest.prototype = {
         // create a reference to the request for ajax callbacks
         var request = this;
 
+        var isAction = false;
+        var actionParent;
+        if (this.$action) {
+            actionParent = jQuery(this.$action).parents("[data-omit_group='true']");
+        }
+
+        var updateParent;
+        if (request.refreshId) {
+            updateParent = jQuery('#' + request.refreshId).parents("[data-omit_group='true']");
+        }
+
+        // if the fields to send is originally
+        var fieldToSendBlank = !request.fieldsToSend || request.fieldsToSend.length === 0;
+        if (fieldToSendBlank) {
+            request.fieldsToSend = [];
+        }
+
+        if (updateParent && updateParent.length && fieldToSendBlank) {
+            var updateParentId = jQuery(updateParent[0]).attr("id");
+            request.fieldsToSend.push('#' + updateParentId);
+        }
+
+        if (actionParent && actionParent.length && fieldToSendBlank) {
+            var parentId = jQuery(actionParent[0]).attr("id");
+            if (request.fieldsToSend.indexOf(parentId) === -1) {
+                request.fieldsToSend.push('#' + parentId);
+            }
+        }
+
         // if we aren't limiting the fields to send then send the whole form unless a field is explicitly set to omit
         if (!request.fieldsToSend || request.fieldsToSend.length === 0) {
             var submitOptions = {
@@ -401,13 +430,19 @@ KradRequest.prototype = {
                     request._processError(jqXHR, textStatus, request);
                 },
                 beforeSubmit: function (arr, $form, options) {
-                    var omitElements = jQuery("[data-omit='true']");
+                    var omitElements = jQuery("[data-role='InputField'][data-omit='true'] [data-role='Control'],[name='script']");
 
                     jQuery(omitElements).each(function (index, value) {
                         var name = jQuery(value).attr('name');
+
+                        var dataOmit = jQuery(value).attr('data-omit');
+                        if (dataOmit && name) {
+                            request.fieldsToSend.push(name);
+                        }
+
                         var dataIndex;
                         jQuery(arr).each(function (ind, val) {
-                            if (val.name == name) {
+                            if (val.name === name) {
                                 dataIndex = ind;
                             }
                         });
@@ -418,12 +453,17 @@ KradRequest.prototype = {
                 }
             };
 
-            // Show visual loading/blocking indication
-            this._setupBlocking(submitOptions);
+            // if still no fields to send then go ahead and send
+            if (!request.fieldsToSend || request.fieldsToSend.length === 0) {
+                // Show visual loading/blocking indication
+                this._setupBlocking(submitOptions);
 
-            // Submit request
-            jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
-        } else {
+                // Submit request
+                jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
+            }
+        }
+
+        if (request.fieldsToSend && request.fieldsToSend.length > 0) {
             // Serialize all the data we wish to send
             // The formInfo and formComplete data is data that is always necessary or added for the controller call
             var dataSerialized = jQuery.param(data, true);
@@ -466,6 +506,22 @@ KradRequest.prototype = {
                 },
                 error: function (jqXHR, textStatus) {
                     request._processError(jqXHR, textStatus, request);
+                },
+                beforeSubmit: function (arr, $form, options) {
+                    var omitElements = jQuery("[name='script']");
+
+                    jQuery(omitElements).each(function (index, value) {
+                        var name = jQuery(value).attr('name');
+                        var dataIndex;
+                        jQuery(arr).each(function (ind, val) {
+                            if (val.name === name) {
+                                dataIndex = ind;
+                            }
+                        });
+                        if (dataIndex) {
+                            arr.splice(dataIndex, 1);
+                        }
+                    });
                 }
             };
 

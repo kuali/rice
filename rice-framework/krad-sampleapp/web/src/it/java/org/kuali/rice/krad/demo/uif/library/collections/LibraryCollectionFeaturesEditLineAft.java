@@ -201,20 +201,6 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     }
 
     /**
-     * Method to test all the examples of the edit line that use a custom dialog
-     */
-    protected void testCustomDialogEditLine() throws Exception {
-        jGrowl("Calling testCustomDialogEditLine1");
-        testCustomDialogEditLine1();
-        jGrowl("Calling testCustomDialogEditLine2");
-        testCustomDialogEditLine2();
-        jGrowl("Calling testCustomDialogLineActionEditLine");
-        testCustomDialogLineActionEditLine();
-        jGrowl("Calling testCustomDialogSaveActionEditLine");
-        testCustomDialogSaveActionEditLine();
-    }
-
-    /**
      * Method to test various examples of the edit line
      */
     protected void testCollectionFeaturesEditLine() throws Exception {
@@ -916,16 +902,58 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     }
 
     @Test
-    public void testCustomDialogEditLineBookmark() throws Exception {
+    public void testCustomDialogEditLine1Bookmark() throws Exception {
         this.waitSeconds = FIVE_SECOND_WAIT_TIME;
-        testCustomDialogEditLine();
+        testCustomDialogEditLine1();
         passed();
     }
 
     @Test
-    public void testCustomDialogEditLineNav() throws Exception {
+    public void testCustomDialogEditLine1Nav() throws Exception {
         this.waitSeconds = FIVE_SECOND_WAIT_TIME;
-        testCustomDialogEditLine();
+        testCustomDialogEditLine1();
+        passed();
+    }
+
+    @Test
+    public void testCustomDialogEditLine2Bookmark() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testCustomDialogEditLine2();
+        passed();
+    }
+
+    @Test
+    public void testCustomDialogEditLine2Nav() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testCustomDialogEditLine2();
+        passed();
+    }
+
+    @Test
+    public void testCustomDialogLineActionEditLineBookmark() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testCustomDialogLineActionEditLine();
+        passed();
+    }
+
+    @Test
+    public void testCustomDialogLineActionEditLineNav() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testCustomDialogLineActionEditLine();
+        passed();
+    }
+
+    @Test
+    public void testCustomDialogSaveActionEditLineBookmark() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testCustomDialogSaveActionEditLine();
+        passed();
+    }
+
+    @Test
+    public void testCustomDialogSaveActionEditLineNav() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testCustomDialogSaveActionEditLine();
         passed();
     }
 

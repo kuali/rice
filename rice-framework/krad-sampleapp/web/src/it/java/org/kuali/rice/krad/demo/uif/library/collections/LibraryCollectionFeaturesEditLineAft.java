@@ -52,16 +52,20 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     public static final String EDIT_BUTTON_CSS_SELECTOR =
             " tr:not(.uif-collectionAddItem) .uif-collection-column-action button[data-onclick^='"
                     + UifConstants.JsFunctions.SHOW_EDIT_LINE_DIALOG + "']";
+    public static final String ADD_FIELDS_IN_DIALOG_CSS_SELECTOR =
+            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-body .uif-inputField input:not([type='hidden'])";
+    public static final String ADD_LINE_ACTIONS_IN_DIALOG_CSS_SELECTOR =
+            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-footer button[id$='_add']";
     public static final String EDIT_DIALOG_BUTTONS_CSS_SELECTOR =
-            " tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-footer button";
+            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-footer button";
     public static final String EDIT_DIALOG_CLOSE_BUTTON_CSS_SELECTOR =
-            " tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-header button.close";
+            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-header button.close";
     public static final String EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR =
-            " tbody tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-body input:not([type='hidden'])";
+            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-body input:not([type='hidden'])";
     public static final String EDIT_DIALOG_LOOKUP_CSS_SELECTOR =
-            " tbody tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-body .input-group-btn > button";
+            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-body .input-group-btn > button";
     public static final String EDIT_DIALOG_CSS_SELECTOR =
-            " tbody tr:not(.uif-collectionAddItem) .uif-collection-column-action .modal-body";
+            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-body";
     public static final String ROW_DETAILS_LINK_CSS_SELECTOR =
             " table tbody tr:not(.uif-collectionAddItem) a.uif-detailsAction";
     public static final String TABLE_ROWS_CSS_SELECTOR = " table tbody tr:not(.uif-collectionAddItem)";
@@ -197,20 +201,33 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
     }
 
     /**
-     * Method to test all the examples of the edit line.
+     * Method to test all the examples of the edit line that use a custom dialog
+     */
+    protected void testCustomDialogEditLine() throws Exception {
+        jGrowl("Calling testCustomDialogEditLine1");
+        testCustomDialogEditLine1();
+        jGrowl("Calling testCustomDialogEditLine2");
+        testCustomDialogEditLine2();
+        jGrowl("Calling testCustomDialogLineActionEditLine");
+        testCustomDialogLineActionEditLine();
+        jGrowl("Calling testCustomDialogSaveActionEditLine");
+        testCustomDialogSaveActionEditLine();
+    }
+
+    /**
+     * Method to test various examples of the edit line
      */
     protected void testCollectionFeaturesEditLine() throws Exception {
-        testDefaultEditLine();
-        testCustomDialogEditLine1();
-        testCustomDialogEditLine2();
-        testCustomDialogLineActionEditLine();
-        testCustomDialogSaveActionEditLine();
+        jGrowl("Calling testReadOnlyEditLine");
         testReadOnlyEditLine();
+        jGrowl("Calling testEditAuthorizationEditLineCollectionReadOnly");
         testEditAuthorizationEditLineCollectionReadOnly();
+        jGrowl("Calling testEditAuthorizationEditLineLineAuthorization");
         testEditAuthorizationEditLineLineAuthorization();
+        jGrowl("Calling testLookup");
         testLookup();
-//        testRowDetailsGroup(); // tested separately
-//        testSubCollection(); // tested separately
+        //        testRowDetailsGroup(); // tested separately
+        //        testSubCollection(); // tested separately
     }
 
     /**
@@ -297,7 +314,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         } else {
             // verify dialog fields and dialog sub-collection fields match those of line fields and line
             // sub-collection fields on save
-            String dialogCssSelector = "#" + exampleId + EDIT_DIALOG_CSS_SELECTOR;
+            String dialogCssSelector = EDIT_DIALOG_CSS_SELECTOR;
             String tableRowsCssSelector = "#" + exampleId + TABLE_ROWS_CSS_SELECTOR;
 
             // these have to be processed separately since there are essential differences in each
@@ -438,7 +455,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         WebElement subCollectionAddLineButton = findElement(By.cssSelector(
                 dialogSubCollectionAddLineButtonCssSelector));
         subCollectionAddLineButton.click();
-        waitForProgressAddingLine();
+        waitForProgress("Adding Line...", WebDriverUtils.configuredImplicityWait() * 15);
         waitFor(By.cssSelector(dialogCssSelector));
 
         // get the added line fields and make sure the values match the add line
@@ -476,13 +493,12 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
                 subCollectionRows.size() + 1, dialogSubCollectionRows.size());
 
         // get the buttons in the dialog
-        List<WebElement> buttonElements = findVisibleElements(By.cssSelector(
-                "#" + exampleId + EDIT_DIALOG_BUTTONS_CSS_SELECTOR));
+        List<WebElement> buttonElements = findVisibleElements(By.cssSelector(EDIT_DIALOG_BUTTONS_CSS_SELECTOR));
         WebElement saveButton = buttonElements.get(0);
 
         // click the save button and verify changes are saved
         saveButton.click();
-        waitForProgress("Editing Line...");
+        waitForProgress("Editing Line...", WebDriverUtils.configuredImplicityWait() * 15);
 
         // verify the save was processed correctly and the sub-collection field values match with that of the dialog's
         if (subCollectionFieldCssSelector != null && dialogSubCollectionFieldCssSelector != null) {
@@ -528,7 +544,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
                 dialogSubCollectionDeleteLineButtonCssSelector), "Could not find delete button.").get(0);
         subCollectionDeleteButton.click();
         waitForProgress("Editing Line...");
-        waitFor(By.cssSelector("#" + exampleId + EDIT_DIALOG_CSS_SELECTOR));
+        waitFor(By.cssSelector(EDIT_DIALOG_CSS_SELECTOR));
 
         // get the dialog's sub-collection's contents for comparing
         List<WebElement> dialogSubCollectionRows = waitAndGetElementsFor(By.cssSelector(
@@ -537,10 +553,10 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         // click either the close button or the button to not save changes
         WebElement button = null;
         if (close) {
-            button = waitFor(By.cssSelector("#" + exampleId + EDIT_DIALOG_CLOSE_BUTTON_CSS_SELECTOR));
+            button = waitFor(By.cssSelector(EDIT_DIALOG_CLOSE_BUTTON_CSS_SELECTOR));
         } else {
             List<WebElement> buttons = waitAndGetElementsFor(By.cssSelector(
-                    "#" + exampleId + EDIT_DIALOG_BUTTONS_CSS_SELECTOR), "Could not find buttons.");
+                    EDIT_DIALOG_BUTTONS_CSS_SELECTOR), "Could not find buttons.");
             button = buttons.get(1);
         }
         button.click();
@@ -581,12 +597,16 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         String fieldValue = spanElements.get(lineFieldToEditIndex - 1).getText();
 
         // open the edit line dialog
-        Thread.sleep(1000); // avoid cache change by going to quick
+        Thread.sleep(3000); // avoid cache change by going to quick
         openEditLineDialog(exampleId, rowIndex);
 
         // get the original values of the input fields
-        List<WebElement> inputElements = findElements(By.cssSelector(
-                "#" + exampleId + EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR));
+        List<WebElement> inputElements = findElements(By.cssSelector(EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR));
+
+        if (inputElements.isEmpty()) {
+            jiraAwareFail("inputElements should not be empty for example " + exampleId);
+        }
+
         if (custom && !save) {
             fieldValue = inputElements.get(dialogFieldToEditIndex - 1).getAttribute("value");
         }
@@ -625,8 +645,8 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
             getDriver().switchTo().defaultContent();
 
             // wait for the edit line dialog to re-appear
-            waitFor(By.cssSelector("#" + exampleId + EDIT_DIALOG_CSS_SELECTOR));
-            inputElements = findElements(By.cssSelector("#" + exampleId + EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR));
+            waitFor(By.cssSelector(EDIT_DIALOG_CSS_SELECTOR));
+            inputElements = findElements(By.cssSelector(EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR));
             verifyDialogField(inputElements.get(lookupFieldToEditIndex - 1), "", resultValue);
             if (save) {
                 if (lookupFieldToEditIndex == 1) {
@@ -651,13 +671,13 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
 
         // get the buttons in the dialog
         List<WebElement> buttonElements = waitAndGetElementsFor(By.cssSelector(
-                "#" + exampleId + EDIT_DIALOG_BUTTONS_CSS_SELECTOR), "Could not find buttons.");
+                EDIT_DIALOG_BUTTONS_CSS_SELECTOR), "Could not find buttons.");
         WebElement saveButton = buttonElements.get(0);
         WebElement noButton = buttonElements.get(1);
 
         // if its a close, then we point the no button to the close button
         if (close) {
-            noButton = findElement(By.cssSelector("#" + exampleId + EDIT_DIALOG_CLOSE_BUTTON_CSS_SELECTOR));
+            noButton = findElement(By.cssSelector(EDIT_DIALOG_CLOSE_BUTTON_CSS_SELECTOR));
         }
 
         if (save) {
@@ -744,7 +764,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         elements.get(index - 1).click();
 
         // verify that the dialog is visible soon
-        waitFor(By.cssSelector("#" + exampleId + EDIT_DIALOG_CSS_SELECTOR));
+        waitFor(By.cssSelector(EDIT_DIALOG_CSS_SELECTOR));
     }
 
     /**
@@ -786,11 +806,11 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
             WebElement addInDialogButton = findElement(By.cssSelector(addInDialogButtonCssSelector));
             jGrowl("Click add in dialog button");
             addInDialogButton.click();
-            addFieldsCssSelector = "#" + exampleId  + "_dialog" +  " .modal-body .uif-inputField input:not([type='hidden'])";
-            addLineActionCssSelector = "#" + exampleId  + "_dialog" +  " .modal-footer button[id$='_add']";
+            addFieldsCssSelector = ADD_FIELDS_IN_DIALOG_CSS_SELECTOR;
+            addLineActionCssSelector = ADD_LINE_ACTIONS_IN_DIALOG_CSS_SELECTOR;
         } else {
             addFieldsCssSelector = "#" + exampleId + ADD_FIELDS_CSS_SELECTOR;
-            addLineActionCssSelector = "#" + exampleId + ADD_BUTTON_CSS_SELECTOR;
+            addLineActionCssSelector = "#" + exampleId +  ADD_BUTTON_CSS_SELECTOR;
         }
 
         List<WebElement> addFields = findElements(By.cssSelector(addFieldsCssSelector));
@@ -877,6 +897,34 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         List<WebElement> inputFields = findElements(By.cssSelector(
                 "#" + exampleId + " tr:not(.uif-collectionAddItem) input:not([type='hidden'])"));
         assertTrue(inputFields.isEmpty());
+    }
+
+    @Test
+    public void testDefaultEditLineBookmark() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testDefaultEditLine();
+        passed();
+    }
+
+    @Test
+    public void testDefaultEditLineNav() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testDefaultEditLine();
+        passed();
+    }
+
+    @Test
+    public void testCustomDialogEditLineBookmark() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testCustomDialogEditLine();
+        passed();
+    }
+
+    @Test
+    public void testCustomDialogEditLineNav() throws Exception {
+        this.waitSeconds = FIVE_SECOND_WAIT_TIME;
+        testCustomDialogEditLine();
+        passed();
     }
 
     @Test

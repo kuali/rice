@@ -540,7 +540,18 @@ public class CollectionGroupBuilder implements Serializable {
             action.addActionParameter(UifParameters.SELECTED_COLLECTION_ID, collectionGroup.getId());
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
-            action.setRefreshId(collectionGroup.getId());
+
+            // When a sub-collection within a dialog has both line actions and add line actions, it requires
+            // the refreshId and updateComponentId to be the id of the sub-collection rather than the dialog id.
+            String dialogId = action.getActionParameter(UifParameters.DIALOG_ID);
+            String updateComponentId = ((UifFormBase) model).getUpdateComponentId();
+
+            if (StringUtils.isBlank(action.getRefreshId())
+                    && StringUtils.isNotBlank(updateComponentId)
+                    && StringUtils.isNotBlank(dialogId)
+                    && StringUtils.equals(dialogId, updateComponentId)) {
+                action.setRefreshId(collectionGroup.getId());
+            }
 
             if (collectionGroup.isAddWithDialog() && view instanceof FormView && ((FormView) view)
                     .isValidateClientSide()) {
@@ -657,7 +668,8 @@ public class CollectionGroupBuilder implements Serializable {
 
         if (ViewLifecycle.isRefreshLifecycle()
                 && StringUtils.equals(dialogGroup.getId(), ViewLifecycle.getRefreshComponentId())
-                && StringUtils.equals(selectedCollectionPath, collectionGroup.getBindingInfo().getBindingPath())
+                && (StringUtils.equals(selectedCollectionPath, collectionGroup.getBindingInfo().getBindingPath())
+                        || StringUtils.startsWith(selectedCollectionPath, UifPropertyPaths.DIALOG_DATA_OBJECT))
                 && StringUtils.equals(selectedLineIndex, Integer.toString(lineIndex))) {
             return true;
         }

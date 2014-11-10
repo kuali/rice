@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.uif.CssConstants;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.component.Component;
@@ -1011,16 +1012,17 @@ public class CollectionGroupLineBuilder implements Serializable {
                 lineBuilderContext.getLineIndex());
 
         // get the add line actions for this group
-        List<Component> subAddLineComponents = new ArrayList<Component>(newSubCollectionGroup.getAddLineActions());
-        if (newSubCollectionGroup.getAddBlankLineAction() != null) {
-            subAddLineComponents.add(newSubCollectionGroup.getAddBlankLineAction());
-        }
-        List<Action> subAddLineActions = ViewLifecycleUtils.getElementsOfTypeDeep(subAddLineComponents, Action.class);
+            List<Component> subAddLineComponents = new ArrayList<Component>(newSubCollectionGroup.getAddLineActions());
+            if (newSubCollectionGroup.getAddBlankLineAction() != null) {
+                subAddLineComponents.add(newSubCollectionGroup.getAddBlankLineAction());
+            }
+            List<Action> subAddLineActions = ViewLifecycleUtils.getElementsOfTypeDeep(subAddLineComponents,
+                    Action.class);
 
-        // initialize the new sub-collections add line actions
-        setupSubCollectionActions(subAddLineActions, lineDialog.getId(), lineBuilderContext.
-                        getCollectionGroup().getBindingInfo().getBindingName(), lineBuilderContext.getLineIndex()
-        );
+            // initialize the new sub-collections add line actions
+            setupSubCollectionActions(subAddLineActions, lineDialog.getId(), lineBuilderContext.
+                            getCollectionGroup().getBindingInfo().getBindingName(), lineBuilderContext.getLineIndex()
+            );
 
         newSubCollectionFieldGroup.setGroup(newSubCollectionGroup);
 
@@ -1085,13 +1087,14 @@ public class CollectionGroupLineBuilder implements Serializable {
     private void setupSubCollectionActions(List<Action> actions, String dialogId, String bindingName, int lineIndex) {
         for (Action action : actions) {
             action.setDialogDismissOption("REQUEST");
-            action.setRefreshId(dialogId);
+            action.setRefreshId(StringUtils.substring(dialogId, dialogId.indexOf("_") + 1, dialogId.lastIndexOf("_")));
             String actionScript = UifConstants.JsFunctions.SHOW_EDIT_LINE_DIALOG + "('" +
                     dialogId + "', '" + bindingName + "', " + lineIndex + ");";
             action.setRefreshedByAction(false);
             action.setSuccessCallback("jQuery.unblockUI();" + actionScript);
             action.setOnClickScript("jQuery('#" + dialogId +
                 "').one('hide.bs.modal', function(e) { jQuery.blockUI({ message: '<h1>Editing line ...</h1>' }); });");
+            action.addActionParameter(UifParameters.DIALOG_ID, dialogId);
         }
     }
 

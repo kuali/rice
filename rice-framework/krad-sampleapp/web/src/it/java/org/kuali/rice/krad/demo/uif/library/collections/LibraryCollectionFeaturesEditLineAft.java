@@ -543,7 +543,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         WebElement subCollectionDeleteButton = waitAndGetElementsFor(By.cssSelector(
                 dialogSubCollectionDeleteLineButtonCssSelector), "Could not find delete button.").get(0);
         subCollectionDeleteButton.click();
-        waitForProgress("Editing Line...");
+        waitForProgress("Editing Line...", WebDriverUtils.configuredImplicityWait() * 15);
         waitFor(By.cssSelector(EDIT_DIALOG_CSS_SELECTOR));
 
         // get the dialog's sub-collection's contents for comparing
@@ -687,7 +687,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
             // click the no button
             noButton.click();
         }
-        waitForProgress("Editing Line...");
+        waitForProgress("Editing Line...", WebDriverUtils.configuredImplicityWait() * 15);
 
         // get the new values of the line fields
         spanElements = findVisibleElements(By.cssSelector(tableRowsCssSelector)).get(rowIndex - 1).
@@ -825,7 +825,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         WebElement buttonElement = findElement(By.cssSelector(addLineActionCssSelector));
         jGrowl("Click add line");
         buttonElement.click();
-        waitForProgressAddingLine();
+        waitForProgress("Adding Line...", WebDriverUtils.configuredImplicityWait() * 15);
         waitFor(By.cssSelector("#" + exampleId + " .uif-newCollectionItem"));
         List<WebElement> fields = null;
 
@@ -866,7 +866,9 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         WebElement deleteAction = findElement(By.cssSelector(
                 "#" + exampleId + " .uif-newCollectionItem .uif-collection-column-action button"));
         deleteAction.click();
-        waitForProgress("Deleting Line...");
+
+        waitForProgress("Deleting Line...", WebDriverUtils.configuredImplicityWait() * 15);
+
         assertIsNotVisible(By.cssSelector("#" + exampleId + " .uif-newCollectionItem"));
     }
 

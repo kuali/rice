@@ -321,6 +321,12 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     public static final String SAVE_XPATH_2 = "//*[@name='methodToCall.save' and @alt='save']";
 
     /**
+     * KIM Screens
+     * //*[@name='methodToCall.reload' and @alt='reload']
+     */
+    public static final String RELOAD_XPATH = "//*[@name='methodToCall.reload' and @alt='reload']";
+
+    /**
      * //input[@title='search' and @name='methodToCall.search']
      */
     public static final String SAVE_XPATH_3 = "//input[@title='search' and @name='methodToCall.search']";
@@ -1516,6 +1522,20 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickByName("methodToCall.addName.anchor");
         waitForPageToLoad();
         blanketApproveTest(docId);
+    }
+
+    protected  void testIdentityRoleSaveAndReload()throws Exception{
+        selectFrameIframePortlet();
+        waitAndClickSearch2();
+        waitAndClickByXpath("//a[@title='edit Role withRole=63 ']");
+        waitAndTypeByXpath(DOC_DESCRIPTION_XPATH, "Test Save and Reload Role ");
+        assertBlanketApproveButtonsPresent();
+        waitAndClickByXpath(SAVE_XPATH_2);
+        waitForTextPresent("Document was successfully saved.");
+        waitAndClickByXpath(RELOAD_XPATH);
+        waitForTextPresent("Document was successfully reloaded.");
+        findElement(By.xpath("//div[@class='tab-container']")).getText().contains("Members:");
+        passed();
     }
 
     protected void testIdentityRoleBlanketApprove() throws Exception {

@@ -241,6 +241,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 		    	LOG.error( "Value:          " + paramValue );
 		    	if ( paramValue != null ) {
 					LOG.error( "Value Class:    " + paramValue.getClass().getName() );
+          LOG.error( "Value toString: " + paramValue.toString() );
 		    	}
 		        throw new RuntimeException(e1.getMessage(), e1);
 		    }

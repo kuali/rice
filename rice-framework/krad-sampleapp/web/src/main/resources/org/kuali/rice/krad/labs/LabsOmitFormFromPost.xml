@@ -37,6 +37,12 @@
         </property>
       </bean>
     </property>
+    <property name="dialogs">
+      <list>
+        <ref bean="Lab-OmitFromFormPostDialog"/>
+        <ref bean="Lab-OmitFromFormPostDialog-Omit"/>
+      </list>
+    </property>
   </bean>
 
   <bean id="Lab-OmitFormFromPost-Example" parent="Uif-VerticalBoxSection">
@@ -61,22 +67,59 @@
           </property>
         </bean>
         <bean parent="Uif-PrimaryActionButton-Mini" p:methodToCall="refresh" p:actionLabel="Refresh Page"/>
-        <bean parent="Uif-PrimaryActionButton-Mini" p:actionLabel="Show Dialog"
+        <bean parent="Uif-PrimaryActionButton-Mini" p:actionLabel="Show Dialog (Don't Omit)"
               p:actionScript="showDialog('Lab-OmitFromFormPostDialog');"/>
+        <bean parent="Uif-PrimaryActionButton-Mini" p:actionLabel="Show Dialog (Omit)"
+              p:actionScript="showDialog('Lab-OmitFromFormPostDialog-Omit');"/>
       </list>
     </property>
   </bean>
 
-  <bean id="Lab-OmitFromFormPostDialog" parent="Uif-DialogGroup" p:headerText="A Dialog" p:retrieveViaAjax="true">
+  <bean id="Lab-OmitFromFormPostDialog" parent="Uif-DialogGroup" p:headerText="A Dialog (Don't Omit)"
+        p:omitFromFormPost="false">
     <property name="items">
       <list>
-        <bean parent="Uif-Message" p:messageText="Enter some data and close the dialog."/>
-        <bean parent="Uif-InputField" p:propertyName="inputField4" p:width="auto"/>
+        <bean parent="Uif-Message" p:messageText="Enter some data and click 'OK'."/>
+        <bean parent="Uif-InputField" p:propertyName="inputField4" p:width="auto"
+              p:refreshWhenChangedPropertyNames="inputField5"/>
         <bean parent="Uif-InputField" p:propertyName="inputField5" p:width="auto">
           <property name="control">
             <bean parent="Uif-TextAreaControl"/>
           </property>
         </bean>
+      </list>
+    </property>
+    <property name="footer.items">
+      <list>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="Refresh - Ajax"
+              p:dialogDismissOption="REQUEST"
+              p:onClickScript="writeCurrentPageToSession(this);"/>
+        <bean parent="Uif-SaveAction" p:actionLabel="OK" p:dialogDismissOption="REQUEST"
+              p:onClickScript="writeCurrentPageToSession(this);"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="Lab-OmitFromFormPostDialog-Omit" parent="Uif-DialogGroup" p:headerText="A Dialog (Omit)">
+    <property name="items">
+      <list>
+        <bean parent="Uif-Message" p:messageText="Enter some data and click 'OK'."/>
+        <bean parent="Uif-InputField" p:propertyName="inputField6" p:width="auto"
+              p:refreshWhenChangedPropertyNames="inputField7"/>
+        <bean parent="Uif-InputField" p:propertyName="inputField7" p:width="auto">
+          <property name="control">
+            <bean parent="Uif-TextAreaControl"/>
+          </property>
+        </bean>
+      </list>
+    </property>
+    <property name="footer.items">
+      <list>
+        <bean parent="Uif-PrimaryActionButton" p:methodToCall="refresh" p:actionLabel="Refresh - Ajax"
+              p:dialogDismissOption="REQUEST"
+              p:onClickScript="writeCurrentPageToSession(this);"/>
+        <bean parent="Uif-SaveAction" p:actionLabel="OK" p:dialogDismissOption="REQUEST"
+              p:onClickScript="writeCurrentPageToSession(this);"/>
       </list>
     </property>
   </bean>

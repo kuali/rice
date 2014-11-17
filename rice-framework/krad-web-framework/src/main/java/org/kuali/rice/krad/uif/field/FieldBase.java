@@ -164,8 +164,7 @@ public class FieldBase extends ComponentBase implements Field {
 
         // set up script to add omit data so this field will not be posted on form submit
         if (isOmitFromFormPost()) {
-            setOnDocumentReadyScript(
-                    "jQuery('#" + getId() + UifConstants.IdSuffixes.CONTROL + "').attr('data-omit', true);");
+            this.addDataAttribute(UifConstants.DataAttributes.OMIT_FROM_POST, "true");
         }
     }
 

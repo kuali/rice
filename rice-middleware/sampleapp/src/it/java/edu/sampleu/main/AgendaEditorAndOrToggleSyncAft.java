@@ -116,10 +116,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitForTextPresent("SAVED", WebDriverUtils.configuredImplicityWait() * 4);
         waitForTextPresent(" Document was successfully saved.");
 
-        waitAndClickButtonByExactText("Submit");
-        waitAndClickConfirmSubmitOk();
-        waitForTextPresent("ENROUTE");
-        waitForTextPresent("Document was successfully submitted.");
+        submit();
 
         return new PeopleFlowDocInfo(docId, peopleFlowNamespace, peopleFlowName);
     }
@@ -153,15 +150,9 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
 
     protected void testAgendaEditorEditRuleAddActionsBlank() throws Exception {
         //Save & Submit
-        testFillRequiredDetails("",null);
-        waitForTextPresent("INITIATED");
-        waitAndClickButtonByExactText("Save");
-        waitForTextPresent("SAVED");
-        waitForTextPresent(" Document was successfully saved.");
-        waitAndClickButtonByExactText("Submit");
-        waitAndClickConfirmSubmitOk();
-        waitForTextPresent("ENROUTE");
-        waitForTextPresent("Document was successfully submitted.");
+        testFillRequiredDetails("", null);
+        save();
+        submit();
 
         //Blanket Approve
         selectParentWindow();
@@ -171,6 +162,14 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitForTextPresent("INITIATED");
         waitAndClickButtonByExactText("Blanket Approve");
         waitAndClickConfirmBlanketApproveOk();
+    }
+
+    protected void save() throws InterruptedException {
+        waitForTextPresent("INITIATED");
+        waitAndClickButtonByExactText("Save");
+        waitForProgressSaving();
+        waitForTextPresent("SAVED");
+        waitForTextPresent(" Document was successfully saved.");
     }
 
     protected void testAgendaEditorEditRuleAddActionsKrmsActionResolverType() throws Exception {
@@ -178,15 +177,9 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         selectParentWindow();
         waitAndClickMainMenu();
         navigate();
-        testFillRequiredDetails("KrmsActionResolverType",null);
-        waitForTextPresent("INITIATED");
-        waitAndClickButtonByExactText("Save");
-        waitForTextPresent("SAVED");
-        waitForTextPresent(" Document was successfully saved.");
-        waitAndClickButtonByExactText("Submit");
-        waitAndClickConfirmSubmitOk();
-        waitForTextPresent("ENROUTE");
-        waitForTextPresent("Document was successfully submitted.");
+        testFillRequiredDetails("KrmsActionResolverType", null);
+        save();
+        submit();
 
         //Blanket Approve
         selectParentWindow();
@@ -198,20 +191,21 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitAndClickConfirmBlanketApproveOk();
     }
 
+    protected void submit() throws InterruptedException {
+        waitAndClickButtonByExactText("Submit");
+        waitAndClickConfirmSubmitOk();
+        waitForTextPresent("ENROUTE");
+        waitForTextPresent("Document was successfully submitted.");
+    }
+
     protected void testAgendaEditorEditRuleAddActionsNotifyPeopleFlow(String peopleFlowId) throws Exception {
         //Save & Submit
         selectParentWindow();
         waitAndClickMainMenu();
         navigate();
-        testFillRequiredDetails("Notify PeopleFlow",peopleFlowId);
-        waitForTextPresent("INITIATED");
-        waitAndClickButtonByExactText("Save");
-        waitForTextPresent("SAVED");
-        waitForTextPresent(" Document was successfully saved.");
-        waitAndClickButtonByExactText("Submit");
-        waitAndClickConfirmSubmitOk();
-        waitForTextPresent("ENROUTE");
-        waitForTextPresent("Document was successfully submitted.");
+        testFillRequiredDetails("Notify PeopleFlow", peopleFlowId);
+        save();
+        submit();
 
         //Blanket Approve
         selectParentWindow();
@@ -228,15 +222,9 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         selectParentWindow();
         waitAndClickMainMenu();
         navigate();
-        testFillRequiredDetails("Route to PeopleFlow",peopleFlowId);
-        waitForTextPresent("INITIATED");
-        waitAndClickButtonByExactText("Save");
-        waitForTextPresent("SAVED");
-        waitForTextPresent(" Document was successfully saved.");
-        waitAndClickButtonByExactText("Submit");
-        waitAndClickConfirmSubmitOk();
-        waitForTextPresent("ENROUTE");
-        waitForTextPresent("Document was successfully submitted.");
+        testFillRequiredDetails("Route to PeopleFlow", peopleFlowId);
+        save();
+        submit();
 
         //Blanket Approve
         selectParentWindow();
@@ -254,14 +242,8 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitAndClickMainMenu();
         navigate();
         testFillRequiredDetails("Validation Action",null);
-        waitForTextPresent("INITIATED");
-        waitAndClickButtonByExactText("Save");
-        waitForTextPresent("SAVED");
-        waitForTextPresent(" Document was successfully saved.");
-        waitAndClickButtonByExactText("Submit");
-        waitAndClickConfirmSubmitOk();
-        waitForTextPresent("ENROUTE");
-        waitForTextPresent("Document was successfully submitted.");
+        save();
+        submit();
 
         //Blanket Approve
         selectParentWindow();

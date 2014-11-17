@@ -274,6 +274,10 @@ public class GroupBase extends ContainerBase implements Group {
         for (Field field : fields) {
             field.setOmitFromFormPost(isOmitFromFormPost());
         }
+
+        if (isOmitFromFormPost()) {
+            this.addDataAttribute(UifConstants.DataAttributes.OMIT_GROUP_FROM_POST, "true");
+        }
     }
 
     /**

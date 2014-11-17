@@ -106,10 +106,17 @@ function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialo
 
             var lookupParameters = data['actionParameters[lookupParameters]'];
             if (lookupParameters !== "" && typeof lookupParameters !== "undefined") {
-                var lookupField = lookupParameters.substring(lookupParameters.indexOf(":") + 1);
-                var lookupValue = jQuery("#" + quickfinderActionId).parent().parent().children("input").val();
-                if (lookupField !== "" && typeof lookupField !== "undefined" && lookupValue !== "" && typeof lookupValue !== "undefined") {
-                    data['actionParameters[lookupCriteria[&quot;' + lookupField + '&quot;]]'] = lookupValue;
+                var params = lookupParameters.split(",");
+
+                for (var i = 0; i < params.length; i++) {
+                    var param = params[i];
+                    var lookupField = param.substring(param.indexOf(":") + 1);
+                    var lookupFieldName = param.substring(0, param.indexOf(":"));
+                    var lookupValue = jQuery("[name='" + lookupFieldName + "']").val();
+
+                    if (lookupField !== "" && typeof lookupField !== "undefined" && lookupValue !== "" && typeof lookupValue !== "undefined") {
+                        data['actionParameters[lookupCriteria[&quot;' + lookupField + '&quot;]]'] = lookupValue;
+                    }
                 }
             }
 
@@ -132,7 +139,11 @@ function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialo
             // add parameters for lightbox and do standard submit
             data['actionParameters[renderedInDialog]'] = 'true';
             data['actionParameters[returnTarget]'] = '_self';
-            data['actionParameters[flow]'] = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
+            var flow = jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val();
+
+            if (flow !== "") {
+                data['actionParameters[flow]'] = flow;
+            }
 
             nonAjaxSubmitForm(data['methodToCall'], data);
         }

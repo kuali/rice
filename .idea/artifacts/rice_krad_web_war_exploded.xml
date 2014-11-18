@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="rice-krad-web:war exploded">
-    <output-path>$PROJECT_DIR$/rice-framework/krad-web/target/rice-krad-web-2.5.1-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/rice-framework/krad-web/target/rice-krad-web-2.6.0-M1-SNAPSHOT</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="rice-krad-web/web/Web" />
       <element id="directory" name="WEB-INF">
@@ -8,10 +8,10 @@
           <element id="module-output" name="rice-krad-web" />
         </element>
         <element id="directory" name="lib">
-          <element id="archive" name="rice-krad-web-framework-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-krad-web-framework-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-web-framework" />
           </element>
-          <element id="archive" name="rice-core-api-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-api-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-api" />
           </element>
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />
@@ -33,20 +33,20 @@
           <element id="library" level="project" name="Maven: com.sun.mail:javax.mail:1.5.2" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:17.0" />
           <element id="library" level="project" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.6" />
-          <element id="archive" name="rice-krad-app-framework-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-krad-app-framework-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-app-framework" />
           </element>
-          <element id="archive" name="rice-kim-api-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-api-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-api" />
           </element>
-          <element id="archive" name="rice-kew-api-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-kew-api-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-api" />
           </element>
-          <element id="archive" name="rice-ksb-api-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-ksb-api-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-ksb-api" />
           </element>
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
-          <element id="archive" name="rice-core-framework-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-framework-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-framework" />
           </element>
           <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.6" />
@@ -66,7 +66,7 @@
           <element id="library" level="project" name="Maven: logkit:logkit:1.0.1" />
           <element id="library" level="project" name="Maven: org.objectweb.howl:howl:1.0.1-1" />
           <element id="library" level="project" name="Maven: javax.resource:connector-api:1.5" />
-          <element id="archive" name="rice-krad-data-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-krad-data-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-krad-data" />
           </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-orm:3.2.10.RELEASE" />
@@ -78,16 +78,16 @@
           <element id="library" level="project" name="Maven: org.eclipse.persistence:org.eclipse.persistence.antlr:2.5.2" />
           <element id="library" level="project" name="Maven: org.eclipse.persistence:org.eclipse.persistence.jpa.jpql:2.5.2" />
           <element id="library" level="project" name="Maven: org.eclipse.persistence:org.eclipse.persistence.core:2.5.2" />
-          <element id="archive" name="rice-core-service-framework-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-framework-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-framework" />
           </element>
-          <element id="archive" name="rice-core-service-api-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-core-service-api-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-core-service-api" />
           </element>
-          <element id="archive" name="rice-kew-framework-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-kew-framework-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-kew-framework" />
           </element>
-          <element id="archive" name="rice-kim-framework-2.5.1-SNAPSHOT.jar">
+          <element id="archive" name="rice-kim-framework-2.6.0-M1-SNAPSHOT.jar">
             <element id="module-output" name="rice-kim-framework" />
           </element>
           <element id="library" level="project" name="Maven: javax.inject:javax.inject:1" />

@@ -292,6 +292,23 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
     void setReadOnly(Boolean readOnly);
 
     /**
+     * Indicates whether the component should be cleared on copy
+     *
+     * <p>
+     *  By default this property is false. ReadOnly components are cleared on a copy operation.
+     *  If set this prevents the component from being cleared.
+     * </p>
+     * @return
+     */
+    Boolean getCanCopyOnReadOnly();
+
+    /**
+     * Setter for the canCopyOnReadOnly indicator
+     *
+     * @param canCopyOnReadOnly
+     */
+    void setCanCopyOnReadOnly(Boolean canCopyOnReadOnly);
+    /**
      * Indicates whether the component is required
      *
      * <p>
@@ -1327,4 +1344,6 @@ public interface Component extends UifDictionaryBean, LifecycleElement, Serializ
      * @see #isOmitFromFormPost()
      */
     void setOmitFromFormPost(boolean omitFromFormPost);
+
+
 }

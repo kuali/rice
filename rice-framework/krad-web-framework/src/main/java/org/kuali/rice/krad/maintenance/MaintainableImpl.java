@@ -711,6 +711,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     /**
      * Determines if the current field is restricted and replaces its value with a default value if so.
+     * This method should only be called on a copy operation as it checks for canCopyOnReadOnly
      *
      * @param view view instance that contains the fields being checked
      * @param model model instance that contains the fields being checked
@@ -722,7 +723,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
         if (StringUtils.contains(bindingPath, KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
             // The field is restricted if it is hidden or read only or masked
-            boolean isRestricted = field.isHidden() || Boolean.TRUE.equals(field.getReadOnly()) || field.isApplyMask();
+            boolean isRestricted = field.isHidden() || (Boolean.TRUE.equals(field.getReadOnly()) && !Boolean.TRUE.equals(field.getCanCopyOnReadOnly())) || field.isApplyMask();
 
             // If the default value is a sequence number set isRestricted to false since the new sequence number has
             // already been retrieved.  We don't want to set it to null and fetch it again.
@@ -765,6 +766,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
     /**
      * Determines if the current group contains restricted lines and clears them if so.
+     * This method should only be called on a copy operation as it checks for canCopyOnReadOnly
      *
      * @param view view instance that contains the group being checked
      * @param model model instance that contains the group being checked
@@ -775,7 +777,7 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
         if (StringUtils.contains(bindingPath, KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
             // A line is restricted if it is hidden or read only
-            if (group.getUnauthorizedLineBindingInfos() != null) {
+            if (group.getUnauthorizedLineBindingInfos() != null && !group.getCanCopyOnReadOnly()) {
                 Collection<Object> collection = ObjectPropertyUtils.getPropertyValue(model, bindingPath);
 
                 // If any lines are restricted, clear them out

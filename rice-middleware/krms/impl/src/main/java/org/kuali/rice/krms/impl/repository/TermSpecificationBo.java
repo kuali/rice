@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krms.api.repository.category.CategoryDefinition;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinition;
 import org.kuali.rice.krms.api.repository.term.TermSpecificationDefinitionContract;
 
@@ -201,6 +203,11 @@ public class TermSpecificationBo implements TermSpecificationDefinitionContract,
     }
 
     public List<String> getContextIds() {
+        if(CollectionUtils.isEmpty(contextIds)){
+            for(ContextValidTermBo contextValidTermBo : this.getContextValidTerms()) {
+                contextIds.add(contextValidTermBo.getContextId());
+            }
+        }
         return contextIds;
     }
 
@@ -209,6 +216,16 @@ public class TermSpecificationBo implements TermSpecificationDefinitionContract,
     }
 
     public List<ContextBo> getContexts() {
+        if(CollectionUtils.isEmpty(contexts)){
+            for(ContextValidTermBo contextValidTermBo : this.getContextValidTerms()) {
+                ContextDefinition context =
+                        KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextValidTermBo.getContextId());
+
+                if (context != null) {
+                    contexts.add(ContextBo.from(context));
+                }
+            }
+        }
         return contexts;
     }
 

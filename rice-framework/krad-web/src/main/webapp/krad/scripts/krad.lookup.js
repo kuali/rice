@@ -112,7 +112,7 @@ function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialo
                     var param = params[i];
                     var lookupField = param.substring(param.indexOf(":") + 1);
                     var lookupFieldName = param.substring(0, param.indexOf(":"));
-                    var lookupValue = jQuery("[name='" + lookupFieldName + "']").val();
+                    var lookupValue = jQuery("[name='" + escapeName(lookupFieldName) + "']").val();
 
                     if (lookupField !== "" && typeof lookupField !== "undefined" && lookupValue !== "" && typeof lookupValue !== "undefined") {
                         data['actionParameters[lookupCriteria[&quot;' + lookupField + '&quot;]]'] = lookupValue;

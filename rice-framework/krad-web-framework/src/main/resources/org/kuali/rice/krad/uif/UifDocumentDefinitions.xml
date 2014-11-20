@@ -23,7 +23,7 @@
   <bean id="Uif-DocumentView" abstract="true" parent="Uif-DocumentView-parentBean">
     <property name="additionalScriptFiles">
       <list>
-        <value>scripts/krad.document.js</value>
+        <value>/krad/scripts/krad.document.js</value>
       </list>
     </property>
   </bean>

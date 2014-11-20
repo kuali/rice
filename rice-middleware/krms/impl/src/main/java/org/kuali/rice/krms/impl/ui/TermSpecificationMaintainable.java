@@ -51,18 +51,6 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         TermSpecificationBo termSpecificationBo = (TermSpecificationBo) super.retrieveObjectForEditOrCopy(document,
                 dataObjectKeys);
 
-        if (!CollectionUtils.isEmpty(termSpecificationBo.getContextValidTerms())) {
-            for (ContextValidTermBo contextValidTerm : termSpecificationBo.getContextValidTerms()) {
-                ContextDefinition context =
-                        KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextValidTerm.getContextId());
-
-                if (context != null) {
-                    termSpecificationBo.getContexts().add(ContextBo.from(context));
-                    termSpecificationBo.getContextIds().add(contextValidTerm.getContextId());
-                }
-            }
-        }
-
         if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
             document.getDocumentHeader().setDocumentDescription("New Term Specification Document");
         }
@@ -108,12 +96,11 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
      * @param document that contains the old and new TermSpecificationBos
      */
     private void copyContextsOldToNewBo(MaintenanceDocument document) {
-        TermSpecificationBo oldTermSpec = (TermSpecificationBo) document.getOldMaintainableObject().getDataObject();
         TermSpecificationBo newTermSpec = (TermSpecificationBo) document.getNewMaintainableObject().getDataObject();
-        newTermSpec.setContexts(new ArrayList<ContextBo>());
-        for (ContextBo contextBo : oldTermSpec.getContexts()) {
-            newTermSpec.getContexts().add(contextBo);
-        }
+
+        // Hydrade contexts as they are transient
+        newTermSpec.getContexts().clear();
+        newTermSpec.getContexts();
     }
 
     private void setNewContextValidTermsNewBO(MaintenanceDocument document) {
@@ -228,18 +215,6 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
         return TermSpecificationBo.class;
     }
 
-    @Override
-    public void setDataObject(Object object) {
-        List<ContextBo> copiedContexts = new ArrayList<>();
-
-        for (ContextBo context : ((TermSpecificationBo) object).getContexts()) {
-            copiedContexts.add(ContextBo.from(ContextDefinition.Builder.create( context).build()));
-        };
-
-        ((TermSpecificationBo) object).setContexts(copiedContexts);
-        super.setDataObject(object);
-    }
-
     /**
      * Recreate the contexts from the contextIDs (needed due to serialization)
      *
@@ -248,13 +223,5 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     @Override
     public void processAfterRetrieve() {
         super.processAfterRetrieve();
-
-        TermSpecificationBo termSpec = (TermSpecificationBo) getDataObject();
-        termSpec.setContexts(new ArrayList<ContextBo>());
-        for (ContextValidTermBo contextValidTerm : termSpec.getContextValidTerms()) {
-            ContextDefinition context = KrmsRepositoryServiceLocator.getContextBoService().getContextByContextId(contextValidTerm.getContextId());
-            termSpec.getContexts().add(ContextBo.from(context));
-            termSpec.getContextIds().add(context.getId());
-        }
     }
 }

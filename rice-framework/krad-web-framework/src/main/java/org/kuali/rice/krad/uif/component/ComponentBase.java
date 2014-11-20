@@ -110,6 +110,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
 
     private boolean hidden;
     private Boolean readOnly;
+    private Boolean canCopyOnReadOnly;
     private Boolean required;
 
     private String align;
@@ -207,6 +208,7 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         viewStatus = ViewStatus.CREATED;
 
         render = true;
+        canCopyOnReadOnly = false;
         selfRendered = false;
         progressiveRenderViaAJAX = false;
         progressiveRenderAndRefresh = false;
@@ -741,6 +743,23 @@ public abstract class ComponentBase extends UifDictionaryBeanBase implements Com
         checkMutable(true);
         this.readOnly = readOnly;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Boolean getCanCopyOnReadOnly() {
+        return canCopyOnReadOnly;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCanCopyOnReadOnly(Boolean canCopyOnReadOnly) {
+        this.canCopyOnReadOnly = canCopyOnReadOnly;
+    }
+
 
     /**
      * {@inheritDoc}

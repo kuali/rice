@@ -86,6 +86,11 @@ public class RuleBoServiceImpl implements RuleBoService {
         }
 
         final RuleDefinition toUpdate;
+        String existingPropositionId = null;
+
+        if (existing.getProposition() != null){
+            existingPropositionId = existing.getProposition().getId();
+        }
 
         if (!existing.getId().equals(rule.getId())){
             // if passed in id does not match existing id, correct it
@@ -101,6 +106,13 @@ public class RuleBoServiceImpl implements RuleBoService {
 
         // update the rule and create new attributes
         RuleBo updatedData = dataObjectService.save(boToUpdate, PersistenceOption.FLUSH);
+
+        //delete the orphan proposition
+        if (updatedData.getProposition() != null && StringUtils.isNotBlank(existingPropositionId)){
+           if (!(updatedData.getProposition().getId().equals(existingPropositionId))) {
+              dataObjectService.delete(existing.getProposition());
+           }
+        }
 
         return RuleBo.to(updatedData);
     }
@@ -172,8 +184,6 @@ public class RuleBoServiceImpl implements RuleBoService {
 
         return null;
     }
-
-
 
     @Override
     public void deleteRule(String ruleId) {

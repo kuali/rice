@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.5.2</version>
+  <version>2.5.2.0-kualico-SNAPSHOT</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -39,7 +39,7 @@
     quality business
     applications.
   </description>
-  <url>http://${kuali.site.hostname}/rice/${project.version}</url>
+  <url>https://github.com/rSmart/kuali_rice</url>
 
   <ciManagement>
     <url>http://ci.rice.kuali.org</url>
@@ -1516,6 +1516,17 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>rsmart-dev</id>
+      <name>rsmart-dev</name>
+      <url>https://nexus.rsmart.com/nexus/content/groups/public/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+    </repository>
   </repositories>
 
   <dependencyManagement>
@@ -2517,15 +2528,29 @@
   </dependencyManagement>
 
   <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.kuali.org/</url>
+    <system>github</system>
+    <url>https://github.com/rSmart/kuali_rice/issues</url>
   </issueManagement>
 
   <scm>
-    <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>
-    <connection>scm:git:git@github.com:kuali/rice.git</connection>
-    <url>https://github.com/kuali/rice/tree/${project.scm.tag}</url>
-    <tag>rice-2.5.2</tag>
+    <connection>scm:git:git://github.com/rSmart/kuali_rice.git</connection>
+    <developerConnection>scm:git:git@github.com:rSmart/kuali_rice.git</developerConnection>
+    <url>https://github.com/rSmart/kuali_rice</url>
   </scm>
+
+  <distributionManagement>
+    <downloadUrl>https://github.com/rSmart/kuali_rice</downloadUrl>
+    <snapshotRepository>
+       <id>rsmart.snapshot.repo</id>
+       <name>rsmart snapshot repository</name>
+       <url>s3://rsmart-dev/artifacts/maven/snapshot</url>
+       <layout>default</layout>
+    </snapshotRepository>
+    <repository>
+      <id>rsmart.release.repo</id>
+      <name>rsmart release repository</name>
+      <url>s3://rsmart-dev/artifacts/maven/release</url>
+    </repository>
+  </distributionManagement>
 
 </project>

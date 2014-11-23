@@ -37,8 +37,8 @@
     <property name="objectLabel" value="Term Specification"/>
   </bean>
 
-  <!-- Attribute Definitions -->
 
+  <!-- Attribute Definitions -->
 
   <bean id="TermSpecificationBo-id" parent="TermSpecificationBo-id-parentBean"/>
   <bean id="TermSpecificationBo-id-parentBean" abstract="true" parent="AttributeDefinition">
@@ -163,7 +163,6 @@
     <property name="items">
       <list>
 
-        <!-- bean parent="Uif-InputField" p:propertyName="id" / -->
         <bean parent="Uif-InputField" p:propertyName="id" p:required="true">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="40"/>
@@ -195,11 +194,7 @@
             <bean parent="Uif-DropdownControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="name" p:readOnly="true">
-          <property name="control">
-            <bean parent="Uif-TextControl" p:size="80"/>
-          </property>
-        </bean>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
       </list>
     </property>
   </bean>
@@ -218,7 +213,6 @@
     <property name="items">
       <list>
 
-        <!-- bean parent="Uif-InputField" p:propertyName="id" / -->
         <bean parent="Uif-InputField" p:propertyName="id" p:required="true" p:readOnly="@{!#isAddLine}">
           <property name="control">
             <bean parent="Uif-TextControl" p:size="40"/>
@@ -251,25 +245,14 @@
             <bean parent="Uif-DropdownControl"/>
           </property>
         </bean>
-        <bean parent="Uif-InputField" p:propertyName="name" p:readOnly="true">
-          <property name="control">
-            <bean parent="Uif-TextControl" p:size="100"/>
-          </property>
-        </bean>
-        <bean parent="Uif-InputField" p:propertyName="description" p:readOnly="true">
-          <property name="control">
-            <bean parent="Uif-TextAreaControl" p:cols="80" p:rows="3"/>
-          </property>
-        </bean>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="description"/>
       </list>
     </property>
   </bean>
 
 
-
-
   <!-- Inquiry View -->
-
 
   <bean id="TermSpecificationBo-InquiryView" parent="TermSpecificationBo-InquiryView-parentBean"/>
   <bean id="TermSpecificationBo-InquiryView-parentBean" abstract="true" parent="Uif-InquiryView">

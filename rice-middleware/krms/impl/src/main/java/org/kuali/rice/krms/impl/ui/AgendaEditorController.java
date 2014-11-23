@@ -345,6 +345,17 @@ public class AgendaEditorController extends MaintenanceDocumentController {
         }
 
         newAgendaItem.getRule().setAttributes(agendaEditor.getCustomRuleAttributesMap());
+
+        // Check to see if the Rule Id already exists. Essentially the user clicked on AddRule without selection
+        // of copyRule
+        RuleDefinition existingRule = getRuleBoService().getRuleByRuleId( newAgendaItem.getRuleId() );
+
+        if (existingRule != null) {
+            GlobalVariables.getMessageMap().putError("AgendaEditorView-AddRule-Page",
+                    "error.rule.unsavedCopyRule");
+            return super.navigate(form);
+        }
+
         updateRuleAction(agendaEditor);
 
         if (agenda.getItems() == null) {

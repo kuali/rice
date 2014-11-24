@@ -20,10 +20,12 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
+import org.kuali.rice.krms.api.repository.action.ActionDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaItemDefinitionContract;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.api.repository.rule.RuleDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
 import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
@@ -44,6 +46,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Integration test for the AgendaBoService.  Note that we inherit the test data created by AbstractAgendaBoTest, and
@@ -406,8 +409,84 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
     }
 
     @Test
-    public void testAgendaCrud() {
-        String namespace = getNamespaceByContextName(CONTEXT1);
+    public void testDeleteAgenda() {
+        ContextDefinition context = getContextRepository().getContextByNameAndNamespace(CONTEXT2, NAMESPACE2);
+        assertNotNull("context " + CONTEXT2 + " not found", context);
+        AgendaDefinition agenda = getAgendaBoService().getAgendaByNameAndContextId(AGENDA2, context.getId());
+        assertNotNull("agenda " + AGENDA2 + " not found", agenda);
+        AgendaItemDefinition agendaItem = getAgendaBoService().getAgendaItemById(agenda.getFirstItemId());
+        assertNotNull("agenda item " + agenda.getFirstItemId() + " not found", agendaItem);
+
+        AgendaItemDefinition firstItem = getAgendaBoService().getAgendaItemById( agenda.getFirstItemId() );
+        RuleDefinition firstItemRule = firstItem.getRule();
+        List<ActionDefinition> firstActionDefinitions = firstItemRule.getActions();
+
+        AgendaItemDefinition secondItem = firstItem.getAlways();
+        RuleDefinition secondItemRule =   secondItem.getRule();
+        List<ActionDefinition> secondActionDefinitions = secondItemRule.getActions();
+
+        AgendaItemDefinition thirdItem = secondItem.getAlways();
+        RuleDefinition thirdItemRule = thirdItem.getRule();
+        List<ActionDefinition> thirdActionDefinitions = thirdItemRule.getActions();
+
+        getAgendaBoService().deleteAgenda( agenda.getId() );
+
+        AgendaDefinition deletedAgenda = getAgendaBoService().getAgendaByAgendaId( agenda.getId() );
+        assertNull("Agenda should have been deleted", deletedAgenda);
+
+        AgendaItemDefinition deletedAgendaItem =  getAgendaBoService().getAgendaItemById( firstItem.getId() );
+        assertNull("First Agenda item should have been deleted as part of agenda delete", deletedAgendaItem);
+
+        AgendaItemDefinition deletedSecondAgendaItem =  getAgendaBoService().getAgendaItemById( secondItem.getId() );
+        assertNull("Second Agenda item should have been deleted as part of agenda delete", deletedSecondAgendaItem);
+
+        AgendaItemDefinition deletedThirdAgendaItem =  getAgendaBoService().getAgendaItemById( thirdItem.getId() );
+        assertNull("Third Agenda item should have been deleted as part of agenda delete", deletedThirdAgendaItem);
+
+        RuleDefinition deletedFirstRule = getRuleBoService().getRuleByRuleId( firstItemRule.getId() );
+        assertNull("First rule should have been deleted as part of agenda delete", deletedFirstRule);
+
+        RuleDefinition deletedSecondRule = getRuleBoService().getRuleByRuleId( secondItemRule.getId() );
+        assertNull("Second rule should have been deleted as part of agenda delete", deletedSecondRule);
+
+        RuleDefinition deletedThirdRule = getRuleBoService().getRuleByRuleId( thirdItemRule.getId() );
+        assertNull("Third rule should have been deleted as part of agenda delete", deletedThirdRule);
+
+        List<ActionDefinition> actionDefinitionList = new ArrayList<ActionDefinition>();
+
+        for (ActionDefinition actionDefinition: firstActionDefinitions) {
+            actionDefinitionList.add(actionDefinition);
+        }
+
+        for (ActionDefinition actionDefinition: secondActionDefinitions) {
+            actionDefinitionList.add(actionDefinition);
+        }
+
+        for (ActionDefinition actionDefinition: thirdActionDefinitions) {
+            actionDefinitionList.add(actionDefinition);
+        }
+
+        for(ActionDefinition actionDef : actionDefinitionList) {
+            ActionDefinition deletedActionDef = getActionBoService().getActionByActionId( actionDef.getId() );
+            assertNull("All action definitions not deleted as part of agenda delete", deletedActionDef);
+        }
+    }
+
+    @Test
+    public void testDeleteAgenda_WithNoAgendaItems() {
+        AgendaDefinition emptyAgendaDefinition = createEmptyAgenda(CONTEXT1, "testAgenda-deleteEmptyAgenda");
+
+        // get it as a business object
+        final AgendaBo bo = getDataObjectService().find(AgendaBo.class, emptyAgendaDefinition.getId());
+
+        getAgendaBoService().deleteAgenda(bo.getId());
+
+        AgendaDefinition deletedAgenda = getAgendaBoService().getAgendaByAgendaId( bo.getId() );
+        assertNull("Agenda should have been deleted", deletedAgenda);
+    }
+
+    private AgendaDefinition createEmptyAgenda(String contextName, String agendaName) {
+        String namespace = getNamespaceByContextName(contextName);
         if (StringUtils.isBlank(namespace)) {
             throw new RiceRuntimeException("namespace is " + namespace + " for context with name " + CONTEXT1);
         }
@@ -418,10 +497,6 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
         List<AgendaDefinition> agendas = getAgendaBoService().getAgendasByContextId(context.getId());
         AgendaDefinition templateAgenda = agendas.get(0);
 
-//        AgendaBo templateAgendaBo = getBoService().findBySinglePrimaryKey(AgendaBo.class, templateAgenda.getId());
-//        AgendaBo.to(templateAgendaBo.copyAgenda("newTestAgenda", "FooTime"));
-
-
         AgendaDefinition.Builder agendaBuilder = AgendaDefinition.Builder.create(templateAgenda);
 
         agendaBuilder.setFirstItemId(null);
@@ -431,6 +506,15 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
 
         // create agenda
         AgendaDefinition newAgenda = getAgendaBoService().createAgenda(agendaBuilder.build());
+
+        return newAgenda;
+    }
+
+    @Test
+    public void testAgendaCrud() {
+
+        // create agenda
+        AgendaDefinition newAgenda = createEmptyAgenda(CONTEXT1, "testAgendaCrud-agenda");
 
         // verify the agenda is there and
         assertNotNull(newAgenda);

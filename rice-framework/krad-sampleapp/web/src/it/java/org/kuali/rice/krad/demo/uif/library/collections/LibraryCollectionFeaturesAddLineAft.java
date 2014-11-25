@@ -160,7 +160,7 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
 
         // delete the added line from the collection
         jGrowl("Click Trash button.");
-        waitAndClick("#Demo-CollectionAddLine-Example6 button.icon-trash");
+        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6']//button[contains(@class,'icon-trash')]");
 
         // assert that the values have been deleted and that the message shows
         waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field1'][value = '999']"));

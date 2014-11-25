@@ -44,6 +44,7 @@ import org.kuali.rice.krms.impl.repository.ActionBoService;
 import org.kuali.rice.krms.impl.repository.AgendaBoService;
 import org.kuali.rice.krms.impl.repository.FunctionBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
+import org.kuali.rice.krms.impl.repository.PropositionBoService;
 import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.TermBo;
 import org.kuali.rice.krms.impl.repository.TermBoService;
@@ -90,6 +91,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
     protected AgendaBoService agendaBoService;
     protected ActionBoService actionBoService;
     protected FunctionBoServiceImpl functionBoService;
+    protected PropositionBoService propositionBoService;
 
     private static String lastTestClass = null;
 
@@ -131,6 +133,8 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         agendaBoService = KrmsRepositoryServiceLocator.getAgendaBoService();
         actionBoService = KrmsRepositoryServiceLocator.getBean("actionBoService");
         functionBoService = KrmsRepositoryServiceLocator.getBean("functionRepositoryService");
+        propositionBoService = KrmsRepositoryServiceLocator.getPropositionBoService();
+
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
 
         ContextDefinition contextDefintion1 = null;
@@ -296,7 +300,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         return ruleDef1;
     }
 
-    private RuleDefinition createRuleDefinition1(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
+    protected RuleDefinition createRuleDefinition1(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
 
         PropositionParametersBuilder params1 = new PropositionParametersBuilder();
         params1.add(createTermDefinition(CAMPUS_CODE_TERM_NAME, String.class, contextDefinition).getId(), PropositionParameterType.TERM);
@@ -311,7 +315,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         return createRuleDefinition(nameSpace, agendaName+"::Rule1", contextDefinition, LogicalOperator.OR, params1, params2);
     }
 
-    private PropositionDefinition.Builder createPropositionDefinition(String propDescription, PropositionParametersBuilder params, RuleDefinition parentRule) {
+    protected PropositionDefinition.Builder createPropositionDefinition(String propDescription, PropositionParametersBuilder params, RuleDefinition parentRule) {
         // Proposition for rule 2
         PropositionDefinition.Builder propositionDefBuilder1 =
                 PropositionDefinition.Builder.create(null, PropositionType.SIMPLE.getCode(), parentRule.getId(),
@@ -332,7 +336,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         return propositionDefBuilder1;
     }
 
-    private TermDefinition createTermDefinition(String termName, Class termValueType, ContextDefinition contextDefinition) {
+    protected TermDefinition createTermDefinition(String termName, Class termValueType, ContextDefinition contextDefinition) {
 
         // this may be called more than once, we only want to create one though
         Map<String, String> queryArgs = new HashMap<String, String>();
@@ -360,7 +364,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         return termDefinition;
     }
 
-    private RuleDefinition createRuleDefinition2(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
+    protected RuleDefinition createRuleDefinition2(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
 
         PropositionParametersBuilder params1 = new PropositionParametersBuilder();
         params1.add(createTermDefinition2(contextDefinition, nameSpace).getId(), PropositionParameterType.TERM);
@@ -375,7 +379,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         return createRuleDefinition(nameSpace, agendaName+"::Rule2", contextDefinition, LogicalOperator.AND, params1, params2);
     }
 
-    private RuleDefinition createRuleDefinition3(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
+    protected RuleDefinition createRuleDefinition3(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
 
         FunctionDefinition gcdFunction = functionBoService.getFunctionByNameAndNamespace("gcd",
                 contextDefinition.getNamespace());
@@ -411,7 +415,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         return createRuleDefinition(nameSpace, agendaName+"::Rule3", contextDefinition, null, params);
     }
 
-    private RuleDefinition createRuleDefinition4(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
+    protected RuleDefinition createRuleDefinition4(ContextDefinition contextDefinition, String agendaName, String nameSpace) {
 
         PropositionParametersBuilder params1 = new PropositionParametersBuilder();
         params1.add(createTermDefinition(BOOL1, Boolean.class, contextDefinition).getId(), PropositionParameterType.TERM);
@@ -503,7 +507,7 @@ public class AbstractAgendaBoTest extends AbstractBoTest {
         return termBoService;
     }
 
-    private static class PropositionParametersBuilder {
+    protected static class PropositionParametersBuilder {
 
         // poor OOD but this is quick and dirty :-P
         private List<Object[]> params = new ArrayList<Object[]>();

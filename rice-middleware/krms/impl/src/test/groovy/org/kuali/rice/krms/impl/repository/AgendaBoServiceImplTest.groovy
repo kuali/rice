@@ -66,9 +66,6 @@ class AgendaBoServiceImplTest {
     private static AgendaDefinition TEST_EXISTING_AGENDA_DEF2;
 	private static AgendaBo TEST_AGENDA_BO;
 	
-	private static AgendaDefinition TEST_AGENDA_ITEM_DEF;
-	private static AgendaBo TEST_AGENDA_ITEM_BO;
-
     private static ContextBo CONTEXT1;
 	private static KrmsAttributeDefinitionBo ADB1;
 	private static KrmsAttributeDefinitionBo ADB2;
@@ -99,7 +96,7 @@ class AgendaBoServiceImplTest {
 		builder.setAttributes(myAttrs);
 		TEST_EXISTING_AGENDA_DEF = builder.build()
 
-        // create existing definition (with id and version number)
+		// create existing definition (with id and version number)
         builder = AgendaDefinition.Builder.create(AGENDA_ID_2, AGENDA_NAME, TYPE_ID, CONTEXT_ID_1)
         builder.setFirstItemId(AGENDA_ITEM_ID_1)
         builder.setVersionNumber( VERSION_NUMBER_1 )
@@ -114,7 +111,7 @@ class AgendaBoServiceImplTest {
 		TEST_AGENDA_BO.setContextId( CONTEXT_ID_1 )
 		TEST_AGENDA_BO.setFirstItemId( AGENDA_ITEM_ID_1 )
 		TEST_AGENDA_BO.setVersionNumber( VERSION_NUMBER_1 )
-		
+
 		// krmsAttributeDefinitionBos
 		ADB1 = new KrmsAttributeDefinitionBo()
 		ADB1.id = ATTR_DEF_ID_1
@@ -447,31 +444,6 @@ class AgendaBoServiceImplTest {
         shouldFail(IllegalStateException.class) {
             service.deleteAgenda(TEST_AGENDA_BO.getId())
         }
-        mockDataObjectService.verify(dataObjectService)
-    }
-
-    @Test
-    void testDeleteAgendaSuccessReturnsList() {
-        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
-        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([getAgendaItemBo("A","B","C", null)])}
-        mockDataObjectService.demand.delete(1..1) { bo -> return null }
-        mockDataObjectService.demand.delete(1..1) { bo -> return null }
-        def dataObjectService = mockDataObjectService.proxyDelegateInstance()
-        AgendaBoService service = new AgendaBoServiceImpl()
-        service.setDataObjectService(dataObjectService)
-        service.deleteAgenda(TEST_AGENDA_BO.getId())
-        mockDataObjectService.verify(dataObjectService)
-    }
-
-    @Test
-    void testDeleteAgendaSuccessReturnsNoList() {
-        mockDataObjectService.demand.find(1..1) { clazz, id -> TEST_AGENDA_BO }
-        mockDataObjectService.demand.findMatching(1) { type, queryByCriteria -> buildQueryResults([]) }
-        mockDataObjectService.demand.delete(1..1) { bo -> return null }
-        def dataObjectService = mockDataObjectService.proxyDelegateInstance()
-        AgendaBoService service = new AgendaBoServiceImpl()
-        service.setDataObjectService(dataObjectService)
-        service.deleteAgenda(TEST_AGENDA_BO.getId())
         mockDataObjectService.verify(dataObjectService)
     }
 

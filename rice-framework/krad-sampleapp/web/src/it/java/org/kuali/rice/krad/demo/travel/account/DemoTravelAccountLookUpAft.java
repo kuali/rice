@@ -254,6 +254,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     }
     
     private void testSearchAndSelect(String selectorText) throws Exception {
+        jGrowl("Click Travel Account Type Code quickfinder");
     	waitAndClickByXpath("//button[@class='btn btn-default uif-action icon-search']");
     	gotoLightBox();
         waitAndClickSearchByText();

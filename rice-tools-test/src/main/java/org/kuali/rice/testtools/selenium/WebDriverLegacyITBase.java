@@ -569,6 +569,8 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
     protected void assertOutbox(String docId, String state) throws InterruptedException {
         // find it in outbox
         waitAndClickLinkContainingText("Outbox");
+        // TODO if the docId is present as part of uniqueString there will be a false negative it would be better if there
+        // was a waitForIsElementPresent
         while (!waitForIsTextPresent(docId)) {
             waitAndClickByLinkText("Next");
         }

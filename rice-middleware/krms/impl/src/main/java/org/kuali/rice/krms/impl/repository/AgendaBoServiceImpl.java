@@ -141,14 +141,22 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         if (agendaId == null) {
             throw new RiceIllegalArgumentException("agendaId is null");
         }
+
         final AgendaBo bo = getDataObjectService().find(AgendaBo.class, agendaId);
+
         if (bo == null) {
-            throw new IllegalStateException("the Agenda to delete does not exists: " + agendaId);
+            throw new IllegalStateException("the Agenda to delete does not exist: " + agendaId);
         }
 
-        List<AgendaItemDefinition> agendaItems = this.getAgendaItemsByAgendaId(bo.getId());
-        for (AgendaItemDefinition agendaItem : agendaItems) {
-            getDataObjectService().delete(AgendaItemBo.from(agendaItem));
+        // delete orphan agenda items, if needed
+        AgendaItemBo firstAgendaItem = bo.getFirstItem();
+
+        if (firstAgendaItem != null) {
+            getDataObjectService().delete(firstAgendaItem);
+            getDataObjectService().flush(AgendaItemBo.class);
+
+            bo.setFirstItem(null);
+            bo.setItems(null);
         }
 
         getDataObjectService().delete(bo);

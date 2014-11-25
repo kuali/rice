@@ -885,6 +885,32 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         return !isElementPresentByName("document.affiliations[0].dflt");
     }
 
+    /**
+     * recalls a document.
+     * closes the page when done.
+     *
+     * @param cancel if true, performs recall and cancel. if false, performs recall to action list
+     *
+     * @throws InterruptedException
+     */
+    protected void recall(boolean cancel) throws InterruptedException {
+        waitAndClickByName("methodToCall.recall");
+        waitForTextPresent("the reason below");
+        waitAndTypeByName("reason", "Recall " + uniqueString);
+        if (cancel){
+            // recall and cancel
+            waitAndClickByName("methodToCall.processAnswer.button1");
+            waitForTextPresent("RECALLED");
+            waitAndClickByName("methodToCall.close");
+        } else {
+            // recall to action list
+            waitAndClickByName("methodToCall.processAnswer.button0");
+            waitForTextPresent("SAVED");
+            waitAndClickByName("methodToCall.close");
+            waitAndClickByName("methodToCall.processAnswer.button1");
+        }
+    }
+
     protected void saveSuccessfully() throws InterruptedException {
         saveSuccessfully(WebDriverUtils.configuredImplicityWait() * 4);
     }

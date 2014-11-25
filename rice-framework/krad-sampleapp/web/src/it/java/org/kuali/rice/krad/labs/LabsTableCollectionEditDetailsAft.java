@@ -62,6 +62,7 @@ public class LabsTableCollectionEditDetailsAft extends WebDriverLegacyITBase {
 
         //Edit an existing line; change values; click No to cancel; verify new values are not retained.
         waitAndClickByXpath("//button[contains(text(),'Edit in Dialog')]");
+        waitForElementVisibleBy(By.name("dialogDataObject.field2"));
         clearTextByName("dialogDataObject.field2");
         waitAndTypeByName("dialogDataObject.field2","111");
         clearTextByName("dialogDataObject.field4");

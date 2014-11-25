@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -109,11 +110,13 @@ public class ResponsibilityActionListNavAft extends ResponsibilityActionListAftB
     }
 
     @Test
+    @Ignore("Responsibility recall not implemented on screen")
     public void testResponsibilityActionListRecallAndCancel_WithPendingPersonApprove_Nav() throws Exception {
         testResponsibilityActionListRecallAndCancel_WithPendingPersonApprove();
     }
 
     @Test
+    @Ignore("Responsibility recall not implemented on screen")
     public void testResponsibilityActionListRecallToActionList_WithPendingPersonApprove_Nav() throws Exception {
         testResponsibilityActionListRecallToActionList_WithPendingPersonApprove();
     }

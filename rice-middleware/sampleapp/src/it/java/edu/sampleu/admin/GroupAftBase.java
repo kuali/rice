@@ -73,31 +73,4 @@ public abstract class GroupAftBase extends AdminTmplMthdAftNavCreateNewBase {
         waitAndClickByName("methodToCall.route");
         waitForTextPresent("Document was successfully submitted");
     }
-
-    /**
-     * recalls a document.
-     * closes the page when done.
-     *
-     * @param cancel if true, performs recall and cancel. if false, performs recall to action list
-     *
-     * @throws InterruptedException
-     */
-    protected void recall(boolean cancel) throws InterruptedException {
-        waitAndClickByName("methodToCall.recall");
-        waitForTextPresent("the reason below");
-        waitAndTypeByName("reason", "Oops!");
-        if (cancel){
-            // recall and cancel
-            waitAndClickByName("methodToCall.processAnswer.button1");
-            waitForTextPresent("RECALLED");
-            waitAndClickByName("methodToCall.close");
-        } else {
-            // recall to action list
-            waitAndClickByName("methodToCall.processAnswer.button0");
-            waitForTextPresent("SAVED");
-            waitAndClickByName("methodToCall.close");
-            waitAndClickByName("methodToCall.processAnswer.button1");
-        }
-    }
-
 }

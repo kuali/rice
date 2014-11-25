@@ -121,6 +121,7 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']", "My Note " + uniqueString);
         waitAndClickByXpath("//button[@title='Add a Note']");
+        waitForProgressLoading();
 
         // TODO convenience method
         waitAndClickByLinkText("Ad Hoc Recipients");
@@ -153,10 +154,12 @@ public class LabsLookupDefaultCreateNewBlanketApproveAft extends LabsLookupBase 
         waitAndTypeLabeledInput("Travel Sub Account Number:", uniqueString.substring(0,7) + "sa");
         waitAndTypeLabeledInput("Sub Account Name:", "Sub Account " + uniqueString);
         waitAndClickButtonByText("Add");
+        waitForProgressAddingLine();
 
         waitAndClickByLinkText("Notes and Attachments (0)");
         waitAndTypeByXpath("//textarea[@maxlength='800']", "My Note " + uniqueString);
         waitAndClickByXpath("//button[@title='Add a Note']");
+        waitForProgressLoading();
 
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/div/input", "admin");

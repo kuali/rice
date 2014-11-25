@@ -75,6 +75,7 @@ public class LibraryFieldsActionAft extends LibraryBase {
         waitAndClickByLinkText("Pre submit returning true Link");
         assertTrue(driver.switchTo().alert().getText().contains("Pre submit call was invoked, returning true"));
         driver.switchTo().alert().accept();
+        waitForProgressLoading();
 
         assertElementPresentByLinkText("Pre submit returning false Link");
         waitAndClickByLinkText("Pre submit returning false Link");

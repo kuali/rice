@@ -42,15 +42,6 @@ public class TermSpecificationInquiryHelperServiceImpl extends KualiInquirableIm
 
         if (termSpecification == null) { return null; }
 
-        for (ContextValidTermBo contextValidTerm : termSpecification.getContextValidTerms()) {
-            ContextBo context = getDataObjectService().find(ContextBo.class, contextValidTerm.getContextId());
-
-            if (context != null) {
-                termSpecification.getContextIds().add(context.getId());
-                termSpecification.getContexts().add(context);
-            }
-        }
-
         return termSpecification;
     }
 

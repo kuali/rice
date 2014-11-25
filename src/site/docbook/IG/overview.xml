@@ -101,9 +101,9 @@
                             >http://nexus.kuali.org/content/groups/public/</link></para>
                 </listitem>
                 <listitem>
-                    <para><emphasis role="bold">Subversion Repository</emphasis> - <link
-                            xlink:href="http://svn.kuali.org/repos/rice/tags/rice-${project.version}"
-                            >http://svn.kuali.org/repos/rice/tags/rice-${project.version}</link></para>
+                    <para><emphasis role="bold">Github Repository</emphasis> - <link
+                            xlink:href="https://github.com/kuali/rice/tree/rice-${project.version}"
+                            >https://github.com/kuali/rice/tree/rice-${project.version}</link></para>
                 </listitem>
             </orderedlist>
         </para>

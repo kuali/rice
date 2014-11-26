@@ -330,7 +330,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         waitForElementPresentByClassName("jGrowl-message");
 
         // wait for any flash not present errors to fade out
-        while (findElement(By.className("jGrowl-message")).getText().contains("Unable to load SWF file")) {
+        while (jGrowlTextContains("Unable to load SWF file")) {
             try {
                 driver.findElement(By.className("jGrowl-close")).click(); // no wait, click quick
             } catch (Throwable t) {
@@ -352,6 +352,16 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
         //check growl text is present
         assertTrue(growlText + " does not contain " + jGrowlText, growlText.contains(jGrowlText));
+    }
+
+    private boolean jGrowlTextContains(String text) {
+        boolean contains = false;
+        try {
+            contains = findElement(By.className("jGrowl-message")).getText().contains(text);
+        } catch (Throwable t) {
+            return false;
+        }
+        return contains;
     }
 
     protected void assertLabelWithTextPresent(String labelText) throws InterruptedException {

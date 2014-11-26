@@ -53,13 +53,18 @@ public class LibraryElementMultiFileUploadAft extends WebDriverFileResourceAftBa
         assertDelete();
 
     	selectByName("exampleShown", "Max Size Multi-file Upload");
+        fileUploadSetUpforPdf();
         fileIngesterByName("files1");
-        assertLinked();
-        assertDelete();
+        waitForElementVisibleBy(By.linkText("test.pdf"));
+        assertTrue(isTextPresent("9.2 KB")); // file size
+        clickFirstTrashIcon();
+        waitForElementNotPresent(By.linkText("test.pdf"));
 
     	selectByName("exampleShown", "Extra Fields Multi-file Upload");
         fileIngesterByName("files2");
         assertLinked();
+        isElementPresentByName("files2[0].detail1"); // detail 1 extra field
+        isElementPresentByName("files2[0].detail2"); // detail 2 extra field
         assertDelete();
 
         selectByName("exampleShown", "File Types Multi-file Upload");
@@ -95,6 +100,10 @@ public class LibraryElementMultiFileUploadAft extends WebDriverFileResourceAftBa
     
     private void fileUploadSetUpforJpg() throws Exception {
     	setUpResourceDir("general", "jpg");
+    }
+
+    private void fileUploadSetUpforPdf() throws Exception {
+        setUpResourceDir("general", "pdf");
     }
 
     @Test

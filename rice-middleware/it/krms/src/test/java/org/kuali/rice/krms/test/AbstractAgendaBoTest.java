@@ -63,19 +63,19 @@ import java.util.Map;
 public class AbstractAgendaBoTest extends AbstractBoTest {
 
     public static final String CAMPUS_CODE_TERM_NAME = "campusCodeTermSpec";
-    static final String NAMESPACE1 = "KRMS_TEST_1";
-    static final String NAMESPACE2 = "KRMS_TEST_2";
+    protected static final String NAMESPACE1 = "KRMS_TEST_1";
+    protected static final String NAMESPACE2 = "KRMS_TEST_2";
     static final String TSUNAMI_EVENT = "Tsunami";
     static final String EARTHQUAKE_EVENT = "Earthquake";
-    static final String CONTEXT1 = "Context1";
-    static final String CONTEXT2 = "Context2";
+    protected static final String CONTEXT1 = "Context1";
+    protected static final String CONTEXT2 = "Context2";
     static final String CONTEXT3 = "Context3";
     static final String CONTEXT1_QUALIFIER = "Context1Qualifier";
     static final String CONTEXT1_QUALIFIER_VALUE = "BLAH1";
     static final String CONTEXT2_QUALIFIER = "Context2Qualifier";
     static final String CONTEXT2_QUALIFIER_VALUE = "BLAH2";
-    static final String AGENDA1 = "TestAgenda1";
-    static final String AGENDA2 = "Agenda2";
+    protected static final String AGENDA1 = "TestAgenda1";
+    protected static final String AGENDA2 = "Agenda2";
     static final String AGENDA3 = "Agenda3";
     static final String AGENDA4 = "Agenda4";
     static final String AGENDA5 = "Agenda5";

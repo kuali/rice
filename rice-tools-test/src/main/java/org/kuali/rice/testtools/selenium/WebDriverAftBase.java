@@ -1872,6 +1872,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         waitForProgress("Adding Line...");
     }
 
+    protected void waitForProgressDeletingLine() throws InterruptedException {
+        waitForProgress("Deleting Line...");
+    }
+
     protected void waitForProgressAddingLine(int secondsToWait) throws InterruptedException {
         waitForProgress("Adding Line...", secondsToWait);
     }

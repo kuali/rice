@@ -16,30 +16,15 @@
 package org.kuali.rice.krad.demo.uif.library.elements;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.kuali.rice.krad.demo.uif.library.LibraryBase;
-import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverFileResourceAftBase;
 import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LibraryElementMultiFileUploadAft extends LibraryBase {
+public class LibraryElementMultiFileUploadAft extends WebDriverFileResourceAftBase {
 
     /**
      * /kr-krad/kradsampleapp?viewId=Demo-MultiFileUploadView
@@ -63,140 +48,54 @@ public class LibraryElementMultiFileUploadAft extends LibraryBase {
 
     protected void testElementMultiFileUpload() throws Exception {
     	fileUploadSetUpforText();
-    	fileIngester("files");
-    	selectByName("exampleShown","Max Size Multi-file Upload");
-    	fileIngester("files1");
-    	selectByName("exampleShown","Extra Fields Multi-file Upload");
-    	fileIngester("files2");
-    	selectByName("exampleShown","File Types Multi-file Upload");
+    	fileIngesterByName("files");
+        assertLinked();
+        assertDelete();
+
+    	selectByName("exampleShown", "Max Size Multi-file Upload");
+        fileIngesterByName("files1");
+        assertLinked();
+        assertDelete();
+
+    	selectByName("exampleShown", "Extra Fields Multi-file Upload");
+        fileIngesterByName("files2");
+        assertLinked();
+        assertDelete();
+
+        selectByName("exampleShown", "File Types Multi-file Upload");
     	fileUploadSetUpforJpg();
-    	fileIngester("files3");
+        fileIngesterByName("files3");
+        waitForElementVisibleBy(By.linkText("home.jpg"));
+        clickFirstTrashIcon();
+        waitForElementNotPresent(By.linkText("home.jpg"));
     }
-    
+
+    private void assertLinked() throws InterruptedException {
+        waitForElementVisibleBy(By.linkText("test.txt"));
+        waitForElementVisibleBy(By.linkText("test1.txt"));
+    }
+
+    private void assertDelete() throws InterruptedException {
+        clickFirstTrashIcon();
+        waitForElementNotPresent(By.linkText("test.txt"));
+
+        clickFirstTrashIcon();
+        waitForElementNotPresent(By.linkText("test1.txt"));
+    }
+
+    private void clickFirstTrashIcon() throws InterruptedException {
+        jGrowl("Click trash icon");
+        waitAndClickByXpath("//div[@id='Demo-MultiFileUploadView']//button[contains(@class,'icon-trash')]");
+        waitAndClickConfirmDeleteYes();
+    }
+
     private void fileUploadSetUpforText() throws Exception {
-    	setUpResourceDir("general","txt");
+    	setUpResourceDir("general", "txt");
     }
     
     private void fileUploadSetUpforJpg() throws Exception {
-    	setUpResourceDir("general","jpg");
+    	setUpResourceDir("general", "jpg");
     }
-    
-    protected void setUpResourceDir(String resourceDir,String fileExtension) {
-        try {
-            setUpFiles("src/test/resources/" + resourceDir,fileExtension);
-            System.out.println("Try for setUpResourceDir");
-        } catch (Exception e) {
-            System.out.println("Problem loading files from filesystem ( " + e.getMessage() + "). If running from Intellij make sure working directory is rice-framework/krad-sampleapp/web attempt to load as resource.");
-            
-            try {
-                setUpResourceFiles(resourceDir);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-                jiraAwareFail("Problems loading files as resources " + e1.getMessage());
-            }
-            
-            System.out.println("Catch for setUpResourceDir");
-        }
-    }
-    
-    protected void setUpResourceFiles(String resourceDir) throws Exception {
-        System.out.println("In for setUpResourceFiles");
-        String[] resources = getResourceListing(getClass(), resourceDir);
-        fileUploadList = new ArrayList<File>();
-
-        for (String resource : resources) {
-            InputStream inputStream = getClass().getResourceAsStream(resource);
-            File file = new File(System.getProperty("java.io.tmpdir") + File.separator + resource);
-            OutputStream outputStream = new FileOutputStream(file);
-            IOUtils.copy(inputStream, outputStream);
-            outputStream.close();
-            fileUploadList.add(file);
-            System.out.println("For for setUpResourceFiles");
-        }
-        
-        Collections.sort(fileUploadList);
-    }
-
-    protected String[] getResourceListing(Class clazz, String pathStartsWith) throws Exception {
-    	System.out.println("In for getResourceListing");
-        String classPath = clazz.getName().replace(".", "/")+".class";
-        URL dirUrl = clazz.getClassLoader().getResource(classPath);
-
-        if (!"jar".equals(dirUrl.getProtocol())) {
-            throw new UnsupportedOperationException("Cannot list files for URL " + dirUrl);
-        }
-
-        String jarPath = dirUrl.getPath().substring(5, dirUrl.getPath().indexOf("!")); //strip out only the JAR file
-        JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
-        Enumeration<JarEntry> entries = jar.entries();
-        Set<String> result = new HashSet<String>();
-
-        while(entries.hasMoreElements()) {
-            String entry = entries.nextElement().getName();
-            if (entry.startsWith(pathStartsWith) && !entry.endsWith("/")) { //filter according to the pathStartsWith skipping directories
-                result.add(entry);
-            }
-        }
-
-        return result.toArray(new String[result.size()]);
-    }
-
-    protected void setUpFiles(String path,String fileExtension) throws Exception {
-    	System.out.println("In for setUpFiles");
-        fileUploadList = new ArrayList<File>();
-
-        File dir = new File(path);
-
-        if (dir != null && dir.listFiles().length > 0) {
-            Integer i = 1;
-            
-            for (File file : dir.listFiles()) {
-                if (file.getName().endsWith(fileExtension)) {
-                        fileUploadList.add(file);
-                }
-                
-                i++;
-            }
-            
-            Collections.sort(fileUploadList);
-        } else {
-            throw new Exception("----Resources not found----");
-        }
-    }
-    
-    /**
-     * Performs Ingesting files to fileupload component and asserts succesful ingestion.
-     *
-     */
-    private void fileIngester(String name) throws Exception {
-    	System.out.println("In for fileIngester");
-    	
-        if(fileUploadList!=null && fileUploadList.size()>0)
-        {
-	        for (File file : fileUploadList) {
-	            String path = file.getAbsolutePath().toString();
-	            driver.findElement(By.name(name)).sendKeys(path);
-	            System.out.println("In for -------");
-	        }
-        }
-    }
-    
-//    /**
-//     * Performs Ingesting files to fileupload component and asserts succesful ingestion.
-//     *
-//     */
-//    private void fileIngesterCollection() throws Exception {
-//    	System.out.println("In for fileIngester");
-//    	
-//        if(fileUploadList!=null && fileUploadList.size()>0)
-//        {
-//	        for (File file : fileUploadList) {
-//	            String path = file.getAbsolutePath().toString();
-//	            driver.findElement(By.xpath("//div[@data-label='Attached File']/fieldset/div/div/input[@type='file']")).sendKeys(path);
-//	            System.out.println("In for -------");
-//	        }
-//        }
-//    }
 
     @Test
     public void testElementMultiFileUploadBookmark() throws Exception {

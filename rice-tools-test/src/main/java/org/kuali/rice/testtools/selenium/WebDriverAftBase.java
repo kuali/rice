@@ -1463,7 +1463,6 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             ele.click();
         }
     }
-
     protected void waitAndClickConfirmCancelOk() throws InterruptedException {
         jGrowl("Click OK Confirmation");
         String xpath = "//div[@data-parent='ConfirmCancelDialog']/button[contains(text(),'OK')]";
@@ -1473,6 +1472,12 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected void waitAndClickConfirmBlanketApproveOk() throws InterruptedException {
         jGrowl("Click OK Confirmation");
         String xpath = "//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]";
+        waitForElementVisibleBy(By.xpath(xpath)).click();
+    }
+
+    protected void waitAndClickConfirmDeleteYes() throws InterruptedException {
+        jGrowl("Click Yes Confirmation");
+        String xpath = "//section[@id='DialogGroup-DeleteFileUploadLine']//button[contains(text(),'Yes')]";
         waitForElementVisibleBy(By.xpath(xpath)).click();
     }
 
@@ -1816,7 +1821,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForElementNotPresent(By by, String message, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        while (isElementPresent(by) || secondsToWait > 0) {
+        while (isElementPresent(by)) {
+            if (secondsToWait == 0) {
+                break;
+            }
             secondsToWait -= 1;
             Thread.sleep(1000);
         }

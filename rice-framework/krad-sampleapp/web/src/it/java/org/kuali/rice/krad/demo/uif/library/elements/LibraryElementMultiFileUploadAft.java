@@ -61,6 +61,7 @@ public class LibraryElementMultiFileUploadAft extends WebDriverFileResourceAftBa
         waitForElementNotPresent(By.linkText("test.pdf"));
 
     	selectByName("exampleShown", "Extra Fields Multi-file Upload");
+        fileUploadSetUpforText();
         fileIngesterByName("files2");
         assertLinked();
         isElementPresentByName("files2[0].detail1"); // detail 1 extra field

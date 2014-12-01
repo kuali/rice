@@ -397,10 +397,25 @@ KradRequest.prototype = {
 
         var updateParent;
         if (request.refreshId) {
-            updateParent = jQuery('#' + request.refreshId).parents("[data-omit_group='true']");
+            var updateComponent = jQuery('#' + request.refreshId);
+            if (updateComponent.is("[data-omit_group='true']")) {
+                // if the component being refreshed is a group that is omitted normally, explicitly send its fields
+                updateParent = updateComponent;
+        }
+            else {
+                // if the component being refreshed is part of a group that is normally omitted, send the group
+                // data also
+                updateParent = updateComponent.parents("[data-omit_group='true']");
+            }
+
+            // corner case: if the component isn't part of an omitted group but is itself omitted, still send its data
+            // when being explicitly targeted by a refresh
+            if (updateParent.length === 0 && updateComponent.is("[data-omit='true']")) {
+                updateParent = updateComponent;
+            }
         }
 
-        // if the fields to send is originally
+        // if the fields to send is originally blank
         var fieldToSendBlank = !request.fieldsToSend || request.fieldsToSend.length === 0;
         if (fieldToSendBlank) {
             request.fieldsToSend = [];
@@ -413,7 +428,7 @@ KradRequest.prototype = {
 
         if (actionParent && actionParent.length && fieldToSendBlank) {
             var parentId = jQuery(actionParent[0]).attr("id");
-            if (request.fieldsToSend.indexOf(parentId) === -1) {
+            if (request.fieldsToSend.indexOf('#' + parentId) === -1) {
                 request.fieldsToSend.push('#' + parentId);
             }
         }

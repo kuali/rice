@@ -290,6 +290,8 @@ function deselectAllPageLines(collectionId) {
  * @param returnLink link that was selected
  */
 function returnLookupResultsByScript(returnLink) {
+    setupImages();
+
     var jqReturnLink = jQuery(returnLink);
 
     var returnData = jqReturnLink.attr(kradVariables.ATTRIBUTES.DATA_RETURN);
@@ -330,6 +332,9 @@ function returnLookupResultsByScript(returnLink) {
  * Reload page with lookup result URL
  */
 function returnLookupResultReload(returnLink) {
+    setupImages();
+    showLoading('Returning result...',jQuery('#Uif-DialogGroup-Lookup'));
+
     var jqReturnLink = jQuery(returnLink);
 
     var href = jqReturnLink.attr("href");

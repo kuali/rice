@@ -330,7 +330,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         waitForElementPresentByClassName("jGrowl-message");
 
         // wait for any flash not present errors to fade out
-        while (findElement(By.className("jGrowl-message")).getText().contains("Unable to load SWF file")) {
+        while (jGrowlTextContains("Unable to load SWF file")) {
             try {
                 driver.findElement(By.className("jGrowl-close")).click(); // no wait, click quick
             } catch (Throwable t) {
@@ -352,6 +352,16 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
         //check growl text is present
         assertTrue(growlText + " does not contain " + jGrowlText, growlText.contains(jGrowlText));
+    }
+
+    private boolean jGrowlTextContains(String text) {
+        boolean contains = false;
+        try {
+            contains = findElement(By.className("jGrowl-message")).getText().contains(text);
+        } catch (Throwable t) {
+            return false;
+        }
+        return contains;
     }
 
     protected void assertLabelWithTextPresent(String labelText) throws InterruptedException {
@@ -1453,7 +1463,6 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
             ele.click();
         }
     }
-
     protected void waitAndClickConfirmCancelOk() throws InterruptedException {
         jGrowl("Click OK Confirmation");
         String xpath = "//div[@data-parent='ConfirmCancelDialog']/button[contains(text(),'OK')]";
@@ -1463,6 +1472,12 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     protected void waitAndClickConfirmBlanketApproveOk() throws InterruptedException {
         jGrowl("Click OK Confirmation");
         String xpath = "//div[@data-parent='ConfirmBlanketApproveDialog']/button[contains(text(),'OK')]";
+        waitForElementVisibleBy(By.xpath(xpath)).click();
+    }
+
+    protected void waitAndClickConfirmDeleteYes() throws InterruptedException {
+        jGrowl("Click Yes Confirmation");
+        String xpath = "//section[@id='DialogGroup-DeleteFileUploadLine']//button[contains(text(),'Yes')]";
         waitForElementVisibleBy(By.xpath(xpath)).click();
     }
 
@@ -1806,7 +1821,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForElementNotPresent(By by, String message, int secondsToWait) throws InterruptedException {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-        while (isElementPresent(by) || secondsToWait > 0) {
+        while (isElementPresent(by)) {
+            if (secondsToWait == 0) {
+                break;
+            }
             secondsToWait -= 1;
             Thread.sleep(1000);
         }
@@ -1860,6 +1878,10 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 
     protected void waitForProgressAddingLine() throws InterruptedException {
         waitForProgress("Adding Line...");
+    }
+
+    protected void waitForProgressDeletingLine() throws InterruptedException {
+        waitForProgress("Deleting Line...");
     }
 
     protected void waitForProgressAddingLine(int secondsToWait) throws InterruptedException {

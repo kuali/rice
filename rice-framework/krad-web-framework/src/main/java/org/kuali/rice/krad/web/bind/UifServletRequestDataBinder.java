@@ -18,6 +18,7 @@ package org.kuali.rice.krad.web.bind;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.kuali.rice.core.framework.persistence.jta.Jta;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.DataObjectWrapper;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
@@ -38,6 +39,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.UserTransaction;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -157,70 +159,83 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      */
     @Override
     public void bind(ServletRequest request) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Request Parameters from getParameterMap:");
+        UserTransaction userTransaction = Jta.getUserTransaction();
+        try {
 
-            for (String key : request.getParameterMap().keySet()) {
-                LOG.debug("\t" + key + "=>" + request.getParameterMap().get(key));
-            }
+            // begin bind transaction
+            userTransaction.begin();
 
-            LOG.debug("Request Parameters from getParameter:");
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Request Parameters from getParameterMap:");
 
-            for (String name : Collections.list(request.getParameterNames())) {
-                LOG.debug("\t" + name + "=>" + request.getParameter(name));
-            }
-        }
+                for (String key : request.getParameterMap().keySet()) {
+                    LOG.debug("\t" + key + "=>" + request.getParameterMap().get(key));
+                }
 
-        UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();
+                LOG.debug("Request Parameters from getParameter:");
 
-        request.setAttribute(UifConstants.REQUEST_FORM, form);
-
-        form.preBind((HttpServletRequest) request);
-
-        _bind(request);
-
-        request.setAttribute(UifConstants.PROPERTY_EDITOR_REGISTRY, this.bindingResult.getPropertyEditorRegistry());
-
-        executeAutomaticLinking(request, form);
-
-        if (!form.isUpdateNoneRequest()) {
-            // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
-            String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
-            if (StringUtils.isBlank(viewId)) {
-                viewId = request.getParameter(UifParameters.VIEW_ID);
-            }
-
-            View view = null;
-            if (StringUtils.isNotBlank(viewId)) {
-                view = getViewService().getViewById(viewId);
-            }
-
-            // attempt to get view instance by type parameters
-            if (view == null) {
-                view = getViewByType(request, form);
-            }
-
-            // if view not found attempt to find one based on the cached form
-            if (view == null) {
-                view = getViewFromPreviousModel(form);
-
-                if (view != null) {
-                    LOG.warn("Obtained viewId from cached form, this may not be safe!");
+                for (String name : Collections.list(request.getParameterNames())) {
+                    LOG.debug("\t" + name + "=>" + request.getParameter(name));
                 }
             }
 
-            if (view != null) {
-                form.setViewId(view.getId());
+            UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();
 
-            } else {
-                form.setViewId(null);
+            request.setAttribute(UifConstants.REQUEST_FORM, form);
+
+            form.preBind((HttpServletRequest) request);
+
+            _bind(request);
+
+            request.setAttribute(UifConstants.PROPERTY_EDITOR_REGISTRY, this.bindingResult.getPropertyEditorRegistry());
+
+            executeAutomaticLinking(request, form);
+
+            if (!form.isUpdateNoneRequest()) {
+                // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
+                String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
+                if (StringUtils.isBlank(viewId)) {
+                    viewId = request.getParameter(UifParameters.VIEW_ID);
+                }
+
+                View view = null;
+                if (StringUtils.isNotBlank(viewId)) {
+                    view = getViewService().getViewById(viewId);
+                }
+
+                // attempt to get view instance by type parameters
+                if (view == null) {
+                    view = getViewByType(request, form);
+                }
+
+                // if view not found attempt to find one based on the cached form
+                if (view == null) {
+                    view = getViewFromPreviousModel(form);
+
+                    if (view != null) {
+                        LOG.warn("Obtained viewId from cached form, this may not be safe!");
+                    }
+                }
+
+                if (view != null) {
+                    form.setViewId(view.getId());
+
+                } else {
+                    form.setViewId(null);
+                }
+
+                form.setView(view);
             }
 
-            form.setView(view);
-        }
+            // invoke form callback for custom binding
+            form.postBind((HttpServletRequest) request);
 
-        // invoke form callback for custom binding
-        form.postBind((HttpServletRequest) request);
+            // comit bind transaction
+            userTransaction.commit();
+        }
+        catch (Exception ex) {
+            LOG.error("Jta bind transaction failed.", ex);
+        }
     }
 
     /**

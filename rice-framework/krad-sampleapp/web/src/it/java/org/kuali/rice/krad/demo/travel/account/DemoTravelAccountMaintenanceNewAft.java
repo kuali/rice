@@ -121,23 +121,16 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndClickSearchByText();
         waitAndClickLinkContainingText("return value");
         waitAndClickByXpath("//div[@data-parent='Uif-AdHocPersonCollection']/fieldset/div/button");
-        waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/div/div/button[@class='btn btn-default uif-action icon-search']");
+        waitAndClickSaveByText();
         waitForProgressLoading();
-        gotoLightBox();
-        waitAndClickSearchByText();
-        waitForProgressLoading();
-        waitAndClickLinkContainingText("return value");
-        waitAndClickByXpath("//div[@data-parent='CollectionGroup_AdHocWorkgroup']/fieldset/div/button");
-        waitForTextPresent("Delete"); // wait for ajax to finish adding ad hoc group
-        submitSuccessfully();
-        //unlock record
         WebElement webElement = findElement(By.xpath("./html/body/form/div/header/div/table/tbody/tr[1]/td[1]/div"));
         String documentId = webElement.getText();
         if(documentId != "") {
             open(getBaseUrlString() + "/kew/DocHandler.do?docId=" + documentId + "&command=displayActionListView");
             waitAndClickByXpath("/html/body/form/div/div[2]/main/section[7]/header/h3/a/span/span[1]");
             waitAndTypeByXpath("/html/body/form/div/div[2]/main/section[7]/div/div[1]/textarea", "test");
-            waitAndClickByXpath("/html/body/form/div/div[2]/main/section[7]/div/div[2]/button[2]");
+            waitAndClickByXpath("/html/body/form/div/div[2]/main/section[7]/div/section/table/tbody/tr/td[1]/div/input[2]");
+            waitAndClickByXpath("/html/body/form/div/div[2]/main/section[7]/div/div[2]/button");
         }
     }
 
@@ -147,13 +140,11 @@ public class DemoTravelAccountMaintenanceNewAft extends WebDriverLegacyITBase {
         waitAndTypeByName(EXPLANATION_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(ORGANIZATION_DOCUMENT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
         waitAndTypeByName(TRAVEL_ACCOUNT_NAME_FIELD,"\"/><script>alert('!')</script>");
-        waitAndTypeByName(TRAVEL_ACCOUNT_NUMBER_FIELD,"\"/><script>alert('!')</script>");
         waitAndClickByXpath("//input[@name='document.newMaintainableObject.dataObject.accountTypeCode' and @value='CAT']");
         waitAndTypeByName("newCollectionLines['document.newMaintainableObject.dataObject.subAccounts'].subAccount","\"/><script>alert('!')</script>");
         waitAndTypeByXpath(SUB_ACCOUNT_NAME_FIELD_XPATH,"\"/><script>alert('!')</script>");
-        waitAndClickButtonByText("Add");
         waitAndTypeByName(FISCAL_OFFICER_ID_FIELD,"\"/><script>alert('!')</script>");
-        waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]");
+        waitAndClickByXpath("//a/span[contains(text(),'Ad Hoc Recipients')]/span[contains(@class,'icon-caret-right')]");
         waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", "\"/><script>alert('!')</script>");
         waitAndClickById("Uif-AdHocPersonCollection_add");
         waitAndClickSaveByText();

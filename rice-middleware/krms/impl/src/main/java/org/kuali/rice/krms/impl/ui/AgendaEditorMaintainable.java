@@ -371,7 +371,11 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         // with KRMS_AGENDA_T.INIT_AGENDA_ITM_ID and KRMS_AGENDA_ITM_T.AGENDA_ITM_ID both being non-nullable
         List<AgendaItemBo> agendaItems = agendaBo.getItems();
         List<AgendaItemBo> updatedItems = new ArrayList<AgendaItemBo>();
-        if (agendaBo.getId() == null || getDataObjectService().find(AgendaBo.class,agendaBo.getId()) == null) {
+        List<AgendaItemBo> deletedItems = new ArrayList<AgendaItemBo>();
+
+        AgendaBo existing = getDataObjectService().find(AgendaBo.class,agendaBo.getId());
+
+        if (agendaBo.getId() == null || existing == null) {
             agendaBo.setItems(updatedItems);
             agendaBo.setFirstItem(null);
             agendaBo = getDataObjectService().save(agendaBo);
@@ -382,6 +386,21 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             agendaBo.setFirstItem(firstItem);
         }
 
+        // Create a list of agendaItems that will be used to delete rules when the data object is saved
+        if (existing != null) {
+            for (AgendaItemBo existingAgendaItem : existing.getItems()) {
+                boolean deletedAgendaItem = true;
+                for (AgendaItemBo agendaItem : agendaBo.getItems()) {
+                    if (agendaItem.getId().equalsIgnoreCase(existingAgendaItem.getId())) {
+                        deletedAgendaItem = false;
+                        break;
+                    }
+                }
+                if (deletedAgendaItem) {
+                    deletedItems.add(existingAgendaItem);
+                }
+            }
+        }
 
         // handle saving new parameterized terms and processing custom operators
         for (AgendaItemBo agendaItem : agendaBo.getItems()) {
@@ -400,57 +419,20 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             agendaBo.setFirstItem(firstItem);
             getDataObjectService().save(agendaBo);
 
-            // delete orphaned propositions -- this may not be as comprehensive as it should
+            // delete orphaned propositions, rules, etc.
             for (String deletedPropId : ((AgendaEditor) getDataObject()).getDeletedPropositionIds()) {
                 PropositionBo toDelete = getDataObjectService().find(PropositionBo.class, deletedPropId);
 
-                deletePropositionFromTree(toDelete);
+                getDataObjectService().delete(toDelete);
+            }
+
+            for (AgendaItemBo deletedItem : deletedItems) {
+                if (deletedItem.getRule() != null) {
+                    getDataObjectService().delete(deletedItem.getRule());
+                }
             }
         } else {
             throw new RuntimeException("Cannot save null " + AgendaBo.class.getName() + " with business object service");
-        }
-    }
-
-    /**
-     * removes all parent-child relationships from this proposition, and deletes it.
-     *
-     * <p><B>NOTE:</B> This method assumes that the proposition exists in the database.</p>
-     *
-     * @param toDelete the proposition to delete
-     */
-    private void deletePropositionFromTree(PropositionBo toDelete) {
-        if (toDelete != null) {
-            // clear out children to nuke join table rows
-            if (!CollectionUtils.isEmpty(toDelete.getCompoundComponents())) {
-                toDelete.getCompoundComponents().clear();
-            }
-
-            // save it first to delete the join table rows
-            getDataObjectService().save(toDelete);
-            getDataObjectService().delete(toDelete);
-        }
-    }
-
-    private void addItemsToListForDeletion(List<AgendaItemBo> deletionOrder, AgendaItemBo agendaItemBo){
-        if (!deletionOrder.contains(agendaItemBo) && ObjectUtils.isNotNull(agendaItemBo)) {
-            deletionOrder.add(agendaItemBo);
-        }
-        if (ObjectUtils.isNotNull(agendaItemBo)) {
-            if (StringUtils.isNotBlank(agendaItemBo.getWhenTrueId()) &&
-                !deletionOrder.contains(agendaItemBo.getWhenTrue())) {
-                    deletionOrder.add(agendaItemBo.getWhenTrue());
-                    addItemsToListForDeletion (deletionOrder, agendaItemBo.getWhenTrue());
-            }
-            if (StringUtils.isNotBlank(agendaItemBo.getWhenFalseId()) &&
-                !deletionOrder.contains(agendaItemBo.getWhenFalse())) {
-                    deletionOrder.add(agendaItemBo.getWhenFalse());
-                    addItemsToListForDeletion (deletionOrder, agendaItemBo.getWhenFalse());
-            }
-            if (StringUtils.isNotBlank(agendaItemBo.getAlwaysId()) &&
-                !deletionOrder.contains(agendaItemBo.getAlways())) {
-                    deletionOrder.add(agendaItemBo.getAlways());
-                    addItemsToListForDeletion (deletionOrder,agendaItemBo.getAlways());
-            }
         }
     }
 

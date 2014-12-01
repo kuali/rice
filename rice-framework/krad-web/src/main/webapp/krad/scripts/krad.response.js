@@ -242,6 +242,7 @@ KradResponse.prototype = {
             runHiddenScripts(id);
 
             if (displayedModal) {
+                writeMessagesForChildGroups(id);
                 writeMessagesForGroup(id, getValidationData($componentInDom, true), true);
             }
 

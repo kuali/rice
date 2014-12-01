@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -114,11 +115,13 @@ public class PermissionActionListBkMrkAft extends PermissionActionListAftBase {
     }
 
     @Test
+    @Ignore("Permission recall not implemented on screen")
     public void testPermissionActionListRecallAndCancel_WithPendingPersonApprove_Bookmark() throws Exception {
         testPermissionActionListRecallAndCancel_WithPendingPersonApprove();
     }
 
     @Test
+    @Ignore("Permission recall not implemented on screen")
     public void testPermissionActionListRecallToActionList_WithPendingPersonApprove_Bookmark() throws Exception {
         testPermissionActionListRecallToActionList_WithPendingPersonApprove();
     }

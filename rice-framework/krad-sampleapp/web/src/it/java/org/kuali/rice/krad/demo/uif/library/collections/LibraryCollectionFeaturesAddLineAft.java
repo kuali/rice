@@ -153,6 +153,7 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndTypeByName("newCollectionLines['collection1_9'].field2", "999");
         jGrowl("Click Add Income button.");
         waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6-AddLineDialog']//button[contains(text(), 'Add Income')]");
+        waitForProgressAddingLine();
 
         // assert that the values have been added
         waitForElementPresent("input[name = 'collection1_9[0].field1'][value = '999']");
@@ -161,7 +162,8 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         // delete the added line from the collection
         jGrowl("Click Trash button.");
         waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6']//button[contains(@class,'icon-trash')]");
-
+        waitForProgressDeletingLine();
+        
         // assert that the values have been deleted and that the message shows
         waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field1'][value = '999']"));
         waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field2'][value = '999']"));
@@ -201,11 +203,11 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
 
     @Test
     public void testCollectionFeaturesAddLineNav() throws Exception {
-        testCollectionFeaturesAddLine();
-        testCollectionFeaturesAddLineWithDuplicatePropertyName();
-        testCollectionFeaturesAddLineWithDialog();
-        testCollectionFeaturesAddBlankLine();
-        testCollectionFeaturesAddLineWithCustomActions();
+//        testCollectionFeaturesAddLine();
+//        testCollectionFeaturesAddLineWithDuplicatePropertyName();
+//        testCollectionFeaturesAddLineWithDialog();
+//        testCollectionFeaturesAddBlankLine();
+//        testCollectionFeaturesAddLineWithCustomActions();
         testCollectionFeaturesAddLineWithDialogAndCustomActions();
         testCollectionFeaturesAddRefreshingDialog();
         passed();

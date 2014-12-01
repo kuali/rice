@@ -240,7 +240,6 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testColumnSequence() throws Exception {
         waitAndClickByLinkText("Column Sequence");
-        acceptAlert();
         waitForProgressLoading();
         waitAndTypeByName("newCollectionLines['list12'].field1", "1");
         waitAndTypeByName("newCollectionLines['list12'].field2", "1");
@@ -258,7 +257,6 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testSequencerow() throws Exception {
         waitAndClickByLinkText("Save Row");
-        acceptAlert();
         waitForProgressLoading();
         waitAndTypeByName("newCollectionLines['list15'].field1", "1");
         waitAndTypeByName("newCollectionLines['list15'].field2", "1");
@@ -272,7 +270,6 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
         //Check for the added if delete is present or not
         assertTrue(getClass().toString(), isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/button"));
-        //        assertTrue(isElementPresentByXpath("//div[@id='Collections-SaveRow-Table_disclosureContent']/div[@class='dataTables_wrapper']/table/tbody/tr[2]/td[6]/div/fieldset/div/div[@class='uif-boxLayout uif-horizontalBoxLayout clearfix']/button[@class='uif-action uif-secondaryActionButton uif-smallActionButton uif-saveLineAction']"));
     }
 
     private void clickAdd() throws InterruptedException {

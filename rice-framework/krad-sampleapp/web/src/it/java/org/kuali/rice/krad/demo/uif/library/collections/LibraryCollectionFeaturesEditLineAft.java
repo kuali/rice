@@ -39,6 +39,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
      */
     public static final String BOOKMARK_URL = "/kr-krad/kradsampleapp?viewId=Demo-CollectionEditLineView";
     public static final int FIVE_SECOND_WAIT_TIME = 5;
+    public static final int THREE_SECOND_WAIT_TIME = 3000;
     public static final String LIBRARY_MENU_CATEGORY_NAME = "Collection Features";
     public static final String DEMO_ITEM_NAME = "Edit Line";
 
@@ -46,6 +47,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         ROW_DETAILS, SUB_COLLECTION, CUSTOM_SUB_COLLECTION, NO_SUB_COLLECTION
     }
 
+    public static final String UIF_DIALOG_MODAL_SELECTOR = "#Uif-Dialogs .modal[aria-hidden='false']";
     public static final String ADD_BUTTON_CSS_SELECTOR =
             " .uif-collectionAddItem  .uif-collection-column-action button";
     public static final String ADD_FIELDS_CSS_SELECTOR = " .uif-collectionAddItem input:not([type='hidden'])";
@@ -53,19 +55,19 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
             " tr:not(.uif-collectionAddItem) .uif-collection-column-action button[data-onclick^='"
                     + UifConstants.JsFunctions.SHOW_EDIT_LINE_DIALOG + "']";
     public static final String ADD_FIELDS_IN_DIALOG_CSS_SELECTOR =
-            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-body .uif-inputField input:not([type='hidden'])";
+            UIF_DIALOG_MODAL_SELECTOR + " .modal-body .uif-inputField input:not([type='hidden'])";
     public static final String ADD_LINE_ACTIONS_IN_DIALOG_CSS_SELECTOR =
-            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-footer button[id$='_add']";
+            UIF_DIALOG_MODAL_SELECTOR + " .modal-footer button[id$='_add']";
     public static final String EDIT_DIALOG_BUTTONS_CSS_SELECTOR =
-            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-footer button";
+            UIF_DIALOG_MODAL_SELECTOR + " .modal-footer button";
     public static final String EDIT_DIALOG_CLOSE_BUTTON_CSS_SELECTOR =
-            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-header button.close";
+            UIF_DIALOG_MODAL_SELECTOR + " .modal-header button.close";
     public static final String EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR =
-            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-body input:not([type='hidden'])";
+            UIF_DIALOG_MODAL_SELECTOR + " .modal-body input:not([type='hidden'])";
     public static final String EDIT_DIALOG_LOOKUP_CSS_SELECTOR =
-            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-body .input-group-btn > button";
+            UIF_DIALOG_MODAL_SELECTOR + " .modal-body .input-group-btn > button";
     public static final String EDIT_DIALOG_CSS_SELECTOR =
-            "#Uif-Dialogs .modal[aria-hidden='false'] .modal-body";
+            UIF_DIALOG_MODAL_SELECTOR + " .modal-body";
     public static final String ROW_DETAILS_LINK_CSS_SELECTOR =
             " table tbody tr:not(.uif-collectionAddItem) a.uif-detailsAction";
     public static final String TABLE_ROWS_CSS_SELECTOR = " table tbody tr:not(.uif-collectionAddItem)";
@@ -575,7 +577,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         String tableRowsCssSelector = "#" + exampleId + TABLE_ROWS_CSS_SELECTOR;
 
         // get the values of the line fields in the given row
-        Thread.sleep(1000); // avoid cache change by going to quick
+        Thread.sleep(THREE_SECOND_WAIT_TIME); // avoid cache change by going to quick
         List<WebElement> spanElements = findVisibleElements(By.cssSelector(tableRowsCssSelector)).get(rowIndex - 1).
                 findElements(By.cssSelector(" div.uif-inputField > span"));
         String field1Value = spanElements.get(0).getText();
@@ -583,8 +585,8 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
         String fieldValue = spanElements.get(lineFieldToEditIndex - 1).getText();
 
         // open the edit line dialog
-        Thread.sleep(3000); // avoid cache change by going to quick
-        openEditLineDialog(exampleId, rowIndex);
+        Thread.sleep(THREE_SECOND_WAIT_TIME); // avoid cache change by going to quick
+        //        openEditLineDialog(exampleId, rowIndex);
 
         // get the original values of the input fields
         List<WebElement> inputElements = findElements(By.cssSelector(EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR));

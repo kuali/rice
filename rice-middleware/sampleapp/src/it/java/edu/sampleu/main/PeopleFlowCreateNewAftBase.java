@@ -76,15 +76,11 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         waitAndClickBlanketApprove();
         waitAndClickConfirmBlanketApproveOk();
         Thread.sleep(3000);
-        acceptAlert();
         Thread.sleep(3000);
         checkForIncidentReport();
         jGrowl("Blanket Approve");
         Thread.sleep(5000);
 
-        //Close the Doc
-        //findElement(By.id("uif-close")).click();
-        //Thread.sleep(3000);
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
         findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
         Thread.sleep(5000);
@@ -105,9 +101,6 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         checkForDocError();
         checkForIncidentReport();
 
-        //Close the Doc
-        //findElement(By.id("uif-close")).click();
-        //Thread.sleep(3000);
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
         findElement(By.cssSelector("img[alt=\"doc search\"]")).click();
         Thread.sleep(5000);
@@ -138,11 +131,6 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
         jGrowl("verify the forceAction values for our two stops");
         assertFalse(findElement(By.name("document.newMaintainableObject.dataObject.members[0].forceAction")).isSelected());
         assertTrue(findElement(By.name("document.newMaintainableObject.dataObject.members[1].forceAction")).isSelected());
-
-
-        // TODO: handle graceful cancel from here
-//        findElement(By.id("ucancel")).click();
-//        // Say "Yes" to the modal dialog that follows
     }
 
     private PeopleFlowDocInfo peopleFlowCreateNew() throws InterruptedException {

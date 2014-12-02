@@ -282,13 +282,11 @@ public class FreeMarkerInlineRenderUtils {
         List<String> refreshWhenChanged = component.getRefreshWhenChangedPropertyNames();
         if (refreshWhenChanged != null) {
             for (String cName : refreshWhenChanged) {
-                templateJsScripts += "var condition = function(){return true;}"
-                        + ";setupRefreshCheck('"
+                templateJsScripts += "setupOnChangeRefresh('"
                         + StringEscapeUtils.escapeJavaScript(cName)
                         + "', '"
                         + component.getId()
-                        + "',"
-                        + " condition,'"
+                        + "','"
                         + methodToCallOnRefresh
                         + "', "
                         + ScriptUtils.translateValue(component.getFieldsToSendOnRefresh())

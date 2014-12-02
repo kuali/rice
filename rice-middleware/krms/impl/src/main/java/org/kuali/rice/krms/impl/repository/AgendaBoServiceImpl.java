@@ -91,49 +91,128 @@ public class AgendaBoServiceImpl implements AgendaBoService {
         return to(agendaBo);
     }
 
-    /**
-     * This overridden method updates an existing Agenda in the repository
-     */
     @Override
-    public AgendaDefinition updateAgenda(AgendaDefinition agenda) {
-        if (agenda == null) {
+    public AgendaDefinition updateAgenda(AgendaDefinition agendaDefinition) {
+        if (agendaDefinition == null) {
             throw new RiceIllegalArgumentException("agenda is null");
         }
 
         // must already exist to be able to update
-        final String agendaIdKey = agenda.getId();
-        final AgendaBo existing = getDataObjectService().find(AgendaBo.class, agendaIdKey);
-        if (existing == null) {
-            throw new IllegalStateException("the agenda does not exist: " + agenda);
+        final String agendaDefinitionId = agendaDefinition.getId();
+
+        // All AgendaItemDefinitions for the specified Agenda ID will end up in the "items" property.
+        final AgendaBo agendaBoExisting = getDataObjectService().find(AgendaBo.class, agendaDefinitionId);
+        if (agendaBoExisting == null) {
+            throw new IllegalStateException("the agenda does not exist: " + agendaDefinition);
         }
-        final AgendaDefinition toUpdate;
-        if (existing.getId().equals(agenda.getId())) {
-            toUpdate = agenda;
+
+        final AgendaDefinition agendaDefinitionToUpdate;
+        if (agendaBoExisting.getId().equals(agendaDefinition.getId())) {
+            agendaDefinitionToUpdate = agendaDefinition;
         } else {
             // if passed in id does not match existing id, correct it
-            final AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(agenda);
-            builder.setId(existing.getId());
-            toUpdate = builder.build();
+            final AgendaDefinition.Builder builder = AgendaDefinition.Builder.create(agendaDefinition);
+            builder.setId(agendaBoExisting.getId());
+            agendaDefinitionToUpdate = builder.build();
         }
 
         // copy all updateable fields to bo
-        AgendaBo boToUpdate = from(toUpdate);
+        AgendaBo agendaBoToUpdate = from(agendaDefinitionToUpdate);
 
         // move over AgendaBo members that don't get populated from AgendaDefinition
-        boToUpdate.setItems(existing.getItems());
-        if (StringUtils.isNotBlank(agenda.getFirstItemId())) {
-            boToUpdate.setFirstItem(getDataObjectService().find(AgendaItemBo.class, agenda.getFirstItemId()));
+        agendaBoToUpdate.setItems(agendaBoExisting.getItems());
+        if (StringUtils.isNotBlank(agendaDefinition.getFirstItemId())) {
+            agendaBoToUpdate.setFirstItem(getDataObjectService().find(AgendaItemBo.class, agendaDefinition.getFirstItemId()));
         }
 
         // delete any old, existing attributes
         Map<String, String> fields = new HashMap<String, String>(1);
-        fields.put("agenda.id", toUpdate.getId());
+        fields.put("agenda.id", agendaDefinitionToUpdate.getId());
+        // deletes the record(s) in krms_agenda_attr_t specified by agenda_id col
         deleteMatching(getDataObjectService(), AgendaAttributeBo.class, fields);
 
-        // update new agenda and create new attributes
-        AgendaBo updatedData = getDataObjectService().save(boToUpdate, PersistenceOption.FLUSH);
+        // Will get used to determine which "previous" AgendaItems can get deleted
+        ArrayList<String> agendaItemsIds = new ArrayList<String>();
 
-        return to(updatedData);
+        // Will get used for a quick AgendaItem ID to AgendaItemBo lookup
+        HashMap<String, AgendaItemBo> mapIdToBo = new HashMap<String, AgendaItemBo>();
+
+        // Get all AgendaItems which have the specified Agenda ID.  Make a "referenced" list as well.
+        ArrayList<String> agendaItemIdsReferenced = new ArrayList<String>();
+        List<AgendaItemBo> items = agendaBoToUpdate.getItems();
+        for (AgendaItemBo agendaItemBo : items) {
+            agendaItemsIds.add(agendaItemBo.getId());
+            mapIdToBo.put(agendaItemBo.getId(), agendaItemBo);
+
+            if (agendaItemBo.getAlwaysId() != null) {
+                agendaItemIdsReferenced.add(agendaItemBo.getAlwaysId());
+            }
+
+            if (agendaItemBo.getWhenTrueId() != null) {
+                agendaItemIdsReferenced.add(agendaItemBo.getWhenTrueId());
+            }
+
+            if (agendaItemBo.getWhenFalseId() != null) {
+                agendaItemIdsReferenced.add(agendaItemBo.getWhenFalseId());
+            }
+        }
+
+        // update new agenda and create new attributes
+        AgendaBo agendaBoUpdated = getDataObjectService().save(agendaBoToUpdate, PersistenceOption.FLUSH);
+
+        // Walk the "always", "whenTrue", and "whenFalse" lists.
+        AgendaItemBo agendaItemBoTop = agendaBoUpdated.getFirstItem();
+        ArrayList<String> agendaItemIdsActuallyUsed = new ArrayList<String>();
+        AgendaItemBo agendaItemBoCurrent = agendaItemBoTop;
+        agendaItemIdsActuallyUsed.add(agendaItemBoCurrent.getId());
+
+        // always list
+        while (agendaItemBoCurrent != null) {
+            if (StringUtils.isNotEmpty(agendaItemBoCurrent.getAlwaysId())) {
+                agendaItemIdsActuallyUsed.add(agendaItemBoCurrent.getAlwaysId());
+            }
+
+            agendaItemBoCurrent = agendaItemBoCurrent.getAlways();
+        }
+
+        // whenTrue list
+        agendaItemBoCurrent = agendaItemBoTop;
+        while (agendaItemBoCurrent != null) {
+            if (StringUtils.isNotEmpty(agendaItemBoCurrent.getWhenTrueId())) {
+                agendaItemIdsActuallyUsed.add(agendaItemBoCurrent.getWhenTrueId());
+            }
+
+            agendaItemBoCurrent = agendaItemBoCurrent.getWhenTrue();
+        }
+
+        // whenFalse list
+        agendaItemBoCurrent = agendaItemBoTop;
+        while (agendaItemBoCurrent != null) {
+            if (StringUtils.isNotEmpty(agendaItemBoCurrent.getWhenFalseId())) {
+                agendaItemIdsActuallyUsed.add(agendaItemBoCurrent.getWhenFalseId());
+            }
+
+            agendaItemBoCurrent = agendaItemBoCurrent.getWhenFalse();
+        }
+
+        // Compare what is used by the updated Agenda to all AgendaItem IDs for this Agenda ID
+        for (String sIdActuallyUsed : agendaItemIdsActuallyUsed) {
+            if (agendaItemsIds.contains(sIdActuallyUsed)) {
+                agendaItemsIds.remove(sIdActuallyUsed);
+            }
+        }
+
+        // Anything remaining is an orphan. Only delete an AgendaItem which is not referenced,
+        // and that will cascade
+        for (String sAiboId : agendaItemsIds) {
+            boolean bReferenced = agendaItemIdsReferenced.contains(sAiboId);
+            if (bReferenced == false) {
+                AgendaItemBo aibo = mapIdToBo.get(sAiboId);
+                getDataObjectService().delete(aibo);
+            }
+        }
+
+        return to(agendaBoUpdated);
     }
 
     @Override

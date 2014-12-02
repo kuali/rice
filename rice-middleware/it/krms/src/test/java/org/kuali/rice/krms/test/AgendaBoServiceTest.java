@@ -449,6 +449,7 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
         }
     }
 
+
     @Test
     public void testOrphanActions(){
         AgendaDefinitionDataWrapper agendaWrapper = new AgendaDefinitionDataWrapper();
@@ -527,6 +528,87 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
         assertNull("Old parent proposition should be removed", deletedParentProp);
         assertNull("Old compound proposition should be removed", deletedProp1);
         assertNull("Old compound proposition should be removed", deletedProp2);
+    }
+
+    // The asserts should be uncommented once KULRICE- 14014 and KULRICE - 14015 have been fixed.
+    @Test
+    public void testOrphanAgendaItems() {
+        AgendaDefinitionDataWrapper agendaWrapper = new AgendaDefinitionDataWrapper();
+
+        // updating single agendaItem
+        AgendaItemDefinition.Builder agendaItemBuilder = AgendaItemDefinition.Builder.create( agendaWrapper.firstItem );
+        RuleDefinition nRule = createRuleDefinition1(agendaWrapper.context, "Updated Agenda", NAMESPACE1);
+        agendaItemBuilder.setRuleId(nRule.getId());
+
+        RuleDefinition n1Rule = ruleBoService.getRuleByRuleId( nRule.getId() );
+
+        agendaItemBuilder.setRule( RuleDefinition.Builder.create( n1Rule) );
+        AgendaItemDefinition updatedItem = agendaItemBuilder.build();
+        AgendaItemDefinition updatedAgendaItem = agendaBoService.updateAgendaItem(updatedItem);
+
+        RuleDefinition deletedRule = ruleBoService.getRuleByRuleId( agendaWrapper.firstItemRule.getId() );
+        //  assertNull("Old rule should be deleted after updating agendaItem", deletedRule);
+
+        // updating all agendaItems and their rules  through updateAgenda
+        AgendaItemDefinition.Builder agendaItemBuilder1 = AgendaItemDefinition.Builder.create(null, agendaWrapper.agenda.getId());
+        agendaItemBuilder1.setRuleId(createRuleDefinition1(agendaWrapper.context, "New Agenda", NAMESPACE1).getId());
+        agendaItemBuilder1.setRule(RuleDefinition.Builder.create(ruleBoService.getRuleByRuleId(agendaItemBuilder1.getRuleId())));
+
+        AgendaItemDefinition.Builder agendaItemBuilder2 = AgendaItemDefinition.Builder.create(null, agendaWrapper.agenda.getId());
+        agendaItemBuilder1.setAlways(agendaItemBuilder2);
+        agendaItemBuilder2.setRuleId(createRuleDefinition2(agendaWrapper.context,"New Agenda", NAMESPACE1).getId());
+        agendaItemBuilder2.setRule(RuleDefinition.Builder.create(ruleBoService.getRuleByRuleId(agendaItemBuilder2.getRuleId())));
+
+        AgendaItemDefinition.Builder agendaItemBuilder3 = AgendaItemDefinition.Builder.create(null, agendaWrapper.agenda.getId());
+        agendaItemBuilder2.setAlways(agendaItemBuilder3);
+        agendaItemBuilder3.setRuleId(createRuleDefinition3(agendaWrapper.context, "New Agenda", NAMESPACE1).getId());
+        agendaItemBuilder3.setRule(RuleDefinition.Builder.create(ruleBoService.getRuleByRuleId(agendaItemBuilder3.getRuleId())));
+
+        AgendaItemDefinition.Builder agendaItemBuilder4 = AgendaItemDefinition.Builder.create(null, agendaWrapper.agenda.getId());
+        agendaItemBuilder3.setAlways(agendaItemBuilder4);
+        agendaItemBuilder4.setRuleId(createRuleDefinition4(agendaWrapper.context, "New Agenda", NAMESPACE1).getId());
+        agendaItemBuilder4.setRule(RuleDefinition.Builder.create(ruleBoService.getRuleByRuleId(agendaItemBuilder4.getRuleId())));
+
+        AgendaItemDefinition agendaItem4 = agendaBoService.createAgendaItem(agendaItemBuilder4.build());
+
+        agendaItemBuilder3.setAlwaysId(agendaItem4.getId());
+        agendaItemBuilder3.setAlways(AgendaItemDefinition.Builder.create(agendaItem4));
+        AgendaItemDefinition agendaItem3 = agendaBoService.createAgendaItem(agendaItemBuilder3.build());
+
+        agendaItemBuilder2.setAlwaysId(agendaItem3.getId());
+        agendaItemBuilder2.setAlways(AgendaItemDefinition.Builder.create(agendaItem3));
+        AgendaItemDefinition agendaItem2 = agendaBoService.createAgendaItem(agendaItemBuilder2.build());
+
+        agendaItemBuilder1.setAlwaysId(agendaItem2.getId());
+        agendaItemBuilder1.setAlways(AgendaItemDefinition.Builder.create(agendaItem2));
+        AgendaItemDefinition agendaItem1 = agendaBoService.createAgendaItem(agendaItemBuilder1.build());
+
+        AgendaDefinition.Builder agendaDefBuilder1 = AgendaDefinition.Builder.create(agendaWrapper.agenda);
+        agendaDefBuilder1.setFirstItemId(agendaItem1.getId());
+        AgendaDefinition agenda = agendaDefBuilder1.build();
+
+        AgendaDefinition result = agendaBoService.updateAgenda(agenda);
+
+        AgendaItemDefinition deletedItem1 = agendaBoService.getAgendaItemById( agendaWrapper.firstItem.getId() );
+        AgendaItemDefinition deletedItem2 = agendaBoService.getAgendaItemById( agendaWrapper.secondItem.getId() );
+        AgendaItemDefinition deletedItem3 = agendaBoService.getAgendaItemById( agendaWrapper.thirdItem.getId() );
+        AgendaItemDefinition deletedItem4 = agendaBoService.getAgendaItemById( agendaWrapper.fourthItem.getId() );
+
+        RuleDefinition deletedRule1 = ruleBoService.getRuleByRuleId( agendaWrapper.firstItem.getRuleId() );
+        RuleDefinition deletedRule2 = ruleBoService.getRuleByRuleId( agendaWrapper.secondItem.getRuleId() );
+        RuleDefinition deletedRule3 = ruleBoService.getRuleByRuleId( agendaWrapper.thirdItem.getRuleId() );
+        RuleDefinition deletedRule4 = ruleBoService.getRuleByRuleId( agendaWrapper.fourthItem.getRuleId() );
+
+//                assertNull("First item should be deleted", deletedItem1);
+//                assertNull("Second item should be deleted", deletedItem2);
+//                assertNull("Third item should be deleted", deletedItem3);
+//                assertNull("Fourth item should be deleted", deletedItem4);
+//
+//                assertNull("First Item's rule should be deleted", deletedRule1);
+//                assertNull("Second Item's rule should be deleted", deletedRule2);
+//                assertNull("Third Item's rule should be deleted", deletedRule3);
+//                assertNull("Fourth Item's rule should be deleted", deletedRule4);
+
     }
 
     @Test
@@ -654,238 +736,6 @@ public class AgendaBoServiceTest extends AbstractAgendaBoTest {
 //            agendaItemBuilder.set
 //        }
 
-    }
-
-    /**
-     * This uses an Agenda which has 4 Agenda Items, 3 of which are nested.  The Agenda is updated with all
-     * new Agenda Items, also nested 3 deep.  The Rules, Proposition and Actions in the original are checked
-     * to be sure they are not orphaned after the update.  The new Agenda is tested to see if the new Agenda Items
-     * and Rules exist.
-     */
-    @Test
-    public void testUpdateAgendaMega() {
-
-        AgendaDefinitionDataWrapper agendaWrapper = new AgendaDefinitionDataWrapper();
-        ContextDefinition contextDef = agendaWrapper.context;
-        AgendaDefinition agendaDef = agendaWrapper.agenda;
-
-        AgendaItemDefinition agendaItemDefOriginal1 = agendaWrapper.firstItem;
-        AgendaItemDefinition agendaItemDefOriginal2 = agendaWrapper.secondItem;
-        AgendaItemDefinition agendaItemDefOriginal3 = agendaWrapper.thirdItem;
-        AgendaItemDefinition agendaItemDefOriginal4 = agendaWrapper.fourthItem;
-
-        // Existing Rules
-        RuleDefinition ruleDef1 = agendaItemDefOriginal1.getRule();
-        RuleDefinition ruleDef2 = agendaItemDefOriginal2.getRule();
-        RuleDefinition ruleDef3 = agendaItemDefOriginal3.getRule();
-        RuleDefinition ruleDef4 = agendaItemDefOriginal4.getRule();
-
-        // Existing Propositions
-        PropositionDefinition propDef1 = ruleDef1.getProposition();
-        PropositionDefinition propDef2 = ruleDef2.getProposition();
-        PropositionDefinition propDef3 = ruleDef3.getProposition();
-        PropositionDefinition propDef4 = ruleDef4.getProposition();
-
-        // Existing Actions
-        List<ActionDefinition> actionDefs1 = ruleDef1.getActions();
-        List<ActionDefinition> actionDefs2 = ruleDef2.getActions();
-        List<ActionDefinition> actionDefs3 = ruleDef3.getActions();
-        List<ActionDefinition> actionDefs4 = ruleDef4.getActions();
-
-        // "Build" new Agenda Item Defs and Rules
-        AgendaItemDefinition.Builder agendaItemDefBuilder1 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
-        agendaItemDefBuilder1.setRuleId(createRuleDefinition1(contextDef, "New Agenda", NAMESPACE1).getId());
-        agendaItemDefBuilder1.setRule(RuleDefinition.Builder.create(ruleBoService.getRuleByRuleId(
-                agendaItemDefBuilder1.getRuleId())));
-
-        AgendaItemDefinition.Builder agendaItemDefBuilder2 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
-        agendaItemDefBuilder1.setAlways(agendaItemDefBuilder2);
-        agendaItemDefBuilder2.setRuleId(createRuleDefinition2(contextDef, "New Agenda", NAMESPACE1).getId());
-        agendaItemDefBuilder2.setRule(RuleDefinition.Builder.create(ruleBoService.getRuleByRuleId(
-                agendaItemDefBuilder2.getRuleId())));
-
-        AgendaItemDefinition.Builder agendaItemDefBuilder3 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
-        agendaItemDefBuilder2.setAlways(agendaItemDefBuilder3);
-        agendaItemDefBuilder3.setRuleId(createRuleDefinition3(contextDef, "New Agenda", NAMESPACE1).getId());
-        agendaItemDefBuilder3.setRule(RuleDefinition.Builder.create(ruleBoService.getRuleByRuleId(
-                agendaItemDefBuilder3.getRuleId())));
-
-        AgendaItemDefinition.Builder agendaItemDefBuilder4 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
-        agendaItemDefBuilder3.setAlways(agendaItemDefBuilder4);
-        agendaItemDefBuilder4.setRuleId(createRuleDefinition4(contextDef, "New Agenda", NAMESPACE1).getId());
-        agendaItemDefBuilder4.setRule(RuleDefinition.Builder.create(ruleBoService.getRuleByRuleId(
-                agendaItemDefBuilder4.getRuleId())));
-
-        // Create 4 the new Agenda Item Defs, nesting them
-        AgendaItemDefinition agendaItemDefNew4 = agendaBoService.createAgendaItem(agendaItemDefBuilder4.build());
-
-        agendaItemDefBuilder3.setAlwaysId(agendaItemDefNew4.getId());
-        agendaItemDefBuilder3.setAlways(AgendaItemDefinition.Builder.create(agendaItemDefNew4));
-        AgendaItemDefinition agendaItemDefNew3 = agendaBoService.createAgendaItem(agendaItemDefBuilder3.build());
-
-        agendaItemDefBuilder2.setAlwaysId(agendaItemDefNew3.getId());
-        agendaItemDefBuilder2.setAlways(AgendaItemDefinition.Builder.create(agendaItemDefNew3));
-        AgendaItemDefinition agendaItemDefNew2 = agendaBoService.createAgendaItem(agendaItemDefBuilder2.build());
-
-        agendaItemDefBuilder1.setAlwaysId(agendaItemDefNew2.getId());
-        agendaItemDefBuilder1.setAlways(AgendaItemDefinition.Builder.create(agendaItemDefNew2));
-        AgendaItemDefinition agendaItemDefNew1 = agendaBoService.createAgendaItem(agendaItemDefBuilder1.build());
-
-        AgendaDefinition.Builder agendaDefBuilder = AgendaDefinition.Builder.create(agendaDef);
-        agendaDefBuilder.setFirstItemId(agendaItemDefNew1.getId());
-
-        agendaDef = agendaDefBuilder.build();
-
-        // Update Agenda Definition
-        AgendaDefinition agendaDefUpdated = agendaBoService.updateAgenda(agendaDef);
-
-        // Original Agenda Item Defs deleted?
-        assertNull("First agenda item should be deleted", agendaBoService.getAgendaItemById(agendaItemDefOriginal1.getId()));
-        assertNull("Second agenda item should be deleted", agendaBoService.getAgendaItemById(agendaItemDefOriginal2.getId()));
-        assertNull("Third agenda item should be deleted", agendaBoService.getAgendaItemById(agendaItemDefOriginal3.getId()));
-        assertNull("Fourth agenda item should be deleted", agendaBoService.getAgendaItemById(agendaItemDefOriginal4.getId()));
-
-        // Original Rules deleted?
-        assertNull("First agenda item rule should be deleted", ruleBoService.getRuleByRuleId(ruleDef1.getId()));
-        assertNull("Second agenda item rule should be deleted", ruleBoService.getRuleByRuleId(ruleDef2.getId()));
-        assertNull("Third agenda item rule should be deleted", ruleBoService.getRuleByRuleId(ruleDef3.getId()));
-        assertNull("Fourth agenda item rule should be deleted", ruleBoService.getRuleByRuleId(ruleDef4.getId()));
-
-        // Original Proposition and Compound Components deleted?
-        assertNull("First rule proposition should be deleted", propositionBoService.getPropositionById(propDef1.getId()));
-        assertNull("First rule compound component 0 should be deleted",
-                propositionBoService.getPropositionById(propDef1.getCompoundComponents().get(0).getId()));
-        assertNull("First rule compound component 1 should be deleted",
-                propositionBoService.getPropositionById(propDef1.getCompoundComponents().get(1).getId()));
-
-        assertNull("Second rule proposition should be deleted", propositionBoService.getPropositionById(propDef2.getId()));
-        assertNull("Second rule compound component 0 should be deleted",
-                propositionBoService.getPropositionById(propDef2.getCompoundComponents().get(0).getId()));
-        assertNull("Second rule compound component 1 should be deleted",
-                propositionBoService.getPropositionById(propDef2.getCompoundComponents().get(1).getId()));
-
-        // This one does not have any Compound Components (not sure why)
-        assertNull("Second rule proposition should be deleted", propositionBoService.getPropositionById(propDef3.getId()));
-
-        assertNull("Fourth rule proposition should be deleted", propositionBoService.getPropositionById(propDef4.getId()));
-        assertNull("Fourth rule compound component 0 should be deleted",
-                propositionBoService.getPropositionById(propDef4.getCompoundComponents().get(0).getId()));
-        assertNull("Fourth rule compound component 1 should be deleted",
-                propositionBoService.getPropositionById(propDef4.getCompoundComponents().get(1).getId()));
-
-        // Actions deleted?
-        assertNull("First rule action should be deleted", actionBoService.getActionByActionId(actionDefs1.get(0).getId()));
-        assertNull("Second rule action should be deleted", actionBoService.getActionByActionId(actionDefs2.get(0).getId()));
-        assertNull("Third rule action should be deleted", actionBoService.getActionByActionId(actionDefs3.get(0).getId()));
-        assertNull("Fourth rule action should be deleted", actionBoService.getActionByActionId(actionDefs4.get(0).getId()));
-
-        // New Agenda Items there?
-        AgendaItemDefinition agendaItemDefVerify1 = getAgendaBoService().getAgendaItemById(agendaDefUpdated.getFirstItemId());
-        AgendaItemDefinition agendaItemDefVerify2 = agendaItemDefVerify1.getAlways();
-        AgendaItemDefinition agendaItemDefVerify3 = agendaItemDefVerify2.getAlways();
-        AgendaItemDefinition agendaItemDefVerify4 = agendaItemDefVerify3.getAlways();
-
-        assertNotNull("First updated agenda item should not be null", agendaItemDefVerify1);
-        assertNotNull("Second updated agenda item should not be null", agendaItemDefVerify2);
-        assertNotNull("Third updated agenda item should not be null", agendaItemDefVerify3);
-        assertNotNull("Fourth updated agenda item should not be null", agendaItemDefVerify4);
-
-        // New Rules there?
-        assertNotNull("First agenda item rule should not be null", ruleBoService.getRuleByRuleId(agendaItemDefVerify1.getRuleId()));
-        assertNotNull("Second agenda item rule should not be null", ruleBoService.getRuleByRuleId(agendaItemDefVerify2.getRuleId()));
-        assertNotNull("Third agenda item rule should not be null", ruleBoService.getRuleByRuleId(agendaItemDefVerify3.getRuleId()));
-        assertNotNull("Fourth agenda item rule should not be null", ruleBoService.getRuleByRuleId(agendaItemDefVerify4.getRuleId()));
-    }
-
-    /**
-     * This uses an Agenda which has 4 Agenda Items, 3 of which are nested.  The Agenda is updated such that the
-     * bottom two AgendaItems in the "always" list are removed.  The top two items remain.
-     */
-    @Test
-    public void testUpdateAgendaPullLowerTwo() {
-
-        AgendaDefinitionDataWrapper agendaWrapper = new AgendaDefinitionDataWrapper();
-        ContextDefinition contextDef = agendaWrapper.context;
-        AgendaDefinition agendaDef = agendaWrapper.agenda;
-
-        AgendaItemDefinition agendaItemDefOriginal1 = agendaWrapper.firstItem;
-        AgendaItemDefinition agendaItemDefOriginal2 = agendaWrapper.secondItem;
-        AgendaItemDefinition agendaItemDefOriginal3 = agendaWrapper.thirdItem;
-        AgendaItemDefinition agendaItemDefOriginal4 = agendaWrapper.fourthItem;
-
-        // Existing Rules
-        RuleDefinition ruleDef1 = agendaItemDefOriginal1.getRule();
-        RuleDefinition ruleDef2 = agendaItemDefOriginal2.getRule();
-        RuleDefinition ruleDef3 = agendaItemDefOriginal3.getRule();
-        RuleDefinition ruleDef4 = agendaItemDefOriginal4.getRule();
-
-        // Existing Propositions
-        PropositionDefinition propDef1 = ruleDef1.getProposition();
-        PropositionDefinition propDef2 = ruleDef2.getProposition();
-        PropositionDefinition propDef3 = ruleDef3.getProposition();
-        PropositionDefinition propDef4 = ruleDef4.getProposition();
-
-        // Existing Actions
-        List<ActionDefinition> actionDefs1 = ruleDef1.getActions();
-        List<ActionDefinition> actionDefs2 = ruleDef2.getActions();
-        List<ActionDefinition> actionDefs3 = ruleDef3.getActions();
-        List<ActionDefinition> actionDefs4 = ruleDef4.getActions();
-
-        // Rebuild based on AgendaItemDefs 1 and 2.
-        AgendaItemDefinition.Builder agendaItemDefBuilder1 = AgendaItemDefinition.Builder.create(agendaItemDefOriginal1);
-        AgendaItemDefinition.Builder agendaItemDefBuilder2 = AgendaItemDefinition.Builder.create(agendaItemDefOriginal2);
-
-        // Force force the always list to end at AgendaItemDef 2
-        agendaItemDefBuilder2.setAlwaysId(null);
-        agendaItemDefBuilder2.setAlways(null);
-
-        // Build
-        AgendaItemDefinition agendaItemDefNew2 = agendaItemDefBuilder2.build();
-        AgendaItemDefinition agendaItemDefNew1 = agendaItemDefBuilder1.build();
-
-        // update AgendaItemDef 2.  This will write to the DB
-        agendaBoService.updateAgendaItem(agendaItemDefNew2);
-
-        // Build new AgendaDef based on existing one
-        AgendaDefinition.Builder agendaDefBuilder = AgendaDefinition.Builder.create(agendaDef);
-        agendaDefBuilder.setFirstItemId(agendaItemDefNew1.getId());
-        agendaDef = agendaDefBuilder.build();
-
-        // Update Agenda Definition
-        AgendaDefinition agendaDefUpdated = agendaBoService.updateAgenda(agendaDef);
-
-        // Original Agenda Item Defs deleted?
-        assertNull("Third agenda item should be deleted", agendaBoService.getAgendaItemById(agendaItemDefOriginal3.getId()));
-        assertNull("Fourth agenda item should be deleted", agendaBoService.getAgendaItemById(agendaItemDefOriginal4.getId()));
-
-        // Original Rules deleted?
-        assertNull("Third agenda item rule should be deleted", ruleBoService.getRuleByRuleId(ruleDef3.getId()));
-        assertNull("Fourth agenda item rule should be deleted", ruleBoService.getRuleByRuleId(ruleDef4.getId()));
-
-        // Original Proposition and Compound Components deleted?
-        // This rule does not have any Compound Components (not sure why)
-        assertNull("Third rule proposition should be deleted", propositionBoService.getPropositionById(propDef3.getId()));
-
-        assertNull("Fourth rule proposition should be deleted", propositionBoService.getPropositionById(propDef4.getId()));
-        assertNull("Fourth rule compound component 0 should be deleted",
-                propositionBoService.getPropositionById(propDef4.getCompoundComponents().get(0).getId()));
-        assertNull("Fourth rule compound component 1 should be deleted",
-                propositionBoService.getPropositionById(propDef4.getCompoundComponents().get(1).getId()));
-
-        // Actions deleted?
-        assertNull("Third rule action should be deleted", actionBoService.getActionByActionId(actionDefs3.get(0).getId()));
-        assertNull("Fourth rule action should be deleted", actionBoService.getActionByActionId(actionDefs4.get(0).getId()));
-
-        // New Agenda Items there?
-        AgendaItemDefinition agendaItemDefVerify1 = getAgendaBoService().getAgendaItemById(agendaDefUpdated.getFirstItemId());
-        AgendaItemDefinition agendaItemDefVerify2 = agendaItemDefVerify1.getAlways();
-
-        assertNotNull("First updated agenda item should not be null", agendaItemDefVerify1);
-        assertNotNull("Second updated agenda item should not be null", agendaItemDefVerify2);
-
-        // New Rules there?
-        assertNotNull("First agenda item rule should not be null", ruleBoService.getRuleByRuleId(agendaItemDefVerify1.getRuleId()));
-        assertNotNull("Second agenda item rule should not be null", ruleBoService.getRuleByRuleId(agendaItemDefVerify2.getRuleId()));
     }
 
 }

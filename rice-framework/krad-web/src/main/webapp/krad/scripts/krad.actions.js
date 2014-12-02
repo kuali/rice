@@ -531,29 +531,18 @@ function cascadeOpen(componentObject) {
 /** Progressive Disclosure */
 
 /**
- * Sets up the conditional refresh mechanism in js by adding a change handler to the control
- * which may satisfy the conditional refresh condition passed in.  When the condition is satisfied,
- * refresh the necessary content specified by id by making a server call to retrieve a new instance
- * of that component
+ * Same as setupRefreshCheck except the condition will always be true (always refresh when
+ * value changed on control)
  *
  * @param controlName - value for the name attribute for the control the event should be generated for
- * @param refreshId - id for the component that should be refreshed when condition occurs
- * @param condition - function which returns true to refresh, false otherwise
+ * @param refreshId - id for the component that should be refreshed when change occurs
  * @param methodToCall - name of the method that should be invoked for the refresh call (if custom method is needed)
  * @param fieldsToSend (optional) - limit the fields to send to property names defined in an array
  */
-function setupRefreshCheck(controlName, refreshId, condition, methodToCall, fieldsToSend) {
-    var namespace = ".ref" + refreshId + controlName.replace("[", "-");
-    jQuery(document).off("change" + namespace, "[name='" + escapeName(controlName) + "']");
-    jQuery(document).on("change" + namespace, "[name='" + escapeName(controlName) + "']", function () {
-        // visible check because a component must logically be visible to refresh
-        var refreshComp = jQuery("#" + refreshId);
-        if (refreshComp.length) {
-            if (condition()) {
-                retrieveComponent(refreshId, methodToCall, null, null, false, fieldsToSend);
-            }
-        }
-    });
+function setupOnChangeRefresh(controlName, refreshId, methodToCall, fieldsToSend) {
+    setupRefreshCheck(controlName, refreshId, function () {
+        return true;
+    }, methodToCall, fieldsToSend);
 }
 
 /**
@@ -569,7 +558,9 @@ function setupRefreshCheck(controlName, refreshId, condition, methodToCall, fiel
  * @param fieldsToSend (optional) - limit the fields to send to property names defined in an array
  */
 function setupRefreshCheck(controlName, refreshId, condition, methodToCall, fieldsToSend) {
-    jQuery("[name='" + escapeName(controlName) + "']").live('change', function () {
+    var namespace = ".ref" + refreshId + controlName.replace("[", "-");
+    jQuery(document).off("change" + namespace, "[name='" + escapeName(controlName) + "']");
+    jQuery(document).on("change" + namespace, "[name='" + escapeName(controlName) + "']", function () {
         // visible check because a component must logically be visible to refresh
         var refreshComp = jQuery("#" + refreshId);
         if (refreshComp.length) {

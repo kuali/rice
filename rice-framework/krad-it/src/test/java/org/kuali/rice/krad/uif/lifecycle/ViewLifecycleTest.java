@@ -158,6 +158,11 @@ public class ViewLifecycleTest extends KRADTestCase {
     }
 
     private UifFormBase testFormView(UifFormBase form, String viewName) throws Throwable {
+        ViewService viewService = KRADServiceLocatorWeb.getViewService();
+        View view = viewService.getViewById(viewName);
+        form.setView(view);
+        assertEquals(UifConstants.ViewStatus.CREATED, view.getViewStatus());
+
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setParameter(UifParameters.VIEW_ID, viewName);
         new UifServletRequestDataBinder(form).bind(request);
@@ -167,7 +172,7 @@ public class ViewLifecycleTest extends KRADTestCase {
 
         KRADServiceLocatorWeb.getModelAndViewService().prepareView(request, modelAndView);
 
-        View view = form.getView();
+        view = form.getView();
         assertEquals(UifConstants.ViewStatus.FINAL, view.getViewStatus());
 
         return form;

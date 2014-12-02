@@ -132,7 +132,7 @@
       <bean parent="Uif-FooterBase">
         <property name="items">
           <list>
-            <bean parent="Uif-NavigationActionButton" p:methodToCall="editRule" p:actionLabel="Update Rule" />
+            <bean parent="Uif-NavigationActionButton" p:methodToCall="editRule" p:actionLabel="Update Rule" p:performDirtyValidation="false"/>
             <bean parent="Uif-NavigationActionButton" p:navigateToPageId="AgendaEditorView-Agenda-Page" p:actionLabel="Cancel"/>
           </list>
         </property>

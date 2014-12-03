@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchFrameException;
 import org.openqa.selenium.Proxy;
@@ -705,6 +704,45 @@ public class WebDriverUtils {
         }
         WebDriverUtils.jGrowl(driver, "Is Text Present?", false, "Is text '" + text + "' present?" + " " + textPresent);
         return textPresent;
+    }
+
+    /**
+     * assumes javascript window.ALL_ERRORS contains errors
+     */
+    public static List javascriptErrors(WebDriver driver) {
+        List errors = new LinkedList();
+
+        // guard against a NPE below is due to a null WebDriver being passed in
+        if (driver == null) {
+            System.out.println("WebDriver to use to retrieve javascript errors was null!");
+            return errors;
+        }
+
+        try {
+            String javascript = "return window.ALL_ERRORS;";
+            List javascriptErrors = (List)((JavascriptExecutor) driver).executeScript(javascript);
+            if (javascriptErrors != null) {
+                errors.addAll(javascriptErrors);
+            }
+        } catch (Throwable t) {
+            // don't fail on problems retrieving javascript errors
+            System.out.println("Problem retrieving javascript errors: " + t.toString());
+            t.printStackTrace(System.out);
+        }
+
+        return errors;
+    }
+
+    public static String javascriptErrorsToString(List errors) {
+        StringBuilder sb = new StringBuilder();
+
+        if (errors != null && errors.size() > 0) {
+            for (Object error: errors) {
+                sb.append((String)error).append("\n");
+            }
+        }
+
+        return sb.toString();
     }
 
     /**

@@ -1056,6 +1056,12 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
         return true;
     }
 
+    protected void javascriptErrorsReport() {List javascriptErrors = WebDriverUtils.javascriptErrors(getDriver());
+        if (javascriptErrors != null && javascriptErrors.size() > 0) {
+            jGrowl("JAVASCRIPT ERRORS DETECTED - " + WebDriverUtils.javascriptErrorsToString(javascriptErrors));
+        }
+    }
+
     protected void jGrowl(String message) {
         WebDriverUtils.jGrowl(driver, jGrowlHeader, false, message);
         if (webDriverScreenshotHelper.screenshotSteps()) {
@@ -1289,6 +1295,8 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
 //            }
 
             navigateInternal(); // SeleniumBaseTest.fail from navigateInternal results in the test not being recorded as a failure in CI.
+
+            javascriptErrorsReport();
 
         } catch (Throwable t) {
             System.out.println("Throwable " + t.getMessage() + " in Before annotated method is very bad, ignoring and letting first method of test class to fail.");

@@ -35,6 +35,7 @@ import org.kuali.rice.krad.uif.field.FieldGroup;
 import org.kuali.rice.krad.uif.field.InputField;
 import org.kuali.rice.krad.uif.lifecycle.LifecycleEventListener;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
+import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleRestriction;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
@@ -55,6 +56,7 @@ import java.util.Map;
 @BeanTags({@BeanTag(name = "quickFinder", parent = "Uif-QuickFinder"),
         @BeanTag(name = "quickFinderByScript", parent = "Uif-QuickFinderByScript"),
         @BeanTag(name = "collectionQuickFinder", parent = "Uif-CollectionQuickFinder")})
+
 public class QuickFinder extends WidgetBase implements LifecycleEventListener {
 
     private static final long serialVersionUID = 3302390972815386785L;
@@ -506,6 +508,8 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
             actionParameters.putAll(additionalLookupParameters);
             quickfinderAction.setActionParameters(actionParameters);
         }
+
+       quickfinderAction.performFinalize(model, parent);
     }
 
     private Class<?> getDataObjectClass(String className) {
@@ -912,6 +916,7 @@ public class QuickFinder extends WidgetBase implements LifecycleEventListener {
      *
      * @return Action instance rendered for quickfinder
      */
+    @ViewLifecycleRestriction(exclude=UifConstants.ViewPhases.FINALIZE)
     @BeanTagAttribute(type = BeanTagAttribute.AttributeType.BYTYPE)
     public Action getQuickfinderAction() {
         return this.quickfinderAction;

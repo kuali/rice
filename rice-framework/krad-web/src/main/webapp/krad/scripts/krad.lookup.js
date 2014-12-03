@@ -112,7 +112,13 @@ function showLookupDialog(quickfinderActionId, lookupReturnByScript, lookupDialo
                     var param = params[i];
                     var lookupField = param.substring(param.indexOf(":") + 1);
                     var lookupFieldName = param.substring(0, param.indexOf(":"));
-                    var lookupValue = jQuery("[name='" + escapeName(lookupFieldName) + "']").val();
+
+                    var lookupValue = "";
+                    if (jQuery("[name='" + escapeName(lookupFieldName) + "'][type='radio']").length > 0) {
+                        lookupValue = jQuery("[name='" + escapeName(lookupFieldName) + "']:radio:checked").val();
+                    } else {
+                        lookupValue = jQuery("[name='" + escapeName(lookupFieldName) + "']").val();
+                    }
 
                     if (lookupField !== "" && typeof lookupField !== "undefined" && lookupValue !== "" && typeof lookupValue !== "undefined") {
                         data['actionParameters[lookupCriteria[&quot;' + lookupField + '&quot;]]'] = lookupValue;

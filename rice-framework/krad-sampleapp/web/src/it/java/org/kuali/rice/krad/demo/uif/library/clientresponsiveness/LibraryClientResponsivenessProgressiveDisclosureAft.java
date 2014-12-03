@@ -136,7 +136,8 @@ public class LibraryClientResponsivenessProgressiveDisclosureAft extends WebDriv
     
     protected void testClientResponsivenessProgressiveDisclosureCollectionWithGroupRefresh() throws Exception {
     	waitAndClickByLinkText("Collection Group With Refresh");
-        jiraAwareTypeByName("newCollectionLines['collection1'].field2", "ref");
+        acceptAlertIfPresent();
+        waitAndTypeByName("newCollectionLines['collection1'].field2", "ref");
         fireEvent("focus", "collection1[0].field1");
         waitForProgressLoading();
     	//Test cannot be written ahead as there is a freemarker error in page

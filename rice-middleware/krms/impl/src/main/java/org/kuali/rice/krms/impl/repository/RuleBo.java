@@ -244,11 +244,18 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         // sprout parameter passed in.
         // If the prop is a compound proposition, calls itself for each of the compoundComponents
         if (prop != null) {
+            // Blank labels make propositions very difficult to select in the UI, as the label is what
+            // you click on for selecting the proposition.
+            String nodeLabel = prop.getDescription();
+            if (StringUtils.isBlank(nodeLabel)) {
+                nodeLabel = ": :  blank proposition name  : :";
+            }
+
             if (PropositionType.SIMPLE.getCode().equalsIgnoreCase(prop.getPropositionTypeCode())) {
                 // Simple Proposition
                 // add a node for the description display with a child proposition node
                 Node<RuleTreeNode, String> child = new Node<RuleTreeNode, String>();
-                child.setNodeLabel(prop.getDescription());
+                child.setNodeLabel(nodeLabel);
 
                 if (prop.getEditMode()) {
                     child.setNodeLabel("");
@@ -267,7 +274,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
                 // Compound Proposition
                 propositionSummaryBuffer.append(" ( ");
                 Node<RuleTreeNode, String> aNode = new Node<RuleTreeNode, String>();
-                aNode.setNodeLabel(prop.getDescription());
+                aNode.setNodeLabel(nodeLabel);
 
                 // editMode has description as an editable field
                 if (prop.getEditMode()) {

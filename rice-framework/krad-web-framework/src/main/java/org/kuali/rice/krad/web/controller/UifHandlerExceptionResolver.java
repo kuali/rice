@@ -126,6 +126,9 @@ public class UifHandlerExceptionResolver implements org.springframework.web.serv
         // Set the ajax return type
         incidentReportForm.setAjaxReturnType(UifConstants.AjaxReturnTypes.UPDATEVIEW.getKey());
 
+        incidentReportForm.setRequest(request);
+        incidentReportForm.postBind(request);
+
         ModelAndView modelAndView = getModelAndViewService().getModelAndView(incidentReportForm, "");
         try {
             getModelAndViewService().prepareView(request, modelAndView);

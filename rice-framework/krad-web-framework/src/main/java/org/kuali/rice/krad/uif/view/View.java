@@ -475,13 +475,13 @@ public class View extends ContainerBase {
             int sessionTimeoutInterval = ((UifFormBase) model).getSessionTimeoutInterval();
             int sessionWarningSeconds = sessionPolicy.getTimeoutWarningSeconds();
 
-            if (sessionWarningSeconds >= sessionTimeoutInterval) {
-                throw new RuntimeException(
-                        "Time until giving the session warning should be less than the session timeout. Session Warning is "
-                                + sessionWarningSeconds
-                                + "s, session timeout is "
-                                + sessionTimeoutInterval
-                                + "s.");
+            if (sessionTimeoutInterval <= 0) {
+                // force to one hour when no setting detected
+                sessionTimeoutInterval = 3600;
+            }
+
+            if (sessionWarningSeconds >= sessionTimeoutInterval  || sessionWarningSeconds <= 0) {
+                sessionWarningSeconds = sessionTimeoutInterval/10;
             }
 
             int sessionWarningInterval = sessionTimeoutInterval - sessionWarningSeconds;

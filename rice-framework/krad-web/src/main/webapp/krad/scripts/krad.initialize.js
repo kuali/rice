@@ -207,7 +207,7 @@ function initEnterKeyHandler() {
         var enterKeyId = jQuery(event.currentTarget).data(kradVariables.ENTER_KEY_SUFFIX);
 
         // make sure the targeted action is a permitted element
-        if (jQuery(event.target).is(":not(a, button, submit, img[data-role='" + kradVariables.DATA_ROLES.ACTION + "'], input[data-role='" + kradVariables.DATA_ROLES.ACTION + "'] )")) {
+        if (jQuery(event.target).is(":not(a, textarea, button, submit, img[data-role='" + kradVariables.DATA_ROLES.ACTION + "'], input[data-role='" + kradVariables.DATA_ROLES.ACTION + "'] )")) {
             // check to see if primary enter key action button is targeted
             if (enterKeyId === kradVariables.ENTER_KEY_DEFAULT) {
                 // find all primary action buttons on page with attribute data-default_enter_key_action='true'

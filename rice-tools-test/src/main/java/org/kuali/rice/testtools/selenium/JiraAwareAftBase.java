@@ -616,12 +616,15 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
     protected void jiraAwareFail(String contents, String message, Throwable throwable, JiraAwareFailable failable) {
         passed = false;
 
-        if (contents == null) {
-            contents = getDriver().getPageSource();
-        }
-
         if (message == null) {
             message = "";
+        }
+
+        String javascriptErrors = WebDriverUtils.javascriptErrorsToString(WebDriverUtils.javascriptErrors(getDriver()));
+        message = javascriptErrors + message;
+
+        if (contents == null) {
+            contents = getDriver().getPageSource();
         }
 
         if (!contents.startsWith("\nIncident report") && !message.startsWith("\nIncident report")) {

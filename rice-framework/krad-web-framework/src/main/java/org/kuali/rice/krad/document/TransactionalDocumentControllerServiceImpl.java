@@ -61,6 +61,9 @@ public class TransactionalDocumentControllerServiceImpl extends DocumentControll
             throw new RuntimeException("Unable to copy transactional document", e);
         }
 
+        form.setEvaluateFlagsAndModes(true);
+        form.setCanEditView(null);
+
         return getModelAndViewService().getModelAndView(form);
     }
 

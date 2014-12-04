@@ -86,11 +86,16 @@ public class ApplyAuthAndPresentationLogicTask extends ViewLifecycleTaskBase<Com
         // check top level view edit authorization
         if (component instanceof View) {
             if (!Boolean.TRUE.equals(view.getReadOnly())) {
-                boolean canEditView = authorizer.canEditView(view, model, user);
-                if (canEditView) {
-                    canEditView = presentationController.canEditView(view, model);
+                if (model.isCanEditView() == null) {
+                    boolean canEditView = authorizer.canEditView(view, model, user);
+                    if (canEditView) {
+                        canEditView = presentationController.canEditView(view, model);
+                    }
+                    view.setReadOnly(Boolean.valueOf(!canEditView));
+                    model.setCanEditView(Boolean.valueOf(canEditView));
+                } else {
+                    view.setReadOnly(!model.isCanEditView());
                 }
-                view.setReadOnly(!canEditView);
             }
         }
 

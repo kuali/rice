@@ -159,6 +159,9 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
 
         binder.bind(request);
 
+        // prevent an index out of bounds exception
+        assertFalse("TestAutoLinking_ListTarget: The conference session list should not be null or empty.", form.getConferenceSessionList().isEmpty());
+
         assertAltSessionCoordinator(sc, form.getConferenceSessionList().get(0));
         assertAltSessionCoordinator(sc, form.getConferenceSessionList().get(1));
     }
@@ -188,6 +191,9 @@ public class UifServletRequestDataBinderIntegrationTest extends KRADTestCase {
                 viewPostMetadata);
 
         binder.bind(request);
+
+        // prevent an NPE
+        assertFalse("TestAutoLinking-MapTarget: The conference session list should not be null or empty.", form.getConferenceSessionMap().isEmpty());
 
         assertAltSessionCoordinator(sc, form.getConferenceSessionMap().get("foo1"));
         assertAltSessionCoordinator(sc, form.getConferenceSessionMap().get("foo2"));

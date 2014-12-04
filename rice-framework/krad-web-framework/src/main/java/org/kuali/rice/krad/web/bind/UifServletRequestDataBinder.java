@@ -159,83 +159,71 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
      */
     @Override
     public void bind(ServletRequest request) {
-        UserTransaction userTransaction = Jta.getUserTransaction();
-        try {
 
-            // begin bind transaction
-            userTransaction.begin();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Request Parameters from getParameterMap:");
 
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Request Parameters from getParameterMap:");
-
-                for (String key : request.getParameterMap().keySet()) {
-                    LOG.debug("\t" + key + "=>" + request.getParameterMap().get(key));
-                }
-
-                LOG.debug("Request Parameters from getParameter:");
-
-                for (String name : Collections.list(request.getParameterNames())) {
-                    LOG.debug("\t" + name + "=>" + request.getParameter(name));
-                }
+            for (String key : request.getParameterMap().keySet()) {
+                LOG.debug("\t" + key + "=>" + request.getParameterMap().get(key));
             }
 
-            UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();
+            LOG.debug("Request Parameters from getParameter:");
 
-            request.setAttribute(UifConstants.REQUEST_FORM, form);
+            for (String name : Collections.list(request.getParameterNames())) {
+                LOG.debug("\t" + name + "=>" + request.getParameter(name));
+            }
+        }
 
-            form.preBind((HttpServletRequest) request);
+        UifFormBase form = (UifFormBase) UifServletRequestDataBinder.this.getTarget();
 
-            _bind(request);
+        request.setAttribute(UifConstants.REQUEST_FORM, form);
 
-            request.setAttribute(UifConstants.PROPERTY_EDITOR_REGISTRY, this.bindingResult.getPropertyEditorRegistry());
+        form.preBind((HttpServletRequest) request);
 
-            executeAutomaticLinking(request, form);
+        _bind(request);
 
-            if (!form.isUpdateNoneRequest()) {
-                // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
-                String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
-                if (StringUtils.isBlank(viewId)) {
-                    viewId = request.getParameter(UifParameters.VIEW_ID);
-                }
+        request.setAttribute(UifConstants.PROPERTY_EDITOR_REGISTRY, this.bindingResult.getPropertyEditorRegistry());
 
-                View view = null;
-                if (StringUtils.isNotBlank(viewId)) {
-                    view = getViewService().getViewById(viewId);
-                }
+        executeAutomaticLinking(request, form);
 
-                // attempt to get view instance by type parameters
-                if (view == null) {
-                    view = getViewByType(request, form);
-                }
+        if (!form.isUpdateNoneRequest()) {
+            // attempt to retrieve a view by unique identifier first, either as request attribute or parameter
+            String viewId = (String) request.getAttribute(UifParameters.VIEW_ID);
+            if (StringUtils.isBlank(viewId)) {
+                viewId = request.getParameter(UifParameters.VIEW_ID);
+            }
 
-                // if view not found attempt to find one based on the cached form
-                if (view == null) {
-                    view = getViewFromPreviousModel(form);
+            View view = null;
+            if (StringUtils.isNotBlank(viewId)) {
+                view = getViewService().getViewById(viewId);
+            }
 
-                    if (view != null) {
-                        LOG.warn("Obtained viewId from cached form, this may not be safe!");
-                    }
-                }
+            // attempt to get view instance by type parameters
+            if (view == null) {
+                view = getViewByType(request, form);
+            }
+
+            // if view not found attempt to find one based on the cached form
+            if (view == null) {
+                view = getViewFromPreviousModel(form);
 
                 if (view != null) {
-                    form.setViewId(view.getId());
-
-                } else {
-                    form.setViewId(null);
+                    LOG.warn("Obtained viewId from cached form, this may not be safe!");
                 }
-
-                form.setView(view);
             }
 
-            // invoke form callback for custom binding
-            form.postBind((HttpServletRequest) request);
+            if (view != null) {
+                form.setViewId(view.getId());
 
-            // comit bind transaction
-            userTransaction.commit();
+            } else {
+                form.setViewId(null);
+            }
+
+            form.setView(view);
         }
-        catch (Exception ex) {
-            LOG.error("Jta bind transaction failed.", ex);
-        }
+
+        // invoke form callback for custom binding
+        form.postBind((HttpServletRequest) request);
     }
 
     /**

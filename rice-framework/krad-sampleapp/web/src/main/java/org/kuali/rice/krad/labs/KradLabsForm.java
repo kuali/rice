@@ -23,7 +23,9 @@ import org.kuali.rice.krad.demo.uif.form.UITestObject;
 import org.kuali.rice.krad.file.FileMetaBlob;
 import org.kuali.rice.krad.file.FileMeta;
 import org.kuali.rice.krad.labs.fileUploads.FileWithDetails;
+import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -178,6 +180,12 @@ public class KradLabsForm extends UifFormBase {
 
     private List<FileMeta> files = new ArrayList<FileMeta>();
     private List<FileWithDetails> files2 = new ArrayList<FileWithDetails>();
+
+    @SessionTransient
+    private MultipartFile uploadOne;
+
+    @SessionTransient
+    private MultipartFile uploadTwo;
 
     private String backdoorId;
 
@@ -1329,6 +1337,22 @@ public class KradLabsForm extends UifFormBase {
 
     public void setFiles2(List<FileWithDetails> files2) {
         this.files2 = files2;
+    }
+
+    public MultipartFile getUploadOne() {
+        return uploadOne;
+    }
+
+    public void setUploadOne(MultipartFile uploadOne) {
+        this.uploadOne = uploadOne;
+    }
+
+    public MultipartFile getUploadTwo() {
+        return uploadTwo;
+    }
+
+    public void setUploadTwo(MultipartFile uploadTwo) {
+        this.uploadTwo = uploadTwo;
     }
 
     public String getBackdoorId() {

@@ -91,8 +91,8 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//div[@id = 'Uif-Dialogs']//button[contains(text(), 'Add')]");
 
         // assert that the values have been added
-        waitForElementPresent("input[name = 'collection1_3[0].field1'][value = '42']");
-        waitForElementPresent("input[name = 'collection1_3[0].field2'][value = '55']");
+        waitForElementVisibleBy(By.xpath("input[name = 'collection1_3[0].field1'][value = '42']"));
+        waitForElementVisibleBy(By.xpath("input[name = 'collection1_3[0].field2'][value = '55']"));
     }
 
     protected void testCollectionFeaturesAddBlankLine() throws Exception {
@@ -117,8 +117,8 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//section[@data-parent='Demo-CollectionAddLine-Example5']//button[contains(text(),'Add')]");
 
         // assert that the values have been added
-        waitForElementPresent("input[name = 'collection1_8[0].field1'][value = '999']");
-        waitForElementPresent("input[name = 'collection1_8[0].field2'][value = '999']");
+        waitForElementVisibleBy(By.xpath("input[name = 'collection1_8[0].field1'][value = '999']"));
+        waitForElementVisibleBy(By.xpath("input[name = 'collection1_8[0].field2'][value = '999']"));
 
         // delete the added line from the collection
         jGrowl("Click Trash button.");
@@ -147,26 +147,27 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6']//button/text()[contains(., 'Add Income')]/..");
         waitForElementPresentByName("newCollectionLines['collection1_9'].field1");
         clearTextByName("newCollectionLines['collection1_9'].field1");
-        waitAndTypeByName("newCollectionLines['collection1_9'].field1", "999");
+        waitAndTypeByName("newCollectionLines['collection1_9'].field1", "9996");
         waitForElementPresentByName("newCollectionLines['collection1_9'].field2");
         clearTextByName("newCollectionLines['collection1_9'].field2");
-        waitAndTypeByName("newCollectionLines['collection1_9'].field2", "999");
+        waitAndTypeByName("newCollectionLines['collection1_9'].field2", "9996");
         jGrowl("Click Add Income button.");
         waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6-AddLineDialog']//button[contains(text(), 'Add Income')]");
         waitForProgressAddingLine();
 
         // assert that the values have been added
-        waitForElementPresent("input[name = 'collection1_9[0].field1'][value = '999']");
-        waitForElementPresent("input[name = 'collection1_9[0].field2'][value = '999']");
+        waitForElementVisibleBy(By.xpath("input[name = 'collection1_9[0].field1'][value = '9996']"));
+        waitForElementVisibleBy(By.xpath("input[name = 'collection1_9[0].field2'][value = '9996']"));
 
         // delete the added line from the collection
         jGrowl("Click Trash button.");
-        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6']//button[contains(@class,'icon-trash')]");
+        // now example 5?!
+        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example5']//button[contains(@class,'icon-trash')]");
         waitForProgressDeletingLine();
-        
+
         // assert that the values have been deleted and that the message shows
-        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field1'][value = '999']"));
-        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field2'][value = '999']"));
+        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field1'][value = '9996']"));
+        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_9[0].field2'][value = '9996']"));
         waitForTextPresent("You have deleted an item from Project Income.");
     }
 
@@ -186,31 +187,91 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitForProgressLoading();
 
         // assert that the button now exists
-        waitForElementPresent(By.xpath("//section[@id = 'Demo-CollectionAddLine-Example7-AddLineDialog']//button[contains(text(), 'Add Income')]"));
+        waitForElementVisibleBy(By.xpath(
+                "//section[@id = 'Demo-CollectionAddLine-Example7-AddLineDialog']//button[contains(text(), 'Add Income')]"));
     }
 
     @Test
     public void testCollectionFeaturesAddLineBookmark() throws Exception {
         testCollectionFeaturesAddLine();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddLineWithDuplicatePropertyNameBookmark() throws Exception {
         testCollectionFeaturesAddLineWithDuplicatePropertyName();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddLineWithDialogBookmark() throws Exception {
         testCollectionFeaturesAddLineWithDialog();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddBlankLineBookmark() throws Exception {
         testCollectionFeaturesAddBlankLine();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddLineWithCustomActionsBookmark() throws Exception {
         testCollectionFeaturesAddLineWithCustomActions();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddLineWithDialogAndCustomActionsBookmark() throws Exception {
         testCollectionFeaturesAddLineWithDialogAndCustomActions();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddRefreshingDialogBookmark() throws Exception {
         testCollectionFeaturesAddRefreshingDialog();
         passed();
     }
 
     @Test
     public void testCollectionFeaturesAddLineNav() throws Exception {
-//        testCollectionFeaturesAddLine();
-//        testCollectionFeaturesAddLineWithDuplicatePropertyName();
-//        testCollectionFeaturesAddLineWithDialog();
-//        testCollectionFeaturesAddBlankLine();
-//        testCollectionFeaturesAddLineWithCustomActions();
-        testCollectionFeaturesAddLineWithDialogAndCustomActions();
-        testCollectionFeaturesAddRefreshingDialog();
+        testCollectionFeaturesAddLine();
         passed();
     }
 
+    @Test
+    public void testCollectionFeaturesAddLineWithDuplicatePropertyNameNav() throws Exception {
+        testCollectionFeaturesAddLineWithDuplicatePropertyName();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddLineWithDialogNav() throws Exception {
+        testCollectionFeaturesAddLineWithDialog();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddBlankLineNav() throws Exception {
+        testCollectionFeaturesAddBlankLine();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddLineWithCustomActionsNav() throws Exception {
+        testCollectionFeaturesAddLineWithCustomActions();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddLineWithDialogAndCustomActionsNav() throws Exception {
+        testCollectionFeaturesAddLineWithDialogAndCustomActions();
+        passed();
+    }
+
+    @Test
+    public void testCollectionFeaturesAddRefreshingDialogNav() throws Exception {
+        testCollectionFeaturesAddRefreshingDialog();
+        passed();
+    }
 }

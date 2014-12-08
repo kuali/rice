@@ -22,6 +22,7 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.container.PageGroup;
 import org.kuali.rice.krad.uif.service.ViewHelperService;
+import org.kuali.rice.krad.uif.util.BooleanMap;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -180,8 +181,19 @@ public class ViewLifecycleBuild implements Runnable {
             model.setApplyDefaultValues(false);
         }
 
-        // get action flag and edit modes from authorizer/presentation controller
-        helper.retrieveEditModesAndActionFlags();
+        // get action flag and edit modes from authorizer/presentation controller, or set from the form backup
+        if (model.isEvaluateFlagsAndModes()) {
+            helper.retrieveEditModesAndActionFlags();
+
+            // backup maps
+            model.setActionFlags(view.getActionFlags());
+            model.setEditModes(view.getEditModes());
+
+            model.setEvaluateFlagsAndModes(false);
+        } else {
+            view.setActionFlags(model.getActionFlags());
+            view.setEditModes(model.getEditModes());
+        }
 
         // set view context for conditional expressions
         helper.setViewContext();

@@ -327,6 +327,65 @@ public interface ViewModel extends Serializable {
     void setApplyDefaultValues(boolean applyDefaultValues);
 
     /**
+     * Determines whether edit modes and action flags should be evaluated.
+     *
+     * <p>Initially this will be true causing edit modes and action flags to be evaluated on the initial
+     * request to a view. If these need to be reevaluated at some point (for a particular view instance), this
+     * flag can be set to true and causing the authorization to be reevaluated during the lifecycle.</p>
+     *
+     * @return boolean true if flags and modes should be evaluate during the view lifecycle, false if not
+     */
+    boolean isEvaluateFlagsAndModes();
+
+    /**
+     * @see ViewModel#isEvaluateFlagsAndModes()
+     */
+    void setEvaluateFlagsAndModes(boolean evaluateFlagsAndModes);
+
+    /**
+     * Copy of the edit view flag to be used by subsequent requests (so they don't need to be
+     * evaluated on each request).
+     *
+     * <p>If null, edit check will be performed</p>
+     *
+     * @see org.kuali.rice.krad.uif.component.ComponentBase#setReadOnly(java.lang.Boolean)
+     */
+    Boolean isCanEditView();
+
+    /**
+     * @see ViewModel#isCanEditView()
+     */
+    void setCanEditView(Boolean canEditView);
+
+    /**
+     * Copy of the action flags on the view to be used by subsequent requests (so they don't need to be
+     * evaluated on each request).
+     *
+     * @see ViewModel#isEvaluateFlagsAndModes()
+     * @see org.kuali.rice.krad.uif.view.View#getActionFlags()
+     */
+    Map<String, Boolean> getActionFlags();
+
+    /**
+     * @see ViewModel#getActionFlags()
+     */
+    void setActionFlags(Map<String, Boolean> actionFlags);
+
+    /**
+     * Copy of the edit modes on the view to be used by subsequent requests (so they don't need to be
+     * evaluated on each request).
+     *
+     * @see ViewModel#isEvaluateFlagsAndModes()
+     * @see org.kuali.rice.krad.uif.view.View#getEditModes()()
+     */
+    Map<String, Boolean> getEditModes();
+
+    /**
+     * @see ViewModel#getEditModes()
+     */
+    void setEditModes(Map<String, Boolean> editModes);
+
+    /**
      * Script that will run on render (view or component) for generating growl messages
      *
      * @return String JS growl script

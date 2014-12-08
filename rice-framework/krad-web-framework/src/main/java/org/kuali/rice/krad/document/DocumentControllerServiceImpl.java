@@ -240,6 +240,9 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
         form.setDocId(document.getDocumentNumber());
         form.setCommand(DOCUMENT_LOAD_COMMANDS[1]);
 
+        form.setEvaluateFlagsAndModes(true);
+        form.setCanEditView(null);
+
         GlobalVariables.getMessageMap().putInfo(KRADConstants.GLOBAL_MESSAGES, RiceKeyConstants.MESSAGE_RELOADED);
 
         return docHandler(form);
@@ -789,6 +792,13 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
             LOG.debug("Performing workflow action " + action.name() + "for document: " + document.getDocumentNumber());
         }
 
+        // evaluate flags on save only if we are saving for the first time (transitioning to saved status)
+        if (!UifConstants.WorkflowAction.SAVE.equals(action) || document.getDocumentHeader().getWorkflowDocument()
+                .isInitiated()) {
+            form.setEvaluateFlagsAndModes(true);
+            form.setCanEditView(null);
+        }
+
         try {
             String successMessageKey = null;
             switch (action) {
@@ -961,6 +971,9 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
                     successMessageKey = RiceKeyConstants.MESSAGE_SUPER_USER_DISAPPROVED;
                     break;
             }
+
+            form.setEvaluateFlagsAndModes(true);
+            form.setCanEditView(null);
 
             if (successMessageKey != null) {
                 if (actionRequest != null) {

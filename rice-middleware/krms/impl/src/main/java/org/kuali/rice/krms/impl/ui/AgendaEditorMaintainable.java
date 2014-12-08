@@ -372,10 +372,13 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
         List<AgendaItemBo> agendaItems = agendaBo.getItems();
         List<AgendaItemBo> updatedItems = new ArrayList<AgendaItemBo>();
         List<AgendaItemBo> deletedItems = new ArrayList<AgendaItemBo>();
+        AgendaBo existing = null;
 
-        AgendaBo existing = getDataObjectService().find(AgendaBo.class,agendaBo.getId());
+        if (agendaBo.getId() != null) {
+            existing = getDataObjectService().find(AgendaBo.class, agendaBo.getId());
+        }
 
-        if (agendaBo.getId() == null || existing == null) {
+        if (existing == null) {
             agendaBo.setItems(updatedItems);
             agendaBo.setFirstItem(null);
             agendaBo = getDataObjectService().save(agendaBo);
@@ -384,10 +387,8 @@ public class AgendaEditorMaintainable extends MaintainableImpl {
             agendaBo = getDataObjectService().find(AgendaBo.class,agendaBoId);
             agendaBo.setItems(agendaItems);
             agendaBo.setFirstItem(firstItem);
-        }
-
-        // Create a list of agendaItems that will be used to delete rules when the data object is saved
-        if (existing != null) {
+        } else {
+            // Create a list of agendaItems that will be used to delete rules when the data object is saved
             for (AgendaItemBo existingAgendaItem : existing.getItems()) {
                 boolean deletedAgendaItem = true;
                 for (AgendaItemBo agendaItem : agendaBo.getItems()) {

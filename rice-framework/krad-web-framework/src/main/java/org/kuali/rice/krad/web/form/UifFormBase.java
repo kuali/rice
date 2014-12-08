@@ -203,6 +203,11 @@ public class UifFormBase implements ViewModel {
 
     protected boolean applyDefaultValues;
 
+    protected boolean evaluateFlagsAndModes;
+    protected Boolean canEditView;
+    protected Map<String, Boolean> actionFlags;
+    protected Map<String, Boolean> editModes;
+
     protected HttpServletRequest request;
 
     private Object dialogDataObject;
@@ -223,7 +228,9 @@ public class UifFormBase implements ViewModel {
         dialogExplanations = new HashMap<String, String>();
         dialogResponses = new HashMap<String, DialogResponse>();
         extensionData = new HashMap<String, Object>();
+
         applyDefaultValues = true;
+        evaluateFlagsAndModes = true;
     }
 
     /**
@@ -1124,6 +1131,62 @@ public class UifFormBase implements ViewModel {
     @Override
     public void setApplyDefaultValues(boolean applyDefaultValues) {
         this.applyDefaultValues = applyDefaultValues;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isEvaluateFlagsAndModes()
+     */
+    public boolean isEvaluateFlagsAndModes() {
+        return evaluateFlagsAndModes;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setEvaluateFlagsAndModes(boolean)
+     */
+    public void setEvaluateFlagsAndModes(boolean evaluateFlagsAndModes) {
+        this.evaluateFlagsAndModes = evaluateFlagsAndModes;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#isCanEditView()
+     */
+    public Boolean isCanEditView() {
+        return canEditView;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setCanEditView(Boolean)
+     */
+    public void setCanEditView(Boolean canEditView) {
+        this.canEditView = canEditView;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getActionFlags()
+     */
+    public Map<String, Boolean> getActionFlags() {
+        return actionFlags;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setActionFlags(java.util.Map<java.lang.String,java.lang.Boolean>)
+     */
+    public void setActionFlags(Map<String, Boolean> actionFlags) {
+        this.actionFlags = actionFlags;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#getEditModes()
+     */
+    public Map<String, Boolean> getEditModes() {
+        return editModes;
+    }
+
+    /**
+     * @see org.kuali.rice.krad.uif.view.ViewModel#setEditModes(java.util.Map<java.lang.String,java.lang.Boolean>)
+     */
+    public void setEditModes(Map<String, Boolean> editModes) {
+        this.editModes = editModes;
     }
 
     /**

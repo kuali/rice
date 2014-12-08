@@ -450,11 +450,6 @@ KradRequest.prototype = {
                     jQuery(omitElements).each(function (index, value) {
                         var name = jQuery(value).attr('name');
 
-                        var dataOmit = jQuery(value).attr('data-omit');
-                        if (dataOmit && name) {
-                            request.fieldsToSend.push(name);
-                        }
-
                         var dataIndex;
                         jQuery(arr).each(function (ind, val) {
                             if (val.name === name) {
@@ -468,17 +463,14 @@ KradRequest.prototype = {
                 }
             };
 
-            // if still no fields to send then go ahead and send
-            if (!request.fieldsToSend || request.fieldsToSend.length === 0) {
-                // Show visual loading/blocking indication
-                this._setupBlocking(submitOptions);
+            // Show visual loading/blocking indication
+            this._setupBlocking(submitOptions);
 
-                // Submit request
-                jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
-            }
+            // Submit request
+            jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
+
         }
-
-        if (request.fieldsToSend && request.fieldsToSend.length > 0) {
+        else {
             // Serialize all the data we wish to send
             // The formInfo and formComplete data is data that is always necessary or added for the controller call
             var dataSerialized = jQuery.param(data, true);
@@ -491,6 +483,9 @@ KradRequest.prototype = {
                         + " #" + kradVariables.FORM_COMPLETE_ID + "> input").fieldSerialize();
             }
 
+            var hasFileInputs = false;
+            var inputElements = [];
+
             jQuery(request.fieldsToSend).each(function (index, value) {
                 // Stop iteration if NO_FIELDS_TO_SEND keyword detected
                 if (value.toUpperCase() === kradVariables.NO_FIELDS_TO_SEND) {
@@ -501,14 +496,24 @@ KradRequest.prototype = {
                 var wildcarded = value.indexOf("*", this.length - 1) !== -1;
 
                 // If fields to send start with a # look inside that field or group for inputs serialize
+                var $fields = [];
                 if (value.indexOf("#") === 0) {
-                    dataSerialized = dataSerialized + "&" + jQuery(value).find("[name]").fieldSerialize();
+                    $fields = jQuery(value).find("[name]:input");
+                    dataSerialized = dataSerialized + "&" + $fields.not(":disabled,:file").fieldSerialize();
                 } else if (wildcarded) {
+                    $fields = jQuery("[name^='" + value.substr(0, value.length - 1) + "']:input");
                     // Look for inputs which start with name specified before wildcard
                     dataSerialized = dataSerialized + "&"
-                            + jQuery("[name^='" + value.substr(0, value.length - 1) + "']").fieldSerialize();
+                            + $fields.not(":disabled,:file").fieldSerialize();
                 } else {
-                    dataSerialized = dataSerialized + "&" + jQuery("[name='" + value + "']").fieldSerialize();
+                    $fields = jQuery("[name='" + value + "']:input");
+                    dataSerialized = dataSerialized + "&" + $fields.not(":disabled,:file").fieldSerialize();
+                }
+
+                inputElements = inputElements.concat($fields.filter(":file").get());
+
+                if ($fields.length && $fields.is(":file")) {
+                    hasFileInputs = true;
                 }
             });
 
@@ -543,8 +548,36 @@ KradRequest.prototype = {
             // Show visual loading/blocking indication
             this._setupBlocking(submitOptions);
 
-            // Submit request
-            jQuery.ajax(submitOptions);
+            // Submit code below mostly borrowed from  jquery.form plugin but altered for usage here
+            var $form = jQuery("#" + kradVariables.KUALI_FORM);
+            var mp = 'multipart/form-data';
+            var multipart = ($form.attr('enctype') == mp || $form.attr('encoding') == mp);
+
+            // Check for features
+            var feature = {};
+            feature.fileapi = jQuery("<input type='file'/>").get(0).files !== undefined;
+            feature.formdata = window.FormData !== undefined;
+
+            var fileAPI = feature.fileapi && feature.formdata;
+            var unsupportedBrowser = (hasFileInputs || multipart) && !fileAPI;
+            var jqxhr;
+
+            if (unsupportedBrowser) {
+                // This is a Non-fileAPI browser (ie non-supported browser), abandon fieldsToSend logic
+                // and send everything
+                submitOptions.data = data;
+                jQuery("#" + kradVariables.KUALI_FORM).ajaxSubmit(submitOptions);
+            }
+            else if ((hasFileInputs || multipart) && fileAPI) {
+                var inputData = this._createInputData(inputElements, feature);
+                jqxhr = this._fileUploadXhr(inputData, submitOptions);
+            }
+            else {
+                jqxhr = jQuery.ajax(submitOptions);
+            }
+
+            $form.removeData('jqxhr').data('jqxhr', jqxhr);
+
         }
     },
 
@@ -676,5 +709,98 @@ KradRequest.prototype = {
         }
 
         return false;
+    },
+
+    // Code mostly borrowed from  jquery.form plugin but altered for use here
+    _fileUploadXhr: function (a, options) {
+        var formdata = new FormData();
+        var part;
+        var serializedData = options.data;
+        var serialized = serializedData.split('&');
+
+        for (i=0; i < serialized.length; i++) {
+            // undo param space replacement
+            serialized[i] = serialized[i].replace(/\+/g,' ');
+            part = serialized[i].split('=');
+            formdata.append(decodeURIComponent(part[0]), decodeURIComponent(part[1]));
+        }
+
+        for (var i = 0; i < a.length; i++) {
+            formdata.append(a[i].name, a[i].value);
+        }
+
+        options.data = null;
+
+        var s = jQuery.extend(true, {}, jQuery.ajaxSettings, options, {
+            contentType: false,
+            processData: false,
+            cache: false,
+            type: 'POST'
+        });
+
+        if (options.uploadProgress) {
+            // workaround because jqXHR does not expose upload property
+            s.xhr = function () {
+                var xhr = jQuery.ajaxSettings.xhr();
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', function (event) {
+                        var percent = 0;
+                        var position = event.loaded || event.position;
+                        /*event.position is deprecated*/
+                        var total = event.total;
+                        if (event.lengthComputable) {
+                            percent = Math.ceil(position / total * 100);
+                        }
+                        options.uploadProgress(event, position, total, percent);
+                    }, false);
+                }
+                return xhr;
+            };
+        }
+
+        s.data = null;
+        var beforeSend = s.beforeSend;
+        s.beforeSend = function (xhr, o) {
+            o.data = formdata;
+            if (beforeSend)
+                beforeSend.call(this, xhr, o);
+        };
+        return jQuery.ajax(s);
+    },
+
+    _createInputData: function (els, feature) {
+        var a = [];
+
+        var i, j, n, v, el, max, jmax;
+        for (i = 0, max = els.length; i < max; i++) {
+            el = els[i];
+            n = el.name;
+            if (!n || el.disabled) {
+                continue;
+            }
+
+            v = jQuery.fieldValue(el, true);
+            if (v && v.constructor == Array) {
+                for (j = 0, jmax = v.length; j < jmax; j++) {
+                    a.push({name: n, value: v[j]});
+                }
+            }
+            else if (feature.fileapi && el.type == 'file') {
+                var files = el.files;
+                if (files.length) {
+                    for (j = 0; j < files.length; j++) {
+                        a.push({name: n, value: files[j], type: el.type});
+                    }
+                }
+                else {
+                    a.push({ name: n, value: '', type: el.type });
+                }
+            }
+            else if (v !== null && typeof v != 'undefined') {
+                a.push({name: n, value: v, type: el.type, required: el.required});
+            }
+        }
+
+        return a;
     }
 }

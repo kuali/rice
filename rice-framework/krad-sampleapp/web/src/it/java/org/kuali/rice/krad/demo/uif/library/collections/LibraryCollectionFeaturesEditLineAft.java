@@ -586,7 +586,7 @@ public class LibraryCollectionFeaturesEditLineAft extends LibraryBase {
 
         // open the edit line dialog
         Thread.sleep(THREE_SECOND_WAIT_TIME); // avoid cache change by going to quick
-        //        openEditLineDialog(exampleId, rowIndex);
+        openEditLineDialog(exampleId, rowIndex);
 
         // get the original values of the input fields
         List<WebElement> inputElements = findElements(By.cssSelector(EDIT_DIALOG_INPUT_FIELDS_CSS_SELECTOR));

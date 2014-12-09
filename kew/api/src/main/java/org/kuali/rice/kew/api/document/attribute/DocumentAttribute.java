@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
@@ -73,13 +74,14 @@ public abstract class DocumentAttribute extends AbstractDataTransferObject imple
         return name;
     }
 
+    // KULRICE-14037 - add hashCode and equals to allow code to recognize when attributes are
+    // equal for the purposes of de-duplicating them during qualifier extraction.
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result
-                + ((getValue() == null) ? 0 : getValue().hashCode());
+        result = prime * result + ((getValue() == null) ? 0 : getValue().hashCode());
         return result;
     }
 
@@ -94,19 +96,11 @@ public abstract class DocumentAttribute extends AbstractDataTransferObject imple
         if (getClass() != obj.getClass()) {
             return false;
         }
-        DocumentAttributeString other = (DocumentAttributeString) obj;
-        if (getName() == null) {
-            if (other.getName()  != null) {
+        DocumentAttribute other = (DocumentAttribute) obj;
+        if ( !StringUtils.equals(getName(), other.getName() ) ) {
                 return false;
-            }
-        } else if (!getName() .equals(other.getName() )) {
-            return false;
         }
-        if (getValue() == null) {
-            if (other.getValue() != null) {
-                return false;
-            }
-        } else if (!getValue().equals(other.getValue())) {
+        if ( !ObjectUtils.equals(getValue(), other.getValue() ) ) {
             return false;
         }
         return true;

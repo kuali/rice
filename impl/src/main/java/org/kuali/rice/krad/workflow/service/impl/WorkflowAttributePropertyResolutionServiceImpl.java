@@ -75,7 +75,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
                 qualifiers.addAll(resolveDocumentValuePath(document, documentValuePathGroup, routingAttributeTracker));
                 routingAttributeTracker.reset();
             }
-            // SR 16387
+            // KULRICE-14037
             // Now, go through the Map<String,String> objects and eliminate duplicates
             Set<Map<String,String>> deDuplicatedQualifiers = new HashSet<Map<String,String>>(qualifiers);
             if ( LOG.isDebugEnabled() ) {

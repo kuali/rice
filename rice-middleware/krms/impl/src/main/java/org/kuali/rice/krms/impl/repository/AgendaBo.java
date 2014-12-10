@@ -151,7 +151,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
      */
     public AgendaBo copyAgenda(String newAgendaName, String dateTimeStamp) {
         List<AgendaItemBo> agendaItems = this.getItems();
-        AgendaBo copiedAgenda = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
+        AgendaBo copiedAgenda = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_OBJECT_ID );
         copiedAgenda.setName(newAgendaName);
 
         // Using a copiedAgenda we don't mess with the existing agenda at all.

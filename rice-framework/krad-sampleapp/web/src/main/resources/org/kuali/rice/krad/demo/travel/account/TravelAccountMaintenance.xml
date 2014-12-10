@@ -69,12 +69,11 @@
               <bean id="subAccountId" parent="Uif-HorizontalFieldGroup" p:label="Travel Sub Account Number" p:required="true">
                 <property name="items">
                   <list>
-                    <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true" p:required="true" p:readOnly="@{!#isAddLine}">
+                    <bean parent="Uif-InputField" p:propertyName="subAccount" p:uppercaseValue="true" p:required="true" p:readOnly="@{!#isAddLine}" p:canCopyOnReadOnly="true">
                       <property name="fieldLabel.render" value="false"/>
                     </bean>
-                    <bean parent="Uif-InputField" p:propertyName="travelAccountNumber" p:enableAutoQuickfinder="false" p:required="false" p:defaultValue="@{document.newMaintainableObject.dataObject.number}">
+                    <bean parent="Uif-InputField" p:propertyName="travelAccountNumber" p:enableAutoQuickfinder="false" p:required="false" p:value="@{document.newMaintainableObject.dataObject.number}" p:render="true" p:readOnly="false">
                       <property name="fieldLabel.render" value="false"/>
-                      <property name="hidden" value="true"/>
                       <property name="control">
                         <bean parent="Uif-HiddenControl" p:cssClasses="subAccount_travelAccountNumber"/>
                       </property>
@@ -82,7 +81,7 @@
                   </list>
                 </property>
               </bean>
-              <bean parent="Uif-InputField" p:propertyName="subAccountName" p:readOnly="@{!#isAddLine}"/>
+              <bean parent="Uif-InputField" p:propertyName="subAccountName" p:readOnly="@{!#isAddLine}" p:canCopyOnReadOnly="true"/>
             </list>
           </property>
           <property name="duplicateLinePropertyNames">

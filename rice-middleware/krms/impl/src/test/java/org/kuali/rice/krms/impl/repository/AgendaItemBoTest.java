@@ -72,7 +72,7 @@ public class AgendaItemBoTest {
         MockitoAnnotations.initMocks(this);
         testObject = new AgendaItemBo();
         when(mockKrmsTypeRepositoryService.getTypeById(any(String.class))).thenReturn(KrmsTypeDefinition.Builder.create("name","namespace").build());
-        when(mockDataObjectService.copyInstance(any(AgendaItemBo.class), any(CopyOption.class), any(CopyOption.class), any(CopyOption.class)))
+        when(mockDataObjectService.copyInstance(any(AgendaItemBo.class), any(CopyOption.class), any(CopyOption.class)))
                 .thenReturn(getAgendaItemBoFull("A", "B", "C", "D"))
                 .thenReturn(getAgendaItemBo("A", "B", "C", getRuleBo("H", "I", "J", "K", null)));
         when(mockRepositoryBoIncrementer.getNewId()).thenReturn("NEW_ID");

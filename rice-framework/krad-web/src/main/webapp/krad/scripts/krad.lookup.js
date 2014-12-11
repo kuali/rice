@@ -368,12 +368,7 @@ function returnLookupResultReload(returnLink) {
  * Sets form target for the multi-value return and closes the lightbox
  */
 function setupMultiValueReturn() {
-    if ((parent.jQuery('iframe[id*=easyXDM_]').length > 0) || (parent.parent.jQuery('#' + kradVariables.PORTAL_IFRAME_ID).length > 0)) {
-        jQuery('#' + kradVariables.KUALI_FORM).attr('target', kradVariables.PORTAL_IFRAME_ID);
-    }
-    else {
-        jQuery('#' + kradVariables.KUALI_FORM).attr('target', '_parent');
-    }
+     jQuery('#' + kradVariables.KUALI_FORM).attr('target', '_parent');
 
     // Data table only retains elements on the visible page within the DOM.
     // To be able to preserve selections from hidden pages, we need to extract

@@ -541,15 +541,7 @@ public class CollectionGroupBuilder implements Serializable {
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 
-            // When a sub-collection within a dialog has both line actions and add line actions, it requires
-            // the refreshId and updateComponentId to be the id of the sub-collection rather than the dialog id.
-            String dialogId = action.getActionParameter(UifParameters.DIALOG_ID);
-            String updateComponentId = ((UifFormBase) model).getUpdateComponentId();
-
-            if (StringUtils.isBlank(action.getRefreshId())
-                    && StringUtils.isNotBlank(updateComponentId)
-                    && StringUtils.isNotBlank(dialogId)
-                    && StringUtils.equals(dialogId, updateComponentId)) {
+            if (StringUtils.isBlank(action.getRefreshId())) {
                 action.setRefreshId(collectionGroup.getId());
             }
 

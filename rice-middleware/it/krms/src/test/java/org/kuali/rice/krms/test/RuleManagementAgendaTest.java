@@ -67,8 +67,14 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         String ruleId = buildTestRuleDefinition(t0.namespaceName, t0.object0).getId();
         String agendaId = createTestAgenda(t0.object0, /* createAttributes */ true).getId();
-        buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
+        AgendaItemDefinition agendaItemDefinition =  buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
+
         AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
+        AgendaDefinition.Builder agendaDefinitionBuilder = AgendaDefinition.Builder.create(agendaDefinition);
+        agendaDefinitionBuilder.setFirstItemId(agendaItemDefinition.getId());
+        ruleManagementService.updateAgenda(agendaDefinitionBuilder.build());
+
+        agendaDefinition = ruleManagementService.getAgenda(agendaId);
 
         assertTrue("Created agenda is not active", agendaDefinition.isActive());
 
@@ -92,9 +98,14 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         String ruleId = buildTestRuleDefinition(t1.namespaceName, t1.object0).getId();
         String agendaId = createTestAgenda(t1.object0).getId();
-        buildTestAgendaItemDefinition(t1.agendaItem_Id, agendaId, ruleId);
+        AgendaItemDefinition agendaItemDefinition = buildTestAgendaItemDefinition(t1.agendaItem_Id, agendaId, ruleId);
 
-        AgendaDefinition agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(t1.agenda_Name,
+        AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
+        AgendaDefinition.Builder agendaDefinitionBuilder = AgendaDefinition.Builder.create(agendaDefinition);
+        agendaDefinitionBuilder.setFirstItemId(agendaItemDefinition.getId());
+        ruleManagementService.updateAgenda(agendaDefinitionBuilder.build());
+
+        agendaDefinition = ruleManagementService.getAgendaByNameAndContextId(t1.agenda_Name,
                 t1.contextId);
 
         assertEquals("Invalid agendaId name found", t1.agenda_Id, agendaDefinition.getId());
@@ -495,7 +506,12 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
 
         RuleDefinition ruleDefinition = buildTestRuleDefinition(t15.namespaceName, t15.object0);
         AgendaDefinition agendaDefinition = createTestAgenda(t15.object0);
-        buildTestAgendaItemDefinition(t15.agendaItem_Id, agendaDefinition.getId(), ruleDefinition.getId());
+        AgendaItemDefinition agendaItemDefinition = buildTestAgendaItemDefinition(t15.agendaItem_Id, agendaDefinition.getId(), ruleDefinition.getId());
+
+        agendaDefinition = ruleManagementService.getAgenda(agendaDefinition.getId());
+        AgendaDefinition.Builder agendaDefinitionBuilder = AgendaDefinition.Builder.create(agendaDefinition);
+        agendaDefinitionBuilder.setFirstItemId(agendaItemDefinition.getId());
+        ruleManagementService.updateAgenda(agendaDefinitionBuilder.build());
 
         verifyFullAgenda(t15);
     }

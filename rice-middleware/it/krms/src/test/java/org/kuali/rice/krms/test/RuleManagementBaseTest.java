@@ -173,14 +173,6 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         AgendaItemDefinition agendaItemDefinition =
                 ruleManagementService.createAgendaItem(agendaItemDefinitionBuilder.build());
 
-        AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
-        AgendaDefinition.Builder agendaDefinitionBuilder = AgendaDefinition.Builder.create(agendaDefinition);
-        agendaDefinitionBuilder.setFirstItemId(agendaItemDefinition.getId());
-        ruleManagementService.updateAgenda(agendaDefinitionBuilder.build());
-
-        // re-fetch the item because it's version field will have changed in the above update
-        agendaItemDefinition = ruleManagementService.getAgendaItem(agendaItemDefinition.getId());
-
         return agendaItemDefinition;
     }
 
@@ -458,6 +450,7 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
      //   agendaItem1 ( rule1 )
      //       Always     agendaItem5
      //   agendaItem2 ( rule2 )
+     //       WhenTrue  agendaItem7
      //       WhenFalse  agendaItem4
      //       Always     agendaItem6
      //   agendaItem3 ( rule3 )
@@ -501,20 +494,8 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         RuleDefinition rule6 = buildTestRuleDefinition(namespace, names.object6);
         RuleDefinition rule7 = buildTestRuleDefinition(namespace, names.object7);
 
-        // register attribute types
-        createTestKrmsAttribute(names.actionAttribute0, names.actionAttribute0_Key, names.namespaceName);
-        createTestKrmsAttribute(names.actionAttribute1, names.actionAttribute1_Key, names.namespaceName);
-
-        // create rule action attributes
-        Map<String, String> actionAttributesOBJECT7 = new HashMap<String, String>();
-        actionAttributesOBJECT7.put(names.actionAttribute_Key, names.actionAttribute_Value);
-
-        // create rule actions
-        buildTestActionDefinition(names.action_Id, names.action_Name, names.action_Descr, 1, rule7.getId(),
-                names.namespaceName, actionAttributesOBJECT7);
-
         // create agendaItems
-        buildTestAgendaItemDefinition(names.agendaItem_7_Id, agenda.getId(), rule7.getId());
+        AgendaItemDefinition agendaItemOBJECT7 = buildTestAgendaItemDefinition(names.agendaItem_7_Id, agenda.getId(), rule7.getId());
 
         AgendaItemDefinition agendaItemOBJECT6 = buildTestAgendaItemDefinition(names.agendaItem_6_Id, agenda.getId(),
                 rule6.getId());
@@ -533,6 +514,10 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
 
         AgendaItemDefinition.Builder itemBuilderOBJECT2 = AgendaItemDefinition.Builder.create(agendaItemOBJECT2);
         AgendaItemDefinition.Builder itemBuilderOBJECT4 = AgendaItemDefinition.Builder.create(agendaItemOBJECT4);
+        AgendaItemDefinition.Builder itemBuilderOBJECT7 = AgendaItemDefinition.Builder.create(agendaItemOBJECT7);
+
+        itemBuilderOBJECT2.setWhenTrue(itemBuilderOBJECT7);
+        itemBuilderOBJECT2.setWhenTrueId(itemBuilderOBJECT7.getId());
         itemBuilderOBJECT2.setWhenFalse(itemBuilderOBJECT4);
         itemBuilderOBJECT2.setWhenFalseId(itemBuilderOBJECT4.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT6 = AgendaItemDefinition.Builder.create(agendaItemOBJECT6);
@@ -556,12 +541,15 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
         AgendaItemDefinition agendaItemOBJECT0 = buildTestAgendaItemDefinition(names.agendaItem_0_Id, agenda.getId(),
                 rule0.getId());
         AgendaItemDefinition.Builder itemBuilderOBJECT0 = AgendaItemDefinition.Builder.create(agendaItemOBJECT0);
+
         itemBuilderOBJECT1 = AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT1.getId()));
         itemBuilderOBJECT0.setWhenTrue(itemBuilderOBJECT1);
         itemBuilderOBJECT0.setWhenTrueId(itemBuilderOBJECT1.getId());
+
         itemBuilderOBJECT2 = AgendaItemDefinition.Builder.create(ruleManagementService.getAgendaItem(itemBuilderOBJECT2.getId()));
         itemBuilderOBJECT0.setWhenFalse(itemBuilderOBJECT2);
         itemBuilderOBJECT0.setWhenFalseId(itemBuilderOBJECT2.getId());
+
         AgendaItemDefinition.Builder itemBuilderOBJECT3 = AgendaItemDefinition.Builder.create(agendaItemOBJECT3);
         itemBuilderOBJECT0.setAlways(itemBuilderOBJECT3);
         itemBuilderOBJECT0.setAlwaysId(itemBuilderOBJECT3.getId());
@@ -569,8 +557,25 @@ public abstract class RuleManagementBaseTest extends KRMSTestCase {
 
         agendaBuilder = AgendaDefinition.Builder.create(ruleManagementService.getAgenda(agenda.getId()));
         agendaBuilder.setFirstItemId(itemBuilderOBJECT0.getId());
+
+        // register attribute types
+        createTestKrmsAttribute(names.actionAttribute0, names.actionAttribute0_Key, names.namespaceName);
+        createTestKrmsAttribute(names.actionAttribute1, names.actionAttribute1_Key, names.namespaceName);
+
+        // create rule action attributes
+        Map<String, String> actionAttributesOBJECT7 = new HashMap<String, String>();
+        actionAttributesOBJECT7.put(names.actionAttribute_Key, names.actionAttribute_Value);
+
+
+        // create rule actions
+        buildTestActionDefinition(names.action_Id, names.action_Name, names.action_Descr, 1, rule7.getId(),
+                names.namespaceName, actionAttributesOBJECT7);
+
+
         ruleManagementService.updateAgenda(agendaBuilder.build());
         List<AgendaItemDefinition> agendaItems = ruleManagementService.getAgendaItemsByContext(names.contextId);
+
+
 
         assertEquals("Invalid number of agendaItems created", 8, agendaItems.size());
 

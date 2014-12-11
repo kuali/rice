@@ -541,7 +541,10 @@ public class CollectionGroupBuilder implements Serializable {
             action.setJumpToIdAfterSubmit(collectionGroup.getId());
             action.addActionParameter(UifParameters.ACTION_TYPE, UifParameters.ADD_LINE);
 
-            if (StringUtils.isBlank(action.getRefreshId())) {
+            boolean isPageUpdateAction = StringUtils.isNotBlank(action.getAjaxReturnType())
+                    && action.getAjaxReturnType().equals(UifConstants.AjaxReturnTypes.UPDATEPAGE.getKey());
+
+            if (StringUtils.isBlank(action.getRefreshId()) && !isPageUpdateAction) {
                 action.setRefreshId(collectionGroup.getId());
             }
 

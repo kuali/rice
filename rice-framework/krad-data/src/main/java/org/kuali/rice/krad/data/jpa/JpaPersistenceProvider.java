@@ -368,9 +368,9 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
 				if (shouldResetObjectId) {
 					clearObjectIdOnUpdatableObjects(copiedObject, new HashSet<Object>());
 				}
-				// if (shouldResetVersionNumber) {
-				// clearVersionNumberOnUpdatableObjects(copiedObject, new HashSet<Object>());
-				// }
+				if (shouldResetVersionNumber) {
+				    clearVersionNumberOnUpdatableObjects(copiedObject, new HashSet<Object>());
+				}
 				return copiedObject;
             }
         });

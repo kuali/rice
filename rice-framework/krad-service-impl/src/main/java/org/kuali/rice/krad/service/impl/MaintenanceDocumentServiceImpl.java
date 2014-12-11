@@ -143,8 +143,17 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
 
             Object newDataObject = null;
 
+            /*
+               Copy with clearing objectId and version number in the parent and all nested objects if dataObject is an
+               instance of DataObjectBase or PersistableBusinessObject
+             */
             if (dataObjectService.supports(oldDataObject.getClass())) {
-                newDataObject = dataObjectService.copyInstance(oldDataObject);
+                if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceAction)) {
+                    newDataObject = dataObjectService.copyInstance(oldDataObject, CopyOption.RESET_VERSION_NUMBER,
+                            CopyOption.RESET_OBJECT_ID);
+                } else {
+                    newDataObject = dataObjectService.copyInstance(oldDataObject);
+                }
             } else {
                 newDataObject = SerializationUtils.deepCopy((Serializable) oldDataObject);
             }
@@ -159,14 +168,7 @@ public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentServic
                 // Since this will be a new object, we also need to blank out the object ID and version number fields
                 // (if they exist).  If the object uses a different locking key or unique ID field, the blanking of
                 // these will need to be done in the Maintainable.processAfterCopy() method.
-                if ( maintainable.getDataObject() instanceof DataObjectBase ) {
-                    ((DataObjectBase) maintainable.getDataObject()).setObjectId(null);
-                    ((DataObjectBase) maintainable.getDataObject()).setVersionNumber(null);
-                } else if ( maintainable.getDataObject() instanceof PersistableBusinessObject ) {
-                    // Legacy KNS Support - since they don't use DataObjectBase
-                    ((PersistableBusinessObject) maintainable.getDataObject()).setObjectId(null);
-                    ((PersistableBusinessObject) maintainable.getDataObject()).setVersionNumber(null);
-                } else {
+                if(!dataObjectService.supports(oldDataObject.getClass())) {
                     // If neither then use reflection to see if the object has setVersionNumber and setObjectId methods
                    if(ObjectPropertyUtils.getWriteMethod(maintainable.getDataObject().getClass(), "versionNumber") != null) {
                         ObjectPropertyUtils.setPropertyValue(maintainable.getDataObject(), "versionNumber", null);

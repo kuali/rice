@@ -426,7 +426,7 @@ public class AgendaItemBo implements AgendaItemDefinitionContract, Versioned, Se
      */
     public AgendaItemBo copyAgendaItem(AgendaBo copiedAgenda, Map<String, RuleBo> oldRuleIdToNew, Map<String, AgendaItemBo> oldAgendaItemIdToNew, List<AgendaItemBo> copiedAgendaItems, final String dts) {
         // Use deepCopy and update all the ids.
-        AgendaItemBo copiedAgendaItem = getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
+        AgendaItemBo copiedAgendaItem = getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_OBJECT_ID );
         copiedAgendaItem.setId(agendaItemIdIncrementer.getNewId());
         copiedAgendaItem.setAgendaId(copiedAgenda.getId());
         oldAgendaItemIdToNew.put(this.getId(), copiedAgendaItem);

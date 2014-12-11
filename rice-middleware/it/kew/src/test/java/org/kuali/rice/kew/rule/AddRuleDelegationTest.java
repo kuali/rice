@@ -193,7 +193,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 
 	@SuppressWarnings("deprecation")
     private RuleDelegationBo saveNewVersion(RuleDelegationBo ruleDelegation) {
-        ruleDelegation = KradDataServiceLocator.getDataObjectService().copyInstance(ruleDelegation, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID);
+        ruleDelegation = KradDataServiceLocator.getDataObjectService().copyInstance(ruleDelegation, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_OBJECT_ID);
 
         ruleDelegation.setVersionNumber(null);
 

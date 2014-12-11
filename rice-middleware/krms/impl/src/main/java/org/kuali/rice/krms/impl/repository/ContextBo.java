@@ -107,7 +107,7 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
     }
 
     public ContextBo copyContext(String additionalNameText) {
-        ContextBo copy = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_VERSION_NUMBER, CopyOption.RESET_OBJECT_ID );
+        ContextBo copy = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_OBJECT_ID );
         //ContextBo copy = (ContextBo) SerializationUtils.deepCopy(this);
 
         //

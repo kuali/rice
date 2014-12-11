@@ -18,6 +18,7 @@ package org.kuali.rice.krad.demo.uif.library.collections;
 import org.junit.Test;
 
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
+import org.kuali.rice.testtools.selenium.WebDriverUtils;
 import org.openqa.selenium.By;
 
 /**
@@ -66,6 +67,7 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example2']//button[contains(text(), 'Add')]");
 
         // assert that an error message is shown
+        waitForProgressAddingLine(WebDriverUtils.configuredImplicityWait() * 3);
         waitForTextPresent("Duplicate Default Add Line with duplicateLinePropertyNames property configured");
     }
 
@@ -91,8 +93,9 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//div[@id = 'Uif-Dialogs']//button[contains(text(), 'Add')]");
 
         // assert that the values have been added
-        waitForElementVisibleBy(By.xpath("input[name = 'collection1_3[0].field1'][value = '42']"));
-        waitForElementVisibleBy(By.xpath("input[name = 'collection1_3[0].field2'][value = '55']"));
+        waitForProgressAddingLine(WebDriverUtils.configuredImplicityWait() * 3);
+        assertEquals("42", waitForElementVisibleBy(By.name("collection1_3[0].field1")).getAttribute("value"));
+        assertEquals("55", waitForElementVisibleBy(By.name("collection1_3[0].field2")).getAttribute("value"));
     }
 
     protected void testCollectionFeaturesAddBlankLine() throws Exception {
@@ -112,21 +115,23 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
 
         // add some values to the collection via the dialog
         waitAndTypeByName("newCollectionLines['collection1_8'].field1", "999");
-        waitAndTypeByName("newCollectionLines['collection1_8'].field2", "999");
+        waitAndTypeByName("newCollectionLines['collection1_8'].field2", "998");
         jGrowl("Click Add button.");
         waitAndClickByXpath("//section[@data-parent='Demo-CollectionAddLine-Example5']//button[contains(text(),'Add')]");
 
         // assert that the values have been added
-        waitForElementVisibleBy(By.xpath("input[name = 'collection1_8[0].field1'][value = '999']"));
-        waitForElementVisibleBy(By.xpath("input[name = 'collection1_8[0].field2'][value = '999']"));
+        waitForProgressAddingLine(WebDriverUtils.configuredImplicityWait() * 3);
+        assertEquals("999", waitForElementVisibleBy(By.name("collection1_8[0].field1")).getAttribute("value"));
+        assertEquals("998", waitForElementVisibleBy(By.name("collection1_8[0].field2")).getAttribute("value"));
 
         // delete the added line from the collection
         jGrowl("Click Trash button.");
         waitAndClick("#Demo-CollectionAddLine-Example5 button.icon-trash");
+        waitForProgressDeletingLine();
 
         // assert that the values have been deleted and that the message shows
-        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_8[0].field1'][value = '999']"));
-        waitForElementNotPresent(By.cssSelector("input[name = 'collection1_8[0].field2'][value = '999']"));
+        assertFalse("999".equals(waitForElementVisibleBy(By.name("collection1_8[0].field1")).getAttribute("value")));
+        assertFalse("998".equals(waitForElementVisibleBy(By.name("collection1_8[0].field2")).getAttribute("value")));
         waitForTextPresent("You have deleted an item from Project Income.");
     }
 
@@ -153,16 +158,15 @@ public class LibraryCollectionFeaturesAddLineAft extends WebDriverLegacyITBase {
         waitAndTypeByName("newCollectionLines['collection1_9'].field2", "9996");
         jGrowl("Click Add Income button.");
         waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6-AddLineDialog']//button[contains(text(), 'Add Income')]");
-        waitForProgressAddingLine();
+        waitForProgressAddingLine(WebDriverUtils.configuredImplicityWait() * 3);
 
         // assert that the values have been added
-        waitForElementVisibleBy(By.xpath("input[name = 'collection1_9[0].field1'][value = '9996']"));
-        waitForElementVisibleBy(By.xpath("input[name = 'collection1_9[0].field2'][value = '9996']"));
+        waitForElementVisibleBy(By.cssSelector("input[name = 'collection1_9[0].field1'][value = '9996']"));
+        waitForElementVisibleBy(By.cssSelector("input[name = 'collection1_9[0].field2'][value = '9996']"));
 
         // delete the added line from the collection
         jGrowl("Click Trash button.");
-        // now example 5?!
-        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example5']//button[contains(@class,'icon-trash')]");
+        waitAndClickByXpath("//section[@id = 'Demo-CollectionAddLine-Example6']//button[contains(@class,'icon-trash')]");
         waitForProgressDeletingLine();
 
         // assert that the values have been deleted and that the message shows

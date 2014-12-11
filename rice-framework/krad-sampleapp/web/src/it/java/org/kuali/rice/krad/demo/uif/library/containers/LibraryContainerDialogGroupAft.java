@@ -148,8 +148,35 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
 
     protected void testContainerDialogGroupDialogReuse() throws Exception {
     	waitAndClickByLinkText("Dialog Reuse");
+
+        // assert first row data
+        assertEquals("1", waitForElementVisibleBy(By.name("collection2[1].field1")).getAttribute("value"));
+        assertEquals("2", waitForElementVisibleBy(By.name("collection2[1].field2")).getAttribute("value"));
+        assertEquals("3", waitForElementVisibleBy(By.name("collection2[1].field3")).getAttribute("value"));
+
+        jGrowl("Click Delete");
+        // First row is del_line1, noting this here as the second row is del_line0
     	waitAndClickByXpath("//button[@id='Demo-DialogGroup-WizardStep2_del_line1']");
+        jGrowl("Cancel Delete");
+        waitForTextPresent("Are you sure you wish to delete line: 1?");
     	waitAndClickByXpath("//section[@id='Uif-DialogGroup-YesNotmp']/div/div/div[@data-parent='Uif-DialogGroup-YesNo']/button[contains(text(),'No')]");
+
+        // assert first row data not deleted
+        assertEquals("1", waitForElementVisibleBy(By.name("collection2[1].field1")).getAttribute("value"));
+        assertEquals("2", waitForElementVisibleBy(By.name("collection2[1].field2")).getAttribute("value"));
+        assertEquals("3", waitForElementVisibleBy(By.name("collection2[1].field3")).getAttribute("value"));
+
+        jGrowl("Click Delete");
+        waitAndClickByXpath("//button[@id='Demo-DialogGroup-WizardStep2_del_line0']");
+        waitForTextPresent("Are you sure you wish to delete line: A?");
+        jGrowl("Confirm Delete");
+        waitAndClickByXpath("//section[@id='Uif-DialogGroup-YesNotmp']/div/div/div[@data-parent='Uif-DialogGroup-YesNo']/button[contains(text(),'Yes')]");
+        waitForProgressDeletingLine();
+
+        // assert new second row data
+        assertEquals("a", waitForElementVisibleBy(By.name("collection2[2].field1")).getAttribute("value"));
+        assertEquals("b", waitForElementVisibleBy(By.name("collection2[2].field2")).getAttribute("value"));
+        assertEquals("c", waitForElementVisibleBy(By.name("collection2[2].field3")).getAttribute("value"));
     }
     
     protected void testContainerDialogGroupSmallDialog() throws Exception {

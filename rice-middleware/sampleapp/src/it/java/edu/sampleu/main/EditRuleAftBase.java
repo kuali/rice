@@ -57,9 +57,11 @@ public class EditRuleAftBase extends MainTmplMthdSTNavBase{
         waitAndTypeLabeledInput("Context:", "Context1");
         addAndEditRule();
         waitAndClickButtonByExactText("Add Rule");
-        waitAndClickButtonByExactText("Save");
-        waitAndClickButtonByExactText("Submit");
-        waitAndClickConfirmSubmitOk();
+        saveSuccessfully();
+        submitSuccessfully();
+//        waitAndClickButtonByExactText("Save");
+//        waitAndClickButtonByExactText("Submit");
+//        waitAndClickConfirmSubmitOk();
     }
 
     protected void testEditRuleBlanketApprove() throws Exception {
@@ -78,7 +80,8 @@ public class EditRuleAftBase extends MainTmplMthdSTNavBase{
     private void addAndEditRule() throws Exception {
         //Adding Rules so we do not need to rely on the existing data.
         waitAndClickButtonByExactText("Add Rule");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.agendaItemLine.rule.name", "This is name");
+        String desc = getDescriptionUnique();
+        waitAndTypeByName("document.newMaintainableObject.dataObject.agendaItemLine.rule.name", "Rule Name " + desc);
         waitAndClickButtonByExactText("Add");
         waitAndTypeByName(
                 "document.newMaintainableObject.dataObject.agendaItemLine.rule.propositionTree.rootElement.children[0].data.proposition.description",

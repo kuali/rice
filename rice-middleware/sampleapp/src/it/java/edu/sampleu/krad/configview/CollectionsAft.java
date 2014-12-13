@@ -240,6 +240,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testColumnSequence() throws Exception {
         waitAndClickByLinkText("Column Sequence");
+        acceptAlertIfPresent();
         waitForProgressLoading();
         waitAndTypeByName("newCollectionLines['list12'].field1", "1");
         waitAndTypeByName("newCollectionLines['list12'].field2", "1");
@@ -257,6 +258,7 @@ public class CollectionsAft extends WebDriverLegacyITBase {
 
     protected void testSequencerow() throws Exception {
         waitAndClickByLinkText("Save Row");
+        acceptAlertIfPresent();
         waitForProgressLoading();
         waitAndTypeByName("newCollectionLines['list15'].field1", "1");
         waitAndTypeByName("newCollectionLines['list15'].field2", "1");

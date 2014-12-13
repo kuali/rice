@@ -60,6 +60,7 @@ public abstract class CampusAftBase extends AdminTmplMthdAftNavCreateNewBase {
     protected void submitAndClose() throws InterruptedException {
         checkForDocError();
         waitAndClickByName("methodToCall.route");
+        waitForProgress("Submitting...");
         waitForTextPresent("Document was successfully submitted");
         waitAndClickByName("methodToCall.close");
 //         waitAndClickByName("methodToCall.processAnswer.button1");

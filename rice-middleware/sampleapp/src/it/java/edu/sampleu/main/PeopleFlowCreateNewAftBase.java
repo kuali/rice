@@ -73,13 +73,12 @@ public class PeopleFlowCreateNewAftBase extends MainTmplMthdSTNavBase{
     protected void testPeopleFlowBlanketApprove() throws Exception {
         PeopleFlowDocInfo docInfo = peopleFlowCreateNew();
 
+        jGrowl("Blanket Approve");
         waitAndClickBlanketApprove();
         waitAndClickConfirmBlanketApproveOk();
-        Thread.sleep(3000);
-        Thread.sleep(3000);
+        acceptAlertIfPresent();
+        waitForProgressLoading();
         checkForIncidentReport();
-        jGrowl("Blanket Approve");
-        Thread.sleep(5000);
 
         driver.switchTo().window(driver.getWindowHandles().toArray()[0].toString());
         findElement(By.cssSelector("img[alt=\"doc search\"]")).click();

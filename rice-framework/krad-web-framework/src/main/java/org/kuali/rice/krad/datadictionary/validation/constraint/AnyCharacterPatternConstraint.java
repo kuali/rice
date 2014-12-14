@@ -76,7 +76,7 @@ public class AnyCharacterPatternConstraint extends ValidCharactersPatternConstra
         }
 
         if (!allowWhitespace) {
-            return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "noWhitespace";
+            return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "anyCharacterPatternNoWhitespace";
         } else {
             return UifConstants.Messages.VALIDATION_MSG_KEY_PREFIX + "anyCharacterPattern";
         }

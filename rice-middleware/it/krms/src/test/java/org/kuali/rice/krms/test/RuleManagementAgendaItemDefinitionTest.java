@@ -65,8 +65,17 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
 
         String ruleId = buildTestRuleDefinition(t0.namespaceName, t0.object0).getId();
         String agendaId = createTestAgenda(t0.object0).getId();
-        buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
+        AgendaItemDefinition agendaItemDefinition = buildTestAgendaItemDefinition(t0.agendaItem_Id, agendaId, ruleId);
+
         AgendaDefinition agendaDefinition = ruleManagementService.getAgenda(agendaId);
+        AgendaDefinition.Builder agendaDefinitionBuilder = AgendaDefinition.Builder.create(agendaDefinition);
+        agendaDefinitionBuilder.setFirstItemId(agendaItemDefinition.getId());
+        ruleManagementService.updateAgenda(agendaDefinitionBuilder.build());
+
+        // re-fetch the item because it's version field will have changed in the above update
+        agendaItemDefinition = ruleManagementService.getAgendaItem(agendaItemDefinition.getId());
+
+        agendaDefinition = ruleManagementService.getAgenda(agendaId);
 
         assertEquals("Expected Context not found",t0.contextId,agendaDefinition.getContextId());
         assertEquals("Expected AgendaId not found",t0.agenda_Id,agendaDefinition.getId());
@@ -386,7 +395,12 @@ public class RuleManagementAgendaItemDefinitionTest extends RuleManagementBaseTe
 
         RuleDefinition ruleDefinition = buildTestRuleDefinition(t11.namespaceName, t11.object0);
         AgendaDefinition agendaDefinition = createTestAgenda(t11.object0);
-        buildTestAgendaItemDefinition(t11.agendaItem_Id, agendaDefinition.getId(), ruleDefinition.getId());
+        AgendaItemDefinition agendaItemDefinition = buildTestAgendaItemDefinition(t11.agendaItem_Id, agendaDefinition.getId(), ruleDefinition.getId());
+
+        agendaDefinition = ruleManagementService.getAgenda(agendaDefinition.getId());
+        AgendaDefinition.Builder agendaDefinitionBuilder = AgendaDefinition.Builder.create(agendaDefinition);
+        agendaDefinitionBuilder.setFirstItemId(agendaItemDefinition.getId());
+        ruleManagementService.updateAgenda(agendaDefinitionBuilder.build());
 
         verifyFullAgendaItem(t11);
     }

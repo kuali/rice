@@ -83,7 +83,6 @@ import com.google.common.collect.Sets;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Transactional(readOnly = true)
 public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryAware {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(JpaPersistenceProvider.class);
@@ -225,6 +224,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public <T> T find(final Class<T> type, final Object id) {
         return doWithExceptionTranslation(new Callable<T>() {
             @Override
@@ -251,6 +251,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public <T> QueryResults<T> findMatching(final Class<T> type, final QueryByCriteria queryByCriteria) {
         return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
             @Override
@@ -264,6 +265,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public <T> QueryResults<T> findAll(final Class<T> type) {
         return doWithExceptionTranslation(new Callable<QueryResults<T>>() {
             @Override
@@ -501,6 +503,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
     public void flush(final Class<?> type) {
         doWithExceptionTranslation(new Callable<Object>() {
             @Override

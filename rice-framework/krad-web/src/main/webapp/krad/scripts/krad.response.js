@@ -63,10 +63,21 @@ KradResponse.prototype = {
         var viewContent = jQuery("#" + kradVariables.VIEW_CONTENT_WRAPPER);
 
         // remove any already existing matching dialogs from the view
-        jQuery('.modal', page).each(function() {
-                    jQuery('#' + this.id, jQuery("[data-role='View']")).remove();
-                }
-        );
+        jQuery('.modal', page).each(function () {
+            var existingComponent = jQuery('#' + this.id, jQuery("[data-role='View']"));
+            existingComponent.remove();
+        });
+
+        jQuery("." + kradVariables.CLASSES.PLACEHOLDER, page).each(function () {
+            var existingComponent = jQuery('#' + this.id, jQuery("[data-role='View']"));
+
+            if (existingComponent.length && existingComponent.is(".modal") && isDisplayedModal(existingComponent)) {
+                jQuery(this).remove();
+            }
+            else {
+                existingComponent.remove();
+            }
+        });
 
         page.hide();
 
@@ -152,16 +163,26 @@ KradResponse.prototype = {
 
         // remove any already existing matching dialogs from the view
         jQuery('.modal', component).each(function () {
-                    var tmp = jQuery('#' + this.id, jQuery("[data-role='View']"));
-                    var isPlaceHolder = tmp.hasClass(kradVariables.CLASSES.PLACEHOLDER);
-                    var displayedModal = isDisplayedModal($componentInDom);
+            var existingComponent = jQuery('#' + this.id, jQuery("[data-role='View']"));
+            var isPlaceHolder = existingComponent.hasClass(kradVariables.CLASSES.PLACEHOLDER);
+            var displayedModal = isDisplayedModal(existingComponent);
 
-                    // do not remove placeholders or displayedModals
-                    if (!isPlaceHolder && !displayedModal) {
-                        tmp.remove();
-                    }
-                }
-        );
+            // do not remove placeholders or displayedModals
+            if (!isPlaceHolder && !displayedModal) {
+                existingComponent.remove();
+            }
+        });
+
+        jQuery("." + kradVariables.CLASSES.PLACEHOLDER, component).each(function () {
+            var existingComponent = jQuery('#' + this.id, jQuery("[data-role='View']"));
+
+            if (existingComponent.length && existingComponent.is(".modal") && isDisplayedModal(existingComponent)) {
+                jQuery(this).remove();
+            }
+            else {
+                existingComponent.remove();
+            }
+        });
 
         // is the new component now required
         var nowRequired = jQuery(".required", component).size() > 0;

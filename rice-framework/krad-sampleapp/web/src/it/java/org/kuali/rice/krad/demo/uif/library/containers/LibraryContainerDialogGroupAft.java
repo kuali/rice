@@ -147,6 +147,7 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     }
 
     protected void testContainerDialogGroupDialogReuse() throws Exception {
+        Thread.sleep(1000); // try to avoid cache problem
     	waitAndClickByLinkText("Dialog Reuse");
 
         // assert first row data

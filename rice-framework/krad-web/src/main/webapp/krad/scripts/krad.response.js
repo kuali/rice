@@ -103,6 +103,7 @@ KradResponse.prototype = {
 
         pageValidatorReady = false;
         runHiddenScripts(kradVariables.VIEW_CONTENT_WRAPPER, false, true);
+        runHiddenScripts(kradVariables.IDS.DIALOGS);
 
         markActiveMenuLink();
 
@@ -145,6 +146,7 @@ KradResponse.prototype = {
         $dialog.trigger(kradVariables.EVENTS.UPDATE_CONTENT);
 
         runHiddenScripts(id);
+        runHiddenScripts(kradVariables.IDS.DIALOGS);
     },
 
 
@@ -261,6 +263,7 @@ KradResponse.prototype = {
 
             // runs scripts on the span or div with id
             runHiddenScripts(id);
+            runHiddenScripts(kradVariables.IDS.DIALOGS);
 
             if (displayedModal) {
                 writeMessagesForChildGroups(id);

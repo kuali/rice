@@ -19,6 +19,20 @@
 
 <%@ page buffer = "16kb" %>
 
+<c:if test="${!empty KualiForm.backLocation}">
+    <c:choose>
+     <c:when test="${fn:contains(KualiForm.backLocation,'?')}">
+      <c:set var="backLocation" value="${KualiForm.backLocation}&" />
+     </c:when>
+     <c:otherwise>
+      <c:set var="backLocation" value="${KualiForm.backLocation}?" />
+     </c:otherwise>
+    </c:choose>
+    <c:if test="${!fn:contains(backLocation,'methodToCall')}">
+      <c:set var="backLocation" value="${backLocation}methodToCall=refresh&" />
+    </c:if>
+</c:if>
+
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 
 <kul:page lookup="true" showDocumentInfo="false"
@@ -91,13 +105,13 @@
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif" styleClass="tinybutton"
 						alt="clear" title="clear" border="0" /> <c:if test="${KualiForm.formKey!=''}">
 						<a
-							href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" />'  title="cancel"><img
+							href='<c:out value="${backLocation}docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" />'  title="cancel"><img
 							src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" class="tinybutton" alt="cancel" title="cancel" 
 							border="0" /></a>
 					</c:if> <!-- Optional extra button --> <c:if
 						test="${! empty KualiForm.extraButtonSource && extraButtonSource != ''}">
 						<a
-							href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&refreshCaller=kualiLookupable&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" /><c:out value="${KualiForm.extraButtonParams}" />'><img
+							href='<c:out value="${backLocation}refreshCaller=kualiLookupable&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" /><c:out value="${KualiForm.extraButtonParams}" />'><img
 							src='<c:out value="${KualiForm.extraButtonSource}" />'
 							class="tinybutton" border="0" /></a>
 					</c:if>

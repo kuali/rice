@@ -63,7 +63,15 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
     protected String testCreateActionRequestGroup(String user, String namespace, String actionType) throws InterruptedException{
         String docId = testCreateNew();
         addAdHocRecipientsGroup(new String[]{user, actionType, namespace});
-        submitAndClose();
+        checkForDocError();
+        waitAndClickByName("methodToCall.route");
+        waitForProgress("Submitting...");
+
+        reattemptPrimaryKey();
+
+        waitForTextPresent("Document was successfully submitted");
+        waitAndClickByName("methodToCall.close");
+
         return docId;
     }
 
@@ -86,18 +94,24 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         waitAndClickByName("methodToCall.route");
         waitForProgress("Submitting...");
 
-        int attempts = 0;
-        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
-                ++attempts <= 3) {
-            jGrowl("record with the same primary key already exists");
-            clearTextByName("document.newMaintainableObject.code"); // primary key
-            jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomNumeric(2));
-            waitAndClickByName("methodToCall.route");
-            waitForProgress("Submitting...");
-        }
+        reattemptPrimaryKey();
+
+        waitForTextPresent("Document was successfully submitted");
         waitAndClickByName("methodToCall.close");
 
         return docId;
+    }
+
+    private void reattemptPrimaryKey() throws InterruptedException {
+        int attempts = 0;
+        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
+                ++attempts <= 3) {
+            jGrowl("record with the same primary key already exists trying another, attempt: " + attempts);
+            clearTextByName("document.newMaintainableObject.code"); // primary key
+            jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphanumeric(2));
+            waitAndClickByName("methodToCall.route");
+            waitForProgress("Submitting...");
+        }
     }
 
     public void testActionListAcknowledgeGroup() throws Exception {
@@ -298,7 +312,15 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         if (!userActions[0][0].isEmpty()){
             addAdHocRecipientsPerson(userActions);
         }
-        submit();
+
+        checkForDocError();
+        waitAndClickByName("methodToCall.route");
+        waitForProgress("Submitting...");
+
+        reattemptPrimaryKey();
+
+        waitForTextPresent("Document was successfully submitted");
+
         waitForTextPresent("ENROUTE");
         waitAndClickByName("methodToCall.reload");
         waitForTextPresent(state);

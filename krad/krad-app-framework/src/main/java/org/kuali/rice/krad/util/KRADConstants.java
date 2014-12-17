@@ -221,7 +221,8 @@ public final class KRADConstants {
      * set to a message that is displayed when the module is locked.
      */
     public static final String MODULE_LOCKED_MESSAGE_REQUEST_PARAMETER = "moduleLockedMessage";
-    
+    public static final String MODULE_LOCKED_DEFAULT_MESSAGE = "The module you are attempting to access has been locked for maintenance.";
+
     public static final String CUSTOM_ACTION = "customAction";
     public static final String DOC_FORM_KEY = "docFormKey";
     public static final String FORM_KEY = "formKey";

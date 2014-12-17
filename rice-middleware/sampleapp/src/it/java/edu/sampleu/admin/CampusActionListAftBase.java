@@ -15,6 +15,7 @@
  */
 package edu.sampleu.admin;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
 
@@ -80,7 +81,22 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         if (!userActions[0][0].isEmpty()){
             addAdHocRecipientsPerson(userActions);
         }
-        submitAndClose();
+
+        checkForDocError();
+        waitAndClickByName("methodToCall.route");
+        waitForProgress("Submitting...");
+
+        int attempts = 0;
+        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
+                ++attempts <= 3) {
+            jGrowl("record with the same primary key already exists");
+            clearTextByName("document.newMaintainableObject.code"); // primary key
+            jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomNumeric(2));
+            waitAndClickByName("methodToCall.route");
+            waitForProgress("Submitting...");
+        }
+        waitAndClickByName("methodToCall.close");
+
         return docId;
     }
 

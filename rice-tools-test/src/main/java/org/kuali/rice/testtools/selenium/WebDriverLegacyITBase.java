@@ -507,7 +507,9 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         String nextYear = sdf.format(nextYearCal.getTime());
 
-        waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
+        if (!isVisible(By.name("newAdHocRoutePerson.actionRequested"))) {
+            waitAndClickByName("methodToCall.toggleTab.tabAdHocRecipients");
+        }
         for (int i = 0, s = adHocRecipients.length; i < s; i++) {
             selectOptionByName("newAdHocRoutePerson.actionRequested", adHocRecipients[i][1]);
             waitAndTypeByName("newAdHocRoutePerson.id", adHocRecipients[i][0]);

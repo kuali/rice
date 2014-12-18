@@ -25,6 +25,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.common.attribute.KimAttribute;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeAttributeContract;
@@ -50,6 +52,7 @@ public class KimTypeAttributeBo extends DataObjectBase implements KimTypeAttribu
     @Column(name = "KIM_ATTR_DEFN_ID")
     private String kimAttributeId;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = KimAttributeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "KIM_ATTR_DEFN_ID", referencedColumnName = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
     private KimAttributeBo kimAttribute;

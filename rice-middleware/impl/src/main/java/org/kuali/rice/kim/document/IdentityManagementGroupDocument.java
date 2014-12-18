@@ -31,6 +31,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -85,10 +87,12 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
     @Transient
     protected boolean editing;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = GroupDocumentMember.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     private List<GroupDocumentMember> members = new AutoPopulatingList<GroupDocumentMember>(GroupDocumentMember.class);
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = GroupDocumentQualifier.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     private List<GroupDocumentQualifier> qualifiers = new AutoPopulatingList<GroupDocumentQualifier>(GroupDocumentQualifier.class);

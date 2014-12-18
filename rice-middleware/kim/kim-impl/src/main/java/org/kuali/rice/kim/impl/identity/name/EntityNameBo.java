@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.impl.identity.name;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.identity.name.EntityName;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -45,6 +47,7 @@ public class EntityNameBo extends EntityNameBase {
     @Column(name = "ENTITY_NM_ID")
     private String id;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityNameTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "NM_TYP_CD", referencedColumnName = "ENT_NM_TYP_CD", insertable = false, updatable = false)
     private EntityNameTypeBo nameType;

@@ -24,6 +24,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -42,6 +44,7 @@ public class EntityEmailBo extends EntityEmailBase {
     @Column(name = "ENTITY_EMAIL_ID")
     private String id;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityEmailTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "EMAIL_TYP_CD", referencedColumnName = "EMAIL_TYP_CD", insertable = false, updatable = false)
     private EntityEmailTypeBo emailType;

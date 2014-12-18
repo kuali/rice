@@ -31,6 +31,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
 import org.kuali.rice.kim.api.permission.PermissionContract;
@@ -75,10 +77,12 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     @Convert(converter = BooleanYNConverter.class)
     protected boolean active;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = PermissionTemplateBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "PERM_TMPL_ID", referencedColumnName = "PERM_TMPL_ID", insertable = false, updatable = false)
     protected PermissionTemplateBo template = new PermissionTemplateBo();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PermissionAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumn(name = "PERM_ID", referencedColumnName = "PERM_ID")
     protected List<PermissionAttributeBo> attributeDetails;
@@ -86,6 +90,7 @@ public class PermissionBo extends PersistableBusinessObjectBase implements Permi
     @Transient
     protected Map<String, String> attributes;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(mappedBy = "permission")
     @JoinColumn(name = "PERM_ID", referencedColumnName = "PERM_ID", insertable = false, updatable = false)
     protected List<RolePermissionBo> rolePermissions = new AutoPopulatingList<RolePermissionBo>(RolePermissionBo.class);

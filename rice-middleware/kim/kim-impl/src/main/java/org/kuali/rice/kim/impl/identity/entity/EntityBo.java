@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2005-2014 The Kuali Foundation
  *
@@ -33,6 +32,9 @@ import javax.persistence.Table;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.BatchFetch;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
@@ -81,50 +83,62 @@ public class EntityBo extends DataObjectBase implements EntityContract {
     @Column(name = "ENTITY_ID")
     private String id;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityNameBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityNameBo> names = new ArrayList<EntityNameBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PrincipalBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<PrincipalBo> principals = new ArrayList<PrincipalBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityExternalIdentifierBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityExternalIdentifierBo> externalIdentifiers = new ArrayList<EntityExternalIdentifierBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityAffiliationBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityAffiliationBo> affiliations = new ArrayList<EntityAffiliationBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityEmploymentBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityEmploymentBo> employmentInformation = new ArrayList<EntityEmploymentBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityTypeContactInfoBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityTypeContactInfoBo> entityTypeContactInfos = new ArrayList<EntityTypeContactInfoBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToOne(targetEntity = EntityPrivacyPreferencesBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID")
     private EntityPrivacyPreferencesBo privacyPreferences;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToOne(targetEntity = EntityBioDemographicsBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID")
     private EntityBioDemographicsBo bioDemographics;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityCitizenshipBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityCitizenshipBo> citizenships = new ArrayList<EntityCitizenshipBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityEthnicityBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityEthnicityBo> ethnicities = new ArrayList<EntityEthnicityBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityResidencyBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityResidencyBo> residencies = new ArrayList<EntityResidencyBo>();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityVisaBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false)
     private List<EntityVisaBo> visas = new ArrayList<EntityVisaBo>();

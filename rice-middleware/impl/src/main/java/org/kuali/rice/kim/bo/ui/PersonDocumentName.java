@@ -27,6 +27,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.impl.identity.name.EntityNameTypeBo;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -78,6 +80,7 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
     @Column(name = "NM_CHNG_DT")
     protected Timestamp nameChangedDate;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityNameTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "NM_TYP_CD", referencedColumnName = "ENT_NM_TYP_CD", insertable = false, updatable = false)
     protected EntityNameTypeBo entityNameType;

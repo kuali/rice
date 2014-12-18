@@ -28,6 +28,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.springframework.util.AutoPopulatingList;
@@ -59,6 +61,7 @@ public class RoleDocumentDelegation extends KimDocumentBoActivatableBase {
     @Column(name = "DLGN_TYP_CD")
     protected String delegationTypeCode;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = RoleDocumentDelegationMember.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumns({ 
         @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 

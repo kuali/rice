@@ -24,6 +24,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -39,6 +41,7 @@ public class EntityAffiliationBo extends EntityAffiliationBase {
     @Column(name = "ENTITY_AFLTN_ID")
     private String id;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityAffiliationTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "AFLTN_TYP_CD", referencedColumnName = "AFLTN_TYP_CD", insertable = false, updatable = false)
     private EntityAffiliationTypeBo affiliationType;

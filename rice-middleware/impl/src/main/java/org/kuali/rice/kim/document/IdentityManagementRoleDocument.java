@@ -29,6 +29,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityService;
@@ -91,14 +93,17 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     @Transient
     protected boolean editing;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = KimDocumentRolePermission.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<KimDocumentRolePermission> permissions = new AutoPopulatingList<KimDocumentRolePermission>(KimDocumentRolePermission.class);
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = KimDocumentRoleResponsibility.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<KimDocumentRoleResponsibility> responsibilities = new AutoPopulatingList<KimDocumentRoleResponsibility>(KimDocumentRoleResponsibility.class);
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = KimDocumentRoleMember.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<KimDocumentRoleMember> modifiedMembers = new AutoPopulatingList<KimDocumentRoleMember>(KimDocumentRoleMember.class);
@@ -106,6 +111,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
     @Transient
     private List<RoleDocumentDelegationMember> delegationMembers = new AutoPopulatingList<RoleDocumentDelegationMember>(RoleDocumentDelegationMember.class);
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = RoleDocumentDelegation.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     private List<RoleDocumentDelegation> delegations = new AutoPopulatingList<RoleDocumentDelegation>(RoleDocumentDelegation.class);

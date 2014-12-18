@@ -59,7 +59,6 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	protected List<RoleDocumentDelegation> delegations = new AutoPopulatingList<RoleDocumentDelegation>(RoleDocumentDelegation.class);
 	@Transient
 	protected List<RoleDocumentDelegationMember> delegationMembers = new AutoPopulatingList<RoleDocumentDelegationMember>(RoleDocumentDelegationMember.class);
-	@Transient
 	
 	protected void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
 		RoleDocumentDelegation delegation;

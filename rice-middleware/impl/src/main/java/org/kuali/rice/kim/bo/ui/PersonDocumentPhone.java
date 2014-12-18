@@ -25,6 +25,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.impl.identity.phone.EntityPhoneTypeBo;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -60,6 +62,7 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
     @Column(name = "POSTAL_CNTRY_CD")
     protected String countryCode;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityPhoneTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "PHONE_TYP_CD", referencedColumnName = "PHONE_TYP_CD", insertable = false, updatable = false)
     protected EntityPhoneTypeBo phoneType;

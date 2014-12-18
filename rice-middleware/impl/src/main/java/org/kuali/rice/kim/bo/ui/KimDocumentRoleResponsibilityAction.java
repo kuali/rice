@@ -26,6 +26,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kew.api.util.CodeTranslator;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -79,6 +81,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
     @Transient
     protected ResponsibilityBo kimResponsibility;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = RoleResponsibilityBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "ROLE_RSP_ID", referencedColumnName = "ROLE_RSP_ID", insertable = false, updatable = false)
     protected RoleResponsibilityBo roleResponsibility;

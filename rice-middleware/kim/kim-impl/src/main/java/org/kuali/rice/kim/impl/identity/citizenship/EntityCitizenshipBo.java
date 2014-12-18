@@ -27,6 +27,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.identity.citizenship.EntityCitizenship;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -42,6 +44,7 @@ public class EntityCitizenshipBo extends EntityCitizenshipBase {
     @Column(name = "ENTITY_CTZNSHP_ID")
     private String id;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityCitizenshipStatusBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "CTZNSHP_STAT_CD", referencedColumnName = "CTZNSHP_STAT_CD", insertable = false, updatable = false)
     private EntityCitizenshipStatusBo status;

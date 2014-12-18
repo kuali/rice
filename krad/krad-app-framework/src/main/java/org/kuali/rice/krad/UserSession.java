@@ -17,7 +17,6 @@ package org.kuali.rice.krad;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.util.SessionTicket;
@@ -28,6 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -38,10 +38,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UserSession implements Serializable {
     private static final long serialVersionUID = 4532616762540067557L;
 
+    private static final Object NULL_VALUE = new Object();
+
     private Person person;
     private Person backdoorUser;
     private AtomicInteger nextObjectKey;
-    private Map<String, Object> objectMap;
+    private ConcurrentHashMap<String, Object> objectMap;
     private String kualiSessionId;
 
     /**
@@ -69,7 +71,7 @@ public class UserSession implements Serializable {
     public UserSession(String principalName) {
         initPerson(principalName);
         this.nextObjectKey = new AtomicInteger(0);
-        this.objectMap = Collections.synchronizedMap(new HashMap<String,Object>());
+        this.objectMap = new ConcurrentHashMap<String, Object>();
     }
 
     /**
@@ -174,7 +176,7 @@ public class UserSession implements Serializable {
      */
     public String addObjectWithGeneratedKey(Serializable object, String keyPrefix) {
         String objectKey = keyPrefix + nextObjectKey.incrementAndGet();
-        objectMap.put(objectKey, object);
+        addObject(objectKey, object);
         return objectKey;
     }
 
@@ -189,30 +191,61 @@ public class UserSession implements Serializable {
      */
     public String addObjectWithGeneratedKey(Object object) {
         String objectKey = nextObjectKey.incrementAndGet() + "";
-        objectMap.put(objectKey, object);
+        addObject(objectKey, object);
         return objectKey;
     }
 
     /**
-     * allows adding an arbitrary object to the session with static a string key that can be used to later access this
-     * object from
-     * the session using the retrieveObject method in this class
+     * Allows adding an arbitrary object to the session with static a string key that can be used to later access this
+     * object from the session using the retrieveObject method in this class.
      *
-     * @param object
+     * @param key the mapping key
+     * @param object the object to store
      */
     public void addObject(String key, Object object) {
-        objectMap.put(key, object);
+        if (object != null) {
+            objectMap.put(key, object);
+        } else {
+            objectMap.put(key, NULL_VALUE);
+        }
     }
 
     /**
-     * allows for fetching an object that has been put into the userSession based on the key that would have been
-     * returned when
-     * adding the object
+     * Either allows adding an arbitrary object to the session based on a key (if there is not currently an object
+     * associated with that key) or returns the object already associated with that key.
      *
-     * @param objectKey
+     * @see ConcurrentHashMap#putIfAbsent(Object, Object)
+     *
+     * @param key the mapping key
+     * @param object the object to store
+     */
+    public void addObjectIfAbsent(String key, Object object) {
+        if (object != null) {
+            objectMap.putIfAbsent(key, object);
+        } else {
+            objectMap.putIfAbsent(key, NULL_VALUE);
+        }
+    }
+
+    /**
+     * Allows for fetching an object that has been put into the userSession based on the key that would have been
+     * returned when adding the object.
+     *
+     * @param objectKey the mapping key
+     *
+     * @return the stored object
      */
     public Object retrieveObject(String objectKey) {
-        return this.objectMap.get(objectKey);
+        if (objectKey == null) {
+            return null;
+        }
+        Object object = objectMap.get(objectKey);
+
+        if (!NULL_VALUE.equals(object)) {
+            return object;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -223,7 +256,9 @@ public class UserSession implements Serializable {
      * @param objectKey
      */
     public void removeObject(String objectKey) {
-        this.objectMap.remove(objectKey);
+        if (objectKey != null) {
+            this.objectMap.remove(objectKey);
+        }
     }
 
     /**
@@ -346,6 +381,6 @@ public class UserSession implements Serializable {
      * clear the objectMap
      */
     public void clearObjectMap() {
-        this.objectMap = Collections.synchronizedMap(new HashMap<String,Object>());
+        this.objectMap = new ConcurrentHashMap<String, Object>();
     }
 }

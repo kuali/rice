@@ -23,9 +23,10 @@ import org.kuali.rice.core.api.mail.EmailSubject;
 import org.kuali.rice.core.api.mail.EmailTo;
 import org.kuali.rice.core.api.mail.EmailToList;
 import org.kuali.rice.core.api.mail.MailMessage;
+import org.kuali.rice.core.api.mail.MailAttachment;
 
 import javax.mail.MessagingException;
-
+import java.util.List;
 
 public interface Mailer {
 
@@ -35,4 +36,7 @@ public interface Mailer {
 
     void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc,
             boolean htmlMessage);
+
+    void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc,
+            boolean htmlMessage, List<MailAttachment> mailAttachments);
 }

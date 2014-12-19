@@ -437,6 +437,12 @@
       <helpDefinitionURL>default.htm?turl=WordDocuments%2Fcampustype.htm</helpDefinitionURL>
       <active>true</active>
       <routingVersion>2</routingVersion>
+			<policies>
+				<policy>
+					<name>SEND_NOTIFICATION_ON_SU_DISAPPROVE</name>
+					<value>true</value>
+				</policy>
+			</policies>
     </documentType>
 	</documentTypes>
 	<rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">

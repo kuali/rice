@@ -34,3 +34,8 @@ INSERT INTO KRNS_NTE_TYP_T (ACTV_IND,NTE_TYP_CD,OBJ_ID,TYP_DESC_TXT,VER_NBR)
   VALUES ('Y','BO','53680C68F5A9AD9BE0404F8189D80A6C','DOCUMENT BUSINESS OBJECT',1)
 ;
 
+-- Added for KULRICE-14072
+INSERT INTO KRCR_PARM_T (NMSPC_CD, CMPNT_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, VAL, PARM_DESC_TXT, EVAL_OPRTR_CD, APPL_ID)
+  VALUES('KR-NS', 'All', 'xSENSITIVE_DATA_PATTERNS_WARNING_IND', 'e7d133f3-b5fe-11df-ad0a-d18f5709259f', 1, 'CONFG', 'N',
+   'If set to ''Y'' when sensitive data is found the user will be prompted to continue the action or cancel. If this is set to ''N'' the user will be presented with an error message and will not be allowed to continue with the action until the sensitive data is removed.', 'A', 'KUALI')
+;

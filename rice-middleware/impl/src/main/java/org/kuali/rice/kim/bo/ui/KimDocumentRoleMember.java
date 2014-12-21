@@ -31,6 +31,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.group.Group;
@@ -76,6 +78,7 @@ public class KimDocumentRoleMember extends KimDocumentBoActivatableToFromEditabl
     @Transient
     protected String memberFullName;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = KimDocumentRoleQualifier.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumns({ 
         @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 
@@ -85,6 +88,7 @@ public class KimDocumentRoleMember extends KimDocumentBoActivatableToFromEditabl
     @Transient
     protected String qualifiersToDisplay;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = KimDocumentRoleResponsibilityAction.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumns({ 
         @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 

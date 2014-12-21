@@ -29,6 +29,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.KimConstants;
@@ -95,6 +97,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     @Column(name = "MBR_NM")
     protected String memberName;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = RoleDocumentDelegationMemberQualifier.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumns({ 
         @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 

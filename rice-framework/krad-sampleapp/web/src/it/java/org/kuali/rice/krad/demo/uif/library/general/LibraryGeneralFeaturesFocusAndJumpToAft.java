@@ -51,6 +51,7 @@ public class LibraryGeneralFeaturesFocusAndJumpToAft extends WebDriverLegacyITBa
         waitForElementPresentByXpath("//div[@id='input4' and @class='uif-inputField uif-boxLayoutVerticalItem pull-left clearfix uif-hasError']/input");
         waitAndClickButtonByExactText("Refresh Page");
         waitForTextPresent("Loading...");
+        checkForIncidentReport();
     }
     
     protected void testGeneralFeaturesFocusAndJumpToFocusAndCollections() throws Exception {
@@ -64,6 +65,7 @@ public class LibraryGeneralFeaturesFocusAndJumpToAft extends WebDriverLegacyITBa
     	waitAndClickButtonByExactText("Jump to Field 20");
     	waitAndClickButtonByExactText("Jump to Top");
     	waitAndClickButtonByExactText("Jump to Bottom");
+        checkForIncidentReport();
     }
     
     @Test
@@ -74,7 +76,7 @@ public class LibraryGeneralFeaturesFocusAndJumpToAft extends WebDriverLegacyITBa
         passed();
     }
 
-//    @Test
+    @Test
     public void testGeneralFeaturesFocusAndJumpToNav() throws Exception {
     	testGeneralFeaturesFocusAndJumpTo();
     	testGeneralFeaturesFocusAndJumpToFocusAndCollections();

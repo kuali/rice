@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.impl.identity.phone;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -38,6 +40,7 @@ public class EntityPhoneBo extends EntityPhoneBase {
     @Column(name = "ENTITY_PHONE_ID")
     private String id;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityPhoneTypeBo.class, fetch = FetchType.EAGER, cascade = {})
     @JoinColumn(name = "PHONE_TYP_CD", insertable = false, updatable = false)
     private EntityPhoneTypeBo phoneType;

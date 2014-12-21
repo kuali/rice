@@ -30,6 +30,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.common.attribute.KimAttributeDataContract;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimType;
@@ -55,6 +57,7 @@ public abstract class KimAttributeDataBo extends DataObjectBase implements KimAt
     @Column(name="KIM_ATTR_DEFN_ID")
     private String kimAttributeId;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
     private KimAttributeBo kimAttribute;

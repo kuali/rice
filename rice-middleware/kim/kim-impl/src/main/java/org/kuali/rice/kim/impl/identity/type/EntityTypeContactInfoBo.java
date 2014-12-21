@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2005-2014 The Kuali Foundation
  *
@@ -33,6 +32,8 @@ import javax.persistence.Table;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.CompareToBuilder;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.identity.EntityUtils;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
@@ -63,18 +64,22 @@ public class EntityTypeContactInfoBo extends DataObjectBase implements EntityTyp
     @Column(name = "ENT_TYP_CD")
     private String entityTypeCode;
 
+    @JoinFetch(value= JoinFetchType.INNER)
     @ManyToOne(targetEntity = EntityTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false)
     private EntityTypeBo entityType;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityEmailBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityEmailBo> emailAddresses;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityPhoneBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityPhoneBo> phoneNumbers;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = EntityAddressBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumns({ @JoinColumn(name = "ENTITY_ID", referencedColumnName = "ENTITY_ID", insertable = false, updatable = false), @JoinColumn(name = "ENT_TYP_CD", referencedColumnName = "ENT_TYP_CD", insertable = false, updatable = false) })
     private List<EntityAddressBo> addresses;

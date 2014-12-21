@@ -29,6 +29,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.api.type.KimTypeAttribute;
 import org.kuali.rice.kim.api.type.KimTypeContract;
@@ -58,6 +60,7 @@ public class KimTypeBo extends DataObjectBase implements KimTypeContract, Busine
     @Column(name = "NM")
     private String name;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = KimTypeAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "KIM_TYP_ID", referencedColumnName = "KIM_TYP_ID", insertable = false, updatable = false)
     private List<KimTypeAttributeBo> attributeDefinitions = new AutoPopulatingList<KimTypeAttributeBo>(KimTypeAttributeBo.class);

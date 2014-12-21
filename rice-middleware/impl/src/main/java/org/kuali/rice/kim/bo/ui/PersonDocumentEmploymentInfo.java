@@ -26,6 +26,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo;
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo;
@@ -74,10 +76,12 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
     @Convert(converter = BooleanYNConverter.class)
     protected boolean primary;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityEmploymentTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "EMP_TYP_CD", referencedColumnName = "EMP_TYP_CD", insertable = false, updatable = false)
     protected EntityEmploymentTypeBo employmentType;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityEmploymentStatusBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "EMP_STAT_CD", referencedColumnName = "EMP_STAT_CD", insertable = false, updatable = false)
     protected EntityEmploymentStatusBo employmentStatus;

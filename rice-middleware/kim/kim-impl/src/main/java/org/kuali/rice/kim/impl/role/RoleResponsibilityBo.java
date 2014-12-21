@@ -25,6 +25,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.role.RoleResponsibility;
 import org.kuali.rice.kim.api.role.RoleResponsibilityContract;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
@@ -57,6 +59,7 @@ public class RoleResponsibilityBo extends DataObjectBase implements RoleResponsi
     @Convert(converter = BooleanYNConverter.class)
     private boolean active;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = ResponsibilityBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "RSP_ID", referencedColumnName = "RSP_ID", insertable = false, updatable = false)
     private ResponsibilityBo kimResponsibility;

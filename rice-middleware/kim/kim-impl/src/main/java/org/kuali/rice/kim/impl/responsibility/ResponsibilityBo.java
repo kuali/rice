@@ -33,6 +33,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.responsibility.ResponsibilityContract;
@@ -78,14 +80,17 @@ public class ResponsibilityBo extends DataObjectBase implements ResponsibilityCo
     @Convert(converter = BooleanYNConverter.class)
     boolean active;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = ResponsibilityTemplateBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "RSP_TMPL_ID", referencedColumnName = "RSP_TMPL_ID", insertable = false, updatable = false)
     ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = ResponsibilityAttributeBo.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumn(name = "RSP_ID", referencedColumnName = "RSP_ID")
     List<ResponsibilityAttributeBo> attributeDetails = new AutoPopulatingList<ResponsibilityAttributeBo>(ResponsibilityAttributeBo.class);
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(mappedBy = "kimResponsibility")
     @JoinColumn(name = "RSP_ID", referencedColumnName = "RSP_ID", insertable = false, updatable = false)
     List<RoleResponsibilityBo> roleResponsibilities = new AutoPopulatingList<RoleResponsibilityBo>(RoleResponsibilityBo.class);

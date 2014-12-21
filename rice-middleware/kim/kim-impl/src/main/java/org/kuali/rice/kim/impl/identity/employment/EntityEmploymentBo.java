@@ -24,6 +24,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationBo;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
@@ -40,14 +42,17 @@ public class EntityEmploymentBo extends EntityEmploymentBase {
     @Column(name = "ENTITY_EMP_ID")
     private String id;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityEmploymentTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "EMP_TYP_CD", referencedColumnName = "EMP_TYP_CD", insertable = false, updatable = false)
     private EntityEmploymentTypeBo employeeType;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityEmploymentStatusBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "EMP_STAT_CD", referencedColumnName = "EMP_STAT_CD", insertable = false, updatable = false)
     private EntityEmploymentStatusBo employeeStatus;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityAffiliationBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "ENTITY_AFLTN_ID", referencedColumnName = "ENTITY_AFLTN_ID", insertable = false, updatable = false)
     private EntityAffiliationBo entityAffiliation;

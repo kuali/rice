@@ -26,6 +26,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -54,10 +56,10 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoAct
 	
 	@Column(name = "ATTR_VAL")
 	private String attrVal = "";
-	
+
+	@JoinFetch(value= JoinFetchType.OUTER)
 	@OneToOne(targetEntity=KimAttributeBo.class, fetch=FetchType.EAGER, cascade={ CascadeType.REFRESH } )
     @JoinColumn(name="KIM_ATTR_DEFN_ID",insertable=false,updatable=false)
-	
 	private KimAttributeBo kimAttribute;
 	
 	@Transient

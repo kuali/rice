@@ -33,6 +33,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.api.type.KimAttributeField;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -85,6 +87,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
     @Transient
     protected transient Map<String, Object> attributeEntry;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = KimDocumentRoleMember.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumns({ 
         @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 

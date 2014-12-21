@@ -28,6 +28,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.impl.identity.address.EntityAddressTypeBo;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
@@ -96,6 +98,7 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
     @Column(name = "NOTE_MSG")
     protected String noteMessage;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityAddressTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "ADDR_TYP_CD", referencedColumnName = "ADDR_TYP_CD", insertable = false, updatable = false)
     private EntityAddressTypeBo addressType;

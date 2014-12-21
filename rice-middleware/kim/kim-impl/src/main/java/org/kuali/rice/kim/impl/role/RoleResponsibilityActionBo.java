@@ -27,6 +27,8 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleResponsibilityActionContract;
 import org.kuali.rice.krad.bo.DataObjectBase;
@@ -69,6 +71,7 @@ public class RoleResponsibilityActionBo extends DataObjectBase implements RoleRe
     @Column(name = "PRIORITY_NBR")
     private Integer priorityNumber;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = RoleResponsibilityBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "ROLE_RSP_ID", referencedColumnName = "ROLE_RSP_ID", insertable = false, updatable = false)
     private RoleResponsibilityBo roleResponsibility;

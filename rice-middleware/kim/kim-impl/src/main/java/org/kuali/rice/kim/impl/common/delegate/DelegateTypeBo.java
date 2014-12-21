@@ -28,6 +28,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateType;
@@ -62,6 +64,7 @@ public class DelegateTypeBo extends DataObjectBase implements DelegateTypeContra
     @Column(name = "DLGN_TYP_CD")
     private String delegationTypeCode;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = DelegateMemberBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "DLGN_ID", referencedColumnName = "DLGN_ID", insertable = false, updatable = false)
     private List<DelegateMemberBo> members = new AutoPopulatingList<DelegateMemberBo>(DelegateMemberBo.class);

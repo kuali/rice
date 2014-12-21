@@ -35,6 +35,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
@@ -101,6 +103,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     protected String univId = "";
 
     // affiliation data                       
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentAffiliation.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<PersonDocumentAffiliation> affiliations;
@@ -121,30 +124,37 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     protected List<PersonDocumentCitizenship> citizenships;
 
     // protected List<DocEmploymentInfo> employmentInformations;                       
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentName.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<PersonDocumentName> names;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentAddress.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<PersonDocumentAddress> addrs;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentPhone.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<PersonDocumentPhone> phones;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentEmail.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<PersonDocumentEmail> emails;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentGroup.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<PersonDocumentGroup> groups;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentRole.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
     protected List<PersonDocumentRole> roles;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToOne(targetEntity = PersonDocumentPrivacy.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @PrimaryKeyJoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR")
     protected PersonDocumentPrivacy privacy;

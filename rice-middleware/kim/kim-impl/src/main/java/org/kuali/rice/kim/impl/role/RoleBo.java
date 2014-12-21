@@ -29,6 +29,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kim.api.role.Role;
@@ -70,6 +72,7 @@ public class RoleBo extends DataObjectBase implements RoleEbo {
     @Column(name = "NMSPC_CD")
     private String namespaceCode;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = RoleMemberBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "ROLE_ID", referencedColumnName = "ROLE_ID", insertable = false, updatable = false)
     private List<RoleMemberBo> members = new AutoPopulatingList<RoleMemberBo>(RoleMemberBo.class);

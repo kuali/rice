@@ -29,6 +29,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifierContract;
@@ -58,6 +60,7 @@ public class EntityExternalIdentifierBo extends DataObjectBase implements Entity
     @Column(name = "EXT_ID")
     private String externalId;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityExternalIdentifierTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "EXT_ID_TYP_CD", referencedColumnName = "EXT_ID_TYP_CD", insertable = false, updatable = false)
     private EntityExternalIdentifierTypeBo externalIdentifierType;

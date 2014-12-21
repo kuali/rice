@@ -31,6 +31,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.common.delegate.DelegateMember;
 import org.kuali.rice.kim.api.common.delegate.DelegateMemberContract;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeDataBo;
@@ -55,6 +57,7 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
     @Column(name = "ROLE_MBR_ID")
     private String roleMemberId;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = DelegateMemberAttributeDataBo.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID", insertable = false, updatable = false)
     private List<DelegateMemberAttributeDataBo> attributeDetails = new AutoPopulatingList<DelegateMemberAttributeDataBo>(DelegateMemberAttributeDataBo.class);

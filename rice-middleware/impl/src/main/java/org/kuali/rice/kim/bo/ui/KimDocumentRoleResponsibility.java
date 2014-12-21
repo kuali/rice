@@ -28,6 +28,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.api.responsibility.Responsibility;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityBo;
@@ -62,6 +64,7 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
     @Transient
     protected ResponsibilityBo kimResponsibility;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = KimDocumentRoleResponsibilityAction.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumns({ 
             @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false) 

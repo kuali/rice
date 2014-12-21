@@ -30,6 +30,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.kuali.rice.kim.impl.identity.affiliation.EntityAffiliationTypeBo;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 
@@ -57,6 +59,7 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
     @Column(name = "CAMPUS_CD")
     protected String campusCode;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @ManyToOne(targetEntity = EntityAffiliationTypeBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "AFLTN_TYP_CD", referencedColumnName = "AFLTN_TYP_CD", insertable = false, updatable = false)
     protected EntityAffiliationTypeBo affiliationType;
@@ -64,6 +67,7 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
     @Transient
     protected PersonDocumentEmploymentInfo newEmpInfo;
 
+    @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentEmploymentInfo.class, cascade = { CascadeType.REFRESH, CascadeType.PERSIST })
     @JoinColumns({ 
         @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 

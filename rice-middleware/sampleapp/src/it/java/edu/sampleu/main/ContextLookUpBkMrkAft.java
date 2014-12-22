@@ -31,4 +31,11 @@ public class ContextLookUpBkMrkAft extends ContextLookUpAftBase {
     public void testContextLookUpBookmark() throws Exception {
         testContextLookUpBookmark(this);
     }
+
+    @Test
+    public void testContextCopyBookmark() throws Exception {
+        waitForPageToLoad();
+        selectFrameIframePortlet();
+        testContextCopy(this);
+    }
 }

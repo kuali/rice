@@ -1,0 +1,362 @@
+Message-ID: <855638094.193911.1419304665705.JavaMail.tomcat@jira-new.kuali.org>
+Subject: Exported From Confluence
+MIME-Version: 1.0
+Content-Type: multipart/related; 
+	boundary="----=_Part_193910_166922668.1419304665704"
+
+------=_Part_193910_166922668.1419304665704
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Content-Location: file:///C:/exported.html
+
+<html xmlns:o=3D'urn:schemas-microsoft-com:office:office'
+      xmlns:w=3D'urn:schemas-microsoft-com:office:word'
+      xmlns:v=3D'urn:schemas-microsoft-com:vml'
+      xmlns=3D'urn:w3-org-ns:HTML'>
+<head>
+    <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8=
+">
+    <title>Rice 0.9.4 Release Notes</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:TargetScreenSize>1024x640</o:TargetScreenSize>
+            <o:PixelsPerInch>72</o:PixelsPerInch>
+            <o:AllowPNG/>
+        </o:OfficeDocumentSettings>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>90</w:Zoom>
+            <w:DoNotOptimizeForBrowser/>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+                <!--
+        @page Section1 {
+            size: 8.5in 11.0in;
+            margin: 1.0in;
+            mso-header-margin: .5in;
+            mso-footer-margin: .5in;
+            mso-paper-source: 0;
+        }
+
+        td {
+            page-break-inside: avoid;
+        }
+
+        tr {
+            page-break-after: avoid;
+        }
+
+        div.Section1 {
+            page: Section1;
+        }
+
+        /* Confluence print stylesheet. Common to all themes for print medi=
+a */
+/* Full of !important until we improve batching for print CSS */
+
+#main {
+    padding-bottom: 1em !important; /* The default padding of 6em is too mu=
+ch for printouts */
+}
+
+body {
+    font-family: Arial, Helvetica, FreeSans, sans-serif;
+    font-size: 10pt;
+    line-height: 1.2;
+}
+
+body, #full-height-container, #main, #page, #content, .has-personal-sidebar=
+ #content {
+    background: #fff    !important;
+    color: #000         !important;
+    border: 0           !important;
+    width: 100%         !important;
+    height: auto        !important;
+    min-height: auto    !important;
+    margin: 0           !important;
+    padding: 0          !important;
+    display: block      !important;
+}
+
+a, a:link, a:visited, a:focus, a:hover, a:active {
+    color: #000;
+}
+#content h1,
+#content h2,
+#content h3,
+#content h4,
+#content h5,
+#content h6 {
+    font-family: Arial, Helvetica, FreeSans, sans-serif;
+    page-break-after: avoid;
+}
+pre {
+    font-family: Monaco, "Courier New", monospace;
+}
+
+#header,
+.aui-header-inner,
+#navigation,
+#sidebar,
+.sidebar,
+#personal-info-sidebar,
+.ia-fixed-sidebar,
+.page-actions,
+.navmenu,
+.ajs-menu-bar,
+.noprint,
+.inline-control-link,
+.inline-control-link a,
+a.show-labels-editor,
+.global-comment-actions,
+.comment-actions,
+.quick-comment-container,
+#addcomment {
+    display: none !important;
+}
+
+.comment .date::before {
+    content: none !important; /* remove middot for print view */
+}
+
+h1.pagetitle img {
+    height: auto;
+    width: auto;
+}
+
+.print-only {
+    display: block;
+}
+#footer {
+    position: relative !important; /* CONF-17506 Place the footer at end of=
+ the content */
+    margin: 0;
+    padding: 0;
+    background: none;
+    clear: both;
+}
+
+#poweredby {
+    border-top: none;
+    background: none;
+}
+
+#poweredby li.print-only {
+    display: list-item;
+    font-style: italic;
+}
+
+#poweredby li.noprint {
+    display:none;
+}
+
+
+/* no width controls in print */
+.wiki-content .table-wrap,
+.wiki-content p,
+.panel .codeContent,
+.panel .codeContent pre,
+.image-wrap {
+    overflow: visible !important;
+}
+
+/* TODO - should this work? */
+#children-section,
+#comments-section .comment,
+#comments-section .comment .comment-body,
+#comments-section .comment .comment-content,
+#comments-section .comment p {
+    page-break-inside: avoid;
+}
+
+#page-children a {
+    text-decoration: none;
+}
+
+/**
+ hide twixies
+
+ the specificity here is a hack because print styles
+ are getting loaded before the base styles. */
+#comments-section.pageSection .section-header,
+#comments-section.pageSection .section-title,
+#children-section.pageSection .section-header,
+#children-section.pageSection .section-title,
+.children-show-hide {
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.children-show-hide.icon {
+    display: none;
+}
+
+/* personal sidebar */
+.has-personal-sidebar #content {
+    margin-right: 0px;
+}
+
+.has-personal-sidebar #content .pageSection {
+    margin-right: 0px;
+}
+-->
+    </style>
+</head>
+<body>
+    <h1>Rice 0.9.4 Release Notes</h1>
+    <div class=3D"Section1">
+        <div class=3D"aui-message problem shadowed information-macro">=20
+<span class=3D"aui-icon icon-problem">Icon</span>=20
+<div class=3D"message-content">=20
+<p><strong>Not yet released! See <a href=3D"/display/KULRICE/Roadmap">Roadm=
+ap</a> for details.</strong></p>=20
+</div>=20
+</div>=20
+<strong><em>Rice 0.9.4 will focus on refactoring the web layers of the Rice=
+ components to leverage the KNS rendering features. In addition, we will be=
+ retrofitting the Rice components to use KIM for IdM functionality. Essenti=
+ally the user interfaces of KEW, KSB, and KEN will be re-written to use the=
+ KNS.</em></strong>=20
+<p><strong>Approximate Delivery Date: July 2008</strong></p>=20
+<h1 id=3D"Rice0.9.4ReleaseNotes-IssuesResolved">Issues Resolved</h1> Unable=
+ to locate JIRA server for this macro. It may be due to Application Link co=
+nfiguration.=20
+<h1 id=3D"Rice0.9.4ReleaseNotes-ImpactEstimates">Impact Estimates</h1>=20
+<p><strong>Estimated Total Impact:</strong> TBD</p>=20
+<h3 id=3D"Rice0.9.4ReleaseNotes-ForcedChangeIssues">Forced Change Issues</h=
+3> Unable to locate JIRA server for this macro. It may be due to Applicatio=
+n Link configuration.=20
+<h1 id=3D"Rice0.9.4ReleaseNotes-UpgradeProcedure">Upgrade Procedure</h1>=20
+<h3 id=3D"Rice0.9.4ReleaseNotes-URLsurls">URLs <span class=3D"confluence-an=
+chor-link" id=3D"Rice0.9.4ReleaseNotes-urls"></span></h3>=20
+<p>The method for accessing these forms has changed; Rice now uses KNS-base=
+d locations.</p>=20
+<h4 id=3D"Rice0.9.4ReleaseNotes-KEW">KEW</h4>=20
+<h5 id=3D"Rice0.9.4ReleaseNotes-Menu">Menu</h5>=20
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<tbody>=20
+<tr>=20
+<th class=3D"confluenceTh"><p>Form or Page Title</p></th>=20
+<td class=3D"confluenceTd"><p>Menu URL</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Action List</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kew/ActionList.=
+do</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Document Search</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/en/DocumentSear=
+ch.do</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Routing Rules</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kr/lookup.do?bu=
+sinessObjectClassName=3Dorg.kuali.rice.kew.rule.RuleBaseValues&amp;docFormK=
+ey=3D88888888&amp;returnLocation=3D../en/Portal.do&amp;hideReturnLink=3Dtru=
+e&amp;showMaintenanceLinks=3Dtrue</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Routing Rule Delegations</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kr/lookup.do?bu=
+sinessObjectClassName=3Dorg.kuali.rice.kew.rule.RuleDelegation&amp;docFormK=
+ey=3D88888888&amp;returnLocation=3D../en/Portal.do&amp;hideReturnLink=3Dtru=
+e&amp;showMaintenanceLinks=3Dtrue</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Routing Report</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/en/RoutingRepor=
+t.do</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Workflow Quicklinks</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/en/QuickLinks.d=
+o</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Rule Quicklinks</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/en/RuleQuickLin=
+ks.do</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>eDoc Lites</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kr/lookup.do?bu=
+sinessObjectClassName=3Dorg.kuali.rice.kew.edl.bo.EDocLiteAssociation&amp;d=
+ocFormKey=3D88888888&amp;returnLocation=3D../en/Portal.do&amp;hideReturnLin=
+k=3Dtrue</p></td>=20
+</tr>=20
+</tbody>
+</table>
+</div>=20
+<h5 id=3D"Rice0.9.4ReleaseNotes-Administration">Administration</h5>=20
+<div class=3D"table-wrap">
+<table class=3D"confluenceTable">
+<tbody>=20
+<tr>=20
+<th class=3D"confluenceTh"><p>Form or Page Title</p></th>=20
+<td class=3D"confluenceTd"><p>Menu URL</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>XML Ingester</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/en/Ingester.do<=
+/p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Rule Attribute</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kr/lookup.do?bu=
+sinessObjectClassName=3Dorg.kuali.rice.kew.rule.bo.RuleAttribute&amp;docFor=
+mKey=3D88888888&amp;returnLocation=3DAdministration.do&amp;hideReturnLink=
+=3Dtrue</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Rule Template</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kr/lookup.do?bu=
+sinessObjectClassName=3Dorg.kuali.rice.kew.rule.bo.RuleTemplate&amp;docForm=
+Key=3D88888888&amp;returnLocation=3DAdministration.do&amp;hideReturnLink=3D=
+true</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>XSL Stylesheets</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kr/lookup.do?bu=
+sinessObjectClassName=3Dorg.kuali.rice.kew.edl.bo.EDocLiteStyle&amp;docForm=
+Key=3D88888888&amp;returnLocation=3DAdministration.do&amp;hideReturnLink=3D=
+true</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Workflow Statistics Report</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/en/Stats.do</p>=
+</td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Document Operation</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kew/DocumentOpe=
+ration.do</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Workflow Help Entry</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/en/Help.do</p><=
+/td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Document Type</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/kr/lookup.do?bu=
+sinessObjectClassName=3Dorg.kuali.rice.kew.doctype.bo.DocumentType&amp;docF=
+ormKey=3D88888888&amp;returnLocation=3DAdministration.do&amp;hideReturnLink=
+=3Dtrue</p></td>=20
+</tr>=20
+<tr>=20
+<td class=3D"confluenceTd"><p>Preferences</p></td>=20
+<td class=3D"confluenceTd"><p>https://test.kuali.org/kr-stg/en/Preferences.=
+do</p></td>=20
+</tr>=20
+</tbody>
+</table>
+</div>
+    </div>
+</body>
+</html>
+------=_Part_193910_166922668.1419304665704--

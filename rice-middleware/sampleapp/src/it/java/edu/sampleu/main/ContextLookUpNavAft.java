@@ -26,4 +26,9 @@ public class ContextLookUpNavAft extends ContextLookUpAftBase {
     public void testContextLookUpNav() throws Exception {
         testContextLookUpNav(this);
     }
+
+    @Test
+    public void testContextCopyNav() throws Exception {
+        testContextCopy(this);
+    }
 }

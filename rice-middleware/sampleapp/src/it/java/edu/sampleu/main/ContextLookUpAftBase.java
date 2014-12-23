@@ -15,6 +15,7 @@
  */
 package edu.sampleu.main;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.kuali.rice.testtools.common.JiraAwareFailable;
 import org.kuali.rice.testtools.selenium.AutomatedFunctionalTestUtils;
 import org.kuali.rice.testtools.selenium.WebDriverUtils;
@@ -58,6 +59,22 @@ public class ContextLookUpAftBase extends MainTmplMthdSTNavBase{
     }
     public void testContextLookUpNav(JiraAwareFailable failable) throws Exception {
         contextLookupAssertions();
+        passed();
+    }
+
+    public void testContextCopy(JiraAwareFailable failable) throws Exception {
+        waitAndClickSearchByText();
+        waitAndClickLinkContainingText("copy");
+        String randomNumber = RandomStringUtils.randomAlphabetic(4);
+        waitAndTypeByName("document.newMaintainableObject.dataObject.id", "Context " + randomNumber);
+        clearTextByName("document.newMaintainableObject.dataObject.name");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.name", "Context name" + randomNumber);
+        clearTextByName("document.newMaintainableObject.dataObject.description");
+        waitAndTypeByName("document.newMaintainableObject.dataObject.description", "Context desc" + randomNumber);
+        waitAndClickButtonByText("Submit");
+        waitAndClickConfirmSubmitOk();
+        waitForProgressLoading(WebDriverUtils.configuredImplicityWait() * 10);
+        waitForTextPresent("Document was successfully submitted.");
         passed();
     }
 }

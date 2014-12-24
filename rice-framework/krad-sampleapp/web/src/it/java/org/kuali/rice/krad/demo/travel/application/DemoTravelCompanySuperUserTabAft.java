@@ -92,6 +92,10 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Ad Hoc Recipients");
 
         submitSuccessfully(WebDriverUtils.configuredImplicityWait() * 8);
+        waitAndClickButtonByText("Reload");
+        waitForProgressLoading();
+        checkForDocErrorKrad();
+        waitForTextPresent("Document was successfully reloaded.");
     }
 
     protected void travelAccountCreateDocumentWith2Adhoc() throws Exception {
@@ -115,6 +119,10 @@ public class DemoTravelCompanySuperUserTabAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Ad Hoc Recipients");
 
         submitSuccessfully(WebDriverUtils.configuredImplicityWait() * 16);
+        waitAndClickButtonByText("Reload");
+        waitForProgressLoading();
+        checkForDocErrorKrad();
+        waitForTextPresent("Document was successfully reloaded.");
     }
 
     protected void testTravelAccountSuperUserApprove() throws Exception {

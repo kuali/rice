@@ -17,11 +17,16 @@ package org.kuali.rice.krad.uif.lifecycle.initialize;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
+import org.kuali.rice.krad.uif.component.Component;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycle;
 import org.kuali.rice.krad.uif.lifecycle.ViewLifecycleTaskBase;
 import org.kuali.rice.krad.uif.util.LifecycleElement;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewIndex;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Assign a unique ID to the component, if one has not already been assigned.
@@ -29,6 +34,8 @@ import org.kuali.rice.krad.uif.view.ViewIndex;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class AssignIdsTask extends ViewLifecycleTaskBase<LifecycleElement> {
+
+    private static final Pattern DIALOGS_PATTERN = Pattern.compile(UifPropertyPaths.DIALOGS + "\\[([0-9]+?)\\]");
 
     /**
      * Create a task to assign component IDs during the initialize phase.
@@ -79,6 +86,26 @@ public class AssignIdsTask extends ViewLifecycleTaskBase<LifecycleElement> {
         hash += prime;
         if (element.getViewPath() != null) {
             hash += element.getViewPath().hashCode();
+        }
+
+        // Ensure dialog child components have a unique id (because dialogs can be dynamically requested)
+        // and end up with a similar viewPath
+        // Uses the dialog id as part of the hash for their child component ids
+        if (element.getViewPath() != null && element.getViewPath().startsWith(UifPropertyPaths.DIALOGS + "[")) {
+            Matcher matcher = DIALOGS_PATTERN.matcher(element.getViewPath());
+            int index = -1;
+            matcher.find();
+            String strIndex = matcher.group(1);
+            if (StringUtils.isNotBlank(strIndex)) {
+                index = Integer.valueOf(strIndex);
+            }
+
+            if (view.getDialogs() != null && index > -1 && index < view.getDialogs().size()) {
+                Component parentDialog = view.getDialogs().get(index);
+                if (parentDialog != null && StringUtils.isNotBlank(parentDialog.getId())) {
+                    hash += parentDialog.getId().hashCode();
+                }
+            }
         }
         
         // Eliminate negatives without losing precision, and express in base-36

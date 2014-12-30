@@ -36,6 +36,8 @@ import java.util.Set;
 public class ViewPresentationControllerBase implements ViewPresentationController, Serializable {
     private static final long serialVersionUID = -3199587372204398503L;
 
+    private RequestAuthorizationCache requestAuthorizationCache;
+
     /**
      * @see ViewPresentationController#getActionFlags(org.kuali.rice.krad.uif.view.View,
      * org.kuali.rice.krad.web.form.UifFormBase)
@@ -174,6 +176,18 @@ public class ViewPresentationControllerBase implements ViewPresentationControlle
     public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Action action, String actionEvent, String actionId) {
         return true;
+    }
+
+    protected RequestAuthorizationCache getRequestAuthorizationCache() {
+        return requestAuthorizationCache;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAuthorizationCache(RequestAuthorizationCache requestAuthorizationCache) {
+        this.requestAuthorizationCache = requestAuthorizationCache;
     }
 
 }

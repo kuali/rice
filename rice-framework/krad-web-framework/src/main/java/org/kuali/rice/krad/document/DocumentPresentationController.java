@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.kuali.rice.krad.uif.view.RequestAuthorizationCache;
 
 /**
  * Determines what actions are applicable to the given document, irrespective of user
@@ -102,5 +103,7 @@ public interface DocumentPresentationController {
      * @since 2.5
      */
     boolean canSuperUserDisapprove(Document document);
+
+    void setDocumentRequestAuthorizationCache(DocumentRequestAuthorizationCache documentRequestAuthorizationCache);
 
 }

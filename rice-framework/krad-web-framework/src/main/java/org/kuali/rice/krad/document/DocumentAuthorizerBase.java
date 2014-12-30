@@ -41,6 +41,8 @@ import java.util.Map;
 public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements DocumentAuthorizer {
     private static final long serialVersionUID = -5354518767379472681L;
 
+    private DocumentRequestAuthorizationCache documentRequestAuthorizationCache;
+
     public static final String PRE_ROUTING_ROUTE_NAME = "PreRoute";
 
     public final boolean canInitiate(String documentTypeName, Person user) {
@@ -339,5 +341,27 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
         WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
 
         return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
+    }
+
+    protected DocumentRequestAuthorizationCache getDocumentRequestAuthorizationCache(Document document) {
+        if (this.documentRequestAuthorizationCache == null) {
+            this.documentRequestAuthorizationCache = new DocumentRequestAuthorizationCache();
+        }
+
+        if (this.documentRequestAuthorizationCache.getWorkflowDocumentInfo() == null) {
+            this.documentRequestAuthorizationCache.createWorkflowDocumentInfo(
+                    document.getDocumentHeader().getWorkflowDocument());
+        }
+
+        return this.documentRequestAuthorizationCache;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDocumentRequestAuthorizationCache(
+            DocumentRequestAuthorizationCache documentRequestAuthorizationCache) {
+         this.documentRequestAuthorizationCache = documentRequestAuthorizationCache;
     }
 }

@@ -28,6 +28,7 @@ import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.bo.authorization.BusinessObjectAuthorizerBase;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.DocumentRequestAuthorizationCache;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.KRADConstants;
 
@@ -434,5 +435,11 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase impleme
     protected boolean isDocumentInitiator(Document document, Person user) {
         WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         return workflowDocument.getInitiatorPrincipalId().equalsIgnoreCase(user.getPrincipalId());
+    }
+
+    @Override
+    public void setDocumentRequestAuthorizationCache(
+            DocumentRequestAuthorizationCache documentRequestAuthorizationCache) {
+        // noop
     }
 }

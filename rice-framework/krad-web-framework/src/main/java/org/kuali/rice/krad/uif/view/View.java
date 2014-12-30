@@ -174,6 +174,7 @@ public class View extends ContainerBase {
 
     private ViewPresentationController presentationController;
     private ViewAuthorizer authorizer;
+    private Class<? extends RequestAuthorizationCache> requestAuthorizationCacheClass;
 
     private Map<String, Boolean> actionFlags;
     private Map<String, Boolean> editModes;
@@ -229,6 +230,8 @@ public class View extends ContainerBase {
         objectPathToConcreteClassMapping = Collections.emptyMap();
         viewRequestParameters = Collections.emptyMap();
         expressionVariables = Collections.emptyMap();
+
+        requestAuthorizationCacheClass = RequestAuthorizationCache.class;
 
         dialogs = Collections.emptyList();
 
@@ -1569,23 +1572,14 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute
     public Map<String, Boolean> getActionFlags() {
-        if (actionFlags == Collections.EMPTY_MAP && isMutable(true)) {
-            actionFlags = new LifecycleAwareMap<String, Boolean>(this);
-        }
-
-        return actionFlags;
+        return this.actionFlags;
     }
 
     /**
      * @see View#getActionFlags()
      */
     public void setActionFlags(Map<String, Boolean> actionFlags) {
-        checkMutable(true);
-        if (actionFlags == null) {
-            this.actionFlags = Collections.emptyMap();
-        } else {
-            this.actionFlags = new LifecycleAwareMap<String, Boolean>(this, actionFlags);
-        }
+        this.actionFlags = actionFlags;
     }
 
     /**
@@ -1598,23 +1592,23 @@ public class View extends ContainerBase {
      */
     @BeanTagAttribute
     public Map<String, Boolean> getEditModes() {
-        if (editModes == Collections.EMPTY_MAP && isMutable(true)) {
-            editModes = new LifecycleAwareMap<String, Boolean>(this);
-        }
-
-        return editModes;
+        return this.editModes;
     }
 
     /**
      * @see View#getEditModes()
      */
     public void setEditModes(Map<String, Boolean> editModes) {
-        checkMutable(true);
-        if (editModes == null) {
-            this.editModes = Collections.emptyMap();
-        } else {
-            this.editModes = new LifecycleAwareMap<String, Boolean>(this, editModes);
-        }
+        this.editModes = editModes;
+    }
+
+    public Class<? extends RequestAuthorizationCache> getRequestAuthorizationCacheClass() {
+        return requestAuthorizationCacheClass;
+    }
+
+    public void setRequestAuthorizationCacheClass(
+            Class<? extends RequestAuthorizationCache> requestAuthorizationCacheClass) {
+        this.requestAuthorizationCacheClass = requestAuthorizationCacheClass;
     }
 
     /**

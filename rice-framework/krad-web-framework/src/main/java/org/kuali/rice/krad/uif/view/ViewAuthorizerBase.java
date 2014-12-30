@@ -63,6 +63,8 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
     private ConfigurationService configurationService;
 
+    private RequestAuthorizationCache requestAuthorizationCache;
+
     /**
      * @see ViewAuthorizer#getActionFlags(org.kuali.rice.krad.uif.view.View, org.kuali.rice.krad.uif.view.ViewModel,
      *      org.kuali.rice.kim.api.identity.Person, java.util.Set<java.lang.String>)
@@ -742,6 +744,18 @@ public class ViewAuthorizerBase extends DataObjectAuthorizerBase implements View
 
     public void setConfigurationService(ConfigurationService configurationService) {
         this.configurationService = configurationService;
+    }
+
+    protected RequestAuthorizationCache getRequestAuthorizationCache() {
+        return requestAuthorizationCache;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAuthorizationCache(RequestAuthorizationCache requestAuthorizationCache) {
+        this.requestAuthorizationCache = requestAuthorizationCache;
     }
 
 }

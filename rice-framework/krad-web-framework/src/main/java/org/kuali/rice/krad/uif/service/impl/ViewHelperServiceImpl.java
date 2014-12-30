@@ -57,6 +57,7 @@ import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.uif.util.RecycleUtils;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluator;
 import org.kuali.rice.krad.uif.view.ExpressionEvaluatorFactory;
+import org.kuali.rice.krad.uif.view.RequestAuthorizationCache;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -1096,6 +1097,16 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
         UifFormBase model = (UifFormBase) ViewLifecycle.getModel();
         ViewPresentationController presentationController = view.getPresentationController();
         ViewAuthorizer authorizer = view.getAuthorizer();
+
+        RequestAuthorizationCache requestAuthorizationCache;
+        try {
+            requestAuthorizationCache = view.getRequestAuthorizationCacheClass().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot create instance of request authorization cache class", e);
+        }
+
+        presentationController.setRequestAuthorizationCache(requestAuthorizationCache);
+        authorizer.setRequestAuthorizationCache(requestAuthorizationCache);
 
         Set<String> actionFlags = presentationController.getActionFlags(view, model);
         Set<String> editModes = presentationController.getEditModes(view, model);

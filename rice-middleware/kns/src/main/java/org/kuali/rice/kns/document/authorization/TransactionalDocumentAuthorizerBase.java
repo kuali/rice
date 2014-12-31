@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document.authorization;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.DocumentRequestAuthorizationCache;
 import org.kuali.rice.krad.util.KRADConstants;
 
 import java.util.HashMap;
@@ -57,4 +58,5 @@ public class TransactionalDocumentAuthorizerBase extends DocumentAuthorizerBase
 		editModes.removeAll(unauthorizedEditModes);
 		return editModes;
 	}
+
 }

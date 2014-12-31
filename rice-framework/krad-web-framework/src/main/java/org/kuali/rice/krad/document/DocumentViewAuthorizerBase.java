@@ -28,6 +28,7 @@ import org.kuali.rice.krad.service.DocumentDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
+import org.kuali.rice.krad.uif.view.RequestAuthorizationCache;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizerBase;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -630,5 +631,46 @@ public class DocumentViewAuthorizerBase extends ViewAuthorizerBase implements Do
 
     public void setDocumentDictionaryService(DocumentDictionaryService documentDictionaryService) {
         this.documentDictionaryService = documentDictionaryService;
+    }
+
+    protected DocumentRequestAuthorizationCache getDocumentRequestAuthorizationCache(Document document) {
+        if (getRequestAuthorizationCache() == null) {
+            setRequestAuthorizationCache(new DocumentRequestAuthorizationCache());
+        }
+
+        DocumentRequestAuthorizationCache documentRequestAuthorizationCache =
+                (DocumentRequestAuthorizationCache) getRequestAuthorizationCache();
+        if (documentRequestAuthorizationCache.getWorkflowDocumentInfo() == null) {
+            documentRequestAuthorizationCache.createWorkflowDocumentInfo(
+                    document.getDocumentHeader().getWorkflowDocument());
+        }
+
+        return documentRequestAuthorizationCache;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDocumentRequestAuthorizationCache(
+            DocumentRequestAuthorizationCache documentRequestAuthorizationCache) {
+          this.setRequestAuthorizationCache(documentRequestAuthorizationCache);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAuthorizationCache(RequestAuthorizationCache requestAuthorizationCache) {
+        super.setRequestAuthorizationCache(requestAuthorizationCache);
+
+        if (!(requestAuthorizationCache instanceof DocumentRequestAuthorizationCache)) {
+            throw new RuntimeException(
+                    "Request authorization cache should be instance of " + DocumentRequestAuthorizationCache.class
+                            .getName());
+        }
+
+        getDocumentAuthorizer().setDocumentRequestAuthorizationCache(
+                (DocumentRequestAuthorizationCache) requestAuthorizationCache);
     }
 }

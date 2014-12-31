@@ -187,4 +187,6 @@ public interface ViewAuthorizer {
             String collectionPropertyName, Object line, Action action, String actionEvent, String actionId,
             Person user);
 
+    void setRequestAuthorizationCache(RequestAuthorizationCache requestAuthorizationCache);
+
 }

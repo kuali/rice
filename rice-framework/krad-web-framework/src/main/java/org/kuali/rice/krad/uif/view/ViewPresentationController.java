@@ -106,4 +106,6 @@ public interface ViewPresentationController {
     public boolean canPerformLineAction(View view, ViewModel model, CollectionGroup collectionGroup,
             String collectionPropertyName, Object line, Action action, String actionEvent, String actionId);
 
+    void setRequestAuthorizationCache(RequestAuthorizationCache requestAuthorizationCache);
+
 }

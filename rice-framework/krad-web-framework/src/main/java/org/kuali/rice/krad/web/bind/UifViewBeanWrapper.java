@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.web.bind;
 
+import com.sun.accessibility.internal.resources.accessibility;
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -42,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class is a top level BeanWrapper for a UIF View Model.
@@ -265,6 +268,12 @@ public class UifViewBeanWrapper extends UifBeanWrapper {
             ViewPostMetadata viewPostMetadata = ((ViewModel) getWrappedInstance()).getViewPostMetadata();
             if ((viewPostMetadata != null) && (viewPostMetadata.getAccessibleBindingPaths() != null)) {
                 isAccessible = viewPostMetadata.getAccessibleBindingPaths().contains(propertyName);
+
+                if (!isAccessible && propertyName.contains("[")) {
+                    String wildcardedPropertyName = propertyName.substring(0, propertyName.lastIndexOf("["))
+                        + "[*" + propertyName.substring(propertyName.lastIndexOf("]"));
+                    isAccessible = viewPostMetadata.getAccessibleBindingPaths().contains(wildcardedPropertyName);
+                }
             }
         }
 

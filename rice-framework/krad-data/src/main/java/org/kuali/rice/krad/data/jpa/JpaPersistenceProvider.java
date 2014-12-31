@@ -101,6 +101,8 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
 
     private PersistenceExceptionTranslator persistenceExceptionTranslator;
 
+    private Set<Class<?>> managedTypesCache;
+
     /**
      * Initialization-on-demand holder idiom for thread-safe lazy loading of configuration.
      */
@@ -481,22 +483,20 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
      */
     @Override
     public boolean handles(final Class<?> type) {
-        return doWithExceptionTranslation(new Callable<Boolean>() {
-            @Override
-			public Boolean call() {
-                try {
-                    ManagedType<?> managedType = sharedEntityManager.getMetamodel().managedType(type);
-                    return Boolean.valueOf(managedType != null);
-                } catch (IllegalArgumentException iae) {
-                    return Boolean.FALSE;
-				} catch (IllegalStateException ex) {
-					// This catches cases where the entity manager is not initialized or has already been destroyed
-					LOG.warn("sharedEntityManager " + sharedEntityManager + " is not in a state to be used: "
-							+ ex.getMessage());
-					return Boolean.FALSE;
-                }
+        if (managedTypesCache == null) {
+            managedTypesCache = new HashSet<Class<?>>();
+
+            Set<ManagedType<?>> managedTypes = sharedEntityManager.getMetamodel().getManagedTypes();
+            for (ManagedType managedType : managedTypes) {
+                managedTypesCache.add(managedType.getJavaType());
             }
-        }).booleanValue();
+        }
+
+        if (managedTypesCache.contains(type)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

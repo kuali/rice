@@ -24,8 +24,10 @@ import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestType;
 import org.kuali.rice.kew.api.action.ActionType;
 import org.kuali.rice.kew.api.document.DocumentStatus;
+import org.kuali.rice.krad.uif.view.RequestAuthorizationCache;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.KRADUtils;
 
 import java.io.Serializable;
 
@@ -37,17 +39,22 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
 
     private static transient ParameterService parameterService;
 
+    private DocumentRequestAuthorizationCache documentRequestAuthorizationCache;
+
     public boolean canInitiate(String documentTypeName) {
         return true;
     }
 
     public boolean canEdit(Document document) {
         boolean canEdit = false;
-        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.isInitiated()
-                || workflowDocument.isSaved()
-                || workflowDocument.isEnroute()
-                || workflowDocument.isException()) {
+
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
+        if (workflowDocumentInfo.isInitiated()
+                || workflowDocumentInfo.isSaved()
+                || workflowDocumentInfo.isEnroute()
+                || workflowDocumentInfo.isException()) {
             canEdit = true;
         }
 
@@ -59,8 +66,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
 
     public boolean canReload(Document document) {
-        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return (canEdit(document) && !workflowDocument.isInitiated());
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
+        return (canEdit(document) && !workflowDocumentInfo.isInitiated());
 
     }
 
@@ -74,22 +83,29 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
 
     public boolean canRoute(Document document) {
         boolean canRoute = false;
-        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        if (workflowDocument.isInitiated() || workflowDocument.isSaved()) {
+
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
+        if (workflowDocumentInfo.isInitiated() || workflowDocumentInfo.isSaved()) {
             canRoute = true;
         }
+
         return canRoute;
     }
 
     public boolean canCancel(Document document) {
-        WorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return workflowDocument.isValidAction(ActionType.CANCEL);
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
+        return workflowDocumentInfo.isValidAction(ActionType.CANCEL);
     }
 
     public boolean canRecall(Document document) {
-        // Enroute - the most liberal approximation of recallability
-        // DocumentAuthorizer will perform finer-grained authorization
-        return document.getDocumentHeader().getWorkflowDocument().isEnroute();
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
+        return workflowDocumentInfo.isEnroute();
     }
 
     public boolean canCopy(Document document) {
@@ -129,8 +145,11 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
             return true;
         }
 
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
         // or to a user with an approval action request
-        if (workflowDocument.isApprovalRequested()) {
+        if (workflowDocumentInfo.isApprovalRequested()) {
             return true;
         }
 
@@ -147,8 +166,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
 
     public boolean canSendAdhocRequests(Document document) {
-        WorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return !(kualiWorkflowDocument.isInitiated() || kualiWorkflowDocument.isSaved());
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
+        return !(workflowDocumentInfo.isInitiated() || workflowDocumentInfo.isSaved());
     }
 
     public boolean canSendNoteFyi(Document document) {
@@ -156,8 +177,10 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
 
     public boolean canEditDocumentOverview(Document document) {
-        WorkflowDocument kualiWorkflowDocument = document.getDocumentHeader().getWorkflowDocument();
-        return (kualiWorkflowDocument.isInitiated() || kualiWorkflowDocument.isSaved());
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
+        return (workflowDocumentInfo.isInitiated() || workflowDocumentInfo.isSaved());
     }
 
     public boolean canFyi(Document document) {
@@ -169,8 +192,11 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
     }
 
     public boolean canComplete(Document document) {
-        boolean docInInit = document.getDocumentHeader().getWorkflowDocument().isInitiated() || document.getDocumentHeader().getWorkflowDocument().isSaved();
-        boolean completionRequested = document.getDocumentHeader().getWorkflowDocument().isCompletionRequested();
+        DocumentRequestAuthorizationCache.WorkflowDocumentInfo workflowDocumentInfo =
+                getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo();
+
+        boolean docInInit = workflowDocumentInfo.isInitiated() || workflowDocumentInfo.isSaved();
+        boolean completionRequested = workflowDocumentInfo.isCompletionRequested();
         if (completionRequested && !docInInit) {
             return true;
         }
@@ -301,5 +327,27 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
             parameterService = CoreFrameworkServiceLocator.getParameterService();
         }
         return parameterService;
+    }
+
+    protected DocumentRequestAuthorizationCache getDocumentRequestAuthorizationCache(Document document) {
+        if (this.documentRequestAuthorizationCache == null) {
+            this.documentRequestAuthorizationCache = new DocumentRequestAuthorizationCache();
+        }
+
+        if (this.documentRequestAuthorizationCache.getWorkflowDocumentInfo() == null) {
+            this.documentRequestAuthorizationCache.createWorkflowDocumentInfo(
+                    document.getDocumentHeader().getWorkflowDocument());
+        }
+
+        return this.documentRequestAuthorizationCache;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDocumentRequestAuthorizationCache(
+            DocumentRequestAuthorizationCache documentRequestAuthorizationCache) {
+         this.documentRequestAuthorizationCache = documentRequestAuthorizationCache;
     }
 }

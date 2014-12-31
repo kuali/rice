@@ -23,6 +23,7 @@ import org.kuali.rice.krad.uif.container.Group;
 import org.kuali.rice.krad.uif.element.Action;
 import org.kuali.rice.krad.uif.field.DataField;
 import org.kuali.rice.krad.uif.field.Field;
+import org.kuali.rice.krad.uif.view.RequestAuthorizationCache;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewAuthorizer;
 import org.kuali.rice.krad.uif.view.ViewModel;
@@ -128,4 +129,8 @@ class MockViewAuthorizer implements ViewAuthorizer {
         return true;
     }
 
+    @Override
+    public void setRequestAuthorizationCache(RequestAuthorizationCache requestAuthorizationCache) {
+
+    }
 }

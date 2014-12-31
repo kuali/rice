@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.krad.document;
 
+import org.kuali.rice.krad.uif.view.RequestAuthorizationCache;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
 import org.kuali.rice.krad.uif.view.ViewPresentationControllerBase;
@@ -50,6 +51,9 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
         Set<String> documentActions = new HashSet<String>();
 
         Document document = ((DocumentFormBase) model).getDocument();
+
+        DocumentRequestAuthorizationCache requestAuthorizationCache =
+                (DocumentRequestAuthorizationCache) getRequestAuthorizationCache();
 
         if (canEdit(document)) {
             documentActions.add(KRADConstants.KUALI_ACTION_CAN_EDIT);
@@ -275,5 +279,46 @@ public class DocumentViewPresentationControllerBase extends ViewPresentationCont
     public void setDocumentPresentationControllerClass(
             Class<? extends DocumentPresentationController> documentPresentationControllerClass) {
         this.documentPresentationController = KRADUtils.createNewObjectFromClass(documentPresentationControllerClass);
+    }
+
+    protected DocumentRequestAuthorizationCache getDocumentRequestAuthorizationCache(Document document) {
+        if (getRequestAuthorizationCache() == null) {
+            setRequestAuthorizationCache(new DocumentRequestAuthorizationCache());
+        }
+
+        DocumentRequestAuthorizationCache documentRequestAuthorizationCache =
+                (DocumentRequestAuthorizationCache) getRequestAuthorizationCache();
+        if (documentRequestAuthorizationCache.getWorkflowDocumentInfo() == null) {
+            documentRequestAuthorizationCache.createWorkflowDocumentInfo(
+                    document.getDocumentHeader().getWorkflowDocument());
+        }
+
+        return documentRequestAuthorizationCache;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDocumentRequestAuthorizationCache(
+            DocumentRequestAuthorizationCache documentRequestAuthorizationCache) {
+          this.setRequestAuthorizationCache(documentRequestAuthorizationCache);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setRequestAuthorizationCache(RequestAuthorizationCache requestAuthorizationCache) {
+        super.setRequestAuthorizationCache(requestAuthorizationCache);
+
+        if (!(requestAuthorizationCache instanceof DocumentRequestAuthorizationCache)) {
+            throw new RuntimeException(
+                    "Request authorization cache should be instance of " + DocumentRequestAuthorizationCache.class
+                            .getName());
+        }
+
+        getDocumentPresentationController().setDocumentRequestAuthorizationCache(
+                (DocumentRequestAuthorizationCache) requestAuthorizationCache);
     }
 }

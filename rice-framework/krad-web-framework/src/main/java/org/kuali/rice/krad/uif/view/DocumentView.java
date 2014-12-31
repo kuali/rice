@@ -25,6 +25,7 @@ import org.kuali.rice.krad.datadictionary.DocumentEntry;
 import org.kuali.rice.krad.datadictionary.parse.BeanTag;
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute;
 import org.kuali.rice.krad.document.Document;
+import org.kuali.rice.krad.document.DocumentRequestAuthorizationCache;
 import org.kuali.rice.krad.document.DocumentViewAuthorizerBase;
 import org.kuali.rice.krad.document.DocumentViewPresentationControllerBase;
 import org.kuali.rice.krad.keyvalues.KeyValuesFinder;
@@ -58,6 +59,8 @@ public class DocumentView extends FormView {
 
 	public DocumentView() {
 		super();
+
+        setRequestAuthorizationCacheClass(DocumentRequestAuthorizationCache.class);
 	}
 
     /**

@@ -175,4 +175,6 @@ public interface DocumentAuthorizer extends DataObjectAuthorizer {
      */
     boolean canSuperUserDisapprove(Document document, Person user);
 
+    void setDocumentRequestAuthorizationCache(DocumentRequestAuthorizationCache documentRequestAuthorizationCache);
+
 }

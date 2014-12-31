@@ -93,7 +93,7 @@ public class TransactionHandlerInterceptor implements HandlerInterceptor {
 
         try {
             if (!status.isCompleted()) {
-                if (ex == null) {
+                if (ex == null && !status.isRollbackOnly()) {
                     txManager.commit(status);
                 } else {
                     txManager.rollback(status);

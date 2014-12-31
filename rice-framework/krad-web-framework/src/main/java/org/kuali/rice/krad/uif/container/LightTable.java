@@ -291,6 +291,10 @@ public class LightTable extends GroupBase implements DataBinding {
             if (item instanceof DataField) {
                 ((DataField) item).getBindingInfo().setBindByNamePrefix(this.getBindingInfo().getBindingPath() + "[0]");
             }
+
+            if (item instanceof InputField) {
+                ViewLifecycle.getViewPostMetadata().addAccessibleBindingPath(this.getBindingInfo().getBindingPath() + "[*]." + ((DataField) item).getPropertyName());
+            }
         }
 
         Object collectionValue = ObjectPropertyUtils.getPropertyValue(model, bindingInfo.getBindingPath());

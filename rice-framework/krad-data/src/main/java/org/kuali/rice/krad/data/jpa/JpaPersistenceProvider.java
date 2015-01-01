@@ -362,7 +362,7 @@ public class JpaPersistenceProvider implements PersistenceProvider, BeanFactoryA
 		if (shouldResetVersionNumber) {
 			copyGroup.setShouldResetVersion(true);
 		}
-		final boolean shouldResetObjectId = ArrayUtils.contains(options, CopyOption.RESET_VERSION_NUMBER);
+		final boolean shouldResetObjectId = ArrayUtils.contains(options, CopyOption.RESET_OBJECT_ID);
         return doWithExceptionTranslation(new Callable<T>() {
 			@SuppressWarnings("unchecked")
 			@Override

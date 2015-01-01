@@ -43,11 +43,11 @@ public class LibraryGeneralFeaturesFocusAndJumpToAft extends WebDriverLegacyITBa
 
     protected void testGeneralFeaturesFocusAndJumpTo() throws Exception {
         waitAndClickButtonByExactText("Refresh Group");
-        waitForTextPresent("Loading...");
+       // waitForTextPresent("Loading...");    Sometimes load too fast
         waitAndClickButtonByExactText("Save");
         waitForTextPresent("Loading...");
         waitAndClickButtonByExactText("Refresh Field but with Server Errors");
-        waitForTextPresent("Loading...");
+        // waitForTextPresent("Loading...");  Sometimes load too fast
         waitForElementPresentByXpath("//div[@id='input4' and @class='uif-inputField uif-boxLayoutVerticalItem pull-left clearfix uif-hasError']/input");
         waitAndClickButtonByExactText("Refresh Page");
         waitForTextPresent("Loading...");
@@ -55,7 +55,7 @@ public class LibraryGeneralFeaturesFocusAndJumpToAft extends WebDriverLegacyITBa
     }
     
     protected void testGeneralFeaturesFocusAndJumpToFocusAndCollections() throws Exception {
-    	selectByName("exampleShown","Focus and Collections");
+    	waitAndSelectByName("exampleShown","Focus and Collections");
     	waitAndClickButtonByExactText("Add");
     	waitForTextPresent("Adding Line...");
     }

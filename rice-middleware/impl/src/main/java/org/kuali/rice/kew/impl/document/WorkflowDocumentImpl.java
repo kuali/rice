@@ -562,7 +562,9 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         if (actionType == null) {
             throw new IllegalArgumentException("actionType was null");
         }
-        return getValidActions().getValidActions().contains(actionType);
+
+        return getWorkflowDocumentActionsService().isValidAction(actionType.getCode(), getDocumentId(),
+                getPrincipalId());
     }
 
     @Override

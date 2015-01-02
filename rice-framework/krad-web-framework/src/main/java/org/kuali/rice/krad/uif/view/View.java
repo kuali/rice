@@ -172,6 +172,8 @@ public class View extends ContainerBase {
     private boolean persistFormToSession;
     private ViewSessionPolicy sessionPolicy;
 
+    private int preloadPoolSize;
+
     private ViewPresentationController presentationController;
     private ViewAuthorizer authorizer;
     private Class<? extends RequestAuthorizationCache> requestAuthorizationCacheClass;
@@ -1488,6 +1490,14 @@ public class View extends ContainerBase {
     public void setSessionPolicy(ViewSessionPolicy sessionPolicy) {
         checkMutable(true);
         this.sessionPolicy = sessionPolicy;
+    }
+
+    public int getPreloadPoolSize() {
+        return preloadPoolSize;
+    }
+
+    public void setPreloadPoolSize(int preloadPoolSize) {
+        this.preloadPoolSize = preloadPoolSize;
     }
 
     /**

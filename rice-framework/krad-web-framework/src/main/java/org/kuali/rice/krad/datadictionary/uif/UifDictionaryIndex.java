@@ -20,10 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.krad.datadictionary.DataDictionaryException;
 import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
@@ -34,6 +37,7 @@ import org.kuali.rice.krad.uif.service.ViewTypeService;
 import org.kuali.rice.krad.uif.util.CopyUtils;
 import org.kuali.rice.krad.uif.util.ViewModelUtils;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 
@@ -61,12 +65,26 @@ public class UifDictionaryIndex implements Runnable {
     // view entries indexed by type
     private Map<String, ViewTypeDictionaryIndex> viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
 
+    // views that are loaded eagerly
+    private Map<String, UifViewPool> viewPools;
+
+    // threadpool size
+    private int threadPoolSize = 4;
+
     public UifDictionaryIndex(DefaultListableBeanFactory ddBeans) {
         this.ddBeans = ddBeans;
     }
 
     @Override
     public void run() {
+        try {
+            Integer size = new Integer(ConfigContext.getCurrentContextConfig().getProperty(
+                    KRADConstants.KRAD_DICTIONARY_INDEX_POOL_SIZE));
+            threadPoolSize = size.intValue();
+        } catch (NumberFormatException nfe) {
+            // ignore this, instead the pool will be set to DEFAULT_SIZE
+        }
+
         buildViewIndicies();
     }
 
@@ -81,6 +99,32 @@ public class UifDictionaryIndex implements Runnable {
      * @throws org.kuali.rice.krad.datadictionary.DataDictionaryException if view doesn't exist for id
      */
     public View getViewById(final String viewId) {
+        // check for preloaded view
+        if (viewPools.containsKey(viewId)) {
+            final UifViewPool viewPool = viewPools.get(viewId);
+            synchronized (viewPool) {
+                if (!viewPool.isEmpty()) {
+                    View view = viewPool.getViewInstance();
+
+                    // replace view in the pool
+                    Runnable createView = new Runnable() {
+                        public void run() {
+                            View newViewInstance = CopyUtils.copy(getImmutableViewById(viewId));
+                            viewPool.addViewInstance(newViewInstance);
+                        }
+                    };
+
+                    Thread t = new Thread(createView);
+                    t.start();
+
+                    return view;
+                } else {
+                    LOG.info("Pool size for view with id: " + viewId
+                            + " is empty. Considering increasing max pool size.");
+                }
+            }
+        }
+
         View view = getImmutableViewById(viewId);
 
         return CopyUtils.copy(view);
@@ -258,6 +302,12 @@ public class UifDictionaryIndex implements Runnable {
 
         viewBeanEntriesById = new HashMap<String, String>();
         viewEntriesByType = new HashMap<String, ViewTypeDictionaryIndex>();
+        viewPools = new HashMap<String, UifViewPool>();
+
+        boolean inDevMode = Boolean.parseBoolean(ConfigContext.getCurrentContextConfig().getProperty(
+                KRADConstants.ConfigParameters.KRAD_DEV_MODE));
+
+        ExecutorService executor = Executors.newFixedThreadPool(threadPoolSize);
 
         String[] beanNames = ddBeans.getBeanNamesForType(View.class);
         for (final String beanName : beanNames) {
@@ -276,7 +326,35 @@ public class UifDictionaryIndex implements Runnable {
             viewBeanEntriesById.put(id, beanName);
 
             indexViewForType(propertyValues, id);
+
+            // pre-load views if necessary
+            if (!inDevMode) {
+                String poolSizeStr = ViewModelUtils.getStringValFromPVs(propertyValues, "preloadPoolSize");
+                if (StringUtils.isNotBlank(poolSizeStr)) {
+                    int poolSize = Integer.parseInt(poolSizeStr);
+                    if (poolSize < 1) {
+                        continue;
+                    }
+
+                    final View view = (View) ddBeans.getBean(beanName);
+                    final UifViewPool viewPool = new UifViewPool();
+                    viewPool.setMaxSize(poolSize);
+                    for (int j = 0; j < poolSize; j++) {
+                        Runnable createView = new Runnable() {
+                            @Override
+                            public void run() {
+                                viewPool.addViewInstance((View) CopyUtils.copy(view));
+                            }
+                        };
+
+                        executor.execute(createView);
+                    }
+                    viewPools.put(id, viewPool);
+                }
+            }
         }
+
+        executor.shutdown();
 
         LOG.info("Completed View Index Building");
     }

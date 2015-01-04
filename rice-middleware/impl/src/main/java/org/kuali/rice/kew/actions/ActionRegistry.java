@@ -70,4 +70,11 @@ public interface ActionRegistry {
      */
     public org.kuali.rice.kew.api.action.ValidActions getValidActions(PrincipalContract principal, DocumentRouteHeaderValue document);
 
+    /**
+     * Determines whether the given action type is valid for the given user and document instance.
+     *
+     * @throws ResourceUnavailableException if an action class cannot be constructed
+     */
+    boolean isValidAction(String actionTypeCode, PrincipalContract principal, DocumentRouteHeaderValue document);
+
 }

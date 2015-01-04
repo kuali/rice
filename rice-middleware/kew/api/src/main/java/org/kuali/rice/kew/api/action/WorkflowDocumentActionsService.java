@@ -214,6 +214,31 @@ public interface WorkflowDocumentActionsService {
             throws RiceIllegalArgumentException;
 
     /**
+     * Determines whether the given action is valid for the document and principal id.
+     *
+     * @param actionTypeCode type code for the action to check
+     * @param documentId the id of the document to check action for
+     * @param principalId the id of the principal to check permission for
+     *
+     * @return boolean true if the action is valid, false if not
+     *
+     * @throws RiceIllegalArgumentException if {@code actionTypeCode} is null or blank
+     * @throws RiceIllegalArgumentException if {@code documentId} is null or blank
+     * @throws RiceIllegalArgumentException if document with the given {@code documentId} does not
+     *         exist
+     * @throws RiceIllegalArgumentException if {@code principalId} is null or blank
+     * @throws RiceIllegalArgumentException if principal with the given {@code principalId} does not
+     *         exist
+     */
+    @WebMethod(operationName = "isValidAction")
+    @WebResult(name = "isValidAction")
+    boolean isValidAction(
+            @WebParam(name = "actionTypeCode") String actionTypeCode,
+            @WebParam(name = "documentId") String documentId,
+            @WebParam(name = "principalId") String principalId)
+            throws RiceIllegalArgumentException;
+
+    /**
      * Determines which actions are requested against the document with the given id for the
      * principal with the given id. These are generally derived based on action requests that are
      * currently pending against the document.

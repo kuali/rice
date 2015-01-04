@@ -95,7 +95,8 @@ public class DocumentAuthorizerBase extends DataObjectAuthorizerBase implements 
     }
 
     public boolean canRecall(Document document, Person user) {
-        return KewApiServiceLocator.getWorkflowDocumentActionsService().determineValidActions(document.getDocumentNumber(), user.getPrincipalId()).getValidActions().contains(ActionType.RECALL);
+        return getDocumentRequestAuthorizationCache(document).getWorkflowDocumentInfo().isValidAction(
+                ActionType.RECALL);
     }
 
     public boolean canCopy(Document document, Person user) {

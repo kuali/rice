@@ -341,6 +341,27 @@ public class WorkflowDocumentActionsServiceImpl implements WorkflowDocumentActio
     }
 
     @Override
+    public boolean isValidAction(String actionTypeCode, String documentId, String principalId)
+            throws RiceIllegalArgumentException {
+        incomingParamCheck(actionTypeCode, "actionTypeCode");
+        incomingParamCheck(documentId, "documentId");
+        incomingParamCheck(principalId, "principalId");
+
+        DocumentRouteHeaderValue documentBo = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
+        if (documentBo == null) {
+            throw new RiceIllegalArgumentException("Failed to locate a document for document id: " + documentId);
+        }
+
+        return determineValidActionInternal(actionTypeCode, documentBo, principalId);
+    }
+
+    protected boolean determineValidActionInternal(String actionTypeCode, DocumentRouteHeaderValue documentBo,
+            String principalId) {
+        Principal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
+        return KEWServiceLocator.getActionRegistry().isValidAction(actionTypeCode, principal, documentBo);
+    }
+
+    @Override
     public RequestedActions determineRequestedActions(String documentId, String principalId) {
         incomingParamCheck(documentId, "documentId");
         incomingParamCheck(principalId, "principalId");

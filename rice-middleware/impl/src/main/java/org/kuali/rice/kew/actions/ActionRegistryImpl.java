@@ -153,4 +153,32 @@ public class ActionRegistryImpl implements ActionRegistry {
     		throw new WorkflowRuntimeException(e);
     	}
     }
+
+    @Override
+    public boolean isValidAction(String actionTypeCode, PrincipalContract principal,
+            DocumentRouteHeaderValue document) {
+        boolean validAction = false;
+        try {
+            List<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();
+            for (ActionRequestValue ar : document.getActionRequests()) {
+                if ((ar.getCurrentIndicator() != null && ar.getCurrentIndicator()) && StringUtils.equals(ar.getStatus(),
+                        ActionRequestStatus.ACTIVATED.getCode())) {
+                    activeRequests.add(ar);
+                }
+            }
+
+            List<DataDefinition> parameters = new ArrayList<DataDefinition>();
+            parameters.add(new DataDefinition(document));
+            parameters.add(new DataDefinition(principal));
+
+            ActionTakenEvent actionEvent = createAction(actionTypeCode, parameters);
+            if (StringUtils.isEmpty(actionEvent.validateActionRules(activeRequests))) {
+                validAction = true;
+            }
+        } catch (ResourceUnavailableException e) {
+            throw new WorkflowRuntimeException(e);
+        }
+
+        return validAction;
+    }
 }

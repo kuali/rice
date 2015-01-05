@@ -63,7 +63,7 @@ public class ComponentExhibit extends ContentElementBase {
         int currentIndice = 0;
         if (model instanceof KradSampleAppForm) {
             KradSampleAppForm kradSampleAppForm = (KradSampleAppForm) model;
-            if (kradSampleAppForm.getCurrentExampleIndex()!=null) {
+            if (kradSampleAppForm.getCurrentExampleIndex() != null) {
                 currentIndice = Integer.parseInt(kradSampleAppForm.getCurrentExampleIndex());
             }
             String id =  demoGroups.get(currentIndice).getId();
@@ -71,16 +71,16 @@ public class ComponentExhibit extends ContentElementBase {
         }
 
         //source code viewer setup
-        if(demoSourceCode != null && !demoSourceCode.isEmpty()){
+        if(demoSourceCode != null && !demoSourceCode.isEmpty() && currentIndice < demoSourceCode.size()){
             sourceCodeViewer.setSourceCode(demoSourceCode.get(currentIndice));
         }
 
-        if(additionalDemoSourceCode1 != null && !additionalDemoSourceCode1.isEmpty()
+        if(additionalDemoSourceCode1 != null && !additionalDemoSourceCode1.isEmpty() && currentIndice < additionalDemoSourceCode1.size()
                 && additionalDemoSourceCode1.get(currentIndice) != null){
             additionalSourceCodeViewer1.setSourceCode(additionalDemoSourceCode1.get(currentIndice));
         }
 
-        if(additionalDemoSourceCode2 != null && !additionalDemoSourceCode2.isEmpty()
+        if(additionalDemoSourceCode2 != null && !additionalDemoSourceCode2.isEmpty() && currentIndice < additionalDemoSourceCode2.size()
                         && additionalDemoSourceCode2.get(currentIndice) != null){
             additionalSourceCodeViewer2.setSourceCode(additionalDemoSourceCode2.get(currentIndice));
         }

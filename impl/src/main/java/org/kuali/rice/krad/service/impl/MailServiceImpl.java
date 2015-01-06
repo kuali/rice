@@ -17,7 +17,9 @@ package org.kuali.rice.krad.service.impl;
 
 import javax.mail.MessagingException;
 
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.mail.MailMessage;
 import org.kuali.rice.core.api.mail.Mailer;
 import org.kuali.rice.krad.exception.InvalidAddressException;
@@ -71,7 +73,19 @@ public class MailServiceImpl implements MailService {
 	 */
 	@Override
 	public void sendMessage(MailMessage message) throws InvalidAddressException, MessagingException {
-		mailer.sendEmail(composeMessage(message));		
+        if(KRADServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(KRADConstants.ConfigParameters.KRAD_LOG_EMAIL_MESSAGE)) {
+            LOG.info( "*********************** EMAIL SEND *****************************");
+            LOG.info( "FROM : " + message.getToAddresses() );
+            LOG.info( "TO   : " + message.getFromAddress() );
+            LOG.info( "CC   : " + message.getCcAddresses() );
+            LOG.info( "BCC  : " + message.getBccAddresses() );
+            LOG.info( "SUBJECT : " + message.getSubject() );
+            LOG.info( "MESSAGE : \n" + message.getMessage() );
+            LOG.info( "*********************** END EMAIL  *****************************");
+
+        } else {
+            mailer.sendEmail(composeMessage(message));
+        }
 	}
 	
     protected MailMessage composeMessage(MailMessage message){

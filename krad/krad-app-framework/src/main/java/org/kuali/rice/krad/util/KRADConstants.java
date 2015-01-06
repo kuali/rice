@@ -611,7 +611,9 @@ public final class KRADConstants {
     		throw new UnsupportedOperationException("do not call");
     	}
     }
-
+    public static final class ConfigParameters {
+        public static final String KRAD_LOG_EMAIL_MESSAGE = "rice.krad.dev.log.email";
+    }
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
 	
   	public static final String SINGLE_QUOTE = "'";

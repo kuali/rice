@@ -97,6 +97,9 @@
 
 	<param name="kfsLocator.useAppContext">true</param>
 
+    <!-- Used to log email instead of sending them -->
+    <param name="rice.krad.dev.log.email" override="false">false</param>
+
 	<!-- Ken stuffs... -->
     <!-- stock notification system configuration properties -->
 

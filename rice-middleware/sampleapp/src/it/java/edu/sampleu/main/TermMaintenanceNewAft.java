@@ -56,7 +56,7 @@ public class TermMaintenanceNewAft extends MainTmplMthdSTNavBase {
         String randomCode = RandomStringUtils.randomAlphabetic(9).toUpperCase();
         waitAndTypeByName("document.newMaintainableObject.dataObject.description","New Term " + randomCode);
         waitAndTypeByName("document.newMaintainableObject.dataObject.specificationId", "T1000");
-        waitAndTypeByName("document.newMaintainableObject.dataObject.specification.namespace", "KR_RULE_TEST");
+        fireEvent("document.newMaintainableObject.dataObject.specificationId", "blur");
         waitForProgressLoading();
         waitForTextPresent("campusSize");
         waitForTextPresent("java.lang.Integer");

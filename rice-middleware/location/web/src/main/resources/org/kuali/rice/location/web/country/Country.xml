@@ -176,6 +176,32 @@
       </list>
     </property>
   </bean>
+
+  <bean id="CountryLookupView" parent="Uif-LookupView">
+    <property name="headerText" value="Country Lookup" />
+    <property name="dataObjectClassName" value="org.kuali.rice.location.impl.country.CountryBo" />
+    <property name="defaultSortAttributeNames">
+      <list>
+        <value>code</value>
+      </list>
+    </property>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="code" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="alternateCode" />
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active" />
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="code" />
+        <bean parent="Uif-DataField" p:propertyName="name" />
+        <bean parent="Uif-DataField" p:propertyName="alternateCode"/>
+        <bean parent="Uif-DataField" p:propertyName="active" />
+      </list>
+    </property>
+  </bean>
   
   <!-- KRAD Inquiry Definition --> 
   

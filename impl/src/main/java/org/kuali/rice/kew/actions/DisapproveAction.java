@@ -148,7 +148,8 @@ public class DisapproveAction extends ActionTakenEvent {
 //        if (actionRequests.size() > 0) { //I don't see why this matters let me know if it does rk
         	notificationNodeInstance = ((ActionRequestValue)actionRequests.get(0)).getNodeInstance();
 //        }
-        generateAcknowledgementsToPreviousActionTakers(notificationNodeInstance);
+        generateAcknowledgementsOrFyiToPreviousActionTakers(notificationNodeInstance,
+                KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
 
         LOG.debug("Disapproving document");
         try {

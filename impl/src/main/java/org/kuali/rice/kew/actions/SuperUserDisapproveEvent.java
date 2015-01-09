@@ -37,6 +37,7 @@ import java.util.List;
 public class SuperUserDisapproveEvent extends SuperUserActionTakenEvent {
 
     private final boolean sendAcknowledgements;
+    private final boolean sendFyiNotifications;
 
     public SuperUserDisapproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal) {
         this(routeHeader, principal, DEFAULT_ANNOTATION, DEFAULT_RUN_POSTPROCESSOR_LOGIC);
@@ -45,14 +46,22 @@ public class SuperUserDisapproveEvent extends SuperUserActionTakenEvent {
     public SuperUserDisapproveEvent(DocumentRouteHeaderValue routeHeader, PrincipalContract principal, String annotation, boolean runPostProcessor) {
         super(KewApiConstants.ACTION_TAKEN_SU_DISAPPROVED_CD, KewApiConstants.SUPER_USER_DISAPPROVE, routeHeader, principal, annotation, runPostProcessor);
         this.sendAcknowledgements = isPolicySet(routeHeader.getDocumentType(), DocumentTypePolicy.SEND_NOTIFICATION_ON_SU_DISAPPROVE);
+        this.sendFyiNotifications = isPolicySet(routeHeader.getDocumentType(), DocumentTypePolicy.SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE);
     }
 
     @Override
     protected void processActionTaken(ActionTakenValue actionTaken) {
-        if (sendAcknowledgements) {
+        if (sendFyiNotifications && !sendAcknowledgements) {
             Collection<ActionRequestValue> actionRequests = actionTaken.getActionRequests();
             if (!actionRequests.isEmpty()) {
-               generateAcknowledgementsToPreviousActionTakers(actionRequests.iterator().next().getNodeInstance());
+                generateAcknowledgementsOrFyiToPreviousActionTakers(actionRequests.iterator().next().getNodeInstance(),
+                        KewApiConstants.ACTION_REQUEST_FYI_REQ);
+            }
+        } else if (sendAcknowledgements || (sendFyiNotifications && sendAcknowledgements)) {
+            Collection<ActionRequestValue> actionRequests = actionTaken.getActionRequests();
+            if (!actionRequests.isEmpty()) {
+                generateAcknowledgementsOrFyiToPreviousActionTakers(actionRequests.iterator().next().getNodeInstance(),
+                       KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ);
             }
         }
     }

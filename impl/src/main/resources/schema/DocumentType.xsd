@@ -533,6 +533,8 @@
       <enumeration value="recall_valid_actionstaken"/>
       <enumeration value="SEND_NOTIFICATION_ON_SU_DISAPPROVE"/>
       <enumeration value="send_notification_on_su_disapprove"/>
+      <enumeration value="SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE"/>
+      <enumeration value="send_fyi_notification_on_su_disapprove"/>
       <enumeration value="ALLOW_SU_FINAL_APPROVAL"/>
       <enumeration value="allow_su_final_approval"/>
       <enumeration value="SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION"/>

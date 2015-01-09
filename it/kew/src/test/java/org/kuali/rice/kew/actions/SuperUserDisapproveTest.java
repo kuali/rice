@@ -32,6 +32,8 @@ import static org.junit.Assert.*;
 public class SuperUserDisapproveTest extends KEWTestCase {
     private static final String DOC_TYPE = NotifySetup.DOCUMENT_TYPE_NAME;
     private static final String DOC_TYPE_WITH_NOTIFY = "SUDisapproveWithNotificationTest";
+    private static final String DOC_TYPE_WITH_FYI_NOTIFY = "SUDisapproveWithFyiNotificationTest";
+    private static final String DOC_TYPE_WITH_BOTH_NOTIFY_POLICIES = "SUDisapproveWithBothNotificationPoliciesTest";
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");
@@ -43,6 +45,16 @@ public class SuperUserDisapproveTest extends KEWTestCase {
 
     @Test public void testSuperUserDisapproveWithNotification() throws Exception {
         superUserDisapprove(true);
+    }
+
+    @Test
+    public void testSuperUserDisapproveWithFyiNotification() throws Exception {
+        superUserDisapproveWithFyiNotification();
+    }
+
+    @Test
+    public void testSuperUserDisapproveWithBothNotificationPolicies() throws Exception {
+        superUserDisapprovewithBothNotificationPolicies();
     }
 
     protected void superUserDisapprove(boolean notify) throws Exception {
@@ -62,6 +74,61 @@ public class SuperUserDisapproveTest extends KEWTestCase {
         assertEquals(notify, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId()).isAcknowledgeRequested());
         assertEquals(notify, WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId()).isAcknowledgeRequested());
 	}
+
+    protected void superUserDisapproveWithFyiNotification() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"),
+                DOC_TYPE_WITH_FYI_NOTIFY);
+        document.route("");
+
+        WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId()).approve("");
+        WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId()).approve("");
+        WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId()).approve("");
+
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isValidAction(ActionType.SU_DISAPPROVE));
+        document.superUserDisapprove("");
+        assertTrue("Document should be final after Super User Disapprove", document.isDisapproved());
+        assertTrue(WorkflowDocumentFactory.loadDocument(document.getInitiatorPrincipalId(),
+                document.getDocumentId()).isFYIRequested());
+        assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"),
+                document.getDocumentId()).isFYIRequested());
+        assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"),
+                document.getDocumentId()).isFYIRequested());
+        assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"),
+                document.getDocumentId()).isFYIRequested());
+    }
+
+    protected void superUserDisapprovewithBothNotificationPolicies() throws Exception {
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"),
+                DOC_TYPE_WITH_BOTH_NOTIFY_POLICIES);
+        document.route("");
+
+        WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId()).approve("");
+        WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId()).approve("");
+        WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId()).approve("");
+
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId());
+        assertTrue("WorkflowDocument should indicate jhopf as SuperUser", document.isValidAction(ActionType.SU_DISAPPROVE));
+        document.superUserDisapprove("");
+        assertTrue("Document should be final after Super User Disapprove", document.isDisapproved());
+        assertTrue(WorkflowDocumentFactory.loadDocument(document.getInitiatorPrincipalId(),
+                document.getDocumentId()).isAcknowledgeRequested());
+        assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"),
+                document.getDocumentId()).isAcknowledgeRequested());
+        assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"),
+                document.getDocumentId()).isAcknowledgeRequested());
+        assertTrue(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"),
+                document.getDocumentId()).isAcknowledgeRequested());
+
+        assertFalse(WorkflowDocumentFactory.loadDocument(document.getInitiatorPrincipalId(), document.getDocumentId())
+                .isFYIRequested());
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("ewestfal"), document.getDocumentId())
+                .isFYIRequested());
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document.getDocumentId())
+                .isFYIRequested());
+        assertFalse(WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("jhopf"), document.getDocumentId())
+                .isFYIRequested());
+    }
 	
     @Test public void testSuperUserInitiatorDisapprove() throws Exception {
         superUserInitiatorDisapprove(false);

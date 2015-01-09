@@ -378,14 +378,15 @@ public abstract class ActionTakenEvent {
 	}
 
     /**
-     * Utility for generating Acknowledgements to previous document action takers.  Note that in constrast with other
-     * notification-generation methods (such as those in ActionRequestFactory) this method determines its recipient list
-     * from ActionTakenValues, not from outstanding ActionRequests.
+     * Utility for generating Acknowledgements or FYIs to previous document action takers.  Note that in constrast with
+     * other notification-generation methods (such as those in ActionRequestFactory) this method determines its
+     * recipient list from ActionTakenValues, not from outstanding ActionRequests.
      * @see ActionRequestFactory#generateNotifications(java.util.List, org.kuali.rice.kim.api.identity.principal.PrincipalContract, org.kuali.rice.kew.actionrequest.Recipient, String, String)
      * @see ActionRequestFactory#generateNotifications(org.kuali.rice.kew.actionrequest.ActionRequestValue, java.util.List, org.kuali.rice.kim.api.identity.principal.PrincipalContract, org.kuali.rice.kew.actionrequest.Recipient, String, String, org.kuali.rice.kim.api.group.Group)
-     * @param notificationNodeInstance the node instance with which generated actionrequests will be associated
+     * @param notificationNodeInstance the node instance with which generated action requests will be associated
      */
-    protected void generateAcknowledgementsToPreviousActionTakers(RouteNodeInstance notificationNodeInstance)
+    protected void generateAcknowledgementsOrFyiToPreviousActionTakers(RouteNodeInstance notificationNodeInstance,
+            String typeOfNotificationToSend)
     {
         String groupName = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(
                 KewApiConstants.KEW_NAMESPACE,
@@ -421,7 +422,16 @@ public abstract class ActionTakenEvent {
             {
                 if (!systemPrincipalIds.contains(action.getPrincipalId()))
                 {
-                    ActionRequestValue request = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
+                    ActionRequestValue request;
+
+                    if (typeOfNotificationToSend.equalsIgnoreCase(KewApiConstants.ACTION_REQUEST_FYI_REQ)) {
+                        request = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_FYI_REQ,
+                                action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
+                    } else {
+                        request = arFactory.createNotificationRequest(KewApiConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ,
+                                action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
+                    }
+
                     KEWServiceLocator.getActionRequestService().activateRequest(request);
                     usersNotified.add(request.getPrincipalId());
                 }

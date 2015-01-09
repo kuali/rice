@@ -5114,6 +5114,9 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                     <listitem>
                       <para>SEND_NOTIFICATION_ON_SU_DISAPPROVE</para>
                     </listitem>
+                    <listitem>
+                      <para>SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE</para>
+                    </listitem>
                 </itemizedlist></para>
             <para>Document Type Policies defined in the Document Type XML have this
                 structure:</para>
@@ -5355,7 +5358,7 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 
           <section>
             <title>SEND_NOTIFICATION_ON_SU_DISAPPROVE</title>
-            <para>By default, acknowledgedments are not sent on Super User Disapproval like they are for normal Disapprove actions.
+            <para>By default, acknowledgements are not sent on Super User Disapproval like they are for normal Disapprove actions.
                   This policy can be used to enable sending of acknowledgements upon Super User Disapproval.</para>
             <programlisting>&lt;policies>
               &lt;policy>
@@ -5366,6 +5369,20 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
             </programlisting>
           </section>
 
+          <section>
+            <title>SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE</title>
+            <para>By default, FYI notifications are not sent when a super user disapproves a document.
+                  This policy can be used to enable sending of FYIs upon Super User Disapproval. If both
+                  SEND_NOTIFICATION_ON_SU_DISAPPROVE and SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE are set to true for a
+                  document type, only acknowledgements will be sent when a super user disapproves a document.</para>
+            <programlisting>&lt;policies>
+              &lt;policy>
+              &lt;name>SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE&lt;/name>
+              &lt;value>true&lt;/value>
+              &lt;/policy>
+              &lt;/policies>
+            </programlisting>
+          </section>
 
         </section>
         <section>

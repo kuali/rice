@@ -122,6 +122,28 @@
     </property>
   </bean>
 
+  <bean id="County-InquiryView" parent="Uif-InquiryView">
+      <property name="title" value="County Inquiry"/>
+      <property name="dataObjectClassName" value="org.kuali.rice.location.impl.county.CountyBo"/>
+      <property name="Items">
+          <list>
+              <bean parent="Uif-Disclosure-GridSection">
+                  <property name="layoutManager.numberOfColumns" value="2"/>
+                  <property name="items">
+                      <list>
+                          <bean parent="Uif-InputField" p:propertyName="countryCode"/>
+                          <bean parent="Uif-InputField" p:propertyName="code"/>
+                          <bean parent="Uif-InputField" p:propertyName="stateCode"/>
+                          <bean parent="Uif-InputField" p:propertyName="name"/>
+                          <bean parent="Uif-InputField" p:propertyName="active"/>
+                      </list>
+                  </property>
+                  <property name="title" value="County Information"/>
+              </bean>
+          </list>
+      </property>
+  </bean>
+
 <!-- Business Object Lookup Definition -->
 
 
@@ -158,4 +180,33 @@
       </list>
     </property>
   </bean>
+
+  <bean id="CountyLookupView" parent="Uif-LookupView">
+    <property name="headerText" value="County Lookup"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.location.impl.county.CountyBo"/>
+    <property name="defaultSortAttributeNames">
+      <list>
+        <value>code</value>
+      </list>
+    </property>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="countryCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="code"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="stateCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="countryCode"/>
+        <bean parent="Uif-DataField" p:propertyName="code"/>
+        <bean parent="Uif-DataField" p:propertyName="stateCode"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="active"/>
+      </list>
+    </property>
+  </bean>
+
 </beans>

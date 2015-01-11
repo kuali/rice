@@ -70,6 +70,8 @@ public class DataObjectWrapperBaseTest {
 	private DataObjectMetadata dataObject3Metadata;
 	@Mock
 	private DataObjectMetadata dataObject4Metadata;
+	@Mock
+	private DataObjectMetadata dataObject5Metadata;
     @Mock private ReferenceLinker referenceLinker;
 
     private DataObject dataObject;
@@ -171,11 +173,59 @@ public class DataObjectWrapperBaseTest {
 		when(dataObject4Metadata.getPrimaryKeyAttributeNames()).thenReturn(Collections.singletonList("pk"));
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	protected void setUpDataObject5MetadataMocks() {
+		when(dataObjectService.supports(DataObject.class)).thenReturn(true);
+		when(dataObject5Metadata.getType()).thenReturn((Class) DataObject.class);
+		when(dataObject5Metadata.getPrimaryKeyAttributeNames()).thenReturn(Collections.singletonList("id"));
+
+		// M:1 relationship, lazy-loaded, not part of parent object tree
+		DataObjectRelationshipImpl dataObject2Relationship = new DataObjectRelationshipImpl();
+		dataObject2Relationship.setName("dataObject2");
+		dataObject2Relationship.setRelatedType(DataObject2.class);
+		dataObject2Relationship.setSavedWithParent(false);
+		dataObject2Relationship.setLoadedAtParentLoadTime(false);
+		dataObject2Relationship.setLoadedDynamicallyUponUse(true);
+		dataObject2Relationship.setAttributeRelationships((List) Collections
+				.singletonList(new DataObjectAttributeRelationshipImpl("dataObject2sKey", null)));
+
+		when(dataObject5Metadata.getRelationship("dataObject2")).thenReturn(dataObject2Relationship);
+
+		// M:1 relationship, eager-loaded, not part of parent object tree
+		DataObjectRelationshipImpl eagerDataObject2Relationship = new DataObjectRelationshipImpl();
+		eagerDataObject2Relationship.setName("eagerDataObject2");
+		eagerDataObject2Relationship.setRelatedType(DataObject2.class);
+		eagerDataObject2Relationship.setSavedWithParent(false);
+		eagerDataObject2Relationship.setLoadedAtParentLoadTime(true);
+		eagerDataObject2Relationship.setLoadedDynamicallyUponUse(false);
+		eagerDataObject2Relationship.setAttributeRelationships((List) Collections
+				.singletonList(new DataObjectAttributeRelationshipImpl("dataObject2sKey", "one")));
+
+		when(dataObject5Metadata.getRelationship("eagerDataObject2")).thenReturn(eagerDataObject2Relationship);
+
+		when(dataObject5Metadata.getRelationships()).thenReturn(
+				(List) Arrays.asList(dataObject2Relationship, eagerDataObject2Relationship));
+
+		// 1:M relationship, lazy-loaded, saved with parent
+		DataObjectCollectionImpl dataObject3Relationship = new DataObjectCollectionImpl();
+		dataObject3Relationship.setName("dataObject3s");
+		dataObject3Relationship.setRelatedType(DataObject3.class);
+		dataObject3Relationship.setSavedWithParent(true);
+		dataObject3Relationship.setLoadedAtParentLoadTime(false);
+		dataObject3Relationship.setLoadedDynamicallyUponUse(true);
+		dataObject3Relationship.setAttributeRelationships((List) Collections
+				.singletonList(new DataObjectAttributeRelationshipImpl("id", "parentId")));
+
+		when(dataObject5Metadata.getCollections()).thenReturn((List) Collections.singletonList(dataObject3Relationship));
+		when(dataObject5Metadata.getCollection("dataObject3s")).thenReturn(dataObject3Relationship);
+	}
+
     protected void configureMocks() {
 		setUpDataObjectMetadataMocks();
 		setUpDataObject2MetadataMocks();
 		setUpDataObject3MetadataMocks();
 		setUpDataObject4MetadataMocks();
+		setUpDataObject5MetadataMocks();
 
 		when(dataObjectService.findMatching(any(Class.class), any(QueryByCriteria.class))).thenAnswer(new Answer() {
 			@Override
@@ -263,6 +313,13 @@ public class DataObjectWrapperBaseTest {
             super(dataObject, metadata, dataObjectService, referenceLinker);
         }
     }
+
+	@Test
+	public void testGetForeignKeyAttributeMap_NoNullChildAttributeName(){
+		wrap = new DataObjectWrapperImpl<DataObject>(dataObject, dataObject5Metadata, dataObjectService, referenceLinker);
+		final Map<String, Object> result = wrap.getForeignKeyAttributeMap("dataObject2");
+		assertTrue(result.get((String)null)==null);
+	}
 
     @Test
     public void testGetType() {
@@ -709,5 +766,4 @@ public class DataObjectWrapperBaseTest {
 		}
 
     }
-
 }

@@ -100,6 +100,7 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
         return metadata;
     }
 
+
     /**
      * {@inheritDoc}
      */
@@ -542,7 +543,9 @@ public abstract class DataObjectWrapperBase<T> implements DataObjectWrapper<T> {
 
                 // store the mapping with the child attribute name to fetch on the referenced child object
                 String childAttributeName = attributeRelationship.getChildAttributeName();
-                attributeMap.put(childAttributeName, parentAttributeValue);
+                if (childAttributeName != null) {
+                    attributeMap.put(childAttributeName, parentAttributeValue);
+                }
             }
 
             return attributeMap;

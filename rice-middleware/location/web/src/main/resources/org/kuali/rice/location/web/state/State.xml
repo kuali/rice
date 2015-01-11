@@ -16,7 +16,9 @@
     limitations under the License.
 
 -->
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 
   <bean id="State" parent="State-parentBean"/>
 
@@ -40,9 +42,9 @@
     </property>
   </bean>
 
-<!-- Attribute Definitions -->
+  <!-- Attribute Definitions -->
   <bean id="State-countryCode" parent="Country-code-parentBean">
-      <property name="name" value="countryCode"/>
+    <property name="name" value="countryCode"/>
   </bean>
 
   <bean id="State-code" parent="State-code-parentBean"/>
@@ -89,7 +91,7 @@
   </bean>
 
 
-<!-- Business Object Inquiry Definition -->
+  <!-- Business Object Inquiry Definition -->
 
 
   <bean id="State-inquiryDefinition" parent="State-inquiryDefinition-parentBean"/>
@@ -114,14 +116,14 @@
     </property>
   </bean>
 
-<!-- Business Object Lookup Definition -->
+  <!-- Business Object Lookup Definition -->
 
 
   <bean id="State-lookupDefinition" parent="State-lookupDefinition-parentBean"/>
 
   <bean id="State-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
     <property name="title" value="State Code Lookup"/>
-    
+
     <property name="defaultSort">
       <bean parent="SortDefinition">
         <property name="attributeNames">
@@ -148,27 +150,53 @@
       </list>
     </property>
   </bean>
-  
-  <!-- KRAD Inquiry Definition -->   
-  
+
+  <bean id="StateLookupView" parent="Uif-LookupView">
+    <property name="headerText" value="State Lookup"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.location.impl.state.StateBo"/>
+    <property name="defaultSortAttributeNames">
+      <list>
+        <value>code</value>
+      </list>
+    </property>
+    <property name="criteriaFields">
+      <list>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="countryCode"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="code"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="name"/>
+        <bean parent="Uif-LookupCriteriaInputField" p:propertyName="active"/>
+      </list>
+    </property>
+    <property name="resultFields">
+      <list>
+        <bean parent="Uif-DataField" p:propertyName="countryCode"/>
+        <bean parent="Uif-DataField" p:propertyName="code"/>
+        <bean parent="Uif-DataField" p:propertyName="name"/>
+        <bean parent="Uif-DataField" p:propertyName="active"/>
+      </list>
+    </property>
+  </bean>
+
+  <!-- KRAD Inquiry Definition -->
+
   <bean id="State-InquiryView" parent="Uif-InquiryView">
-     <property name="title" value="State Inquiry"/>
-     <property name="dataObjectClassName" value="org.kuali.rice.location.impl.state.StateBo"/>
-     <property name="Items">
-         <list>
-           <bean parent="Uif-Disclosure-GridSection">
-             <property name="layoutManager.numberOfColumns" value="2"/>
-             <property name="items">
-               <list>
-                <bean parent="Uif-InputField" p:propertyName="countryCode"/>
-                <bean parent="Uif-InputField" p:propertyName="code"/>
-                <bean parent="Uif-InputField" p:propertyName="name"/>
-                <bean parent="Uif-InputField" p:propertyName="active"/>
-               </list>
-             </property>
-             <property name="title" value="State Information"/>
-           </bean>               
-         </list>
-     </property>
-  </bean> 
+    <property name="title" value="State Inquiry"/>
+    <property name="dataObjectClassName" value="org.kuali.rice.location.impl.state.StateBo"/>
+    <property name="Items">
+      <list>
+        <bean parent="Uif-Disclosure-GridSection">
+          <property name="layoutManager.numberOfColumns" value="2"/>
+          <property name="items">
+            <list>
+              <bean parent="Uif-InputField" p:propertyName="countryCode"/>
+              <bean parent="Uif-InputField" p:propertyName="code"/>
+              <bean parent="Uif-InputField" p:propertyName="name"/>
+              <bean parent="Uif-InputField" p:propertyName="active"/>
+            </list>
+          </property>
+          <property name="title" value="State Information"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
 </beans>

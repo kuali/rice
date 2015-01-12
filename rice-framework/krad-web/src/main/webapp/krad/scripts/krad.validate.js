@@ -1767,6 +1767,12 @@ function validateFieldValue(fieldControl) {
         hadIgnore = true;
     }
     clientErrorExistsCheck = true;
+
+    // skip fields in hidden dialogs
+    if (jQuery(fieldControl).is(kradVariables.DIALOG_SELECTOR + ":hidden [data-role='Control']")) {
+        return true;
+    }
+
     //the validation call
     var valid = jQuery(fieldControl).valid();
     dependsOnCheck(fieldControl, new Array());

@@ -56,7 +56,7 @@ public class LibraryGeneralFeaturesFocusAndJumpToAft extends WebDriverLegacyITBa
     
     protected void testGeneralFeaturesFocusAndJumpToFocusAndCollections() throws Exception {
     	waitAndSelectByName("exampleShown","Focus and Collections");
-    	waitAndClickButtonByExactText("Add");
+        waitAndClickButtonByExactText("Add");
     	waitForTextPresent("Adding Line...");
     }
     
@@ -67,20 +67,40 @@ public class LibraryGeneralFeaturesFocusAndJumpToAft extends WebDriverLegacyITBa
     	waitAndClickButtonByExactText("Jump to Bottom");
         checkForIncidentReport();
     }
-    
+
     @Test
     public void testGeneralFeaturesFocusAndJumpToBookmark() throws Exception {
-    	testGeneralFeaturesFocusAndJumpTo();
+        testGeneralFeaturesFocusAndJumpTo();
+        passed();
+    }
+
+    @Test
+    public void testGeneralFeaturesFocusAndJumpToFocusAndCollectionsBookmark() throws Exception {
     	testGeneralFeaturesFocusAndJumpToFocusAndCollections();
-    	testGeneralFeaturesFocusAndJumpToAndJumpToIdAfterSubmit();
+        passed();
+    }
+
+    @Test
+    public void testGeneralFeaturesFocusAndJumpToAndJumpToIdAfterSubmitBookmark() throws Exception {
+        testGeneralFeaturesFocusAndJumpToAndJumpToIdAfterSubmit();
         passed();
     }
 
     @Test
     public void testGeneralFeaturesFocusAndJumpToNav() throws Exception {
     	testGeneralFeaturesFocusAndJumpTo();
-    	testGeneralFeaturesFocusAndJumpToFocusAndCollections();
-    	testGeneralFeaturesFocusAndJumpToAndJumpToIdAfterSubmit();
         passed();
-    }  
+    }
+
+    @Test
+    public void testGeneralFeaturesFocusAndJumpToFocusAndCollectionsNav() throws Exception {
+        testGeneralFeaturesFocusAndJumpToFocusAndCollections();
+        passed();
+    }
+
+    @Test
+    public void testGeneralFeaturesFocusAndJumpToAndJumpToIdAfterSubmitNav() throws Exception {
+        testGeneralFeaturesFocusAndJumpToAndJumpToIdAfterSubmit();
+        passed();
+    }
 }

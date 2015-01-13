@@ -327,11 +327,6 @@ KradRequest.prototype = {
             jQuery.extend(data, this.additionalData);
         }
 
-        var jsonViewState = getSerializedViewState();
-        if (jsonViewState) {
-            jQuery.extend(data, {clientViewState: jsonViewState});
-        }
-
         // check if we still have a dialog to dismiss
         if (this.dismissDialogId) {
             var request = this;
@@ -385,6 +380,12 @@ KradRequest.prototype = {
 
     // handles the request as an ajax request
     _submitAjax: function (data) {
+        // add client state to the data
+        var jsonViewState = getSerializedViewState();
+        if (jsonViewState) {
+            jQuery.extend(data, {clientViewState: jsonViewState});
+        }
+
         // create a reference to the request for ajax callbacks
         var request = this;
 

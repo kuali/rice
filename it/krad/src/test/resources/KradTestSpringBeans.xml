@@ -64,7 +64,8 @@
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/krad-test-config.xml</value>
-			</list>
+                <value>classpath:META-INF/mail-test-config.xml</value>
+            </list>
 		</property>
 	</bean>
 	

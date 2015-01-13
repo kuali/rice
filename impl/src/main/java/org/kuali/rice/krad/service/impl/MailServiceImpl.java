@@ -140,6 +140,7 @@ public class MailServiceImpl implements MailService {
         buf.append("Email To: ").append(message.getToAddresses()).append("\n");
         buf.append("Email CC: ").append(message.getCcAddresses()).append("\n");
         buf.append("Email BCC: ").append(message.getBccAddresses()).append("\n\n");
+        buf.append("Email FROM: ").append(message.getFromAddress()).append("\n\n");
         buf.append(message.getMessage());
 
         message.getToAddresses().clear();
@@ -147,6 +148,8 @@ public class MailServiceImpl implements MailService {
         message.addToAddress(getNonProductionNotificationMailingList());
         message.getBccAddresses().clear();
         message.getCcAddresses().clear();
+        message.setFromAddress(getBatchMailingList());
+
         message.setMessage(buf.toString());
 
         return message;

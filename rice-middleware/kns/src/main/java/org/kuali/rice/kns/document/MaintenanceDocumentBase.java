@@ -353,6 +353,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
                             } else {
                                 multiAttach.setFileName(attachmentFromBusinessObject.getFileName());
                                 multiAttach.setContentType(attachmentFromBusinessObject.getContentType());
+                                multiAttach.setObjectId(UUID.randomUUID().toString());
                                 attachments.add(multiAttach);
                             }
                             md5Hashes.remove(md5Hex);
@@ -362,6 +363,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
                             attach.setContentType(attachmentFromBusinessObject.getContentType());
                             attach.setAttachmentContent(attachmentFromBusinessObject.getFileData());
                             attach.setDocumentNumber(getDocumentNumber());
+                            attach.setObjectId(UUID.randomUUID().toString());
                             attachments.add(attach);
                         }
                     } else {
@@ -372,7 +374,7 @@ public class MaintenanceDocumentBase extends org.kuali.rice.krad.maintenance.Mai
                             attach.setContentType(persistableAttachment.getContentType());
                             attach.setAttachmentContent(persistableAttachment.getAttachmentContent());
                             attach.setDocumentNumber(getDocumentNumber());
-
+                            attach.setObjectId(UUID.randomUUID().toString());
                             //set Bo's content to null
                             persistableAttachment.setAttachmentContent(null);
                             attachments.add(attach);

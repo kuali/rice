@@ -292,9 +292,17 @@ public class CollectionGroupBase extends GroupBase implements CollectionGroup {
         if (StringUtils.isNotBlank(getBindingInfo().getCollectionPath())) {
             collectionPath += getBindingInfo().getCollectionPath() + ".";
         }
-        if (StringUtils.isNotBlank(getBindingInfo().getBindByNamePrefix())) {
+
+        // Check to see if binding prefix path starts the same as the collection path,
+        // and if it does just start with that instead
+        if (StringUtils.isNotBlank(getBindingInfo().getBindByNamePrefix()) && StringUtils.isNotBlank(
+                getBindingInfo().getCollectionPath()) && getBindingInfo().getBindByNamePrefix().startsWith(
+                getBindingInfo().getCollectionPath())) {
+            collectionPath = getBindingInfo().getBindByNamePrefix() + ".";
+        } else if (StringUtils.isNotBlank(getBindingInfo().getBindByNamePrefix())) {
             collectionPath += getBindingInfo().getBindByNamePrefix() + ".";
         }
+
         collectionPath += getBindingInfo().getBindingName();
 
         List<DataField> collectionFields = ComponentUtils.getNestedNonCollectionComponents((List<Component>) getItems(),

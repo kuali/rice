@@ -949,8 +949,18 @@ public class ViewHelperServiceImpl implements ViewHelperService, Serializable {
     @Override
     public void populateDefaultValueForField(Object object, DataField dataField, String bindingPath) {
 
-        if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath) || !ObjectPropertyUtils.isWritableProperty(
-                object, bindingPath)) {
+        try{
+            if (!ObjectPropertyUtils.isReadableProperty(object, bindingPath) || !ObjectPropertyUtils.isWritableProperty(
+                    object, bindingPath)) {
+                return;
+            }
+        }catch(RuntimeException e){
+            /*
+              ApplyDefaultValues is run even on components with skipLifeCycle phase set to true. This can lead to cases
+              where the Object may not be present on the model causing ObjectPropertyUtils to throw an exception. For
+              more details and a specific case refer to KULRICE-14084
+             */
+            LOG.warn("No property with binding path '" +bindingPath+"' is readable on '"+object+"'"+e.getMessage() );
             return;
         }
 

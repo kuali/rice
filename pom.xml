@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>3.3.44</version>
+    <version>4.3.9</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -54,6 +54,8 @@
     <kuali.release.goals>deploy</kuali.release.goals>
     <kuali.release.arguments>-DskipTests</kuali.release.arguments>
 
+    <!-- TODO: Remove after updating to kuali-common 4.4.x -->
+    <kuali-core.version>1.0.18</kuali-core.version>
     <appserver.port>8080</appserver.port>
     <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
     <gmaven.compile.phase>compile</gmaven.compile.phase>

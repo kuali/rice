@@ -18,7 +18,7 @@
 -->
 <project version="4">
   <component name="VcsDirectoryMappings">
-    <mapping directory="" vcs="svn" />
+    <mapping directory="" vcs="git" />
   </component>
 </project>
 

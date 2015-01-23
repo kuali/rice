@@ -2517,7 +2517,7 @@
   <scm>
     <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>
     <connection>scm:git:git@github.com:kuali/rice.git</connection>
-    <url>https://github.com/kuali/rice-playground/tree/${project.scm.tag}</url>
+    <url>https://github.com/kuali/rice/tree/${project.scm.tag}</url>
     <tag>master</tag>
   </scm>
 

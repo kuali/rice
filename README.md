@@ -16,9 +16,9 @@
 
 Contents
 -----
-Preface
-Licensing and Licenses
-References and Links
+- Preface
+- Licensing and Licenses
+- References and Links
 
 
 Preface

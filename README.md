@@ -35,7 +35,7 @@ third-parties whose libraries are used by, or distributed with, Kuali Rice. All
 relevant third-party licenses are included in the Rice binary and server 
 distributions (in the /licenses directory) and in the NOTICE.txt file. Due
 attribution is also given on the Kuali wiki at
-https://test.kuali.org/confluence/x/-ILxCw.
+https://wiki.kuali.org/display/KULRICE/Licensing+and+Acknowledgements.
 
 
 References and Links

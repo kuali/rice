@@ -2133,9 +2133,10 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.1</connection>
-    <developerConnection>scm:svn:https://svn.kuali.org/repos/rice/branches/rice-2.1</developerConnection>
-    <url>https://svn.kuali.org/repos/rice/branches/rice-2.1</url>
+    <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>
+    <connection>scm:git:git@github.com:kuali/rice.git</connection>
+    <url>https://github.com/kuali/rice/tree/${project.scm.tag}</url>
+    <tag>rice-2.1</tag>
   </scm>
 
 </project>

@@ -48,6 +48,7 @@
   <properties>
     <project.java.version>1.7</project.java.version>
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
+    <kuali-core.version>1.0.19</kuali-core>
 
     <!-- These properties modify the release process -->
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>

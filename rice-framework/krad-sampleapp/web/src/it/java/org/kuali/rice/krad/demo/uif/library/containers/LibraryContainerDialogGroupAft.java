@@ -117,6 +117,10 @@ public class LibraryContainerDialogGroupAft extends WebDriverLegacyITBase {
     protected void testContainerDialogGroupServerDialog1() throws Exception {
     	waitAndClickByLinkText("Server Dialog Ex. 1");
     	waitAndClickByXpath("//section[@id='Demo-DialogGroup-Example8']/button");
+        waitForProgressLoading();
+        waitAndClickByXpath(
+                "//section[@id='Demo-DialogGroup-ServerResponse1']/div/div/div[@data-parent='Demo-DialogGroup-ServerResponse1']/button[contains(text(),'Yes')]");
+        waitForElementPresentByXpath("//div[@id='Demo-DialogGroup-Example8_messages']/ul/li[contains(text(), 'Save was completed.')]");
     }
     
     protected void testContainerDialogGroupServerDialog2() throws Exception {

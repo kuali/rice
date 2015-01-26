@@ -230,6 +230,11 @@
                 <version>${eclipselink.version}</version>
               </dependency>
               <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>org.eclipse.persistence.oracle</artifactId>
+                <version>${eclipselink.version}</version>
+              </dependency>
+              <dependency>
                 <groupId>${project.groupId}</groupId>
                 <artifactId>rice-edl-impl</artifactId>
                 <version>${project.version}</version>

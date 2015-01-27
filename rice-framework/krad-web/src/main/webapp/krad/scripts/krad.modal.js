@@ -486,6 +486,8 @@ function openIframeDialog(url, dialogId, modalOptions) {
  */
 function closeIframeDialog() {
     window.parent.postMessage(kradVariables.MODAL.MODAL_CLOSE_DIALOG, "*");
+    // Fix for lingering loading message in IE
+    hideLoading();
 }
 
 /**

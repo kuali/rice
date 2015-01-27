@@ -47,6 +47,7 @@ import org.kuali.rice.krad.service.KualiRuleService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.service.MaintenanceDocumentService;
 import org.kuali.rice.krad.uif.UifConstants;
+import org.kuali.rice.krad.uif.UifPropertyPaths;
 import org.kuali.rice.krad.uif.component.BindingInfo;
 import org.kuali.rice.krad.uif.container.CollectionGroup;
 import org.kuali.rice.krad.uif.field.DataField;
@@ -602,7 +603,8 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
          *  if the bindingPath includes a new maintainable path
          */
         if (KRADConstants.MAINTENANCE_EDIT_ACTION.equals(form.getMaintenanceAction()) && element instanceof InputField
-                && StringUtils.contains(((InputField) element).getName(), KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)) {
+                && StringUtils.contains(((InputField) element).getName(), KRADConstants.MAINTENANCE_NEW_MAINTAINABLE)
+                && !(StringUtils.contains(((InputField) element).getName(), UifPropertyPaths.NEW_COLLECTION_LINES))) {
             setPrimaryKeyReadOnly(element);
 
         }

@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.krad.demo.uif.controller;
 
-import org.kuali.rice.krad.demo.uif.form.KradSampleAppForm;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.web.form.DialogResponse;
+import org.kuali.rice.krad.web.form.UifFormBase;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +37,8 @@ public class DemoDialogController extends KradSampleAppController {
     protected static final String DEMO_DISAPPROVE_SURVEY = "Demo-DialogGroup-ServerResponse3";
 
     @RequestMapping(params = "methodToCall=save")
-    public ModelAndView save(@ModelAttribute("KualiForm") KradSampleAppForm form) throws Exception {
+    @Override
+    public ModelAndView save(@ModelAttribute("KualiForm") UifFormBase form) throws Exception {
         // typically there would be conditional logic that triggers the dialog
         DialogResponse duplicateDialogResponse = form.getDialogResponse(DEMO_DUPLICATE_DIALOG);
         if (duplicateDialogResponse == null) {
@@ -54,7 +55,7 @@ public class DemoDialogController extends KradSampleAppController {
     }
 
     @RequestMapping(params = "methodToCall=disapprove")
-    public ModelAndView disapprove(@ModelAttribute("KualiForm") KradSampleAppForm form) throws Exception {
+    public ModelAndView disapprove(@ModelAttribute("KualiForm") UifFormBase form) throws Exception {
         // typically there would be conditional logic that triggers the dialog
         DialogResponse disapproveConfirm = form.getDialogResponse(DEMO_DISAPPROVE_CONFIRM);
         if (disapproveConfirm == null) {

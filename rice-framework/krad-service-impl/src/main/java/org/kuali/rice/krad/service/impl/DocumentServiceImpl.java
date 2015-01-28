@@ -883,9 +883,9 @@ public class DocumentServiceImpl implements DocumentService {
                 LOG.info("storing document " + document.getDocumentNumber());
             }
             savedDocument = getLegacyDataAdapter().saveDocument(document);
-            savedDocument.processAfterRetrieve();
             // Need to preserve the workflow document header, which just got left behind
             savedDocument.getDocumentHeader().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+            savedDocument.processAfterRetrieve();
         } catch (OptimisticLockingFailureException e) {
             LOG.error("exception encountered on store of document " + e.getMessage());
             throw e;

@@ -544,6 +544,14 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
 
+        boolean saveNeeded = reviewDocumentForSaveNeeded(document);
+
+        if (saveNeeded) {
+            // save in workflow
+            removeNewIndicatorOnNotes(document);
+            getDocumentService().saveDocument(document);
+        }
+
         boolean rulePassed = getKualiRuleService().applyRules(new SendAdHocRequestsEvent(document));
 
         if (rulePassed) {
@@ -552,6 +560,18 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    private boolean reviewDocumentForSaveNeeded(Document document) {
+        List<Note> notes = document.getNotes();
+
+        for (Note note : notes) {
+            if (note.isNewCollectionRecord()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -611,6 +631,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         // save in workflow
+        removeNewIndicatorOnNotes(document);
         getDocumentService().saveDocument(document);
 
         KNSGlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SAVED);
@@ -626,6 +647,16 @@ public class KualiDocumentActionBase extends KualiAction {
 //        }
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
+    }
+
+    private void removeNewIndicatorOnNotes(Document document) {
+        List<Note> notes = document.getNotes();
+
+        for (Note note : notes) {
+            if (note.isNewCollectionRecord()) {
+                note.setNewCollectionRecord(false);
+            }
+        }
     }
 
     /**
@@ -1448,6 +1479,9 @@ public class KualiDocumentActionBase extends KualiAction {
 
 
             DocumentHeader documentHeader = document.getDocumentHeader();
+
+            // flag added Note as new
+            tmpNote.setNewCollectionRecord(true);
 
             // associate note with object now
             document.addNote(tmpNote);

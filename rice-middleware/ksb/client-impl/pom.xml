@@ -47,6 +47,10 @@
       <artifactId>org.eclipse.persistence.jpa</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>org.eclipse.persistence.oracle</artifactId>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-data</artifactId>
       <version>${project.version}</version>

@@ -1345,7 +1345,7 @@
               <resources>
                 <resource>
                   <directory>${rice.docbook.src}</directory>
-                  <filtering>false</filtering>
+                  <filtering>true</filtering>
                   <includes>
                     <include>**/*.xml</include>
                     <include>**/*.css</include>

@@ -101,9 +101,9 @@
             The links provided here are for convenience in finding the latest default keystore from source.</para>
         <para><emphasis role="bold">Kuali locations</emphasis>
         <itemizedlist>
-            <listitem><para><link xlink:href="https://wiki.kuali.org/display/KULFOUND/Subversion">https://wiki.kuali.org/display/KULFOUND/Subversion</link></para></listitem>
-            <listitem><para><link xlink:href="https://svn.kuali.org/repos">https://svn.kuali.org/repos</link></para></listitem>
-            <listitem><para><link xlink:href="https://svn.kuali.org/repos/rice/trunk/rice-middleware/security/rice.keystore">https://svn.kuali.org/repos/rice/trunk/rice-middleware/security/rice.keystore</link></para></listitem>
+            <listitem><para><link xlink:href="https://wiki.kuali.org/display/KULFOUND/GitHub">https://wiki.kuali.org/display/KULFOUND/GitHub</link></para></listitem>
+            <listitem><para><link xlink:href="https://github.com/kuali">https://github.com/kuali</link></para></listitem>
+            <listitem><para><link xlink:href="https://github.com/kuali/rice/blob/master/rice-middleware/security/rice.keystore">https://github.com/kuali/rice/blob/master/rice-middleware/security/rice.keystore</link></para></listitem>
         </itemizedlist></para>
     </section>
     <section xml:id="new_keystore_alias">

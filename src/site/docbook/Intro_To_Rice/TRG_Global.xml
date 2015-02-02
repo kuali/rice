@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?> 
+<?xml version='1.0' encoding='UTF-8'?>
 <!--
 
     Copyright 2005-2014 The Kuali Foundation
@@ -847,9 +847,9 @@ value="classpath:my/app/package/MyCustomSpringFile.xml"/>
                             >http://subclipse.tigris.org/install.html</link>) </para>
                 </listitem>
                 <listitem>
-                    <para>Set up a new Git repository in Eclipse: <link
-                            xlink:href="https://github.com/kuali/rice/tree/rice-${project.version}"
-                            >https://github.com/kuali/rice/tree/rice-${project.version}</link>
+                    <para>Set up a new GitHub repository in Eclipse: <link
+                            xlink:href="https://github.com/kuali/rice"
+                            >https://github.com/kuali/rice</link>
                     </para>
                 </listitem>
                 <listitem>

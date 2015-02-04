@@ -31,11 +31,11 @@
                         >http://nexus.kuali.org/content/groups/public/</link></para>
             </listitem>
             <listitem>
-                <para>Kuali Git repository - <link
+                <para>Kuali GitHub repository - <link
                         xlink:show="new" xlink:href="https://github.com/kuali/rice/tree/rice-${project.version}"
                     >https://github.com/kuali/rice/tree/rice-${project.version}</link></para>
             </listitem>
-        </itemizedlist>        
+        </itemizedlist>
     </section>
     <section>
         <title>Release Documentation</title>

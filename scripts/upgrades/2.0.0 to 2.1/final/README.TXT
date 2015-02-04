@@ -73,4 +73,4 @@ If you are upgrading an embedded MySql database:
 /******************************************************/
 
     1. Are you upgrading from 1.0.3?  If so, read the following:
-       https://svn.kuali.org/repos/rice/branches/rice-2.1/scripts/upgrades/1.0.3 to 2.0.0/final/README.TXT
+       https://github.com/kuali/rice/blob/rice-2.1/scripts/upgrades/1.0.3%20to%202.0.0/final/README.TXT

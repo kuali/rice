@@ -33,8 +33,8 @@ public class BranchServiceImpl implements BranchService {
         dataObjectService.save(branch);
     }
     
-    public void deleteBranchStates(List statesToBeDeleted){
-        for(BranchState bs : (List<BranchState>)statesToBeDeleted){
+    public void deleteBranchStates(List<BranchState> statesToBeDeleted){
+        for(BranchState bs : statesToBeDeleted){
             dataObjectService.delete(bs);
         }
     }

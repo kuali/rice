@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-impex-server</artifactId>
-    <version>2.6.0-M1-SNAPSHOT</version>
+    <version>2.6.0-M1-20150207-7201b2d4a5</version>
   </parent>
 
   <artifactId>rice-impex-server-bootstrap</artifactId>

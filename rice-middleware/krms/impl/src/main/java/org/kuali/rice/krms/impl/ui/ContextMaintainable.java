@@ -22,6 +22,7 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
+import org.kuali.rice.krms.impl.repository.ContextAttributeBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.RepositoryBoIncrementer;
 
@@ -49,7 +50,19 @@ public class ContextMaintainable extends MaintainableImpl {
     public void processAfterCopy(MaintenanceDocument document, Map<String, String[]> requestParameters) {
         ContextBo context = (ContextBo) document.getNewMaintainableObject().getDataObject();
 
-        context.setId(contextIdIncrementer.getNewId());
+        if (context.getId()== null) {
+            context.setId(contextIdIncrementer.getNewId());
+        }
+
+        if(context.getName() == null) {
+            context.setName(" Copy " + System.currentTimeMillis());
+        }
+
+        context.setAgendas(null);
+        for (ContextAttributeBo attributeBo : context.getAttributeBos()) {
+            attributeBo.setId(null);
+            attributeBo.setVersionNumber(null);
+        }
 
         super.processAfterCopy(document,
                 requestParameters);
@@ -72,8 +85,6 @@ public class ContextMaintainable extends MaintainableImpl {
 
         if (KRADConstants.MAINTENANCE_COPY_ACTION.equals(getMaintenanceAction())) {
             document.getDocumentHeader().setDocumentDescription("New Context Document");
-
-            contextBo = contextBo.copyContext(" Copy " + System.currentTimeMillis());
         }
 
         return contextBo;

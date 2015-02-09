@@ -26,6 +26,7 @@
   <bean id="Context-MaintenanceView-parentBean" abstract="true" parent="Uif-MaintenanceView">
     <property name="headerText" value="Context Maintenance"/>
     <property name="dataObjectClassName" value="org.kuali.rice.krms.impl.repository.ContextBo"/>
+    <property name="viewHelperServiceClass" value="org.kuali.rice.krms.impl.ui.ContextMaintainable"/>
     <property name="items">
       <list merge="true">
         <bean parent="Uif-MaintenanceGridSection">

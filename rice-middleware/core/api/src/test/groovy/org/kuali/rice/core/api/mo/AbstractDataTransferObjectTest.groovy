@@ -94,7 +94,9 @@ class AbstractDataTransferObjectTest {
         SampleDataTransferObject deserializedDto = SerializationUtils.deserialize(serialized)
         assert dto == deserializedDto
         byte[] serializedAgain = SerializationUtils.serialize(deserializedDto)
-        assert serialized == serializedAgain
+        SampleDataTransferObject data1 = SerializationUtils.deserialize(serialized)
+        SampleDataTransferObject data2 = SerializationUtils.deserialize(serializedAgain)
+        assert data1.equals(data2);
         SampleDataTransferObject deserializedAgainDto = SerializationUtils.deserialize(serializedAgain)
         assert deserializedDto == deserializedAgainDto
     }

@@ -19,6 +19,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 import org.kuali.rice.kew.api.rule.Rule
+import org.kuali.rice.kew.api.rule.RuleContract
 import org.kuali.rice.kew.api.rule.RuleDelegation
 import org.junit.Ignore
 
@@ -55,8 +56,13 @@ class RuleValidationContextTest {
 
     @Test(expected=IllegalArgumentException.class)
  	void test_Builder_create_fail_null_source() {
- 	    RuleValidationContext.Builder.create(null)
+ 	    RuleValidationContext.Builder.create((RuleContract)null)
  	}
+
+    @Test(expected=NullPointerException.class)
+    void test_Builder_create_fail_null_source2() {
+        RuleValidationContext.Builder.create((RuleValidationContextContract)null)
+    }
 
     @Test
     void test_Builder_create_success_optional_properties() {

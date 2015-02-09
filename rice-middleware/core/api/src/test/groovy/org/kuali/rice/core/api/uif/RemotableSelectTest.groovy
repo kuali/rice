@@ -92,8 +92,14 @@ class RemotableSelectTest {
 
     @Test(expected=IllegalArgumentException.class)
     void testNullKeyLabels() {
-        RemotableSelect.Builder o = RemotableSelect.Builder.create(null)
+        RemotableSelect.Builder o = RemotableSelect.Builder.create((Map)null)
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    void testNullKeyLabels2() {
+        RemotableSelect.Builder o = RemotableSelect.Builder.create((List)null)
+    }
+
 
     @Test
 	void testJAXB1() {

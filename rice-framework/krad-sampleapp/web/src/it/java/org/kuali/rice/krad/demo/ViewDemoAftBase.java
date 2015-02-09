@@ -29,7 +29,7 @@ import org.openqa.selenium.WebElement;
 public abstract class ViewDemoAftBase extends WebDriverLegacyITBase{
 
     /**
-     * http://site.kuali.org/rice/2-5
+     * http://site.kuali.org/rice/2-6
      *
      * In theory it would be possible to get the rice version from the AbstractBaseConfig, but then we have a requirement
      * of having the app configured for AFTs to run and AFTs frequently are run against a remote app.  Also the rice config
@@ -37,7 +37,7 @@ public abstract class ViewDemoAftBase extends WebDriverLegacyITBase{
      *
      * The DB rice.version (which is where the help urls are stored) seems to be independent from the app.xml, using that value might be better than hardcoding
      */
-    public static final String VERSION = "2.5.";
+    public static final String VERSION = "2.6.";
     public static final String HELP_URL_RICE_VERSION = "site.kuali.org/rice/" + VERSION;
 
     protected void assertHelp() throws InterruptedException {

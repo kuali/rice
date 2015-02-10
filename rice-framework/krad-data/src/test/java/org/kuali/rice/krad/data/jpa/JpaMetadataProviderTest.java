@@ -153,12 +153,12 @@ public class JpaMetadataProviderTest {
 		assertNotNull("Collections object should not be null", collections);
 		assertEquals("Collections size incorrect", 4, collections.size());
 
-		DataObjectCollection collection = collections.get(0);
+		DataObjectCollection collection = collections.get(3);
 		assertEquals("property name incorrect", "collectionProperty", collection.getName());
 		assertEquals("collection backing object incorrect", "KRTST_TEST_COLL_T", collection.getBackingObjectName());
 		assertEquals("collection label incorrect", "Collection Property", collection.getLabel());
 		assertEquals("collection item label incorrect", "Collection Data Object", collection.getElementLabel());
-		
+
 		collection = metadata.getCollection("collectionPropertyTwo");
 		assertNotNull("Collection object for collectionPropertyTwo should not be null", collection);
 		assertEquals("property name incorrect", "collectionPropertyTwo", collection.getName());
@@ -270,12 +270,15 @@ public class JpaMetadataProviderTest {
 
 		assertNotNull("attribute relationships must not be null", relationship.getAttributeRelationships());
 		assertEquals("attribute relationships size incorrect", 2, relationship.getAttributeRelationships().size());
-		DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(0);
+
+		DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(1);
+
 		assertEquals("first parent attribute name mismatch", "stringProperty",
                 linkingAttribute.getParentAttributeName());
 		assertEquals("first child attribute name mismatch", "stringProperty", linkingAttribute.getChildAttributeName());
 
-		linkingAttribute = relationship.getAttributeRelationships().get(1);
+		linkingAttribute = relationship.getAttributeRelationships().get(0);
+
 		assertEquals("second parent attribute name mismatch", "dateProperty", linkingAttribute.getParentAttributeName());
 		assertEquals("second child attribute name mismatch", "dateProperty", linkingAttribute.getChildAttributeName());
 	}
@@ -322,12 +325,14 @@ public class JpaMetadataProviderTest {
 
 		assertNotNull("attribute relationships must not be null", relationship.getAttributeRelationships());
 		assertEquals("attribute relationships size incorrect", 2, relationship.getAttributeRelationships().size());
-		DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(0);
-		assertEquals("first parent attribute name mismatch", "stringProperty",
-                linkingAttribute.getParentAttributeName());
+
+		DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(1);
+
+		assertEquals("first parent attribute name mismatch", "stringProperty", linkingAttribute.getParentAttributeName());
 		assertEquals("first child attribute name mismatch", "stringProperty", linkingAttribute.getChildAttributeName());
 
-		linkingAttribute = relationship.getAttributeRelationships().get(1);
+		linkingAttribute = relationship.getAttributeRelationships().get(0);
+
 		assertEquals("second parent attribute name mismatch", "dateProperty", linkingAttribute.getParentAttributeName());
 		assertEquals("second child attribute name mismatch", "dateProperty", linkingAttribute.getChildAttributeName());
 	}
@@ -360,8 +365,7 @@ public class JpaMetadataProviderTest {
 
 		DataObjectRelationship relationship = metadata.getRelationshipByLastAttributeInRelationship("stringProperty");
 		assertNotNull("retrieval by last attribute name (stringProperty) failed", relationship);
-		assertEquals("retrieval by last attribute name (stringProperty) returned wrong relationship",
-                "referencedObject", relationship.getName());
+		assertEquals("retrieval by last attribute name (stringProperty) returned wrong relationship", "referencedObject", relationship.getName());
 	}
 
 	@Test
@@ -371,8 +375,7 @@ public class JpaMetadataProviderTest {
 
 		DataObjectRelationship relationship = metadata.getRelationshipByLastAttributeInRelationship("dateProperty");
 		assertNotNull("retrieval by last attribute name (dateProperty) failed", relationship);
-		assertEquals("retrieval by last attribute name (dateProperty) returned wrong relationship",
-                "anotherReferencedObject", relationship.getName());
+		assertEquals("retrieval by last attribute name (dateProperty) returned wrong relationship", 	"anotherReferencedObject", relationship.getName());
 	}
 
 	@Test

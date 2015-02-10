@@ -83,8 +83,8 @@ public class PredicateTest {
 		
 		assertEquals("OrPredicate should have 2 expressions", 2, foundOr.getPredicates().size());
 
-		EqualPredicate nameFirstPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(1);
-		EqualPredicate nameLastPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(0);
+		EqualPredicate nameFirstPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(0);
+		EqualPredicate nameLastPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(1);
 
 		assertEquals("name.first", nameFirstPredicate.getPropertyPath());
 		assertEquals("Eric", nameFirstPredicate.getValue().getValue());

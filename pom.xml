@@ -1341,11 +1341,12 @@
             </goals>
             <phase>${rice.docbook.phase}</phase>
             <configuration>
+              <escapeString>\</escapeString>
               <outputDirectory>${rice.docbook.filtered}</outputDirectory>
               <resources>
                 <resource>
                   <directory>${rice.docbook.src}</directory>
-                  <filtering>false</filtering>
+                  <filtering>true</filtering>
                   <includes>
                     <include>**/*.xml</include>
                     <include>**/*.css</include>

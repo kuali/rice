@@ -58,6 +58,8 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
 
 import javax.servlet.ServletException;
@@ -84,6 +86,8 @@ import java.util.StringTokenizer;
 public class DocumentOperationAction extends KewKualiAction {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentOperationAction.class);
 	private static final String DEFAULT_LOG_MSG = "Admin change via document operation";
+
+    private DataObjectService dataObjectService;
 
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		return mapping.findForward("basic");
@@ -115,7 +119,6 @@ public class DocumentOperationAction extends KewKualiAction {
 			if (routeHeader == null) {
 				GlobalVariables.getMessageMap().putError("documentId", RiceKeyConstants.ERROR_EXISTENCE, "document");
 			} else {
-				materializeDocument(routeHeader);
 				docForm.setRouteHeader(routeHeader);
 				setRouteHeaderTimestampsToString(docForm);
 				docForm.setRouteHeaderOp(KewApiConstants.NOOP);
@@ -154,21 +157,6 @@ public class DocumentOperationAction extends KewKualiAction {
 		}
 			
 		return mapping.findForward("basic");
-	}
-
-	/**
-	 * Sets up various objects on the document which are required for use inside of the Struts and JSP framework.
-	 *
-	 * Specifically, if a document has action requests with null RouteNodeInstances, it will create empty node instance
-	 * objects.
-	 */
-	private void materializeDocument(DocumentRouteHeaderValue document) {
-		for (Iterator iterator = document.getActionRequests().iterator(); iterator.hasNext();) {
-			ActionRequestValue request = (ActionRequestValue) iterator.next();
-			if (request.getNodeInstance() == null) {
-				request.setNodeInstance(new RouteNodeInstance());
-			}
-		}
 	}
 
 	public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -419,7 +407,7 @@ public class DocumentOperationAction extends KewKualiAction {
 
 		List branches=(List)(request.getSession().getAttribute("branches"));
 		String branchStateIds = (docForm.getBranchStatesDelete() != null) ? docForm.getBranchStatesDelete().trim() : null;
-		List branchStatesToBeDeleted=new ArrayList();
+		List<Long> branchStatesToBeDeleted=new ArrayList<Long>();
 		if(branchStateIds!=null && !branchStateIds.equals("")){
 		    StringTokenizer idSets=new StringTokenizer(branchStateIds);
 		    while (idSets.hasMoreTokens()) {
@@ -487,7 +475,19 @@ public class DocumentOperationAction extends KewKualiAction {
 		}
 
 		if(branchStatesToBeDeleted!=null && branchStatesToBeDeleted.size()>0){
-			getBranchService().deleteBranchStates(branchStatesToBeDeleted);
+            List<BranchState> branchStatesToDelete = new ArrayList<BranchState>();
+            List<String> branchStateIdsToBeDeleted =  new ArrayList<String>(branchStatesToBeDeleted.size());
+            //Converting a list of Long values to list of String values
+            for(Long branchStateToBeDeleted : branchStatesToBeDeleted){
+                branchStateIdsToBeDeleted.add(String.valueOf(branchStateToBeDeleted));
+            }
+
+            for(String branchStateId : branchStateIdsToBeDeleted){
+                BranchState branchState = getDataObjectService().find(BranchState.class, branchStateId);
+                branchStatesToDelete.add(branchState);
+            }
+
+            getBranchService().deleteBranchStates(branchStatesToDelete);
 		}
 
 		WorkflowDocument workflowDocument = WorkflowDocumentFactory.loadDocument(GlobalVariables.getUserSession().getPrincipalId(), docForm.getDocumentId());
@@ -743,4 +743,11 @@ public class DocumentOperationAction extends KewKualiAction {
 	private BranchService getBranchService(){
 		return (BranchService) KEWServiceLocator.getService(KEWServiceLocator.BRANCH_SERVICE);
 	}
+
+    public DataObjectService getDataObjectService() {
+        if(dataObjectService == null) {
+            dataObjectService = KRADServiceLocator.getDataObjectService();
+        }
+        return dataObjectService;
+    }
 }

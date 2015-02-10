@@ -16,7 +16,8 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>rice-ksb</artifactId>
     <groupId>org.kuali.rice</groupId>
@@ -129,6 +130,16 @@
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>asm</artifactId>
+          <groupId>asm</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>${asm.group.string}</groupId>
+      <artifactId>asm</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
@@ -181,7 +192,7 @@
     </dependency>
     <!-- ASM as an explicit dependency, see KULRICE-6353 -->
     <dependency>
-      <groupId>asm</groupId>
+      <groupId>${asm.group.string}</groupId>
       <artifactId>asm</artifactId>
       <scope>runtime</scope>
     </dependency>

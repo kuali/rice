@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat
 import org.junit.Test
 import static org.junit.Assert.*
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Test the {@link PredicateFactory}.  Runs through a few different PredicateFactory scenarios.
@@ -83,7 +84,7 @@ public class PredicateTest {
         // order is not guaranteed
         if (StringUtils.equals(equalPredicates.get(0).getPropertyPath(), "name.first")) {
             assertEquals("name.first", equalPredicates.get(0).getPropertyPath());
-            assertEquals("Eric", equalPredicates.get(0).getValue());
+            assertEquals("Eric", equalPredicates.get(0).getValue().getValue());
             assertEquals("name.last", equalPredicates.get(1).getPropertyPath());
             assertEquals("Westfall", equalPredicates.get(1).getValue().getValue());
         } else {

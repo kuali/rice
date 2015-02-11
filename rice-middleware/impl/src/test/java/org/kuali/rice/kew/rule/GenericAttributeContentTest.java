@@ -49,14 +49,14 @@ public class GenericAttributeContentTest {
                                                   "    </coolAttribute>";
     private static final String ATTRIB2_CONTENT_REVERSED = "    <coolAttribute>" +
                                                            "      <field>" +
-                                                           "        <name>car</name>" +
-                                                           "        <value>KIT</value>" +
-                                                           "      </field>" +
-                                                           "      <field>" +
-                                                           "        <name>driver</name>" +
-                                                           "        <value>hasselhof</value>" +
-                                                           "      </field>" +
-                                                           "    </coolAttribute>";
+                                                            "        <name>driver</name>" +
+                                                            "        <value>hasselhof</value>" +
+                                                            "      </field>" +
+                                                            "      <field>" +
+                                                            "        <name>car</name>" +
+                                                            "        <value>KIT</value>" +
+                                                            "      </field>" +
+                                                            "    </coolAttribute>";
     private static final String TEST_CONTENT = "<documentContent>" +
                                                "  <attributeContent>" +
                                                ATTRIB1_CONTENT +
@@ -86,8 +86,9 @@ public class GenericAttributeContentTest {
         content = gac.generateContent(properties);
 
         // order is not guaranteed
-        List<String> validValues = Arrays.asList(ATTRIB2_CONTENT.replaceAll("\\s+", ""), ATTRIB2_CONTENT_REVERSED
-                .replaceAll("\\s+", ""));
-        assertTrue(validValues.contains(content.replaceAll("\\s+", "")));
+        List<String> validValues = Arrays.asList(ATTRIB2_CONTENT.replaceAll("\\s+", ""), ATTRIB2_CONTENT_REVERSED.replaceAll(
+                "\\s+", ""));
+        content = content.replaceAll("\\s+", "");
+        assertTrue(validValues.contains(content));
     }
 }

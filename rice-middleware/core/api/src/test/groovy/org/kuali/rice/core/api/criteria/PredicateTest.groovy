@@ -81,9 +81,9 @@ public class PredicateTest {
 
         List<EqualPredicate> equalPredicates = foundOr.getPredicates().asList();
         // order is not guaranteed
-        if (StringUtils.equals(equalPredicates.get(0).getPropertyPath(), "name.first")) {
+        if (equalPredicates.get(0).getPropertyPath().equals("name.first")) {
             assertEquals("name.first", equalPredicates.get(0).getPropertyPath());
-            assertEquals("Eric", equalPredicates.get(0).getValue());
+            assertEquals("Eric", equalPredicates.get(0).getValue().getValue());
             assertEquals("name.last", equalPredicates.get(1).getPropertyPath());
             assertEquals("Westfall", equalPredicates.get(1).getValue().getValue());
         } else {

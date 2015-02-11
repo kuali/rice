@@ -641,10 +641,10 @@ ${KualiForm.body}</programlisting></para>
 &lt;/#macro>
 
 Incorrect Invocation:
-&lt;\\@grid rowCount="3"/>
+&lt;\@grid rowCount="3"/>
 
 Correct Invocation:
-&lt;\\@grid rowCount=3/></programlisting>
+&lt;\@grid rowCount=3/></programlisting>
         </para>
         </section>
         
@@ -822,21 +822,21 @@ Correct Invocation:
             <para>As an example, let's invoke our body macro created in the previous section,
                 passing a value for the 'bodyContent' parameter:</para>
             <para>
-                <programlisting linenumbering = "numbered">&lt;\\@body bodyContent="Hello KRAD World!"/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;\@body bodyContent="Hello KRAD World!"/></programlisting>
                 
                 
             </para>
             <para>or </para>
             <para>
                 <programlisting linenumbering = "numbered">&lt;#assign content="Hello KRAD World!"/>
-&lt;\\@body bodyContent=content/></programlisting>
+&lt;\@body bodyContent=content/></programlisting>
             </para>
             <para>When the macro is associated with a namespace, we must specify the namespace
                 before the macro name, using a dot to separate each. Let's assume our body macro was
                 associated with the namespace 'myapp'. We would then invoke the macro as
                 follows:</para>
             <para>
-                <programlisting linenumbering = "numbered">&lt;\\@myapp.body bodyContent=content/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;\@myapp.body bodyContent=content/></programlisting>
             </para>
         </section>   
         

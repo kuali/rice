@@ -32,64 +32,66 @@ public class PredicateTest {
 
 	@Test
 	public void testBuild() throws Exception {
-		
-		Date gtBirthDate = new SimpleDateFormat("yyyyMMdd").parse("19800901");
-		Date ltBirthDate = new SimpleDateFormat("yyyyMMdd").parse("19801001");
-		
-		def pred = and(
-            like("display", "*Eric*"),
-            greaterThan("birthDate", gtBirthDate),
-            lessThan("birthDate", ltBirthDate),
-            or(
-                equal("name.first", "Eric"),
-		        equal("name.last", "Westfall"),
-            )
-        )
 
-		assertEquals("Criteria should have 4 expressions", 4, pred.getPredicates().size());
-		
-		LikePredicate foundLike = null;
-		GreaterThanPredicate foundGt = null;
-		LessThanPredicate foundLt = null;
-		OrPredicate foundOr = null;
-		for (Predicate expression : pred.getPredicates()) {
-			if (expression instanceof LikePredicate) {
-				foundLike = (LikePredicate)expression;
-			} else if (expression instanceof GreaterThanPredicate) {
-				foundGt = (GreaterThanPredicate)expression;
-			} else if (expression instanceof LessThanPredicate) {
-				foundLt = (LessThanPredicate)expression;
-			} else if (expression instanceof OrPredicate) {
-				foundOr = (OrPredicate)expression;
-			} else {
-				fail("Found an expression which should not have been found: " + expression);
-			}
-		}
-		assertNotNull("Should have found a LikePredicate", foundLike);
-		assertNotNull("Should have found a GreaterThanPredicate", foundGt);
-		assertNotNull("Should have found a LessThanPredicate", foundLt);
-		assertNotNull("Should have found an OrPredicate", foundOr);
-		
-		assertEquals("display", foundLike.getPropertyPath());
-		assertEquals("*Eric*", foundLike.getValue().getValue());
-		
-		assertEquals("birthDate", foundGt.getPropertyPath());
-		assertTrue(foundGt.getValue() instanceof CriteriaDateTimeValue);
-		assertEquals(new CriteriaDateTimeValue(gtBirthDate), foundGt.getValue());
-		
-		assertEquals("birthDate", foundLt.getPropertyPath());
-		assertTrue(foundLt.getValue() instanceof CriteriaDateTimeValue);
-		assertEquals(new CriteriaDateTimeValue(ltBirthDate), foundLt.getValue());
-		
-		assertEquals("OrPredicate should have 2 expressions", 2, foundOr.getPredicates().size());
+        Date gtBirthDate = new SimpleDateFormat("yyyyMMdd").parse("19800901");
+        Date ltBirthDate = new SimpleDateFormat("yyyyMMdd").parse("19801001");
 
-		EqualPredicate nameFirstPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(0);
-		EqualPredicate nameLastPredicate = (EqualPredicate)foundOr.getPredicates().asList().get(1);
+        def pred = and(like("display", "*Eric*"),
+                greaterThan("birthDate", gtBirthDate),
+                lessThan("birthDate", ltBirthDate),
+                or(equal("name.first", "Eric"),
+                        equal("name.last", "Westfall"),))
 
-		assertEquals("name.first", nameFirstPredicate.getPropertyPath());
-		assertEquals("Eric", nameFirstPredicate.getValue().getValue());
-		assertEquals("name.last", nameLastPredicate.getPropertyPath());
-		assertEquals("Westfall", nameLastPredicate.getValue().getValue());
+        assertEquals("Criteria should have 4 expressions", 4, pred.getPredicates().size());
+
+        LikePredicate foundLike = null;
+        GreaterThanPredicate foundGt = null;
+        LessThanPredicate foundLt = null;
+        OrPredicate foundOr = null;
+        for (Predicate expression : pred.getPredicates()) {
+            if (expression instanceof LikePredicate) {
+                foundLike = (LikePredicate) expression;
+            } else if (expression instanceof GreaterThanPredicate) {
+                foundGt = (GreaterThanPredicate) expression;
+            } else if (expression instanceof LessThanPredicate) {
+                foundLt = (LessThanPredicate) expression;
+            } else if (expression instanceof OrPredicate) {
+                foundOr = (OrPredicate) expression;
+            } else {
+                fail("Found an expression which should not have been found: " + expression);
+            }
+        }
+        assertNotNull("Should have found a LikePredicate", foundLike);
+        assertNotNull("Should have found a GreaterThanPredicate", foundGt);
+        assertNotNull("Should have found a LessThanPredicate", foundLt);
+        assertNotNull("Should have found an OrPredicate", foundOr);
+
+        assertEquals("display", foundLike.getPropertyPath());
+        assertEquals("*Eric*", foundLike.getValue().getValue());
+
+        assertEquals("birthDate", foundGt.getPropertyPath());
+        assertTrue(foundGt.getValue() instanceof CriteriaDateTimeValue);
+        assertEquals(new CriteriaDateTimeValue(gtBirthDate), foundGt.getValue());
+
+        assertEquals("birthDate", foundLt.getPropertyPath());
+        assertTrue(foundLt.getValue() instanceof CriteriaDateTimeValue);
+        assertEquals(new CriteriaDateTimeValue(ltBirthDate), foundLt.getValue());
+
+        assertEquals("OrPredicate should have 2 expressions", 2, foundOr.getPredicates().size());
+
+        List<EqualPredicate> equalPredicates = foundOr.getPredicates().asList();
+        // order is not guaranteed
+        if (StringUtils.equals(equalPredicates.get(0).getPropertyPath(), "name.first")) {
+            assertEquals("name.first", equalPredicates.get(0).getPropertyPath());
+            assertEquals("Eric", equalPredicates.get(0).getValue());
+            assertEquals("name.last", equalPredicates.get(1).getPropertyPath());
+            assertEquals("Westfall", equalPredicates.get(1).getValue().getValue());
+        } else {
+            assertEquals("name.first", equalPredicates.get(1).getPropertyPath());
+            assertEquals("Eric", equalPredicates.get(1).getValue().getValue());
+            assertEquals("name.last", equalPredicates.get(0).getPropertyPath());
+            assertEquals("Westfall", equalPredicates.get(0).getValue().getValue());
+        }
 
 	}
 

@@ -60,6 +60,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -264,7 +265,7 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 			relationship.setLoadedDynamicallyUponUse(relationshipMapping.isCascadeRefresh()
 					&& relationshipMapping.isLazy());
 
-			List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
+			List<DataObjectAttributeRelationship> attributeRelationships = new LinkedList<DataObjectAttributeRelationship>();
 			for (DatabaseField parentField : relationshipMapping.getForeignKeyFields()) {
 				String parentFieldName = getPropertyNameFromDatabaseColumnName(rd.getDeclaringType(),
 						parentField.getName());

@@ -163,5 +163,9 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
             }
         }
     }
+    
+    protected String getDocumentTypeName() {
+        return "DocumentTypeDocument";
+    }
 
 }

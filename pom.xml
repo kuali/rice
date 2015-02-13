@@ -189,7 +189,7 @@
     <validation.version>1.1.0.Final</validation.version>
     <velocity.version>1.7</velocity.version>
     <velocity.tools.version>2.0</velocity.tools.version>
-    <wss4j.version>1.6.16</wss4j.version>
+    <wss4j.version>1.6.18</wss4j.version>
     <xalan.version>2.7.2</xalan.version>
     <xapool.version>1.5.0-patch6</xapool.version>
     <xercesImpl.version>2.11.0</xercesImpl.version>

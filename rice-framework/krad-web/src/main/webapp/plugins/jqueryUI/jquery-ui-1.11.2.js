@@ -3990,13 +3990,15 @@ $.extend(Datepicker.prototype, {
 		if (showOn === "button" || showOn === "both") { // pop-up date picker when button clicked
 			buttonText = this._get(inst, "buttonText");
 			buttonImage = this._get(inst, "buttonImage");
-			inst.trigger = $(this._get(inst, "buttonImageOnly") ?
-				$("<img/>").addClass(this._triggerClass).
-					attr({ src: buttonImage, alt: buttonText, title: buttonText }) :
-				$("<button type='button'></button>").addClass(this._triggerClass).
-					html(!buttonImage ? buttonText : $("<img/>").attr(
-					{ src:buttonImage, alt:buttonText, title:buttonText })));
-			input[isRTL ? "before" : "after"](inst.trigger);
+            /* Kuali Customization */
+            inst.trigger = $(this._get(inst, 'buttonImageOnly') ?
+                    $('<a/>').addClass("btn btn-default icon-calendar").addClass(this._triggerClass).
+                            attr({alt: buttonText, title: buttonText }) :
+                    $('<button type="button"></button>').addClass("btn btn-default").addClass(this._triggerClass).
+                            html(buttonImage == '' ? buttonText : $('<img/>').attr(
+                                    { src: buttonImage, alt: buttonText, title: buttonText })));
+            input.siblings(".input-group-btn").append(inst.trigger);
+            /* end Kuali Customization */
 			inst.trigger.click(function() {
 				if ($.datepicker._datepickerShowing && $.datepicker._lastInput === input[0]) {
 					$.datepicker._hideDatepicker();

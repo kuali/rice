@@ -230,36 +230,38 @@ public class MaintainableImpl extends ViewHelperServiceImpl implements Maintaina
 
         List<String> keyFieldNames = getDocumentDictionaryService().getLockingKeys(documentTypeName);
 
-        for (Iterator<?> i = keyFieldNames.iterator(); i.hasNext(); ) {
-            String fieldName = (String) i.next();
-
-            Object fieldValue = wrapper.getPropertyValueNullSafe(fieldName);
-            if (fieldValue == null) {
-                fieldValue = "";
-            }
-
-            // check if field is a secure
-            if (getDataObjectAuthorizationService()
-                    .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass, fieldName)) {
-                try {
-                    if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
-                        fieldValue = getEncryptionService().encrypt(fieldValue);
+        if (keyFieldNames != null) {
+            for (Iterator<?> i = keyFieldNames.iterator(); i.hasNext(); ) {
+                String fieldName = (String) i.next();
+    
+                Object fieldValue = wrapper.getPropertyValueNullSafe(fieldName);
+                if (fieldValue == null) {
+                    fieldValue = "";
+                }
+    
+                // check if field is a secure
+                if (getDataObjectAuthorizationService()
+                        .attributeValueNeedsToBeEncryptedOnFormsAndLinks(dataObjectClass, fieldName)) {
+                    try {
+                        if(CoreApiServiceLocator.getEncryptionService().isEnabled()) {
+                            fieldValue = getEncryptionService().encrypt(fieldValue);
+                        }
+                    } catch (GeneralSecurityException e) {
+                        LOG.error("Unable to encrypt secure field for locking representation " + e.getMessage());
+                        throw new RuntimeException(
+                                "Unable to encrypt secure field for locking representation " + e.getMessage());
                     }
-                } catch (GeneralSecurityException e) {
-                    LOG.error("Unable to encrypt secure field for locking representation " + e.getMessage());
-                    throw new RuntimeException(
-                            "Unable to encrypt secure field for locking representation " + e.getMessage());
+                }
+    
+                lockRepresentation.append(fieldName);
+                lockRepresentation.append(KRADConstants.Maintenance.LOCK_AFTER_FIELDNAME_DELIM);
+                lockRepresentation.append(String.valueOf(fieldValue));
+                if (i.hasNext()) {
+                    lockRepresentation.append(KRADConstants.Maintenance.LOCK_AFTER_VALUE_DELIM);
                 }
             }
-
-            lockRepresentation.append(fieldName);
-            lockRepresentation.append(KRADConstants.Maintenance.LOCK_AFTER_FIELDNAME_DELIM);
-            lockRepresentation.append(String.valueOf(fieldValue));
-            if (i.hasNext()) {
-                lockRepresentation.append(KRADConstants.Maintenance.LOCK_AFTER_VALUE_DELIM);
-            }
         }
-
+        
         MaintenanceLock maintenanceLock = new MaintenanceLock();
         maintenanceLock.setDocumentNumber(documentNumber);
         maintenanceLock.setLockingRepresentation(lockRepresentation.toString());

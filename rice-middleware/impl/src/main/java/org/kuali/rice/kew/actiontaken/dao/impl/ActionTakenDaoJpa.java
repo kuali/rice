@@ -16,14 +16,16 @@
 package org.kuali.rice.kew.actiontaken.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDao;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
-
+import java.util.List;
 
 /**
  * JPA implementation of the {@link org.kuali.rice.kew.actiontaken.dao.ActionTakenDao}.
@@ -53,6 +55,14 @@ public class ActionTakenDaoJpa implements ActionTakenDao {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public List<ActionTakenValue> findActionsTakenAtRouteNodeInstance(RouteNodeInstance nodeInstance) {
+        javax.persistence.Query actionTakenIdResult = getEntityManager().createQuery(
+                "Select r.actionTaken from ActionRequestValue r where r.nodeInstance = :nodeInstance");
+        actionTakenIdResult.setParameter("nodeInstance", nodeInstance);
+
+        return actionTakenIdResult.getResultList();
     }
 
     public EntityManager getEntityManager() {

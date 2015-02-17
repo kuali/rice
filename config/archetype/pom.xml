@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-config</artifactId>
-    <version>2.5.3-SNAPSHOT</version>
+    <version>2.5.3-20150217-c1585d9713</version>
   </parent>
   <artifactId>rice-archetype</artifactId>
   <packaging>pom</packaging>

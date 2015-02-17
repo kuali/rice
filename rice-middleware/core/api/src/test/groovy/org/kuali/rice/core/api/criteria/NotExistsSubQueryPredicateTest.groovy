@@ -1,5 +1,5 @@
-/**
- * Copyright 2005-2015 The Kuali Foundation
+/*
+ * Copyright 2006-2015 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,22 +15,20 @@
  */
 package org.kuali.rice.core.api.criteria
 
+import org.junit.Test
+import org.kuali.rice.core.test.JAXBAssert
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.fail
 
-import org.junit.Test
-import org.kuali.rice.core.api.util.type.KualiDecimal
-import org.kuali.rice.core.api.util.type.KualiPercent
-import org.kuali.rice.core.test.JAXBAssert
-
 /**
- * A test for the {@link ExistsSubQueryPredicate} class.
+ * A test for the {@link NotExistsSubQueryPredicate} class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ExistsSubQueryPredicateTest {
+public class NotExistsSubQueryPredicateTest {
 
-	private static final String EXPECTED_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><existsSubQuery subQueryType=\"SubQueryDataObjectClass\" xmlns=\"http://rice.kuali.org/core/v2_0\"><equal propertyPath=\"subQueryProp\"><propertyPathValue><propertyPath dataType=\"ParentObject\" propertyPath=\"parentProp\"/></propertyPathValue></equal></existsSubQuery>";
+	private static final String EXPECTED_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><notExistsSubQuery subQueryType=\"SubQueryDataObjectClass\" xmlns=\"http://rice.kuali.org/core/v2_0\"><equal propertyPath=\"subQueryProp\"><propertyPathValue><propertyPath dataType=\"ParentObject\" propertyPath=\"parentProp\"/></propertyPathValue></equal></notExistsSubQuery>";
 
     /**
      * Test method for {@link GreaterThanPredicate#GreaterThanPredicate(java.lang.String, org.kuali.rice.core.api.criteria.CriteriaValue)}.
@@ -42,7 +40,7 @@ public class ExistsSubQueryPredicateTest {
         PropertyPath propertyPath = new PropertyPath("ParentObject","parentProp");
         Predicate innerPredicate = new EqualPredicate("subQueryProp", new CriteriaPropertyPathValue(propertyPath) );
         
-        ExistsSubQueryPredicate predicate = new ExistsSubQueryPredicate("SubQueryDataObjectClass", innerPredicate );
+        NotExistsSubQueryPredicate predicate = new NotExistsSubQueryPredicate("SubQueryDataObjectClass", innerPredicate );
         assertEquals("SubQueryDataObjectClass", predicate.getSubQueryType());
         assertEquals("subQueryProp", predicate.getSubQueryPredicate().getPropertyPath());
         assertEquals("parentProp", predicate.getSubQueryPredicate().getValue().getValue().getPropertyPath() );
@@ -50,7 +48,7 @@ public class ExistsSubQueryPredicateTest {
         
         // test failure cases, should throw IllegalArgumentException when null is passed
         try {
-            new ExistsSubQueryPredicate(null, innerPredicate);
+            new NotExistsSubQueryPredicate(null, innerPredicate);
             fail("Should have thrown an IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             // expected exception
@@ -58,7 +56,7 @@ public class ExistsSubQueryPredicateTest {
 
         // but should allow a null predicate
         try {
-            new ExistsSubQueryPredicate("SubQueryDataObjectClass", null);
+            new NotExistsSubQueryPredicate("SubQueryDataObjectClass", null);
         } catch (IllegalArgumentException e) {
             fail("Should NOT have thrown an IllegalArgumentException");
         }
@@ -72,8 +70,8 @@ public class ExistsSubQueryPredicateTest {
         PropertyPath propertyPath = new PropertyPath("ParentObject","parentProp");
         Predicate innerPredicate = new EqualPredicate("subQueryProp", new CriteriaPropertyPathValue(propertyPath) );
         
-        ExistsSubQueryPredicate predicate = new ExistsSubQueryPredicate("SubQueryDataObjectClass", innerPredicate );
-        JAXBAssert.assertEqualXmlMarshalUnmarshal(predicate, EXPECTED_XML, ExistsSubQueryPredicate.class);
+        NotExistsSubQueryPredicate predicate = new NotExistsSubQueryPredicate("SubQueryDataObjectClass", innerPredicate );
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(predicate, EXPECTED_XML, NotExistsSubQueryPredicate.class);
     }
 
 }

@@ -161,6 +161,15 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
 		}
 
         /**
+         * Adds a JPA Subquery to the predicates.
+         *
+         * @param subquery the subquery to add.
+         */
+        void addNotExistsSubquery(Subquery<?> subquery) {
+            predicates.add(builder.not( builder.exists(subquery)) );
+        }
+
+        /**
          * Adds an OR clause.
          *
          * @param predicate the predicate to OR.
@@ -466,6 +475,29 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
 			throw new IllegalArgumentException(subQueryType + " can not be resolved to a class for JPA");
 		}
 	}
+
+    @Override
+    protected void addNotExistsSubquery(TranslationContext criteria, String subQueryType,
+            org.kuali.rice.core.api.criteria.Predicate subQueryPredicate) {
+
+        try {
+            Class<?> subQueryBaseClass = Class.forName(subQueryType);
+            Subquery<?> subquery = criteria.query.subquery(subQueryBaseClass);
+            TranslationContext subQueryJpaPredicate = createCriteriaForSubQuery(subQueryBaseClass, criteria);
+
+            // If a subQueryPredicate is passed, this is a Rice Predicate object and must be translated
+            // into JPA - so we add it to the list this way.
+            if (subQueryPredicate != null) {
+                addPredicate(subQueryPredicate, subQueryJpaPredicate);
+            }
+
+            subquery.where(subQueryJpaPredicate.predicates.toArray(new Predicate[0]));
+            criteria.addNotExistsSubquery(subquery);
+
+        } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException(subQueryType + " can not be resolved to a class for JPA");
+        }
+    }
 
 	/**
 	 * Fixes the search pattern by converting all non-escaped lookup wildcards ("*" and "?") into their respective JPQL

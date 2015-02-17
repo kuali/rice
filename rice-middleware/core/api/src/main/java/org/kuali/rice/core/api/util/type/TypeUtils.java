@@ -31,14 +31,14 @@ import java.util.concurrent.ConcurrentMap;
  * Provides utilities for checking the types of objects.
  */
 public class TypeUtils {
-    private static final Collection<Class<?>> BOOLEAN_CLASSES = add(Boolean.class, Boolean.TYPE);
-    private static final Collection<Class<?>> INTEGRAL_CLASSES = add(Byte.class, Byte.TYPE, Short.class, Short.TYPE, Integer.class, Integer.TYPE, Long.class, Long.TYPE, BigInteger.class, KualiInteger.class);
-    private static final Collection<Class<?>> DECIMAL_CLASSES = add(Float.class, Float.TYPE, Double.class, Double.TYPE, BigDecimal.class, AbstractKualiDecimal.class, KualiDecimal.class);
-    private static final Collection<Class<?>> TEMPORAL_CLASSES = add(java.util.Date.class, java.sql.Date.class, java.sql.Timestamp.class, LocalDate.class, DateTime.class);
-    private static final Collection<Class<?>> STRING_CLASSES = Collections.<Class<?>>singleton(CharSequence.class);
-    private static final Collection<Class<?>> CLASS_CLASSES = Collections.<Class<?>>singleton(Class.class);
+    protected static Collection<Class<?>> BOOLEAN_CLASSES = add(Boolean.class, Boolean.TYPE);
+    protected static Collection<Class<?>> INTEGRAL_CLASSES = add(Byte.class, Byte.TYPE, Short.class, Short.TYPE, Integer.class, Integer.TYPE, Long.class, Long.TYPE, BigInteger.class, KualiInteger.class);
+    protected static Collection<Class<?>> DECIMAL_CLASSES = add(Float.class, Float.TYPE, Double.class, Double.TYPE, BigDecimal.class, AbstractKualiDecimal.class, KualiDecimal.class);
+    protected static Collection<Class<?>> TEMPORAL_CLASSES = add(java.util.Date.class, java.sql.Date.class, java.sql.Timestamp.class, LocalDate.class, DateTime.class);
+    protected static Collection<Class<?>> STRING_CLASSES = Collections.<Class<?>>singleton(CharSequence.class);
+    protected static Collection<Class<?>> CLASS_CLASSES = Collections.<Class<?>>singleton(Class.class);
     @SuppressWarnings("unchecked")
-    private static final Collection<Class<?>> SIMPLE_CLASSES = add(BOOLEAN_CLASSES, INTEGRAL_CLASSES, DECIMAL_CLASSES, TEMPORAL_CLASSES, STRING_CLASSES);
+    protected static Collection<Class<?>> SIMPLE_CLASSES = add(BOOLEAN_CLASSES, INTEGRAL_CLASSES, DECIMAL_CLASSES, TEMPORAL_CLASSES, STRING_CLASSES);
 
     private static final ConcurrentMap<Class<?>, Boolean> IS_BOOLEAN_CACHE = new MapMaker().weakKeys().makeMap();
     private static final ConcurrentMap<Class<?>, Boolean> IS_INTEGRAL_CACHE = new MapMaker().weakKeys().makeMap();
@@ -165,24 +165,50 @@ public class TypeUtils {
      * adds classes to a collection which is returned.
      *
      * @param classes the classes to add
-     * @return an unmodifiable collection
+     * @return a collection
      */
     private static Collection<Class<?>> add(Class<?>... classes) {
-        return Collections.unmodifiableCollection(Arrays.asList(classes));
+        ArrayList<Class<?>> arrayClasses = new ArrayList<Class<?>>();
+        for(Class<?> clazz : classes) {
+            arrayClasses.add(clazz);
+        }
+        return arrayClasses;
     }
 
     /**
      * adds classes to a collection which is returned.
      *
      * @param classes the classes to add
-     * @return an unmodifiable collection
-     */
+     * @return a collection
+     */ 
     private static Collection<Class<?>> add(Collection<Class<?>>... classes) {
         final Collection<Class<?>> temp = new ArrayList<Class<?>>();
         for (Collection<Class<?>> clazz : classes) {
             temp.addAll(clazz);
         }
 
-        return Collections.unmodifiableCollection(temp);
+        return temp;
     }
+
+    public static void addToDecimalType(Class<?> clazz) {
+        DECIMAL_CLASSES.add(clazz);
+    }
+
+    public static void addToIntegralType(Class<?> clazz) {
+        INTEGRAL_CLASSES.add(clazz);
+    }
+
+    public static void addToTemporalType(Class<?> clazz) {
+        TEMPORAL_CLASSES.add(clazz);
+    }
+
+    public static void addToStringType(Class<?> clazz) {
+        STRING_CLASSES.add(clazz);
+    }
+
+    public static void addToBooleanType(Class<?> clazz) {
+        BOOLEAN_CLASSES.add(clazz);
+    }
+
+
 }

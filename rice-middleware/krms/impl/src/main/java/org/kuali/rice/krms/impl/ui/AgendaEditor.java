@@ -34,7 +34,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class AgendaEditor implements Serializable {
+public class AgendaEditor implements BuildError {
 	
 	private static final long serialVersionUID = 1L;
 	

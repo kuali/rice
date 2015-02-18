@@ -81,6 +81,7 @@ public final class QueryByCriteria extends AbstractDataTransferObject {
         @XmlElement(name = EqualPredicate.Constants.ROOT_ELEMENT_NAME, type = EqualPredicate.class, required = false),
         @XmlElement(name = EqualIgnoreCasePredicate.Constants.ROOT_ELEMENT_NAME, type = EqualIgnoreCasePredicate.class, required = false),
         @XmlElement(name = ExistsSubQueryPredicate.Constants.ROOT_ELEMENT_NAME, type = ExistsSubQueryPredicate.class, required = false),
+        @XmlElement(name = NotExistsSubQueryPredicate.Constants.ROOT_ELEMENT_NAME, type = NotExistsSubQueryPredicate.class, required = false),
         @XmlElement(name = GreaterThanPredicate.Constants.ROOT_ELEMENT_NAME, type = GreaterThanPredicate.class, required = false),
         @XmlElement(name = GreaterThanOrEqualPredicate.Constants.ROOT_ELEMENT_NAME, type = GreaterThanOrEqualPredicate.class, required = false),
         @XmlElement(name = InPredicate.Constants.ROOT_ELEMENT_NAME, type = InPredicate.class, required = false),

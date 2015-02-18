@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-config</artifactId>
-    <version>2.5.3-SNAPSHOT</version>
+    <version>2.5.3-20150218-1e0fb06bff</version>
   </parent>
   <artifactId>rice-deploy</artifactId>
   <name>Rice Deploy</name>

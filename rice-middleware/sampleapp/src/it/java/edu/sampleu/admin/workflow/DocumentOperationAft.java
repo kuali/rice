@@ -219,11 +219,11 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         impersonateUser("user3");
         docSearch(docId);
         waitAndClickByLinkText(docId);
+        waitForPageToLoad();
         selectChildWindow();
         driver.findElement(By.cssSelector("input[title='Approve']")).click();
         driver.get(WebDriverUtils.getBaseUrlString());
         driver.findElement(By.cssSelector("input[title='Click to logout.']")).click();
-
         return docId;
     }
 

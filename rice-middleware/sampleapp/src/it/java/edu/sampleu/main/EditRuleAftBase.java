@@ -55,6 +55,7 @@ public class EditRuleAftBase extends MainTmplMthdSTNavBase{
         waitAndSelectLabeled("Namespace:", "Kuali Rules Test");
         waitAndTypeLabeledInput("Name:", desc);
         waitAndTypeLabeledInput("Context:", "Context1");
+        waitAndClickById("Editor-MaintenanceView_header");
         addAndEditRule();
         waitAndClickButtonByExactText("Add Rule");
         saveSuccessfully();
@@ -71,6 +72,7 @@ public class EditRuleAftBase extends MainTmplMthdSTNavBase{
         waitAndSelectLabeled("Namespace:", "Kuali Rules Test");
         waitAndTypeLabeledInput("Name:", desc);
         waitAndTypeLabeledInput("Context:", "Context1");
+        waitAndClickById("Editor-MaintenanceView_header");
         addAndEditRule();
         waitAndClickButtonByExactText("Add Rule");
         waitAndClickButtonByExactText("Blanket Approve");
@@ -79,6 +81,7 @@ public class EditRuleAftBase extends MainTmplMthdSTNavBase{
 
     private void addAndEditRule() throws Exception {
         //Adding Rules so we do not need to rely on the existing data.
+        Thread.sleep(2000);
         waitAndClickButtonByExactText("Add Rule");
         String desc = getDescriptionUnique();
         waitAndTypeByName("document.newMaintainableObject.dataObject.agendaItemLine.rule.name", "Rule Name " + desc);
@@ -95,6 +98,7 @@ public class EditRuleAftBase extends MainTmplMthdSTNavBase{
         selectByName(
                 "document.newMaintainableObject.dataObject.agendaItemLine.rule.propositionTree.rootElement.children[0].data.proposition.parameters[2].value",
                 "=");
+        Thread.sleep(2000);
         waitAndClickByXpath("//input[@type='image' and @alt='Add Parent']");
         waitAndClickButtonByExactText("Add");
         waitForElementPresentByXpath(
@@ -108,6 +112,8 @@ public class EditRuleAftBase extends MainTmplMthdSTNavBase{
         selectByName(
                 "document.newMaintainableObject.dataObject.agendaItemLine.rule.propositionTree.rootElement.children[0].children[2].data.proposition.parameters[2].value",
                 "=");
+        Thread.sleep(2000);
+        waitForElementPresentByName("document.newMaintainableObject.dataObject.agendaItemLine.rule.propositionTree.rootElement.children[0].children[2].data.proposition.parameters[1].value");
         waitAndTypeByName(
                 "document.newMaintainableObject.dataObject.agendaItemLine.rule.propositionTree.rootElement.children[0].children[2].data.proposition.parameters[1].value",
                 "12345");

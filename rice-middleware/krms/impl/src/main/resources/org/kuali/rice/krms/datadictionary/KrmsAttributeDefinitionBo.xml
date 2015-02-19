@@ -70,7 +70,10 @@
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Namespace"/>
     <property name="controlField">
-      <bean parent="Uif-TextControl" p:size="20"/>
+      <bean parent="Uif-DropdownControl"/>
+    </property>
+    <property name="optionsFinder">
+      <bean class="org.kuali.rice.coreservice.web.namespace.NamespaceValuesFinder"/>
     </property>
     <property name="name" value="namespace"/>
     <property name="label" value="Attribute Namespace"/>

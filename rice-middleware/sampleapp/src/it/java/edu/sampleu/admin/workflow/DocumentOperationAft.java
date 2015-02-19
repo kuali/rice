@@ -172,6 +172,61 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         return docId;
     }
 
+    /**
+     * Deletion of branch states
+     * @throws Exception if there are no branch states to delete
+     */
+    public void testDeleteBranchStates() throws Exception {
+        waitAndClickMainMenu();
+        String docId = createAndRouteTestEdocLite();
+        if (docId == null || "".equals(docId)) {
+            fail("Returned document id is empty or null!");
+        }
+        waitAndClickAdministration();
+        waitAndClickByLinkText("Document Operation");
+        selectFrameIframePortlet();
+        waitAndTypeByName("documentId", docId);
+        waitAndClickByName("methodToCall.getDocument");
+        driver.findElement(By.cssSelector("input[name='branchOp[0].value'][value='update']")).click();
+        driver.findElement(By.cssSelector("input[name='branchStateDeleteOp[1].value']")).click();
+        driver.findElement(By.name("methodToCall.save")).click();
+
+    }
+
+    /**
+     * Creates an edoclite from the example doctype and routes to FINAL
+     * @return the document id as a String
+     * @throws Exception if errors while creating the example edoc lite
+     */
+    private String createAndRouteTestEdocLite() throws Exception {
+        driver.get(WebDriverUtils.getBaseUrlString());
+        waitAndClickByLinkText("eDoc Lite");
+        selectFrameIframePortlet();
+        waitAndTypeByName("edlName", "eDoc.Example1Doctype");
+        waitAndClickSearch();
+        waitAndClickByLinkText("Create Document");
+        waitAndTypeByName("userName", "Test User");
+        waitAndTypeByName("rqstDate", getDateToday());
+        waitAndSelectByName("campus", "IUPUI");
+        jGrowl("Getting the document id.");
+        String docId = getText(By.xpath("/html/body/table[2]/tbody/tr/td[2]/table/tbody/tr[4]/td[2]"));
+        jGrowl("Document id is: " + docId);
+        jGrowl("Click Edoc Lite Submit Button.");
+        driver.findElement(By.cssSelector("input[title='Route']")).click();
+        //approving the submitted edoclite
+        jGrowl("Redirecting to portal screen");
+        driver.get(WebDriverUtils.getBaseUrlString());
+        impersonateUser("user3");
+        docSearch(docId);
+        waitAndClickByLinkText(docId);
+        selectChildWindow();
+        driver.findElement(By.cssSelector("input[title='Approve']")).click();
+        driver.get(WebDriverUtils.getBaseUrlString());
+        driver.findElement(By.cssSelector("input[title='Click to logout.']")).click();
+
+        return docId;
+    }
+
     @Test
     public void testDocumentOperationBookmark() throws Exception {
         testCreateDocument();
@@ -197,7 +252,7 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
     }
 
     /**
-     * Thest the document disapproval process by navigating to it.
+     * Test the document disapproval process by navigating to it.
      * @throws Exception if errors while disapproving a document in the document operation.
      */
     @Test
@@ -205,4 +260,25 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         testDocumentOperationDisapprove();
         passed();
     }
+
+    /**
+     * Test the deletion of branch states.
+     * @throws Exception if errors while deleting branch states
+     */
+    @Test
+    public void testDeletionOfBranchStatesNav() throws Exception {
+        testDeleteBranchStates();
+        passed();
+    }
+
+    /**
+     * Test the document disapproval process from the bookmark link
+     * @throws Exception if errors while disapproving a document in the document operation.
+     */
+    @Test
+    public void testDeletionOfBranchStatesBookmark() throws Exception {
+        testDeleteBranchStates();
+        passed();
+    }
+
 }

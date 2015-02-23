@@ -37,6 +37,7 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Document%20Operation&channelUrl="+ WebDriverUtils
             .getBaseUrlString()+"/kew/DocumentOperation.do";
+    private static final String DOC_HANDLER_URL = "/kew/DocHandler.do?command=displayDocSearchView&docId=";
 
     private static String documentId = null;
 
@@ -217,10 +218,10 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         jGrowl("Redirecting to portal screen");
         driver.get(WebDriverUtils.getBaseUrlString());
         impersonateUser("user3");
-        docSearch(docId);
-        waitAndClickByLinkText(docId);
-        waitForPageToLoad();
-        selectChildWindow();
+        String newUser = getText(By.xpath("/html/body/div[6]/strong[2]")).replace("Impersonating User:", "").trim();
+        jGrowl("Impersonating User: " + newUser);
+        open(getBaseUrlString() + DOC_HANDLER_URL + docId);
+        waitForElementPresent(By.cssSelector("input[title='Approve']"));
         driver.findElement(By.cssSelector("input[title='Approve']")).click();
         driver.get(WebDriverUtils.getBaseUrlString());
         driver.findElement(By.cssSelector("input[title='Click to logout.']")).click();

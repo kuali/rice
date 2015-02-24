@@ -28,6 +28,10 @@
   <artifactId>rice-core-framework</artifactId>
   <dependencies>
     <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-api</artifactId>
       <version>${project.version}</version>

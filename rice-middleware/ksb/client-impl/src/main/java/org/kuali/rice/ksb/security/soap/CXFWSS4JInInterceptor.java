@@ -18,10 +18,12 @@ package org.kuali.rice.ksb.security.soap;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.log4j.Logger;
-import org.apache.ws.security.components.crypto.Crypto;
-import org.apache.ws.security.components.crypto.Merlin;
-import org.apache.ws.security.handler.RequestData;
-import org.apache.ws.security.handler.WSHandlerConstants;
+import org.apache.wss4j.common.crypto.Crypto;
+import org.apache.wss4j.common.crypto.Merlin;
+import org.apache.wss4j.common.crypto.PasswordEncryptor;
+import org.apache.wss4j.common.ext.WSSecurityException;
+import org.apache.wss4j.dom.handler.RequestData;
+import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.kuali.rice.core.api.config.ConfigurationException;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -33,16 +35,13 @@ import org.springframework.core.io.DefaultResourceLoader;
 import java.io.IOException;
 import java.util.Properties;
 
-//import javax.xml.ws.handler.MessageContext;
-
-
 /**
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
 //TODO: Replace this class with cxf wss4j in interceptor
-public class CXFWSS4JInInterceptor extends WSS4JInInterceptor{
+public class CXFWSS4JInInterceptor extends WSS4JInInterceptor {
 
 	private static final Logger LOG = Logger.getLogger(CXFWSS4JInInterceptor.class);
 
@@ -59,16 +58,17 @@ public class CXFWSS4JInInterceptor extends WSS4JInInterceptor{
 	}
 
 	@Override
-	public Crypto loadSignatureCrypto(RequestData reqData) {
+    public Crypto loadSignatureCrypto(RequestData requestData) throws WSSecurityException {
 		try {
-			return new Merlin(getMerlinProperties(), ClassLoaderUtils.getDefaultClassLoader());
-		} catch (Exception e) {
+            PasswordEncryptor encryptor = new KualiPasswordEncryptor();
+			return new Merlin(getMerlinProperties(), ClassLoaderUtils.getDefaultClassLoader(), encryptor);
+		} catch (IOException e) {
 			throw new RiceRuntimeException(e);
 		}
 	}
 
-	@Override
-	public Crypto loadDecryptionCrypto(RequestData reqData) {
+    @Override
+	public Crypto loadDecryptionCrypto(RequestData reqData) throws WSSecurityException {
 		return loadSignatureCrypto(reqData);
 	}
 

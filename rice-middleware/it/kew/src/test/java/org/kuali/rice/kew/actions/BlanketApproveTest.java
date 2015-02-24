@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.actions;
 
 import mocks.MockEmailNotificationService;
-import org.apache.cxf.common.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.delegation.DelegationType;

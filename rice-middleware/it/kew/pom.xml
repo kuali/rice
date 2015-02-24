@@ -196,11 +196,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.subethamail</groupId>
       <artifactId>subethasmtp</artifactId>
       <scope>test</scope>

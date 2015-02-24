@@ -16,95 +16,90 @@
     limitations under the License.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <artifactId>rice-it</artifactId>
-        <groupId>org.kuali.rice</groupId>
-        <version>2.6.0-M1-SNAPSHOT</version>
-    </parent>
-    <artifactId>rice-it-location</artifactId>
-    <name>Rice Integration Test Location</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>rice-it</artifactId>
+    <groupId>org.kuali.rice</groupId>
+    <version>2.6.0-M1-SNAPSHOT</version>
+  </parent>
+  <artifactId>rice-it-location</artifactId>
+  <name>Rice Integration Test Location</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.kuali.rice</groupId>
-            <version>${project.version}</version>
-            <artifactId>rice-location-impl</artifactId>
-            <scope>test</scope>
-            <type>test-jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.kuali.rice</groupId>
-            <version>${project.version}</version>
-            <artifactId>rice-location-impl</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.kuali.rice</groupId>
-            <version>${project.version}</version>
-            <artifactId>rice-it-internal-tools</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-location-impl</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-location-impl</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-it-internal-tools</artifactId>
+    </dependency>
 
-      <dependency>
-          <groupId>org.kuali.rice</groupId>
-          <version>${project.version}</version>
-          <artifactId>rice-it-krad</artifactId>
-          <scope>test</scope>
-          <type>test-jar</type>
-      </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-it-krad</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
 
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <version>${project.version}</version>
-        <artifactId>rice-krad-sampleapp-impl</artifactId>
-        <scope>test</scope>
-      </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-krad-sampleapp-impl</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-transports-http-jetty</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-security</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
-            <exclusions>
-              <exclusion>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-security</artifactId>
-              </exclusion>
-            </exclusions>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>${mysql.jdbc.artifactId}</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <version>${project.version}</version>
+      <artifactId>rice-krad-data</artifactId>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
 
-      <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>${mysql.jdbc.artifactId}</artifactId>
-      </dependency>
-      <dependency>
-        <groupId>org.kuali.rice</groupId>
-        <version>${project.version}</version>
-        <artifactId>rice-krad-data</artifactId>
-        <scope>test</scope>
-        <type>test-jar</type>
-      </dependency>
-
-    </dependencies>
+  </dependencies>
 </project>

@@ -208,7 +208,7 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Create Document");
         waitAndTypeByName("userName", "Test User");
         waitAndTypeByName("rqstDate", getDateToday());
-        waitAndSelectByName("campus", "IUPUI");
+        waitAndSelectByName("campus", "IUB");
         jGrowl("Getting the document id.");
         String docId = getText(By.xpath("/html/body/table[2]/tbody/tr/td[2]/table/tbody/tr[4]/td[2]"));
         jGrowl("Document id is: " + docId);
@@ -217,11 +217,8 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         //approving the submitted edoclite
         jGrowl("Redirecting to portal screen");
         driver.get(WebDriverUtils.getBaseUrlString());
-        impersonateUser("user3");
-        String newUser = getText(By.xpath("/html/body/div[6]/strong[2]")).replace("Impersonating User:", "").trim();
-        jGrowl("Impersonating User: " + newUser);
+        impersonateUser("user2");
         open(getBaseUrlString() + DOC_HANDLER_URL + docId);
-        waitForElementPresent(By.cssSelector("input[title='Approve']"));
         driver.findElement(By.cssSelector("input[title='Approve']")).click();
         driver.get(WebDriverUtils.getBaseUrlString());
         driver.findElement(By.cssSelector("input[title='Click to logout.']")).click();

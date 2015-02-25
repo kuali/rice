@@ -29,6 +29,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
+import org.quartz.impl.JobDetailImpl;
 import org.quartz.listeners.JobListenerSupport;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -205,21 +206,24 @@ public class MessagingServiceTest extends KCBTestCase {
             assertTrue("broken".equals(d.getDelivererTypeName()) || "bogus".equals(d.getDelivererTypeName()));
         }
     }
-    
+
+
     protected void registerJobListener() throws SchedulerException {
-        KSBServiceLocator.getScheduler().addGlobalJobListener(new JobListenerSupport() {
+        KSBServiceLocator.getScheduler().getListenerManager().addJobListener(new JobListenerSupport() {
             @Override
             public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
                 log.info("Job was executed: " + context);
-                if (MessageProcessingJob.NAME.equals(context.getJobDetail().getName())) {
+                if (MessageProcessingJob.NAME.equals(((JobDetailImpl) context.getJobDetail()).getName())) {
                     signal.countDown();
                 }
             }
+
             public String getName() {
                 return System.currentTimeMillis() + RandomStringUtils.randomAlphanumeric(10);
             }
         });
     }
+
 
     protected void waitForNextJobCompletion() throws InterruptedException {
         log.info("Waiting for job to complete...");

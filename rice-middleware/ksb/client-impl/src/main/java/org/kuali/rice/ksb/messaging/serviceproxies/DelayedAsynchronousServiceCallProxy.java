@@ -34,6 +34,8 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
+import org.quartz.impl.JobDetailImpl;
+import org.quartz.impl.triggers.SimpleTriggerImpl;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -113,18 +115,22 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
     }
 
     protected void scheduleMessage(PersistedMessageBO message) throws SchedulerException {
-	LOG.debug("Scheduling execution of a delayed asynchronous message.");
-	Scheduler scheduler = KSBServiceLocator.getScheduler();
-	JobDataMap jobData = new JobDataMap();
-	jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);
-	JobDetail jobDetail = new JobDetail("Delayed_Asynchronous_Call-" + Math.random(), "Delayed_Asynchronous_Call",
-		MessageServiceExecutorJob.class);
-	jobDetail.setJobDataMap(jobData);
-	jobDetail.addJobListener(MessageServiceExecutorJobListener.NAME);
-	Trigger trigger = new SimpleTrigger("Delayed_Asynchronous_Call_Trigger-" + Math.random(),
-		"Delayed_Asynchronous_Call", message.getQueueDate());
-	trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
-	scheduler.scheduleJob(jobDetail, trigger);
+	    LOG.debug("Scheduling execution of a delayed asynchronous message.");
+	    Scheduler scheduler = KSBServiceLocator.getScheduler();
+	    JobDataMap jobData = new JobDataMap();
+	    jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, message);
+
+        JobDetailImpl jobDetail = new JobDetailImpl("Delayed_Asynchronous_Call-" + Math.random(), "Delayed_Asynchronous_Call",
+		    MessageServiceExecutorJob.class);
+	    jobDetail.setJobDataMap(jobData);
+
+        scheduler.getListenerManager().addJobListener( new MessageServiceExecutorJobListener());
+
+        SimpleTriggerImpl trigger = new SimpleTriggerImpl("Delayed_Asynchronous_Call_Trigger-" + Math.random(),
+		    "Delayed_Asynchronous_Call", message.getQueueDate());
+
+        trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
+	    scheduler.scheduleJob(jobDetail, trigger);
     }
 
     /**

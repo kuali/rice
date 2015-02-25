@@ -25,11 +25,11 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
@@ -115,7 +115,8 @@ public class DocumentSearchInternalUtils {
 
         private static ObjectMapper initializeObjectMapper() {
             ObjectMapper jsonMapper = new ObjectMapper();
-            jsonMapper.getSerializationConfig().setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+            jsonMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
             return jsonMapper;
         }
     }

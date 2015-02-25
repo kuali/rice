@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -315,7 +316,13 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 	}
 
-	@Override
+    @Override
+    public <T> T getBean(Class<T> tClass, Object... objects) throws BeansException {
+        // currently does not support the creating a bean instance using explicit arguments
+        return getBean(tClass);
+    }
+
+    @Override
 	public boolean containsBeanDefinition(String beanName) {
 		Assert.notNull(beanName, "Bean name must not be null");
 		return this.beanDefinitionMap.containsKey(beanName);
@@ -597,7 +604,12 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		return bd;
 	}
 
-	public void freezeConfiguration() {
+    @Override
+    public Iterator<String> getBeanNamesIterator() {
+        return beanDefinitionMap.keySet().iterator();
+    }
+
+    public void freezeConfiguration() {
 		this.configurationFrozen = true;
 		synchronized (this.beanDefinitionMap) {
 			this.frozenBeanDefinitionNames = StringUtils.toStringArray(this.beanDefinitionNames);

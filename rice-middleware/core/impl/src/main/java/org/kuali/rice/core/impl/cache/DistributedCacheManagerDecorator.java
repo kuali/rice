@@ -202,6 +202,17 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         }
 
         @Override
+        public ValueWrapper putIfAbsent(Object o, Object o2) {
+            Object existingValue = cache.get(o);
+            if (existingValue == null) {
+                cache.put(o, o2);
+                return null;
+            } else {
+                return cache.get(o);
+            }
+        }
+
+        @Override
         public void evict(Object key) {
             final String sKey = coerceStr(key);
             cache.evict(sKey);
@@ -393,6 +404,11 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         @Override public <T> T get(Object o, Class<T> tClass) { return null; }
 
         @Override public void put(Object key, Object value) { }
+
+        @Override
+        public ValueWrapper putIfAbsent(Object o, Object o2) {
+            return null;
+        }
 
         @Override public void evict(Object key) { }
 

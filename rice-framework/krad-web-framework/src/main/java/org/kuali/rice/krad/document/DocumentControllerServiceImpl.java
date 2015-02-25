@@ -677,7 +677,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
     @Override
     public ModelAndView superUserTakeActions(DocumentFormBase form) {
         Document document = form.getDocument();
-
+        String superUserAnnotation = document.getSuperUserAnnotation();
         if (StringUtils.isBlank(document.getSuperUserAnnotation())) {
             GlobalVariables.getMessageMap().putErrorForSectionId(
                     "Uif-SuperUserAnnotation", RiceKeyConstants.ERROR_SUPER_USER_TAKE_ACTIONS_MISSING);
@@ -704,6 +704,7 @@ public class DocumentControllerServiceImpl extends ControllerServiceImpl impleme
             if (StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.COMPLETE.getCode()) ||
                     StringUtils.equals(actionRequest.getActionRequested().getCode(), ActionRequestType.APPROVE.getCode())) {
                 document = getDocumentService().validateAndPersistDocument(document, new RouteDocumentEvent(document));
+                document.setSuperUserAnnotation(superUserAnnotation);
                 form.setDocument(document);
             }
 

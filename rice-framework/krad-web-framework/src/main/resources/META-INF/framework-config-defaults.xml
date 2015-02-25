@@ -105,5 +105,6 @@
   <param name="rice.krad.schema.packages" override="false">org.kuali.rice.krad.uif,org.kuali.rice.krad.datadictionary,org.kuali.rice.krad.lookup</param>
 
   <param name="rice.krad.views.autoGeneration.enabled" override="false">false</param>
+  <param name="rice.krad.preInstantiateBeans.enabled" override="false">false</param>
 
 </config>

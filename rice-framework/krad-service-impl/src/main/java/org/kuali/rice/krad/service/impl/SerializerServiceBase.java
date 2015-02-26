@@ -75,6 +75,12 @@ public abstract class SerializerServiceBase implements SerializerService  {
         } catch ( Exception ex ) {
         	// Do nothing - this will blow if the OJB class does not exist, which it won't in some installs
         }
+        try {
+        	Class<?> jpaIndirectListClass = Class.forName("org.eclipse.persistence.indirection.IndirectList");
+        	xstream.addDefaultImplementation(ArrayList.class, jpaIndirectListClass);
+        } catch ( Exception ex ) {
+        	// Do nothing if JPA isn't included
+        }
         xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
         xstream.registerConverter(new DateTimeConverter());
     }

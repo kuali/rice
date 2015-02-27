@@ -41,7 +41,8 @@ public class OrchestrationConfig {
     //KULRICE-12283: Added two new flags to indicate if acknowledgements and FYIs should be deactivated
     private final boolean deactivateAcknowledgements;
     private final boolean deactivateFYIs;
-    
+    private final boolean supressRequestsNodePolicyErrors;
+
     public OrchestrationConfig(EngineCapability capability) {
         this(capability, Collections.<String>emptySet(), null, true, true);
     }
@@ -55,11 +56,14 @@ public class OrchestrationConfig {
     }
 
     //KULRICE-12283: Added new constructors which set up the two new properties
-    public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause, boolean sendNotifications, boolean doRunPostProcessorLogic) {
-        this(capability, destinationNodeNames, cause, sendNotifications, doRunPostProcessorLogic, false, false);
+    public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause,
+            boolean sendNotifications, boolean doRunPostProcessorLogic) {
+        this(capability, destinationNodeNames, cause, sendNotifications, doRunPostProcessorLogic, false, false, false);
     }
 
-    public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause, boolean sendNotifications, boolean doRunPostProcessorLogic, boolean deactivateAcknowledgements, boolean deactivateFYIs) {
+    public OrchestrationConfig(EngineCapability capability, Set<String> destinationNodeNames, ActionTakenValue cause,
+            boolean sendNotifications, boolean doRunPostProcessorLogic, boolean deactivateAcknowledgements,
+            boolean deactivateFYIs, boolean supressRequestsNodePolicyErrors) {
         this.capability = capability;
         this.destinationNodeNames = Collections.unmodifiableSet(new HashSet<String>(destinationNodeNames));
         this.cause = cause;
@@ -67,6 +71,11 @@ public class OrchestrationConfig {
         this.runPostProcessorLogic = doRunPostProcessorLogic;
         this.deactivateAcknowledgements = deactivateAcknowledgements;
         this.deactivateFYIs = deactivateFYIs;
+        this.supressRequestsNodePolicyErrors = supressRequestsNodePolicyErrors;
+    }
+
+    public boolean isSupressRequestsNodePolicyErrors() {
+        return supressRequestsNodePolicyErrors;
     }
 
     public Set<String> getDestinationNodeNames() {
@@ -104,5 +113,5 @@ public class OrchestrationConfig {
     public boolean isDeactivateFYIs() {
         return deactivateFYIs;
     }
-    
+
 }

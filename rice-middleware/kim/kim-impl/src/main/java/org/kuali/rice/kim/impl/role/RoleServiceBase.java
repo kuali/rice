@@ -282,30 +282,29 @@ abstract class RoleServiceBase {
     protected List<RoleMemberBo> getRoleMembersForRoleIdsWithFilters(Collection<String> roleIds,
             String principalId, Collection<String> groupIds, Map<String, String> qualification) {
         List<Predicate> criteria = new ArrayList<Predicate>();
-
+        List<Predicate> orCriteria = new ArrayList<Predicate>();
+        
         if (CollectionUtils.isNotEmpty(roleIds)) {
-            criteria.add( PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds) );
+            orCriteria.add(PredicateFactory.and(
+                    PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()),
+                    PredicateFactory.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds)));
         }
-
-        List<Predicate> principalPredicates = new ArrayList<Predicate>(2);
-        principalPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()));
 
         if ( StringUtils.isNotBlank(principalId) ) {
-            principalPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId));
+            orCriteria.add(PredicateFactory.and(
+                    PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.PRINCIPAL.getCode()),
+                    PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId)));
         }
-
-        List<Predicate> groupPredicates = new ArrayList<Predicate>(2);
-        groupPredicates.add(PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()));
 
         if (CollectionUtils.isNotEmpty(groupIds)) {
-            groupPredicates.add(PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds));
+            orCriteria.add(PredicateFactory.and(
+                    PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.GROUP.getCode()),
+                    PredicateFactory.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds)));
         }
 
-        criteria.add( PredicateFactory.or(
-                PredicateFactory.equal(KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, MemberType.ROLE.getCode()),
-                PredicateFactory.and(principalPredicates.toArray(new Predicate[0])),
-                PredicateFactory.and(groupPredicates.toArray(new Predicate[0]))
-        ) );
+        if (!orCriteria.isEmpty()) {
+            criteria.add(PredicateFactory.or(orCriteria.toArray(new Predicate[0])));
+        }
 
         Predicate roleQualificationPredicate = getRoleQualificationPredicate(qualification);
         if ( roleQualificationPredicate != null ) {

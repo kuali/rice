@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.kew.useroptions;
 
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
+import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.PersistenceOption;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
-
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
-import org.kuali.rice.kew.api.KewApiConstants;
-import org.kuali.rice.krad.data.DataObjectService;
-
-import org.springframework.transaction.annotation.Transactional;
+import java.util.Properties;
 
 import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
 
@@ -91,7 +91,7 @@ public class UserOptionsServiceImpl implements UserOptionsService {
      */
     @Override
     public void save(UserOptions userOptions) {
-        this.dataObjectService.save(userOptions);
+        this.dataObjectService.save(userOptions, PersistenceOption.FLUSH);
     }
 
     /**

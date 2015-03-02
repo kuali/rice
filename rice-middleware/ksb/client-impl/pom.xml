@@ -118,28 +118,64 @@
       <groupId>aopalliance</groupId>
       <artifactId>aopalliance</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk16</artifactId>
     </dependency>
+
+    <!-- WSS4J Dependencies -->
     <dependency>
-      <groupId>org.apache.ws.security</groupId>
-      <artifactId>wss4j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <groupId>org.apache.wss4j</groupId>
+      <artifactId>wss4j-bindings</artifactId>
       <exclusions>
-        <exclusion>
-          <artifactId>asm</artifactId>
-          <groupId>asm</groupId>
-        </exclusion>
+      	<exclusion>
+      		<artifactId>stax-api</artifactId>
+      		<groupId>javax.xml.stream</groupId>
+      	</exclusion>
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>${asm.group.string}</groupId>
-      <artifactId>asm</artifactId>
+      <groupId>org.apache.wss4j</groupId>
+      <artifactId>wss4j-policy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.wss4j</groupId>
+      <artifactId>wss4j-ws-security-common</artifactId>
+      <exclusions>
+      	<exclusion>
+      		<artifactId>geronimo-javamail_1.4_spec</artifactId>
+      		<groupId>org.apache.geronimo.specs</groupId>
+      	</exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.wss4j</groupId>
+      <artifactId>wss4j-ws-security-dom</artifactId>
+      <exclusions>
+      	<exclusion>
+      		<artifactId>ehcache</artifactId>
+      		<groupId>net.sf.ehcache</groupId>
+      	</exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.wss4j</groupId>
+      <artifactId>wss4j-ws-security-policy-stax</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.wss4j</groupId>
+      <artifactId>wss4j-ws-security-stax</artifactId>
+      <exclusions>
+      	<exclusion>
+      		<artifactId>ehcache</artifactId>
+      		<groupId>net.sf.ehcache</groupId>
+      	</exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-frontend-jaxws</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
@@ -148,6 +184,12 @@
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-simple</artifactId>
+      <exclusions>
+      	<exclusion>
+      		<artifactId>asm</artifactId>
+      		<groupId>asm</groupId>
+      	</exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
@@ -166,17 +208,24 @@
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-databinding-aegis</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-rs-client</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-bindings-soap</artifactId>
     </dependency>
+
     <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-core</artifactId>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-api</artifactId>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>

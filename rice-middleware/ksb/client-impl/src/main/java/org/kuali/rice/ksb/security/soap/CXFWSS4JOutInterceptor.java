@@ -18,10 +18,12 @@ package org.kuali.rice.ksb.security.soap;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.log4j.Logger;
-import org.apache.ws.security.components.crypto.Crypto;
-import org.apache.ws.security.components.crypto.Merlin;
-import org.apache.ws.security.handler.RequestData;
-import org.apache.ws.security.handler.WSHandlerConstants;
+import org.apache.wss4j.common.crypto.Crypto;
+import org.apache.wss4j.common.crypto.Merlin;
+import org.apache.wss4j.common.crypto.PasswordEncryptor;
+import org.apache.wss4j.common.ext.WSSecurityException;
+import org.apache.wss4j.dom.handler.RequestData;
+import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.ClassLoaderUtils;
@@ -53,16 +55,17 @@ public class CXFWSS4JOutInterceptor extends WSS4JOutInterceptor {
 	}
 
 	@Override
-	public Crypto loadSignatureCrypto(RequestData reqData) {
+    public Crypto loadSignatureCrypto(RequestData reqData) throws WSSecurityException {
 		try {
-			return new Merlin(getMerlinProperties(), ClassLoaderUtils.getDefaultClassLoader());
+            PasswordEncryptor encryptor = new KualiPasswordEncryptor();
+            return new Merlin(getMerlinProperties(), ClassLoaderUtils.getDefaultClassLoader(), encryptor);
 		} catch (Exception e) {
 			throw new RiceRuntimeException(e);
 		}
 	}
 
-	@Override
-	public Crypto loadDecryptionCrypto(RequestData reqData) {
+    @Override
+	public Crypto loadDecryptionCrypto(RequestData reqData) throws WSSecurityException {
 		return loadSignatureCrypto(reqData);
 	}
 
@@ -92,5 +95,4 @@ public class CXFWSS4JOutInterceptor extends WSS4JOutInterceptor {
 			super.handleMessage(mc);
 		}
 	}
-
 }

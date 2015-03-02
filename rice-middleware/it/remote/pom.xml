@@ -116,12 +116,6 @@
       <version>${project.version}</version>
       <artifactId>rice-it-internal-tools</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-core</artifactId>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
@@ -139,6 +133,10 @@
         <exclusion>
           <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-security</artifactId>
+        </exclusion>
+        <exclusion>
+        	<artifactId>geronimo-servlet_3.0_spec</artifactId>
+        	<groupId>org.apache.geronimo.specs</groupId>
         </exclusion>
       </exclusions>
       <scope>test</scope>

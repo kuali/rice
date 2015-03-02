@@ -125,7 +125,7 @@
     <commons-pool.version>1.6</commons-pool.version>
     <commons-digester.version>2.1</commons-digester.version>
     <commons-validator.version>1.4.0</commons-validator.version>
-    <cxf.version>2.7.12</cxf.version>
+    <cxf.version>3.0.4</cxf.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
@@ -140,8 +140,8 @@
     <httpclient.version>4.3.5</httpclient.version>
 
     <!-- Can't get rid of this dependency until the JAXB RI in our current JDK is >= this version.
-         As of JDK 7, it's 2.2.4 -->
-    <jaxb-impl.version>2.2.6</jaxb-impl.version>
+         As of JDK 7, it's 2.2.4-->
+    <jaxb-impl.version>2.2.11</jaxb-impl.version>
 
     <jackson.version>1.9.13</jackson.version>
     <javassist.version>3.18.2-GA</javassist.version>
@@ -192,7 +192,7 @@
     <validation.version>1.1.0.Final</validation.version>
     <velocity.version>1.7</velocity.version>
     <velocity.tools.version>2.0</velocity.tools.version>
-    <wss4j.version>1.6.16</wss4j.version>
+    <wss4j.version>2.0.3</wss4j.version>
     <xalan.version>2.7.2</xalan.version>
     <xapool.version>1.5.0-patch6</xapool.version>
     <xercesImpl.version>2.11.0</xercesImpl.version>
@@ -1111,23 +1111,6 @@
           <groupId>org.apache.cxf</groupId>
           <artifactId>cxf-java2ws-plugin</artifactId>
           <version>${cxf.version}</version>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.cxf</groupId>
-              <artifactId>cxf-rt-frontend-jaxws</artifactId>
-              <version>${cxf.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.apache.cxf</groupId>
-              <artifactId>cxf-rt-frontend-simple</artifactId>
-              <version>${cxf.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>com.sun.xml.bind</groupId>
-              <artifactId>jaxb-impl</artifactId>
-              <version>${jaxb-impl.version}</version>
-            </dependency>
-          </dependencies>
           <configuration>
             <genWsdl>true</genWsdl>
             <verbose>false</verbose>
@@ -1884,48 +1867,28 @@
         <artifactId>filemonitor</artifactId>
         <version>${filemonitor.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-core</artifactId>
+        <version>${jaxb-impl.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>com.sun.xml.bind</groupId>
         <artifactId>jaxb-impl</artifactId>
         <version>${jaxb-impl.version}</version>
-        <scope>runtime</scope>
       </dependency>
 
       <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-api</artifactId>
-        <version>${cxf.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>commons-logging</artifactId>
-            <groupId>commons-logging</groupId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-javamail_1.4_spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-          </exclusion>
-        </exclusions>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-core</artifactId>
+      <version>${cxf.version}</version>
       </dependency>
 
       <dependency>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-        <version>${cxf.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-javamail_1.4_spec</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-core</artifactId>
         <version>${cxf.version}</version>
         <exclusions>
           <exclusion>
@@ -1977,6 +1940,10 @@
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
           </exclusion>
+          <exclusion>
+            <artifactId>asm</artifactId>
+            <groupId>asm</groupId>
+          </exclusion>
         </exclusions>
       </dependency>
 
@@ -1994,6 +1961,12 @@
 
       <dependency>
         <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-rs-client</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-rt-ws-security</artifactId>
         <version>${cxf.version}</version>
         <exclusions>
@@ -2004,6 +1977,14 @@
           <exclusion>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15</artifactId>
+          </exclusion>
+          <exclusion>
+            <artifactId>geronimo-javamail_1.4_spec</artifactId>
+            <groupId>org.apache.geronimo.specs</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>ehcache</artifactId>
+            <groupId>net.sf.ehcache</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -2060,20 +2041,41 @@
         <version>${struts.version}</version>
       </dependency>
 
+      <!-- WSS4J Dependencies -->
       <dependency>
-        <groupId>org.apache.ws.security</groupId>
+        <groupId>org.apache.wss4j</groupId>
         <artifactId>wss4j</artifactId>
         <version>${wss4j.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>commons-logging</artifactId>
-            <groupId>commons-logging</groupId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk14</artifactId>
-          </exclusion>
-        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wss4j</groupId>
+        <artifactId>wss4j-bindings</artifactId>
+        <version>${wss4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wss4j</groupId>
+        <artifactId>wss4j-policy</artifactId>
+        <version>${wss4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wss4j</groupId>
+        <artifactId>wss4j-ws-security-common</artifactId>
+        <version>${wss4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wss4j</groupId>
+        <artifactId>wss4j-ws-security-dom</artifactId>
+        <version>${wss4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wss4j</groupId>
+        <artifactId>wss4j-ws-security-policy-stax</artifactId>
+        <version>${wss4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.wss4j</groupId>
+        <artifactId>wss4j-ws-security-stax</artifactId>
+        <version>${wss4j.version}</version>
       </dependency>
 
       <dependency>

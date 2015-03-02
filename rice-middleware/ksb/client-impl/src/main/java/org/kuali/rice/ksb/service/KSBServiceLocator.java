@@ -16,7 +16,6 @@
 package org.kuali.rice.ksb.service;
 
 import org.apache.cxf.Bus;
-import org.apache.cxf.bus.CXFBusImpl;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
 import org.kuali.rice.core.api.exception.RiceRemoteServiceConnectionException;
@@ -93,7 +92,7 @@ public class KSBServiceLocator {
     }
 
     public static Bus getCXFBus(){
-    	return (CXFBusImpl) getService(KSBConstants.ServiceNames.CXF_BUS);
+    	return (Bus) getService(KSBConstants.ServiceNames.CXF_BUS);
     }
 
     public static List<Interceptor<? extends Message>> getInInterceptors() {

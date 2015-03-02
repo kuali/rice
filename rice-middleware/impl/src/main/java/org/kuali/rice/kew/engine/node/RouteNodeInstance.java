@@ -69,7 +69,7 @@ public class RouteNodeInstance implements Serializable {
     @Column(name="DOC_HDR_ID")
 	private String documentId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name="BRCH_ID")
 	private Branch branch;
 

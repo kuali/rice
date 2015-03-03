@@ -134,10 +134,11 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
     @Override
     public void processAfterAddLine(ViewModel viewModel, Object addLine, String collectionId, String collectionPath,
             boolean isValidLine) {
-        super.processAfterAddLine(viewModel, addLine, collectionId, collectionPath, isValidLine);
-
         // we only want to do our custom processing if a context has been added
-        if (addLine == null || !(addLine instanceof ContextBo)) { return; }
+        if (addLine == null || !(addLine instanceof ContextBo)) {
+            super.processAfterAddLine(viewModel, addLine, collectionId, collectionPath, isValidLine);
+            return;
+        }
 
         ContextBo addedContext = (ContextBo) addLine;
         TermSpecificationBo termSpec = getDataObjectFromForm(viewModel);
@@ -188,10 +189,9 @@ public class TermSpecificationMaintainable extends MaintainableImpl {
             if (contextValidTerm.getContextId().equals(context.getId())) {
                 contextValidTerm.setTermSpecification(null);
                 contextValidTermListIter.remove();
+                termSpec.getContexts().remove(context);
             }
         }
-
-        super.processCollectionDeleteLine(viewModel, collectionId, collectionPath, lineIndex);
     }
 
     /**

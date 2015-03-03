@@ -151,6 +151,7 @@
     <jetty.version>8.1.15.v20140411</jetty.version>
     <joda-time.version>2.4</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
+    <jackson-datatype-joda.version>2.4.0</jackson-datatype-joda.version>
     <jotm.version>2.1.10-kuali-1</jotm.version>
     <jpa.version>2.1.0</jpa.version>
     <json-api.version>1.0</json-api.version>
@@ -1845,6 +1846,12 @@
       </dependency>
 
       <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-joda</artifactId>
+        <version>${jackson-datatype-joda.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
@@ -2100,6 +2107,12 @@
         <artifactId>jackson-databind</artifactId>
         <version>${jackson.version}</version>
         <scope>compile</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+          <version>${jackson.version}</version>
       </dependency>
 
       <dependency>

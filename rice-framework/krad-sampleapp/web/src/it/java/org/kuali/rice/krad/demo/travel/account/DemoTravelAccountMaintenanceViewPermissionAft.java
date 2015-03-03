@@ -72,8 +72,9 @@ public class DemoTravelAccountMaintenanceViewPermissionAft extends WebDriverLega
         waitAndSelectByName("newCollectionLines['document.notes'].attachment.attachmentTypeCode", "OTH");
 
         waitAndClickByXpath("//button[@title='Add a Note']");
+        waitForElementPresentByXpath("//button[contains(text(),'Delete')]");
         waitForTextPresent("Bonzo!");
-        assertTextPresent("attachment.oth");
+        waitForTextPresent("attachment.oth");
 
         waitAndClickByLinkText("Ad Hoc Recipients");
         waitAndTypeByName("newCollectionLines['document.adHocRoutePersons'].id", user);

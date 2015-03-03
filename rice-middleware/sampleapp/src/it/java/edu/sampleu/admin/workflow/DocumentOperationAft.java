@@ -37,6 +37,7 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
      */
     public static final String BOOKMARK_URL = AutomatedFunctionalTestUtils.PORTAL+"?channelTitle=Document%20Operation&channelUrl="+ WebDriverUtils
             .getBaseUrlString()+"/kew/DocumentOperation.do";
+    private static final String DOC_HANDLER_URL = "/kew/DocHandler.do?command=displayDocSearchView&docId=";
 
     private static String documentId = null;
 
@@ -207,7 +208,7 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         waitAndClickByLinkText("Create Document");
         waitAndTypeByName("userName", "Test User");
         waitAndTypeByName("rqstDate", getDateToday());
-        waitAndSelectByName("campus", "IUPUI");
+        waitAndSelectByName("campus", "IUB");
         jGrowl("Getting the document id.");
         String docId = getText(By.xpath("/html/body/table[2]/tbody/tr/td[2]/table/tbody/tr[4]/td[2]"));
         jGrowl("Document id is: " + docId);
@@ -216,14 +217,11 @@ public class DocumentOperationAft extends WebDriverLegacyITBase {
         //approving the submitted edoclite
         jGrowl("Redirecting to portal screen");
         driver.get(WebDriverUtils.getBaseUrlString());
-        impersonateUser("user3");
-        docSearch(docId);
-        waitAndClickByLinkText(docId);
-        selectChildWindow();
+        impersonateUser("user2");
+        open(getBaseUrlString() + DOC_HANDLER_URL + docId);
         driver.findElement(By.cssSelector("input[title='Approve']")).click();
         driver.get(WebDriverUtils.getBaseUrlString());
         driver.findElement(By.cssSelector("input[title='Click to logout.']")).click();
-
         return docId;
     }
 

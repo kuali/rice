@@ -51,6 +51,11 @@ public interface ActionTakenService {
 
     Timestamp getLastApprovedDate(String documentId);
 
+    /**
+     * Returns actions taken at a route node instance
+     * @param nodeInstance the route node instance
+     * @return actions taken at a route node instance
+     */
     List<ActionTakenValue> getActionsTakenAtRouteNode(RouteNodeInstance nodeInstance);
 
 }

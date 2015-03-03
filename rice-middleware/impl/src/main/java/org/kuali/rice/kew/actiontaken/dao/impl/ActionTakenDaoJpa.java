@@ -41,6 +41,9 @@ public class ActionTakenDaoJpa implements ActionTakenDao {
     public static final String GET_LAST_ACTION_TAKEN_DATE_NAME = "ActionTakenValue.getLastActionTakenDate";
     public static final String GET_LAST_ACTION_TAKEN_DATE_QUERY =
             "SELECT max(a.actionDate) from ActionTakenValue a where a.documentId = :documentId and a.actionTaken=:actionTaken";
+    public static final String FIND_ACTIONS_TAKEN_AT_NODE_INSTANCE_NAME = "ActionRequestValue.findActionsTakenAtRouteNodeInstance";
+    public static final String FIND_ACTIONS_TAKEN_AT_NODE_INSTANCE_QUERY =
+            "Select r.actionTaken from ActionRequestValue r where r.nodeInstance = :nodeInstance";
 
     public Timestamp getLastActionTakenDate(String documentId, ActionType actionType) {
         if (StringUtils.isBlank(documentId) || actionType == null) {
@@ -58,11 +61,11 @@ public class ActionTakenDaoJpa implements ActionTakenDao {
     }
 
     public List<ActionTakenValue> findActionsTakenAtRouteNodeInstance(RouteNodeInstance nodeInstance) {
-        javax.persistence.Query actionTakenIdResult = getEntityManager().createQuery(
-                "Select r.actionTaken from ActionRequestValue r where r.nodeInstance = :nodeInstance");
-        actionTakenIdResult.setParameter("nodeInstance", nodeInstance);
+        TypedQuery<ActionTakenValue> query =
+                entityManager.createNamedQuery(FIND_ACTIONS_TAKEN_AT_NODE_INSTANCE_NAME, ActionTakenValue.class);
+        query.setParameter("nodeInstance", nodeInstance);
 
-        return actionTakenIdResult.getResultList();
+        return query.getResultList();
     }
 
     public EntityManager getEntityManager() {

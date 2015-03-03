@@ -384,16 +384,17 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
 			RouteNodeInstance  nodeInstance = (RouteNodeInstance ) iterator.next();
             List<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().getActionsTakenAtRouteNode(nodeInstance);
             ActionTakenValue foundValue =  null;
-            String actionTknCode = null;
+            String actionTakenCode = null;
             if(!actionsTaken.isEmpty()) {
                 foundValue = actionsTaken.get(0);
             }
             if(foundValue != null){
-                actionTknCode = foundValue.getActionTaken();
+                actionTakenCode = foundValue.getActionTaken();
             }
-            if(actionTknCode != null) {
+            if(actionTakenCode != null) {
                 // if we have a complete final approval node in our path and if the action taken at that node is not return to previous we cannot return past it
-                if (nodeInstance.isComplete() && Boolean.TRUE.equals(nodeInstance.getRouteNode().getFinalApprovalInd()) && actionsTaken.isEmpty() && !actionTknCode.equals(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD)) {
+                if (nodeInstance.isComplete() && Boolean.TRUE.equals(nodeInstance.getRouteNode().getFinalApprovalInd()) &&
+                        actionsTaken.isEmpty() && !actionTakenCode.equals(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD)) {
                     throw new InvalidActionTakenException("Cannot return past or through the final approval node '" + nodeInstance.getName() + "'.");
                 }
             }

@@ -45,6 +45,11 @@ public interface ActionTakenDao {
      */
     Timestamp getLastActionTakenDate(String documentId, ActionType actionType);
 
+    /**
+     * Returns the actions taken at a route node instance
+     * @param nodeInstance the route node instance
+     * @return the list of actions taken at a route node instance
+     */
     List<ActionTakenValue> findActionsTakenAtRouteNodeInstance(RouteNodeInstance nodeInstance);
 
 }

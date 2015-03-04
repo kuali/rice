@@ -76,7 +76,7 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
 
     private void verify(String docId) throws InterruptedException {
         waitAndClickLinkContainingText(docId);
-
+        Thread.sleep(3000);
         driver.switchTo().window((String) driver.getWindowHandles().toArray()[1]);
 
         waitIsVisible(By.xpath("//tr/th/label[contains(text(), '" + CONTEXT_LABEL + "')]"));

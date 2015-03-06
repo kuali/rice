@@ -16,10 +16,10 @@
 package org.kuali.rice.ksb.security.soap;
 
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-import org.apache.ws.security.WSPasswordCallback;
-import org.apache.ws.security.WSSecurityException;
-import org.apache.ws.security.handler.RequestData;
-import org.apache.ws.security.handler.WSHandlerConstants;
+import org.apache.wss4j.common.ext.WSPasswordCallback;
+import org.apache.wss4j.common.ext.WSSecurityException;
+import org.apache.wss4j.dom.handler.RequestData;
+import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.kuali.rice.core.api.security.credentials.Credentials;
 import org.kuali.rice.core.api.security.credentials.CredentialsSource;
 import org.kuali.rice.ksb.api.bus.ServiceConfiguration;

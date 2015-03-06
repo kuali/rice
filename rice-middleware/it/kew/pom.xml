@@ -104,6 +104,12 @@
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
       <scope>test</scope>
+      <exclusions>
+      	<exclusion>
+      		<artifactId>asm</artifactId>
+      		<groupId>asm</groupId>
+      	</exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
@@ -154,6 +160,12 @@
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-simple</artifactId>
       <scope>test</scope>
+      <exclusions>
+      	<exclusion>
+      		<artifactId>asm</artifactId>
+      		<groupId>asm</groupId>
+      	</exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
@@ -193,11 +205,6 @@
     <dependency>
       <groupId>xalan</groupId>
       <artifactId>serializer</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

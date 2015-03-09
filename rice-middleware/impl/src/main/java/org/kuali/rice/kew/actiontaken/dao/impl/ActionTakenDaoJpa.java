@@ -16,14 +16,16 @@
 package org.kuali.rice.kew.actiontaken.dao.impl;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDao;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
-
+import java.util.List;
 
 /**
  * JPA implementation of the {@link org.kuali.rice.kew.actiontaken.dao.ActionTakenDao}.
@@ -39,6 +41,9 @@ public class ActionTakenDaoJpa implements ActionTakenDao {
     public static final String GET_LAST_ACTION_TAKEN_DATE_NAME = "ActionTakenValue.getLastActionTakenDate";
     public static final String GET_LAST_ACTION_TAKEN_DATE_QUERY =
             "SELECT max(a.actionDate) from ActionTakenValue a where a.documentId = :documentId and a.actionTaken=:actionTaken";
+    public static final String FIND_ACTIONS_TAKEN_AT_NODE_INSTANCE_NAME = "ActionRequestValue.findActionsTakenAtRouteNodeInstance";
+    public static final String FIND_ACTIONS_TAKEN_AT_NODE_INSTANCE_QUERY =
+            "Select r.actionTaken from ActionRequestValue r where r.nodeInstance = :nodeInstance";
 
     public Timestamp getLastActionTakenDate(String documentId, ActionType actionType) {
         if (StringUtils.isBlank(documentId) || actionType == null) {
@@ -53,6 +58,14 @@ public class ActionTakenDaoJpa implements ActionTakenDao {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public List<ActionTakenValue> findActionsTakenAtRouteNodeInstance(RouteNodeInstance nodeInstance) {
+        TypedQuery<ActionTakenValue> query =
+                entityManager.createNamedQuery(FIND_ACTIONS_TAKEN_AT_NODE_INSTANCE_NAME, ActionTakenValue.class);
+        query.setParameter("nodeInstance", nodeInstance);
+
+        return query.getResultList();
     }
 
     public EntityManager getEntityManager() {

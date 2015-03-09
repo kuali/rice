@@ -641,10 +641,10 @@ ${KualiForm.body}</programlisting></para>
 &lt;/#macro>
 
 Incorrect Invocation:
-&lt;@grid rowCount="3"/>
+&lt;\@grid rowCount="3"/>
 
 Correct Invocation:
-&lt;@grid rowCount=3/></programlisting>
+&lt;\@grid rowCount=3/></programlisting>
         </para>
         </section>
         
@@ -822,21 +822,21 @@ Correct Invocation:
             <para>As an example, let's invoke our body macro created in the previous section,
                 passing a value for the 'bodyContent' parameter:</para>
             <para>
-                <programlisting linenumbering = "numbered">&lt;@body bodyContent="Hello KRAD World!"/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;\@body bodyContent="Hello KRAD World!"/></programlisting>
                 
                 
             </para>
             <para>or </para>
             <para>
                 <programlisting linenumbering = "numbered">&lt;#assign content="Hello KRAD World!"/>
-&lt;@body bodyContent=content/></programlisting>
+&lt;\@body bodyContent=content/></programlisting>
             </para>
             <para>When the macro is associated with a namespace, we must specify the namespace
                 before the macro name, using a dot to separate each. Let's assume our body macro was
                 associated with the namespace 'myapp'. We would then invoke the macro as
                 follows:</para>
             <para>
-                <programlisting linenumbering = "numbered">&lt;@myapp.body bodyContent=content/></programlisting>
+                <programlisting linenumbering = "numbered">&lt;\@myapp.body bodyContent=content/></programlisting>
             </para>
         </section>   
         
@@ -856,13 +856,13 @@ Correct Invocation:
 &lt;/#macro>
 
 Invocation:
-&lt;@wrapTd>
+&lt;\@wrapTd>
   &lt;#if renderHeader>
     ${header}
   &lt;#else>
     ${footer}
   &lt;/#if>
-&lt;/@wrapTd></programlisting>
+&lt;/\@wrapTd></programlisting>
         </para>
         <para>Assuming renderHeader is true, and the header variable is 'Header One', the following
                 would be output:</para>
@@ -882,8 +882,8 @@ Header One
 &lt;#macro>
 
 Invocation:
-&lt;@loop parm1 parm2/>
-&lt;@loop parm1 parm2 parm3/></programlisting>
+&lt;\@loop parm1 parm2/>
+&lt;\@loop parm1 parm2 parm3/></programlisting>
         </para>
         <para>The parameter 'parms' becomes a hash, where the name for each additional parameter is
             the hash key and the corresponding parameter value the hash value. The macro may include
@@ -1018,7 +1018,7 @@ ${name?upper_case} &lt;#-- prints 'JOE SMITH' --></programlisting>
             <title>Coarse-Grained Parameters</title>
             <para>An important consideration when setting up a macro is how to setup the parameters.
             To help explain this, let's take a look at a sample text
-            control:<programlisting linenumbering = "numbered">&lt;@spring.input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"/>    </programlisting></para>
+            control:<programlisting linenumbering = "numbered">&lt;\@spring.input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"/>    </programlisting></para>
             <para>This snippet is invoking a spring input macro, which will then output the HTML
                 input tag. We see some of the attributes this macro provides are id, path, disabled,
                 size, and maxlength. Since this template is generic (in the sense that it should
@@ -1027,17 +1027,17 @@ ${name?upper_case} &lt;#-- prints 'JOE SMITH' --></programlisting>
                 will allow values for these variables (or attributes) to be specified by the calling
                 template. This would look like the following:
                 <programlisting linenumbering = "numbered">&lt;#macro uif_input id path disabled size maxLength>
-  &lt;@spring:input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"/>  
+  &lt;\@spring:input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"/>  
 &lt;/#macro>  </programlisting></para>
             <para>The calling template would then be:
-            <programlisting linenumbering = "numbered">&lt;@uif_input id="${component.id}" path="${component.path}" disabled="${component.disabled}" 
+            <programlisting linenumbering = "numbered">&lt;\@uif_input id="${component.id}" path="${component.path}" disabled="${component.disabled}" 
 size="${component.size}" maxLength="${component.maxLength}"/>    </programlisting></para>
             <para>Here the component variable is the component instance that has been exported to
                 the page. </para>
             <para>Now let's suppose that a developer wishes to override the component class and
             template to provide a 'readonly' property. The template now looks like this:
             <programlisting linenumbering = "numbered">&lt;#macro uif_input id path disabled size maxLength readOnly>
-  &lt;@spring.input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"
+  &lt;\@spring.input id="${id}" path="${path}" disabled="${disabled}" size="${size}" maxlength="${maxLength}"
     readOnly="${readOnly}"/>  
 &lt;/#macro>    </programlisting></para>
             <para>In order for the readonly attribute to be passed in, the developer must also
@@ -1048,12 +1048,12 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             individual properties of the component. Passing the full component makes changes our
             original macro to:
             <programlisting linenumbering = "numbered">&lt;#macro uif_input component>
-  &lt;@spring.input id="${component.id}" path="${component.path}" disabled="${component.disabled}" size="${component.size}"/>
+  &lt;\@spring.input id="${component.id}" path="${component.path}" disabled="${component.disabled}" size="${component.size}"/>
 &lt;/#macro>    </programlisting></para>
             <para>Now for the custom template, we simply make use of the new property without any
             changes to the calling template:
             <programlisting linenumbering = "numbered">&lt;#macro uif_input component>
-  &lt;@spring.input id="${component.id}" path="${component.path}" disabled="${component.disabled}" size="${component.size}"
+  &lt;\@spring.input id="${component.id}" path="${component.path}" disabled="${component.disabled}" size="${component.size}"
                  readOnly="${component.readOnly}"/>
 &lt;/#macro>    </programlisting></para>
             <para>In addition to providing more template flexibility, using the course grained
@@ -1154,7 +1154,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 namespace, and are available by default to all component templates. The following
                 shows an example of using the script wrapper tag:</para>
         <para>
-            <programlisting linenumbering = "numbered">&lt;@krad.script value="alert('hello');"/></programlisting>
+            <programlisting linenumbering = "numbered">&lt;\@krad.script value="alert('hello');"/></programlisting>
         </para>
         </section>
         
@@ -1171,7 +1171,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <para>The template macro requires the component parameter to be specified. This is the
             child component that should be rendered:</para>
             <programlisting linenumbering = "numbered">
-&lt;@krad.template component=childComponent/&gt;
+&lt;\@krad.template component=childComponent/&gt;
             </programlisting>
           
             <para>The template macro will then create the call for invoking the component macro, and
@@ -1246,7 +1246,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                     parameter name. If a parameter does not have a default value defined it becomes a required parameter.</para>
                 </listitem>
                 <listitem>
-                    <para>Macros are invoked using the '@' symbol followed by the macro name.
+                    <para>Macros are invoked using the '\@' symbol followed by the macro name.
                         Parameter values are given after the macro name with key=value pairs
                         (parameterName=parameterValue).</para>
                 </listitem>
@@ -1480,7 +1480,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             <tip><para><emphasis role="keyword">Read Only</emphasis>: As stated above, the feature of read only
                     inheritance is done by setting an expression on the readOnly property which is
                     inherited. This configuration is as follows:
-                    <programlisting linenumbering = "numbered">&lt;property name="readOnly" value="@{#parent.readOnly}"/&gt;     </programlisting></para>
+                    <programlisting linenumbering = "numbered">&lt;property name="readOnly" value="\@{#parent.readOnly}"/&gt;     </programlisting></para>
             <para>However, the readOnly property can be overridden to specify another condition, or
                     to explicitly make the component editable. This can be useful for cases when a
                     few of the child components need to be editable, but the majority should be read
@@ -2000,7 +2000,7 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
             constants that are used throughout the UIF. Some of these are constants that represent
             configuration options, while others are used by the code. For those that can be used for
             configuration, the constant can be referenced using an expression and the 'UifConstants'
-            variable. For example @{#UifConstants.Placement.LEFT} refers to the LEFT enum value in
+            variable. For example \@{#UifConstants.Placement.LEFT} refers to the LEFT enum value in
             the UifConstants class. </para>
         <para><emphasis role="keyword">Position</emphasis> – The Position enum has values BOTTOM, LEFT,
             RIGHT, and TOP. This is used to configure where an element should be placed in relation
@@ -2076,8 +2076,8 @@ size="${component.size}" maxLength="${component.maxLength}"/>    </programlistin
                 </listitem>
                 <listitem>
                     <para>UifConstants can be referenced in XML by using the UifConstants variable
-                        (@{#UifConstants.constantname}), likewise KradConstants can be referenced
-                        using the Constants variable (@{Constants.constantname}). </para>
+                        (\@{#UifConstants.constantname}), likewise KradConstants can be referenced
+                        using the Constants variable (\@{Constants.constantname}). </para>
                 </listitem>
             </itemizedlist>
         </section>

@@ -40,7 +40,6 @@ import org.kuali.rice.core.api.criteria.LikePredicate;
 import org.kuali.rice.core.api.criteria.MultiValuedPredicate;
 import org.kuali.rice.core.api.criteria.NotEqualIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotEqualPredicate;
-import org.kuali.rice.core.api.criteria.NotExistsSubQueryPredicate;
 import org.kuali.rice.core.api.criteria.NotInIgnoreCasePredicate;
 import org.kuali.rice.core.api.criteria.NotInPredicate;
 import org.kuali.rice.core.api.criteria.NotLikeIgnoreCasePredicate;
@@ -252,18 +251,6 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 	 *            Additional predicates to apply to the inner query - may be null.
 	 */
 	protected abstract void addExistsSubquery(C criteria, String subQueryType, Predicate subQueryPredicate);
-
-    /**
-     * Adds an NOT EXISTS clause to the criteria.
-     *
-     * @param criteria
-     *            the criteria to add to.
-     * @param subQueryType
-     *            The data object type of the inner subquery
-     * @param subQueryPredicate
-     *            Additional predicates to apply to the inner query - may be null.
-     */
-    protected abstract void addNotExistsSubquery(C criteria, String subQueryType, Predicate subQueryPredicate);
 
     /**
      * Adds an order by clause to the given criteria
@@ -516,9 +503,7 @@ abstract class QueryTranslatorBase<C, Q> implements QueryTranslator<C, Q> {
 	protected void addSubQueryPredicate(SubQueryPredicate p, C parent) {
 		if (p instanceof ExistsSubQueryPredicate) {
 			addExistsSubquery(parent, p.getSubQueryType(), p.getSubQueryPredicate());
-		} else if (p instanceof NotExistsSubQueryPredicate) {
-            addNotExistsSubquery(parent, p.getSubQueryType(), p.getSubQueryPredicate());
-        }else {
+		} else {
 			throw new UnsupportedPredicateException(p);
 		}
 	}

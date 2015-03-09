@@ -163,7 +163,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
                 LOG.warn("Problems contacting PostProcessor after engine process", e);
                 throw new RouteManagerException("Problems contacting PostProcessor", e, context);
             }
-			RouteContext.releaseCurrentRouteContext();
+			RouteContext.clearCurrentRouteContext();
 			MDC.remove("docId");
 		}
 	}

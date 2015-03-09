@@ -133,7 +133,7 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
     protected void testTravelAccountLookUpXss(String fieldName) throws Exception {
         waitAndTypeByName(fieldName,"\"/><script>alert('!')</script>");
         waitAndClickButtonByText(SEARCH);
-        waitForProgressLoading();
+        Thread.sleep(1000);
         
         if(isAlertPresent())    {
             jiraAwareFail(fieldName + " caused XSS.");
@@ -247,6 +247,10 @@ public class DemoTravelAccountLookUpAft extends ViewDemoAftBase {
 
     private void testXss() throws Exception {
         testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NUMBER_FIELD);
+        testTravelAccountLookUpXss(TRAVEL_ACCOUNT_NAME_FIELD); // in 2.3 this is readonly (and masked)
+//        testTravelAccountLookUpXss(SUB_ACCOUNT_FIELD); removed in 2.4
+//        testTravelAccountLookUpXss(SUB_ACCOUNT_NAME_FIELD);  // in 2.3 this is readonly (and masked), removed in 2.4
+//        testTravelAccountLookUpXss("lookupCriteria[foId]"); // in 2.3 this has a different name, removed in 2.4
     }
     
     private void testSearchAndSelect(String selectorText) throws Exception {

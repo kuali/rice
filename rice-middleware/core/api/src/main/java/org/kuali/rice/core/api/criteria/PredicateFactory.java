@@ -807,26 +807,6 @@ public final class PredicateFactory {
 
 
     /**
-     * This method will generate a "<tt>NOT EXISTS ( SELECT 1 FROM subQueryType WHERE <predicate> )</tt>" style query.
-     *
-     * @param subQueryType The data type of the inner subquery
-     * @param subQueryPredicate Additional predicates to apply to the inner query - may be null.
-     * @return the Predicate
-     * @throws IllegalArgumentException if subQueryBaseClass, subQueryProperty, or outerQueryProperty are blank or null.
-     * @since Rice 2.5.3
-     */
-    public static Predicate notExistsSubquery( String subQueryType, Predicate subQueryPredicate ) {
-        if ( StringUtils.isBlank( subQueryType ) ) {
-            throw new IllegalArgumentException("subQueryBaseClass is blank or null");
-        }
-
-        return new NotExistsSubQueryPredicate(subQueryType, subQueryPredicate);
-    }
-
-
-
-
-    /**
      * This method will construct a predicate based on the predicate name.
      *
      * ex: "or", Or, "OrPredicate" passing the arguments to the construction method.

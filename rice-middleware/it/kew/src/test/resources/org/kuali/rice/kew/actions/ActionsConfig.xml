@@ -151,47 +151,6 @@
 				</requests>
 			</routeNodes>
 		</documentType>
-    <documentType>
-      <name>BAActionSUApproveAnotherDocPostProcessor</name>
-      <description>BAActionSUApproveAnotherDocPostProcessor</description>
-      <label>BAActionSUApproveAnotherDocPostProcessor</label>
-      <postProcessorName>org.kuali.rice.kew.actions.BAActionSUApproveAnotherDocPostProcessor</postProcessorName>
-      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
-      <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
-      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
-      <docHandler>_blank</docHandler>
-      <active>true</active>
-      <routePaths>
-        <routePath>
-          <start name="AdHoc" nextNode="WorkflowDocument" />
-          <requests name="WorkflowDocument" nextNode="WorkflowDocument2" />
-          <requests name="WorkflowDocument2" nextNode="Acknowledge1" />
-          <requests name="Acknowledge1" nextNode="Acknowledge2" />
-          <requests name="Acknowledge2" />
-        </routePath>
-      </routePaths>
-      <routeNodes>
-        <start name="AdHoc">
-          <activationType>S</activationType>
-        </start>
-        <requests name="WorkflowDocument">
-          <activationType>S</activationType>
-          <ruleTemplate>WorkflowDocumentTemplate</ruleTemplate>
-        </requests>
-        <requests name="WorkflowDocument2">
-          <activationType>S</activationType>
-          <ruleTemplate>WorkflowDocument2Template</ruleTemplate>
-        </requests>
-        <requests name="Acknowledge1">
-          <activationType>S</activationType>
-          <ruleTemplate>Ack1Template</ruleTemplate>
-        </requests>
-        <requests name="Acknowledge2">
-          <activationType>S</activationType>
-          <ruleTemplate>Ack2Template</ruleTemplate>
-        </requests>
-      </routeNodes>
-    </documentType>
 		<documentType>
 			<name>BlanketApproveTest</name>
 			<description>BlanketApproveTest</description>

@@ -24,6 +24,7 @@ import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDao;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kim.api.group.GroupService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.data.DataObjectService;
@@ -170,6 +171,11 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         }
     }
 
+    @Override
+    public List<ActionTakenValue> getActionsTakenAtRouteNode(RouteNodeInstance nodeInstance) {
+
+        return getActionTakenDao().findActionsTakenAtRouteNodeInstance(nodeInstance);
+    }
 
     public ActionTakenDao getActionTakenDao() {
         return actionTakenDao;

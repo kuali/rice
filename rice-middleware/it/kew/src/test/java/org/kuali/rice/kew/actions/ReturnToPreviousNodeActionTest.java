@@ -355,6 +355,68 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     	document.blanketApprove("");
     	assertTrue("Document should be processed.", document.isProcessed());
     }
+
+    /**
+     * This test was implemented to address issue KULRICE-14124
+     * We want to ensure that a document can be returned to a previous node from a final approval node as long as approval/disapproval action has not be taken at the final approval node
+     * @throws Exception
+     */
+    @Test public void testFinalApprovalNodeReturnToPrevious() throws Exception {
+        //create a document
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdByName("ewestfal"), "BlanketApproveMandatoryNodeTest");
+        //route if for approval
+        document.route("");
+        assertTrue("Document should be enroute",document.isEnroute());
+        TestUtilities.assertAtNodeNew("Should be at the WorkflowDocument node.", document, "WorkflowDocument");
+
+        //approve the document as bmcgough and rkirkend
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("bmcgough"), document.getDocumentId());
+        assertTrue("Bmcgough should have an approve.", document.isApprovalRequested());
+        document.approve("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("rkirkend"), document.getDocumentId());
+        assertTrue("Rkirkend should have an approve.", document.isApprovalRequested());
+        document.approve("");
+
+        //verify the document is routed to final approval node i.e. WorkflowDocument2
+        TestUtilities.assertAtNodeNew("Document should be at WorkflowDocument2 node.", document,"WorkflowDocument2");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("pmckown"), document.getDocumentId());
+        assertTrue("pmckown should have approve and return to previous actions", document.isApprovalRequested());
+
+        //return the document to its previous node, i.e. WorkflowDocument
+        document.returnToPreviousNode("", "WorkflowDocument");
+        assertTrue("Document should be enroute.", document.isEnroute());
+
+        //Verify that the document is now at WorkflowDocument node
+        TestUtilities.assertAtNodeNew("Should be at the old WorkflowDocument node.", document, "WorkflowDocument");
+        //approve the document by bmcgough and rkirkend
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("bmcgough"), document.getDocumentId());
+        assertTrue("Bmcgough should have an approve.", document.isApprovalRequested());
+        document.approve("");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("rkirkend"), document.getDocumentId());
+        assertTrue("Rkirkend should have an approve.", document.isApprovalRequested());
+        document.approve("");
+
+        //Verify that the document is has now routed to WorkflowDocument2 node again
+        TestUtilities.assertAtNodeNew("Document should be at WorkflowDocument2 node.", document,"WorkflowDocument2");
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("pmckown"), document.getDocumentId());
+        assertTrue("pmckown should have approve and return to previous actions", document.isApprovalRequested());
+
+        //Return the document to the initiated(AdHoc) node. Before the bug fix this would fail with the error: Cannot return past or through the 'final' approval node
+        document.returnToPreviousNode("","AdHoc");
+        //Verify that return to previous node worked and the document is now at AdHoc node
+        TestUtilities.assertAtNodeNew("Document should be at the AdHoc node", document, "AdHoc");
+        document =  WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("ewestfal"), document.getDocumentId());
+        //Blanket approve the document to WorkflowDocument2 node
+        document.blanketApprove("", "WorkflowDocument2");
+
+        // Approve the document at WorkflowDocument2 node to ensure the multiple 'return to previous' actions has not effected the routing of the document
+        document = WorkflowDocumentFactory.loadDocument(getPrincipalIdByName("pmckown"), document.getDocumentId());
+        assertTrue("pmckown should have approve.", document.isApprovalRequested());
+        document.approve("");
+        // The document should be processed
+        assertTrue("Document should be processed.", document.isProcessed());
+
+    }
         
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionsConfig.xml");

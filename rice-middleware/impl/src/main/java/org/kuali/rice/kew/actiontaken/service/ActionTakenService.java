@@ -17,6 +17,7 @@ package org.kuali.rice.kew.actiontaken.service;
 
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -49,5 +50,12 @@ public interface ActionTakenService {
     boolean hasUserTakenAction(String principalId, String documentId);
 
     Timestamp getLastApprovedDate(String documentId);
+
+    /**
+     * Returns actions taken at a route node instance
+     * @param nodeInstance the route node instance
+     * @return actions taken at a route node instance
+     */
+    List<ActionTakenValue> getActionsTakenAtRouteNode(RouteNodeInstance nodeInstance);
 
 }

@@ -17,7 +17,6 @@ package org.kuali.rice.krad.labs;
 
 import org.junit.Test;
 import org.kuali.rice.testtools.selenium.WebDriverLegacyITBase;
-import org.openqa.selenium.By;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -40,30 +39,11 @@ public class LabsEnterKeySupportTables2Aft extends WebDriverLegacyITBase {
     }
 
     protected void testDemoEnterKeySupportTables2() throws InterruptedException {
-        //verify the result of the first result row
-        String value1 = waitAndGetAttributeByXpath("//table/tbody/tr[2]/td[2]/div/input", "value");
-        String value2 = waitAndGetAttributeByXpath("//table/tbody/tr[2]/td[3]/div/input", "value");
-        jGrowl("got first row values "+value1+" "+value2);
-        assertFalse(value1.equals("1"));
-        assertFalse(value2.equals("1"));
-
-        //fill in values and send the enter key
-        waitAndTypeByXpath("//table/tbody/tr[1]/td[2]/div/input", "1");
-        waitAndTypeByXpath("//table/tbody/tr[1]/td[3]/div/input","1");
-        pressEnterByXpath("//table/tbody/tr[1]/td[3]/div/input");
-
-        //wait for first result row
-        waitForElementVisibleBy(By.xpath("//table/tbody/tr[2]/td[3]/div/input"),"1");
-
-        //verify the result of the first result row
-        String value3 = waitAndGetAttributeByXpath("//table/tbody/tr[2]/td[2]/div/input", "value");
-        String value4 = waitAndGetAttributeByXpath("//table/tbody/tr[2]/td[3]/div/input", "value");
-        jGrowl("got first row values "+value3+" "+value4);
-        assertTrue(value3.equals("1"));
-        assertTrue(value4.equals("1"));
-
-        pressEnterByXpath("//table/tbody/tr[2]/td[3]/div/input");
-        acceptAlert();
+    	waitAndTypeByXpath("//table/tbody/tr/td[2]/div/input","1");
+    	waitAndTypeByXpath("//table/tbody/tr/td[3]/div/input","1");
+    	pressEnterByXpath("//table/tbody/tr/td[3]/div/input");
+    	pressEnterByXpath("//table/tbody/tr[2]/td[3]/div/input");
+    	acceptAlert();
     }
 
     @Test

@@ -214,68 +214,6 @@ public class JpaPersistenceProviderTest extends KRADTestCase {
         assertEquals( "We added an extension record, so there should have been one result", 1, results.getResults().size() );
     }
 
-    @Test
-    public void testNotExistsSubQueryCriteria() {
-
-        Logger.getLogger(getClass()).info( "Adding Account1" );
-        Account acct = new Account();
-        acct.setNumber("a1");
-        acct.setName("a1 name");
-        provider.save(acct, PersistenceOption.FLUSH);
-
-        Logger.getLogger(getClass()).info( "Adding Account2" );
-        Account acct2 = new Account();
-        acct.setNumber("a2");
-        acct.setName("a2 name");
-        provider.save(acct, PersistenceOption.FLUSH);
-
-        acct = null;
-        Logger.getLogger(getClass()).info( "Testing Account1 Saved" );
-        acct = provider.find(Account.class, "a1");
-        assertNotNull( "a1 SimpleAccount missing", acct );
-
-        acct2 = null;
-        Logger.getLogger(getClass()).info( "Testing Account2 Saved" );
-        acct2 = provider.find(Account.class, "a2");
-        assertNotNull( "a2 SimpleAccount missing", acct2 );
-
-        // Just a1 has an AccountExtension
-        Logger.getLogger(getClass()).info( "Building extension object for retest" );
-        AccountExtension ext = new AccountExtension();
-        ext.setAccount(acct);
-        ext.setAccountTypeCode("EAX");
-        provider.save(ext, PersistenceOption.FLUSH);
-
-
-        /*
-         * Testing query of form:
-         *
-         * SELECT * FROM SimpleAccount WHERE NOT EXISTS ( SELECT 'x' FROM SimpleAccountExtension WHERE SimpleAccountExtension.number = SimpleAccount.number )
-         */
-        Predicate subquery = PredicateFactory.notExistsSubquery(AccountExtension.class.getName(),
-                PredicateFactory.equalsProperty("number", null, "parent.number"));
-        QueryByCriteria q = QueryByCriteria.Builder.fromPredicates(subquery);
-        Logger.getLogger(getClass()).info( "Performing Lookup with Exists Query: " + q );
-        QueryResults<Account> results = provider.findMatching(Account.class, q);
-
-        assertNotNull( "Results should not have been null", results );
-        assertEquals( "Should have been one result in the default data", 1, results.getResults().size() );
-        assertEquals(" A2 should be returned for not exists", results.getResults().get(0).getNumber(), "a2");
-
-
-        // Now acct2 also has AccountExtension
-        Logger.getLogger(getClass()).info( "Building extension object for retest" );
-        AccountExtension ext2 = new AccountExtension();
-        ext2.setAccount(acct2);
-        ext2.setAccountTypeCode("EAX2");
-        provider.save(ext2, PersistenceOption.FLUSH);
-
-        Logger.getLogger(getClass()).info( "Running query again to test results" );
-        results = provider.findMatching(Account.class, q);
-        assertNotNull( "Results should not have been null", results );
-        assertEquals( "We added an extension record, so there should have been no result", 0, results.getResults().size() );
-    }
-
     // EclipseLink consumes the underlying exception itself and explicitly rolls back the transaction
     // resulting in just an opaque UnexpectedRollbackException coming out of Spring
     // (underlying exception is never translated by the PersistenceExceptionTranslator)

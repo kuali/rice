@@ -103,10 +103,9 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
             setRouteHeader(routeHeaderValue);
 		}
 
-        OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, new HashSet<String>(),
-                actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue(),
-                isRunPostProcessorLogic(), false, false, true);
-        try {
+		OrchestrationConfig config = new OrchestrationConfig(EngineCapability.BLANKET_APPROVAL, new HashSet<String>(), actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue(), isRunPostProcessorLogic());
+		RequestsNode.setSuppressPolicyErrors(RouteContext.getCurrentRouteContext());
+		try {
 			completeAnyOutstandingCompleteApproveRequests(actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
 			BlanketApproveEngine blanketApproveEngine = KEWServiceLocator.getWorkflowEngineFactory().newEngine(config);
 			blanketApproveEngine.process(getRouteHeader().getDocumentId(), null);

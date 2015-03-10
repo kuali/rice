@@ -106,6 +106,30 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         return attributes;
     }
 
+    public ContextBo copyContext(String additionalNameText) {
+        ContextBo copy = KradDataServiceLocator.getDataObjectService().copyInstance(this, CopyOption.RESET_PK_FIELDS, CopyOption.RESET_OBJECT_ID );
+        //ContextBo copy = (ContextBo) SerializationUtils.deepCopy(this);
+
+        //
+        // set all IDs to null
+        //
+
+        copy.setId(null);
+
+        // copying a context does not copy the associated agendas
+        copy.setAgendas(null);
+        for (ContextAttributeBo attributeBo : copy.getAttributeBos()) {
+            attributeBo.setId(null);
+            attributeBo.setVersionNumber(null);
+        }
+
+        if (!StringUtils.isEmpty(additionalNameText)) {
+            copy.setName(copy.getName() + additionalNameText);
+        }
+
+        return copy;
+    }
+
     /**
      * Converts a mutable bo to it's immutable counterpart
      *

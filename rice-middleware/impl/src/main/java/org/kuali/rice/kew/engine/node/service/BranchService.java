@@ -18,7 +18,6 @@ package org.kuali.rice.kew.engine.node.service;
 import java.util.List;
 
 import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.BranchState;
 
 /**
  * A service providing data access for {@link Branch} instances.
@@ -26,8 +25,8 @@ import org.kuali.rice.kew.engine.node.BranchState;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface BranchService {
-    public void save(Branch branch);
-    public void deleteBranchStates(List<BranchState> statesToBeDeleted);
+    public void save(Branch branch);    
+    public void deleteBranchStates(List statesToBeDeleted);
     /**
      * Responsible for inspecting the branch hierarchy/scope and returning a value
      * for the variable name if it exists somewere in scope. 

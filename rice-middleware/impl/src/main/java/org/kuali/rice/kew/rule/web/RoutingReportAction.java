@@ -237,7 +237,7 @@ public class RoutingReportAction extends KewKualiAction {
     				routeHeader.getSimulatedActionRequests().addAll(actionRequests);
 				}
 			} finally {
-				RouteContext.releaseCurrentRouteContext();
+				RouteContext.clearCurrentRouteContext();
 			}
 		}
 

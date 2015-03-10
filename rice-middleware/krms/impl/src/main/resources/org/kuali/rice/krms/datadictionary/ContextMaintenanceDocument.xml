@@ -32,11 +32,6 @@
       	<value>id</value>
       </list>
     </property>
-    <property name="clearValueOnCopyPropertyNames">
-      <list>
-        <value>name</value>
-      </list>
-    </property>
 
     <property name="documentTypeName" value="ContextMaintenanceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.krad.maintenance.MaintenanceDocumentAuthorizerBase"/>

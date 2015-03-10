@@ -95,11 +95,6 @@
       <artifactId>javax.servlet-api</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.kuali.rice</groupId>
-      <version>${project.version}</version>
-      <artifactId>rice-kim-ldap</artifactId>
-    </dependency>
   </dependencies>
 
   <build>

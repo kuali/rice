@@ -27,7 +27,6 @@ import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.kew.api.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
-import org.kuali.rice.kew.engine.node.RequestsNode;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
@@ -69,11 +68,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         MDC.put("docId", documentId);
 
         try {
-            RouteContext context = RouteContext.createNewRouteContext();
-            if(config.isSupressRequestsNodePolicyErrors()) {
-                RequestsNode.setSuppressPolicyErrors(RouteContext.getCurrentRouteContext());
-            }
-
+            RouteContext context = RouteContext.getCurrentRouteContext();
             KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId);
             if ( LOG.isInfoEnabled() ) {
             	LOG.info("Processing document for Blanket Approval: " + documentId + " : " + nodeInstanceId);
@@ -152,7 +147,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         	}
             }
         } finally {
-            RouteContext.releaseCurrentRouteContext();
+            RouteContext.clearCurrentRouteContext();
             MDC.remove("docId");
         }
     }

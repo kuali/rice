@@ -774,6 +774,8 @@ public class WebDriverUtils {
      */
     public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message) {
         stepMessage(message);
+        message = message.replace("'", "&#39;");
+        message = message.replace("\"", "&quot;");
         if (jGrowlEnabled) {
             String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
             try {

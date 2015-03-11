@@ -68,19 +68,6 @@ public abstract class SerializerServiceBase implements SerializerService  {
 
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
-        try {
-        	Class<?> objListProxyClass = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
-            xstream.addDefaultImplementation(ArrayList.class, objListProxyClass);
-            xstream.addDefaultImplementation(AutoPopulatingList.class, objListProxyClass);
-        } catch ( Exception ex ) {
-        	// Do nothing - this will blow if the OJB class does not exist, which it won't in some installs
-        }
-        try {
-        	Class<?> jpaIndirectListClass = Class.forName("org.eclipse.persistence.indirection.IndirectList");
-        	xstream.addDefaultImplementation(ArrayList.class, jpaIndirectListClass);
-        } catch ( Exception ex ) {
-        	// Do nothing if JPA isn't included
-        }
         xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
         xstream.registerConverter(new DateTimeConverter());
     }
@@ -136,12 +123,14 @@ public abstract class SerializerServiceBase implements SerializerService  {
         }
         @Override
 		public boolean canConvert(Class clazz) {
-            return clazz.getName().contains("CGLIB") || clazz.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
+            return clazz.getName().contains("CGLIB") || clazz.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl")
+            		|| clazz.getName().equals("org.eclipse.persistence.indirection.IndirectList");
         }
 
         @Override
 		public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
-            if (obj.getClass().getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl")) {
+            if (obj.getClass().getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl")
+            		|| obj.getClass().getName().equals("org.eclipse.persistence.indirection.IndirectList")) {
                 List copiedList = new ArrayList();
                 List proxiedList = (List) obj;
                 for (Iterator iter = proxiedList.iterator(); iter.hasNext();) {

@@ -382,10 +382,22 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     private void assertFinalApprovalNodeNotInPath(List path) throws InvalidActionTakenException {
     	for (Iterator iterator = path.iterator(); iterator.hasNext(); ) {
 			RouteNodeInstance  nodeInstance = (RouteNodeInstance ) iterator.next();
-			// if we have a complete final approval node in our path, we cannot return past it
-			if (nodeInstance.isComplete() && Boolean.TRUE.equals(nodeInstance.getRouteNode().getFinalApprovalInd())) {
-				throw new InvalidActionTakenException("Cannot return past or through the final approval node '"+nodeInstance.getName()+"'.");
-			}
+            List<ActionTakenValue> actionsTaken = KEWServiceLocator.getActionTakenService().getActionsTakenAtRouteNode(nodeInstance);
+            ActionTakenValue foundValue =  null;
+            String actionTakenCode = null;
+            if(!actionsTaken.isEmpty()) {
+                foundValue = actionsTaken.get(0);
+            }
+            if(foundValue != null){
+                actionTakenCode = foundValue.getActionTaken();
+            }
+            if(actionTakenCode != null) {
+                // if we have a complete final approval node in our path and if the action taken at that node is not return to previous we cannot return past it
+                if (nodeInstance.isComplete() && Boolean.TRUE.equals(nodeInstance.getRouteNode().getFinalApprovalInd()) &&
+                        actionsTaken.isEmpty() && !actionTakenCode.equals(KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS_CD)) {
+                    throw new InvalidActionTakenException("Cannot return past or through the final approval node '" + nodeInstance.getName() + "'.");
+                }
+            }
 		}
     }
 

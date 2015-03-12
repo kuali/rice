@@ -23,6 +23,7 @@ import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+import org.kuali.rice.kew.actiontaken.dao.impl.ActionTakenDaoJpa;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionRequest;
 import org.kuali.rice.kew.api.action.ActionRequestPolicy;
@@ -82,7 +83,8 @@ import java.util.Map;
   @NamedQuery(name="ActionRequestValue.FindPendingByResponsibilityIds", query = "SELECT DISTINCT(arv.documentId) FROM ActionRequestValue arv WHERE (arv.status = '"
           + KewApiConstants.ActionRequestStatusVals.INITIALIZED + "' OR arv.status = '" +
                   KewApiConstants.ActionRequestStatusVals.ACTIVATED
-          + "') AND arv.responsibilityId IN :respIds")
+          + "') AND arv.responsibilityId IN :respIds"),
+  @NamedQuery(name = ActionTakenDaoJpa.FIND_ACTIONS_TAKEN_AT_NODE_INSTANCE_NAME, query = ActionTakenDaoJpa.FIND_ACTIONS_TAKEN_AT_NODE_INSTANCE_QUERY)
 })
 public class ActionRequestValue implements Serializable {
 

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.routelog.web;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -44,6 +45,7 @@ import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -155,7 +157,12 @@ public class RouteLogAction extends KewKualiAction {
     	 */
     	
     	if (!actionRequest.isRoleRequest()) {
-    		List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
+            /**
+             * KULRICE-14183 : Detaching the action request object so that re-ordering of action requests for primary delegates does not get incorrectly persisted
+             */
+            EntityManager entityManager = GlobalResourceLoader.getService("rice.kew.entityManager");
+            entityManager.detach(actionRequest);
+            List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
     		// only display primary delegate request at top if there is only *one* primary delegate request
     		if ( primaryDelegateRequests.size() != 1) {
     			return actionRequest;

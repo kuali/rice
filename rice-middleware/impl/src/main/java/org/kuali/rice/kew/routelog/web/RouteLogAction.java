@@ -117,12 +117,20 @@ public class RouteLogAction extends KewKualiAction {
     }
 
     @SuppressWarnings("unchecked")
-	public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
-        List<ActionRequestValue> rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
+    public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
+        List<ActionRequestValue> rootRequests = getActionRequestService().getRootRequests(
+                routeHeader.getActionRequests());
         Collections.sort(rootRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
-        rootRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(rootRequests);
+
+        List<ActionRequestValue> rootRequestsForDisplay = new ArrayList<ActionRequestValue>();
+
+        for (ActionRequestValue actionRequestValue : rootRequests) {
+            rootRequestsForDisplay.add(actionRequestValue.deepCopy(new HashMap<Object, Object>()));
+        }
+
+        rootRequestsForDisplay = switchActionRequestPositionsIfPrimaryDelegatesPresent(rootRequestsForDisplay);
         int arCount = 0;
-        for ( ActionRequestValue actionRequest : rootRequests ) {
+        for ( ActionRequestValue actionRequest : rootRequestsForDisplay ) {
             if (actionRequest.isPending()) {
                 arCount++;
 
@@ -133,12 +141,12 @@ public class RouteLogAction extends KewKualiAction {
                 }
             }
         }
-        rlForm.setRootRequests(rootRequests);
+        rlForm.setRootRequests(rootRequestsForDisplay);
         rlForm.setPendingActionRequestCount(arCount);
     }
 
     @SuppressWarnings("unchecked")
-	private ActionRequestValue switchActionRequestPositionIfPrimaryDelegatePresent( ActionRequestValue actionRequest ) {
+    private ActionRequestValue switchActionRequestPositionIfPrimaryDelegatePresent( ActionRequestValue actionRequest ) {
     	
     	/**
     	 * KULRICE-4756 - The main goal here is to fix the regression of what happened in Rice 1.0.2 with the display
@@ -155,37 +163,37 @@ public class RouteLogAction extends KewKualiAction {
     	 */
     	
     	if (!actionRequest.isRoleRequest()) {
-    		List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
+            List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
     		// only display primary delegate request at top if there is only *one* primary delegate request
     		if ( primaryDelegateRequests.size() != 1) {
     			return actionRequest;
     		}
-    		ActionRequestValue primaryDelegateRequest = primaryDelegateRequests.get(0);
-    		actionRequest.getChildrenRequests().remove(primaryDelegateRequest);
-    		primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
-    		primaryDelegateRequest.setParentActionRequest(actionRequest.getParentActionRequest());
+            ActionRequestValue primaryDelegateRequest = primaryDelegateRequests.get(0);
+            actionRequest.getChildrenRequests().remove(primaryDelegateRequest);
+            primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
+            primaryDelegateRequest.setParentActionRequest(actionRequest.getParentActionRequest());
 
-    		actionRequest.setChildrenRequests( new ArrayList<ActionRequestValue>(0) );
-    		actionRequest.setParentActionRequest(primaryDelegateRequest);
+            actionRequest.setChildrenRequests( new ArrayList<ActionRequestValue>(0) );
+            actionRequest.setParentActionRequest(primaryDelegateRequest);
 
-    		primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
-    		
-    		for (ActionRequestValue delegateRequest : primaryDelegateRequest.getChildrenRequests()) {
-    			delegateRequest.setParentActionRequest(primaryDelegateRequest);
-    		}
-    		
-    		return primaryDelegateRequest;
-    	}
-    	
-    	return actionRequest;
+            primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
+
+            for (ActionRequestValue delegateRequest : primaryDelegateRequest.getChildrenRequests()) {
+                delegateRequest.setParentActionRequest(primaryDelegateRequest);
+            }
+
+            return primaryDelegateRequest;
+        }
+
+        return actionRequest;
     }
 
     private List<ActionRequestValue> switchActionRequestPositionsIfPrimaryDelegatesPresent( Collection<ActionRequestValue> actionRequests ) {
-    	List<ActionRequestValue> results = new ArrayList<ActionRequestValue>( actionRequests.size() );
-    	for ( ActionRequestValue actionRequest : actionRequests ) {
-			results.add( switchActionRequestPositionIfPrimaryDelegatePresent(actionRequest) );
-    	}
-    	return results;
+        List<ActionRequestValue> results = new ArrayList<ActionRequestValue>( actionRequests.size() );
+        for ( ActionRequestValue actionRequest : actionRequests ) {
+            results.add( switchActionRequestPositionIfPrimaryDelegatePresent(actionRequest) );
+        }
+        return results;
     }
     
     @SuppressWarnings("unchecked")
@@ -216,15 +224,22 @@ public class RouteLogAction extends KewKualiAction {
         DocumentDetail documentDetail = KewApiServiceLocator.getWorkflowDocumentActionsService(applicationId).executeSimulation(reportCriteria);
 
         // fabricate our ActionRequestValueS from the results
-        List<ActionRequestValue> futureActionRequests = 
+        List<ActionRequestValue> futureActionRequests =
         	reconstituteActionRequestValues(documentDetail, preexistingActionRequestIds);
 
         Collections.sort(futureActionRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
-        
-        futureActionRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(futureActionRequests);
-        
+
+        List<ActionRequestValue> futureActionRequestsForDisplay = new ArrayList<ActionRequestValue>();
+
+        for (ActionRequestValue actionRequestValue : futureActionRequests) {
+            futureActionRequestsForDisplay.add(actionRequestValue.deepCopy(new HashMap<Object, Object>()));
+        }
+
+        futureActionRequestsForDisplay =
+                switchActionRequestPositionsIfPrimaryDelegatesPresent(futureActionRequestsForDisplay);
+
         int pendingActionRequestCount = 0;
-        for (ActionRequestValue actionRequest: futureActionRequests) {
+        for (ActionRequestValue actionRequest: futureActionRequestsForDisplay) {
             if (actionRequest.isPending()) {
                 pendingActionRequestCount++;
 
@@ -236,7 +251,7 @@ public class RouteLogAction extends KewKualiAction {
             }
         }
 
-        rlForm.setFutureRootRequests(futureActionRequests);
+        rlForm.setFutureRootRequests(futureActionRequestsForDisplay);
         rlForm.setFutureActionRequestCount(pendingActionRequestCount);
     }
 
@@ -304,7 +319,7 @@ public class RouteLogAction extends KewKualiAction {
     private UserSession getUserSession() {
         return GlobalVariables.getUserSession();
     }
-    
+
     /**
      * Creates dummy RouteNodeInstances based on imported data from RouteNodeInstanceDTOs.
      * It is then able to vend those RouteNodeInstanceS back by their IDs.

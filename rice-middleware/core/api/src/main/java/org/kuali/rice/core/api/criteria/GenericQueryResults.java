@@ -28,12 +28,12 @@ import java.util.List;
 
 public final class GenericQueryResults<T> implements QueryResults<T> {
 
-	private final List<T> results;
+	private List<T> results;
 	private final Integer totalRowCount;
 	private final boolean moreResultsAvailable;
 	
 	private GenericQueryResults(Builder<T> builder) {
-		this.results = builder.getResults() != null ? Collections.unmodifiableList(new ArrayList<T>(builder.getResults())) : Collections.<T>emptyList();
+		this.results = builder.getResults() != null ? new ArrayList<T>(builder.getResults()) : new ArrayList<T>();
 		this.totalRowCount = builder.getTotalRowCount();
 		this.moreResultsAvailable = builder.isMoreResultsAvailable();
 	}

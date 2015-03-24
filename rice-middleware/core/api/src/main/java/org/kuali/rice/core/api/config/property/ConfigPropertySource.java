@@ -17,6 +17,8 @@ package org.kuali.rice.core.api.config.property;
 
 import org.springframework.core.env.EnumerablePropertySource;
 
+import java.util.ArrayList;
+
 /**
  * Defines an {@link EnumerablePropertySource} that can hold Rice config parameters.
  * 
@@ -33,7 +35,7 @@ public class ConfigPropertySource extends EnumerablePropertySource<Config> {
 
 	@Override
 	public String[] getPropertyNames() {
-		return source.getProperties().keySet().toArray(EMPTY_NAMES_ARRAY);
+		return source.getProperties().keySet().toArray(new String[]{});
 	}
 
 	@Override

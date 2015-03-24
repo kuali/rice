@@ -52,7 +52,8 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
             try {
 	            schedulerInjected = true;
                 Scheduler scheduler = (Scheduler) ConfigContext.getCurrentContextConfig().getObject(KSBConstants.Config.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY);
-                scheduler.addJobListener(new MessageServiceExecutorJobListener());
+                scheduler.getListenerManager().addJobListener( new MessageServiceExecutorJobListener());
+
                 return scheduler;
             } catch (Exception e) {
                 throw new ConfigurationException(e);

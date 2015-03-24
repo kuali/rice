@@ -116,7 +116,13 @@ public final class CompositeBeanFactory implements BeanFactory {
 		return null;
 	}
 
-	@Override
+    @Override
+    public <T> T getBean(Class<T> tClass, Object... objects) throws BeansException {
+        // Does not currently support creating a bean instance using explicit arguments
+        return getBean(tClass);
+    }
+
+    @Override
 	public boolean containsBean(String name) {
 		for (BeanFactory f : factories) {
 			try {

@@ -110,7 +110,7 @@
         <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
         <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
         <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
-        <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+        <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
         <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
         <bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter"/>
       </list>

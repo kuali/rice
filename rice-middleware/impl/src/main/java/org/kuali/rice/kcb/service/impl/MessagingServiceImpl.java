@@ -39,6 +39,7 @@ import org.quartz.JobDataMap;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleTrigger;
+import org.quartz.impl.triggers.SimpleTriggerImpl;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -308,7 +309,7 @@ public class MessagingServiceImpl implements MessagingService {
                     job.run();
                 } else {
                     String uniqueTriggerName = jobName + "-Trigger-" + System.currentTimeMillis() + Math.random();
-                    SimpleTrigger trigger = new SimpleTrigger(uniqueTriggerName, jobGroup + "-Trigger");
+                    SimpleTriggerImpl trigger = new SimpleTriggerImpl(uniqueTriggerName, jobGroup + "-Trigger");
                     LOG.debug("Scheduling trigger: " + trigger);
 
                     JobDataMap data = new JobDataMap();

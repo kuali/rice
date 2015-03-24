@@ -164,7 +164,7 @@ xapool-1.5.0-patch4.jar, v.1.5.0-patch4. Copyright (c) 2000 Lutris Technologies 
 
 QUARTZ
 This product includes software developed by Quartz (http://quartz-scheduler.org/):
-quartz-1.8.4.jar, v1.8.4. Copyright (c) 2010 Terracotta, Inc., Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+quartz-2.2.1.jar, v2.2.1. Copyright (c) 2010 Terracotta, Inc., Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
 REFLECTIONS
 This product includes software developed by Reflections (https://code.google.com/p/reflections/)

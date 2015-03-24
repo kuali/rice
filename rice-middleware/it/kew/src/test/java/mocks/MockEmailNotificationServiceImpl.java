@@ -39,10 +39,9 @@ import org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceIm
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
 
-
+import org.quartz.impl.JobDetailImpl;
+import org.quartz.impl.triggers.CronTriggerImpl;
 
 
 public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
@@ -153,8 +152,8 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
                 .getProperty(KewApiConstants.DAILY_EMAIL_CRON_EXPRESSION);
         if (!StringUtils.isBlank(dailyCron)) {
             LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
-            CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
-            JobDetail dailyJobDetail = new JobDetail(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
+            CronTriggerImpl dailyTrigger = new CronTriggerImpl(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
+            JobDetailImpl dailyJobDetail = new JobDetailImpl(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
             dailyTrigger.setJobName(dailyJobDetail.getName());
             dailyTrigger.setJobGroup(dailyJobDetail.getGroup());
             sendDailyReminderCalled = true;
@@ -167,8 +166,8 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
                 KewApiConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
         if (!StringUtils.isBlank(weeklyCron)) {
             LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
-            CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
-            JobDetail weeklyJobDetail = new JobDetail(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
+            CronTriggerImpl weeklyTrigger = new CronTriggerImpl(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
+            JobDetailImpl weeklyJobDetail = new JobDetailImpl(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
             weeklyTrigger.setJobName(weeklyJobDetail.getName());
             weeklyTrigger.setJobGroup(weeklyJobDetail.getGroup());
             sendWeeklyReminderCalled = true;

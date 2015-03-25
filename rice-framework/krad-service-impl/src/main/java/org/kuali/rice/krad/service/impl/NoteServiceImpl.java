@@ -118,6 +118,7 @@ public class NoteServiceImpl implements NoteService {
     	validateNoteNotNull(note);
     	if ( note.getAttachment() != null ) { // Not sure about this - might blow up when no attachment
     		dataObjectService.delete(note.getAttachment());
+            note.setAttachment(null);
     	}
         dataObjectService.delete(note);
     }

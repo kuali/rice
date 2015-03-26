@@ -48,7 +48,7 @@ import java.util.Set;
 @Table(name = "KRMS_TERM_RSLVR_T")
 public class TermResolverBo implements TermResolverDefinitionContract, Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_TERM_RSLVR_S")
     @GeneratedValue(generator = "KRMS_TERM_RSLVR_S")

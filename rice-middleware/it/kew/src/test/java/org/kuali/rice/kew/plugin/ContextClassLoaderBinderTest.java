@@ -34,6 +34,7 @@ public class ContextClassLoaderBinderTest {
      * @deprecated {@link ContextClassLoaderBinder#doInContextClassLoader(ClassLoader, java.util.concurrent.Callable)} is the safe way to
      * run code under a specific Context ClassLoader that ensures the classloader is always set and unset properly.
      */
+    @Deprecated
 	@Test public void testBinding() {
         try {
             ContextClassLoaderBinder.unbind();

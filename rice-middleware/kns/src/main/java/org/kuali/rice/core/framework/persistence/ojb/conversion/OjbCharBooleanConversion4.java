@@ -21,6 +21,7 @@ package org.kuali.rice.core.framework.persistence.ojb.conversion;
  * 
  * @deprecated Use OjbCharBooleanConversion2 instead
  */
+@Deprecated
 public final class OjbCharBooleanConversion4 extends OjbCharBooleanConversionBase {
     private static final long serialVersionUID = 5192588414458129183L;
     private static String S_TRUE = "Y";

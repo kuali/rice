@@ -51,7 +51,7 @@ import java.util.Map;
 @Table(name = "KRMS_ACTN_T")
 public class ActionBo implements ActionDefinitionContract, Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_ACTN_S")
     @GeneratedValue(generator = "KRMS_ACTN_S")

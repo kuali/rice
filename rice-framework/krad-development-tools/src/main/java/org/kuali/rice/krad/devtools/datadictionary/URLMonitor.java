@@ -68,7 +68,7 @@ public class URLMonitor {
     }
 
     private Long getCRC(URL zipUrl) {
-        Long result = -1l;
+        Long result = -1L;
         try {
             CRC32 crc = new CRC32();
             CheckedInputStream cis = new CheckedInputStream(zipUrl.openStream(), crc);

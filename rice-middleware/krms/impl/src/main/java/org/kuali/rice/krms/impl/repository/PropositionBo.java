@@ -56,7 +56,7 @@ import java.util.UUID;
 @Table(name = "KRMS_PROP_T")
 public class PropositionBo implements PropositionDefinitionContract, Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     private static final String PROP_SEQ_NAME = "KRMS_PROP_S";
     static final RepositoryBoIncrementer propositionIdIncrementer = new RepositoryBoIncrementer(PROP_SEQ_NAME);

@@ -31,7 +31,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_CNTXT_VLD_TERM_SPEC_T")
 public class ContextValidTermBo implements Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_CNTXT_VLD_TERM_SPEC_S")
     @GeneratedValue(generator = "KRMS_CNTXT_VLD_TERM_SPEC_S")

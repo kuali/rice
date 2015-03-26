@@ -22,6 +22,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -93,7 +94,7 @@ public abstract class JiraAwareAftBase extends AutomatedFunctionalTestBase imple
                 }
             }
             WebDriverUtils.jGrowl(getDriver(), "Assert DataTable Row", false, "Assert datatable row '" + dataTableRow
-                    + "' contains '" + data[i] + "' " + dataPresent);
+                    + "' contains '" + Arrays.toString(data[i]) + "' " + dataPresent);
         }
         if (!dataPresent) {
             jiraAwareFail(missingMessage);

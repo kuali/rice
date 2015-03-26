@@ -41,7 +41,7 @@ import java.util.List;
 @Table(name = "KRMS_TYP_T")
 public class KrmsTypeBo implements MutableInactivatable, KrmsTypeDefinitionContract, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_TYP_S")
     @GeneratedValue(generator = "KRMS_TYP_S")

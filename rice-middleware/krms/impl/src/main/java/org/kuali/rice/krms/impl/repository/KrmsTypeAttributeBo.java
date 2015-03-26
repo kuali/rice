@@ -37,7 +37,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_TYP_ATTR_T")
 public class KrmsTypeAttributeBo implements MutableInactivatable, KrmsTypeAttributeContract, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_TYP_ATTR_S")
     @GeneratedValue(generator = "KRMS_TYP_ATTR_S")

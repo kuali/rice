@@ -38,7 +38,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_NL_USAGE_T")
 public class NaturalLanguageUsageBo implements NaturalLanguageUsageContract, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_NL_USAGE_S")
     @GeneratedValue(generator = "KRMS_NL_USAGE_S")

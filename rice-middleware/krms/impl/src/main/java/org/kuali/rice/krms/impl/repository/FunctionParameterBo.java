@@ -38,7 +38,7 @@ import java.util.List;
 @Table(name = "KRMS_FUNC_PARM_T")
 public class FunctionParameterBo implements FunctionParameterDefinitionContract, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_FUNC_S")
     @GeneratedValue(generator = "KRMS_FUNC_S")

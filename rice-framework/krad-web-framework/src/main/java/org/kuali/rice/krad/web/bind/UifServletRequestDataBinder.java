@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.UserTransaction;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -164,7 +165,7 @@ public class UifServletRequestDataBinder extends ServletRequestDataBinder {
             LOG.debug("Request Parameters from getParameterMap:");
 
             for (String key : request.getParameterMap().keySet()) {
-                LOG.debug("\t" + key + "=>" + request.getParameterMap().get(key));
+                LOG.debug("\t" + key + "=>" + Arrays.toString(request.getParameterMap().get(key)));
             }
 
             LOG.debug("Request Parameters from getParameter:");

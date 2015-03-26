@@ -39,7 +39,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_REF_OBJ_KRMS_OBJ_T")
 public class ReferenceObjectBindingBo implements ReferenceObjectBindingContract, Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_REF_OBJ_KRMS_OBJ_S")
     @GeneratedValue(generator = "KRMS_REF_OBJ_KRMS_OBJ_S")

@@ -25,8 +25,8 @@ import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KCBTestData {
-    public static final Long FAKE_ID = 0xBEEFl;
-    public static final Long INVALID_ID = -1l;
+    public static final Long FAKE_ID = 0xBEEFL;
+    public static final Long INVALID_ID = -1L;
 
     public static Message getMessage1() {
         Message m= new Message();

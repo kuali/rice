@@ -140,11 +140,13 @@ public interface WorkflowDocumentService {
     /**
      * @deprecated use blanketApproval which takes a Set of nodeNames instead.
      */
+    @Deprecated
     public DocumentRouteHeaderValue blanketApproval(String principalId, DocumentRouteHeaderValue routeHeader, String annotation, Integer routeLevel) throws InvalidActionTakenException;
 
     /**
      * @deprecated use returnDocumentToPreviousNode instead
      */
+    @Deprecated
     public DocumentRouteHeaderValue returnDocumentToPreviousRouteLevel(String principalId, DocumentRouteHeaderValue routeHeader, Integer destRouteLevel, String annotation) throws InvalidActionTakenException;
 
 }

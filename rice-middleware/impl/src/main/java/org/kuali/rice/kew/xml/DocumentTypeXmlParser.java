@@ -1634,7 +1634,7 @@ public class DocumentTypeXmlParser {
          * @param xpath
          * @throws XPathExpressionException
          */
-        @SuppressWarnings("deprecated")
+        @SuppressWarnings("deprecation")
         public static void parseValidApplicationStatuses(DocumentType documentType, Node documentTypeNode, XPath xpath) throws XPathExpressionException {
             ApplicationDocumentStatusParser parser = new ApplicationDocumentStatusParser();
             parser.parseValidApplicationStatusesHelper(documentType, documentTypeNode, xpath);

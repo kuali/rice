@@ -34,7 +34,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_TERM_RSLVR_PARM_SPEC_T")
 public class TermResolverParameterSpecificationBo implements Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_TERM_RSLVR_PARM_SPEC_S")
     @GeneratedValue(generator = "KRMS_TERM_RSLVR_PARM_SPEC_S")

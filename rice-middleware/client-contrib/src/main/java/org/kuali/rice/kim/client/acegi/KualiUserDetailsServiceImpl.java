@@ -23,6 +23,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 
+import java.util.Arrays;
+
 /**
  * Populates a UserDetails object with ticket or username and 
  * Authentication Method
@@ -78,7 +80,7 @@ public class KualiUserDetailsServiceImpl implements KualiUserDetailsService, Ini
         GrantedAuthority[] newAuthorities = new GrantedAuthority[authorities.length+1];
         System.arraycopy(authorities, 0, newAuthorities, 0, authorities.length);
         newAuthorities[authorities.length]= new GrantedAuthorityImpl("ROLE_KUALI_USER");
-        logger.warn("setting granted authorities:" + newAuthorities.toString());
+        logger.warn("setting granted authorities:" + Arrays.toString(newAuthorities));
         UserDetails user = new User(username, "empty_password", true, true, true, true, newAuthorities);    
         return user;
     }

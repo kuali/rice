@@ -40,7 +40,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_NL_TMPL_ATTR_T")
 public class NaturalLanguageTemplateAttributeBo implements NaturalLanguageTemplateAttributeContract, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "NL_TMPL_ID")
     private String naturalLanguageTemplateId;

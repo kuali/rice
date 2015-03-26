@@ -215,7 +215,7 @@ public class DataTypeConstraintProcessorTest {
 	
 	@Test
 	public void testLongAsOutOfIntegerRangeLong() {
-		ConstraintValidationResult validationResult = process(dictionaryValidationResult, Long.valueOf(923423423423423412l), longConstraint);
+		ConstraintValidationResult validationResult = process(dictionaryValidationResult, Long.valueOf(923423423423423412L), longConstraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		assertSuccess(validationResult);
@@ -224,7 +224,7 @@ public class DataTypeConstraintProcessorTest {
 	
 	@Test
 	public void testLongAsNegativeLong() {
-		ConstraintValidationResult validationResult = process(dictionaryValidationResult, Long.valueOf(-923423423423423412l), longConstraint);
+		ConstraintValidationResult validationResult = process(dictionaryValidationResult, Long.valueOf(-923423423423423412L), longConstraint);
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfWarnings());
 		Assert.assertEquals(0, dictionaryValidationResult.getNumberOfErrors());
 		assertSuccess(validationResult);

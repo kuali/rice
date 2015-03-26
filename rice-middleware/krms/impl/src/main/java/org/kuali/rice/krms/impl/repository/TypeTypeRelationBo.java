@@ -46,7 +46,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_TYP_RELN_T")
 public class TypeTypeRelationBo implements TypeTypeRelationContract, Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "FROM_TYP_ID")
     private String fromTypeId;

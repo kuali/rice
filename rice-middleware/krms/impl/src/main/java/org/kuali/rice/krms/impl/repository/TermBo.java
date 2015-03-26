@@ -42,7 +42,7 @@ import java.util.Map.Entry;
 @Table(name = "KRMS_TERM_T")
 public class TermBo implements TermDefinitionContract, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     public static final String TERM_SEQ_NAME = "KRMS_TERM_S";
 

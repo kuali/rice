@@ -209,7 +209,7 @@ public class MessageMapTest {
 
                 String[] params = message.getMessageParameters();
                 if (usedParams.contains(params)) {
-                    fail("usedParams contains duplicate parameters object '" + params + "'");
+                    fail("usedParams contains duplicate parameters object '" + Arrays.toString(params) + "'");
                 }
                 usedParams.add(params);
             }

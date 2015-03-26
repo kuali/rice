@@ -36,7 +36,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_CNTXT_VLD_AGENDA_TYP_T")
 public class ContextValidAgendaBo implements Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_CNTXT_VLD_AGENDA_TYP_S")
     @GeneratedValue(generator = "KRMS_CNTXT_VLD_AGENDA_TYP_S")

@@ -70,7 +70,7 @@ public final class NaturalLanguageTemplateIntegrationGenTest extends AbstractBoT
                 Iterator<String> keys = attributes.keySet().iterator();
                 while (keys.hasNext()) {
                     String key = keys.next();
-                    template.replace(key, attributes.get(key));
+                    template = template.replace(key, attributes.get(key));
                 }
                 return template;
             }

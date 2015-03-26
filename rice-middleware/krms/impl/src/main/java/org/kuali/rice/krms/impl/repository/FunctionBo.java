@@ -44,7 +44,7 @@ import java.util.List;
 @Table(name = "KRMS_FUNC_T")
 public class FunctionBo implements MutableInactivatable, FunctionDefinitionContract, Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_FUNC_S")
     @GeneratedValue(generator = "KRMS_FUNC_S")

@@ -132,6 +132,11 @@
       <artifactId>spring-modules-ojb</artifactId>
     </dependency>
 
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+    </dependency>
+
     <!-- test-scoped dependencies: -->
 
     <dependency>

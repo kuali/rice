@@ -32,7 +32,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_RULE_ATTR_T")
 public class RuleAttributeBo extends BaseAttributeBo implements Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_RULE_ATTR_S")
     @GeneratedValue(generator = "KRMS_RULE_ATTR_S")

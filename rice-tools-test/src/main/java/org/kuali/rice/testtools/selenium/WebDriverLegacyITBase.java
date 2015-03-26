@@ -56,6 +56,7 @@ import java.util.concurrent.TimeUnit;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @deprecated only rice sampleapp specific code should go in this class, see WebDriverAftBase.
  */
+@Deprecated
 public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
 
     /**

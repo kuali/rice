@@ -33,6 +33,7 @@ import org.springframework.util.Assert;
  * desire to continue using JOTM and XAPool, please configure using org.enhyrdra.jdbc.standard.StandardXADataSource directly
  * instead of using this class.
  */
+@Deprecated
 public class XAPoolDataSource extends StandardXAPoolDataSource implements InitializingBean, DisposableBean {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(XAPoolDataSource.class);

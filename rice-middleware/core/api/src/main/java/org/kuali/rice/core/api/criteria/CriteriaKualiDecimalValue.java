@@ -49,8 +49,7 @@ public final class CriteriaKualiDecimalValue implements CriteriaValue<KualiDecim
 
     CriteriaKualiDecimalValue(KualiDecimal value) {
     	validateValue(value);
-        this.value = safeInstance(value);
-        this.value.setScale(KualiDecimal.SCALE);
+        this.value = safeInstance(value).setScale(KualiDecimal.SCALE);
     }
 
     CriteriaKualiDecimalValue(double value) {

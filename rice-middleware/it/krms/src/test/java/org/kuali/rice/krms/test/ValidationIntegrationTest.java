@@ -20,9 +20,9 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.krad.data.DataObjectService;
-import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.KrmsConstants;
 import org.kuali.rice.krms.api.engine.EngineResults;
@@ -50,31 +50,18 @@ import org.kuali.rice.krms.framework.type.ValidationActionType;
 import org.kuali.rice.krms.framework.type.ValidationActionTypeService;
 import org.kuali.rice.krms.framework.type.ValidationRuleType;
 import org.kuali.rice.krms.framework.type.ValidationRuleTypeService;
-import org.kuali.rice.krms.impl.repository.ActionAttributeBo;
-import org.kuali.rice.krms.impl.repository.ActionBo;
-import org.kuali.rice.krms.impl.repository.ActionBoService;
 import org.kuali.rice.krms.impl.repository.ActionBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.AgendaAttributeBo;
-import org.kuali.rice.krms.impl.repository.AgendaBo;
-import org.kuali.rice.krms.impl.repository.AgendaBoService;
 import org.kuali.rice.krms.impl.repository.AgendaBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.AgendaItemBo;
-import org.kuali.rice.krms.impl.repository.ContextAttributeBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
-import org.kuali.rice.krms.impl.repository.ContextBoService;
 import org.kuali.rice.krms.impl.repository.ContextBoServiceImpl;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.KrmsTypeBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.PropositionBo;
 import org.kuali.rice.krms.impl.repository.PropositionBoService;
 import org.kuali.rice.krms.impl.repository.PropositionBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.RuleAttributeBo;
 import org.kuali.rice.krms.impl.repository.RuleBo;
-import org.kuali.rice.krms.impl.repository.RuleBoService;
 import org.kuali.rice.krms.impl.repository.RuleBoServiceImpl;
-import org.kuali.rice.krms.impl.repository.TermBoService;
 import org.kuali.rice.krms.impl.repository.TermBoServiceImpl;
 import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -84,23 +71,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static org.junit.Assert.*;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 /**
  * Validation Integration Test
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineMode(Mode.CLEAR_DB)
-public class ValidationIntegrationTest extends AbstractBoTest {
+public class ValidationIntegrationTest extends RuleManagementBaseTest {
 
     private static final String EVENT_ATTRIBUTE = "Event";
-//    private static final String TERM_NAME = "totalProposalDollarAmount";
     private static final String TERM_NAME = "campusCodeTermSpec";
 
     private static final String CONTEXT_NAME = "ValidationITContext";
@@ -110,93 +94,133 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     private static final String VALIDATION_RULE_TYPE_SERVICE = "validationRuleTypeService";
 
     private KrmsTypeBoService krmsTypeBoService;
-    private KrmsAttributeDefinitionService krmsAttributeDefinitionService;
     private PropositionBoService propositionBoService;
-    private TermBoService termBoService;
-    private ContextBoService contextRepository;
-    private AgendaBoService agendaBoService;
-    private RuleBoService ruleBoService;
-    private ActionBoService actionBoService;
+
+    private String propOperator = "=";
+    private String discriminator = null;
 
 
 	@Before
 	public void setup() {
 
+        ruleManagementService = KrmsRepositoryServiceLocator.getService("ruleManagementService");
+        dataObjectService = (DataObjectService)GlobalResourceLoader.getService("dataObjectService");
         krmsAttributeDefinitionService = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService();
+        krmsTypeRepository = KrmsRepositoryServiceLocator.getKrmsTypeRepositoryService();
         krmsTypeBoService = new KrmsTypeBoServiceImpl();
-        ((KrmsTypeBoServiceImpl)krmsTypeBoService).setDataObjectService(getDataObjectService());
+        ((KrmsTypeBoServiceImpl)krmsTypeBoService).setDataObjectService(dataObjectService);
 
         // like RepositoryCreateAndExecuteIntegrationTest
         propositionBoService = new PropositionBoServiceImpl();
-        ((PropositionBoServiceImpl)propositionBoService).setDataObjectService(getDataObjectService());
+        ((PropositionBoServiceImpl)propositionBoService).setDataObjectService(dataObjectService);
         termBoService = new TermBoServiceImpl();
-
-        // TODO: fix
-        ((TermBoServiceImpl)termBoService).setDataObjectService(GlobalResourceLoader.<DataObjectService>getService("dataObjectService"));
-
+        ((TermBoServiceImpl)termBoService).setDataObjectService(dataObjectService);
         contextRepository = new ContextBoServiceImpl();
-        ((ContextBoServiceImpl)contextRepository).setDataObjectService(getDataObjectService());
+        ((ContextBoServiceImpl)contextRepository).setDataObjectService(dataObjectService);
         agendaBoService = new AgendaBoServiceImpl();
-        ((AgendaBoServiceImpl)agendaBoService).setDataObjectService(getDataObjectService());
+        ((AgendaBoServiceImpl)agendaBoService).setDataObjectService(dataObjectService);
         ((AgendaBoServiceImpl)agendaBoService).setAttributeDefinitionService(krmsAttributeDefinitionService);
         ruleBoService = new RuleBoServiceImpl();
-        ((RuleBoServiceImpl)ruleBoService).setDataObjectService(getDataObjectService());
+        ((RuleBoServiceImpl)ruleBoService).setDataObjectService(dataObjectService);
         actionBoService = new ActionBoServiceImpl();
-        ((ActionBoServiceImpl)actionBoService).setDataObjectService(getDataObjectService());
+        ((ActionBoServiceImpl)actionBoService).setDataObjectService(dataObjectService);
     }
 
     @Transactional
-    @Test
-    public void testValidWarning() {
-        KrmsAttributeTypeDefinitionAndBuilders ruleDefs = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                ValidationRuleType.VALID.toString(), true, ValidationRuleType.VALID.toString(),
-                ValidationRuleType.VALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeBoService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                ValidationActionType.WARNING.toString(), true, ValidationActionType.WARNING.toString(),
-                ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                "Valdiation Action Message", true, "Valdiation Action Message",
-                WARNING_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
+     @Test
+     public void testValidWarning() {
+        discriminator = "1";
+        propOperator = "=";
+        String ruleName = ValidationRuleType.VALID.toString();
+        String nameSpace =  KrmsConstants.KRMS_NAMESPACE;
+        String ruleTypeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleAttributeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleTypeLabel = ValidationRuleType.VALID.toString();
+        String ruleServiceName = VALIDATION_RULE_TYPE_SERVICE;
+        String actionTypeName = "KrmsActionResolverType";
+        String actionTypeServicename = VALIDATION_ACTION_TYPE_SERVICE;
+        String actionName = ValidationActionType.WARNING.toString();
+        Map<String, String> actionAttributes = new HashMap<String, String>();
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.WARNING.getCode());
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE,WARNING_MESSAGE);
+        Map<String, String> actionAttributesDefs = new HashMap<String, String>();
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.WARNING.toString());
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, "Validation Action Message");
+        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        ruleAttributes.put(ruleAttributeName, ValidationRuleType.VALID.getCode());
 
-        List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
-        actionDefs.add(actionDef);
-        actionDefs.add(actionMessageDef);
-        ContextBo contextBo = createContext();
-        RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, WARNING_MESSAGE);
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("ContextTypeName" + discriminator, nameSpace,
+                "ContextAttributeName" + discriminator, "ContextLabel", "ContextServiceName");
+
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME + discriminator, nameSpace,
+                contextTypeDefinition.getId(), Collections.EMPTY_MAP );
+        ContextBo contextBo = ContextBo.from(contextDefinition);
+
+        KrmsTypeDefinition ruleTypeDefinition = createUpdateRuleTypeDef(ruleTypeName, nameSpace, ruleAttributeName,
+                ruleTypeLabel, ruleServiceName);
+
+        KrmsTypeDefinition actionTypeDefinition = createUpdateActionTypeDef(actionTypeName, nameSpace,
+                actionTypeServicename);
+
+        for (Map.Entry<String, String> actionAttributeDef : actionAttributesDefs.entrySet()) {
+            createUpdateAttribute(actionAttributeDef.getKey(), nameSpace, actionAttributeDef.getValue());
+        }
+
+        RuleBo ruleBo = createUpdateRuleWithAction(ruleName, nameSpace, contextDefinition.getId(),
+                ruleTypeDefinition.getId(), actionName, actionTypeDefinition.getId(), actionAttributes, ruleAttributes);
+
         createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
 
-        EngineResults results = engineExecute();
+        EngineResults results = engineExecute(CONTEXT_NAME + discriminator, nameSpace);
         assertTrue(results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE) == null);
     }
 
     @Transactional
     @Test
     public void testInvalidWarning() {
-        KrmsAttributeTypeDefinitionAndBuilders ruleDefs = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                ValidationRuleType.INVALID.toString(), true, ValidationRuleType.INVALID.toString(),
-                ValidationRuleType.INVALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeBoService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                ValidationActionType.WARNING.toString(), true, ValidationActionType.WARNING.toString(),
-                ValidationActionType.WARNING.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                "Valdiation Action Message", true, "Valdiation Action Message",
-                WARNING_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
+        discriminator = "2";
+        propOperator = "=";
+        String ruleName = ValidationRuleType.INVALID.toString();
+        String nameSpace =  KrmsConstants.KRMS_NAMESPACE;
+        String ruleTypeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleAttributeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleTypeLabel = ValidationRuleType.INVALID.toString();
+        String ruleServiceName = VALIDATION_RULE_TYPE_SERVICE;
+        String actionTypeName = "KrmsActionResolverType";
+        String actionTypeServicename = VALIDATION_ACTION_TYPE_SERVICE;
+        String actionName = ValidationActionType.WARNING.toString();
+        Map<String, String> actionAttributes = new HashMap<String, String>();
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.WARNING.getCode());
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE,WARNING_MESSAGE);
+        Map<String, String> actionAttributesDefs = new HashMap<String, String>();
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.WARNING.toString());
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, "Validation Action Message");
+        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        ruleAttributes.put(ruleAttributeName, ValidationRuleType.INVALID.getCode());
 
-        List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
-        actionDefs.add(actionDef);
-        actionDefs.add(actionMessageDef);
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("ContextTypeName" + discriminator, nameSpace,
+                "ContextAttributeName" + discriminator, "ContextLabel", "ContextServiceName");
 
-        ContextBo contextBo = createContext();
-        RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, WARNING_MESSAGE);
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME + discriminator, nameSpace,
+                contextTypeDefinition.getId(), Collections.EMPTY_MAP );
+        ContextBo contextBo = ContextBo.from(contextDefinition);
+
+        KrmsTypeDefinition ruleTypeDefinition = createUpdateRuleTypeDef(ruleTypeName, nameSpace, ruleAttributeName,
+                ruleTypeLabel, ruleServiceName);
+
+        KrmsTypeDefinition actionTypeDefinition = createUpdateActionTypeDef(actionTypeName, nameSpace,
+                actionTypeServicename);
+
+        for (Map.Entry<String, String> actionAttributeDef : actionAttributesDefs.entrySet()) {
+            createUpdateAttribute(actionAttributeDef.getKey(), nameSpace, actionAttributeDef.getValue());
+        }
+
+        RuleBo ruleBo = createUpdateRuleWithAction(ruleName, nameSpace, contextDefinition.getId(),
+                ruleTypeDefinition.getId(), actionName, actionTypeDefinition.getId(), actionAttributes, ruleAttributes);
+
         createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
 
-        EngineResults results = engineExecute();
+        EngineResults results = engineExecute(CONTEXT_NAME + discriminator, nameSpace);
         assertNotNull(results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE));
         assertEquals(ValidationActionType.WARNING.getCode() + ":" + WARNING_MESSAGE,
                 results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE));
@@ -205,54 +229,98 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     @Transactional
     @Test
     public void testValidError() {
-        KrmsAttributeTypeDefinitionAndBuilders ruleDefs = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                ValidationRuleType.VALID.toString(), true, ValidationRuleType.VALID.toString(),
-                ValidationRuleType.VALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeBoService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                ValidationActionType.ERROR.toString(), true, ValidationActionType.ERROR.toString(),
-                ValidationActionType.ERROR.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                "Valdiation Action Message", true, "Valdiation Action Message",
-                ERROR_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
-        List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
-        actionDefs.add(actionDef);
-        actionDefs.add(actionMessageDef);
+        discriminator = "3";
+        propOperator = "=";
+        String ruleName = ValidationRuleType.VALID.toString();
+        String nameSpace =  KrmsConstants.KRMS_NAMESPACE;
+        String ruleTypeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleAttributeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleTypeLabel = ValidationRuleType.VALID.toString();
+        String ruleServiceName = VALIDATION_RULE_TYPE_SERVICE;
+        String actionTypeName = "KrmsActionResolverType";
+        String actionTypeServicename = VALIDATION_ACTION_TYPE_SERVICE;
+        String actionName = ValidationActionType.ERROR.toString();
+        Map<String, String> actionAttributes =  new HashMap<String, String>();
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.ERROR.getCode());
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE,ERROR_MESSAGE);
+        Map<String, String> actionAttributesDefs = new HashMap<String, String>();
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.ERROR.toString());
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, "Validation Action Message");
+        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        ruleAttributes.put(ruleAttributeName, ValidationRuleType.VALID.getCode());
 
-        ContextBo contextBo = createContext();
-        RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, ERROR_MESSAGE);
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("ContextTypeName" + discriminator, nameSpace,
+                "ContextAttributeName" + discriminator, "ContextLabel", "ContextServiceName");
+
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME + discriminator, nameSpace,
+                contextTypeDefinition.getId(), Collections.EMPTY_MAP );
+        ContextBo contextBo = ContextBo.from(contextDefinition);
+
+        KrmsTypeDefinition ruleTypeDefinition = createUpdateRuleTypeDef(ruleTypeName, nameSpace, ruleAttributeName,
+                ruleTypeLabel, ruleServiceName);
+
+        KrmsTypeDefinition actionTypeDefinition = createUpdateActionTypeDef(actionTypeName, nameSpace,
+                actionTypeServicename);
+
+        for (Map.Entry<String, String> actionAttributeDef : actionAttributesDefs.entrySet()) {
+            createUpdateAttribute(actionAttributeDef.getKey(), nameSpace, actionAttributeDef.getValue());
+        }
+
+        RuleBo ruleBo = createUpdateRuleWithAction(ruleName, nameSpace, contextDefinition.getId(),
+                ruleTypeDefinition.getId(), actionName, actionTypeDefinition.getId(), actionAttributes, ruleAttributes);
+
         createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
 
-        EngineResults results = engineExecute();
+        EngineResults results = engineExecute(CONTEXT_NAME + discriminator, nameSpace);
         assertTrue(results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE) == null);
     }
 
     @Transactional
     @Test
     public void testInvalidError() {
-        KrmsAttributeTypeDefinitionAndBuilders ruleDefs = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                ValidationRuleType.INVALID.toString(), true, ValidationRuleType.INVALID.toString(),
-                ValidationRuleType.INVALID.getCode(), VALIDATION_RULE_TYPE_SERVICE, krmsTypeBoService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionDef = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                ValidationActionType.ERROR.toString(), true, ValidationActionType.ERROR.toString(),
-                ValidationActionType.ERROR.getCode(), VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
-        KrmsAttributeTypeDefinitionAndBuilders actionMessageDef = createKrmsAttributeTypeDefinitionAndBuilders(
-                ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE,
-                "Valdiation Action Message", true, "Valdiation Action Message",
-                ERROR_MESSAGE, VALIDATION_ACTION_TYPE_SERVICE, krmsTypeBoService, 1);
-        List<KrmsAttributeTypeDefinitionAndBuilders> actionDefs = new LinkedList<KrmsAttributeTypeDefinitionAndBuilders>();
-        actionDefs.add(actionDef);
-        actionDefs.add(actionMessageDef);
+        discriminator = "4";
+        propOperator = "=";
+        String ruleName = ValidationRuleType.INVALID.toString();
+        String nameSpace =  KrmsConstants.KRMS_NAMESPACE;
+        String ruleTypeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleAttributeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleTypeLabel = ValidationRuleType.INVALID.toString();
+        String ruleServiceName = VALIDATION_RULE_TYPE_SERVICE;
+        String actionTypeName = "KrmsActionResolverType";
+        String actionTypeServicename = VALIDATION_ACTION_TYPE_SERVICE;
+        String actionName = ValidationActionType.ERROR.toString();
+        Map<String, String> actionAttributes =  new HashMap<String, String>();
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.ERROR.getCode());
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE,ERROR_MESSAGE);
+        Map<String, String> actionAttributesDefs = new HashMap<String, String>();
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.ERROR.toString());
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, "Validation Action Message");
+        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        ruleAttributes.put(ruleAttributeName, ValidationRuleType.INVALID.getCode());
 
-        ContextBo contextBo = createContext();
-        RuleBo ruleBo = createRuleWithAction(ruleDefs, actionDefs, contextBo, ERROR_MESSAGE);
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("ContextTypeName" + discriminator,
+                KrmsConstants.KRMS_NAMESPACE, "ContextAttributeName" + discriminator, "ContextLabel", "ContextServiceName");
+
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME + discriminator, nameSpace,
+                contextTypeDefinition.getId(), Collections.EMPTY_MAP );
+        ContextBo contextBo = ContextBo.from(contextDefinition);
+
+        KrmsTypeDefinition ruleTypeDefinition = createUpdateRuleTypeDef(ruleTypeName, nameSpace, ruleAttributeName,
+                ruleTypeLabel, ruleServiceName);
+
+        KrmsTypeDefinition actionTypeDefinition = createUpdateActionTypeDef(actionTypeName, nameSpace,
+                actionTypeServicename);
+
+        for (Map.Entry<String, String> actionAttributeDef : actionAttributesDefs.entrySet()) {
+            createUpdateAttribute(actionAttributeDef.getKey(), nameSpace, actionAttributeDef.getValue());
+        }
+
+        RuleBo ruleBo = createUpdateRuleWithAction(ruleName, nameSpace, contextDefinition.getId(),
+                ruleTypeDefinition.getId(), actionName, actionTypeDefinition.getId(), actionAttributes, ruleAttributes);
+
         createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
 
-        EngineResults results = engineExecute();
+        EngineResults results = engineExecute(CONTEXT_NAME + discriminator, KrmsConstants.KRMS_NAMESPACE);
         assertNotNull(results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE));
         assertEquals(ValidationActionType.ERROR.getCode() + ":" + ERROR_MESSAGE, results.getAttribute(
                 ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE));
@@ -260,52 +328,304 @@ public class ValidationIntegrationTest extends AbstractBoTest {
 
     @Transactional
     @Test
+    public void testValidWarningReversedOperator() {
+        discriminator = "5";
+        // reverse operator to check Rule evaluation returns expected(opposite results)
+        propOperator = "!=";
+        String ruleName = ValidationRuleType.VALID.toString();
+        String nameSpace =  KrmsConstants.KRMS_NAMESPACE;
+        String ruleTypeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleAttributeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleTypeLabel = ValidationRuleType.VALID.toString();
+        String ruleServiceName = VALIDATION_RULE_TYPE_SERVICE;
+        String actionTypeName = "KrmsActionResolverType";
+        String actionTypeServicename = VALIDATION_ACTION_TYPE_SERVICE;
+        String actionName = ValidationActionType.WARNING.toString();
+        Map<String, String> actionAttributes = new HashMap<String, String>();
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.WARNING.getCode());
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE,WARNING_MESSAGE);
+        Map<String, String> actionAttributesDefs = new HashMap<String, String>();
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.WARNING.toString());
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, "Validation Action Message");
+        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        ruleAttributes.put(ruleAttributeName, ValidationRuleType.VALID.getCode());
+
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("ContextTypeName" + discriminator, nameSpace,
+                "ContextAttributeName" + discriminator, "ContextLabel", "ContextServiceName");
+
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME + discriminator, nameSpace,
+                contextTypeDefinition.getId(), Collections.EMPTY_MAP );
+        ContextBo contextBo = ContextBo.from(contextDefinition);
+
+        KrmsTypeDefinition ruleTypeDefinition = createUpdateRuleTypeDef(ruleTypeName, nameSpace, ruleAttributeName,
+                ruleTypeLabel, ruleServiceName);
+
+        KrmsTypeDefinition actionTypeDefinition = createUpdateActionTypeDef(actionTypeName, nameSpace,
+                actionTypeServicename);
+
+        for (Map.Entry<String, String> actionAttributeDef : actionAttributesDefs.entrySet()) {
+            createUpdateAttribute(actionAttributeDef.getKey(), nameSpace, actionAttributeDef.getValue());
+        }
+
+        RuleBo ruleBo = createUpdateRuleWithAction(ruleName, nameSpace, contextDefinition.getId(),
+                ruleTypeDefinition.getId(), actionName, actionTypeDefinition.getId(), actionAttributes, ruleAttributes);
+
+        createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
+
+        EngineResults results = engineExecute(CONTEXT_NAME + discriminator, nameSpace);
+        assertFalse(results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE) == null);
+    }
+
+    @Transactional
+    @Test
+    public void testInvalidWarningReversedOperator() {
+        discriminator = "6";
+        // reverse operator to check Rule evaluation returns expected(opposite results)
+        propOperator = "!=";
+        String ruleName = ValidationRuleType.INVALID.toString();
+        String nameSpace =  KrmsConstants.KRMS_NAMESPACE;
+        String ruleTypeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleAttributeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleTypeLabel = ValidationRuleType.INVALID.toString();
+        String ruleServiceName = VALIDATION_RULE_TYPE_SERVICE;
+        String actionTypeName = "KrmsActionResolverType";
+        String actionTypeServicename = VALIDATION_ACTION_TYPE_SERVICE;
+        String actionName = ValidationActionType.WARNING.toString();
+        Map<String, String> actionAttributes = new HashMap<String, String>();
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.WARNING.getCode());
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE,WARNING_MESSAGE);
+        Map<String, String> actionAttributesDefs = new HashMap<String, String>();
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.WARNING.toString());
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, "Validation Action Message");
+        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        ruleAttributes.put(ruleAttributeName, ValidationRuleType.INVALID.getCode());
+
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("ContextTypeName" + discriminator, nameSpace,
+                "ContextAttributeName" + discriminator, "ContextLabel", "ContextServiceName");
+
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME +discriminator, nameSpace,
+                contextTypeDefinition.getId(), Collections.EMPTY_MAP );
+        ContextBo contextBo = ContextBo.from(contextDefinition);
+
+        KrmsTypeDefinition ruleTypeDefinition = createUpdateRuleTypeDef(ruleTypeName, nameSpace, ruleAttributeName,
+                ruleTypeLabel, ruleServiceName);
+
+        KrmsTypeDefinition actionTypeDefinition = createUpdateActionTypeDef(actionTypeName, nameSpace,
+                actionTypeServicename);
+
+        for (Map.Entry<String, String> actionAttributeDef : actionAttributesDefs.entrySet()) {
+            createUpdateAttribute(actionAttributeDef.getKey(), nameSpace, actionAttributeDef.getValue());
+        }
+
+        RuleBo ruleBo = createUpdateRuleWithAction(ruleName, nameSpace, contextDefinition.getId(),
+                ruleTypeDefinition.getId(), actionName, actionTypeDefinition.getId(), actionAttributes, ruleAttributes);
+
+        createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
+
+        EngineResults results = engineExecute(CONTEXT_NAME + discriminator, nameSpace);
+        assertNull(results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE));
+    }
+
+    @Transactional
+    @Test
+    public void testValidErrorReversedOperator() {
+        discriminator = "7";
+        // reverse operator to check Rule evaluation returns expected(opposite results)
+        propOperator = "!=";
+        String ruleName = ValidationRuleType.VALID.toString();
+        String nameSpace =  KrmsConstants.KRMS_NAMESPACE;
+        String ruleTypeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleAttributeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleTypeLabel = ValidationRuleType.VALID.toString();
+        String ruleServiceName = VALIDATION_RULE_TYPE_SERVICE;
+        String actionTypeName = "KrmsActionResolverType";
+        String actionTypeServicename = VALIDATION_ACTION_TYPE_SERVICE;
+        String actionName = ValidationActionType.ERROR.toString();
+        Map<String, String> actionAttributes =  new HashMap<String, String>();
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.ERROR.getCode());
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE,ERROR_MESSAGE);
+        Map<String, String> actionAttributesDefs = new HashMap<String, String>();
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.ERROR.toString());
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, "Validation Action Message");
+        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        ruleAttributes.put(ruleAttributeName, ValidationRuleType.VALID.getCode());
+
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("ContextTypeName" + discriminator, nameSpace,
+                "ContextAttributeName" + discriminator, "ContextLabel", "ContextServiceName");
+
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME + discriminator, nameSpace,
+                contextTypeDefinition.getId(), Collections.EMPTY_MAP );
+        ContextBo contextBo = ContextBo.from(contextDefinition);
+
+        KrmsTypeDefinition ruleTypeDefinition = createUpdateRuleTypeDef(ruleTypeName, nameSpace, ruleAttributeName,
+                ruleTypeLabel, ruleServiceName);
+
+        KrmsTypeDefinition actionTypeDefinition = createUpdateActionTypeDef(actionTypeName, nameSpace,
+                actionTypeServicename);
+
+        for (Map.Entry<String, String> actionAttributeDef : actionAttributesDefs.entrySet()) {
+            createUpdateAttribute(actionAttributeDef.getKey(), nameSpace, actionAttributeDef.getValue());
+        }
+
+        RuleBo ruleBo = createUpdateRuleWithAction(ruleName, nameSpace, contextDefinition.getId(),
+                ruleTypeDefinition.getId(), actionName, actionTypeDefinition.getId(), actionAttributes, ruleAttributes);
+
+        createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
+
+        EngineResults results = engineExecute(CONTEXT_NAME + discriminator, nameSpace);
+        assertFalse(results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE) == null);
+    }
+
+    @Transactional
+    @Test
+    public void testInvalidErrorReversedOperator() {
+        discriminator = "8";
+        // reverse operator to check Rule evaluation returns expected(opposite results)
+        propOperator = "!=";
+        String ruleName = ValidationRuleType.INVALID.toString();
+        String nameSpace =  KrmsConstants.KRMS_NAMESPACE;
+        String ruleTypeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleAttributeName = ValidationRuleTypeService.VALIDATIONS_RULE_TYPE_CODE_ATTRIBUTE;
+        String ruleTypeLabel = ValidationRuleType.INVALID.toString();
+        String ruleServiceName = VALIDATION_RULE_TYPE_SERVICE;
+        String actionTypeName = "KrmsActionResolverType";
+        String actionTypeServicename = VALIDATION_ACTION_TYPE_SERVICE;
+        String actionName = ValidationActionType.ERROR.toString();
+        Map<String, String> actionAttributes =  new HashMap<String, String>();
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.ERROR.getCode());
+        actionAttributes.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE,ERROR_MESSAGE);
+        Map<String, String> actionAttributesDefs = new HashMap<String, String>();
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_TYPE_CODE_ATTRIBUTE, ValidationActionType.ERROR.toString());
+        actionAttributesDefs.put(ValidationActionTypeService.VALIDATIONS_ACTION_MESSAGE_ATTRIBUTE, "Validation Action Message");
+        Map<String, String> ruleAttributes = new HashMap<String, String>();
+        ruleAttributes.put(ruleAttributeName, ValidationRuleType.INVALID.getCode());
+
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("ContextTypeName" + discriminator,
+                KrmsConstants.KRMS_NAMESPACE, "ContextAttributeName" + discriminator, "ContextLabel", "ContextServiceName");
+
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME + discriminator, nameSpace,
+                contextTypeDefinition.getId(), Collections.EMPTY_MAP );
+        ContextBo contextBo = ContextBo.from(contextDefinition);
+
+        KrmsTypeDefinition ruleTypeDefinition = createUpdateRuleTypeDef(ruleTypeName, nameSpace, ruleAttributeName,
+                ruleTypeLabel, ruleServiceName);
+
+        KrmsTypeDefinition actionTypeDefinition = createUpdateActionTypeDef(actionTypeName, nameSpace,
+                actionTypeServicename);
+
+        for (Map.Entry<String, String> actionAttributeDef : actionAttributesDefs.entrySet()) {
+            createUpdateAttribute(actionAttributeDef.getKey(), nameSpace, actionAttributeDef.getValue());
+        }
+
+        RuleBo ruleBo = createUpdateRuleWithAction(ruleName, nameSpace, contextDefinition.getId(),
+                ruleTypeDefinition.getId(), actionName, actionTypeDefinition.getId(), actionAttributes, ruleAttributes);
+
+        createAgenda(ruleBo, contextBo, createEventAttributeDefinition());
+
+        EngineResults results = engineExecute(CONTEXT_NAME + discriminator, KrmsConstants.KRMS_NAMESPACE);
+        assertNull(results.getAttribute(ValidationActionTypeService.VALIDATIONS_ACTION_ATTRIBUTE));
+    }
+
+    @Transactional
+    @Test
     public void testDef() {
-        ContextDefinition contextDefinition = createContextDefinition(KrmsConstants.KRMS_NAMESPACE);
-        createAgendaDefinition(contextDefinition, "ValidationIntegration", KrmsConstants.KRMS_NAMESPACE);
+        discriminator = "9";
+        KrmsTypeDefinition contextTypeDefinition = createContextTypeDef("KrmsTestContextType" + discriminator,
+                KrmsConstants.KRMS_NAMESPACE, "Context1Qualifier", "Context 1 Qualifier", null);
 
-        engineExecute();
+        ContextDefinition contextDefinition =  createContext(CONTEXT_NAME + discriminator, KrmsConstants.KRMS_NAMESPACE,
+                contextTypeDefinition.getId(), Collections.singletonMap("Context1Qualifier", "BLAH") );
+
+        createAgendaDefinition(contextDefinition.getId(), "ValidationIntegration", KrmsConstants.KRMS_NAMESPACE);
+
+        engineExecute(CONTEXT_NAME + discriminator, KrmsConstants.KRMS_NAMESPACE);
     }
 
-    private ContextDefinition createContextDefinition(String nameSpace) {
-        // Attribute Defn for context;
-        KrmsAttributeDefinition.Builder contextTypeAttributeDefnBuilder = KrmsAttributeDefinition.Builder.create(null, "Context1Qualifier", nameSpace);
-        contextTypeAttributeDefnBuilder.setLabel("Context 1 Qualifier");
-        KrmsAttributeDefinition contextTypeAttributeDefinition = krmsAttributeDefinitionService.createAttributeDefinition(contextTypeAttributeDefnBuilder.build());
+    private ContextDefinition createContext(String name, String nameSpace, String typeDefId, Map<String, String> attributes) {
+        ContextDefinition contextDefinition = ruleManagementService.getContextByNameAndNamespace(name, nameSpace);
+        assertNull("Context with this name and namespace should not exist", contextDefinition);
 
-        // Attr for context;
-        KrmsTypeAttribute.Builder krmsTypeAttrBuilder = KrmsTypeAttribute.Builder.create(null, contextTypeAttributeDefinition.getId(), 1);
+        ContextDefinition.Builder contextDefinitionBuilder = ContextDefinition.Builder.create(nameSpace, name);
+        contextDefinitionBuilder.setTypeId(typeDefId);
+        if(attributes != null ) {
+            contextDefinitionBuilder.setAttributes(attributes);
+        }
 
-        // KrmsType for context
-        KrmsTypeDefinition.Builder krmsContextTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsTestContextType", nameSpace);
-        krmsContextTypeDefnBuilder.setAttributes(Collections.singletonList(krmsTypeAttrBuilder));
-        KrmsTypeDefinition krmsContextTypeDefinition = krmsContextTypeDefnBuilder.build();
-        krmsContextTypeDefinition = krmsTypeBoService.createKrmsType(krmsContextTypeDefinition);
-
-        // Context
-        ContextDefinition.Builder contextBuilder = ContextDefinition.Builder.create(nameSpace, CONTEXT_NAME);
-        contextBuilder.setTypeId(krmsContextTypeDefinition.getId());
-        ContextDefinition contextDefinition = contextBuilder.build();
-        contextDefinition = contextRepository.createContext(contextDefinition);
-
-        // Context Attribute
-        // TODO: do this fur eel
-        ContextAttributeBo contextAttribute = new ContextAttributeBo();
-        contextAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(contextTypeAttributeDefinition));
-        contextAttribute.setContext(ContextBo.from(contextDefinition));
-        contextAttribute.setValue("BLAH");
-        getDataObjectService().save(contextAttribute, PersistenceOption.FLUSH);
-
-        return contextDefinition;
+        return ruleManagementService.findCreateContext(contextDefinitionBuilder.build());
     }
 
-    private void createAgendaDefinition(ContextDefinition contextDefinition, String eventName, String nameSpace ) {
-        AgendaDefinition agendaDef =
-            AgendaDefinition.Builder.create(null, "testAgenda", null, contextDefinition.getId()).build();
+    private KrmsTypeDefinition createContextTypeDef(String contextTypeName, String nameSpace, String attributeName,
+            String attributeLabel, String serviceName) {
+        String attributeId = createUpdateAttribute(attributeName, nameSpace, attributeLabel);
+
+        KrmsTypeDefinition.Builder typeDefinitionBuilder = KrmsTypeDefinition.Builder.create(contextTypeName, nameSpace);
+        typeDefinitionBuilder.setServiceName(serviceName);
+
+        KrmsTypeAttribute.Builder attribDefinitionBuilder = KrmsTypeAttribute.Builder.create("ContextTypeId", attributeId, 1);
+        typeDefinitionBuilder.setAttributes(Collections.singletonList(attribDefinitionBuilder));
+        KrmsTypeDefinition typeDef = krmsTypeBoService.createKrmsType(typeDefinitionBuilder.build());
+        assertNotNull(typeDef);
+
+        return typeDef;
+    }
+
+    private KrmsTypeDefinition createUpdateRuleTypeDef(String ruleTypeName, String nameSpace, String attributeName,
+            String attributeLabel, String serviceName) {
+        String attributeId = createUpdateAttribute(attributeName, nameSpace, attributeLabel);
+        KrmsAttributeDefinition attributeDefinition = krmsTypeBoService.getAttributeDefinitionById(attributeId);
+        KrmsAttributeDefinition.Builder attributeDefinitionBuilder = KrmsAttributeDefinition.Builder.create(attributeDefinition);
+
+        KrmsTypeDefinition.Builder typeDefinitionBuilder = null;
+        KrmsTypeDefinition typeDefinition = krmsTypeBoService.getTypeByName(nameSpace, ruleTypeName);
+        if (typeDefinition == null) {
+            typeDefinitionBuilder = KrmsTypeDefinition.Builder.create(ruleTypeName, nameSpace);
+            typeDefinitionBuilder.setServiceName(serviceName);
+            KrmsTypeAttribute.Builder typeAttributeBuilder = KrmsTypeAttribute.Builder.create(ruleTypeName, attributeId, 1);
+            typeDefinitionBuilder.setAttributes(Collections.singletonList(typeAttributeBuilder));
+            typeDefinition = krmsTypeBoService.createKrmsType(typeDefinitionBuilder.build());
+        } else {
+            typeDefinitionBuilder = KrmsTypeDefinition.Builder.create(typeDefinition);
+            typeDefinitionBuilder.setServiceName(serviceName);
+            KrmsTypeAttribute.Builder typeAttributeBuilder = KrmsTypeAttribute.Builder.create(typeDefinition.getAttributes().get(0));
+            typeAttributeBuilder.setAttributeDefinitionId(attributeId);
+            typeDefinitionBuilder.setAttributes(Collections.singletonList(typeAttributeBuilder));
+            typeDefinition = krmsTypeBoService.updateKrmsType(typeDefinitionBuilder.build());
+        }
+
+        assertNotNull(typeDefinition);
+
+        return typeDefinition;
+    }
+
+    private String createUpdateAttribute(String attributeName, String nameSpace, String attributeLabel) {
+        KrmsAttributeDefinition attributeDefinition = krmsAttributeDefinitionService.getAttributeDefinitionByNameAndNamespace(attributeName, nameSpace);
+
+        KrmsAttributeDefinition.Builder attributeDefinitionBuilder = null;
+        if (attributeDefinition != null) {
+            attributeDefinitionBuilder = KrmsAttributeDefinition.Builder.create(attributeDefinition);
+            attributeDefinitionBuilder.setLabel(attributeLabel);
+            attributeDefinitionBuilder.setActive(true);
+            krmsAttributeDefinitionService.updateAttributeDefinition(attributeDefinitionBuilder.build());
+        } else {
+            attributeDefinitionBuilder = KrmsAttributeDefinition.Builder.create(null, attributeName, nameSpace);
+            attributeDefinitionBuilder.setLabel(attributeLabel);
+            attributeDefinitionBuilder.setActive(true);
+            krmsAttributeDefinitionService.createAttributeDefinition(attributeDefinitionBuilder.build());
+        }
+
+        attributeDefinition = krmsAttributeDefinitionService.getAttributeDefinitionByNameAndNamespace(attributeName,
+                nameSpace);
+        assertNotNull(attributeDefinition.getId());
+
+        return attributeDefinition.getId();
+    }
+
+    private void createAgendaDefinition(String contextId, String eventName, String nameSpace ) {
+        AgendaDefinition agendaDef = AgendaDefinition.Builder.create(null, "testAgenda", null, contextId).build();
         agendaDef = agendaBoService.createAgenda(agendaDef);
 
         AgendaItemDefinition.Builder agendaItemBuilder1 = AgendaItemDefinition.Builder.create(null, agendaDef.getId());
-        RuleDefinition ruleDefinition = createRuleDefinition1(contextDefinition, nameSpace);
+        RuleDefinition ruleDefinition = createRuleDefinition1(contextId, nameSpace);
         agendaItemBuilder1.setRuleId(ruleDefinition.getId());
 //        agendaItemBuilder1.setRule(RuleDefinition.Builder.create(ruleDefinition));
 
@@ -318,20 +638,19 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         agendaBoService.updateAgenda(agendaDef);
     }
 
-    private RuleDefinition createRuleDefinition1(ContextDefinition contextDefinition, String nameSpace) {
+    private RuleDefinition createRuleDefinition1(String contextId, String nameSpace) {
         // Rule 1
-        RuleDefinition.Builder ruleDefBuilder1 =
-            RuleDefinition.Builder.create(null, "Rule1", nameSpace, null, null);
+        RuleDefinition.Builder ruleDefBuilder1 = RuleDefinition.Builder.create(null, "Rule1", nameSpace, null, null);
         RuleDefinition ruleDef1 = ruleBoService.createRule(ruleDefBuilder1.build());
 
-
         ruleDefBuilder1 = RuleDefinition.Builder.create(ruleDef1);
-        ruleDefBuilder1.setProposition(createCompoundProposition(contextDefinition, ruleDef1));
+        ruleDefBuilder1.setProposition(createCompoundProposition(contextId, ruleDef1));
         ruleDef1 = ruleDefBuilder1.build();
         ruleDef1 = ruleBoService.updateRule(ruleDef1);
 
         // Action
-        ActionDefinition.Builder actionDefBuilder1 = ActionDefinition.Builder.create(null, "testAction1", nameSpace, createKrmsActionTypeDefinition(nameSpace).getId(), ruleDef1.getId(), 1);
+        ActionDefinition.Builder actionDefBuilder1 = ActionDefinition.Builder.create(null, "testAction1", nameSpace,
+                createUpdateActionTypeDef("KrmsActionResolverType", nameSpace, "testActionTypeService").getId(), ruleDef1.getId(), 1);
         ActionDefinition actionDef1 = actionBoService.createAction(actionDefBuilder1.build());
 
         return ruleDef1;
@@ -345,25 +664,42 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         return krmsCampusTypeDefinition;
     }
 
-    private KrmsTypeDefinition createKrmsActionTypeDefinition(String nameSpace) {
-        KrmsTypeDefinition.Builder krmsActionTypeDefnBuilder = KrmsTypeDefinition.Builder.create("KrmsActionResolverType", nameSpace);
-        krmsActionTypeDefnBuilder.setServiceName("testActionTypeService");
+    private KrmsTypeDefinition createKrmsActionTypeDefx(String name, String nameSpace, String actionTypeServiceName) {
+        KrmsTypeDefinition.Builder krmsActionTypeDefnBuilder = KrmsTypeDefinition.Builder.create(name, nameSpace);
+        krmsActionTypeDefnBuilder.setServiceName(actionTypeServiceName);
         KrmsTypeDefinition krmsActionTypeDefinition = krmsTypeBoService.createKrmsType(krmsActionTypeDefnBuilder.build());
 
         return krmsActionTypeDefinition;
     }
 
+    private KrmsTypeDefinition createUpdateActionTypeDef(String actionTypeName, String nameSpace, String actionTypeServiceName) {
+        KrmsTypeDefinition.Builder typeDefinitionBuilder = null;
 
-    private EngineResults engineExecute() {
+        KrmsTypeDefinition typeDefinition = krmsTypeBoService.getTypeByName(nameSpace, actionTypeName);
+        if (typeDefinition == null) {
+            typeDefinitionBuilder = KrmsTypeDefinition.Builder.create(actionTypeName, nameSpace);
+            typeDefinitionBuilder.setServiceName(actionTypeServiceName);
+            typeDefinition = krmsTypeBoService.createKrmsType(typeDefinitionBuilder.build());
+        } else {
+            typeDefinitionBuilder = KrmsTypeDefinition.Builder.create(typeDefinition);
+            typeDefinitionBuilder.setServiceName(actionTypeServiceName);
+            typeDefinition = krmsTypeBoService.updateKrmsType(typeDefinitionBuilder.build());
+        }
+
+        assertNotNull(typeDefinition);
+
+        return typeDefinition;
+    }
+
+    private EngineResults engineExecute(String contextName, String nameSpace) {
         Map<String, String> contextQualifiers = new HashMap<String, String>();
-        contextQualifiers.put("name", CONTEXT_NAME);
-        contextQualifiers.put("namespaceCode", KrmsConstants.KRMS_NAMESPACE);
+        contextQualifiers.put("name", contextName);
+        contextQualifiers.put("namespaceCode", nameSpace);
 
         SelectionCriteria sc1 = SelectionCriteria.createCriteria(new DateTime(),
                 contextQualifiers, Collections.<String,String>emptyMap());
 
         Facts.Builder factsBuilder1 = Facts.Builder.create();
-//        factsBuilder1.addFact(TERM_NAME, 49999);
         factsBuilder1.addFact(TERM_NAME, "BL");
 
         ExecutionOptions xOptions1 = new ExecutionOptions();
@@ -373,6 +709,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         assertNotNull(engineResults);
         assertTrue(engineResults.getAllResults().size() > 0);
         print(engineResults);
+
         return engineResults;
     }
 
@@ -380,154 +717,108 @@ public class ValidationIntegrationTest extends AbstractBoTest {
         System.out.println(ToStringBuilder.reflectionToString(engineResults, ToStringStyle.MULTI_LINE_STYLE));
     }
 
-    private ContextBo createContext() {
-        KrmsAttributeTypeDefinitionAndBuilders defs = createKrmsAttributeTypeDefinitionAndBuilders(
-                "ContextAttributeName", KrmsConstants.KRMS_NAMESPACE, "ContextLabel", true, "ContextTypeName",
-                "ContextTypeId", "ContextServiceName", krmsTypeBoService, 1);
+    private RuleBo createUpdateRuleWithAction(String ruleName, String nameSpace, String contextId, String ruleTypeId, String actionName,
+            String actionTypeId, Map<String, String> actionAttributes, Map<String, String> ruleAttributes ) {
 
-        ContextBo contextBo = new ContextBo();
-        contextBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);
-        contextBo.setName(CONTEXT_NAME);
-        contextBo.setTypeId(defs.typeDef.getId());
-
-        return getDataObjectService().save(contextBo, PersistenceOption.FLUSH);
-    }
-
-    private KrmsAttributeTypeDefinitionAndBuilders createKrmsAttributeTypeDefinitionAndBuilders(String attributeName,
-            String namespace, String label, boolean active, String typeName, String typeId, String serviceName,
-            KrmsTypeBoService krmsTypeBoService, Integer sequenceNumber) {
-        KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
-        attributeDefinitionBo.setNamespace(namespace);
-        attributeDefinitionBo.setName(attributeName);
-        attributeDefinitionBo.setLabel(label);
-        attributeDefinitionBo.setActive(active);
-        attributeDefinitionBo = (KrmsAttributeDefinitionBo)getDataObjectService().save(attributeDefinitionBo, PersistenceOption.FLUSH);
-        assertNotNull(attributeDefinitionBo.getId());
-        KrmsAttributeDefinition attribDef = KrmsAttributeDefinitionBo.to(attributeDefinitionBo);
-
-        KrmsTypeDefinition.Builder typeDefinition = KrmsTypeDefinition.Builder.create(
-            typeName, namespace);
-        typeDefinition.setServiceName(serviceName);
-        KrmsTypeAttribute.Builder attribDefinitionBuilder = KrmsTypeAttribute.Builder.create(typeId, attribDef.getId(), sequenceNumber);
-        typeDefinition.getAttributes().add(attribDefinitionBuilder);
-        KrmsTypeDefinition typeDef = krmsTypeBoService.createKrmsType(typeDefinition.build());
-        assertNotNull(typeDef);
-
-        return new KrmsAttributeTypeDefinitionAndBuilders(attribDef, attribDefinitionBuilder, typeDef, typeDefinition);
-    }
-
-    private RuleBo createRuleWithAction(KrmsAttributeTypeDefinitionAndBuilders ruleBits,
-            List<KrmsAttributeTypeDefinitionAndBuilders> actionBits, ContextBo contextBo, String message) {
-
-        RuleBo rule = new RuleBo();
-        rule.setTypeId(ruleBits.typeDef.getId());
-        rule.setNamespace(ruleBits.typeDef.getNamespace());
-        rule.setName(ruleBits.typeDef.getName());
-
-        ActionBo action = new ActionBo();
-        action.setTypeId(actionBits.get(0).typeDef.getId());
-        action.setDescription("Description of validation action for message " + actionBits.get(0).attribDef.getDescription());
-        action.setNamespace(actionBits.get(0).typeDef.getNamespace());
-        action.setName(actionBits.get(0).typeDef.getName());
-        action.setSequenceNumber(actionBits.get(0).typeAttribBuilder.getSequenceNumber());
-        List<ActionAttributeBo> actionAttributes = new ArrayList<ActionAttributeBo>();
-        action.setAttributeBos(actionAttributes);
-
-        for (KrmsAttributeTypeDefinitionAndBuilders actionBit : actionBits) {
-
-            ActionAttributeBo actionAttribute = new ActionAttributeBo();
-            actionAttributes.add(actionAttribute);
-            actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(actionBit.attribDef));
-            actionAttribute.setValue(actionBit.typeAttribBuilder.getTypeId());
-            actionAttribute.setAction(action);
-
-            //            createActionAttributeBo(actionBit.attribDef.getNamespace(), actionBit.attribDef.getName(), "Action Message", actionBit.attribDef.isActive(), actionBit.attribDef.getDescription(), message, actionAttributes);
+        RuleDefinition ruleDefinition = ruleManagementService.getRuleByNameAndNamespace(ruleName, nameSpace);
+        if(ruleDefinition == null) {
+            //create(String ruleId, String name, String namespace, String typeId, String propId)
+            RuleDefinition.Builder ruleDefinitionBuilder = RuleDefinition.Builder.create(null, ruleName, nameSpace, ruleTypeId, null);
+            ruleDefinition = ruleManagementService.createRule(ruleDefinitionBuilder.build());
         }
 
-        rule.getActions().add(action);
-        action.setRule(rule);
+        RuleDefinition.Builder ruleDefinitionBuilder = RuleDefinition.Builder.create(ruleDefinition);
+        ruleDefinitionBuilder.setActions(createUpdateAction(ruleDefinition.getId(), nameSpace, actionName, actionTypeId,
+                actionAttributes));
+        ruleDefinitionBuilder.setAttributes(ruleAttributes);
 
-        rule = getDataObjectService().save(rule, PersistenceOption.FLUSH);
+        PropositionDefinition propositionDefinition = createPropositionDefinition1(contextId, ruleDefinition.getId());
+        ruleDefinitionBuilder.setProposition(PropositionDefinition.Builder.create(propositionDefinition));
 
-        // set attributes
-        RuleAttributeBo ruleType = new RuleAttributeBo();
-        ruleType.setAttributeDefinition(KrmsAttributeDefinitionBo.from(ruleBits.attribDef));
-        ruleType.setValue(ruleBits.typeAttribBuilder.getTypeId());
-        ruleType.setRule(rule);
-        rule.getAttributeBos().add(ruleType);
+        ruleDefinition =  ruleManagementService.getRule(ruleDefinition.getId());
+        ruleDefinitionBuilder.setVersionNumber(ruleDefinition.getVersionNumber());
+        ruleManagementService.updateRule(ruleDefinitionBuilder.build());
 
-        rule = getDataObjectService().save(rule, PersistenceOption.FLUSH);
+        ruleDefinition = ruleManagementService.getRule(ruleDefinitionBuilder.getId());
 
-        RuleDefinition ruleDef = RuleBo.to(rule);
-        
-        PropositionDefinition propDef = createPropositionDefinition1(ContextBo.to(contextBo), ruleDef).build();
-        propDef = propositionBoService.createProposition(propDef);
-        rule.setProposition(PropositionBo.from(propDef));
+        assertNotNull(ruleDefinition.getId());
+        assertNotNull(ruleDefinition.getProposition().getId());
+        assertEquals(ruleDefinition.getProposition().getRuleId(), ruleDefinition.getId());
+        assertEquals(1, ruleDefinition.getActions().size());
+        assertNotNull(ruleDefinition.getActions().get(0).getId());
+        assertEquals(2, ruleDefinition.getActions().get(0).getAttributes().size());
 
-        rule = getDataObjectService().save(rule, PersistenceOption.FLUSH);
-
-        assertNotNull(rule.getId());
-        assertNotNull(propDef.getId());
-        assertEquals(propDef.getRuleId(), rule.getId());
-        assertEquals(1, rule.getActions().size());
-        assertNotNull(rule.getActions().get(0).getId());
-        assertEquals(2, rule.getActions().get(0).getAttributeBos().size());
-
-        return rule;
+        return RuleBo.from(ruleDefinition);
     }
 
-    private void createActionAttributeBo(String namespace, String attributeName, String label, boolean active,
-            String actionAttribDefId, String value, Set<ActionAttributeBo> actionAttributes) {
-        KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
-        attributeDefinitionBo.setNamespace(namespace);
-        attributeDefinitionBo.setName(attributeName);
-        attributeDefinitionBo.setLabel(label);
-        attributeDefinitionBo.setActive(active);
-        attributeDefinitionBo = (KrmsAttributeDefinitionBo)getDataObjectService().save(attributeDefinitionBo,
-                PersistenceOption.FLUSH);
-        assertNotNull(attributeDefinitionBo.getId());
-        KrmsAttributeDefinition attribDef = KrmsAttributeDefinitionBo.to(attributeDefinitionBo);
+    private List<ActionDefinition.Builder> createUpdateAction(String ruleId, String nameSpace, String actionName,
+            String actionTypeId, Map<String, String> actionAttributes) {
+        //check if action already exists
+        ActionDefinition actionDefinition = null;
+        QueryByCriteria.Builder criteriaBuilder = QueryByCriteria.Builder.create();
+        criteriaBuilder.setPredicates(equal("name", actionName));
 
-        ActionAttributeBo actionAttribute = new ActionAttributeBo();
-        actionAttributes.add(actionAttribute);
-        actionAttribute.setAttributeDefinition(KrmsAttributeDefinitionBo.from(attribDef));
-        actionAttribute.setValue(value);
-    }
-
-    private PropositionDefinition.Builder createPropositionDefinition1(ContextDefinition contextDefinition, RuleDefinition ruleDef1) {
-        // Proposition for rule 1
-        PropositionDefinition.Builder propositionDefBuilder1 =
-            PropositionDefinition.Builder.create(null, PropositionType.SIMPLE.getCode(), ruleDef1.getId(), null /* type code is only for custom props */, Collections.<PropositionParameter.Builder>emptyList());
-        propositionDefBuilder1.setDescription("is campus bloomington");
-
-        // PropositionParams for rule 1
-        List<PropositionParameter.Builder> propositionParams1 = new ArrayList<PropositionParameter.Builder>();
-        propositionParams1.add(
-                PropositionParameter.Builder.create(null, null, createTermDefinition1(contextDefinition).getId(), PropositionParameterType.TERM.getCode(), 1)
-        );
-        propositionParams1.add(
-                PropositionParameter.Builder.create(null, null, "BL", PropositionParameterType.CONSTANT.getCode(), 2)
-        );
-        propositionParams1.add(
-                PropositionParameter.Builder.create(null, null, "=", PropositionParameterType.OPERATOR.getCode(), 3)
-        );
-
-        // set the parent proposition so the builder will not puke
-        for (PropositionParameter.Builder propositionParamBuilder : propositionParams1) {
-            propositionParamBuilder.setProposition(propositionDefBuilder1);
+        List<String> actionIds = ruleManagementService.findActionIds(criteriaBuilder.build());
+        if (actionIds.size() > 0) {
+            //update
+            actionDefinition = ruleManagementService.getAction(actionIds.get(0));
+            ActionDefinition.Builder actionDefinitionBuilder = ActionDefinition.Builder.create(actionDefinition);
+            actionDefinitionBuilder.setAttributes(actionAttributes);
+            ruleManagementService.updateAction(actionDefinitionBuilder.build());
+            actionDefinition = ruleManagementService.getAction(actionDefinitionBuilder.getId());
+        } else {
+            //create
+            ActionDefinition.Builder actionDefinitionBuilder = ActionDefinition.Builder.create(null, actionName, nameSpace,
+                    actionTypeId, ruleId, 1);
+            actionDefinitionBuilder.setAttributes(actionAttributes);
+            actionDefinition = ruleManagementService.createAction(actionDefinitionBuilder.build());
         }
 
-        propositionDefBuilder1.setParameters(propositionParams1);
+        return Collections.singletonList(ActionDefinition.Builder.create(actionDefinition));
+    }
 
-        return propositionDefBuilder1;
+    private PropositionDefinition createPropositionDefinition1(String contextId, String ruleId){
+        String namespace = KrmsConstants.KRMS_NAMESPACE;
+        String propId = null;
+        String propConstant = "BL";
+
+        TermDefinition termDefinition = createTermDefinition1(contextId);
+        String termSpecId =  termDefinition.getId();
+        String termSpecType = termDefinition.getSpecification().getType();
+        String termSpecDescr = termDefinition.getSpecification().getDescription();
+
+        createTestTermSpecification(termSpecId, termSpecId, namespace, termSpecType, termSpecDescr);
+        KrmsTypeDefinition krmsTypeDefinition = createKrmsTypeDefinition(null, namespace, termSpecId, "testTypeService");
+
+        PropositionDefinition.Builder propBuilder = PropositionDefinition.Builder.create(propId,
+                PropositionType.SIMPLE.getCode(), ruleId, null, Collections.<PropositionParameter.Builder>emptyList());
+        propBuilder.setDescription("is campus bloomington");
+
+        PropositionDefinition propositionDefinition = ruleManagementService.createProposition(propBuilder.build());
+
+        List<PropositionParameter.Builder> propParam =  new ArrayList<PropositionParameter.Builder>();
+        propParam.add(PropositionParameter.Builder.create(propId + "_0", propositionDefinition.getId(), termSpecId,
+                PropositionParameterType.TERM.getCode(), 0));
+        propParam.add(PropositionParameter.Builder.create(propId + "_1", propositionDefinition.getId(), propConstant,
+                PropositionParameterType.CONSTANT.getCode(), 1));
+        propParam.add(PropositionParameter.Builder.create(propId + "_2", propositionDefinition.getId(), propOperator,
+                PropositionParameterType.OPERATOR.getCode(), 2));
+
+        propBuilder = PropositionDefinition.Builder.create(propositionDefinition);
+        propBuilder.setParameters(propParam);
+
+        ruleManagementService.updateProposition(propBuilder.build());
+        // re-fetch to get the updated version numbers
+        propositionDefinition = ruleManagementService.getProposition(propositionDefinition.getId());
+
+        return propositionDefinition;
     }
 
 
-    private PropositionDefinition.Builder createCompoundProposition(ContextDefinition contextDefinition,
-            RuleDefinition ruleDef1) {
+    private PropositionDefinition.Builder createCompoundProposition(String contextId, RuleDefinition ruleDef1) {
         // Proposition for rule 1
         List<PropositionParameter.Builder> propositionParameterBuilderList = new ArrayList<PropositionParameter.Builder>();
-        propositionParameterBuilderList.add(PropositionParameter.Builder.create(null, null, createTermDefinition1(contextDefinition).getId(),
+        propositionParameterBuilderList.add(PropositionParameter.Builder.create(null, null, createTermDefinition1(contextId).getId(),
                 PropositionParameterType.TERM.getCode(), 1)
         );
         propositionParameterBuilderList.add(PropositionParameter.Builder.create(null, null, "BL",
@@ -541,28 +832,18 @@ public class ValidationIntegrationTest extends AbstractBoTest {
             PropositionDefinition.Builder.create(null, PropositionType.SIMPLE.getCode(), ruleDef1.getId(), null /* type code is only for custom props */, propositionParameterBuilderList);
         propositionDefBuilder1.setDescription("propositionDefBuilder1 Description");
 
-        // PropositionParams for rule 1
-//        List<PropositionParameter.Builder> propositionParams1 = new ArrayList<PropositionParameter.Builder>();
-//        propositionParams1.add(
-//                PropositionParameter.Builder.create(null, null, createTermDefinition1(contextDefinition).getId(), PropositionParameterType
-//                        .TERM.getCode(), 1)
-//        );
-
         // set the parent proposition so the builder will not puke
         for (PropositionParameter.Builder propositionParamBuilder : propositionParameterBuilderList) {
             propositionParamBuilder.setProposition(propositionDefBuilder1);
         }
 
-//        propositionDefBuilder1.setParameters(propositionParams1);
-
         return propositionDefBuilder1;
     }
 
-    private TermDefinition createTermDefinition1(ContextDefinition contextDefinition) {
+    private TermDefinition createTermDefinition1(String contextId) {
         // campusCode TermSpec
         TermSpecificationDefinition campusCodeTermSpec =
-            TermSpecificationDefinition.Builder.create(null, "campusCodeTermSpec", contextDefinition.getId(),
-                    "java.lang.String").build();
+                TermSpecificationDefinition.Builder.create(null, "campusCodeTermSpec", contextId, "java.lang.String").build();
         campusCodeTermSpec = termBoService.createTermSpecification(campusCodeTermSpec);
 
         // Term 1
@@ -576,8 +857,7 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     private TermDefinition createTermDefinitionInteger(ContextDefinition contextDefinition) {
         // campusCode TermSpec
         TermSpecificationDefinition termSpec =
-            TermSpecificationDefinition.Builder.create(null, TERM_NAME, contextDefinition.getId(),
-                    "java.lang.Integer").build();
+            TermSpecificationDefinition.Builder.create(null, TERM_NAME, contextDefinition.getId(), "java.lang.Integer").build();
         termSpec = termBoService.createTermSpecification(termSpec);
 
         // Term 1
@@ -592,62 +872,50 @@ public class ValidationIntegrationTest extends AbstractBoTest {
     private KrmsAttributeDefinitionBo createEventAttributeDefinition() {
         KrmsAttributeDefinitionService service = KrmsServiceLocatorInternal.getService("krmsAttributeDefinitionService");
         assertNotNull(service);
-        KrmsAttributeDefinitionBo attributeDefinitionBo = new KrmsAttributeDefinitionBo();
-        attributeDefinitionBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);
-        attributeDefinitionBo.setName(EVENT_ATTRIBUTE);
-        attributeDefinitionBo.setLabel("Event");
-        attributeDefinitionBo.setActive(true);
-        attributeDefinitionBo = (KrmsAttributeDefinitionBo) getDataObjectService().save(attributeDefinitionBo, PersistenceOption.FLUSH);
-        assertNotNull(attributeDefinitionBo.getId());
-        return attributeDefinitionBo;
-    }
 
-    private AgendaBo createAgenda(RuleBo ruleBo, ContextBo contextBo, KrmsAttributeDefinitionBo eventAttributeDefinition) {
-        AgendaBo agendaBo = new AgendaBo();
-        agendaBo.setActive(true);
-        agendaBo.setContextId(contextBo.getId());
-        agendaBo.setName("MyAgenda");
-        agendaBo.setTypeId(null);
-        agendaBo = getDataObjectService().save(agendaBo, PersistenceOption.FLUSH);
-
-        AgendaItemBo agendaItemBo = new AgendaItemBo();
-        agendaItemBo.setRule(ruleBo);
-        agendaItemBo.setAgendaId(agendaBo.getId());
-        agendaItemBo = getDataObjectService().save(agendaItemBo, PersistenceOption.FLUSH);
-
-        List<AgendaItemBo> agendaItems = new ArrayList<AgendaItemBo>();
-        agendaItems.add(agendaItemBo);
-        agendaBo.setItems(agendaItems);
-        agendaBo.setFirstItemId(agendaItemBo.getId());
-        agendaBo.setFirstItem(agendaItemBo);
-
-        // also add attribute to the agenda to store event
-        Set<AgendaAttributeBo> agendaAttributes = new HashSet<AgendaAttributeBo>();
-        agendaBo.setAttributeBos(agendaAttributes);
-        AgendaAttributeBo agendaAttribute = new AgendaAttributeBo();
-        agendaAttributes.add(agendaAttribute);
-        agendaAttribute.setAttributeDefinition(eventAttributeDefinition);
-        agendaAttribute.setValue(EVENT_ATTRIBUTE);
-        agendaAttribute.setAgenda(agendaBo);
-//        agendaAttribute.setValue("workflow");
-        agendaBo = getDataObjectService().save(agendaBo, PersistenceOption.FLUSH);
-
-        contextBo.getAgendas().add(agendaBo);
-
-        return agendaBo;
-    }
-
-    class KrmsAttributeTypeDefinitionAndBuilders {
-        KrmsTypeDefinition typeDef;
-        KrmsTypeDefinition.Builder typeDefBuilder;
-        KrmsAttributeDefinition attribDef;
-        KrmsTypeAttribute.Builder typeAttribBuilder;
-        KrmsAttributeTypeDefinitionAndBuilders(KrmsAttributeDefinition krmsAttributeDefinition, KrmsTypeAttribute.Builder krmsAttributeDefinitionBuilder,
-                KrmsTypeDefinition krmsTypeDefinition, KrmsTypeDefinition.Builder krmsTypeDefinitionBuilder) {
-            this.typeDef = krmsTypeDefinition;
-            this.typeDefBuilder = krmsTypeDefinitionBuilder;
-            this.attribDef = krmsAttributeDefinition;
-            this.typeAttribBuilder = krmsAttributeDefinitionBuilder;
+        KrmsAttributeDefinition krmsAttributeDefinition = krmsAttributeDefinitionService.getAttributeDefinitionByNameAndNamespace(
+                EVENT_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE);
+        if (krmsAttributeDefinition == null) {
+            KrmsAttributeDefinition.Builder krmsAttributeDefinitionBuilder = KrmsAttributeDefinition.Builder.create(null, EVENT_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE);
+            krmsAttributeDefinitionBuilder.setLabel("Event");
+            krmsAttributeDefinitionBuilder.setActive(true);
+            krmsAttributeDefinition = krmsAttributeDefinitionService.createAttributeDefinition(krmsAttributeDefinitionBuilder.build());
         }
+
+        assertNotNull(krmsAttributeDefinition.getId());
+
+        return KrmsAttributeDefinitionBo.from(krmsAttributeDefinition);
+    }
+
+    private AgendaDefinition createAgenda(RuleBo ruleBo, ContextBo contextBo, KrmsAttributeDefinitionBo eventAttributeDefinition) {
+
+        KrmsTypeDefinition agendaTypeDefinition =  krmsTypeRepository.getTypeByName(contextBo.getNamespace(), "EventAgenda");
+
+        String attributeId = createUpdateAttribute(EVENT_ATTRIBUTE, KrmsConstants.KRMS_NAMESPACE, "Event");
+
+        if (agendaTypeDefinition == null) {
+            KrmsTypeAttribute.Builder krmsTypeAttributeBuilder = KrmsTypeAttribute.Builder.create(null, attributeId, 1);
+            KrmsTypeDefinition.Builder krmsTypeDefnBuilder = KrmsTypeDefinition.Builder.create("EventAgenda", KrmsConstants.KRMS_NAMESPACE);
+            krmsTypeDefnBuilder.setAttributes(Collections.singletonList(krmsTypeAttributeBuilder));
+            krmsTypeDefnBuilder.setServiceName("AgendaTypeService");
+            agendaTypeDefinition = krmsTypeRepository.createKrmsType(krmsTypeDefnBuilder.build());
+        }
+
+        AgendaDefinition agendaDefinition = AgendaDefinition.Builder.create(null, "testAgenda", null, contextBo.getId()).build();
+        agendaDefinition = ruleManagementService.findCreateAgenda(agendaDefinition);
+        AgendaDefinition.Builder agendaDefinitionBuilder = AgendaDefinition.Builder.create(agendaDefinition);
+
+        RuleDefinition.Builder ruleDefinitionBuilder = RuleDefinition.Builder.create(ruleBo);
+        AgendaItemDefinition.Builder  agendaItemDefininitionBuilder = AgendaItemDefinition.Builder.create(null, agendaDefinition.getId());
+        agendaItemDefininitionBuilder.setRule(ruleDefinitionBuilder);
+        agendaItemDefininitionBuilder.setAgendaId(agendaDefinition.getId());
+        AgendaItemDefinition agendaItemDefinition = ruleManagementService.createAgendaItem(agendaItemDefininitionBuilder.build());
+
+        agendaDefinitionBuilder.setFirstItemId(agendaItemDefinition.getId());
+        //agendaDefinitionBuilder.setAttributes(Collections.singletonMap(eventAttributeDefinition.getName(), EVENT_ATTRIBUTE));
+
+        ruleManagementService.updateAgenda(agendaDefinitionBuilder.build());
+
+        return ruleManagementService.getAgenda(agendaDefinitionBuilder.getId());
     }
 }

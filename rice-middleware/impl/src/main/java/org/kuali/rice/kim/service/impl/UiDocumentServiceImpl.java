@@ -147,6 +147,7 @@ import org.kuali.rice.kns.datadictionary.exporter.AttributesMapBuilder;
 import org.kuali.rice.kns.kim.type.DataDictionaryTypeServiceHelper;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.datadictionary.AttributeDefinition;
@@ -2618,6 +2619,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementRoleDocument.getDelegations()){
 				newKimDelegation = new DelegateTypeBo();
 				KimCommonUtilsInternal.copyProperties(newKimDelegation, roleDocumentDelegation);
+                newKimDelegation = KRADServiceLocator.getDataObjectService().copyInstance(newKimDelegation, CopyOption.RESET_VERSION_NUMBER,CopyOption.RESET_OBJECT_ID);
 				newKimDelegation.setRoleId(identityManagementRoleDocument.getRoleId());
 				if(ObjectUtils.isNotNull(origDelegations)){
 					for(DelegateTypeBo origDelegationImpl: origDelegations){

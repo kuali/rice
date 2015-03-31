@@ -704,16 +704,22 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             throw new IllegalArgumentException("Must delete action request graph from the root, encountered a request with a parent: " + actionRequest);
         }
         deleteActionItemsFromGraph(actionRequest, populateOutbox);
-        if (actionRequest.getActionTakenId() != null) {
-            ActionTakenValue actionTaken = getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId());
-            if (actionTaken != null) {
-                getActionTakenService().delete(actionTaken);
-            }
-        }
+        String actionTakenId = actionRequest.getActionTakenId();
         // delete from the root, it should cascade down to the children
         getDataObjectService().delete(actionRequest);
         // go ahead and flush to ensure that the deletion happens before we return control to the calling code
         getDataObjectService().flush(ActionRequestValue.class);
+
+        // If there are no other actions taken associated with this action request, delete the action taken as well.
+        if (actionTakenId != null) {
+            ActionTakenValue actionTaken = getActionTakenService().findByActionTakenId(actionTakenId);
+            if (actionTaken != null) {
+                Collection<ActionRequestValue> actionRequestValues = actionTaken.getActionRequests();
+                if (actionRequestValues.size() == 0) {
+                    getActionTakenService().delete(actionTaken);
+                }
+            }
+        }
     }
 
     /**

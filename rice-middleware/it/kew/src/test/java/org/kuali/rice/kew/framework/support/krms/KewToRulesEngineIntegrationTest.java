@@ -26,6 +26,8 @@ import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krms.api.KrmsApiServiceLocator;
 import org.kuali.rice.krms.api.KrmsConstants;
+import org.kuali.rice.krms.api.repository.RuleManagementService;
+import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeAttribute;
 import org.kuali.rice.krms.api.repository.type.KrmsTypeDefinition;
@@ -38,6 +40,7 @@ import org.kuali.rice.krms.impl.repository.AgendaItemBo;
 import org.kuali.rice.krms.impl.repository.ContextBo;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionBo;
 import org.kuali.rice.krms.impl.repository.KrmsAttributeDefinitionService;
+import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 import org.kuali.rice.krms.impl.repository.RuleBo;
 import org.kuali.rice.krms.impl.util.KrmsServiceLocatorInternal;
 import org.kuali.rice.test.BaselineTestCase;
@@ -66,6 +69,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
     private static final String EVENT_ATTRIBUTE = "Event";
 
     private DataObjectService dataObjectService;
+    private RuleManagementService ruleManagementService;
 
     private KrmsAttributeDefinition peopleFlowIdAttributeDefinition;
     private KrmsAttributeDefinition peopleFlowNameAttributeDefinition;
@@ -78,6 +82,7 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         loadXmlFile("KewToRulesEngineIntegrationTest.xml");
         dataObjectService = KRADServiceLocator.getDataObjectService();
         assertNotNull(dataObjectService);
+        ruleManagementService = KrmsRepositoryServiceLocator.getService("ruleManagementService");
         PeopleFlowDefinition peopleFlow = createFirstPeopleFlow();
         this.peopleFlowIdAttributeDefinition = createPeopleFlowIdAttributeDefinition();
         this.peopleFlowNameAttributeDefinition = createPeopleFlowNameAttributeDefinition();
@@ -216,7 +221,17 @@ public class KewToRulesEngineIntegrationTest extends KEWTestCase {
         contextBo.setNamespace(KrmsConstants.KRMS_NAMESPACE);
         contextBo.setName("MyContext");
         contextBo.setTypeId(defaultContextType.getId());
-        return dataObjectService.save(contextBo, PersistenceOption.FLUSH);
+
+        ContextDefinition contextDefinition = ruleManagementService.getContextByNameAndNamespace("MyContext", KrmsConstants.KRMS_NAMESPACE);
+
+        if (contextDefinition == null) {
+
+            return ContextBo.from(ruleManagementService.createContext(ContextBo.to(contextBo)));
+        }
+
+        ruleManagementService.updateContext(ContextBo.to(contextBo));
+
+        return ContextBo.from(ruleManagementService.getContextByNameAndNamespace("MyContext", KrmsConstants.KRMS_NAMESPACE));
     }
 
     /**

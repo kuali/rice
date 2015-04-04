@@ -751,6 +751,25 @@
     </testResources>
     <pluginManagement>
       <plugins>
+        <!-- disabling decrypt plugin for kualico release -->
+        <plugin>
+          <groupId>org.kuali.maven.plugins</groupId>
+          <artifactId>properties-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>decrypt</id>
+              <goals>
+                <goal>decryptall</goal>
+              </goals>
+              <phase>none</phase>
+              <configuration>
+                <quiet>true</quiet>
+                <password>${enc.password}</password>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>

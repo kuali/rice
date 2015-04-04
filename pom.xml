@@ -50,6 +50,11 @@
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
 
 
+    <!--added for KualiCo's release process -->
+    <maven-scm-provider-gitexe.version>1.9.2</maven-scm-provider-gitexe.version>
+    <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+
+
     <!-- These properties modify the release process -->
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
     <kuali.release.goals>deploy</kuali.release.goals>
@@ -705,6 +710,18 @@
     </testResources>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.scm</groupId>
+              <artifactId>maven-scm-provider-gitexe</artifactId>
+              <version>${maven-scm-provider-gitexe.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>
@@ -2540,9 +2557,10 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:git:git://github.com/rSmart/kuali_rice.git</connection>
-    <developerConnection>scm:git:git@github.com:rSmart/kuali_rice.git</developerConnection>
-    <url>https://github.com/rSmart/kuali_rice</url>
+    <connection>scm:git:git://github.com/kualico/rice-kc.git</connection>
+    <developerConnection>scm:git:git@github.com:kualico/rice-kc.git</developerConnection>
+    <url>https://github.com/kualico/rice-kc</url>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>

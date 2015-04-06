@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.5.4.1-kckualico-SNAPSHOT</version>
+  <version>2.5.4.0-kckualico-SNAPSHOT</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -280,6 +280,11 @@
 
     <jdk.source.version>1.6</jdk.source.version>
     <jdk.target.version>1.6</jdk.target.version>
+
+    <!-- disable kuali release logic -->
+    <kuali.release.arguments></kuali.release.arguments>
+    <kuali.release.profiles>release-profile</kuali.release.profiles>
+    <kuali.release.use.maven.profile>true</kuali.release.use.maven.profile>
 
     <error_prone_core.version>2.0.1</error_prone_core.version>
     <plexus-compiler-javac.version>2.5</plexus-compiler-javac.version>
@@ -751,25 +756,6 @@
     </testResources>
     <pluginManagement>
       <plugins>
-        <!-- disabling decrypt plugin for kualico release -->
-        <plugin>
-          <groupId>org.kuali.maven.plugins</groupId>
-          <artifactId>properties-maven-plugin</artifactId>
-          <executions>
-            <execution>
-              <id>decrypt</id>
-              <goals>
-                <goal>decryptall</goal>
-              </goals>
-              <phase>none</phase>
-              <configuration>
-                <quiet>true</quiet>
-                <password>${enc.password}</password>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
@@ -781,6 +767,13 @@
               <version>${maven-scm-provider-gitexe.version}</version>
             </dependency>
           </dependencies>
+          <configuration>
+            <arguments>${kuali.release.arguments}</arguments>
+            <releaseProfiles>${kuali.release.profiles}</releaseProfiles>
+            <useReleaseProfile>${kuali.release.use.maven.profile}</useReleaseProfile>
+            <preparationGoals>${kuali.release.prepare.goals}</preparationGoals>
+            <goals>${kuali.release.goals}</goals>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>

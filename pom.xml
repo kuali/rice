@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.5.4.0-kckualico-SNAPSHOT</version>
+  <version>2.5.4.0-kckualico</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -282,7 +282,7 @@
     <jdk.target.version>1.6</jdk.target.version>
 
     <!-- disable kuali release logic -->
-    <kuali.release.arguments></kuali.release.arguments>
+    <kuali.release.arguments />
     <kuali.release.profiles>release-profile</kuali.release.profiles>
     <kuali.release.use.maven.profile>true</kuali.release.use.maven.profile>
 
@@ -2613,7 +2613,7 @@
     <connection>scm:git:git://github.com/kualico/rice-kc.git</connection>
     <developerConnection>scm:git:git@github.com:kualico/rice-kc.git</developerConnection>
     <url>https://github.com/kualico/rice-kc</url>
-    <tag>HEAD</tag>
+    <tag>rice-2.5.4.0-kckualico</tag>
   </scm>
 
   <distributionManagement>

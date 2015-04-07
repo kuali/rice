@@ -19,6 +19,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -29,7 +30,6 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.testclient1.RemotedObject;
 import org.kuali.rice.ksb.testclient1.TestClient1ObjectToBeRemoted;
-import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 

@@ -32,11 +32,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -122,7 +125,10 @@ public class UserLoginFilter implements Filter {
         KimPrincipal principal = null;
 
         IdentityManagementService idmService = KIMServiceLocator.getIdentityManagementService();
-        principalName = idmService.getAuthenticatedPrincipalName(request);
+        
+        principalName = ((AuthenticationService) 
+				GlobalResourceLoader.getResourceLoader().getService(
+						new QName("kimAuthenticationService"))).getPrincipalName(request);
         	
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Looking up principal by name: " + principalName);

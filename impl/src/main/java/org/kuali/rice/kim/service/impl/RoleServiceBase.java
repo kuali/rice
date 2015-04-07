@@ -37,6 +37,7 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
@@ -1418,6 +1419,37 @@ public class RoleServiceBase {
                 KimConstants.SequenceNames.KRIM_DLGN_MBR_ID_S,
                 KimDelegationImpl.class);
         return nextSeq.toString();
+    }
+    
+	protected KimRoleInfo toKimRoleInfo(RoleImpl kimRole) {
+		KimRoleInfo info = null;
+
+        if (kimRole != null) {
+            info = new KimRoleInfo();
+
+            info.setActive(kimRole.isActive());
+            info.setKimTypeId(kimRole.getKimTypeId());
+            info.setNamespaceCode(kimRole.getNamespaceCode());
+            info.setRoleDescription(kimRole.getRoleDescription());
+            info.setRoleId(kimRole.getRoleId());
+            info.setRoleName(kimRole.getRoleName());
+        }
+
+        return info;
+    }
+    
+    protected List<KimRoleInfo> toKimRoleInfo(List<RoleImpl> kimRoles){
+    	List<KimRoleInfo> lRet = null;
+
+    	if(kimRoles != null){
+    		lRet = new ArrayList<KimRoleInfo>();
+
+    		for(RoleImpl ri: kimRoles){
+    			lRet.add(this.toKimRoleInfo(ri));
+    		}
+    	}
+
+    	return lRet;
     }
     
     protected BusinessObjectService getBusinessObjectService() {

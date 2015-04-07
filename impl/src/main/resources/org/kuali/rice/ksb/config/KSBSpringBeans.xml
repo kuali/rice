@@ -220,7 +220,6 @@
 				<entry key="enThreadPool"><ref bean="enThreadPool"/></entry>
 				<entry key="enScheduledThreadPool"><ref bean="enScheduledThreadPool"/></entry>
 				<entry key="cxf"><ref bean="cxf"/></entry>
-				<entry key="org.apache.cxf.endpoint.ServerRegistry"><ref bean="org.apache.cxf.endpoint.ServerRegistry"/></entry>
 			</map>
 		</property>
 	</bean>

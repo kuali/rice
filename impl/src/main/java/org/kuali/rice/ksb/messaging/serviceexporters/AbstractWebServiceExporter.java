@@ -118,10 +118,6 @@ public abstract class AbstractWebServiceExporter {
     }
 
     protected ServerRegistry getCXFServerRegistry() {
-    	if (this.serviceLocator != null) {
-    		return serviceLocator.getCXFServerRegistry();
-    	}
-    	return KSBServiceLocator.getCXFServerRegistry();
+    	return getCXFBus().getExtension(ServerRegistry.class);
     }
-
 }

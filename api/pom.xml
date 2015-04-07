@@ -94,16 +94,13 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+        	<artifactId>javax.servlet-api</artifactId>
+        	<scope>provided</scope>
 		</dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxrs</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-        	<groupId>org.apache.geronimo.specs</groupId>
-        	<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
         </dependency>
         <dependency>
        		<groupId>org.apache.geronimo.specs</groupId>

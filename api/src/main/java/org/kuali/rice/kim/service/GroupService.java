@@ -25,7 +25,6 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -83,7 +82,7 @@ public interface GroupService {
      *
      * <p>This method returns it's results as a List of GroupInfo objects that match the given search criteria.
      */
-    List<? extends Group> lookupGroups(@WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
+    List<GroupInfo> lookupGroups(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, String> searchCriteria);
 
     /**
      * Get the group by the given id.
@@ -100,7 +99,7 @@ public interface GroupService {
      *
      * <p>The result is a Map containing the group id as the key and the group info as the value.
      */
-    @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String, GroupInfo> getGroupInfos(@WebParam(name="groupIds") Collection<String> groupIds);
+    Map<String, GroupInfo> getGroupInfos(@WebParam(name="groupIds") Collection<String> groupIds);
 
 	/**
 	 * Check whether the give principal is a member of the group.

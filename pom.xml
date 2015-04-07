@@ -39,9 +39,10 @@
     <kuali.release.prepare.goals>clean</kuali.release.prepare.goals>
     <kuali.release.goals>deploy</kuali.release.goals>
     <kuali.release.arguments>-DskipTests</kuali.release.arguments>
+	<maven.surefire.forkedProcessTimeoutInSeconds>7200</maven.surefire.forkedProcessTimeoutInSeconds>
 
-    <kuali.compile.source>1.5</kuali.compile.source>
-    <kuali.compile.target>1.5</kuali.compile.target>
+    <kuali.compile.source>1.6</kuali.compile.source>
+    <kuali.compile.target>1.6</kuali.compile.target>
     <kuali.clover.generate.info.phase>none</kuali.clover.generate.info.phase>
     <kuali.javadoc.report.2>javadoc</kuali.javadoc.report.2>
     <plugin.site.version>2.3</plugin.site.version>
@@ -51,7 +52,7 @@
     <test.includes>**/*Test.java</test.includes>
 
     <acegi.version>1.0.6</acegi.version>
-    <asm.version>2.2.3</asm.version>
+    <asm.version>3.3.1</asm.version>
     <bcel.version>5.1</bcel.version>
     <bcprov.version>1.45</bcprov.version>
     <bsf.version>2.4.0</bsf.version>
@@ -70,10 +71,10 @@
     <commons-pool.version>1.2</commons-pool.version>
     <concurrent.version>1.3.4</concurrent.version>
     <connector-api.version>1.5</connector-api.version>
-    <cxf.version>2.2.9</cxf.version>
+    <cxf.version>2.7.15</cxf.version>
     <db-ojb.version>1.0.4-patch6</db-ojb.version>
     <derby.version>10.2.2.0</derby.version>
-    <displaytag.version>1.1</displaytag.version>
+    <displaytag.version>1.2</displaytag.version>
     <dwr.version>1.1.3</dwr.version>
     <geronimo-ws-metadata.version>1.1.2</geronimo-ws-metadata.version>
     <geronimo-annotation.version>1.1.1</geronimo-annotation.version>
@@ -81,16 +82,18 @@
     <hibernate-entitymanager.version>3.3.1.ga</hibernate-entitymanager.version>
     <hibernate.version>3.2.6.ga</hibernate.version>
     <htmlunit.version>1.13</htmlunit.version>
-    <jasper-compiler-jdt.version>5.5.15</jasper-compiler-jdt.version>
-    <jasper-compiler.version>5.5.15</jasper-compiler.version>
-    <jasper-runtime.version>5.5.15</jasper-runtime.version>
     <javamail.version>1.4</javamail.version>
+    <!-- Can't get rid of this dependency until the JAXB RI in our 
+         current JDK is >= this version. As of JDK 7, it's 2.2.4 -->
+    <jaxb-impl.version>2.2.6</jaxb-impl.version>
+    <javax.ws.rs-api.version>2.0-m10</javax.ws.rs-api.version>
     <jaxen.version>1.1.1</jaxen.version>
     <jdom.version>1.0</jdom.version>
-    <jetty.version>6.1.1</jetty.version>
+    <jetty.version>8.1.7.v20120910</jetty.version>
     <jmeter.version>2.3-RC4</jmeter.version>
     <jotm.version>2.0.10</jotm.version>
-    <jstl.version>1.1.2</jstl.version>
+   	<jstl.version>1.2</jstl.version>
+	<jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
     <jta.version>1.0.1B</jta.version>
     <junit.version>4.4</junit.version>
     <log4j.version>1.2.14</log4j.version>
@@ -99,15 +102,17 @@
     <oro.version>2.0.8</oro.version>
     <oscache.version>2.3.2</oscache.version>
     <quartz.version>1.6.0</quartz.version>
-    <servlet-api.version>2.4</servlet-api.version>
+    <serializer.version>2.7.1</serializer.version>
+    <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.6.1</slf4j.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>2.5.6</spring.version>
+    <stax2-api.version>3.1.4</stax2-api.version>
     <struts-el.version>1.2.9</struts-el.version>
     <struts.version>1.2.9</struts.version>
-    <taglibs-standard.version>1.1.2</taglibs-standard.version>
-    <wss4j.version>1.5.1</wss4j.version>
-    <xalan.version>2.7.0</xalan.version>
+    <struts-taglib.version>1.3.10</struts-taglib.version>
+    <wss4j.version>1.6.18</wss4j.version>
+    <xalan.version>2.7.1</xalan.version>
     <xapool.version>1.5.0-patch3</xapool.version>
     <xercesImpl.version>2.9.1</xercesImpl.version>
     <xstream.version>1.2.2</xstream.version>
@@ -159,6 +164,132 @@
           </testResource>
         </testResources>
         <plugins>
+        <!--
+		    This plugin helps enforce that excluded dependencies stay excluded 
+			and don't sneak back in through another dependency (a global ban). Here are 
+			a few common situations this plugin helps with:
+			
+			1) multiple implementations of a dependency - you only want to use one implementation
+			   (ex: commons-logging vs jcl-over-slf4j, javax.mail vs geronimo-javamail_1.4_spec)
+			2) similar maven artifacts are produced for the same project - you only need to include one 
+			   (ex: cglib vs cglib-nodep)
+			3) an artifact's group id or artifact id has been renamed - maven considers these different
+			   artifacts and you only want to include one
+			   (ex: opensymphony:quartz vs org.opensymphony.quartz:quartz vs org.quartz-scheduler:quartz)
+			4) an artifact was added to the container and no longer is needed
+			   (ex: jaxb in java 6) This plugin is also enforcing maven and jdk versions.
+	      -->
+		  <plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-enforcer-plugin</artifactId>
+			<version>1.0-beta-1</version>
+			<executions>
+			  <execution>
+				<id>enforce-banned-dependencies</id>
+				<goals>
+				  <goal>enforce</goal>
+				</goals>
+				<configuration>
+				  <rules>
+					<bannedDependencies>
+						<excludes>
+							<!-- renamed (decrecated) groupids -->
+							<exclude>wss4j</exclude>
+							<exclude>acegisecurity</exclude>
+							<exclude>xstream</exclude>
+							<exclude>uk.ltd.getahead</exclude>
+							<exclude>quartz</exclude>
+							<exclude>groovy</exclude>
+									
+							<!-- already including cglib-nodep -->
+							<exclude>cglib:cglib</exclude>
+
+							<!-- excluding old jstl implementations which can cause hard-to-detect errors -->
+							<exclude>taglibs:standard</exclude>
+							<exclude>javax.servlet:jstl</exclude> <!-- allowing (including) a specific version below -->
+
+							<!-- already including javax.mail -->
+							<exclude>javamail</exclude>
+							<exclude>geronimo:geronimo-mail</exclude>
+							<exclude>org.apache.geronimo.javamail:geronimo-javamail_1.4_mail</exclude>
+							<exclude>org.apache.geronimo.javamail:geronimo-javamail_1.3.1_mail</exclude>
+							<exclude>org.apache.geronimo.modules:geronimo-mail</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-javamail_1.3.1_spec</exclude>
+
+							<!-- already including javax.transation -->
+							<exclude>org.apache.geronimo.specs:geronimo-jta_1.1_spec</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec</exclude>
+							<exclude>geronimo-spec:geronimo-spec-jta</exclude>
+							<exclude>org.ow2.spec.ee:ow2-jta-1.1-spec</exclude>
+							<exclude>jta</exclude>
+
+							<!-- activation apis - in jdk 6 -->
+							<exclude>org.apache.geronimo.specs:geronimo-activation_1.0.2_spec</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec</exclude>
+
+							<!-- metadata apis - in jdk 6 -->
+							<exclude>javax.jws</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec</exclude>
+
+							<!-- These are repackaged parser apis - some of these apis are 
+								included in jdk 6. The non-jdk parsers can be added indivually if needed. -->
+							<exclude>xerces:xmlParserAPIs</exclude>
+							
+							<!-- group ids for many sun xml apis - in jdk 6 -->
+							<exclude>javax.xml</exclude>
+							<exclude>com.sun.xml</exclude>
+
+							<!-- jaxb apis - in jdk 6 -->
+							<exclude>javax.xml.bind</exclude>
+							<exclude>com.sun.xml.bind</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-jaxb_2.1_spec</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-jaxb_2.2_spec</exclude>
+
+							<!-- jaxws apis - in jdk 6 -->
+							<exclude>javax.xml.ws</exclude>
+							<exclude>com.sun.xml.ws</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-jaxws_2.1_spec</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-jaxws_2.2_spec</exclude>
+
+							<!-- stax apis - in jdk 6 -->
+							<exclude>javax.xml.stream</exclude>
+							<exclude>com.sun.xml.stream</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-stax-api_1.0_spec</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-stax-api_1.2_spec</exclude>
+							<exclude>stax</exclude>
+
+							<!-- jaxp apis - in jdk 6 -->
+							<exclude>javax.xml.parsers</exclude>
+							<exclude>com.sun.xml.parsers</exclude>
+							<exclude>org.apace.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.4</exclude>
+							<exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.jaxp-api-1.3</exclude>
+
+							<!-- saaj apis - in jdk 6 -->
+							<exclude>javax.xml.soap</exclude>
+							<exclude>javax.xml.soap:saaj-api</exclude>
+							<exclude>javax.xml.soap:saaj-impl</exclude>
+							<exclude>com.sun.xml.messaging.saaj</exclude>
+							<exclude>org.apache.geronimo.specs:geronimo-saaj_1.3_spec</exclude>
+							<exclude>geronimo-spec:geronimo-spec-saaj</exclude>
+							<exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.saaj-api-1.3</exclude>
+						</excludes>
+
+						<includes>
+							<!-- including because the compiler is not standard in the jdk -->
+							<include>com.sun.xml.bind:jaxb-xjc</include>
+							<include>com.sun.xml.bind:jaxb-impl</include>
+							
+							<!-- only allow in this specific version -->
+							<include>javax.servlet:jstl:1.2</include>
+						</includes>
+					  </bannedDependencies>
+				    </rules>
+			      <fail>true</fail>
+		        </configuration>
+		      </execution>
+		    </executions>
+		  </plugin>
           <plugin>
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
@@ -181,7 +312,7 @@
               </includes>
               <forkMode>once</forkMode>
               <reportFormat>plain</reportFormat>
-              <argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
+              <argLine>-Xmx1536m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</argLine>
             </configuration>
           </plugin>
           <plugin>
@@ -346,18 +477,30 @@
         <groupId>org.acegisecurity</groupId>
         <artifactId>acegi-security</artifactId>
         <version>${acegi.version}</version>
+      	<exclusions>
+			<exclusion>
+				<artifactId>commons-logging</artifactId>
+				<groupId>commons-logging</groupId>
+			</exclusion>
+		</exclusions>
       </dependency>
       <dependency>
         <groupId>org.acegisecurity</groupId>
         <artifactId>acegi-security-cas</artifactId>
         <version>${acegi.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <!-- Force servlet-api to scope=provided -->
       <dependency>
         <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
+        <artifactId>javax.servlet-api</artifactId>
         <version>${servlet-api.version}</version>
-        <scope>provided</scope>
+        <scope>compile</scope>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -375,6 +518,16 @@
         <groupId>cas</groupId>
         <artifactId>casclient</artifactId>
         <version>${casclient.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.jasig.cas</groupId>
@@ -402,51 +555,84 @@
         <version>${jmeter.version}</version>
         <scope>provided</scope>
       </dependency>
+      
+      <!-- the jsp libraries have not been moved over to eclipse as of jetty 8 - this is required for jetty 8 -->
       <dependency>
         <groupId>org.mortbay.jetty</groupId>
-        <artifactId>jetty</artifactId>
-        <version>${jetty.version}</version>
-        <scope>compile</scope>
+		<artifactId>jsp-2.1-glassfish</artifactId>
+		<version>${jsp-2.1-glassfish.version}</version>
+		<scope>compile</scope>
         <exclusions>
           <exclusion>
-            <artifactId>servlet-api-2.5</artifactId>
-            <groupId>org.mortbay.jetty</groupId>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>servlet-api</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
+      </dependency>    
+      
+     <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+		<artifactId>jsp-api-2.1-glassfish</artifactId>
+		<version>${jsp-2.1-glassfish.version}</version>
+		<scope>compile</scope>
+        <exclusions>
+          <exclusion>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>servlet-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency> 
+         
       <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>jstl</artifactId>
+        <!--
+          KULRICE-7262: Bad jstl version in maven repository
+          When we are able to bump this version, go back to the javax.servlet artifact.
+
+          Note that the rice-core-impl, rice-core-service-impl, and rice-impl poms also need
+          to have this changed. Search on the Jira tag to easily find all the changes.
+        -->
+        <!-- <groupId>javax.servlet</groupId>
+             <artifactId>jstl</artifactId> -->
+        <groupId>org.glassfish.web</groupId>
+        <artifactId>jstl-impl</artifactId>
         <version>${jstl.version}</version>
-      </dependency>
+        <exclusions>
+          <exclusion>
+            <artifactId>servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jsp-api</artifactId>
+            <groupId>javax.servlet.jsp</groupId>
+          </exclusion>
+        </exclusions>
+        <!-- should be provided scope on newer containers like tomcat 7 -->
+        <scope>compile</scope>
+      </dependency>          
+      
       <dependency>
-        <groupId>taglibs</groupId>
-        <artifactId>standard</artifactId>
-        <version>${taglibs-standard.version}</version>
+        <groupId>org.apache.struts</groupId>
+        <artifactId>struts-taglib</artifactId>
+        <version>${struts-taglib.version}</version>
       </dependency>
-      <dependency>
-        <groupId>tomcat</groupId>
-        <artifactId>jasper-compiler</artifactId>
-        <version>${jasper-compiler.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>tomcat</groupId>
-        <artifactId>jasper-runtime</artifactId>
-        <version>${jasper-runtime.version}</version>
-        <scope>provided</scope>
-      </dependency>
-      <dependency>
-        <groupId>tomcat</groupId>
-        <artifactId>jasper-compiler-jdt</artifactId>
-        <version>${jasper-compiler-jdt.version}</version>
-        <scope>provided</scope>
-      </dependency>
+           
       <dependency>
         <groupId>xalan</groupId>
         <artifactId>xalan</artifactId>
         <version>${xalan.version}</version>
       </dependency>
+      <dependency>
+        <groupId>xalan</groupId>
+        <artifactId>serializer</artifactId>
+        <version>${serializer.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+         
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
@@ -468,6 +654,10 @@
           <exclusion>
             <artifactId>avalon-framework</artifactId>
             <groupId>avalon-framework</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -501,6 +691,31 @@
         <groupId>wss4j</groupId>
         <artifactId>wss4j</artifactId>
         <version>${wss4j.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <groupId>bouncycastle</groupId>
+            <artifactId>bcprov-jdk14</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.ws.security</groupId>
+        <artifactId>wss4j</artifactId>
+        <version>${wss4j.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk14</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>commons-lang</groupId>
@@ -516,17 +731,33 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
           </exclusion>
-        </exclusions>
+		  <exclusion>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+		  </exclusion>
+		</exclusions>
       </dependency>
       <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
         <version>${commons-beanutils.version}</version>
+        <exclusions>
+		  <exclusion>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+		  </exclusion>
+		</exclusions>
       </dependency>
       <dependency>
         <groupId>commons-httpclient</groupId>
         <artifactId>commons-httpclient</artifactId>
         <version>${commons-httpclient.version}</version>
+        <exclusions>
+		  <exclusion>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+		  </exclusion>
+		</exclusions>
       </dependency>
       <dependency>
         <groupId>commons-dbcp</groupId>
@@ -602,11 +833,35 @@
         <groupId>struts</groupId>
         <artifactId>struts-el</artifactId>
         <version>${struts-el.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>displaytag</groupId>
         <artifactId>displaytag</artifactId>
         <version>${displaytag.version}</version>
+         <exclusions>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl104-over-slf4j</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+          </exclusion>
+        </exclusions> 
       </dependency>
       <dependency>
         <groupId>com.thoughtworks.xstream</groupId>
@@ -617,6 +872,16 @@
         <groupId>opensymphony</groupId>
         <artifactId>oscache</artifactId>
         <version>${oscache.version}</version>
+        <exclusions>
+		  <exclusion>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+		  </exclusion>
+		  <exclusion>
+            <artifactId>servlet-api</artifactId>
+            <groupId>javax.servlet</groupId>
+          </exclusion>
+		</exclusions>
       </dependency>
       <dependency>
         <groupId>dwr</groupId>
@@ -628,6 +893,10 @@
             <groupId>xerces</groupId>
             <artifactId>xmlParserAPIs</artifactId>
           </exclusion>
+		  <exclusion>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+		  </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -657,11 +926,23 @@
         <groupId>bsf</groupId>
         <artifactId>bsf</artifactId>
         <version>${bsf.version}</version>
+        <exclusions>
+		  <exclusion>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+		  </exclusion>
+		</exclusions>
       </dependency>
       <dependency>
         <groupId>bcel</groupId>
         <artifactId>bcel</artifactId>
         <version>${bcel.version}</version>
+        <exclusions>
+		  <exclusion>
+			<artifactId>commons-logging</artifactId>
+			<groupId>commons-logging</groupId>
+		  </exclusion>
+		</exclusions>
       </dependency>
       <dependency>
         <groupId>xerces</groupId>
@@ -698,6 +979,10 @@
         <artifactId>cxf-rt-frontend-jaxws</artifactId>
         <version>${cxf.version}</version>
         <exclusions>
+          <exclusion>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+		  </exclusion>
           <!-- avoids conflict with javamail -->
           <exclusion>
             <groupId>org.apache.geronimo.specs</groupId>
@@ -711,17 +996,6 @@
       </dependency>
       <dependency>
         <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-common-utilities</artifactId>
-        <version>${cxf.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-rt-frontend-jaxrs</artifactId>
         <version>${cxf.version}</version>
         <exclusions>
@@ -729,6 +1003,10 @@
           <exclusion>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -746,6 +1024,16 @@
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-rt-ws-security</artifactId>
         <version>${cxf.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.cxf</groupId>
@@ -755,6 +1043,14 @@
           <exclusion>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
+		  </exclusion>
+		  <exclusion>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-activation_1.1_spec</artifactId>
+		  </exclusion>
+		  <exclusion>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -771,12 +1067,84 @@
             <artifactId>geronimo-activation_1.1_spec</artifactId>
             <groupId>org.apache.geronimo.specs</groupId>
           </exclusion>
+          <exclusion>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+          </exclusion>
+		  <exclusion>
+			<groupId>com.sun.xml.bind</groupId>
+			<artifactId>jaxb-impl</artifactId>
+	      </exclusion>
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>org.apache.geronimo.specs</groupId>
-        <artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
-        <version>${geronimo-ws-metadata.version}</version>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-core</artifactId>
+        <version>${cxf.version}</version>
+		<exclusions>
+			<exclusion>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-javamail_1.4_spec</artifactId>
+			</exclusion>
+		</exclusions>
+      </dependency> 
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-bindings-soap</artifactId>
+        <version>${cxf.version}</version>
+		<exclusions>
+			<exclusion>
+				<groupId>com.sun.xml.bind</groupId>
+				<artifactId>jaxb-impl</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>javax.xml.soap</groupId>
+				<artifactId>saaj-api</artifactId>
+			</exclusion>
+		</exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-api</artifactId>
+        <version>${cxf.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-javamail_1.4_spec</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <!--
+        There appears to be a problem with the 2.2.5 version of jaxb-impl which cxf 2.7.0 depends on by default.
+        Get the following exception when attempting to run cxf-java2ws-plugin on services that use certain Enums:
+
+        java.lang.ClassCastException: com.sun.xml.bind.v2.model.impl.RuntimeEnumLeafInfoImpl cannot be cast to com.sun.xml.bind.v2.model.impl.ClassInfoImpl
+
+        One of the specific offenders here is WorkflowDocumentService and it's use of DocumentStatus enum.
+        Switching to jaxb-impl version 2.2.6 causes the problem to go away.
+      -->
+      <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>${jaxb-impl.version}</version>
+      </dependency>
+      
+      <dependency>
+          <groupId>com.sun.xml.bind</groupId>
+          <artifactId>jaxb-xjc</artifactId>
+          <version>${jaxb-impl.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.geronimo.specs</groupId>
@@ -813,6 +1181,25 @@
         <artifactId>jaxen</artifactId>
         <version>${jaxen.version}</version>
       </dependency>
+      
+      <dependency>
+    	<groupId>javax.ws.rs</groupId>
+    	<artifactId>javax.ws.rs-api</artifactId>
+    	<version>${javax.ws.rs-api.version}</version>
+	  </dependency>
+
+	  <dependency>
+ 	    <groupId>org.eclipse.jetty</groupId>
+ 	    <artifactId>jetty-deploy</artifactId>
+ 	    <version>${jetty.version}</version>  
+ 	  </dependency> 	 	                
+ 	   	                
+ 	  <dependency>
+ 	    <groupId>org.eclipse.jetty</groupId>
+ 	    <artifactId>jetty-webapp</artifactId>
+ 	    <version>${jetty.version}</version>      
+ 	  </dependency>
+ 	   
     </dependencies>
   </dependencyManagement>
 

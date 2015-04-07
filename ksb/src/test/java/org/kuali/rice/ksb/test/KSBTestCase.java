@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
+import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -36,7 +37,6 @@ import org.kuali.rice.ksb.server.TestClient1;
 import org.kuali.rice.ksb.server.TestClient2;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.test.RiceTestCase;
-import org.mortbay.jetty.webapp.WebAppClassLoader;
 import org.springframework.context.ApplicationContext;
 
 

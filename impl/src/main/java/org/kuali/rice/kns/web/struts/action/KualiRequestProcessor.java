@@ -19,6 +19,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -34,10 +35,12 @@ import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.util.RequestUtils;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -163,7 +166,10 @@ public class KualiRequestProcessor extends RequestProcessor {
 	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
 		UserSession userSession = null;
 		if (!isUserSessionEstablished(request)) {
-			String principalName = getIdentityManagementService().getAuthenticatedPrincipalName(request);
+			String principalName = ((AuthenticationService) 
+					GlobalResourceLoader.getResourceLoader().getService(
+							new QName("kimAuthenticationService"))).getPrincipalName(request);
+	        	
 			if ( StringUtils.isNotBlank(principalName) ) {
 				KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
 				if ( principal != null ) {

@@ -29,7 +29,6 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.mortbay.log.Log;
 
 import javax.jws.WebService;
 import java.util.*;
@@ -121,7 +120,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
        if (!CollectionUtils.isEmpty(memberPrincipalsAfter)) {
     	   // should never happen!
-    	   Log.warn("after attempting removal of all members, group with id '" + groupId + "' still has principal members");
+    	   LOG.warn("after attempting removal of all members, group with id '" + groupId + "' still has principal members");
        }
 
        // do updates

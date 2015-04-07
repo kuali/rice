@@ -22,7 +22,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.AttributeSetAdapter;
@@ -198,16 +197,6 @@ public interface IdentityManagementService {
     		@WebParam(name="groupId") String groupId,
     		@WebParam(name="groupInfo") GroupInfo groupInfo
     );
-
-	// *******************************
-	// AuthenticationService
-	// *******************************
-    @WebMethod(exclude=true)
-	String getAuthenticatedPrincipalName( @WebParam(name="request") HttpServletRequest request);
-
-	// *******************************
-	// AuthorizationService
-	// *******************************
 
     // --------------------
     // Authorization Checks

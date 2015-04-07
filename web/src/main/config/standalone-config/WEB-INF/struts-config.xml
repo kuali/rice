@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
 
-<struts-config>
-    <data-sources />
-  
+<struts-config> 
     <form-beans>
     	<!-- Begin required KNS forms -->
         <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />

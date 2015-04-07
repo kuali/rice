@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.bus.CXFBusImpl;
-import org.apache.cxf.endpoint.ServerRegistry;
 import org.kuali.rice.ksb.messaging.MessageHelper;
 import org.kuali.rice.ksb.messaging.threadpool.KSBScheduledPool;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
@@ -66,9 +65,4 @@ public class KSBContextServiceLocator {
     	return (CXFBusImpl) getService("cxf");
     }
     
-    public ServerRegistry getCXFServerRegistry(){
-    	return (ServerRegistry)getService("org.apache.cxf.endpoint.ServerRegistry");
-    }
-
-
 }

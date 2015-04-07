@@ -14,20 +14,23 @@
         <title>Overview</title>
         <para>This Release Notes documentation includes information on the list of changes between
             Rice ${previous.version} (released ${previous.reldate}) and Rice ${pom.version}. There are no
-            database or impacting changes between Rice ${previous.version} and ${pom.version} and ${pom.version}
-            should be a drop-in replacement.</para>
+            database between Rice ${previous.version} and ${pom.version} and ${pom.version}.</para>
         <para>The scope of changes for Rice ${pom.version} are critical security fixes.</para>
+        <para>As part of the security updates multiple dependencies needed to be updated including CXF.
+            As a result Java 5 is no longer supported. The method signature of GroupService.lookupGroups
+            and RoleService.getRolesSearchResults were changed and 
+            IdentityManagementService.getAuthenticatedPrincipalName was removed.
+            Details are are at https://wiki.kuali.org/display/KULRICE/Rice+1.0+Impacting+Changes</para>
         <para>If you encounter any difficulty, please don’t hesitate to contact the Rice team on our
             public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
 
-        <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link
-                xlink:href="http://kuali.org/rice/download"
-            >http://kuali.org/rice/download</link>.</para>
+        <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at 
+            <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
         <para>There are three different distributions of Rice available: source, binary and server.
             Please read the Installation Guide for more details on each of these
             distributions.</para>
-        <para>Documentation for this release can be found at at <link
-                xlink:href="https://wiki.kuali.org/display/KULRICE/Home+%28${pom.version}%29"
+        <para>Documentation for this release can be found at at 
+            <link xlink:href="https://wiki.kuali.org/display/KULRICE/Home+%28${pom.version}%29"
                 >https://wiki.kuali.org/display/KULRICE/Home+%28${pom.version}%29</link>.</para>
     </sect1>
 </article>

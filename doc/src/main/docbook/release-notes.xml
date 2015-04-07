@@ -20,7 +20,8 @@
             As a result Java 5 is no longer supported. The method signature of GroupService.lookupGroups
             and RoleService.getRolesSearchResults were changed and 
             IdentityManagementService.getAuthenticatedPrincipalName was removed.
-            Details are are at https://wiki.kuali.org/display/KULRICE/Rice+1.0+Impacting+Changes</para>
+            Details are are at <link xlink:href="https://wiki.kuali.org/display/KULRICE/Rice+1.0+Impacting+Changes"
+                >https://wiki.kuali.org/display/KULRICE/Rice+1.0+Impacting+Changes</link></para>
         <para>If you encounter any difficulty, please don’t hesitate to contact the Rice team on our
             public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
 

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
@@ -191,7 +192,8 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 	 * @see org.kuali.rice.kim.service.GroupService#lookupGroups(java.util.Map)
 	 */
     @SuppressWarnings("unchecked")
-	public List<? extends Group> lookupGroups(Map<String, String> searchCriteria) {
+    @WebMethod(exclude = true)
+    public List<GroupInfo> lookupGroups(Map<String, String> searchCriteria) {
     	return this.toGroupInfo( kimGroupDao.getGroups(searchCriteria));
 	}
 

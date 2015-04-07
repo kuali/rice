@@ -625,7 +625,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRolesSearchResults(java.util.Map)
 	 */
-	public List<? extends Role> getRolesSearchResults(
+	public List<KimRoleInfo> getRolesSearchResults(
 			Map<String, String> fieldValues) {
 		return getRoleService().getRolesSearchResults(fieldValues);
 	}

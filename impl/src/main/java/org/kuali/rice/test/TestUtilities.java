@@ -24,11 +24,11 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
+import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.mortbay.jetty.webapp.WebAppClassLoader;
 
 public class TestUtilities {
 	

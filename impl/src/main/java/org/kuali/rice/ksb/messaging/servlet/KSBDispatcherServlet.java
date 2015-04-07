@@ -17,17 +17,24 @@
 package org.kuali.rice.ksb.messaging.servlet;
 
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Vector;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
+import org.apache.commons.collections.EnumerationUtils;
 import org.apache.cxf.Bus;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.transport.servlet.ServletController;
-import org.apache.cxf.transport.servlet.ServletTransportFactory;
+import org.apache.cxf.transport.http.DestinationRegistry;
+import org.apache.cxf.transport.http.HTTPTransportFactory;
+import org.apache.cxf.transport.servlet.servicelist.ServiceListGeneratorServlet;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -47,6 +54,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter;
 import org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter;
+import org.apache.cxf.message.Message;
 
 
 /**
@@ -68,31 +76,64 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		
         Bus bus = KSBServiceLocator.getCXFBus();
 
-        List<Interceptor> inInterceptors = KSBServiceLocator.getInInterceptors();
+        List<Interceptor<? extends Message>> inInterceptors = KSBServiceLocator.getInInterceptors();
         if(inInterceptors != null) {
-        	List<Interceptor> busInInterceptors = bus.getInInterceptors();
+        	List<Interceptor<? extends Message>> busInInterceptors = bus.getInInterceptors();
         	busInInterceptors.addAll(inInterceptors);
         }
        
-        List<Interceptor> outInterceptors = KSBServiceLocator.getOutInterceptors();
+        List<Interceptor<? extends Message>> outInterceptors = KSBServiceLocator.getOutInterceptors();
         if(outInterceptors != null) {
-        	List<Interceptor> busOutInterceptors = bus.getOutInterceptors();
+        	List<Interceptor<? extends Message>> busOutInterceptors = bus.getOutInterceptors();
         	busOutInterceptors.addAll(outInterceptors);
         }
-        
-		ServletTransportFactory servletTransportFactory = KSBServiceLocator.getCXFServletTransportFactory();
-				
-		this.cxfServletController = new ServletController(servletTransportFactory, this.getServletConfig(), this.getServletContext(), bus);
-		
-		if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
-		    // disable handling of URLs ending in /services which display CXF generated service lists
-		    this.cxfServletController.setHideServiceList(true);
-		}
-		
-		this.setPublishEvents(false);
+
+        HTTPTransportFactory transportFactory = bus.getExtension(HTTPTransportFactory.class);
+        if (transportFactory == null) {
+            throw new IllegalStateException("Failed to locate HTTPTransportFactory extension on Apache CXF Bus");
+        }
+
+        DestinationRegistry destinationRegistry = transportFactory.getRegistry();
+
+
+        this.cxfServletController = new ServletController(destinationRegistry, getCXFServletConfig(
+                this.getServletConfig()), new ServiceListGeneratorServlet(destinationRegistry, bus));
+
+        this.setPublishEvents(false);
 	}
 
-	protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
+    /**
+     * This is a workaround after upgrading to CXF 2.7.0 whereby we could no longer just call "setHideServiceList" on
+     * the ServletController. Instead, it is now reading this information from the ServletConfig, so wrapping the base
+     * ServletContext to return true or false for hide service list depending on whether or not we are in dev mode.
+     */
+    protected ServletConfig getCXFServletConfig(final ServletConfig baseServletConfig) {
+        // disable handling of URLs ending in /services which display CXF generated service lists if we are not in dev mode
+        final String shouldHide = Boolean.toString(!ConfigContext.getCurrentContextConfig().getDevMode().booleanValue());
+        return new ServletConfig() {
+            private static final String HIDE_SERVICE_LIST_PAGE_PARAM = "hide-service-list-page";
+            public String getServletName() {
+                return baseServletConfig.getServletName();
+            }
+            public ServletContext getServletContext() {
+                return baseServletConfig.getServletContext();
+            }
+            public String getInitParameter(String parameter) {
+                if (HIDE_SERVICE_LIST_PAGE_PARAM.equals(parameter)) {
+                    return shouldHide;
+                }
+                return baseServletConfig.getInitParameter(parameter);
+            }
+            public Enumeration<String> getInitParameterNames() {
+                List<String> initParameterNames = EnumerationUtils.toList(baseServletConfig.getInitParameterNames());
+                initParameterNames.add(HIDE_SERVICE_LIST_PAGE_PARAM);
+                return new Vector<String>(initParameterNames).elements();
+            }
+        };
+    }
+
+
+    protected HandlerAdapter getHandlerAdapter(Object handler) throws ServletException {
 		if (handler instanceof HttpRequestHandler) {
 			return new HttpRequestHandlerAdapter();
 		} else if (handler instanceof Controller) {

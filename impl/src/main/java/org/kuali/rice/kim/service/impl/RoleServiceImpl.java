@@ -27,6 +27,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
@@ -1064,11 +1065,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     // --------------------
     // Support Methods
     // --------------------
-
-	
-
-    public List<RoleImpl> getRolesSearchResults(java.util.Map<String,String> fieldValues) {
-    	return getRoleDao().getRoles(fieldValues);
+    @WebMethod(exclude = true)
+    public List<KimRoleInfo> getRolesSearchResults(java.util.Map<String,String> fieldValues) {
+    	return this.toKimRoleInfo(getRoleDao().getRoles(fieldValues));
     }
 
     /**

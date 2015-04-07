@@ -27,7 +27,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
-import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -171,7 +170,7 @@ public interface RoleService {
 	 * 
 	 * This method get search results for role lookup
 	 */
-	List<? extends Role> getRolesSearchResults(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name = "fieldValues") java.util.Map<String,String> fieldValues);
+	List<KimRoleInfo> getRolesSearchResults(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) java.util.Map<String,String> fieldValues);
 	
 	/**
 	 * Notifies all of a principal's roles and role types that the principal has been inactivated.

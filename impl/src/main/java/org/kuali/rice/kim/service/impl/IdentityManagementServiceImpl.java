@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jws.WebService;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
@@ -427,12 +426,6 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	protected void addIsAuthorizedToCache( String key, boolean authorized ) {
 		isAuthorizedCache.put( key, new MaxAgeSoftReference<Boolean>( permissionCacheMaxAgeSeconds, authorized ) );
-	}
-
-	// AUTHENTICATION SERVICE
-
-	public String getAuthenticatedPrincipalName(HttpServletRequest request) {
-		return getAuthenticationService().getPrincipalName(request);
 	}
 
     // AUTHORIZATION SERVICE

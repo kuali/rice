@@ -15,9 +15,14 @@
  */
 package org.kuali.rice.krad.service;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kew.api.WorkflowDocument;
+import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.bo.DocumentHeader;
+import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentBase;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
@@ -25,13 +30,16 @@ import org.kuali.rice.krad.maintenance.MaintenanceDocumentBase;
 import org.kuali.rice.krad.rules.rule.event.SaveDocumentEvent;
 import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.AccountRequestDocument;
+import org.kuali.rice.krad.test.document.AccountRequestDocument2;
 import org.kuali.rice.krad.test.document.RuleEventImpl;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.util.ErrorMessage;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.MessageMap;
+import org.kuali.rice.krad.util.NoteType;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -205,6 +213,60 @@ public class DocumentServiceTest extends KRADTestCase {
                 MaintenanceDocumentBase.class, Arrays.asList(fakeDocumentNumber1, fakeDocumentNumber2));
 
         assertTrue("documents found", documents.isEmpty());
+    }
+
+    /**
+     * Test getting notes via getNotes, which will call getNoteService().getByRemoteObjectId
+     *
+     * @throws Exception for any test issues
+     */
+    @Test
+    public void testGetNotes() throws Exception {
+        AccountRequestDocument2 accountDoc2 = (AccountRequestDocument2) KRADServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest2");
+        String remoteObjectId = "remoteObjectId" + RandomStringUtils.randomNumeric(5);
+        String noteText = "i like notes";
+
+        WorkflowDocument workflowDocument = WorkflowDocumentFactory.createDocument("admin","AccountRequest2");
+        DocumentHeader documentHeader = new DocumentHeader();
+        documentHeader.setWorkflowDocument(workflowDocument);
+        documentHeader.setDocumentNumber(workflowDocument.getDocumentId());
+        documentHeader.setObjectId(remoteObjectId);
+        accountDoc2.setDocumentHeader(documentHeader);
+
+        Note note = new Note();
+        note.setAuthorUniversalIdentifier("superLongNameUsersFromWorkflow");
+        note.setNotePostedTimestamp(CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp());
+        note.setNoteText(noteText);
+        note.setRemoteObjectIdentifier(remoteObjectId);
+        note.setNoteTypeCode(NoteType.BUSINESS_OBJECT.getCode());
+        try {
+            KRADServiceLocator.getNoteService().save(note);
+        } catch (Exception e) {
+            fail("Saving a note should not fail");
+        }
+
+        Note note2 = new Note();
+        note2.setAuthorUniversalIdentifier("admin");
+        note2.setNotePostedTimestamp(CoreApiServiceLocator.getDateTimeService().getCurrentTimestamp());
+        note2.setNoteText(noteText);
+        note2.setRemoteObjectIdentifier(remoteObjectId);
+        note2.setNoteTypeCode(NoteType.BUSINESS_OBJECT.getCode());
+        try {
+            KRADServiceLocator.getNoteService().save(note2);
+        } catch (Exception e) {
+            fail("Saving a note should not fail");
+        }
+
+        List<Note> notes = accountDoc2.getNotes();
+
+        assertTrue("Size of the notes list should be 2", notes.size() == 2);
+        assertFalse("List is immutable but it should be mutable.",
+                Collections.unmodifiableList(notes).getClass().isInstance(notes));
+
+        for (Note note1 : notes) {
+            assertNotNull("document was null", note1);
+            assertTrue(note1.getNoteText().equalsIgnoreCase(noteText));
+        }
     }
 
 }

@@ -21,6 +21,7 @@ import org.kuali.rice.krad.document.TransactionalDocumentBase;
 import org.kuali.rice.krad.exception.PessimisticLockingException;
 import org.kuali.rice.krad.test.document.bo.Account;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.NoteType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,5 +144,10 @@ public class AccountRequestDocument2 extends TransactionalDocumentBase implement
     		throw new PessimisticLockingException("The value of the user session's '" + ACCT_REQ_DOC_2_EDITABLE_FIELDS + "' property is invalid");
     	}
     	return getDocumentNumber() + "-" + editableFields;
+    }
+
+    @Override
+    public NoteType getNoteType() {
+        return NoteType.BUSINESS_OBJECT;
     }
 }

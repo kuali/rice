@@ -28,6 +28,7 @@ import javax.persistence.PostRemove;
 import javax.persistence.PrePersist;
 import javax.persistence.Transient;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
@@ -647,7 +648,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBaseAdapter 
     public List<Note> getNotes() {
         if (CollectionUtils.isEmpty(notes) && getNoteType().equals(NoteType.BUSINESS_OBJECT) && StringUtils.isNotBlank(
                 getNoteTarget().getObjectId())) {
-            notes = getNoteService().getByRemoteObjectId(getNoteTarget().getObjectId());
+            notes = Lists.newArrayList(getNoteService().getByRemoteObjectId(getNoteTarget().getObjectId()));
         }
 
         return notes;

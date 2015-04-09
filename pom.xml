@@ -18,13 +18,13 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.7.6</version>
+    <version>4.3.9</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
   <packaging>pom</packaging>
   <name>Kuali Rice</name>
-  <version>1.0.8-SNAPSHOT</version>
+  <version>1.0.7</version>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
   <description>
         The Kuali Rice effort provides an enterprise class

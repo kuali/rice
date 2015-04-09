@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.krms.impl.repository;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -186,6 +188,12 @@ public class ContextBo implements ContextDefinitionContract, Serializable {
         bo.versionNumber = im.getVersionNumber();
 
         return bo;
+    }
+
+    private void writeObject(ObjectOutputStream stream) throws IOException, ClassNotFoundException {
+                agendas.size();
+                attributeBos.size();
+                stream.defaultWriteObject();
     }
 
     @Override

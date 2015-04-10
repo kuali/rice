@@ -27,6 +27,25 @@
   <artifactId>rice-krad-data</artifactId>
   <name>Rice KRAD data</name>
 
+  <profiles>
+    <!-- This profile will be used unless -DskipOracleProfile is passed as a parameter -->
+    <profile>
+      <id>usingOracle</id>
+      <activation>
+        <property>
+          <name>!skipOracleProfile</name>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.eclipse.persistence</groupId>
+          <artifactId>org.eclipse.persistence.oracle</artifactId>
+          <version>${eclipselink.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
   <dependencies>
 
     <dependency>
@@ -107,11 +126,6 @@
     <dependency>
       <groupId>org.eclipse.persistence</groupId>
       <artifactId>org.eclipse.persistence.jpa</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>org.eclipse.persistence.oracle</artifactId>
       <optional>true</optional>
     </dependency>
     <dependency>

@@ -6,4 +6,6 @@ overlays/
 rice-framework/krad-web/src/main/webapp/krad/min
 velocity.log
 **/.project
+**/.settings
+**/.classpath
 **/.launch

@@ -40,6 +40,8 @@ import org.kuali.rice.krad.data.CopyOption;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
+import org.kuali.rice.krad.data.provider.annotation.Serialized;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.agenda.AgendaDefinitionContract;
 import org.kuali.rice.krms.api.repository.type.KrmsAttributeDefinition;
@@ -92,6 +94,7 @@ public class AgendaBo implements AgendaDefinitionContract, Serializable {
     @JoinColumn(name = "AGENDA_ID", referencedColumnName = "AGENDA_ID", insertable = false, updatable = false)
     private List<AgendaItemBo> items;
 
+    @Serialized(enabled=false, forContexts=SerializationContext.MAINTENANCE)
     @ManyToOne(targetEntity = ContextBo.class, cascade = { CascadeType.REFRESH })
     @JoinColumn(name = "CNTXT_ID", referencedColumnName = "CNTXT_ID", insertable = false, updatable = false)
     private ContextBo context;

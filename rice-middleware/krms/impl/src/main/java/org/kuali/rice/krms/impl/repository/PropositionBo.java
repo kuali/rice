@@ -20,6 +20,8 @@ import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kuali.rice.core.api.mo.common.Versioned;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.kuali.rice.krad.data.provider.annotation.SerializationContext;
+import org.kuali.rice.krad.data.provider.annotation.Serialized;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.util.ScriptUtils;
 import org.kuali.rice.krms.api.repository.LogicalOperator;
@@ -126,6 +128,7 @@ public class PropositionBo implements PropositionDefinitionContract, Versioned, 
     private String newTermDescription = "new term " + UUID.randomUUID().toString();
 
     @Transient
+    @Serialized(enabled = true, forContexts= SerializationContext.MAINTENANCE)
     private Map<String, String> termParameters = new HashMap<String, String>();
 
     private void setupParameterDisplayString() {

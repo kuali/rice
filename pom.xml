@@ -39,11 +39,7 @@
     quality business
     applications.
   </description>
-  <url>https://github.com/rSmart/kuali_rice</url>
-
-  <ciManagement>
-    <url>http://ci.rice.kuali.org</url>
-  </ciManagement>
+  <url>http://www.kuali.org/rice</url>
 
   <properties>
     <project.java.version>1.7</project.java.version>
@@ -51,7 +47,7 @@
 
 
     <!--added for KualiCo's release process -->
-    <maven-scm-provider-gitexe.version>1.9.2</maven-scm-provider-gitexe.version>
+    <maven-scm-provider-gitexe.version>1.9.4</maven-scm-provider-gitexe.version>
     <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
 
 
@@ -281,17 +277,91 @@
     <jdk.source.version>1.6</jdk.source.version>
     <jdk.target.version>1.6</jdk.target.version>
 
-    <!-- disable kuali release logic -->
-    <kuali.release.arguments />
-    <kuali.release.profiles>release-profile</kuali.release.profiles>
-    <kuali.release.use.maven.profile>true</kuali.release.use.maven.profile>
-
-    <error_prone_core.version>2.0.1</error_prone_core.version>
+    <error_prone_core.version>2.0.2</error_prone_core.version>
     <plexus-compiler-javac.version>2.5</plexus-compiler-javac.version>
     <plexus-compiler-javac-errorprone.version>2.5</plexus-compiler-javac-errorprone.version>
+
+    <scm.connection>scm:git:git://github.com/kuali/kc-rice.git</scm.connection>
+    <scm.developerConnection>scm:git:git@github.com:kuali/kc-rice.git</scm.developerConnection>
+    <scm.url>https://github.com/kuali/kc-rice</scm.url>
+
+    <issueManagement.system>github</issueManagement.system>
+    <issueManagement.url>https://github.com/kuali/kc-rice/issues</issueManagement.url>
+
+    <dm.snapshotRepository.id>kuali.snapshot</dm.snapshotRepository.id>
+    <dm.snapshotRepository.name>Main Kuali Repository</dm.snapshotRepository.name>
+    <dm.snapshotRepository.url>scp://test.kuali.org:/opt/m2/repository</dm.snapshotRepository.url>
+
+    <dm.repository.id>kuali.snapshot</dm.repository.id>
+    <dm.repository.name>Kuali Snapshot Repository</dm.repository.name>
+    <dm.repository.url>s3://maven.kuali.org/snapshot</dm.repository.url>
+
+    <ciManagement.url>https://ci.kuali.org/</ciManagement.url>
   </properties>
 
   <profiles>
+    <profile>
+      <id>grm</id>
+      <!-- comment out activation section to turn this profile off permanently-->
+      <activation>
+        <property>
+          <name>!grm.off</name>
+        </property>
+      </activation>
+
+      <properties>
+        <scm.connection>scm:git:git://github.com/kualico/kc-rice.git</scm.connection>
+        <scm.developerConnection>scm:git:git@github.com:kualico/kc-rice.git</scm.developerConnection>
+        <scm.url>https://github.com/kualico/kc-rice</scm.url>
+
+        <issueManagement.system>github</issueManagement.system>
+        <issueManagement.url>https://github.com/kualico/kc-rice/issues</issueManagement.url>
+
+        <dm.snapshotRepository.id>rsmart.snapshot.repo</dm.snapshotRepository.id>
+        <dm.snapshotRepository.name>rsmart snapshot repository</dm.snapshotRepository.name>
+        <dm.snapshotRepository.url>s3://rsmart-dev/artifacts/maven/snapshot</dm.snapshotRepository.url>
+
+        <dm.repository.id>rsmart.release.repo</dm.repository.id>
+        <dm.repository.name>rsmart release repository</dm.repository.name>
+        <dm.repository.url>s3://rsmart-dev/artifacts/maven/release</dm.repository.url>
+
+        <ciManagement.url>https://res-deploy.kuali.co/</ciManagement.url>
+
+        <!-- disable kuali release logic -->
+        <kuali.release.arguments />
+        <kuali.release.profiles>release-profile</kuali.release.profiles>
+        <kuali.release.use.maven.profile>true</kuali.release.use.maven.profile>
+      </properties>
+
+      <repositories>
+        <repository>
+          <id>rsmart-dev</id>
+          <name>rSmart Nexus Repository Manager</name>
+          <url>https://nexus.rsmart.com/nexus/content/groups/public/</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+        </repository>
+      </repositories>
+
+      <pluginRepositories>
+        <pluginRepository>
+          <id>rsmart-dev</id>
+          <name>rSmart Nexus Repository Manager</name>
+          <url>https://nexus.rsmart.com/nexus/content/groups/public/</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
     <!-- Optimize the nightly build -->
     <profile>
       <id>nightly</id>
@@ -1039,7 +1109,6 @@
             <maxmem>2048m</maxmem>
               <source>1.7</source>
               <target>1.7</target>
-            <permgensize>256m</permgensize>
           </configuration>
         </plugin>
         <plugin>
@@ -1592,17 +1661,6 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-    </repository>
-    <repository>
-      <id>rsmart-dev</id>
-      <name>rsmart-dev</name>
-      <url>https://nexus.rsmart.com/nexus/content/groups/public/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
     </repository>
   </repositories>
 
@@ -2604,31 +2662,33 @@
     </dependencies>
   </dependencyManagement>
 
-  <issueManagement>
-    <system>github</system>
-    <url>https://github.com/rSmart/kuali_rice/issues</url>
-  </issueManagement>
-
   <scm>
-    <connection>scm:git:git://github.com/kualico/kc-rice.git</connection>
-    <developerConnection>scm:git:git@github.com:kualico/kc-rice.git</developerConnection>
-    <url>https://github.com/kualico/kc-rice</url>
-    <tag>HEAD</tag>
+    <connection>${scm.connection}</connection>
+    <developerConnection>${scm.developerConnection}</developerConnection>
+    <url>${scm.url}</url>
+    <tag>coeus-s2sgen-6.0.2</tag>
   </scm>
 
   <distributionManagement>
-    <downloadUrl>https://github.com/rSmart/kuali_rice</downloadUrl>
     <snapshotRepository>
-       <id>rsmart.snapshot.repo</id>
-       <name>rsmart snapshot repository</name>
-       <url>s3://rsmart-dev/artifacts/maven/snapshot</url>
-       <layout>default</layout>
+      <id>${dm.snapshotRepository.id}</id>
+      <name>${dm.snapshotRepository.name}</name>
+      <url>${dm.snapshotRepository.url}</url>
     </snapshotRepository>
     <repository>
-      <id>rsmart.release.repo</id>
-      <name>rsmart release repository</name>
-      <url>s3://rsmart-dev/artifacts/maven/release</url>
+      <id>${dm.repository.id}</id>
+      <name>${dm.repository.name}</name>
+      <url>${dm.repository.url}</url>
     </repository>
   </distributionManagement>
+
+  <issueManagement>
+    <system>${issueManagement.system}</system>
+    <url>${issueManagement.url}</url>
+  </issueManagement>
+
+  <ciManagement>
+    <url>${ciManagement.url}</url>
+  </ciManagement>
 
 </project>

@@ -2610,9 +2610,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:git:git://github.com/kualico/rice-kc.git</connection>
-    <developerConnection>scm:git:git@github.com:kualico/rice-kc.git</developerConnection>
-    <url>https://github.com/kualico/rice-kc</url>
+    <connection>scm:git:git://github.com/kualico/kc-rice.git</connection>
+    <developerConnection>scm:git:git@github.com:kualico/kc-rice.git</developerConnection>
+    <url>https://github.com/kualico/kc-rice</url>
     <tag>HEAD</tag>
   </scm>
 

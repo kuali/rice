@@ -2666,7 +2666,7 @@
     <connection>${scm.connection}</connection>
     <developerConnection>${scm.developerConnection}</developerConnection>
     <url>${scm.url}</url>
-    <tag>coeus-s2sgen-6.0.2</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <distributionManagement>

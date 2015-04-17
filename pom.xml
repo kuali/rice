@@ -331,6 +331,8 @@
         <kuali.release.arguments />
         <kuali.release.profiles>release-profile</kuali.release.profiles>
         <kuali.release.use.maven.profile>true</kuali.release.use.maven.profile>
+        <kuali.release.dev.version>${developmentVersion}</kuali.release.dev.version>
+        <kuali.release.version>${releaseVersion}</kuali.release.version>
       </properties>
 
       <repositories>

@@ -241,6 +241,10 @@ class QuickStartTest {
 
         executeMaven(context)
 
+        System.out.println(">>>>>>>> Begin: Maven output of Quickstart Integration Test <<<<<<<<<<<")
+        System.out.println(context.stdOutWriter.toString());
+        System.out.println(">>>>>>>>  End: Maven output of Quickstart Integration Test  <<<<<<<<<<<")
+
         if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 2) {
             fail("the output did not contain two occurances of BUILD SUCCESS \n ${context.stdOutWriter} \n ${context.stdErrWriter}")
         }

@@ -71,8 +71,6 @@ alter table krsb_qrtz_cron_triggers add column sched_name varchar(120) not null 
 /
 alter table krsb_qrtz_fired_triggers add column sched_name varchar(120) not null DEFAULT 'KrTestScheduler'
 /
-alter TABLE krsb_qrtz_fired_triggers add COLUMN SCHED_TIME BIGINT(13) NOT NULL
-/
 alter table krsb_qrtz_job_details add column sched_name varchar(120) not null DEFAULT 'KrTestScheduler'
 /
 alter table krsb_qrtz_locks add column sched_name varchar(120) not null DEFAULT 'KrTestScheduler'
@@ -87,7 +85,7 @@ alter table krsb_qrtz_triggers add column sched_name varchar(120) not null DEFAU
 /
 
 --
--- drop all primary and foreign key constraint s, so that we can define new ones
+-- drop all primary and foreign key constraints, so that we can define new ones
 --
  alter table krsb_qrtz_blob_triggers  drop foreign key KRSB_QRTZ_BLOB_TRIGGERS_TR1
 /
@@ -95,35 +93,35 @@ alter table krsb_qrtz_triggers add column sched_name varchar(120) not null DEFAU
 /
  alter table krsb_qrtz_cron_triggers drop foreign key KRSB_QRTZ_CRON_TRIGGERS_TR1
 /
- alter table krsb_qrtz_job_details drop primary key, add primary key (sched_name, job_name, job_group)
+ alter table krsb_qrtz_job_details drop primary key, add primary key (job_name, job_group, sched_name)
 /
 
 --
 -- add all primary and foreign key constraint s, based on new columns
 --
-alter table krsb_qrtz_triggers drop primary key, add primary key (sched_name, trigger_name, trigger_group)
+alter table krsb_qrtz_triggers drop primary key, add primary key (trigger_name, trigger_group, sched_name)
 /
-alter table krsb_qrtz_blob_triggers drop primary key, add primary key (sched_name, trigger_name, trigger_group)
+alter table krsb_qrtz_blob_triggers drop primary key, add primary key (trigger_name, trigger_group, sched_name)
 /
-alter table KRSB_QRTZ_BLOB_TRIGGERS add  constraint  KRSB_QRTZ_BLOB_TRIGGERS_TR1 foreign key(sched_name, trigger_name, trigger_group) references KRSB_QRTZ_TRIGGERS (sched_name, trigger_name, trigger_group)
+alter table KRSB_QRTZ_BLOB_TRIGGERS add  constraint  KRSB_QRTZ_BLOB_TRIGGERS_TR1 foreign key(trigger_name, trigger_group, sched_name) references KRSB_QRTZ_TRIGGERS (trigger_name, trigger_group, sched_name)
 /
-alter table krsb_qrtz_cron_triggers drop primary key, add primary key (sched_name, trigger_name, trigger_group)
+alter table krsb_qrtz_cron_triggers drop primary key, add primary key (trigger_name, trigger_group, sched_name)
 /
-alter table krsb_qrtz_cron_triggers add  constraint  KRSB_QRTZ_CRON_TRIGGERS_TR1 foreign key(sched_name, trigger_name, trigger_group) references krsb_qrtz_triggers(sched_name, trigger_name, trigger_group)
+alter table krsb_qrtz_cron_triggers add  constraint  KRSB_QRTZ_CRON_TRIGGERS_TR1 foreign key(trigger_name, trigger_group, sched_name) references krsb_qrtz_triggers(trigger_name, trigger_group, sched_name)
 /
-alter table krsb_qrtz_simple_triggers drop primary key, add primary key (sched_name, trigger_name, trigger_group)
+alter table krsb_qrtz_simple_triggers drop primary key, add primary key (trigger_name, trigger_group, sched_name)
 /
-alter table krsb_qrtz_simple_triggers add  constraint  KRSB_QRTZ_SIMPLE_TRIGGERS_TR1 foreign key(sched_name, trigger_name, trigger_group) references krsb_qrtz_triggers(sched_name, trigger_name, trigger_group)
+alter table krsb_qrtz_simple_triggers add  constraint  KRSB_QRTZ_SIMPLE_TRIGGERS_TR1 foreign key(trigger_name, trigger_group, sched_name) references krsb_qrtz_triggers(trigger_name, trigger_group, sched_name)
 /
-alter table krsb_qrtz_fired_triggers drop primary key, add primary key (sched_name, entry_id)
+alter table krsb_qrtz_fired_triggers drop primary key, add primary key (entry_id, sched_name)
 /
-alter table krsb_qrtz_calendars drop primary key, add primary key (sched_name, calendar_name)
+alter table krsb_qrtz_calendars drop primary key, add primary key (calendar_name, sched_name)
 /
-alter table krsb_qrtz_locks drop primary key, add primary key (sched_name, lock_name)
+alter table krsb_qrtz_locks drop primary key, add primary key (lock_name, sched_name)
 /
-alter table krsb_qrtz_paused_trigger_grps drop primary key, add primary key (sched_name, trigger_group)
+alter table krsb_qrtz_paused_trigger_grps drop primary key, add primary key (trigger_group, sched_name)
 /
-alter table krsb_qrtz_scheduler_state drop primary key, add primary key (sched_name, instance_name)
+alter table krsb_qrtz_scheduler_state drop primary key, add primary key (instance_name, sched_name)
 /
 --
 -- add new simprop_triggers table
@@ -146,7 +144,7 @@ CREATE TABLE krsb_qrtz_simprop_triggers
     BOOL_PROP_2 BOOL NULL,
     primary key (SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP),
     constraint KRSB_QRTZ_SIMPROP_TRIGGERS_TR1 foreign key(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
-    references krsb_QRTZ_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP)
+    references krsb_QRTZ_TRIGGERS(TRIGGER_NAME,TRIGGER_GROUP,SCHED_NAME)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
 /
  

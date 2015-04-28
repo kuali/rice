@@ -39,6 +39,7 @@ import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.exception.ExportNotSupportedException;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.ObjectUtils;
 
 /**
  * A helper class to be used with the custom ExportView implementations for
@@ -115,18 +116,19 @@ public class ExportViewHelper {
 
     // KULRICE-12281: Turn off the ability to export results from the certain lookups
     public void checkPermission() throws AuthorizationException {
-        boolean isAuthorized = false;
-        String componentName = businessObjectEntry.getBusinessObjectClass().getName();
-        String nameSpaceCode = "KR-NS";
-        String templateName =  "Export Records";
-        String principalId = GlobalVariables.getUserSession().getPrincipalId();
-        String principalUserName = GlobalVariables.getUserSession().getPrincipalName();
-        Map<String, String> permissionDetails = new HashMap<String,String>();
-        permissionDetails.put("componentName", componentName);
-        isAuthorized = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(principalId,nameSpaceCode,templateName,permissionDetails,new HashMap<String,String>());
-        if(!isAuthorized){
-            throw new AuthorizationException(principalUserName, "Exporting the LookUp Results", componentName);
+        if (ObjectUtils.isNotNull(businessObjectEntry)) {
+            String componentName = businessObjectEntry.getBusinessObjectClass().getName();
+            String nameSpaceCode = "KR-NS";
+            String templateName = "Export Records";
+            String principalId = GlobalVariables.getUserSession().getPrincipalId();
+            String principalUserName = GlobalVariables.getUserSession().getPrincipalName();
+            Map<String, String> permissionDetails = new HashMap<String, String>();
+            permissionDetails.put("componentName", componentName);
+            boolean isAuthorized = KimApiServiceLocator.getPermissionService().isAuthorizedByTemplate(principalId, nameSpaceCode,
+                    templateName, permissionDetails, new HashMap<String, String>());
+            if (!isAuthorized) {
+                throw new AuthorizationException(principalUserName, "Exporting the LookUp Results", componentName);
+            }
         }
     }
-	
 }

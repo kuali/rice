@@ -29,8 +29,8 @@
     <web.launch.context.path>/${PROJECT_NAME}</web.launch.context.path>
     <servlet-api.version>3.0.1</servlet-api.version>
     <jsp-api.version>2.1</jsp-api.version>
-    <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
-    <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
+    <oracle.jdbc.version>11.2.0.2</oracle.jdbc.version>
+    <oracle.jdbc.artifactId>ojdbc6</oracle.jdbc.artifactId>
     <mysql.jdbc.version>5.1.24</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
   </properties>
@@ -57,7 +57,7 @@
         </configuration>
         <dependencies>
           <!-- Only needed for Oracle databases.
-               Due to licensing the ojdbc14.jar can not be distributed via repositories, instead
+               Due to licensing the ojdbc6.jar can not be distributed via repositories, instead
                it needs to be installed manually. After this is done the dependency can be uncommented.
           <dependency>
             <groupId>com.oracle</groupId>
@@ -131,7 +131,7 @@
       <scope>provided</scope>
     </dependency>
     <!-- Only needed for Oracle databases.
-         Due to licensing the ojdbc14.jar can not be distributed via repositories, instead
+         Due to licensing the ojdbc6.jar can not be distributed via repositories, instead
          it needs to be installed manually. After this is done the dependency can be uncommented.
 		<dependency>
 			<groupId>com.oracle</groupId>

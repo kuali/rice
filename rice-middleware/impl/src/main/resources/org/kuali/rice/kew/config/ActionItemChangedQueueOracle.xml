@@ -1,0 +1,80 @@
+<!--
+  ~ Copyright 2006-2015 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!--
+
+These beans will only be needed to notify an external KualiCo action list of changes to the
+KREW_ACTN_ITM_T table and can only be utilized if also using Oracle.  Because of that, the beans in
+this file will only loaded  if the rice.kew.enableExternalActnListNotification property is set to
+true and the driver.class.name is set to oracle.jdbc.OracleDriver.
+
+In order for this process to work correctly, the following must be done as initial setup.
+
+  * Install aqapi.jar manually. Due to licensing the aqapi.jar can not be distributed via repositories,
+           instead it needs to be installed manually.
+
+  * Install jmscommon.jar manually. Due to licensing the jmscommon.jar can not be distributed via repositories,
+           instead it needs to be installed manually.
+
+  * Run the SQL in 2015-04-28-KULRICE-14217.sql - Note that some of the statments need to be run as SYS
+
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+
+  <bean id="MessageQueueDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <property name="driverClassName" value="${datasource.driver.name}" />
+    <property name="url" value="${datasource.url}" />
+    <property name="username" value="${datasource.username}" />
+    <property name="password" value="${datasource.password}"/>
+  </bean>
+
+  <bean id="oracleAqConnFactory"
+        factory-bean="oracleAqConnectionFactoryHandler" factory-method="createConnectionFactory" />
+
+  <bean id="oracleAqConnectionFactoryHandler"
+        class="org.kuali.rice.kew.actionitem.oracle.queue.OracleAQConnectionFactory">
+    <property name="dataSource" ref="MessageQueueDataSource" />
+  </bean>
+
+  <bean id="oracleAqJMSQueue" class="org.springframework.data.jdbc.jms.listener.oracle.AdtMessageListenerContainer">
+    <property name="connectionFactory" ref="oracleAqConnFactory"/>
+    <property name="destinationName" value="actn_item_changed_mq"/>
+    <property name="messageListener">
+      <bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
+        <property name="delegate" ref="messageDelegate"/>
+        <property name="defaultListenerMethod" value="handleMessage"/>
+        <property name="messageConverter" ref="messageConverter"/>
+      </bean>
+    </property>
+  </bean>
+
+  <bean id="messageDelegate" class="org.kuali.rice.kew.actionitem.oracle.queue.MessageDelegate" />
+
+  <bean id="messageConverter"
+      class="org.springframework.data.jdbc.jms.support.converter.oracle.MappingAdtMessageConverter">
+    <constructor-arg>
+      <bean class="org.springframework.data.jdbc.jms.support.oracle.StructDatumMapper">
+        <constructor-arg index="0" value="ACTION_ITEM_CHANGED_MESSAGE_TYP"/>
+        <constructor-arg index="1" value="org.kuali.rice.kew.actionitem.oracle.queue.ActionItemChangedPayload"/>
+      </bean>
+    </constructor-arg>
+  </bean>
+
+</beans>

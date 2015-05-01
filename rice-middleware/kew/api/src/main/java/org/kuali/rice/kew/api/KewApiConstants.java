@@ -934,6 +934,9 @@ public final class KewApiConstants {
     public static final String SECURE_ATTACHMENTS_PARAM = "SECURED_ATTACHMENT_SERVLET";
 
     public static final String OUTBOX_ITEM_LIMIT = "OUTBOX_ITEM_LIMIT";
+    public static final String ACTION_ITEM_INSERTED = "I";
+    public static final String ACTION_ITEM_UPDATED = "U";
+    public static final String ACTION_ITEM_DELETED = "D";
 
     //System parameter value comparisons
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "Y";
@@ -954,8 +957,10 @@ public final class KewApiConstants {
     // special user used when no other user is available
     public static final String SYSTEM_USER = "kr";
     public static final String ENABLE_KEN_NOTIFICATION = "rice.kew.enableKENNotification";
-    
-	public static final String ROLEROUTE_QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
+    public static final String ENABLE_EXTERNAL_ACTN_LIST_NOTIFICATION = "rice.kew.enableExternalActnListNotification";
+    public static final String DATASOURCE_DRIVER_NAME = "datasource.driver.name";
+
+    public static final String ROLEROUTE_QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
 	public static final String ROLEROUTE_QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
 	public static final String ROLEROUTE_RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = "responsibilityTemplateName";
 	public static final String ROLEROUTE_NAMESPACE_ELEMENT = "namespace";

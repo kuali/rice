@@ -73,7 +73,7 @@
 			</and>
 		</condition>
 
-		<property name="oracle.driver.version" value="10.2.0.3.0"/>
+		<property name="oracle.driver.version" value="11.2.0.2"/>
 		<property name="default.jta.excludes" value="**/xapool*.jar, **/jotm*.jar, **/connector*.jar, **/howl*.jar, **/jta*.jar, **/jts*.jar, **/ow_carol*.jar, **/carol.properties"/>
 		<property environment="env"/>
 		<!-- if the M2_HOME is already defined in the environment, use it -->
@@ -193,8 +193,8 @@
 
 	<target name="install-oracle-jar" depends="init">
 		<property name="drivers.directory" location="/java/drivers" />
-		<property name="oracle.driver.jar"  location="${drivers.directory}/ojdbc14.jar"/>
-		<maven goals="install:install-file" options="-DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=${oracle.driver.version} -Dpackaging=jar -Dfile=${oracle.driver.jar}"/>
+		<property name="oracle.driver.jar"  location="${drivers.directory}/ojdbc6.jar"/>
+		<maven goals="install:install-file" options="-DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=${oracle.driver.version} -Dpackaging=jar -Dfile=${oracle.driver.jar}"/>
 	</target>
 
 	<target name="install-rice-jars" depends="init">

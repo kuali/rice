@@ -325,11 +325,17 @@
             <para>Examples of each are outlined below</para>
             <section>
                 <title>Requeuing a document that was stuck</title>
-                <para></para>
+                <para>After fixing the issue that cause the route exception a document can be re-routed. To do so click the 
+                    <emphasis role="bold">Queue Document</emphasis> button. This will route the document from the beginning, skipping all actions that have been applied already.
+                </para>
             </section>
             <section>
                 <title>Moving a document to FINAL</title>
-                <para></para>
+                <para>Change the <emphasis role="bold">Route Status</emphasis> of the document to "final".  Don't forget to select
+                    <emphasis role="bold">Update</emphasis> on the document section. Then click <emphasis role="bold">save</emphasis>.
+                </para>
+                <para>If desired, additional fields like the Finalized Date may be set to keep the document information more complete.
+                </para>
             </section>
             <section>
                 <title>Rolling a document back to a previous point in the route path</title>

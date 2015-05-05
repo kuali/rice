@@ -2648,52 +2648,66 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected List<DelegateMemberBo> getDelegationMembers(List<RoleDocumentDelegationMember> delegationMembers,
-			List<DelegateMemberBo> origDelegationMembers, List<DelegateMemberBo> allOrigMembers, boolean activatingInactive, String newDelegationIdAssigned){
+			List<DelegateMemberBo> origDelegationMembers, List<DelegateMemberBo> allOrigMembers,
+			boolean activatingInactive, String newDelegationIdAssigned) {
 		List<DelegateMemberBo> delegationsMembersList = new ArrayList<DelegateMemberBo>();
 		DelegateMemberBo newDelegationMemberImpl;
 		DelegateMemberBo origDelegationMemberImplTemp = null;
 		List<DelegateMemberAttributeDataBo> origAttributes;
 		String delegationMemberId = "";
-		if(CollectionUtils.isNotEmpty(delegationMembers)){
-			for(RoleDocumentDelegationMember delegationMember: delegationMembers){
+		if (CollectionUtils.isNotEmpty(delegationMembers)) {
+			for (RoleDocumentDelegationMember delegationMember : delegationMembers) {
 				newDelegationMemberImpl = new DelegateMemberBo();
 				KimCommonUtilsInternal.copyProperties(newDelegationMemberImpl, delegationMember);
-                newDelegationMemberImpl.setType(MemberType.fromCode(delegationMember.getMemberTypeCode()));
-				if(ObjectUtils.isNotNull(origDelegationMembers)){
-					for(DelegateMemberBo origDelegationMember: origDelegationMembers){
-						if(activatingInactive && StringUtils.equals(origDelegationMember.getMemberId(), newDelegationMemberImpl.getMemberId()) &&
-								StringUtils.equals(newDelegationMemberImpl.getDelegationId(), newDelegationIdAssigned) &&
-								!origDelegationMember.isActive(getDateTimeService().getCurrentTimestamp())){
+
+				// versionNumber and objectId will get set to the proper values below if needed
+				newDelegationMemberImpl.setVersionNumber(null);
+				newDelegationMemberImpl.setObjectId(null);
+				newDelegationMemberImpl.setType(MemberType.fromCode(delegationMember.getMemberTypeCode()));
+
+				if (ObjectUtils.isNotNull(origDelegationMembers)) {
+					for (DelegateMemberBo origDelegationMember : origDelegationMembers) {
+						if (activatingInactive && StringUtils.equals(origDelegationMember.getMemberId(),
+								newDelegationMemberImpl.getMemberId()) && StringUtils.equals(
+								newDelegationMemberImpl.getDelegationId(), newDelegationIdAssigned) &&
+								!origDelegationMember.isActive(getDateTimeService().getCurrentTimestamp())) {
 							newDelegationMemberImpl.setDelegationId(origDelegationMember.getDelegationId());
 							delegationMemberId = newDelegationMemberImpl.getDelegationMemberId();
 							newDelegationMemberImpl.setDelegationMemberId(origDelegationMember.getDelegationMemberId());
 						}
-						if(origDelegationMember.getDelegationMemberId()!=null && StringUtils.equals(origDelegationMember.getDelegationMemberId(), newDelegationMemberImpl.getDelegationMemberId())){
+
+						if (origDelegationMember.getDelegationMemberId() != null && StringUtils.equals(
+								origDelegationMember.getDelegationMemberId(),
+								newDelegationMemberImpl.getDelegationMemberId())) {
 							newDelegationMemberImpl.setVersionNumber(origDelegationMember.getVersionNumber());
-                            newDelegationMemberImpl.setObjectId(origDelegationMember.getObjectId());
-                            origDelegationMemberImplTemp = origDelegationMember;
+							newDelegationMemberImpl.setObjectId(origDelegationMember.getObjectId());
+							origDelegationMemberImplTemp = origDelegationMember;
 						}
 					}
 				}
-                if(ObjectUtils.isNotNull(allOrigMembers)){
-                    for (DelegateMemberBo origMember : allOrigMembers) {
-                        if ((origMember.getDelegationMemberId() != null) &&
-                            (origMember.getDelegationMemberId().equals(delegationMember.getDelegationMemberId())) &&
-                            (origMember.getRoleMemberId() != null) &&
-                            (origMember.getRoleMemberId().equals(delegationMember.getRoleMemberId()))) {
-                                newDelegationMemberImpl.setVersionNumber(origMember.getVersionNumber());
-                                newDelegationMemberImpl.setObjectId(origMember.getObjectId());
-                                origDelegationMemberImplTemp = origMember;
-                        }
-                    }
-                }
-                    origAttributes = (origDelegationMemberImplTemp==null || origDelegationMemberImplTemp.getAttributeDetails()==null)?
-                            new ArrayList<DelegateMemberAttributeDataBo>():origDelegationMemberImplTemp.getAttributeDetails();
-                    newDelegationMemberImpl.setAttributeDetails(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
-                    newDelegationMemberImpl.setActiveFromDateValue(delegationMember.getActiveFromDate());
-                    newDelegationMemberImpl.setActiveToDateValue(delegationMember.getActiveToDate());
-                    newDelegationMemberImpl.setVersionNumber(null);
-                    delegationsMembersList.add(newDelegationMemberImpl);
+
+				if (ObjectUtils.isNotNull(allOrigMembers)) {
+					for (DelegateMemberBo origMember : allOrigMembers) {
+						if ((origMember.getDelegationMemberId() != null) &&
+								(origMember.getDelegationMemberId().equals(delegationMember.getDelegationMemberId())) &&
+								(origMember.getRoleMemberId() != null) &&
+								(origMember.getRoleMemberId().equals(delegationMember.getRoleMemberId()))) {
+							newDelegationMemberImpl.setVersionNumber(origMember.getVersionNumber());
+							newDelegationMemberImpl.setObjectId(origMember.getObjectId());
+							origDelegationMemberImplTemp = origMember;
+						}
+					}
+				}
+
+				origAttributes = (origDelegationMemberImplTemp == null
+						|| origDelegationMemberImplTemp.getAttributeDetails() == null) ?
+						new ArrayList<DelegateMemberAttributeDataBo>() :
+						origDelegationMemberImplTemp.getAttributeDetails();
+				newDelegationMemberImpl.setAttributeDetails(getDelegationMemberAttributeData(
+						delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
+				newDelegationMemberImpl.setActiveFromDateValue(delegationMember.getActiveFromDate());
+				newDelegationMemberImpl.setActiveToDateValue(delegationMember.getActiveToDate());
+				delegationsMembersList.add(newDelegationMemberImpl);
 			}
 		}
 		return delegationsMembersList;

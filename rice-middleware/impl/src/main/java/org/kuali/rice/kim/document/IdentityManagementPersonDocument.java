@@ -386,6 +386,9 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         if (getDelegationMembers() != null) {
             for (RoleDocumentDelegationMember delegationMember : getDelegationMembers()) {
                 delegationMember.setDocumentNumber(getDocumentNumber());
+                delegationMember.setVersionNumber(null);
+                delegationMember.setObjectId(null);
+
                 for (RoleDocumentDelegationMemberQualifier qualifier : delegationMember.getQualifiers()) {
                     qualifier.setDocumentNumber(getDocumentNumber());
                     qualifier.setKimTypId(delegationMember.getRoleBo().getKimTypeId());

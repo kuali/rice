@@ -1494,6 +1494,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				newKimDelegation = new DelegateTypeBo();
 				KimCommonUtilsInternal.copyProperties(newKimDelegation, roleDocumentDelegation);
 				newKimDelegation.setRoleId(roleDocumentDelegation.getRoleId());
+				newKimDelegation.setVersionNumber(null);
+
 				if(ObjectUtils.isNotNull(origDelegations)){
 					for(DelegateTypeBo origDelegationImpl: origDelegations){
 						if((origDelegationImpl.getRoleId()!=null && StringUtils.equals(origDelegationImpl.getRoleId(), newKimDelegation.getRoleId())) &&
@@ -1512,7 +1514,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				origMembers = (origDelegationImplTemp==null || origDelegationImplTemp.getMembers()==null)?
 									new ArrayList<DelegateMemberBo>():origDelegationImplTemp.getMembers();
 				newKimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers, null, activatingInactive, newDelegationIdAssigned));
-                newKimDelegation.setVersionNumber(null);
 				kimDelegations.add(newKimDelegation);
 				activatingInactive = false;
 			}

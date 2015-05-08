@@ -43,6 +43,9 @@
 
   <properties>
     <project.java.version>1.7</project.java.version>
+    <project.compile.source>${project.java.version}</project.compile.source>
+    <project.compile.target>${project.java.version}</project.compile.target>
+    <project.compiler.version>${project.java.version}</project.compiler.version>
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
 
 
@@ -106,7 +109,8 @@
     <ant.version>1.7.0</ant.version>
     <antlr.version>2.7.7</antlr.version>
     <aopalliance.version>1.0</aopalliance.version>
-    <asm.version>3.3.1</asm.version>
+    <asm.group.string>org.ow2.asm</asm.group.string>
+    <asm.version>5.0.3</asm.version>
     <aspectj.version>1.8.1</aspectj.version>
     <bcprov.version>1.46</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
@@ -127,7 +131,7 @@
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
-    <eclipselink.version>2.5.2</eclipselink.version>
+    <eclipselink.version>2.6.0</eclipselink.version>
     <ehcache.version>2.6.9</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <freemarker.version>2.3.20-patch2</freemarker.version>
@@ -183,7 +187,7 @@
     <slf4j.version>1.7.7</slf4j.version>
     <soa.model.core.version>1.2.2</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-    <spring.version>3.2.12.RELEASE</spring.version>
+    <spring.version>3.2.13.RELEASE</spring.version>
     <spring.security.version>3.2.4.RELEASE</spring.security.version>
     <struts.version>1.3.10</struts.version>
     <subethasmtp.version>3.1.7</subethasmtp.version>
@@ -928,7 +932,7 @@
               <configuration>
                 <rules>
                   <requireJavaVersion>
-                    <version>1.7</version>
+                    <version>${project.java.version}</version>
                   </requireJavaVersion>
                   <requireMavenVersion>
                     <version>[3.0,4.0)</version>
@@ -1078,6 +1082,7 @@
                       -->
                       <exclude>javax.servlet:jstl</exclude>
                       <exclude>org.apache.ws.security:wss4j</exclude>
+                      <exclude>asm:asm</exclude>
                     </excludes>
 
                     <includes>
@@ -1105,14 +1110,15 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
-            <source>${jdk.source.version}</source>
-            <target>${jdk.target.version}</target>
-            <!-- impl module is huge and requires at least 768m to compile -->
             <fork>true</fork>
-            <meminitial>256</meminitial>
-            <maxmem>2048m</maxmem>
-              <source>1.7</source>
-              <target>1.7</target>
+            <meminitial>512</meminitial>
+            <maxmem>2048</maxmem>
+            <source>${project.compile.source}</source>
+            <target>${project.compile.target}</target>
+            <forceJavacCompilerUse>true</forceJavacCompilerUse>
+            <compilerVersion>${project.compiler.version}</compilerVersion>
+            <encoding>${project.encoding}</encoding>
+            <verbose>true</verbose>
           </configuration>
         </plugin>
         <plugin>
@@ -1685,7 +1691,7 @@
 
       <!-- explicitly including asm to change version number from what maven would have resolved it to -->
       <dependency>
-        <groupId>asm</groupId>
+        <groupId>${asm.group.string}</groupId>
         <artifactId>asm</artifactId>
         <version>${asm.version}</version>
       </dependency>
@@ -2117,6 +2123,10 @@
           <exclusion>
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-javamail_1.4_spec</artifactId>
+          </exclusion>
+          <exclusion>
+            <artifactId>asm</artifactId>
+            <groupId>asm</groupId>
           </exclusion>
         </exclusions>
       </dependency>

@@ -100,7 +100,7 @@
       <groupId>com.sun</groupId>
       <artifactId>tools</artifactId>
       <scope>system</scope>
-      <version>1.7</version>
+      <version>${project.java.version}</version>
       <systemPath>${tools.jar.path}</systemPath>
     </dependency>
   </dependencies>

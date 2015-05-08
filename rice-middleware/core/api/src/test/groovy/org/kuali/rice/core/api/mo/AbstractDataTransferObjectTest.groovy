@@ -16,15 +16,13 @@
 package org.kuali.rice.core.api.mo
 
 import javax.xml.bind.JAXBContext
-import org.apache.commons.lang.SerializationUtils
 import org.junit.Test
-import org.kuali.rice.core.api.util.io.SerializationUtils
 import org.apache.commons.lang.SerializationUtils
 
 /**
  * This test verifies that AbstractDataTransferObjects work the way they are expected to work in terms of JAXB
  * marshalling/unmarshalling and standard java serialization/deserialization.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -46,7 +44,7 @@ class AbstractDataTransferObjectTest {
   <theseAreSomeFutureElements>which shouldn't get included in the unmarshalled version</theseAreSomeFutureElements>
 </sampleDataTransferObject>
     """
-    
+
     private static final JAXBContext JAXB = JAXBContext.newInstance(SampleDataTransferObject.class)
 
     private SampleDataTransferObject createDto() {
@@ -94,7 +92,9 @@ class AbstractDataTransferObjectTest {
         SampleDataTransferObject deserializedDto = SerializationUtils.deserialize(serialized)
         assert dto == deserializedDto
         byte[] serializedAgain = SerializationUtils.serialize(deserializedDto)
-        assert serialized == serializedAgain
+        SampleDataTransferObject data1 = SerializationUtils.deserialize(serialized)
+        SampleDataTransferObject data2 = SerializationUtils.deserialize(serializedAgain)
+        assert data1.equals(data2);
         SampleDataTransferObject deserializedAgainDto = SerializationUtils.deserialize(serializedAgain)
         assert deserializedDto == deserializedAgainDto
     }

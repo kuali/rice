@@ -76,8 +76,8 @@
     <!-- other properties -->
     <jetty.port>8080</jetty.port>
     <maven.failsafe.skip>true</maven.failsafe.skip>
-    <plugin.compiler.source>1.7</plugin.compiler.source>
-    <plugin.compiler.target>1.7</plugin.compiler.target>
+    <plugin.compiler.source>${project.java.version}</plugin.compiler.source>
+    <plugin.compiler.target>${project.java.version}</plugin.compiler.target>
   </properties>
 
   <build>

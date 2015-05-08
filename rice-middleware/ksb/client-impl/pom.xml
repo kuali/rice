@@ -131,6 +131,10 @@
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
     </dependency>
     <dependency>
+      <groupId>${asm.group.string}</groupId>
+      <artifactId>asm</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxrs</artifactId>
     </dependency>
@@ -181,7 +185,7 @@
     </dependency>
     <!-- ASM as an explicit dependency, see KULRICE-6353 -->
     <dependency>
-      <groupId>asm</groupId>
+      <groupId>${asm.group.string}</groupId>
       <artifactId>asm</artifactId>
       <scope>runtime</scope>
     </dependency>

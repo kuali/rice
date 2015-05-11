@@ -62,7 +62,7 @@ public class RoleDocumentDelegation extends KimDocumentBoActivatableBase {
     protected String delegationTypeCode;
 
     @JoinFetch(value= JoinFetchType.OUTER)
-    @OneToMany(targetEntity = RoleDocumentDelegationMember.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = RoleDocumentDelegationMember.class, orphanRemoval = true, cascade = { CascadeType.ALL })
     @JoinColumns({ 
         @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 
         @JoinColumn(name = "DLGN_ID", referencedColumnName = "DLGN_ID", insertable = false, updatable = false) })

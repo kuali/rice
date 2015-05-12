@@ -934,6 +934,9 @@ public final class KewApiConstants {
     public static final String SECURE_ATTACHMENTS_PARAM = "SECURED_ATTACHMENT_SERVLET";
 
     public static final String OUTBOX_ITEM_LIMIT = "OUTBOX_ITEM_LIMIT";
+    public static final String ACTION_ITEM_INSERTED = "I";
+    public static final String ACTION_ITEM_UPDATED = "U";
+    public static final String ACTION_ITEM_DELETED = "D";
 
     //System parameter value comparisons
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "Y";

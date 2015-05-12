@@ -51,6 +51,7 @@
 
   <param name="xml.pipeline.lifecycle.enabled">true</param>
   <param name="email.reminder.lifecycle.enabled">true</param>
+  <param name="external.actn.list.notification.lifecycle.enabled">false</param>
 
   <param name="data.xml.root.location">${rice.base}xml/${environment}/</param>
 

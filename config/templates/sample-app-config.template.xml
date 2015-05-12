@@ -90,6 +90,10 @@
 	<param name="data.xml.pollIntervalSecs">30</param>
 	<param name="initialDelaySecs">10</param>
 
+	<!-- External Action List Notification Polling Information -->
+	<param name="external.actn.list.notification.poll.interval.seconds">15</param>
+	<param name="external.actn.list.notification.initial.delay.seconds">30</param>
+
 	<!-- Kuali parameters -->
 	<param name="mail.relay.server">localhost</param>
 	<param name="mailing.list.batch">mailing.list.batch</param>

@@ -250,6 +250,10 @@ class DummyConfig implements Config{
         return null
     }
 
+    Boolean getExternalActnListNotificationLifeCycleEnabled() {
+        return null
+    }
+
     Boolean getDevMode() {
         return null
     }

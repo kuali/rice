@@ -870,10 +870,10 @@ value="classpath:my/app/package/MyCustomSpringFile.xml"/>
                     <listitem>
                         <para>If you do not already have an Oracle driver saved in <emphasis
                                 role="bold">/java/drivers</emphasis> as <emphasis role="bold"
-                                >ojdbc14.jar</emphasis>, you can download one from <link
+                                >ojdbc6.jar</emphasis>, you can download one from <link
                                 xlink:href="http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html"
                                 >http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html</link>.
-                            Save it as <emphasis role="bold">/java/drivers/ojdbc14.jar</emphasis>
+                            Save it as <emphasis role="bold">/java/drivers/ojdbc6.jar</emphasis>
                         </para>
                     </listitem>
                     <listitem>
@@ -881,14 +881,14 @@ value="classpath:my/app/package/MyCustomSpringFile.xml"/>
                             when you enter it): </para>
                         <para><emphasis role="bold">UNIX</emphasis></para>
                         <para>
-                            <programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14
- -Dversion=10.2.0.3.0 -Dpackaging=jar -Dfile=/java/drivers/ojdbc14.jar
+                            <programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6
+ -Dversion=11.2.0.2 -Dpackaging=jar -Dfile=/java/drivers/ojdbc6.jar
 </programlisting>
                         </para>
                         <para><emphasis role="bold">Windows</emphasis></para>
                         <para>
-                            <programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14
- -Dversion=10.2.0.3.0 -Dpackaging=jar -Dfile=c:/java/drivers/ojdbc14.jar</programlisting>
+                            <programlisting>mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6
+ -Dversion=11.2.0.2 -Dpackaging=jar -Dfile=c:/java/drivers/ojdbc6.jar</programlisting>
                         </para>
                         <para>Or, run the equivalent Ant target: </para>
                         <para>

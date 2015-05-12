@@ -208,6 +208,7 @@
 
 	  <!-- KEW -->
 	  <param name="rice.kew.enableKENNotification" override="false">true</param>
+    <param name="rice.kew.enableExternalActnListNotification" override="false">false</param>
 
     <!-- KNS -->
     <param name="kr.incident.mailing.list" override="false"></param>

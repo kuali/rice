@@ -51,6 +51,37 @@
     </plugins>
   </build>
 
+  <profiles>
+    <!-- This profile will be used unless -DskipOracleAqProfile is passed as a parameter -->
+    <profile>
+      <id>usingOracleAq</id>
+      <activation>
+        <property>
+          <name>!skipOracleAqProfile</name>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-jms</artifactId>
+          <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>aqapi</artifactId>
+          <version>${oracle.jdbc.version}</version>
+        </dependency>
+
+        <dependency>
+          <groupId>com.oracle</groupId>
+          <artifactId>jmscommon</artifactId>
+          <version>${oracle.jdbc.version}</version>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>

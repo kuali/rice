@@ -58,6 +58,9 @@
 	<param name="attachment.dir.location">/tmp/en_attachments</param>
 	<param name="transaction.timeout">300000</param>
 
+  <param name="external.actn.list.notification.poll.interval.seconds">15</param>
+  <param name="external.actn.list.notification.initial.delay.seconds">30</param>
+
 	<param name="rice.kew.additionalSpringFiles">classpath:org/kuali/rice/kew/config/TestSpring.xml</param>
 
     <param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter</param>

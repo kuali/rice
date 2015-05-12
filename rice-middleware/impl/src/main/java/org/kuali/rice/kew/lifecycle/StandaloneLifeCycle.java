@@ -18,7 +18,6 @@ package org.kuali.rice.kew.lifecycle;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.core.api.lifecycle.BaseCompositeLifecycle;
-import org.kuali.rice.core.api.lifecycle.Lifecycle;
 import org.kuali.rice.kew.mail.EmailReminderLifecycle;
 
 import java.util.LinkedList;
@@ -37,9 +36,15 @@ public class StandaloneLifeCycle extends BaseCompositeLifecycle {
     	if (ConfigContext.getCurrentContextConfig().getXmlPipelineLifeCycleEnabled()) {
             lifecycles.add(new XmlPipelineLifeCycle());
     	}
-    	if (ConfigContext.getCurrentContextConfig().getEmailReminderLifecycleEnabled()) {
+
+		if (ConfigContext.getCurrentContextConfig().getEmailReminderLifecycleEnabled()) {
             lifecycles.add(new EmailReminderLifecycle());
     	}
+
+		if (ConfigContext.getCurrentContextConfig().getExternalActnListNotificationLifeCycleEnabled()) {
+			lifecycles.add(new ExternalActnListNotificationLifecycle());
+		}
+
     	return lifecycles;
 	}
 

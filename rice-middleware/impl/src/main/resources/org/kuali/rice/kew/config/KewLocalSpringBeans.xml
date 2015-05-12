@@ -180,6 +180,19 @@
     </property>
   </bean>
 
+  <bean id="rice.kew.externalActnListNotificationService"
+        class="org.kuali.rice.kew.batch.ExternalActnListNotificationServiceImpl">
+    <property name="externalActnListNotificationPollIntervalSeconds">
+      <value>${external.actn.list.notification.poll.interval.seconds}</value>
+    </property>
+    <property name="externalActnListNotificationInitialDelaySeconds">
+      <value>${external.actn.list.notification.initial.delay.seconds}</value>
+    </property>
+    <property name="url" value="${datasource.url}"/>
+    <property name="username" value="${datasource.username}"/>
+    <property name="password" value="${datasource.password}"/>
+  </bean>
+
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>

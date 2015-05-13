@@ -27,7 +27,7 @@ limitations under the License.
     <para>Welcome to Rice ${project.version}! </para>
     <section>
       <title>Release Highlights</title>
-      <para>This version of Rice contains bug fixes requested by the Kuali Applications and community. There are no database changes and it should be a drop-in replacement.</para>
+      <para>This release consists of security fixes, AFT fixes and some cleanup. There are no database changes and it should be a drop-in replacement.</para>
     </section>
     <section>
       <title>Download</title>
@@ -63,167 +63,13 @@ limitations under the License.
     <section><title>        Bug Fix
     </title>
       <para><itemizedlist>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13332'>KULRICE-13332</link>] -         NPE on lookup within a lookup
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14155'>KULRICE-14155</link>] - rice-2.6-docbook-install ci job failing
         </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13956'>KULRICE-13956</link>] -         Term Specification maintenance screen &quot;add Contexts&quot; and &quot;add Categories&quot; action lines are non fuctional.
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14159'>KULRICE-14159</link>] - Fix testDemoEnterKeySupportTables2 AFT
         </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13968'>KULRICE-13968</link>] -         Reopening or reloading a role document can cause unmodified members to disappear
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14177'>KULRICE-14177</link>] - Apache WSS4J update to version 1.6.17
         </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13969'>KULRICE-13969</link>] -         Gear and &quot;add sibling&quot; icons not working in Agenda Editor
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13985'>KULRICE-13985</link>] -         JPA Performance issues
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13986'>KULRICE-13986</link>] -         refreshReference on collections do not work
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13987'>KULRICE-13987</link>] -         AFT Failure LibraryCollectionFeaturesEditLineAft testSubCollection dialog is often empty
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13994'>KULRICE-13994</link>] -         Copy maintenance function needs option to copy readOnly fields
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14012'>KULRICE-14012</link>] -         deleteAgenda() AgendaBoServiceImpl  incorrectly implemented
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14013'>KULRICE-14013</link>] -         Updating a Rule to change proposition leaves original propositions as orphans.
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14014'>KULRICE-14014</link>] -         Updating an AgendaItem to change the rule leaves the original Rule and its child objects as orphans
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14015'>KULRICE-14015</link>] -         Updating an Agenda on UI to change the AgendaItem and associated Rules leaves the original AgendaItem as well as its Rules with their proposition as orphans.
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14021'>KULRICE-14021</link>] -         LibraryCollectionFeaturesEditLineAft testCollectionFeaturesEditLine and testRowDetailsGroup tests are failing
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14024'>KULRICE-14024</link>] -         If you do more than one context search in an agenda document you get an STE
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14025'>KULRICE-14025</link>] -         Severe issues with refreshing of content that contains refresh and progressive render handlers
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14026'>KULRICE-14026</link>] -         Loading indication not needed by return by script lookups and interfers requests
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14027'>KULRICE-14027</link>] -         All action of add line dialog get validate add line
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14029'>KULRICE-14029</link>] -         KRMS - Agenda Editor - adding Type prevents document from routing
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14030'>KULRICE-14030</link>] -         AFT Failures CollectionsAft PeopleFlowCreateNewBkMrkAft not alerting on page load
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14031'>KULRICE-14031</link>] -         AFT Failure DemoTravelAccountMaintenanceNewAft testDemoTravelAccountMaintenanceNewXss page doesn&#39;t fully render
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14042'>KULRICE-14042</link>] -         Agenda Rule - Copy Rule causes PK violation
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14043'>KULRICE-14043</link>] -         QuickFinder on Collection AddLine causes JavaScript Errors
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14045'>KULRICE-14045</link>] -         Multi Value Lookups in the KNS Portal returns values to a new page
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14047'>KULRICE-14047</link>] -         Enter key of Text Area is intercepted by default page action
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14048'>KULRICE-14048</link>] -         Consecutive collection adds via dialog adds first value to data
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14053'>KULRICE-14053</link>] -         Remove unsaved data message on updating agenda rules
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14054'>KULRICE-14054</link>] -         Switching people flow member type to role/group and back to principal breaks principal lookup
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14055'>KULRICE-14055</link>] -         Change Any Character Validation error message
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14059'>KULRICE-14059</link>] -         AFT Failure DemoTravelAccountLookUpAft testTravelAccountLookUp Travel Account Type Code quickfinder now defaults to CAT
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14060'>KULRICE-14060</link>] -         AgendaEditor: Attribute query for context field doesn&#39;t work.
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14061'>KULRICE-14061</link>] -         Collection add line validation fails on Uif-InputFields that are read only
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14062'>KULRICE-14062</link>] -         Validation message from server for dialogs with sub-groups not displaying properly
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14063'>KULRICE-14063</link>] -         Update IntelliJ XML files for Update 2.5.1 to 2.5.2
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14067'>KULRICE-14067</link>] -         IT Failure ViewLifecycleTest View in form was null
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14068'>KULRICE-14068</link>] -         IT Failure UifServletRequestDataBinderIntegrationTest tests
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14070'>KULRICE-14070</link>] -         Cannot upload attachments from within a dialog
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14073'>KULRICE-14073</link>] -         AFT Failures ReferenceError: setupOnChangeRefresh is not defined
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14076'>KULRICE-14076</link>] -         FieldsToSend for Dialogs doesn&#39;t account for itself when determining what to send
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14078'>KULRICE-14078</link>] -         AFT Failures javascript error condition is not a function
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14079'>KULRICE-14079</link>] -         AFT Failure LabsKsaTransactionAft delete message no longer clears
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14080'>KULRICE-14080</link>] -         AFT Failure Incident Report page no longer renders
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14088'>KULRICE-14088</link>] -         Problems with session timeout and incident report form
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14091'>KULRICE-14091</link>] -         AFT Failures Agenda new maintenance records superseded old
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14092'>KULRICE-14092</link>] -         AFT Failure CreateNewAgendaBkMrkAft testCreateNewAgenda InvalidDataAccessApiUsageException null PK
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14093'>KULRICE-14093</link>] -         Add line dialog not displaying server error messages in dialog and other issues around collection actions and refreshes
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14096'>KULRICE-14096</link>] -         Cannot copy TravelAccount when it has subAccounts
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14097'>KULRICE-14097</link>] -         IT Failure RuleManagementAgendaItemDefinitionTest the proposition does not exist
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14101'>KULRICE-14101</link>] -         IT Failure AddRuleDelegationTest testAddRuleDelegation javax.transaction.RollbackException
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14103'>KULRICE-14103</link>] -         AFT Failure LibraryContainerDialogGroupAft testContainerDialogGroup reuse dialog delete IndexOutOfBoundsException
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14104'>KULRICE-14104</link>] -         Fix backLocation in jsp so it can have its own parameters
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14105'>KULRICE-14105</link>] -         Fix scripts for dialogs that are not explicity retrieved but moved to Uif-Dialogs
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14106'>KULRICE-14106</link>] -         AFT Failure TermMaintenanceEditCopyAft testCopyEditExistingTermWithParameter Incident Report Column &#39;NM&#39; cannot be null
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14107'>KULRICE-14107</link>] -         AFT Failure DemoTravelCompanySuperUserTabAft User and Actions no longer displayed
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14108'>KULRICE-14108</link>] -         AFT Failure LibraryClientResponsivenessProgressiveDisclosureAft Incident Report RollbackException
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14110'>KULRICE-14110</link>] -         JPA Performance of Referenced Entity (Child Data Objects) - KRMS
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14112'>KULRICE-14112</link>] -         JPA Performance of Referenced Entity (Child Data Objects) - KIM
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14116'>KULRICE-14116</link>] -         AFT Failure LibraryGeneralFeaturesFocusAndJumpToAft Incident Report Exception evaluating expression: devMode
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14120'>KULRICE-14120</link>] -         Ids can be duplicate if multiple dialogs are requested but do not exist on the page
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14122'>KULRICE-14122</link>] -         Light table binding issue
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14127'>KULRICE-14127</link>] -         AFT Failure : edu.sampleu.admin.CampusActionListBkMrkAft.testCreateNewSaveSubmitBookmark
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14128'>KULRICE-14128</link>] -         AFT Failure : edu.sampleu.admin.ConfigComponentActionListBkMrkAft
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14129'>KULRICE-14129</link>] -         AFT Failure : edu.sampleu.admin.DetailedDocSearchAft.testAdvancedDocSearchNav   DetailedDocSearchAft items retrieved is not present for class edu.sampleu.admin.DetailedDocSearchAft navigating to  Doc Id
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14130'>KULRICE-14130</link>] -         AFT Failure edu.sampleu.main.TermMaintenanceNewAft TermMaintenanceNewAft campusSize is not present for class edu.sampleu.main.TermMaintenanceNewAft navigating to  : View Id:  Doc Id:
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14134'>KULRICE-14134</link>] -         Exception adding attachment in maintenance document
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14137'>KULRICE-14137</link>] -         Client state needs to be processed in the submitAjax function so it can be modified by dialog hide events
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14139'>KULRICE-14139</link>] -         Fix potential timing issue when dialog hides and field is validated on blur
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14141'>KULRICE-14141</link>] -         Change to performInitialize in CollectionGroupBase to check and fix binding prefix path
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14142'>KULRICE-14142</link>] -         AFT Failure : edu.sampleu.kim.api.location.LocationCampusAft.testBlanketAppNav
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14149'>KULRICE-14149</link>] -         OraclePlatform 10 and 11 classes needed for eclipseLink performance improvements need to be added when oracle db is used.
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14150'>KULRICE-14150</link>] -         STE on Peopleflow
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14151'>KULRICE-14151</link>] -         AFT Failure LibraryContainerDialogGroupAft - DemoDialogController.save not used
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14155'>KULRICE-14155</link>] -         rice-2.6-docbook-install ci job failing
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14156'>KULRICE-14156</link>] -         Lingering loading message after lookup dialog in IE only
-        </para></listitem>
-      </itemizedlist></para>
-    </section>
-
-    <section><title>        Epic
-    </title>
-      <para><itemizedlist>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12994'>KULRICE-12994</link>] -         Git Migration
-        </para></listitem>
-      </itemizedlist></para>
-    </section>
-
-    <section><title>        Improvement
-    </title>
-      <para><itemizedlist>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14131'>KULRICE-14131</link>] -         Test Java 8 support locally
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14248'>KULRICE-14248</link>] - Fixed document help icon of Document Search 
         </para></listitem>
       </itemizedlist></para>
     </section>
@@ -231,59 +77,13 @@ limitations under the License.
     <section><title>        Task
     </title>
       <para><itemizedlist>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12997'>KULRICE-12997</link>] -         Test git with nightly release process
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14147'>KULRICE-14147</link>] - Remove library samples from jscalendar-1.0
         </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13100'>KULRICE-13100</link>] -         Develop sync job for git repository
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14148'>KULRICE-14148</link>] - Clean up DemoTravelAccountLookUpAft.testXss
         </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13102'>KULRICE-13102</link>] -         Production Move of svn to git
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14160'>KULRICE-14160</link>] - Document how we want to handle testing and verification of pull requests from external entities
         </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13103'>KULRICE-13103</link>] -         Update relevant documentation on wiki/docbook/kuali website to refer to git
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13373'>KULRICE-13373</link>] -         Listen for Javascript console errors in AFTs
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13916'>KULRICE-13916</link>] -         Migration Jira to using git repository
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13917'>KULRICE-13917</link>] -         Migration Jenkins to git repository
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13918'>KULRICE-13918</link>] -         Migration of Fisheye to git repository
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13989'>KULRICE-13989</link>] -         Review and release kuali-common and kuali-core
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-13990'>KULRICE-13990</link>] -         Add github-pull-request-builder-plugin to jenkins
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14033'>KULRICE-14033</link>] -         CI Analysis 2.5.2 Sprint 1
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14034'>KULRICE-14034</link>] -         Blank proposition labels make proposition tree unusable
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14049'>KULRICE-14049</link>] -         Review Impact of Updating Spring 3.2.10 to 3.2.12
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14065'>KULRICE-14065</link>] -         Update Rice docbook references from svn to git
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14075'>KULRICE-14075</link>] -         Performance Profiling of KC
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14077'>KULRICE-14077</link>] -         CI Analysis 2.5.2 Sprint 2
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14082'>KULRICE-14082</link>] -         Reduce invocations for edit mode and action flag checks
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14083'>KULRICE-14083</link>] -         Profile Proposal Questionnaire Data Access
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14084'>KULRICE-14084</link>] -         Improvements for Key Personnel Search Rendering
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14085'>KULRICE-14085</link>] -         Improvements for Key Personnel Search
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14086'>KULRICE-14086</link>] -         Improvements for Key Personnel Page Rendering
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14087'>KULRICE-14087</link>] -         Several (hundreds) of transactions being created for a single request
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14090'>KULRICE-14090</link>] -         Make improvements to KIM integration performance
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14102'>KULRICE-14102</link>] -         CI Analysis 2.5.2 Sprint 3
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14123'>KULRICE-14123</link>] -         Add init view caching ability
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14125'>KULRICE-14125</link>] -         Improve workflow document is valid action method
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14146'>KULRICE-14146</link>] -         Prepare Release Notes for  2.5.2
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14179'>KULRICE-14179</link>] - Update IntelliJ XML Files for update 2.5.2 to 2.5.3
         </para></listitem>
       </itemizedlist></para>
     </section>

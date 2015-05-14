@@ -36,6 +36,21 @@
 * No Changes
 
 
+##rice-2.5.3.1505.3-kckualico
+*  Fix !=null comparison on prepositions.
+  * Steps to Recreate
+  * 1 Create a People Flow
+  * 2 Create an Agenda with a single single proposition. Activity Type != null. I did this because I wanted the rule to always fire no matter what, and as Activity Type is required to save a prop dev doc this field cannot be null.
+  * 3 Link the created people flow with his rule so it will populate the route log when this rule executes to true.
+  * When I did this it did not populate the route log. Gayathri asked me to try this with a specific Activity Type value, and when I had the rule check for activity type of 1 it properly populated the route log. So KRMS propositions are not currently checking for not null properly.
+  * Gayathri on Wed, 13 May 2015 10:22:51 -0700 [View Commit](../../commit/e40f8389dec88fe9e2703105ed302203ab04c4f3)
+* move to java 8
+  * Travis Schneberger on Thu, 14 May 2015 07:52:29 -0400 [View Commit](../../commit/5f2dcf22328d6bf8532eca08e7150bd70cc88239)
+* fixing java 8 generic inference compilation issue.
+  * Travis Schneberger on Thu, 14 May 2015 10:57:29 -0400 [View Commit](../../commit/7148d3b52dedf0a0f03823436f435c829948a0cc)
+* fixing java 8 generic inference compilation issue.
+  * Travis Schneberger on Thu, 14 May 2015 11:30:18 -0400 [View Commit](../../commit/149380ff4e4b53a4d673472d57e50c36541d1330)
+
 ##rice-2.5.3.1505.2-kckualico
 * Preparing code and libraries to switch to Java 8
   * Travis Schneberger on Fri, 8 May 2015 09:56:51 -0400 [View Commit](../../commit/ac9e1e14f6b6504003dc02bdd8c93adf525aa607)

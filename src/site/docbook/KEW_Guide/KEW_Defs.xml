@@ -241,8 +241,15 @@
                             </row>
                             <row>
                                 <entry>split</entry>
-                                <entry>The routing path splits into branches and can continue on any
-                                    of them at a split.</entry>
+                                <entry><para>The routing path splits into branches and can continue on any
+                                    of them at a split.  Implementaions of SplitNode which are provided:</para>
+                                    <itemizedlist>
+                                      <listitem><para>SimpleSplitNode: A simple implementation which always splits to
+                                          all branches that are defined for the split.</para></listitem>
+                                      <listitem><para>XPathSplitNode:  An implementation which chooses
+                                          branches to execute using XPath.</para></listitem>
+                                    </itemizedlist>
+                                </entry>
                             </row>
                             <row>
                                 <entry>branch</entry>

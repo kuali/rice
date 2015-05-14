@@ -46,6 +46,7 @@
     <project.compile.source>${project.java.version}</project.compile.source>
     <project.compile.target>${project.java.version}</project.compile.target>
     <project.compiler.version>${project.java.version}</project.compiler.version>
+    <plugin.javadoc.version>2.10.3</plugin.javadoc.version>
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
 
 
@@ -1119,6 +1120,13 @@
             <compilerVersion>${project.compiler.version}</compilerVersion>
             <encoding>${project.encoding}</encoding>
             <verbose>true</verbose>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <additionalparam>-Xdoclint:none</additionalparam>
+            <failOnError>false</failOnError>
           </configuration>
         </plugin>
         <plugin>

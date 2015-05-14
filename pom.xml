@@ -42,7 +42,7 @@
   <url>http://www.kuali.org/rice</url>
 
   <properties>
-    <project.java.version>1.7</project.java.version>
+    <project.java.version>1.8</project.java.version>
     <project.compile.source>${project.java.version}</project.compile.source>
     <project.compile.target>${project.java.version}</project.compile.target>
     <project.compiler.version>${project.java.version}</project.compiler.version>

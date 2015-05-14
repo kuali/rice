@@ -1,1 +1,0 @@
-This folder contains sample documents for testing WebUtils.saveMimeZipOutputStreamAsFile method. 

@@ -31,8 +31,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -336,44 +334,6 @@ public class WebUtils {
 		outputStream.flush();
 		outputStream.close();
 	}
-
-    /**
-     * Zipoutput files that are not of type text/plain or text/html.
-     *
-     * @param response
-     * @param contentType
-     * @param outputStreamMap<filename, outputStream>
-     * @param zipFileName
-     * @throws IOException
-     */
-    public static void saveMimeZipOutputStreamAsFile(HttpServletResponse response, String contentType, Map<String, ByteArrayOutputStream> outputStreamMap, String zipFileName) throws IOException {
-
-        // set response
-        response.setContentType(contentType);
-        response.setHeader(KNSConstants.HttpHeaderResponse.CONTENT_DIPOSITION, KNSConstants.HttpHeaderResponse.ATTACHMENT_CONTENT_TYPE + "; " + KNSConstants.HttpHeaderResponse.FILENAME + "=" + zipFileName);
-        response.setHeader(KNSConstants.HttpHeaderResponse.EXPIRES, KNSConstants.ZERO);
-        response.setHeader(KNSConstants.HttpHeaderResponse.CACHE_CONTROL, KNSConstants.HttpHeaderResponse.CACHE_CONTROL_REVALIDATE_PRE_POST_CHECK_ZERO);
-        response.setHeader(KNSConstants.HttpHeaderResponse.PRAGMA, KNSConstants.HttpHeaderResponse.PUBLIC);
-
-        // write to zipoutput
-        ZipOutputStream zout = new ZipOutputStream(response.getOutputStream());
-        int totalSize = 0;
-        Iterator<String> fileNames = outputStreamMap.keySet().iterator();
-
-        while (fileNames.hasNext()) {
-            String fileName = fileNames.next();
-            ByteArrayOutputStream pdfStream = outputStreamMap.get(fileName);
-            totalSize += pdfStream.size();
-            zout.putNextEntry(new ZipEntry(fileName));
-            zout.write(pdfStream.toByteArray());
-            zout.closeEntry();
-        }
-
-        response.setContentLength(totalSize);
-        zout.flush();
-        zout.close();
-    }
-
 
 	/**
 	 * A file that is not of type text/plain or text/html can be output through

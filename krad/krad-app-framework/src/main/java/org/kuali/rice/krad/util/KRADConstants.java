@@ -221,8 +221,7 @@ public final class KRADConstants {
      * set to a message that is displayed when the module is locked.
      */
     public static final String MODULE_LOCKED_MESSAGE_REQUEST_PARAMETER = "moduleLockedMessage";
-    public static final String MODULE_LOCKED_DEFAULT_MESSAGE = "The module you are attempting to access has been locked for maintenance.";
-
+    
     public static final String CUSTOM_ACTION = "customAction";
     public static final String DOC_FORM_KEY = "docFormKey";
     public static final String FORM_KEY = "formKey";
@@ -611,9 +610,7 @@ public final class KRADConstants {
     		throw new UnsupportedOperationException("do not call");
     	}
     }
-    public static final class ConfigParameters {
-        public static final String KRAD_LOG_EMAIL_MESSAGE = "rice.krad.dev.log.email";
-    }
+
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
 	
   	public static final String SINGLE_QUOTE = "'";

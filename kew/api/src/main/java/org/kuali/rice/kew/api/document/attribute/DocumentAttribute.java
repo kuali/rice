@@ -15,8 +15,11 @@
  */
 package org.kuali.rice.kew.api.document.attribute;
 
-import java.io.Serializable;
-import java.util.Collection;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
+import org.kuali.rice.core.api.mo.ModelBuilder;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,13 +27,8 @@ import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.lang.ObjectUtils;
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
-import org.kuali.rice.core.api.mo.ModelBuilder;
-import org.w3c.dom.Element;
+import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * An abstract representation of the {@code DocumentAttributeContract} which can be used as the super class for
@@ -51,10 +49,11 @@ import org.w3c.dom.Element;
 public abstract class DocumentAttribute extends AbstractDataTransferObject implements DocumentAttributeContract {
 
     private static final long serialVersionUID = -1935235225791818090L;
-
+    
     @XmlElement(name = Elements.NAME, required = true)
     private final String name;
 
+    @SuppressWarnings("unused")
     @XmlAnyElement
     private final Collection<Element> _futureElements = null;
 
@@ -74,38 +73,6 @@ public abstract class DocumentAttribute extends AbstractDataTransferObject imple
         return name;
     }
 
-    // KULRICE-14037 - add hashCode and equals to allow code to recognize when attributes are
-    // equal for the purposes of de-duplicating them during qualifier extraction.
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
-        result = prime * result + ((getValue() == null) ? 0 : getValue().hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        DocumentAttribute other = (DocumentAttribute) obj;
-        if ( !StringUtils.equals(getName(), other.getName() ) ) {
-                return false;
-        }
-        if ( !ObjectUtils.equals(getValue(), other.getValue() ) ) {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * An abstract base class that can be extended by concrete builder implementations of subclasses of
      * {@code DocumentAttribute}.
@@ -115,7 +82,7 @@ public abstract class DocumentAttribute extends AbstractDataTransferObject imple
     public abstract static class AbstractBuilder<T> implements Serializable, ModelBuilder, DocumentAttributeContract {
 
         private static final long serialVersionUID = -4402662354421207678L;
-
+        
         private String name;
         private T value;
 
@@ -160,9 +127,8 @@ public abstract class DocumentAttribute extends AbstractDataTransferObject imple
          *
          * @return the instantiated instance of {@code DocumentAttribute} which was built by this builder
          */
-        @Override
         public abstract DocumentAttribute build();
-
+        
     }
 
     /**

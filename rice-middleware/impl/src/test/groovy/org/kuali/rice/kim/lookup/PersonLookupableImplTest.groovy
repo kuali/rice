@@ -54,7 +54,8 @@ class PersonLookupableImplTest {
                     //kimUiDocumentService: [ canModifyEntity: { a,b -> true } ] as UiDocumentService,
                     kimPermissionService: [ isAuthorized: {a, b, c, d -> true} ] as PermissionService,
                     personService: [ getPersonByPrincipalName: { new PersonImpl() } ] as PersonService,
-                    kualiConfigurationService: [ getPropertyValueAsString: { "KIM_BASE_PATH" } ] as ConfigurationService
+                    kualiConfigurationService: [ getPropertyValueAsString: { "KIM_BASE_PATH" },
+                            getPropertyValueAsBoolean: { false }] as ConfigurationService
                 ][name.getLocalPart()]
                 svc
             },

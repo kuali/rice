@@ -36,6 +36,10 @@
 * No Changes
 
 
+##rice-2.5.3.1505.2-kckualico
+* Preparing code and libraries to switch to Java 8
+  * Travis Schneberger on Fri, 8 May 2015 09:56:51 -0400 [View Commit](../../commit/ac9e1e14f6b6504003dc02bdd8c93adf525aa607)
+
 ##rice-2.5.3.1505.1-kckualico
 * No Changes
 

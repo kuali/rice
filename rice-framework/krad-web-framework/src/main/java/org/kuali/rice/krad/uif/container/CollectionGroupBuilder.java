@@ -195,8 +195,8 @@ public class CollectionGroupBuilder implements Serializable {
 
             // initialize the line dialogs, like edit line dialog
             initializeEditLineDialog(collectionGroup, indexedElement.index, currentLine, model);
-
-            List<Component> actionComponents = new ArrayList<>(ComponentUtils.copy(collectionGroup.getLineActions()));
+            List<? extends Component> components = ComponentUtils.copy(collectionGroup.getLineActions());
+            List<Component> actionComponents = new ArrayList<Component>(components);
 
             // initialize the line actions
             List<? extends Component> lineActions = initializeLineActions(actionComponents, view, collectionGroup,

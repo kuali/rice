@@ -27,9 +27,7 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para>This version of Rice is a patch release consisting of bug fixes and small items
-        needed by Kuali application partners. There are no database changes and it should be a
-        drop-in replacement.</para>
+            <para>This release consists of security fixes. There are no database changes and it should be a drop-in replacement.</para>
         </section>
         <section>
             <title>Download</title>
@@ -66,53 +64,14 @@
         <para>
           <itemizedlist>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-10345'>KULRICE-10345</link>] - Required * does not appear on left descriptor column in maintenance documents</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14248'>KULRICE-14248</link>] - Fixed document help icon of Document Search</para>
             </listitem>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11816'>KULRICE-11816</link>] - Expanded Text Area broken</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11862'>KULRICE-11862</link>] -  When editing maintenance doc, fields with refreshWhenChangedPropertyNames renders wrong when refresh</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12021'>KULRICE-12021</link>] - Kim Attribute problem when multiple attributes have the same name</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12037'>KULRICE-12037</link>] - Newer Rice 2.3.x releases are ignoring a KRAD field's default value finder class</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12058'>KULRICE-12058</link>] - Custom property editor not being invoked for java.sql.Time</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12374'>KULRICE-12374</link>] - Provide method to create disapproval note text in DocumentControllerBase</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12457'>KULRICE-12457</link>] - KRMS error and cache flush messages not appearing right</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12485'>KULRICE-12485</link>] - Adding/Removing a role doesn't take effect even if you clear the kim cache</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14253'>KULRICE-14253</link>] - Apache WSS4J Security Update (update to version 1.6.17)</para>
             </listitem>
           </itemizedlist>
         </para>
       </section>
-      
-      
-      <section>
-        <title>Task</title>
-        <para>
-          <itemizedlist>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-11579'>KULRICE-11579</link>] - Add memberQualifiers parameter to RoleTypeService.convertQualificationForMemberRoles</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-12417'>KULRICE-12417</link>] - Correct errors in the installation guide's "Building the Rice Database" section</para>
-            </listitem>
-          </itemizedlist>
-        </para>
-      </section>
-      
-      
-      
       
     </section>
 </article>

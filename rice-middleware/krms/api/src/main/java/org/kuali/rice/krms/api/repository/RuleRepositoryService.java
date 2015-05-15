@@ -55,7 +55,6 @@ public interface RuleRepositoryService {
 	 */
 	@WebMethod(operationName = "selectContext")
 	@WebResult(name = "contextDefinition")
-	@Cacheable(value= ContextDefinition.Cache.NAME, key="'contextSelectionCriteria=' + #p0.getNamespaceCode() + #p0.getName()")
 	public ContextDefinition selectContext(@WebParam(name = "contextSelectionCriteria") ContextSelectionCriteria contextSelectionCriteria)
             throws RiceIllegalArgumentException;
 	
@@ -96,7 +95,6 @@ public interface RuleRepositoryService {
     @XmlElementWrapper(name = "agendaTrees", required = true)
     @XmlElement(name = "agendaTree", required = false)
 	@WebResult(name = "agendaTrees")
-	@Cacheable(value= AgendaTreeDefinition.Cache.NAME, key="'agendaIds=' + #p0.toString()")
 	public List<AgendaTreeDefinition> getAgendaTrees(@WebParam(name = "agendaIds") List<String> agendaIds)
             throws RiceIllegalArgumentException;
 
@@ -136,7 +134,6 @@ public interface RuleRepositoryService {
     @XmlElementWrapper(name = "rules", required = true)
     @XmlElement(name = "rule", required = false)
 	@WebResult(name = "rules")
-	@Cacheable(value= RuleDefinition.Cache.NAME, key="'ruleIds=' + #p0.toString()")
 	public List<RuleDefinition> getRules(@WebParam(name = "ruleIds") List<String> ruleIds)
             throws RiceIllegalArgumentException;
 

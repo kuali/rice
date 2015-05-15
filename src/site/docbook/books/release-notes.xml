@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2014 The Kuali Foundation
+    Copyright 2005-2013 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -27,14 +27,13 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para>This version of Rice is a patch release containing security fixes. There are no database changes and
-                it should be a drop-in replacement.</para>
+            <para>This release consists of security fixes. There are no database changes and it should be a drop-in replacement.</para>
         </section>
         <section>
             <title>Download</title>
             <para>Kuali Rice ${project.version} can be downloaded from the Rice website at <link xlink:show="new" xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>
             <para>There are three different distributions of Rice available: source, binary and
-              server. Please read the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/IG.html">Installation Guide</link> for
+                server. Please read the <link xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/IG.html">Installation Guide</link> for
                 more details on each of these distributions.</para>
             <para>Applications can also consume Rice from the maven site at <link
                     xlink:href="http://search.maven.org/#search|ga|1|org.kuali.rice"
@@ -44,9 +43,9 @@
             <title>Documentation</title>
             <para>API Documentation can be found at <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">http://site.kuali.org/rice/${project.version}/apidocs/index.html</link></para>
             <para>Formal documentation can be found at <link xlink:show="new"
-                    xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/portal.html"
-                    >http://site.kuali.org/rice/${project.version}/reference/html/portal.html</link>.
-                This documentation is still in the process of review and update which will continue
+                    xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/index.html"
+                    >http://site.kuali.org/rice/${project.version}/reference/html/index.html</link>.
+                This documentation is still in the process of review and update  which will continue
                 through subsequent releases, so please follow the notes in each document to report
                 any outdated information.</para>
         </section>
@@ -56,5 +55,23 @@
                 our public collaboration mailing list at <email>rice.collab@kuali.org</email>.
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
+    </section>
+    <section xml:id="items_addressed_in_rice">
+        <title>Items Addressed in Rice ${project.version}</title>
+      
+      <section>
+        <title>Bug Fix</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14248'>KULRICE-14248</link>] - Fixed document help icon of Document Search</para>
+            </listitem>
+            <listitem>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14253'>KULRICE-14253</link>] - Apache WSS4J Security Update (update to version 1.6.17)</para>
+            </listitem>
+          </itemizedlist>
+        </para>
+      </section>
+      
     </section>
 </article>

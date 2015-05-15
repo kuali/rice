@@ -177,9 +177,7 @@
     <subethasmtp.version>3.1.6</subethasmtp.version>
     <velocity.version>1.6.4</velocity.version>
     <velocity.tools.version>2.0</velocity.tools.version>
-
-    <!-- Version 2.3.6 of cxf requires wss4j 1.5.11 or 1.5.12 and does not work with 1.6.0 -->
-    <wss4j.version>1.6.7</wss4j.version>
+    <wss4j.version>1.6.18</wss4j.version>
     <xapool.version>1.5.0-patch4</xapool.version>
     <!-- 2.11.0 is not in maven central repo https://issues.apache.org/jira/browse/XERCESJ-1454 -->
     <xercesImpl.version>2.9.1</xercesImpl.version>

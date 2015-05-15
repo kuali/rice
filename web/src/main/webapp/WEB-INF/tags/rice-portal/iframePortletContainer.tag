@@ -1,5 +1,5 @@
 <%--
- Copyright 2005-2014 The Kuali Foundation
+ Copyright 2005-2009 The Kuali Foundation
 
  Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@
 <%@ attribute name="channelUrl" required="true" %>
 
 <script type="text/javascript">
-  /**
-   * Creates a link element from the given url.  This link element can be used to extract partial link information
-   * such as: host, hostname, pathname, port, protocol, and search.
-   *
-   * @param href - relative or absolute url for which the link element should be created
-   * @return {Element} - the link element
-   */
-  function getLocation(href) {
+/**
+ * Creates a link element from the given url.  This link element can be used to extract partial link information
+ * such as: host, hostname, pathname, port, protocol, and search.
+ *
+ * @param href - relative or absolute url for which the link element should be created
+ * @return {Element} - the link element
+ */
+function getLocation(href) {
     var location = document.createElement("a");
     location.href = href;
     // IE doesn't populate all link properties when setting .href with a relative URL, however .href will return an
@@ -35,44 +35,46 @@
       location.href = location.href;
     }
     return location;
-  };
+};
 
-  /**
-   * easyXDM is used to enable portal resizing when the content is on a different server url.
-   *
-   * The portal needs to know where to find the resize_intermediate.html file on the remote server.  This means that the
-   * application contexts of the local and remote content need to be specified in the configuration parameters.  These
-   * parameters start with "context.names.". A specific suffix is not important.  For applications that use a standalone
-   * rice server "context.names.rice" would need to be specified.  By default context.names.app is set to app.context.name.
-   */
+/**
+ * easyXDM is used to enable portal resizing when the content is on a different server url.
+ *
+ * The portal needs to know where to find the resize_intermediate.html file on the remote server.  This means that the
+ * application contexts of the local and remote content need to be specified in the configuration parameters.  These
+ * parameters start with "context.names.". A specific suffix is not important.  For applications that use a standalone
+ * rice server "context.names.rice" would need to be specified.  By default context.names.app is set to app.context.name.
+ */
   var channelLocation = getLocation("${channelUrl}");
   var contextNames = new Array();
   <c:forEach var="contextName" items="${ConfigProperties.context.names}">
-  <c:if test="${not empty contextName.value}">
-  contextNames.push("<c:out value="${contextName.value}" />");
-  </c:if>
+      <c:if test="${not empty contextName.value}">
+          contextNames.push("<c:out value="${contextName.value}" />");
+      </c:if>
   </c:forEach>
   var swf;
   var remote = channelLocation.protocol + '//' + channelLocation.host + "/";
-
-  // Preserve the server's context name in url path. IE pathname has a leading slash
-  for (var i = 0; i < contextNames.length; i++) {
-    if (channelLocation.pathname.lastIndexOf(contextNames[i], 0) === 0
-            || channelLocation.pathname.lastIndexOf("/" + contextNames[i], 0) === 0) {
-      remote += contextNames[i] + "/";
-      break;
+  if (jQuery.browser.msie){
+    for (var i = 0; i < contextNames.length; i++) {
+      if (channelLocation.pathname.lastIndexOf(contextNames[i], 0) === 0) {
+        remote += contextNames[i] + "/";
+        break;
+      }
     }
+    swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
+    remote += "rice-portal/scripts/easyXDM/resize_intermediate.html?url=/"
+            + encodeURIComponent(channelLocation.pathname + channelLocation.search);
+  } else {
+    for (var i = 0; i < contextNames.length; i++) {
+      if (channelLocation.pathname.lastIndexOf(contextNames[i], 1) === 1) {
+        remote += contextNames[i] + "/";
+        break;
+      }
+    }
+    swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
+    remote += "rice-portal/scripts/easyXDM/resize_intermediate.html?url="
+            + encodeURIComponent(channelLocation.pathname + channelLocation.search);
   }
-
-  // Add leading slash, only IE has a leading slash
-  var channelPathAndSearch = channelLocation.pathname + channelLocation.search;
-  if (channelPathAndSearch.substr(0,1) != "/") {
-    channelPathAndSearch = "/" + channelPathAndSearch;
-  }
-
-  swf = remote + "rice-portal/scripts/easyXDM/easyxdm.swf";
-  remote += "rice-portal/scripts/easyXDM/resize_intermediate.html?url="
-          + encodeURIComponent(channelPathAndSearch);
 
   new easyXDM.Socket(/** The configuration */{
     remote: remote,

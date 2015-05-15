@@ -144,12 +144,6 @@ public enum DocumentTypePolicy implements Coded {
      */
     @XmlEnumValue(Codes.SEND_NOTIFICATION_ON_SU_DISAPPROVE) SEND_NOTIFICATION_ON_SU_DISAPPROVE(Codes.SEND_NOTIFICATION_ON_SU_DISAPPROVE),
     /**
-     * Specifies whether to send FYI notifications on a super user disapprove action
-     * @since 2.1.10
-     * @see https://jira.kuali.org/browse/KULRICE-14072
-     */
-    @XmlEnumValue(Codes.SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE) SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE(Codes.SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE),
-    /**
      * Specifies whether to disallow super user approval on the final route node
      * @since 2.1
      * @see https://jira.kuali.org/browse/KULRICE-7057
@@ -208,7 +202,6 @@ public enum DocumentTypePolicy implements Coded {
         private static final String RECALL_NOTIFICATION = "RECALL_NOTIFICATION";
         private static final String RECALL_VALID_ACTIONSTAKEN = "RECALL_VALID_ACTIONSTAKEN";
         private static final String SEND_NOTIFICATION_ON_SU_DISAPPROVE = "SEND_NOTIFICATION_ON_SU_DISAPPROVE";
-        private static final String SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE = "SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE";
         private static final String ALLOW_SU_FINAL_APPROVAL = "ALLOW_SU_FINAL_APPROVAL";
         private static final String SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION = "SUPPRESS_IMMEDIATE_EMAILS_ON_SU_ACTION";
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2012 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,26 +15,15 @@
  */
 package org.kuali.rice.krad.workflow.service.impl;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
-
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttribute;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDateTime;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeDecimal;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeFactory;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeInteger;
 import org.kuali.rice.kew.api.document.attribute.DocumentAttributeString;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.bo.BusinessObject;
@@ -52,22 +41,31 @@ import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.workflow.attribute.DataDictionarySearchableAttribute;
 import org.kuali.rice.krad.workflow.service.WorkflowAttributePropertyResolutionService;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+
 /**
  * The default implementation of the WorkflowAttributePropertyResolutionServiceImpl
  */
 public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowAttributePropertyResolutionService {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(WorkflowAttributePropertyResolutionServiceImpl.class);
-
+    
     private PersistenceStructureService persistenceStructureService;
     private BusinessObjectMetaDataService businessObjectMetaDataService;
 
     /**
      * Using the proper RoutingTypeDefinition for the current routing node of the document, aardvarks out the proper routing type qualifiers
      */
-    @Override
     public List<Map<String, String>> resolveRoutingTypeQualifiers(Document document, RoutingTypeDefinition routingTypeDefinition) {
         List<Map<String, String>> qualifiers = new ArrayList<Map<String, String>>();
-
+        
         if (routingTypeDefinition != null) {
             document.populateDocumentForRouting();
             RoutingAttributeTracker routingAttributeTracker = new RoutingAttributeTracker(routingTypeDefinition.getRoutingAttributes());
@@ -75,17 +73,10 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
                 qualifiers.addAll(resolveDocumentValuePath(document, documentValuePathGroup, routingAttributeTracker));
                 routingAttributeTracker.reset();
             }
-            // KULRICE-14037
-            // Now, go through the Map<String,String> objects and eliminate duplicates
-            Set<Map<String,String>> deDuplicatedQualifiers = new HashSet<Map<String,String>>(qualifiers);
-            if ( LOG.isDebugEnabled() ) {
-                LOG.debug( "Number of qualifier sets before deduplication: " + qualifiers.size() + " -- after: " + deDuplicatedQualifiers.size() );
-            }
-            qualifiers = new ArrayList<Map<String,String>>( deDuplicatedQualifiers );
         }
         return qualifiers;
     }
-
+    
     /**
      * Resolves all of the values in the given DocumentValuePathGroup from the given BusinessObject
      * @param businessObject the business object which is the source of values
@@ -113,7 +104,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return qualifiers;
     }
-
+    
     /**
      * Resolves document values from a collection path on a given business object
      * @param businessObject the business object which has a collection, each element of which is a source of values
@@ -155,7 +146,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return qualifiers;
     }
-
+    
     /**
      * Returns a collection from a path on a business object
      * @param businessObject the business object to get values from
@@ -165,7 +156,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     protected Collection getCollectionByPath(BusinessObject businessObject, String collectionPath) {
         return (Collection)getPropertyByPath(businessObject, collectionPath.trim());
     }
-
+    
     /**
      * Aardvarks values out of a business object and puts them into an Map<String, String>, based on a List of paths
      * @param businessObject the business object to get values from
@@ -185,7 +176,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
             }
         }
     }
-
+    
     /**
      * Copies all the values from one qualifier to another
      * @param source the source of values
@@ -201,7 +192,6 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * Resolves all of the searching values to index for the given document, returning a list of SearchableAttributeValue implementations
      *
      */
-    @Override
     public List<DocumentAttribute> resolveSearchableAttributeValues(Document document, WorkflowAttributes workflowAttributes) {
         List<DocumentAttribute> valuesToIndex = new ArrayList<DocumentAttribute>();
         if (workflowAttributes != null && workflowAttributes.getSearchingTypeDefinitions() != null) {
@@ -211,7 +201,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return valuesToIndex;
     }
-
+    
     /**
      * Pulls SearchableAttributeValue values from the given document for the given searchingTypeDefinition
      * @param document the document to get search values from
@@ -220,7 +210,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      */
     protected List<DocumentAttribute> aardvarkValuesForSearchingTypeDefinition(Document document, SearchingTypeDefinition searchingTypeDefinition) {
         List<DocumentAttribute> searchAttributes = new ArrayList<DocumentAttribute>();
-
+        
         final List<Object> searchValues = aardvarkSearchValuesForPaths(document, searchingTypeDefinition.getDocumentValues());
         for (Object value : searchValues) {
             try {
@@ -235,7 +225,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return searchAttributes;
     }
-
+    
     /**
      * Pulls values as objects from the document for the given paths
      * @param document the document to pull values from
@@ -249,7 +239,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return searchValues;
     }
-
+    
     /**
      * Removes empty Map<String, String>s from the given List of qualifiers
      * @param qualifiers a List of Map<String, String>s holding qualifiers for responsibilities
@@ -265,18 +255,16 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
        return cleanedQualifiers;
     }
 
-    @Override
     public String determineFieldDataType(Class<? extends BusinessObject> businessObjectClass, String attributeName) {
         return DataTypeUtil.determineFieldDataType(businessObjectClass, attributeName);
     }
 
     /**
-     * Using the type of the sent in value, determines what kind of SearchableAttributeValue implementation should be passed back
+     * Using the type of the sent in value, determines what kind of SearchableAttributeValue implementation should be passed back 
      * @param attributeKey
      * @param value
      * @return
      */
-    @Override
     public DocumentAttribute buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value) {
         if (value == null) return null;
         final String fieldDataType = determineFieldDataType(businessObjectClass, attributeKey);
@@ -287,7 +275,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN) && DataTypeUtil.isBooleanable(value.getClass())) return buildSearchableYesNoAttribute(attributeKey, value);
         return buildSearchableStringAttribute(attributeKey, value);
     }
-
+    
     /**
      * Builds a date time SearchableAttributeValue for the given key and value
      * @param attributeKey the key for the searchable attribute
@@ -297,7 +285,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     protected DocumentAttributeDateTime buildSearchableDateTimeAttribute(String attributeKey, Object value) {
         return DocumentAttributeFactory.createDateTimeAttribute(attributeKey, new DateTime(value));
     }
-
+    
     /**
      * Builds a "float" SearchableAttributeValue for the given key and value
      * @param attributeKey the key for the searchable attribute
@@ -315,7 +303,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return DocumentAttributeFactory.createDecimalAttribute(attributeKey, decimalValue);
     }
-
+    
     /**
      * Builds a "integer" SearchableAttributeValue for the given key and value
      * @param attributeKey the key for the searchable attribute
@@ -331,7 +319,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return DocumentAttributeFactory.createIntegerAttribute(attributeKey, integerValue);
     }
-
+    
     /**
      * Our last ditch attempt, this builds a String SearchableAttributeValue for the given key and value
      * @param attributeKey the key for the searchable attribute
@@ -341,7 +329,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     protected DocumentAttributeString buildSearchableStringAttribute(String attributeKey, Object value) {
         return DocumentAttributeFactory.createStringAttribute(attributeKey, value.toString());
     }
-
+    
     /**
      * This builds a String SearchableAttributeValue for the given key and value, correctly correlating booleans
      * @param attributeKey the key for the searchable attribute
@@ -352,7 +340,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         final String boolValueAsString = booleanValueAsString((Boolean)value);
         return DocumentAttributeFactory.createStringAttribute(attributeKey, boolValueAsString);
    }
-
+    
     /**
      * Converts the given boolean value to "" for null, "Y" for true, "N" for false
      * @param booleanValue the boolean value to convert
@@ -364,14 +352,13 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         return "N";
     }
 
-    @Override
     public Object getPropertyByPath(Object object, String path) {
         if (object instanceof Collection) return getPropertyOfCollectionByPath((Collection)object, path);
 
         final String[] splitPath = headAndTailPath(path);
         final String head = splitPath[0];
         final String tail = splitPath[1];
-
+        
         if (object instanceof PersistableBusinessObject && tail != null) {
             if (getBusinessObjectMetaDataService().getBusinessObjectRelationship((BusinessObject) object, head) != null) {
                 ((PersistableBusinessObject)object).refreshReferenceObject(head);
@@ -398,7 +385,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return null;
     }
-
+    
     /**
      * Finds a child object, specified by the given path, on each object of the given collection
      * @param collection the collection of objects
@@ -412,7 +399,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return values;
     }
-
+    
     /**
      * Makes a new collection of exactly the same type of the collection that was handed to it
      * @param collection the collection to make a new collection of the same type as
@@ -431,7 +418,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
             throw new RuntimeException("Illegal Access on class of collection we'd already accessed??", iae);
         }
     }
-
+    
     /**
      * Splits the first property off from a path, leaving the tail
      * @param path the path to split
@@ -444,7 +431,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         }
         return new String[] { path.substring(0, firstDot), path.substring(firstDot + 1) };
     }
-
+    
     /**
      * Convenience method which makes sure that if the given object is a collection, it is added to the given collection flatly
      * @param c a collection, ready to be added to
@@ -459,7 +446,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     }
 
     /**
-     * Gets the persistenceStructureService attribute.
+     * Gets the persistenceStructureService attribute. 
      * @return Returns the persistenceStructureService.
      */
     public PersistenceStructureService getPersistenceStructureService() {
@@ -473,16 +460,16 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
     }
-
+    
     /**
      * Inner helper class which will track which routing attributes have been used
      */
     class RoutingAttributeTracker {
-
+        
         private List<RoutingAttribute> routingAttributes;
         private int currentRoutingAttributeIndex;
         private Stack<Integer> checkPoints;
-
+        
         /**
          * Constructs a WorkflowAttributePropertyResolutionServiceImpl
          * @param routingAttributes the routing attributes to track
@@ -491,35 +478,35 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
             this.routingAttributes = routingAttributes;
             checkPoints = new Stack<Integer>();
         }
-
+        
         /**
          * @return the routing attribute hopefully associated with the current qualifier
          */
         public RoutingAttribute getCurrentRoutingAttribute() {
             return routingAttributes.get(currentRoutingAttributeIndex);
         }
-
+        
         /**
          * Moves this routing attribute tracker to its next routing attribute
          */
         public void moveToNext() {
             currentRoutingAttributeIndex += 1;
         }
-
+        
         /**
          * Check points at the current routing attribute, so that this position is saved
          */
         public void checkPoint() {
             checkPoints.push(new Integer(currentRoutingAttributeIndex));
         }
-
+        
         /**
          * Returns to the point of the last check point
          */
         public void backUpToCheckPoint() {
             currentRoutingAttributeIndex = checkPoints.pop().intValue();
         }
-
+        
         /**
          * Resets this RoutingAttributeTracker, setting the current RoutingAttribute back to the top one and
          * clearing the check point stack

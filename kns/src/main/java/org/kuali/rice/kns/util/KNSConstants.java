@@ -21,18 +21,4 @@ package org.kuali.rice.kns.util;
 public class KNSConstants {
     public static final String AUDIT_ERRORS = "AuditErrors";
     public static final String EXCEPTION_ON_MISSING_FIELD_CONVERSION_ATTRIBUTE = "rice.kns.exceptionOnMissingFieldConversionAttribute";
-
-    public static final String ZERO = "0";
-
-    public static class HttpHeaderResponse {
-        public static final String ATTACHMENT_CONTENT_TYPE = "attachment";
-        public static final String INLINE_CONTENT_TYPE = "inline";
-        public static final String CONTENT_DIPOSITION = "Content-disposition";
-        public static final String EXPIRES = "Expires";
-        public static final String CACHE_CONTROL = "Cache-Control";
-        public static final String FILENAME = "filename";
-        public static final String PRAGMA = "Pragma";
-        public static final String CACHE_CONTROL_REVALIDATE_PRE_POST_CHECK_ZERO = "must-revalidate, post-check=0, pre-check=0";
-        public static final String PUBLIC = "public";
-    }
 }

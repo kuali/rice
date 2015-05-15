@@ -552,34 +552,6 @@
       </policies>
     </documentType>
 
-		<documentType>
-			<name>SUDisapproveWithFyiNotificationTest</name>
-			<parent>NotificationTest</parent>
-			<label>SUDisapproveWithFyiNotificationTest</label>
-			<policies>
-				<policy>
-					<name>SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE</name>
-					<value>true</value>
-				</policy>
-			</policies>
-		</documentType>
-
-		<documentType>
-			<name>SUDisapproveWithBothNotificationPoliciesTest</name>
-			<parent>NotificationTest</parent>
-			<label>SUDisapproveWithBothNotificationPoliciesTest</label>
-			<policies>
-				<policy>
-					<name>SEND_NOTIFICATION_ON_SU_DISAPPROVE</name>
-					<value>true</value>
-				</policy>
-				<policy>
-					<name>SEND_FYI_NOTIFICATION_ON_SU_DISAPPROVE</name>
-					<value>true</value>
-				</policy>
-			</policies>
-		</documentType>
-
     <documentType>
       <name>SUApproveFinalNodeDisallowed</name>
       <parent>NotificationTest</parent>

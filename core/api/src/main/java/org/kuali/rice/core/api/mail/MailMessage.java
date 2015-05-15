@@ -16,15 +16,12 @@
 package org.kuali.rice.core.api.mail;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
- * Email message information
- *
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
+ * 
  */
 public class MailMessage implements Serializable {
     private String fromAddress;
@@ -33,7 +30,6 @@ public class MailMessage implements Serializable {
     private Set bccAddresses = new HashSet();
     private String subject = "";
     private String message = "";
-    private List<MailAttachment> mailAttachments = new ArrayList<MailAttachment>();
 
     public MailMessage() {
         super();
@@ -139,13 +135,5 @@ public class MailMessage implements Serializable {
      */
     public void setToAddresses(Set toAddresses) {
         this.toAddresses = toAddresses;
-    }
-
-    public List<MailAttachment> getMailAttachments() {
-        return mailAttachments;
-    }
-
-    public void setMailAttachments(List<MailAttachment> mailAttachments) {
-        this.mailAttachments = mailAttachments;
     }
 }

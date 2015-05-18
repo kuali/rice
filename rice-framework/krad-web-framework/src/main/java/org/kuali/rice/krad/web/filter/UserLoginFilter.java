@@ -149,7 +149,10 @@ public class UserLoginFilter implements Filter {
             kualiSessionId = UUID.randomUUID().toString();
             response.addCookie(new Cookie(KRADConstants.KUALI_SESSION_ID, kualiSessionId));
         }
-        KRADUtils.getUserSessionFromRequest(request).setKualiSessionId(kualiSessionId);
+
+        if (KRADUtils.getUserSessionFromRequest(request).getKualiSessionId() == null) {
+            KRADUtils.getUserSessionFromRequest(request).setKualiSessionId(kualiSessionId);
+        }
     }
 
     /**

@@ -36,6 +36,12 @@
 * No Changes
 
 
+##rice-2.5.3.1505.4-kckualico
+*  Fix test. The test was wrong earlier.
+  * Gayathri on Thu, 14 May 2015 11:45:34 -0700 [View Commit](../../commit/ef77e4c09f46a06b20d91c1dd032900310a90648)
+* turning off lint for javadoc because of Java 8's strict javadoc compiler.
+  * Travis Schneberger on Thu, 14 May 2015 17:10:57 -0400 [View Commit](../../commit/f3fdfe8900a53686b2355d89000de4701ff93d92)
+
 ##rice-2.5.3.1505.3-kckualico
 *  Fix !=null comparison on prepositions.
   * Steps to Recreate

@@ -36,6 +36,10 @@
 * No Changes
 
 
+##rice-2.5.3.1505.5-kckualico
+* turning off lint for javadoc because of Java 8's strict javadoc compiler.
+  * Travis Schneberger on Sun, 17 May 2015 21:26:34 -0400 [View Commit](../../commit/f01c8978571c95b60b3244628ecbb0dccb1c4015)
+
 ##rice-2.5.3.1505.4-kckualico
 *  Fix test. The test was wrong earlier.
   * Gayathri on Thu, 14 May 2015 11:45:34 -0700 [View Commit](../../commit/ef77e4c09f46a06b20d91c1dd032900310a90648)

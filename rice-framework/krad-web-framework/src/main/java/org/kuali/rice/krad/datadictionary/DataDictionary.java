@@ -231,9 +231,11 @@ public class DataDictionary {
         factoryPostProcessor.postProcessBeanFactory(ddBeans);
         timer.stop();
 
-        timer.start("Instantiating DD Beans");
-        ddBeans.preInstantiateSingletons();
-        timer.stop();
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.ENABLE_PREINSTANTIATE_BEANS, false)) {
+            timer.start("Instantiating DD Beans");
+            ddBeans.preInstantiateSingletons();
+            timer.stop();
+        }
 
         // Allow the DD to perform final post processing in a controlled order
         // Unlike the Spring post processor, we will only call for these operations on the

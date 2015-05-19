@@ -41,7 +41,7 @@
 		<h1><c:out value="${KualiForm.lookupable.title}" /> <c:choose>
 			<c:when test="${KualiForm.fields.docTypeFullName != null}">
 				<%-- this is a custom doc search --%>
-				<kul:help searchDocumentTypeName="${KualiForm.fields.docTypeFullName}" altText="lookup help" />
+				<kul:help searchDocumentTypeName="${fn:escapeXml(KualiForm.fields.docTypeFullName)}" altText="lookup help" />			
 			</c:when>
 			<c:otherwise>
 				<%-- KNS looup --%>

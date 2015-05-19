@@ -34,6 +34,7 @@ public final class ContextClassLoaderBinder {
      * restored on unbind
      * @deprecated since 2.1, use #doInContextClassLoader. storing references to classloaders is an incredibly bad idea!
      */
+    @Deprecated
     private static final ThreadLocal<List<ClassLoader>> STACK = new ThreadLocal<List<ClassLoader>>() {
         protected List<ClassLoader> initialValue() {
             return new ArrayList<ClassLoader>(5);
@@ -43,6 +44,7 @@ public final class ContextClassLoaderBinder {
     /**
      * @deprecated use #doInContextClassLoader
      */
+    @Deprecated
     private static List<ClassLoader> getStack() {
         return STACK.get();
     }
@@ -50,6 +52,7 @@ public final class ContextClassLoaderBinder {
     /**
      * @deprecated use #doInContextClassLoader
      */
+    @Deprecated
     public static void bind(ClassLoader cl) {
         List<ClassLoader> stack = getStack();
         Thread current = Thread.currentThread();
@@ -62,6 +65,7 @@ public final class ContextClassLoaderBinder {
     /**
      * @deprecated use #doInContextClassLoader
      */
+    @Deprecated
     public static void unbind() {
         List<ClassLoader> stack = getStack();
         if (stack.size() == 0) {

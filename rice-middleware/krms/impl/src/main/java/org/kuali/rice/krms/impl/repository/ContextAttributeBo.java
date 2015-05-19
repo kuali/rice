@@ -33,7 +33,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_CNTXT_ATTR_T")
 public class ContextAttributeBo extends BaseAttributeBo implements BaseAttributeContract, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_CNTXT_ATTR_S")
     @GeneratedValue(generator = "KRMS_CNTXT_ATTR_S")

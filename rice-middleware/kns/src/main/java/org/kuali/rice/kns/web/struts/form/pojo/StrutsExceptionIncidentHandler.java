@@ -82,7 +82,13 @@ public class StrutsExceptionIncidentHandler extends ExceptionHandler {
             }
         }
         
-        Map<String, String> properties = IncidentReportUtils.populateRequestForIncidentReport(exception, documentId, form.getClass().getSimpleName(), request);
+    String componentName = "unknown";
+    if (form != null) {
+      componentName = form.getClass().getSimpleName();
+    }
+    Map<String, String> properties = IncidentReportUtils
+        .populateRequestForIncidentReport(exception, documentId, componentName, request);
+
         
         ActionForward forward=mapping.findForward(EXCEPTION_INCIDENT_HANDLER);
         

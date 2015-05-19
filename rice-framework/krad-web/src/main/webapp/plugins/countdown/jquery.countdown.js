@@ -53,7 +53,8 @@ function Countdown() {
 	};
 	$.extend(this._defaults, this.regional['']);
 	this._serverSyncs = [];
-	var now = (typeof Date.now == 'function' ? Date.now :
+    // ISSUE-207 FIX for performance variable. See: https://github.com/kbwood/countdown/issues/18
+    var now = (typeof Date.now == 'function' ? Date.now :
 		function() { return new Date().getTime(); });
 	var perfAvail = (window.performance && typeof window.performance.now == 'function');
 	// Shared timer for all countdowns

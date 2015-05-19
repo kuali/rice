@@ -45,7 +45,7 @@ import java.util.List;
 @Table(name = "KRMS_TERM_SPEC_T")
 public class TermSpecificationBo implements TermSpecificationDefinitionContract, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     @PortableSequenceGenerator(name = "KRMS_TERM_SPEC_S")
     @GeneratedValue(generator = "KRMS_TERM_SPEC_S")

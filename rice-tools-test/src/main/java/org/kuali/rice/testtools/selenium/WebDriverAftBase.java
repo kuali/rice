@@ -497,6 +497,7 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     /**
      * @deprecated {@see #checkForIncidentReport(String, String)}
      */
+    @Deprecated
     protected void checkForIncidentReport(String locator, JiraAwareFailable failable, String message) {
         AutomatedFunctionalTestUtils.checkForIncidentReport(driver.getPageSource(), locator, message, failable);
     }

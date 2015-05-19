@@ -329,10 +329,19 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
      * {@inheritDoc}
      */
     public Object getIndexedProperty(Object bean, String name, int index) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        LOG.debug("getIndexedProperty(Object " + bean + ", String " + name + ", int " + index
+            + ")");
         try {
             return super.getIndexedProperty(bean, name, index);
         } catch (IndexOutOfBoundsException ioobe) {
             return generateIndexedProperty(bean, name, index, ioobe);
+        // java.lang.NullPointerException
+        //   org.apache.commons.beanutils.PropertyUtilsBean.getIndexedProperty(PropertyUtilsBean.java:507)
+        //   org.kuali.rice.kns.web.struts.form.pojo.PojoPropertyUtilsBean.getIndexedProperty(PojoPropertyUtilsBean.java:267)
+        } catch (NullPointerException npe) {
+            LOG.error("Caught NPE for during super.getIndexedProperty(" + bean + ", " + name
+                + ", " + index + "); returning null instead of throwing exception.");
+            return null;
         }
     }
 

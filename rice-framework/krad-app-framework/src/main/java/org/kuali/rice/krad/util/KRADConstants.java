@@ -167,6 +167,8 @@ public final class KRADConstants {
     public static final String KUALI_RICE_URL_KEY = "kr.url";
     public static final String PROD_ENVIRONMENT_CODE_KEY =
             org.kuali.rice.core.api.config.property.Config.PROD_ENVIRONMENT_CODE;
+    public static final String AUTHN_USE_PRINCIPAL_ID = 
+            org.kuali.rice.core.api.config.property.Config.AUTHN_USE_PRINCIPAL_ID;
     public static final String DOC_HANDLER_ACTION = "DocHandler.do";
     public static final String DOCHANDLER_DO_URL = "/" + DOC_HANDLER_ACTION + "?docId=";
     public static final String DOCHANDLER_URL_CHUNK = "&command=displayDocSearchView";

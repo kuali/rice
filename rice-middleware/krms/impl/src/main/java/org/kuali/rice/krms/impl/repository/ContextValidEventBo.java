@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 public class ContextValidEventBo implements Versioned, Serializable {
 
-    private static final long serialVersionUID = 1l;
+    private static final long serialVersionUID = 1L;
 
     private String id;
     private String contextId;

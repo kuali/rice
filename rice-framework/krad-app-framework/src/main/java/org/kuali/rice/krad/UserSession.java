@@ -16,9 +16,11 @@
 package org.kuali.rice.krad;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.SessionTicket;
 
 import java.io.Serializable;
@@ -78,7 +80,9 @@ public class UserSession implements Serializable {
      * @param principalName the principalName
      */
     protected void initPerson(String principalName) {
-        this.person = KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        this.person = CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsBoolean(KRADConstants.AUTHN_USE_PRINCIPAL_ID) 
+            ? KimApiServiceLocator.getPersonService().getPerson(principalName)
+            : KimApiServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
         if (this.person == null) {
             throw new IllegalArgumentException(
                     "Failed to locate a principal with principal name '" + principalName + "'");

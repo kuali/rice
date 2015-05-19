@@ -17,10 +17,12 @@ package org.kuali.rice.ken.service.impl;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.kim.api.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.group.GroupService;
+import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
 import java.util.List;
@@ -109,10 +111,20 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      *
      * @see org.kuali.rice.ken.service.NotificationRecipientService#isUserRecipientValid(java.lang.String)
      */
-    public boolean isUserRecipientValid(String principalName)
-    {
-        return (KimApiServiceLocator.getIdentityService()
-                .getPrincipalByPrincipalName(principalName) != null);
+    public boolean isUserRecipientValid(final String principalName) {
+      if (principalName != null && principalName.length() > 0) {
+        Principal p = null;
+        try {
+          p = KimApiServiceLocator.getIdentityService().getPrincipalByPrincipalName(
+              principalName);
+        } catch (org.kuali.rice.core.api.exception.RiceIllegalArgumentException e) {
+          LOG.info("Recipient cannot be found: " + principalName);
+        }
+        if (p != null) {
+          return true;
+        }
+      }
+      return false;
     }
 
 }

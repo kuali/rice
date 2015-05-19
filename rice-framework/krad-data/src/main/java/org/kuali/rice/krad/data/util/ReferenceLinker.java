@@ -380,7 +380,7 @@ public class ReferenceLinker {
                             decomposePropertyPaths(decomposedPaths.get(modifiedFieldName), linkingPath);
                     String valuePath = modifiedFieldName;
                     if (StringUtils.isNotBlank(linkingPath)) {
-                        valuePath = valuePath + "." + link.path();
+                        valuePath = valuePath + "." + linkingPath;
                     }
                     Object linkRootObject = wrapped.getPropertyValueNullSafe(valuePath);
                     linkChangesInternal(linkRootObject, decomposedLinkingPath, linked);

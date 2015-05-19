@@ -36,6 +36,10 @@
 * No Changes
 
 
+##rice-2.5.3.1505.7-kckualico
+* [KULRICE-12991] Fix for startup slowdown, flag added to turn on bean instantiation at startup
+  * bsmith83 on Tue, 19 May 2015 09:00:16 -0700 [View Commit](../../commit/87c584b8c2ebe86fa79318756719bcefa01a44e5)
+
 ##rice-2.5.3.1505.6-kckualico
 * No Changes
 

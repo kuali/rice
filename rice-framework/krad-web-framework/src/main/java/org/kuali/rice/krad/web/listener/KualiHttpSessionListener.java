@@ -15,17 +15,17 @@
  */
 package org.kuali.rice.krad.web.listener;
 
-import java.util.List;
-
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.authorization.PessimisticLock;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
+import org.kuali.rice.krad.util.KRADConstants;
+
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+import java.util.List;
 
 /**
  * Used to handle session timeouts where {@link PessimisticLock} objects should
@@ -54,24 +54,31 @@ public class KualiHttpSessionListener implements HttpSessionListener {
      */
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        releaseLocks();
+        releaseLocks(se);
     }
 
     /**
      * Remove any locks that the user has for this session
      */
-    private void releaseLocks() {
-        if ( GlobalVariables.getUserSession() != null ) {
-            String sessionId = GlobalVariables.getUserSession().getKualiSessionId();
-            Person user = GlobalVariables.getUserSession().getPerson();
-            if ( StringUtils.isNotBlank(sessionId) && user != null ) {
-                List<PessimisticLock> locks = KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForSession(
-                        sessionId);
+    private void releaseLocks(HttpSessionEvent se) {
+        if (se != null && se.getSession() != null && se.getSession().getAttribute(KRADConstants.USER_SESSION_KEY) != null) {
+            UserSession userSession = (UserSession) se.getSession().getAttribute(KRADConstants.USER_SESSION_KEY);
+            releaseUserSessionLocks(userSession);
+        }
 
-                KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, user);
-            }
+        if (GlobalVariables.getUserSession() != null) {
+            releaseUserSessionLocks(GlobalVariables.getUserSession());
         }
     }
 
-}
+    private void releaseUserSessionLocks(UserSession userSession) {
+        String sessionId = userSession.getKualiSessionId();
+        Person user = userSession.getPerson();
+        if (StringUtils.isNotBlank(sessionId) && user != null) {
+            List<PessimisticLock> locks =
+                    KRADServiceLocatorWeb.getPessimisticLockService().getPessimisticLocksForSession(sessionId);
 
+            KRADServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, user);
+        }
+    }
+}

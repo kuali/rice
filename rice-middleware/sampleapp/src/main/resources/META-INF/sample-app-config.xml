@@ -44,4 +44,5 @@
   <param name="config.location">${alt.config.location}</param>
 
   <param name="rice.krad.views.autoGeneration.enabled">true</param>
+  <param name="rice.krad.preInstantiateBeans.enabled" override="false">false</param>
 </config>

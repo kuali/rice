@@ -641,6 +641,7 @@ public final class KRADConstants {
         public static final String KNS_ENABLED = "rice.krad.kns.enabled";
         public static final String ENABLE_LEGACY_DATA_FRAMEWORK = "rice.krad.enableLegacyDataFramework";
         public static final String ENABLE_VIEW_AUTOGENERATION = "rice.krad.views.autoGeneration.enabled";
+        public static final String ENABLE_PREINSTANTIATE_BEANS = "rice.krad.preInstantiateBeans.enabled";
 
         private Config() {
             throw new UnsupportedOperationException("do not call");

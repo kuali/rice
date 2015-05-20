@@ -24,7 +24,7 @@
   <artifactId>rice</artifactId>
   <packaging>pom</packaging>
   <name>Kuali Rice</name>
-  <version>1.0.7-SNAPSHOT</version>
+  <version>1.0.7</version>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
   <description>
         The Kuali Rice effort provides an enterprise class
@@ -1207,6 +1207,6 @@
     <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>
     <connection>scm:git:git@github.com:kuali/rice.git</connection>
     <url>https://github.com/kuali/rice/tree/${project.scm.tag}</url>
-    <tag>rice-1.0</tag>
+    <tag>rice-1.0.7</tag>
   </scm>
 </project>

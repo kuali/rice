@@ -36,6 +36,12 @@
 * No Changes
 
 
+##rice-2.5.3.1505.10-kckualico
+* [KULRICE-14248] Security fix
+  * bsmith83 on Thu, 21 May 2015 12:42:23 -0700 [View Commit](../../commit/fe0da05a5086b598dcbbdb5480264e5896ab0426)
+* [RESKC-452] Allow for unmarshalling of jdk8 types by xstream
+  * bsmith83 on Thu, 21 May 2015 14:02:20 -0700 [View Commit](../../commit/a1d7afbea02065f38be54258a90df7a53bb1b71c)
+
 ##rice-2.5.3.1505.9-kckualico
 * [RESKC-432] Pessimistic lock release on log out or session expiration fix
   * bsmith83 on Mon, 18 May 2015 14:40:41 -0700 [View Commit](../../commit/851de7a3e60c94af7a6659dfb3550b3994f0db53)

@@ -36,6 +36,10 @@
 * No Changes
 
 
+##rice-2.5.3.1505.9-kckualico
+* [RESKC-432] Pessimistic lock release on log out or session expiration fix
+  * bsmith83 on Mon, 18 May 2015 14:40:41 -0700 [View Commit](../../commit/851de7a3e60c94af7a6659dfb3550b3994f0db53)
+
 ##rice-2.5.3.1505.8-kckualico
 * No Changes
 

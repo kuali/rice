@@ -201,7 +201,7 @@ public abstract class SerializerServiceBase implements SerializerService {
                 jpaProxy = Class.forName("org.eclipse.persistence.indirection.IndirectSet");
                 collectionMap.put(jpaProxy, HashSet.class);
 
-            } catch (Exception ex) {
+            } catch (Exception|Error ex) {
                 //do nothing if classes cannot be registered
             }
 
@@ -214,7 +214,7 @@ public abstract class SerializerServiceBase implements SerializerService {
                 jpaProxy = Class.forName("org.eclipse.persistence.internal.indirection.jdk8.IndirectSet");
                 collectionMap.put(jpaProxy, HashSet.class);
 
-            } catch (Exception ex) {
+            } catch (Exception|Error ex) {
                 //do nothing if classes cannot be registered
             }
         }

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2006-2015 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData"><edoclite xmlns="ns:workflow/EDocLite" xsi:schemaLocation="ns:workflow/EDocLite resource:EDocLite"><edl name="XPathSplitNodeExampleForm" title="Computer Request">
+      <security />
+      <createInstructions />
+      <instructions />
+      <fieldDef name="campus" title="Campus">
+        <value>Select</value>
+        <display>
+          <type>select</type>
+          <values title="(BL) Bloomington">BL</values>
+          <values title="(IN) Indianapolis">IN</values>
+          <values title="(EI) East Indy">EI</values>  
+          <values title="(WI) West Indy">WI</values>  
+        </display>
+        <validation required="true">
+          <regex>[^Select]</regex>
+          <message>Please Select a Campus.</message>
+        </validation>
+      </fieldDef>
+      <fieldDef name="building" title="building">
+        <display>
+          <type>text</type>
+        </display>
+        <validation required="true" />
+      </fieldDef>
+      <fieldDef name="room" title="room">
+        <display>
+          <type>text</type>
+        </display>
+        <validation required="true" />
+      </fieldDef>
+    </edl><style name="XPathSplitNodeExampleStyle"><xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:my-class="xalan://org.kuali.rice.edl.framework.util.EDLFunctions" version="1.0">
+        <xsl:include href="widgets" />
+        <xsl:output indent="yes" method="html" omit-xml-declaration="yes" version="4.01" />
+        <xsl:param name="overrideMain" select="'true'" />
+        <!-- if "overrideMain" = true, please customize the "mainForm" template, otherwise please customize the "mainBody" template -->
+        <xsl:template name="mainForm">
+          <html xmlns="">
+            <head>
+              <xsl:call-template name="htmlHead" />
+            </head>
+            <body onload="onPageLoad()">
+              <xsl:call-template name="header" />
+              <xsl:call-template name="instructions" />
+              <xsl:call-template name="errors" />
+              <xsl:variable name="formTarget" select="'EDocLite'" />
+              <div id="mainform-div">
+                <form action="{$formTarget}" enctype="multipart/form-data" id="edoclite" method="post" onsubmit="return validateOnSubmit(this)">
+                  <xsl:call-template name="hidden-params" />
+                  <xsl:call-template name="mainBody" />
+                  <br />
+                  <xsl:call-template name="buttons" />
+                </form>
+              </div>
+              <xsl:call-template name="footer" />
+            </body>
+          </html>
+        </xsl:template>
+        <xsl:template name="mainBody">
+          <table xmlns="" align="center" border="0" cellpadding="0" cellspacing="0" class="bord-r-t" width="80%">
+            <tr>
+              <td align="left" border="3" class="thnormal" colspan="100%">
+                <br />
+                <h2>Computer Request</h2>
+				 Attributes marked with a <font color="#ff0000">*</font> are required fields.
+                <br />
+              </td>
+            </tr>			
+			<tr>
+              <td class="thnormal" colspan="1">
+                <xsl:call-template name="widget_render">
+                  <xsl:with-param name="fieldName" select="'campus'" />
+                  <xsl:with-param name="renderCmd" select="'title'" />
+                </xsl:call-template>
+                <font color="#ff0000">*</font>
+              </td>
+              <td class="datacell">
+                <xsl:call-template name="widget_render">
+                  <xsl:with-param name="fieldName" select="'campus'" />
+                  <xsl:with-param name="renderCmd" select="'input'" />
+                </xsl:call-template>
+              </td>
+            </tr>
+            <tr>
+              <td class="thnormal" colspan="1">
+                <xsl:call-template name="widget_render">
+                  <xsl:with-param name="fieldName" select="'building'" />
+                  <xsl:with-param name="renderCmd" select="'title'" />
+                </xsl:call-template>
+                <font color="#ff0000">*</font>
+              </td>
+              <td class="datacell">
+                <xsl:call-template name="widget_render">
+                  <xsl:with-param name="fieldName" select="'building'" />
+                  <xsl:with-param name="renderCmd" select="'input'" />
+                </xsl:call-template>
+              </td>
+            </tr>			
+            <tr>
+              <td class="thnormal" colspan="1">
+                <xsl:call-template name="widget_render">
+                  <xsl:with-param name="fieldName" select="'room'" />
+                  <xsl:with-param name="renderCmd" select="'title'" />
+                </xsl:call-template>
+                <font color="#ff0000">*</font>
+              </td>
+              <td class="datacell">
+                <xsl:call-template name="widget_render">
+                  <xsl:with-param name="fieldName" select="'room'" />
+                  <xsl:with-param name="renderCmd" select="'input'" />
+                </xsl:call-template>
+              </td>
+            </tr> 	
+          </table>
+        </xsl:template>
+      </xsl:stylesheet></style><association><docType>XPathSplitNodeExampleDocType</docType><definition>XPathSplitNodeExampleForm</definition><style>XPathSplitNodeExampleStyle</style><active>true</active></association></edoclite></data>

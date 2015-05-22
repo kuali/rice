@@ -29,7 +29,7 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.SplitNode;
 import org.kuali.rice.kew.engine.node.SubProcessNode;
-
+import org.kuali.rice.kew.engine.node.XPathSplitNode;
 
 /**
  * A helper class which provides some useful utilities for examining and generating nodes.
@@ -59,7 +59,8 @@ public class RouteHelper {
     }
 
     public boolean isSplitNode(RouteNode routeNode) {
-        return ClassLoaderUtils.isInstanceOf(getNode(routeNode), SplitNode.class);
+        return (ClassLoaderUtils.isInstanceOf(getNode(routeNode), SplitNode.class) ||
+                ClassLoaderUtils.isInstanceOf(getNode(routeNode), XPathSplitNode.class));
     }
 
     public boolean isDynamicNode(RouteNode routeNode) {

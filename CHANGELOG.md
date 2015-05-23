@@ -1,5 +1,68 @@
 
 
+##CURRENT
+* switching to standard properties
+  * Travis Schneberger on Fri, 17 Apr 2015 17:02:03 -0400 [View Commit](../../commit/04d595e166c5da88f123d68ef3f341eba2c998f1)
+* switching to standard properties
+  * Travis Schneberger on Fri, 17 Apr 2015 17:07:38 -0400 [View Commit](../../commit/59330cd2c3471ee370a733712248e9d85a63c10b)
+* back to snapshot
+  * Travis Schneberger on Fri, 17 Apr 2015 17:51:28 -0400 [View Commit](../../commit/94bf32f59df81b4177d26be89907a2d190b51cf4)
+* removing outdated IDE metadata
+  * Travis Schneberger on Thu, 23 Apr 2015 13:06:16 -0400 [View Commit](../../commit/c3691d0f7adf0dcdc9a01201ce36cb6849d38924)
+* Update rice pom after release
+  * Gayathri on Mon, 27 Apr 2015 16:24:00 -0700 [View Commit](../../commit/a053f0846a6643b5ac9a790e57f64855d3130601)
+*  Fixing exception while exporting results.
+  * Rice added an enhancement to check permissions before displaying the options to export search results. Rice assumes that the export functionality is only used in lookupForms which have a boEntry but KC uses it in other forms as well. Therefore, when the boEntry is null, I bypass the perm check. I could not override the helper because it is not spring injected, therefore this solution. Additionally, in the absence of a boEntry, how would you check perms? Hence this solution.
+  * Details
+  * --------
+  * Steps to reproduce -
+  * 1. From the Home Page - Navigate to Current and Pending Reports Menu Option
+  * 2. Search for Select "cate" as PI or any PI that will return results
+  * 3. select "current"
+  * 4. select initiate report
+  * 5. Get results on screen
+  * 6. select option to export into spreadsheet, CSV, or XML file
+  * Get HTTP 500 error
+  * HTTP Status 500 - javax.servlet.ServletException: javax.servlet.jsp.JspException: javax.servlet.jsp.JspException: java.lang.NullPointerException
+  * ________________________________________
+  * type Exception report
+  * message javax.servlet.ServletException: javax.servlet.jsp.JspException: javax.servlet.jsp.JspException: java.lang.NullPointerException
+  * description The server encountered an internal error that prevented it from fulfilling this request.
+  * exception
+  * org.apache.jasper.JasperException: javax.servlet.ServletException: javax.servlet.jsp.JspException: javax.servlet.jsp.JspException: java.lang.NullPointerException org.apache.jasper.servlet.JspServletWrapper.handleJspException(JspServletWrapper.java:549) org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:455) org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:390) org.apache.jasper.servlet.JspServlet.service(JspServlet.java:334) javax.servlet.http.HttpServlet.service(HttpServlet.java:728) org.apache.struts.action.RequestProcessor.doForward(RequestProcessor.java:1083) org.apache.struts.action.RequestProcessor.processForwardConfig(RequestProcessor.java:396) org.kuali.rice.kns.web.struts.action.KualiRequestProcessor.processFormActionAndForward(KualiRequestProcessor.java:243) org.kuali.rice.kns.web.struts.action.KualiRequestProcessor.strutsProcess(KualiRequestProcessor.java:222) org.kuali.rice.kns.web.struts.action.KualiRequestProcessor.process(KualiRequestProcessor.java:101) org.apache.struts.action.ActionServlet.process(ActionServlet.java:1913) org.kuali.rice.kns.web.struts.action.KualiActionServlet.process(KualiActionServlet.java:202) org.apache.struts.action.ActionServlet.doGet(ActionServlet.java:449) javax.servlet.http.HttpServlet.service(HttpServlet.java:621) javax.servlet.http.HttpServlet.service(HttpServlet.java:728) org.kuali.coeus.sys.framework.controller.interceptor.RequestLoggingFilter.doFilter(RequestLoggingFilter.java:92) org.kuali.rice.kew.web.UserPreferencesFilter.doFilter(UserPreferencesFilter.java:78) org.kuali.rice.kew.web.UserPreferencesFilter.doFilter(UserPreferencesFilter.java:62) org.kuali.rice.krad.web.filter
+  * Gayathri on Mon, 27 Apr 2015 17:34:47 -0700 [View Commit](../../commit/7cf2efdb81dd79916e27fdb147c61158d59d52b5)
+* Preparing code and libraries to switch to Java 8
+  * Travis Schneberger on Fri, 8 May 2015 09:56:51 -0400 [View Commit](../../commit/ac9e1e14f6b6504003dc02bdd8c93adf525aa607)
+*  Fix !=null comparison on prepositions.
+  * Steps to Recreate
+  * 1 Create a People Flow
+  * 2 Create an Agenda with a single single proposition. Activity Type != null. I did this because I wanted the rule to always fire no matter what, and as Activity Type is required to save a prop dev doc this field cannot be null.
+  * 3 Link the created people flow with his rule so it will populate the route log when this rule executes to true.
+  * When I did this it did not populate the route log. Gayathri asked me to try this with a specific Activity Type value, and when I had the rule check for activity type of 1 it properly populated the route log. So KRMS propositions are not currently checking for not null properly.
+  * Gayathri on Wed, 13 May 2015 10:22:51 -0700 [View Commit](../../commit/e40f8389dec88fe9e2703105ed302203ab04c4f3)
+* move to java 8
+  * Travis Schneberger on Thu, 14 May 2015 07:52:29 -0400 [View Commit](../../commit/5f2dcf22328d6bf8532eca08e7150bd70cc88239)
+* fixing java 8 generic inference compilation issue.
+  * Travis Schneberger on Thu, 14 May 2015 10:57:29 -0400 [View Commit](../../commit/7148d3b52dedf0a0f03823436f435c829948a0cc)
+* fixing java 8 generic inference compilation issue.
+  * Travis Schneberger on Thu, 14 May 2015 11:30:18 -0400 [View Commit](../../commit/149380ff4e4b53a4d673472d57e50c36541d1330)
+*  Fix test. The test was wrong earlier.
+  * Gayathri on Thu, 14 May 2015 11:45:34 -0700 [View Commit](../../commit/ef77e4c09f46a06b20d91c1dd032900310a90648)
+* turning off lint for javadoc because of Java 8's strict javadoc compiler.
+  * Travis Schneberger on Thu, 14 May 2015 17:10:57 -0400 [View Commit](../../commit/f3fdfe8900a53686b2355d89000de4701ff93d92)
+* turning off lint for javadoc because of Java 8's strict javadoc compiler.
+  * Travis Schneberger on Sun, 17 May 2015 21:26:34 -0400 [View Commit](../../commit/f01c8978571c95b60b3244628ecbb0dccb1c4015)
+* [RESKC-432] Pessimistic lock release on log out or session expiration fix
+  * bsmith83 on Mon, 18 May 2015 14:40:41 -0700 [View Commit](../../commit/851de7a3e60c94af7a6659dfb3550b3994f0db53)
+* [KULRICE-12991] Fix for startup slowdown, flag added to turn on bean instantiation at startup
+  * bsmith83 on Tue, 19 May 2015 09:00:16 -0700 [View Commit](../../commit/87c584b8c2ebe86fa79318756719bcefa01a44e5)
+* [KULRICE-14248] Security fix
+  * bsmith83 on Thu, 21 May 2015 12:42:23 -0700 [View Commit](../../commit/fe0da05a5086b598dcbbdb5480264e5896ab0426)
+* [RESKC-452] Allow for unmarshalling of jdk8 types by xstream
+  * bsmith83 on Thu, 21 May 2015 14:02:20 -0700 [View Commit](../../commit/a1d7afbea02065f38be54258a90df7a53bb1b71c)
+* catching Error in specific cases to support java 7 and java 8
+  * Travis Schneberger on Fri, 22 May 2015 07:06:07 -0400 [View Commit](../../commit/5728ac97399dfa23f247c90224943d94d71787ca)
+
 ##rice-2.5.4.6-kckualico
 * No Changes
 
@@ -35,6 +98,10 @@
 ##rice-2.5.4.0-kckualico
 * No Changes
 
+
+##rice-2.5.3.1505.12-kckualico
+* catching Error in specific cases to support java 7 and java 8
+  * Travis Schneberger on Fri, 22 May 2015 07:06:07 -0400 [View Commit](../../commit/5728ac97399dfa23f247c90224943d94d71787ca)
 
 ##rice-2.5.3.1505.11-kckualico
 * No Changes

@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-impex</artifactId>
-   <version>2.5.3.1505.14-kckualico-SNAPSHOT</version>
+   <version>2.5.3.1505.14-kckualico</version>
   </parent>
 
   <artifactId>rice-impex-client</artifactId>

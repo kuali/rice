@@ -105,6 +105,14 @@
 * No Changes
 
 
+##rice-2.5.3.1505.15-kckualico
+*  FE issue - People Flow KRMS - Descriptors need to feed to PD Proposal Action>Route Log>Future Routing Requests details
+  * I think the issue here is that in Future actions, while people flow members' and delegates' names appear correctly in the PD Route Log, there is no field in PD route log that displays what Routing Agenda rule or which People Flow is associated with the required approval.
+  * Unit Administrators, Deans Office reviewers and OSP need to be able to easily identify the unit to which the proposal will route (or has routed, or is currently at the stop for).
+  * Possibly the easiest way for this to be done is to display the People Flow name, e.g. "151000 Biology All Proposals." in the Route Log, so users could see which approval group the stop is for.
+  * This would be consistent with how this routing information is displayed in Coeus Proposal Routing view.
+  * Gayathri on Wed, 27 May 2015 11:37:48 -0700 [View Commit](../../commit/54dd6c0b258c911979d183be1246dbc0a4ed880c)
+
 ##rice-2.5.3.1505.14-kckualico
 * No Changes
 

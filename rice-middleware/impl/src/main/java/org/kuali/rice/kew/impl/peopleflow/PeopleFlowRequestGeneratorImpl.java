@@ -66,6 +66,7 @@ import java.util.Map;
  */
 public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerator {
 
+    public static final String PEOPLE_FLOW_NAME = "PeopleFlow Name: ";
     private KewTypeRepositoryService typeRepositoryService;
     private RoleService roleService;
 
@@ -225,7 +226,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             throw new RiceIllegalStateException("MemberType unknown: " + delegate.getMemberType());
         }
 
-        String delegationAnnotation = generateDelegationAnnotation(memberRequest, member, delegate);
+        String delegationAnnotation = generateDelegationAnnotation(memberRequest, member, delegate, context.getPeopleFlow());
 
         context.getActionRequestFactory().addDelegationRequest(memberRequest, recipient,
                 delegate.getResponsibilityId(), member.getForceAction(),
@@ -296,10 +297,11 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
      * @param parentRequest an action request that was generated for the given member
      * @param member the PeopleFlow member
      * @param delegate the delegate
+     * @param peopleFlowDefinition
      * @return the annotation string
      */
     private String generateDelegationAnnotation(ActionRequestValue parentRequest, PeopleFlowMember member,
-            PeopleFlowDelegate delegate) {
+                                                PeopleFlowDelegate delegate, PeopleFlowDefinition peopleFlowDefinition) {
 
         StringBuffer annotation = new StringBuffer( "Delegation of: " );
         annotation.append( parentRequest.getAnnotation() );
@@ -327,6 +329,12 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             annotation.append( "?????? '" );
             annotation.append( member.getMemberId() );
             annotation.append( "'" );
+        }
+
+        if (peopleFlowDefinition != null) {
+            annotation.append(System.getProperty("line.separator"));
+            annotation.append(PEOPLE_FLOW_NAME + peopleFlowDefinition.getName());
+            annotation.append(System.getProperty("line.separator"));
         }
 
         return annotation.toString();

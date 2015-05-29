@@ -19,40 +19,40 @@
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
          updateCheck="false"
          monitoring="autodetect"
-         Name="kimCacheManager"
+         name="kimCacheManager"
          dynamicConfig="true">
 
-  <defaultCache maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
+  <defaultCache maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
 
-  <cache name="http://rice.kuali.org/kim/v2_0/KimTypeType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/ResponsibilityType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Responsibility}" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/GroupType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/GroupHistoryType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/GroupMemberType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/EntityDefaultType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/EntityType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/EntityNamePrincipalNameType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/PrincipalType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/EntityPrivacyPreferencesType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EntityType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AddressType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AffiliationType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{CitizenshipStatus}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentStatus}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{ExternalIdentifierType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{NameType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{PhoneType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmailType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/PermissionType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Permission}" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/RoleType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/RoleMembershipType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/RoleMemberType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/DelegateMemberType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/RoleResponsibilityType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/DelegateTypeType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800"/>
-  <cache name="http://rice.kuali.org/kim/v2_0/KimAttributeType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" copyOnRead="false" copyOnWrite="false"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/KimTypeType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/ResponsibilityType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Responsibility}" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/GroupType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/GroupHistoryType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/GroupMemberType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityDefaultType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityNamePrincipalNameType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/PrincipalType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/EntityPrivacyPreferencesType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EntityType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AddressType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{AffiliationType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{CitizenshipStatus}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmploymentStatus}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{ExternalIdentifierType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{NameType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{PhoneType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/CodedAttributeType{EmailType}" maxEntriesLocalHeap="100" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/PermissionType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/TemplateType{Permission}" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleMembershipType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleMemberType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/DelegateMemberType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/RoleResponsibilityType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/DelegateTypeType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" statistics="true"/>
+  <cache name="http://rice.kuali.org/kim/v2_0/KimAttributeType" maxEntriesLocalHeap="500" timeToLiveSeconds="1800" copyOnRead="false" copyOnWrite="false" statistics="true"/>
 
 </ehcache>

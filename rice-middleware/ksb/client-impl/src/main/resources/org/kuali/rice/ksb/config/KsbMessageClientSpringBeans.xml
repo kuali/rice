@@ -114,6 +114,7 @@
 	<bean id="rice.ksb.exceptionMessagingService" class="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl" lazy-init="true" />
 
 	<bean id="rice.ksb.scheduler" class="org.kuali.rice.ksb.messaging.quartz.KSBSchedulerFactoryBean" destroy-method="stop">
+		<property name="exposeSchedulerInRepository" value="true" />
 		<property name="jobListeners">
 			<list>
 				<bean class="org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener"/>

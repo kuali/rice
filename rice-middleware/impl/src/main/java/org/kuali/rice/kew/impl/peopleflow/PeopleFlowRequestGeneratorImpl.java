@@ -92,6 +92,8 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             if (actionRequest != null) {
                 generateDelegationRequests(context, Collections.singletonList(actionRequest), member);
             }
+
+            actionRequest.setAnnotation(PEOPLE_FLOW_NAME + context.getPeopleFlow().getName() + System.getProperty("line.separator"));
         }
     }
 

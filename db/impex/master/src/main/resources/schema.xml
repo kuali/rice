@@ -464,6 +464,10 @@
             <index-column name="NTFCTN_ID"/>
         </index>
     </table>
+    <table name="KREW_ACTN_ITM_CHANGED_T">
+        <column name="ACTN_TYP" primaryKey="true" size="1" type="VARCHAR"/>
+        <column name="ACTN_ITM_ID" primaryKey="true" size="40" type="VARCHAR"/>
+    </table>
     <table name="KREW_ACTN_ITM_T">
         <column name="ACTN_ITM_ID" primaryKey="true" size="40" type="VARCHAR"/>
         <column name="PRNCPL_ID" required="true" size="40" type="VARCHAR"/>
@@ -3718,6 +3722,7 @@
         <column name="IS_UPDATE_DATA" size="1" type="VARCHAR"/>
         <column default="KrTestScheduler" name="SCHED_NAME"
             primaryKey="true" size="120" type="VARCHAR"/>
+        <column name="SCHED_TIME" required="true" size="13" type="DECIMAL"/>
         <index name="KRSB_QRTZ_FIRED_TRIGGERS_TI1">
             <index-column name="JOB_GROUP"/>
         </index>

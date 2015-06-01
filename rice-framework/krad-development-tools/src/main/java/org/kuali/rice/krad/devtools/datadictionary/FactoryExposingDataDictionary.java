@@ -16,7 +16,7 @@
 package org.kuali.rice.krad.devtools.datadictionary;
 
 import org.kuali.rice.krad.datadictionary.DataDictionary;
-import org.kuali.rice.krad.datadictionary.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

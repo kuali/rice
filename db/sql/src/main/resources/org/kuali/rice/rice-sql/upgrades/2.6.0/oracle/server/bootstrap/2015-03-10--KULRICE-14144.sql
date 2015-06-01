@@ -55,6 +55,8 @@ alter table krsb_qrtz_cron_triggers add sched_name varchar(120) DEFAULT 'KrTestS
 /
 alter table krsb_qrtz_fired_triggers add sched_name varchar(120)  DEFAULT 'KrTestScheduler' not null
 /
+alter table krsb_qrtz_fired_triggers add sched_time number(13) NOT NULL
+/
 alter table krsb_qrtz_job_details add sched_name varchar(120)  DEFAULT 'KrTestScheduler' not null
 /
 alter table krsb_qrtz_locks add sched_name varchar(120) DEFAULT 'KrTestScheduler' not null

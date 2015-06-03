@@ -104,11 +104,12 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
 
     private void reattemptPrimaryKey() throws InterruptedException {
         int attempts = 0;
-        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
-                ++attempts <= 3) {
+        while (isTextPresent("a record with the same primary key already exists.") && ++attempts <= 10) {
             jGrowl("record with the same primary key already exists trying another, attempt: " + attempts);
             clearTextByName("document.newMaintainableObject.code"); // primary key
-            jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphanumeric(2));
+            String randomNumbeForCode = RandomStringUtils.randomNumeric(1);
+            String randomAlphabeticForCode = RandomStringUtils.randomAlphabetic(1);
+            jiraAwareTypeByName("document.newMaintainableObject.code", randomNumbeForCode + randomAlphabeticForCode);
             waitAndClickByName("methodToCall.route");
             waitForProgress("Submitting...");
         }

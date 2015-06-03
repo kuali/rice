@@ -25,7 +25,9 @@ public abstract class CampusAftBase extends AdminTmplMthdAftNavCreateNewBase {
     protected void createNewEnterDetails() throws InterruptedException {
         waitAndTypeByName("document.documentHeader.documentDescription",RandomStringUtils.randomAlphabetic(30));
         String randomAlphabetic = RandomStringUtils.randomAlphabetic(10);
-        waitAndTypeByName("document.newMaintainableObject.code",RandomStringUtils.randomAlphanumeric(2));
+        String randomNumbeForCode = RandomStringUtils.randomNumeric(1);
+        String randomAlphabeticForCode = RandomStringUtils.randomAlphabetic(1);
+        waitAndTypeByName("document.newMaintainableObject.code",randomNumbeForCode + randomAlphabeticForCode);
         waitAndTypeByName("document.newMaintainableObject.name",randomAlphabetic);
         waitAndTypeByName("document.newMaintainableObject.shortName",randomAlphabetic);
         selectByName("document.newMaintainableObject.campusTypeCode","B - BOTH");

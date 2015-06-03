@@ -227,7 +227,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		personDoc.setEntityId("ent123");
 		personDoc.setDocumentNumber("1");
 		personDoc.setPrincipalId("pid123");
-		personDoc.setPrincipalName("test");
+		personDoc.setPrincipalName("quickTest");
 //		personDoc.setUnivId("1234567890");
 		personDoc.setAffiliations(initAffiliations());
 		personDoc.setNames(initNames());

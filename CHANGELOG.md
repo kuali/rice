@@ -70,6 +70,8 @@
   * Gayathri on Wed, 27 May 2015 11:37:48 -0700 [View Commit](../../commit/54dd6c0b258c911979d183be1246dbc0a4ed880c)
 *  enable quartz jobs to be monitored & extra statistics for ehcache with java melody
   * Travis Schneberger on Fri, 29 May 2015 13:53:09 -0400 [View Commit](../../commit/822c2544d158f12875feaea2469eb68801b5cbb0)
+*  allow the jpa vendor adapter to be configured such that a java melody vendor adapter can be used if desired.
+  * Travis Schneeberger on Thu, 4 Jun 2015 15:53:25 -0400 [View Commit](../../commit/fd4f8b5c74610eb468748fae569c80fd0dfc9291)
 
 ##rice-2.5.4.6-kckualico
 * No Changes
@@ -106,6 +108,10 @@
 ##rice-2.5.4.0-kckualico
 * No Changes
 
+
+##rice-2.5.3.1505.17-kckualico
+*  enable quartz jobs to be monitored & extra statistics for ehcache with java melody
+  * Travis Schneberger on Fri, 29 May 2015 13:53:09 -0400 [View Commit](../../commit/822c2544d158f12875feaea2469eb68801b5cbb0)
 
 ##rice-2.5.3.1505.16-kckualico
 * No Changes

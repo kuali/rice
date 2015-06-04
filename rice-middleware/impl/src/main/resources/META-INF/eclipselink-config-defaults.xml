@@ -18,4 +18,5 @@
 <config>
 	<param name="rice.krad.jpa.global.eclipselink.cache.shared.default" override="false">false</param>
 	<param name="rice.krad.jpa.global.eclipselink.session.customizer" override="false">org.kuali.rice.krad.data.jpa.eclipselink.KradEclipseLinkCustomizer</param>
+    <param name="rice.krad.jpa.global.jpa.vendor.adapter.class" override="false">org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter</param>
 </config>

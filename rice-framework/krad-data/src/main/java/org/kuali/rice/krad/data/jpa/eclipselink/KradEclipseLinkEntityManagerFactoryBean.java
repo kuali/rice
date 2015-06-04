@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.kuali.rice.krad.data.jpa.KradEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 
 /**
  * A KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean which can be used to configure an
@@ -28,7 +27,6 @@ import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
  * <p>This class inherits the behavior from {@link KradEntityManagerFactoryBean} but adds the following:</p>
  *
  * <ul>
- *     <li>Sets the {@link org.springframework.orm.jpa.JpaVendorAdapter} to {@link EclipseLinkJpaVendorAdapter}</li>
  *     <li>Detects if JTA is being used and, if so sets a JPA property value for
  *         {@link PersistenceUnitProperties#TARGET_SERVER} to {@link JtaTransactionController} which allows for
  *         EclipseLink integration with JTA.</li>
@@ -43,8 +41,8 @@ public class KradEclipseLinkEntityManagerFactoryBean extends KradEntityManagerFa
     /**
      * Creates a KRAD-managed {@link javax.persistence.EntityManagerFactory} factory bean.
      */
-    public KradEclipseLinkEntityManagerFactoryBean() {
-        super.setJpaVendorAdapter(new EclipseLinkJpaVendorAdapter());
+    public KradEclipseLinkEntityManagerFactoryBean() throws Exception {
+        super();
     }
 
     /**

@@ -148,6 +148,12 @@ import java.util.Properties;
  * for this might be to provide a factory bean that defaults certain values as part of it's default setup.
  * </p>
  *
+ * <p>
+ *     This class sets the {@link org.springframework.orm.jpa.JpaVendorAdapter} from the jpa.vendor.adapter.class property.
+ *     For example: rice.krad.jpa.global.jpa.vendor.adapter.class=org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter
+ *     sets the vendor adapter to eclipselink.
+ * </p>
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFactory>, BeanClassLoaderAware,
@@ -156,6 +162,8 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(KradEntityManagerFactoryBean.class);
+
+    private static final String JPA_VENDOR_ADAPTER_CLASS = "jpa.vendor.adapter.class";
 
     /**
      * Prefix for property names that are passed to the JPA persistence context as JPA properties.
@@ -195,7 +203,7 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
     /**
      * Creates a default KRAD-managed factory bean.
      */
-    public KradEntityManagerFactoryBean() {
+    public KradEntityManagerFactoryBean() throws Exception {
         this.persistenceUnitPostProcessors = new ArrayList<PersistenceUnitPostProcessor>();
         this.managedClassNames = new ArrayList<String>();
 		this.converterPackageNames = new ArrayList<String>();
@@ -203,6 +211,11 @@ public class KradEntityManagerFactoryBean implements FactoryBean<EntityManagerFa
         this.persistenceUnitManager = createPersistenceUnitManager();
         this.internalFactoryBean = createInternalFactoryBean(this.persistenceUnitManager);
         this.internalFactoryBean.setJpaPropertyMap(createDefaultJpaProperties());
+
+        final Object jpaVendorAdapterClass = getJpaPropertyMap().get(JPA_VENDOR_ADAPTER_CLASS);
+        if (jpaVendorAdapterClass != null) {
+            setJpaVendorAdapter((JpaVendorAdapter) Class.forName((String) jpaVendorAdapterClass).newInstance());
+        }
     }
 
     /**

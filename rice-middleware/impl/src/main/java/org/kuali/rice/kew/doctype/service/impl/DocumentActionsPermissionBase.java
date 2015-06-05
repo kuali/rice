@@ -200,6 +200,10 @@ public class DocumentActionsPermissionBase {
         }
     }
 
+    public boolean canReturnToPreviousRouteNode(String principalId, DocumentRouteHeaderValue document) {
+        return false;
+    }
+
     /**
      * Implements {@link org.kuali.rice.kew.doctype.service.DocumentTypePermissionService#canRecall(String, org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue)}
      */

@@ -120,4 +120,10 @@ public interface DocumentTypePermissionService {
      */
     boolean canRecall(String principalId, DocumentRouteHeaderValue document);
 
+	/**
+	 * Determines if the given principal has the permission to return document to previous route node.
+	 *
+	 */
+	boolean canReturnToPreviousRouteNode(String principalId, DocumentRouteHeaderValue document);
+
 }

@@ -141,6 +141,11 @@ public class DocumentTypePermissionServiceImpl extends DocumentActionsPermission
         return false;
     }
 
+    public boolean canReturnToPreviousRouteNode(String principalId, DocumentRouteHeaderValue document) {
+        return false;
+    }
+
+
     /**
      * Converts list of RouteNodeInstance objects to a list of the route node names
      * @param routeNodeInstances the list RouteNodeInstance objects, may be null
@@ -188,4 +193,5 @@ public class DocumentTypePermissionServiceImpl extends DocumentActionsPermission
     protected GroupService getGroupService() {
         return KimApiServiceLocator.getGroupService();
     }
+
 }

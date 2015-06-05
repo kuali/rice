@@ -79,6 +79,9 @@
   * Gayathri on Fri, 29 May 2015 18:49:07 -0700 [View Commit](../../commit/e7cecb382163b727ae0e20ad0a3e6237f7fa7d83)
 *  allow the jpa vendor adapter to be configured such that a java melody vendor adapter can be used if desired.
   * Travis Schneeberger on Thu, 4 Jun 2015 15:53:25 -0400 [View Commit](../../commit/fd4f8b5c74610eb468748fae569c80fd0dfc9291)
+*  Reject Enhancement
+  * Control the reject action with permissions.
+  * Gayathri Athreya on Thu, 4 Jun 2015 20:33:58 -0700 [View Commit](../../commit/c815a720344cb0ff4bfdf62f5aea4e20028040f6)
 
 ##rice-2.5.4.6-kckualico
 * No Changes
@@ -115,6 +118,15 @@
 ##rice-2.5.4.0-kckualico
 * No Changes
 
+
+##rice-2.5.3.1506.2-kckualico
+*  Modified parent annotation for action request to display people flow name.
+  * For the KRMS Agenda based routing approval stops, PPL Flow Member "Annotation" is still blank and does not display any PPL Flow info to user when they open the Future routing.
+
+  * Only the delegates, visible only once the show is expanded, have the PPL flow name included.
+
+  * PPL Flow Member Annotation field in Routing Log needs to show PPL Flow Name. User needs to be able to see PPL Flow names for each Pending Approval stop without expanding to display delegates.
+  * Gayathri on Fri, 29 May 2015 18:49:07 -0700 [View Commit](../../commit/e7cecb382163b727ae0e20ad0a3e6237f7fa7d83)
 
 ##rice-2.5.3.1506.1-kckualico
 *  allow the jpa vendor adapter to be configured such that a java melody vendor adapter can be used if desired.

@@ -543,6 +543,8 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         assertTrue(docIdTr.getText() + " does not contain " + actionRequestLabelMap.get(actionListOptionValue), docIdTr.getText().contains(actionRequestLabelMap.get(actionListOptionValue)));
 //        assertTextPresent(new String[]{docId, actionRequestLabelMap.get(actionListOptionValue)});
         waitAndClickLinkContainingText(docId);
+        // Wait a couple seconds for the document to load
+        Thread.sleep(3000);
         selectChildWindow();
         waitAndClickByName(actionRequestButtonMap.get(actionListOptionValue));
 

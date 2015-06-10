@@ -909,6 +909,39 @@ public class KualiDocumentActionBase extends KualiAction {
 
         ReasonPrompt prompt = new ReasonPrompt(KRADConstants.DOCUMENT_DISAPPROVE_QUESTION, RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT, KRADConstants.CONFIRMATION_QUESTION, RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED, KRADConstants.MAPPING_DISAPPROVE, ConfirmationQuestion.NO, RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO);
         ReasonPrompt.Response resp = prompt.ask(mapping, form, request, response);
+        ActionForward forward = disapproveWithoutConfirmation( resp, mapping, form, request, response );
+        return forward;
+    }
+
+    /**
+    * Calls the document service to disapprove the document, using the terminate confirmation text
+    *
+    * @param mapping
+    * @param form
+    * @param request
+    * @param response
+    * @return ActionForward
+    * @throws Exception
+    */
+    public ActionForward terminate( ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response ) throws Exception {
+ 
+        ReasonPrompt prompt = new ReasonPrompt( KRADConstants.DOCUMENT_TERMINATE_QUESTION, RiceKeyConstants.QUESTION_TERMINATE_DOCUMENT, KRADConstants.CONFIRMATION_QUESTION, RiceKeyConstants.ERROR_DOCUMENT_TERMINATION_REASON_REQUIRED, KRADConstants.MAPPING_TERMINATE, ConfirmationQuestion.NO, RiceKeyConstants.MESSAGE_TERMINATION_NOTE_TEXT_INTRO );
+        ReasonPrompt.Response resp = prompt.ask( mapping, form, request, response );
+        ActionForward forward = disapproveWithoutConfirmation( resp, mapping, form, request, response );
+        return forward;
+    }
+ 
+    /**
+    * Calls the document service to disapprove the document
+    *
+    * @param mapping
+    * @param form
+    * @param request
+    * @param response
+    * @return ActionForward
+    * @throws Exception
+    */
+    public ActionForward disapproveWithoutConfirmation( ReasonPrompt.Response resp, ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response ) throws Exception {
 
         if (resp.forward != null) {
             return resp.forward;

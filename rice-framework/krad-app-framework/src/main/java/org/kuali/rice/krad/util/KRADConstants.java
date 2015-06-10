@@ -1,3 +1,4 @@
+
 /**
  * Copyright 2005-2015 The Kuali Foundation
  *
@@ -229,6 +230,7 @@ public final class KRADConstants {
     public static final String DOCUMENT_CANCEL_QUESTION = "DocCancel";
     //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";
+    public static final String DOCUMENT_TERMINATE_QUESTION = "DocDisapprove";
     public static final String DOCUMENT_RECALL_QUESTION = "DocRecall";
     public static final String DOCUMENT_SENSITIVE_DATA_QUESTION = "DocSensitiveDataQuestion";
     //    public static final String DOCUMENT_HEADER_ID = "documentHeaderId";
@@ -379,6 +381,7 @@ public final class KRADConstants {
     public static final String MAPPING_RECALL = "recall";
     public static final String MAPPING_CLOSE = "close";
     public static final String MAPPING_DISAPPROVE = "disapprove";
+    public static final String MAPPING_TERMINATE = "disapprove";
     //    public static final String MAPPING_DELETE = "delete";
     // Activate the MAPPING_ERROR define for use in Exception incident and handling
     public static final String MAPPING_ERROR = "error";

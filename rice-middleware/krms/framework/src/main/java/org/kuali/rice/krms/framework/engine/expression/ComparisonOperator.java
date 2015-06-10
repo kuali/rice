@@ -137,9 +137,9 @@ public enum ComparisonOperator implements Coded {
         } else if (this == LESS_THAN_EQUAL) {
             return result <= 0;
         } else if (this == EXISTS) {
-            return rhs != null;
+            return lhs != null;
         } else if (this == DOES_NOT_EXIST) {
-            return rhs == null;
+            return lhs == null;
         }
         throw new IllegalStateException("Invalid comparison operator detected: " + this);
 	}

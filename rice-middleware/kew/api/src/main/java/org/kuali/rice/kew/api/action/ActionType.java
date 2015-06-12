@@ -208,7 +208,7 @@ public enum ActionType implements Coded {
      * @return super-user version of ActionType or null if no equivalent SU action type
      */
     public static ActionType toSuperUserActionType(ActionType at) {
-        if (SU_ACTION_TYPE.containsKey(at)) return at;
         return SU_ACTION_TYPE.get(at);
     }
 }
+

@@ -52,12 +52,13 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         assertActionListRequestPerson(adhocRequests, beforeState, afterState);
     }
 
-    private void assertActionListRequestPerson(String[][] adhocRequests, String beforeState, String afterState) throws Exception {
+    private String assertActionListRequestPerson(String[][] adhocRequests, String beforeState, String afterState) throws Exception {
         String docId = testCreateActionRequestPerson(adhocRequests);
         impersonateUser(adhocRequests[0][0]);
         assertActionList(docId, adhocRequests[0][1], beforeState);
         assertOutbox(docId, afterState);
         selectTopFrame();
+        return docId;
     }
 
     protected String testCreateActionRequestGroup(String user, String namespace, String actionType) throws InterruptedException{
@@ -143,6 +144,17 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         assertActionList(docId, "K", "ENROUTE");
         assertOutbox(docId, "ENROUTE");
         selectTopFrame();
+
+        // Approve enroute documents so they do not cause "document cannot be Saved or Routed because... locked" errors
+        // in future tests.
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        String mainBrowserHandle = driver.getWindowHandle();
+        closeAllOtherWindows(mainBrowserHandle);
+        impersonateUser("fred");
+        waitAndClickActionList();
+        selectFrameIframePortlet();
+        waitAndClickLinkContainingText("Action List");
+        assertActionList(docId, "A", "ENROUTE");
         passed();
     }
 
@@ -180,7 +192,18 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
      */
     public void testActionListApprovePerson_WithPendingApprove() throws Exception {
         String[][] adhocRequests = new String [][]{{"fred","A"},{"fran","A"}};
-        assertActionListRequestPerson(adhocRequests, "ENROUTE", "ENROUTE");
+        String docId =  assertActionListRequestPerson(adhocRequests, "ENROUTE", "ENROUTE");
+
+        // Approve enroute documents so they do not cause "document cannot be Saved or Routed because... locked" errors
+        // in future tests.
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        String mainBrowserHandle = driver.getWindowHandle();
+        closeAllOtherWindows(mainBrowserHandle);
+        impersonateUser("fran");
+        waitAndClickActionList();
+        selectFrameIframePortlet();
+        waitAndClickLinkContainingText("Action List");
+        assertActionList(docId, "A", "ENROUTE");
         passed();
     }
 
@@ -325,6 +348,15 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         waitForTextPresent("ENROUTE");
         waitAndClickByName("methodToCall.reload");
         waitForTextPresent(state);
+
+        // Approve enroute documents so they do not cause "document cannot be Saved or Routed because... locked" errors
+        // in future tests.
+        if ("ENROUTE".equalsIgnoreCase(state)) {
+            selectTopFrame();
+            impersonateUser(user);
+            assertActionList(docId, "A", "ENROUTE");
+        }
+
         close();
     }
 

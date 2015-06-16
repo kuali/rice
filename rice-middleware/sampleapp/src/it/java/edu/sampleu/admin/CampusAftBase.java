@@ -54,6 +54,17 @@ public abstract class CampusAftBase extends AdminTmplMthdAftNavCreateNewBase {
     protected void saveAndReload() throws InterruptedException {
         checkForDocError();
         waitAndClickByXpath(SAVE_XPATH);
+
+        int attempts = 0;
+        while (isTextPresent("a record with the same primary key already exists.") && ++attempts <= 10) {
+            jGrowl("record with the same primary key already exists trying another, attempt: " + attempts);
+            clearTextByName("document.newMaintainableObject.code"); // primary key
+            String randomNumbeForCode = RandomStringUtils.randomNumeric(1);
+            String randomAlphabeticForCode = RandomStringUtils.randomAlphabetic(1);
+            jiraAwareTypeByName("document.newMaintainableObject.code", randomNumbeForCode + randomAlphabeticForCode);
+            waitAndClickByXpath(SAVE_XPATH);
+        }
+
         waitForTextPresent("Document was successfully saved");
         waitAndClickByName("methodToCall.reload");
 //         waitAndClickByName("methodToCall.processAnswer.button1");
@@ -63,6 +74,7 @@ public abstract class CampusAftBase extends AdminTmplMthdAftNavCreateNewBase {
         checkForDocError();
         waitAndClickByName("methodToCall.route");
         waitForProgress("Submitting...");
+        reattemptPrimaryKey();
         waitForTextPresent("Document was successfully submitted");
         waitAndClickByName("methodToCall.close");
 //         waitAndClickByName("methodToCall.processAnswer.button1");
@@ -77,6 +89,8 @@ public abstract class CampusAftBase extends AdminTmplMthdAftNavCreateNewBase {
     protected void submit() throws InterruptedException {
         checkForDocError();
         waitAndClickByName("methodToCall.route");
+        waitForProgress("Submitting...");
+        reattemptPrimaryKey();
         waitForTextPresent("Document was successfully submitted");
     }
 
@@ -103,6 +117,19 @@ public abstract class CampusAftBase extends AdminTmplMthdAftNavCreateNewBase {
             waitForTextPresent("SAVED");
             waitAndClickByName("methodToCall.close");
             waitAndClickByName("methodToCall.processAnswer.button1");
+        }
+    }
+
+    private void reattemptPrimaryKey() throws InterruptedException {
+        int attempts = 0;
+        while (isTextPresent("a record with the same primary key already exists.") && ++attempts <= 10) {
+            jGrowl("record with the same primary key already exists trying another, attempt: " + attempts);
+            clearTextByName("document.newMaintainableObject.code"); // primary key
+            String randomNumbeForCode = RandomStringUtils.randomNumeric(1);
+            String randomAlphabeticForCode = RandomStringUtils.randomAlphabetic(1);
+            jiraAwareTypeByName("document.newMaintainableObject.code", randomNumbeForCode + randomAlphabeticForCode);
+            waitAndClickByName("methodToCall.route");
+            waitForProgress("Submitting...");
         }
     }
 }

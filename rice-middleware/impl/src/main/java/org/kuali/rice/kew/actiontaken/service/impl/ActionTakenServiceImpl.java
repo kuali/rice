@@ -187,5 +187,10 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     {
         return getActionTakenDAO().getLastActionTakenDate(documentId, ActionType.APPROVE);
     }
+    
+    public Timestamp getSPSInboxTimestampAndSponsorDeadlineDate(String documentId, boolean spsInboxTimestamp)
+	{
+		return getActionTakenDAO().getSPSInboxTimestampAndSponsorDeadlineDate(documentId, spsInboxTimestamp);
+	}
 
 }

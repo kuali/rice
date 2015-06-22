@@ -52,6 +52,10 @@ public class ActionItemActionListExtension extends ActionItem implements RowStyl
     @Transient
     private Timestamp lastApprovedDate;
     @Transient
+    private Timestamp showSPSInboxTimestamp;
+    @Transient
+    private Timestamp showSponsorDeadlineDate;
+    @Transient
     private Map<String, String> customActions = new HashMap<String, String>();
     @Transient
     private String rowStyleClass;
@@ -71,6 +75,10 @@ public class ActionItemActionListExtension extends ActionItem implements RowStyl
 
     @Transient
     private boolean lastApprovedDateInitialized = false;
+    @Transient
+    private boolean showSPSInboxTimestampInitialized = false;
+    @Transient
+    private boolean showSponsorDeadlineDateInitialized = false;
     @Transient
     private boolean delegatorNameInitialized = false;
     @Transient
@@ -131,6 +139,16 @@ public class ActionItemActionListExtension extends ActionItem implements RowStyl
         initializeLastApprovedDate();
         return this.lastApprovedDate;
     }
+    
+    public Timestamp getShowSPSInboxTimestamp() {
+    	this.initializeShowSPSInboxTimestamp();
+    	return this.showSPSInboxTimestamp;
+    }
+    
+    public Timestamp getShowSponsorDeadlineDate() {
+		initializeShowSponsorDeadlineDate();
+		return this.showSponsorDeadlineDate;
+	}
 
     public Map<String, String> getCustomActions() {
         return customActions;
@@ -173,6 +191,13 @@ public class ActionItemActionListExtension extends ActionItem implements RowStyl
         if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowDateApproved())) {
         	initializeLastApprovedDate();
         }
+        if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowSPSInboxTimestamp())) {
+			initializeShowSPSInboxTimestamp();
+		}
+
+		if (KewApiConstants.PREFERENCES_YES_VAL.equals(preferences.getShowSponsorDeadlineDate())) {
+			initializeShowSponsorDeadlineDate();
+		} 
         this.routeHeader.initialize(preferences);
         isInitialized = true;
     }
@@ -231,6 +256,20 @@ public class ActionItemActionListExtension extends ActionItem implements RowStyl
             lastApprovedDateInitialized = true;
         }
     }
+    
+    private void initializeShowSPSInboxTimestamp() {
+		if (!showSPSInboxTimestampInitialized) {
+			this.showSPSInboxTimestamp = KEWServiceLocator.getActionTakenService().getSPSInboxTimestampAndSponsorDeadlineDate(getDocumentId(), true);
+			showSPSInboxTimestampInitialized = true;
+		}
+	}
+		
+	private void initializeShowSponsorDeadlineDate() {
+		if (!showSponsorDeadlineDateInitialized) {
+			this.showSponsorDeadlineDate = KEWServiceLocator.getActionTakenService().getSPSInboxTimestampAndSponsorDeadlineDate(getDocumentId(), false);
+			showSponsorDeadlineDateInitialized = true;
+		}
+	}
 
 	public DisplayParameters getDisplayParameters() {
 		return displayParameters;

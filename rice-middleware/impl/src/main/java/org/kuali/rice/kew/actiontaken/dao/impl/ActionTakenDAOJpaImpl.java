@@ -156,5 +156,10 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+    
+    @Override
+	public Timestamp getSPSInboxTimestampAndSponsorDeadlineDate(String documentId, boolean spsInboxTimestamp) {
+		throw new UnsupportedOperationException("The JPA version of this method still needs to be implemented!");
+	}
 
 }

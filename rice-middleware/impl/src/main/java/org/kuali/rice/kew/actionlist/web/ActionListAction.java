@@ -23,6 +23,7 @@ import org.apache.struts.action.*;
 import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
+import org.displaytag.tags.TableTagParameters;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
@@ -97,6 +98,8 @@ public class ActionListAction extends KualiAction {
 
     private static final ActionType [] actionListActionTypes =
             { ActionType.APPROVE, ActionType.DISAPPROVE, ActionType.CANCEL, ActionType.ACKNOWLEDGE, ActionType.FYI };
+    
+    private boolean export;
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -146,6 +149,7 @@ public class ActionListAction extends KualiAction {
     }
 
     public ActionForward start(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	export = request.getParameter(TableTagParameters.PARAMETER_EXPORTING) != null;
         PerformanceLogger plog = new PerformanceLogger();
         plog.log("Starting ActionList fetch");
         ActionListForm form = (ActionListForm) actionForm;
@@ -650,7 +654,13 @@ public class ActionListAction extends KualiAction {
         form.setHasDisplayParameters(haveDisplayParameters);
 
         generateActionItemErrors(CUSTOMACTIONLIST_PROP, ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY, customActionListProblemIds);
-        return new PaginatedActionList(currentPage, actionList.size(), page, pageSize, "actionList", sortCriterion, sortOrder);
+        
+        if(export) {
+        	return new PaginatedActionList(actionList, actionList.size(), page, pageSize, "actionList", sortCriterion, sortOrder);
+        }
+        else {
+        	return new PaginatedActionList(currentPage, actionList.size(), page, pageSize, "actionList", sortCriterion, sortOrder);
+        }
     }
 
     // convert a List of org.kuali.rice.kew.actionitem.ActionItemS to org.kuali.rice.kew.api.action.ActionItemS

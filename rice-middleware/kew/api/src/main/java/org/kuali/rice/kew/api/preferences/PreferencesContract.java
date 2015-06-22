@@ -85,6 +85,10 @@ public interface PreferencesContract {
     String getUseOutbox();
 
     String getShowDateApproved();
+    
+    String getShowSPSInboxTimestamp();
+    
+    String getShowSponsorDeadlineDate();
 
     String getShowCurrentNode();
 

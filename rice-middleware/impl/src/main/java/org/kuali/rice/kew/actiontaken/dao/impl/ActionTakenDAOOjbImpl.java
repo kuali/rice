@@ -183,5 +183,91 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
             }
         });
     }
-
+	
+	
+	private static final String SPS_INBOX_TIMESTAMP =
+	"Select INBOX_DATE FROM (select to_char(A.crte_dt, 'YYYY-MM-DD HH24:MI:SS') as INBOX_DATE, A.ACTN_RQST_ANNOTN_TXT as ANNOTATION,Y.APP_DOC_STAT as DOCUMENT_STATUS, "
+	+ "(CASE WHEN A.ACTN_RQST_ANNOTN_TXT = 'KC-WKFLW OSPApprover ' Then 'KC-WKFLW OSPApprover' ELSE 'Other' END) AS ANNOTPROMPT,  to_char(C.DEADLINE_DATE, 'YYYY-MM-DD HH24:MI:SS')  as SPONSOR_DEADLINE_DATE, CAST(A.DOC_HDR_ID AS INTEGER) as DOCUMENT_NUMBER, "
+	+ "C.PROPOSAL_NUMBER, K.SPONSOR_CODE, K.SPONSOR_NAME, C.TITLE, M.FULL_NAME AS LEAD_INVESTIGATOR, G.UNIT_NUMBER AS LEAD_UNIT, U.UNIT_NAME AS LEAD_UNIT_NAME, R.TOTAL_COST, B.PRSN_NM AS PERSON_REQUESTED_OF, "
+	+ "KRNS.FDOC_DESC AS DESCRIPTION from krew_ACTN_RQST_T A inner join krim_entity_cache_t B on A.PRNCPL_ID = B.PRNCPL_ID inner join eps_proposal C on A.DOC_HDR_ID = C.DOCUMENT_NUMBER "
+	+ "inner join budget_document P on c.document_number = p.parent_document_key inner join BUDGET R on P.document_number = R.document_number inner join sponsor K on C.SPONSOR_CODE = K.sponsor_code "
+	+ "inner join EPS_PROP_PERSON_UNITS G on C.PROPOSAL_NUMBER = G.proposal_number inner join UNIT U on U.UNIT_NUMBER = G.UNIT_NUMBER inner join EPS_PROP_PERSON M on C.PROPOSAL_NUMBER = M.PROPOSAL_NUMBER "
+	+ "inner join KREW_DOC_HDR_T Y on Y.DOC_HDR_ID = A.DOC_HDR_ID INNER JOIN KRNS_DOC_HDR_T KRNS ON KRNS.DOC_HDR_ID = A.DOC_HDR_ID where A.crte_dt in (select max(H.crte_dt) from krew_actn_rqst_t H "
+	+ "where A.doc_hdr_id = h.doc_hdr_id and A.ACTN_RQST_ANNOTN_TXT = H.ACTN_RQST_ANNOTN_TXT) and A.STAT_CD = 'A' and R.FINAL_VERSION_FLAG = 'Y' and G.LEAD_UNIT_FLAG = 'Y' and M.PROP_PERSON_ROLE_ID = 'PI' "
+	+ "AND Y.DOC_TYP_ID = (SELECT DOC_TYP_ID FROM KREW_DOC_TYP_T WHERE DOC_TYP_NM = 'ProposalDevelopmentDocument' AND CUR_IND = '1')) where ANNOTPROMPT LIKE 'KC-WKFLW OSPApprover%' and document_number = ?";
+	
+	private static final String SPONSOR_DEADLINE_DATE = "select to_char(deadline_date, 'YYYY-MM-DD HH24:MI:SS') as SPONSOR_DEADLINE_DATE from eps_proposal where document_number = ?";
+	
+	public Timestamp getSPSInboxTimestampAndSponsorDeadlineDate(final String documentId, final boolean spsInboxTimestamp) {
+		
+		if(spsInboxTimestamp) {
+			return (Timestamp) getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+				public Object doInPersistenceBroker(PersistenceBroker broker) {
+					PreparedStatement statement = null;
+					ResultSet resultSet = null;
+					try {
+						Connection connection = broker.serviceConnectionManager().getConnection();
+						statement = connection.prepareStatement(SPS_INBOX_TIMESTAMP);
+						statement.setString(1, documentId);
+						resultSet = statement.executeQuery();
+						if (!resultSet.next()) {
+							return null;
+						} else {
+							return resultSet.getTimestamp(1);
+						}
+					} catch (Exception e) {
+						throw new WorkflowRuntimeException("Error determining SPS Inbox Timestamp.", e);
+					} finally {
+						if (statement != null) {
+							try {
+								statement.close();
+							} catch (SQLException e) {
+							}
+						}
+						if (resultSet != null) {
+							try {
+								resultSet.close();
+							} catch (SQLException e) {
+							}
+						}
+					}
+				}
+			});
+		}
+		
+		else {
+			return (Timestamp) getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
+				public Object doInPersistenceBroker(PersistenceBroker broker) {
+					PreparedStatement statement = null;
+					ResultSet resultSet = null;
+					try {
+						Connection connection = broker.serviceConnectionManager().getConnection();
+						statement = connection.prepareStatement(SPONSOR_DEADLINE_DATE);
+						statement.setString(1, documentId);
+						resultSet = statement.executeQuery();
+						if (!resultSet.next()) {
+							return null;
+						} else {
+							return resultSet.getTimestamp(1);
+						}
+					} catch (Exception e) {
+						throw new WorkflowRuntimeException("Error determining Sponsor Deadline Date.", e);
+					} finally {
+						if (statement != null) {
+							try {
+								statement.close();
+							} catch (SQLException e) {
+							}
+						}
+						if (resultSet != null) {
+							try {
+								resultSet.close();
+							} catch (SQLException e) {
+							}
+						}
+					}
+				}
+			});
+		}
+	} 
 }

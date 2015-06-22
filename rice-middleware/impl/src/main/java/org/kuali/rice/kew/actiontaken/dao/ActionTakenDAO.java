@@ -51,5 +51,7 @@ public interface ActionTakenDAO {
     public boolean hasUserTakenAction(String workflowId, String documentId);
 
     public Timestamp getLastActionTakenDate(String documentId, ActionType actionType);
+    
+    public Timestamp getSPSInboxTimestampAndSponsorDeadlineDate(String documentId, boolean spsInboxTimestamp);
 
 }

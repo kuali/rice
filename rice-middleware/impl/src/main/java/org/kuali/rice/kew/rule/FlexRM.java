@@ -82,6 +82,12 @@ public class FlexRM {
 	 */
 	private static final String RULE_SELECTOR_SUFFIX= "RuleSelector";
 
+	/**
+	 * Corresponds to a node which has been made by the HierarchyRoutingNode factory,
+	 * which means that routelevel does not apply to equality.
+	 */
+	private static final String HIERARCHY_REQUEST = "Hierarchy Request";
+	
 	private final Timestamp effectiveDate;
 	/**
 	 * An accumulator that keeps track of the number of rules that have been selected over the lifespan of
@@ -422,19 +428,32 @@ public class FlexRM {
 	}
 
 	private boolean isDuplicateActionRequestDetected(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, org.kuali.rice.kew.api.rule.RuleResponsibility resp, String qualifiedRoleName) {
+		
 		List<ActionRequestValue> requests = getActionRequestService().findByStatusAndDocId(ActionRequestStatus.DONE.getCode(), routeHeader.getDocumentId());
-        for (ActionRequestValue request : requests)
-        {
-            if (((nodeInstance != null
-                    && request.getNodeInstance() != null
-                    && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())
-                 ) || request.getRouteLevel().equals(routeHeader.getDocRouteLevel())
-                )
-                    && request.getResponsibilityId().equals(resp.getResponsibilityId())
-                        && ObjectUtils.equals(request.getQualifiedRoleName(), qualifiedRoleName)) {
-                return true;
+
+		for (ActionRequestValue request : requests) {
+
+			RouteNodeInstance requestNodeInstance = request.getNodeInstance();
+        	boolean sameRouteInstanceId = (nodeInstance != null &&
+        								   requestNodeInstance!=null &&
+        								   nodeInstance.getRouteNodeInstanceId().equals(requestNodeInstance.getRouteNodeInstanceId()));
+
+        	// isHierarchy negates route level, because in a branched hierarchy of nodes route level has no useful meaning.
+        	boolean isHierarchy = nodeInstance.getRouteNode().getRouteNodeName().equals(HIERARCHY_REQUEST);
+        	boolean sameRouteLevel = !isHierarchy && request.getRouteLevel().equals(routeHeader.getDocRouteLevel());
+
+        	boolean sameResponsibility = request.getResponsibilityId().equals(resp.getResponsibilityId());
+
+        	boolean sameRole = ObjectUtils.equals(request.getQualifiedRoleName(), qualifiedRoleName);
+ 
+        	if((sameRouteInstanceId || sameRouteLevel) 
+        	    && sameResponsibility 
+        	    && sameRole) {
+               	return true;
             }
-        }
+
+        }//for
+
 		return false;
 	}
 

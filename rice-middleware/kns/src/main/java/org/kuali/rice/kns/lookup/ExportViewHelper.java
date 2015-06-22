@@ -70,6 +70,8 @@ public class ExportViewHelper {
 		List<BusinessObject> businessObjects = new ArrayList<BusinessObject>();
 		List<Row> rowList = tableModel.getRowListFull();
 		for (Row row : rowList) {
+			if(!(row.getObject() instanceof ResultRow))
+				return businessObjects;
 			ResultRow resultRow = (ResultRow)row.getObject();
 			if (resultRow.getBusinessObject() != null) {
 				businessObjects.add(resultRow.getBusinessObject());

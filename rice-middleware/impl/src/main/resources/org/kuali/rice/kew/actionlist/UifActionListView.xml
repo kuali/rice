@@ -399,6 +399,10 @@
                           p:cellStyle="display:'';@{'background-color:' + #lp.rowStyleClass + ';'}"/>
                     <bean parent="Uif-DataField" p:propertyName="lastApprovedDate" p:render="@{#dp.preferences.showDateApproved=='yes'}"
                           p:label="Last Approved Date" p:cellStyle="display:'';@{'background-color:' + #lp.rowStyleClass + ';'}"/>
+					<bean parent="Uif-DataField" p:propertyName="showSPSInboxTimestamp" p:render="@{#dp.preferences.showSPSInboxTimestamp=='yes'}"
+						  p:label="SPS Inbox Timestamp" p:cellStyle="display:'';@{'background-color:' + #lp.rowStyleClass + ';'}"/>
+					<bean parent="Uif-DataField" p:propertyName="showSponsorDeadlineDate" p:render="@{#dp.preferences.showSponsorDeadlineDate=='yes'}"
+						  p:label="Sponsor Deadline Date" p:cellStyle="display:'';@{'background-color:' + #lp.rowStyleClass + ';'}"/>
                     <bean parent="Uif-DataField"
                           p:render="@{#dp.preferences.showWorkgroupRequest=='yes'}"
                           p:propertyName="groupName" p:label="Group Request"

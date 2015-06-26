@@ -81,6 +81,8 @@ import org.w3c.dom.Element;
         Preferences.Elements.DELEGATOR_FILTER,
         Preferences.Elements.USE_OUTBOX,
         Preferences.Elements.SHOW_DATE_APPROVED,
+        Preferences.Elements.SHOW_SPS_INBOX_TIMESTAMP,
+		Preferences.Elements.SHOW_SPONSOR_DEADLINE_DATE,
         Preferences.Elements.SHOW_CURRENT_NODE,
         Preferences.Elements.PRIMARY_DELEGATE_FILTER,
         Preferences.Elements.NOTIFY_ACKNOWLEDGE,
@@ -155,6 +157,10 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
     private final String useOutbox;
     @XmlElement(name = Elements.SHOW_DATE_APPROVED)
     private final String showDateApproved;
+	@XmlElement(name = Elements.SHOW_SPS_INBOX_TIMESTAMP)
+	private final String showSPSInboxTimestamp;
+	@XmlElement(name = Elements.SHOW_SPONSOR_DEADLINE_DATE)
+	private final String showSponsorDeadlineDate;
     @XmlElement(name = Elements.SHOW_CURRENT_NODE)
     private final String showCurrentNode;
     @XmlElement(name = Elements.PRIMARY_DELEGATE_FILTER)
@@ -216,6 +222,8 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         this.delegatorFilter = null;
         this.useOutbox = null;
         this.showDateApproved = null;
+        this.showSPSInboxTimestamp = null;
+		this.showSponsorDeadlineDate = null;
         this.showCurrentNode = null;
         this.primaryDelegateFilter = null;
         this.notifyAcknowledge = null;
@@ -258,6 +266,8 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         this.delegatorFilter = builder.getDelegatorFilter();
         this.useOutbox = builder.getUseOutbox();
         this.showDateApproved = builder.getShowDateApproved();
+        this.showSPSInboxTimestamp = builder.getShowSPSInboxTimestamp();
+		this.showSponsorDeadlineDate = builder.getShowSponsorDeadlineDate();
         this.showCurrentNode = builder.getShowCurrentNode();
         this.primaryDelegateFilter = builder.getPrimaryDelegateFilter();
         this.requiresSave = builder.isRequiresSave();
@@ -418,6 +428,16 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
     public String getShowDateApproved() {
         return showDateApproved;
     }
+    
+    @Override
+	public String getShowSPSInboxTimestamp() {
+    	return showSPSInboxTimestamp;
+	}
+
+	@Override
+	public String getShowSponsorDeadlineDate() {
+		return showSponsorDeadlineDate;
+	}
 
     @Override
     public String getShowCurrentNode() {
@@ -505,6 +525,8 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         private String delegatorFilter;
         private String useOutbox;
         private String showDateApproved;
+        private String showSPSInboxTimestamp;
+		private String showSponsorDeadlineDate;
         private String showCurrentNode;
         private String primaryDelegateFilter;
         private String notifyAcknowledge;
@@ -524,7 +546,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                 String colorSaved, String colorInitiated, String colorDisapproved, String colorEnroute,
                 String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProcessed,
                 String colorException, String colorCanceled, String delegatorFilter, String useOutbox,
-                String showDateApproved, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
+                String showDateApproved, String showSPSInboxTimestamp, String showSponsorDeadlineDate, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
                 String notifyApprove, String notifyComplete, String notifyFYI, Map<String, String> documentTypeNotificationPreferences,
                 boolean requiresSave) {
             this.emailNotification = emailNotification;
@@ -556,6 +578,8 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
             this.delegatorFilter = delegatorFilter;
             this.useOutbox = useOutbox;
             this.showDateApproved = showDateApproved;
+            this.showSPSInboxTimestamp = showSPSInboxTimestamp;
+    		this.showSponsorDeadlineDate = showSponsorDeadlineDate;
             this.showCurrentNode = showCurrentNode;
             this.primaryDelegateFilter = primaryDelegateFilter;
             this.requiresSave = requiresSave;
@@ -581,13 +605,13 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                 String colorSaved, String colorInitiated, String colorDisapproved, String colorEnroute,
                 String colorApproved, String colorFinal, String colorDissapproveCancel, String colorProcessed,
                 String colorException, String colorCanceled, String delegatorFilter, String useOutbox,
-                String showDateApproved, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
+                String showDateApproved, String showSPSInboxTimestamp, String showSponsorDeadlineDate, String showCurrentNode, String primaryDelegateFilter, String notifyAcknowledge,
                 String notifyApprove, String notifyComplete, String notifyFYI, Map<String, String> documentTypeNotificationPreferences,
                 boolean requiresSave) {
             return new Builder(emailNotification, notifyPrimaryDelegation, notifySecondaryDelegation, openNewWindow, showActionRequested, showDateCreated,
                     showDocumentStatus, showAppDocStatus, showDocType, showInitiator, showDocTitle, showWorkgroupRequest,  showDelegator, showClearFyi,
                     pageSize, refreshRate, colorSaved, colorInitiated, colorDisapproved, colorEnroute, colorApproved, colorFinal, colorDissapproveCancel,
-                    colorProcessed, colorException, colorCanceled, delegatorFilter, useOutbox, showDateApproved, showCurrentNode, primaryDelegateFilter,
+                    colorProcessed, colorException, colorCanceled, delegatorFilter, useOutbox, showDateApproved, showSPSInboxTimestamp, showSponsorDeadlineDate, showCurrentNode, primaryDelegateFilter,
                     notifyAcknowledge, notifyApprove, notifyComplete, notifyFYI, documentTypeNotificationPreferences, requiresSave);
         }
 
@@ -601,6 +625,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                     contract.getPageSize(), contract.getRefreshRate(), contract.getColorSaved(), contract.getColorInitiated(), contract.getColorDisapproved(),
                     contract.getColorEnroute(), contract.getColorApproved(), contract.getColorFinal(), contract.getColorDisapproveCancel(), contract.getColorProcessed(),
                     contract.getColorException(), contract.getColorCanceled(), contract.getDelegatorFilter(), contract.getUseOutbox(), contract.getShowDateApproved(),
+                    contract.getShowSPSInboxTimestamp(), contract.getShowSponsorDeadlineDate(),
                     contract.getShowCurrentNode(), contract.getPrimaryDelegateFilter(), contract.getNotifyAcknowledge(), contract.getNotifyApprove(), contract.getNotifyComplete(),
                     contract.getNotifyFYI(), contract.getDocumentTypeNotificationPreferences(), contract.isRequiresSave());
             return builder;
@@ -613,6 +638,7 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
                     map.get(KEYS.PAGE_SIZE), map.get(KEYS.REFRESH_RATE), map.get(KEYS.COLOR_SAVED), map.get(KEYS.COLOR_INITIATED), map.get(KEYS.COLOR_DISAPPROVED),
                     map.get(KEYS.COLOR_ENROUTE), map.get(KEYS.COLOR_APPROVED), map.get(KEYS.COLOR_FINAL), map.get(KEYS.COLOR_DISAPPROVE_CANCEL), map.get(KEYS.COLOR_PROCESSED),
                     map.get(KEYS.COLOR_EXCEPTION), map.get(KEYS.COLOR_CANCELED), map.get(KEYS.DELEGATOR_FILTER), map.get(KEYS.USE_OUT_BOX), map.get(KEYS.SHOW_DATE_APPROVED),
+                    map.get(KEYS.SHOW_SPS_INBOX_TIMESTAMP), map.get(KEYS.SHOW_SPONSOR_DEADLINE_DATE),
                     map.get(KEYS.SHOW_CURRENT_NODE), map.get(KEYS.PRIMARY_DELEGATE_FILTER), map.get(KEYS.NOTIFY_ACKNOWLEDGE), map.get(KEYS.NOTIFY_APPROVE), map.get(KEYS.NOTIFY_COMPLETE),
                     map.get(KEYS.NOTIFY_FYI), documentTypeNotificationPreferences, requiresSave);
             return builder;
@@ -857,6 +883,22 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         public synchronized void setShowDateApproved(String showDateApproved) {
             this.showDateApproved = showDateApproved;
         }
+        
+        public synchronized String getShowSPSInboxTimestamp() {
+        	return showSPSInboxTimestamp;
+        }
+        		
+        public synchronized void setShowSPSInboxTimestamp(String showSPSInboxTimestamp) {
+        	this.showSPSInboxTimestamp = showSPSInboxTimestamp;
+        }
+        		
+        public synchronized String getShowSponsorDeadlineDate() {
+        	return showSponsorDeadlineDate;
+        }
+        	
+        public synchronized void setShowSponsorDeadlineDate(String showSponsorDeadlineDate) {
+        	this.showSponsorDeadlineDate = showSponsorDeadlineDate;
+        }
 
         public synchronized String getShowCurrentNode() {
             return showCurrentNode;
@@ -982,6 +1024,8 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         static final String DELEGATOR_FILTER = "delegatorFilter";
         static final String USE_OUTBOX = "useOutbox";
         static final String SHOW_DATE_APPROVED = "showDateApproved";
+        static final String SHOW_SPS_INBOX_TIMESTAMP = "showSPSInboxTimestamp";
+		static final String SHOW_SPONSOR_DEADLINE_DATE = "showSponsorDeadlineDate";
         static final String SHOW_CURRENT_NODE = "showCurrentNode";
         static final String PRIMARY_DELEGATE_FILTER = "primaryDelegateFilter";
         static final String NOTIFY_ACKNOWLEDGE = "notifyAcknowledge";
@@ -1028,6 +1072,8 @@ public final class Preferences extends AbstractDataTransferObject implements Pre
         public static final String PRIMARY_DELEGATE_FILTER = "PRIMARY_DELEGATE_FILTER";
         public static final String USE_OUT_BOX = "USE_OUT_BOX";
         public static final String SHOW_DATE_APPROVED = "LAST_APPROVED_DATE_COL_SHOW_NEW";
+        public static final String SHOW_SPS_INBOX_TIMESTAMP = "SHOW_SPS_INBOX_TIMESTAMP";
+		public static final String SHOW_SPONSOR_DEADLINE_DATE = "SHOW_SPONSOR_DEADLINE_DATE";
         public static final String SHOW_CURRENT_NODE = "CURRENT_NODE_COL_SHOW_NEW";
         public static final String NOTIFY_ACKNOWLEDGE = "NOTIFY_ACKNOWLEDGE";
         public static final String NOTIFY_APPROVE = "NOTIFY_APPROVE";

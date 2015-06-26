@@ -122,6 +122,19 @@
           <td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.showDateApproved" value="${Constants.PREFERENCES_YES_VAL }"/>
           </td>
         </tr>
+        
+		<tr>
+			<th ><div align="right">SPS Inbox Timestamp</div></th>
+			<td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.showSPSInboxTimestamp" value="${Constants.PREFERENCES_YES_VAL }"/>
+			</td>
+		</tr>
+		
+		<tr>
+			<th ><div align="right">Sponsor Deadline Date</div></th>
+			<td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.showSponsorDeadlineDate" value="${Constants.PREFERENCES_YES_VAL }"/>
+			</td>
+		</tr>
+        
         <tr>
           <th ><div align="right">Current Route Node(s)</div></th>
 			<td class="datacell"><html-el:checkbox styleClass="nobord" property="preferences.showCurrentNode" value="${Constants.PREFERENCES_YES_VAL }"/>

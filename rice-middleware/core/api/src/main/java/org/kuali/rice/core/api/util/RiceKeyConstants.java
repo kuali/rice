@@ -107,6 +107,7 @@ public final class RiceKeyConstants {
     public static final String ERROR_DOCUMENT_ANNOTATION_MAX_LENGTH_EXCEEDED =
             "error.document.annotation.maxLength.exceeded";
     public static final String ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED = "error.document.disapprove.reasonRequired";
+    public static final String ERROR_DOCUMENT_TERMINATION_REASON_REQUIRED = "error.document.termination.reasonRequired";
     public static final String ERROR_DOCUMENT_RECALL_REASON_REQUIRED = "error.document.recall.reasonRequired";
     public static final String ERROR_DOCUMENT_NO_DESCRIPTION = "error.document.noDescription";
     public static final String ERROR_UPLOADFILE_NULL = "error.uploadFile.null";
@@ -168,6 +169,7 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_REVERT_SUCCESSFUL = "message.revert.successful";
     public static final String MESSAGE_REVERT_UNNECESSARY = "message.revert.unnecessary";
     public static final String MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO = "message.disapprove.noteTextIntro";
+    public static final String MESSAGE_TERMINATION_NOTE_TEXT_INTRO = "message.termination.noteTextIntro";
     public static final String MESSAGE_RECALL_NOTE_TEXT_INTRO = "message.recall.noteTextIntro";
 
     public static final String INFO_LOOKUP_RESULTS_DISPLAY_ALL = "lookup.results.found.display.all";
@@ -181,6 +183,7 @@ public final class RiceKeyConstants {
     public static final String MESSAGE_DELETED = "mesage.deleted";
 
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";
+    public static final String QUESTION_TERMINATE_DOCUMENT = "document.question.terminate.text";
     public static final String QUESTION_RECALL_DOCUMENT = "document.question.recall.text";
     public static final String QUESTION_SENSITIVE_DATA_DOCUMENT = "document.question.sensitiveData.text";
 

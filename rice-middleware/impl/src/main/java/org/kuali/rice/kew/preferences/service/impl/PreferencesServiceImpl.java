@@ -75,6 +75,8 @@ public class PreferencesServiceImpl implements PreferencesService {
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.DELEGATOR_FILTER, "userOptions.default.delegatorFilterOnActionList");
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.PRIMARY_DELEGATE_FILTER, "userOptions.default.primaryDelegatorFilterOnActionList");
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.SHOW_DATE_APPROVED, "userOptions.default.showLastApprovedDate");
+        USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.SHOW_SPS_INBOX_TIMESTAMP, "userOptions.default.showSPSInboxTimestamp");
+		USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.SHOW_SPONSOR_DEADLINE_DATE, "userOptions.default.showSponsorDeadlineDate");
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.SHOW_CURRENT_NODE, "userOptions.default.showCurrentNode");
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.USE_OUT_BOX, KewApiConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM);
         USER_OPTION_KEY_DEFAULT_MAP.put(Preferences.KEYS.NOTIFY_ACKNOWLEDGE, "userOptions.default.notifyAcknowledge");
@@ -188,6 +190,8 @@ public class PreferencesServiceImpl implements PreferencesService {
         optionsMap.put(Preferences.KEYS.DELEGATOR_FILTER, preferences.getDelegatorFilter());
         optionsMap.put(Preferences.KEYS.PRIMARY_DELEGATE_FILTER, preferences.getPrimaryDelegateFilter());
         optionsMap.put(Preferences.KEYS.SHOW_DATE_APPROVED, preferences.getShowDateApproved());
+        optionsMap.put(Preferences.KEYS.SHOW_SPS_INBOX_TIMESTAMP, preferences.getShowSPSInboxTimestamp());
+		optionsMap.put(Preferences.KEYS.SHOW_SPONSOR_DEADLINE_DATE, preferences.getShowSponsorDeadlineDate());
         optionsMap.put(Preferences.KEYS.SHOW_CURRENT_NODE, preferences.getShowCurrentNode());
         optionsMap.put(Preferences.KEYS.NOTIFY_ACKNOWLEDGE, preferences.getNotifyAcknowledge());
         optionsMap.put(Preferences.KEYS.NOTIFY_APPROVE, preferences.getNotifyApprove());

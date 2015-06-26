@@ -15,16 +15,18 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
+import org.kuali.rice.kim.api.identity.Person;
+import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class handles the logout. After logout it will do an external redirect to an url
@@ -41,7 +43,14 @@ public class KualiLogoutAction extends Action {
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		Person loggedIn = GlobalVariables.getUserSession().getPerson();
+		Person actualLoggedIn = GlobalVariables.getUserSession().getActualPerson();
 
+		if ( loggedIn != actualLoggedIn )
+		{
+			GlobalVariables.getUserSession().clearBackdoorUser();
+			return mapping.findForward( KRADConstants.MAPPING_PORTAL );
+		}
         String redirectString = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KRADConstants.KNS_NAMESPACE, KRADConstants.DetailTypes.ALL_DETAIL_TYPE, KRADConstants.LOGOFF_REDIRECT_URL_PARAMETER);
 
         if(redirectString == null) {

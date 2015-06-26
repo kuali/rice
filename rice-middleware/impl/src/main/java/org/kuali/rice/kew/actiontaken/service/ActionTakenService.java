@@ -59,4 +59,7 @@ public interface ActionTakenService {
     public boolean hasUserTakenAction(String principalId, String documentId);
 
     public Timestamp getLastApprovedDate(String documentId);
+
+    public Timestamp getSPSInboxTimestampAndSponsorDeadlineDate(String documentId, boolean spsInboxTimestamp);
+			
 }

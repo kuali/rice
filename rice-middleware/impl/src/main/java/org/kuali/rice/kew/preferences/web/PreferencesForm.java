@@ -185,6 +185,8 @@ public class PreferencesForm extends KualiForm {
                 (!StringUtils.isBlank(preferences.getShowDelegator())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDelegator())) ||
                 (!StringUtils.isBlank(preferences.getShowDateCreated())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDateCreated())) ||
                 (!StringUtils.isBlank(preferences.getShowDateApproved())) &&(!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDateApproved())) ||
+                (!StringUtils.isBlank(preferences.getShowSPSInboxTimestamp())) &&(!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowSPSInboxTimestamp())) ||
+        		(!StringUtils.isBlank(preferences.getShowSponsorDeadlineDate())) &&(!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowSponsorDeadlineDate())) ||
                 (!StringUtils.isBlank(preferences.getShowCurrentNode())) &&	(!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowCurrentNode())) ||
                 (!StringUtils.isBlank(preferences.getShowWorkgroupRequest())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowWorkgroupRequest())) ||
                 (!StringUtils.isBlank(preferences.getShowDocumentStatus())) && (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getShowDocumentStatus())) ||

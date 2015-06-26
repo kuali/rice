@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.actions;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
@@ -42,6 +43,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.principal.PrincipalContract;
+
 
 
 import java.util.ArrayList;
@@ -272,6 +274,16 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         }
 
             Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getDocumentId());
+            
+            /* UAR-18 starts */
+            //There could be terminal node instances that may not get traced back correctly in certain cases
+            //those need to be included for generating the node graph
+            List<RouteNodeInstance> terminalNodeInstances = KEWServiceLocator.getRouteNodeService().getTerminalNodeInstances(getRouteHeader().getDocumentId());
+            if(CollectionUtils.isNotEmpty(terminalNodeInstances)) {
+            	activeNodeInstances.addAll(terminalNodeInstances);
+            }
+            /* UAR-18 ends */
+            
             NodeGraphSearchCriteria criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, nodeName);
             NodeGraphSearchResult result = KEWServiceLocator.getRouteNodeService().searchNodeGraph(criteria);
             validateReturnPoint(nodeName, activeNodeInstances, result);

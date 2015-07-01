@@ -88,6 +88,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             ActionRequestValue actionRequest = context.getActionRequestFactory().addRootActionRequest(
                     context.getActionRequested().getCode(), member.getPriority(), toRecipient(member), "",
                     member.getResponsibilityId(), member.getForceAction(), getActionRequestPolicyCode(member), null);
+            actionRequest.setAnnotation(context.getPeopleFlow().getNamespaceCode() + " " + context.getPeopleFlow().getName());
 
             if (actionRequest != null) {
                 generateDelegationRequests(context, Collections.singletonList(actionRequest), member);
@@ -305,39 +306,8 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
     private String generateDelegationAnnotation(ActionRequestValue parentRequest, PeopleFlowMember member,
                                                 PeopleFlowDelegate delegate, PeopleFlowDefinition peopleFlowDefinition) {
 
-        StringBuffer annotation = new StringBuffer( "Delegation of: " );
+        StringBuffer annotation = new StringBuffer( "Delegates of Approver in " );
         annotation.append( parentRequest.getAnnotation() );
-        annotation.append( " to " );
-
-        if (delegate.getMemberType() == MemberType.PRINCIPAL) {
-            annotation.append( "principal " );
-            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(delegate.getMemberId());
-
-            if ( principal != null ) {
-                annotation.append( principal.getPrincipalName() );
-            } else {
-                annotation.append( member.getMemberId() );
-            }
-        } else if (delegate.getMemberType() == MemberType.GROUP) {
-            annotation.append( "group " );
-            Group group = KimApiServiceLocator.getGroupService().getGroup(delegate.getMemberId());
-
-            if ( group != null ) {
-                annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getName() );
-            } else {
-                annotation.append( member.getMemberId() );
-            }
-        } else {
-            annotation.append( "?????? '" );
-            annotation.append( member.getMemberId() );
-            annotation.append( "'" );
-        }
-
-        if (peopleFlowDefinition != null) {
-            annotation.append(System.getProperty("line.separator"));
-            annotation.append(PEOPLE_FLOW_NAME + peopleFlowDefinition.getName());
-            annotation.append(System.getProperty("line.separator"));
-        }
 
         return annotation.toString();
     }

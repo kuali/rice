@@ -82,6 +82,10 @@
 *  Reject Enhancement
   * Control the reject action with permissions.
   * Gayathri Athreya on Thu, 4 Jun 2015 20:33:58 -0700 [View Commit](../../commit/c815a720344cb0ff4bfdf62f5aea4e20028040f6)
+* RESKC-397 People flow annotation display fix
+
+  * People flow annotation for route log was displaying null values or blank information, this corrects that behavior by showing Namespace and Name of people flow
+  * bsmith83 on Mon, 29 Jun 2015 15:38:53 -0700 [View Commit](../../commit/c4517d7b126779928322e37be8e9983fe5f68749)
 
 ##rice-2.5.4.6-kckualico
 * No Changes
@@ -118,6 +122,11 @@
 ##rice-2.5.4.0-kckualico
 * No Changes
 
+
+##rice-2.5.3.1506.3-kckualico
+*  Reject Enhancement
+  * Control the reject action with permissions.
+  * Gayathri Athreya on Thu, 4 Jun 2015 20:33:58 -0700 [View Commit](../../commit/c815a720344cb0ff4bfdf62f5aea4e20028040f6)
 
 ##rice-2.5.3.1506.2-kckualico
 *  Modified parent annotation for action request to display people flow name.

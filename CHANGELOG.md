@@ -86,6 +86,8 @@
 
   * People flow annotation for route log was displaying null values or blank information, this corrects that behavior by showing Namespace and Name of people flow
   * bsmith83 on Mon, 29 Jun 2015 15:38:53 -0700 [View Commit](../../commit/c4517d7b126779928322e37be8e9983fe5f68749)
+* fix to display number of items found on person lookupable
+  * Joe Williams on Thu, 2 Jul 2015 13:12:04 -0500 [View Commit](../../commit/43851e909ff82ff7563d904c08a51d633f581cd8)
 
 ##rice-2.5.4.6-kckualico
 * No Changes
@@ -122,6 +124,12 @@
 ##rice-2.5.4.0-kckualico
 * No Changes
 
+
+##rice-2.5.3.1507.1-kckualico
+* RESKC-397 People flow annotation display fix
+
+  * People flow annotation for route log was displaying null values or blank information, this corrects that behavior by showing Namespace and Name of people flow
+  * bsmith83 on Mon, 29 Jun 2015 15:38:53 -0700 [View Commit](../../commit/c4517d7b126779928322e37be8e9983fe5f68749)
 
 ##rice-2.5.3.1506.3-kckualico
 *  Reject Enhancement

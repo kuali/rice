@@ -27,6 +27,7 @@ public abstract class CampusAftBase extends AdminTmplMthdAftNavCreateNewBase {
         String randomAlphabetic = RandomStringUtils.randomAlphabetic(10);
         String randomNumbeForCode = RandomStringUtils.randomNumeric(1);
         String randomAlphabeticForCode = RandomStringUtils.randomAlphabetic(1);
+        clearTextByName("document.newMaintainableObject.code");
         waitAndTypeByName("document.newMaintainableObject.code",randomNumbeForCode + randomAlphabeticForCode);
         waitAndTypeByName("document.newMaintainableObject.name",randomAlphabetic);
         waitAndTypeByName("document.newMaintainableObject.shortName",randomAlphabetic);

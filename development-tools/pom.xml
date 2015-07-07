@@ -31,7 +31,7 @@
     <generateReports>false</generateReports>
     <codemodel.version>2.4.1</codemodel.version>
     <javaparser.version>1.0.9</javaparser.version>
-    <db-ojb.version>1.0.4-patch8</db-ojb.version>
+    <db-ojb.version>1.0.4-patch9</db-ojb.version>
   </properties>
   <dependencies>
     <dependency>

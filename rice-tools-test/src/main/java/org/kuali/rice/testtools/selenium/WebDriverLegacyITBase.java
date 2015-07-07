@@ -1087,8 +1087,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickBlanketApproveKns();
 
         int attempts = 0;
-        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
-                ++attempts <= 10) {
+        while (isTextPresent("a record with the same primary key already exists.") && ++attempts <= 10) {
             uniqueString = null; // make sure try a new one
             jGrowl("record with the same primary key already exists");
             createNewEnterDetails();
@@ -1182,8 +1181,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickSave();
 
         int attempts = 0;
-        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
-                ++attempts <= 10) {
+        while (isTextPresent("a record with the same primary key already exists.") && ++attempts <= 10) {
             uniqueString = null; // make sure try a new one
             jGrowl("record with the same primary key already exists");
             createNewEnterDetails();
@@ -1210,8 +1208,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         createNewEnterDetails();
         waitAndClickSubmit();
         int attempts = 0;
-        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
-                ++attempts <= 10) {
+        while (isTextPresent("a record with the same primary key already exists.") && ++attempts <= 10) {
             uniqueString = null; // make sure try a new one
             jGrowl("record with the same primary key already exists");
             createNewEnterDetails();
@@ -1238,8 +1235,7 @@ public abstract class WebDriverLegacyITBase extends WebDriverAftBase {
         waitAndClickSave();
 
         int attempts = 0;
-        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
-                ++attempts <= 10) {
+        while (isTextPresent("a record with the same primary key already exists.") && ++attempts <= 10) {
             uniqueString = null; // make sure try a new one
             jGrowl("record with the same primary key already exists");
             createNewEnterDetails();

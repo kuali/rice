@@ -264,7 +264,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//a[@class='agendaNode ruleNode']");
         waitAndClickByXpath("//button[contains(text(),'Edit Rule')]");
         selectFrameIframePortlet();
-        selectByName("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId", selectValue);
+        waitAndSelectByName("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId", selectValue);
 
         if (selectValue.equals("KrmsActionResolverType") || selectValue.equalsIgnoreCase("Validation Action")){
             waitClearAndType("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.name", "ActionName");
@@ -285,6 +285,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
     }
 
     protected void waitClearAndType(String name, String value) throws Exception {
+        waitForElementPresent(name);
         clearTextByName(name);
         waitAndTypeByName(name,value);
     }

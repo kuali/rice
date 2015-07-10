@@ -90,6 +90,13 @@
   * Joe Williams on Thu, 2 Jul 2015 13:12:04 -0500 [View Commit](../../commit/43851e909ff82ff7563d904c08a51d633f581cd8)
 *  upgrading ojb to avoid concurrency issues under heavy load
   * Travis Schneeberger on Tue, 7 Jul 2015 12:30:57 -0400 [View Commit](../../commit/b05230f782ecefa87ba0311c877b9b6c2a768a6d)
+*  Fixing role member fetch.
+  * "Proposal Creator" role is behaving like a Unit Hierarchy role with descend enabled in stead of Unit role sometimes.
+  * User with the "Unit" Proposal Creator role assigned at a unit that has children, has all the children listed in the
+  * PD "Lead Unit" drop down when Creating or Copying a proposal, even if they do not have the role assigned for the child units. User can select, create/copy and successfully save the new proposal.
+
+  * After testing I think this behavior is random. I assigned coiadmin to the Proposal Creator role with unit BL-BL and had access to ALL units not just its descendents. The behavior seems to be dependent on the other roles assigned to the user. This is because of how rice fetches role members when given a role id and user id.
+  * Gayathri Athreya on Thu, 9 Jul 2015 16:57:29 -0700 [View Commit](../../commit/049deab42684b58e0c73f1fb683f3ba64f085ec7)
 
 ##rice-2.5.4.6-kckualico
 * No Changes
@@ -126,6 +133,10 @@
 ##rice-2.5.4.0-kckualico
 * No Changes
 
+
+##rice-2.5.3.1507.3-kckualico
+*  upgrading ojb to avoid concurrency issues under heavy load
+  * Travis Schneeberger on Tue, 7 Jul 2015 12:30:57 -0400 [View Commit](../../commit/b05230f782ecefa87ba0311c877b9b6c2a768a6d)
 
 ##rice-2.5.3.1507.2-kckualico
 * fix to display number of items found on person lookupable

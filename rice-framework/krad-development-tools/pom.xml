@@ -86,11 +86,6 @@
     </dependency>
 
     <dependency>
-      <groupId>no.geosoft</groupId>
-      <artifactId>filemonitor</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>mysql</groupId>
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
       <version>${mysql.jdbc.version}</version>

@@ -49,10 +49,6 @@
       <version>${codemodel.version}</version>
     </dependency>
     <dependency>
-      <groupId>no.geosoft</groupId>
-      <artifactId>filemonitor</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.google.code.javaparser</groupId>
       <artifactId>javaparser</artifactId>
       <version>${javaparser.version}</version>

@@ -88,11 +88,6 @@
       <groupId>javax.transaction</groupId>
       <artifactId>jta</artifactId>
     </dependency>
-    
-    <dependency>
-      <groupId>no.geosoft</groupId>
-      <artifactId>filemonitor</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>junit</groupId>

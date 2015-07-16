@@ -97,6 +97,10 @@
 
   * After testing I think this behavior is random. I assigned coiadmin to the Proposal Creator role with unit BL-BL and had access to ALL units not just its descendents. The behavior seems to be dependent on the other roles assigned to the user. This is because of how rice fetches role members when given a role id and user id.
   * Gayathri Athreya on Thu, 9 Jul 2015 16:57:29 -0700 [View Commit](../../commit/049deab42684b58e0c73f1fb683f3ba64f085ec7)
+* Deleting the broken reloading data dictionary
+  * Travis Schneeberger on Thu, 16 Jul 2015 14:58:01 -0400 [View Commit](../../commit/d31dd4b7625beb447f0cc602db86413f23c38f3a)
+* Deleting the broken reloading data dictionary
+  * Travis Schneeberger on Thu, 16 Jul 2015 15:56:27 -0400 [View Commit](../../commit/d7d61acef4f3b1d9f28be8bc412c0850d9ae25ba)
 
 ##rice-2.5.4.6-kckualico
 * No Changes
@@ -133,6 +137,15 @@
 ##rice-2.5.4.0-kckualico
 * No Changes
 
+
+##rice-2.5.3.1507.4-kckualico
+*  Fixing role member fetch.
+  * "Proposal Creator" role is behaving like a Unit Hierarchy role with descend enabled in stead of Unit role sometimes.
+  * User with the "Unit" Proposal Creator role assigned at a unit that has children, has all the children listed in the
+  * PD "Lead Unit" drop down when Creating or Copying a proposal, even if they do not have the role assigned for the child units. User can select, create/copy and successfully save the new proposal.
+
+  * After testing I think this behavior is random. I assigned coiadmin to the Proposal Creator role with unit BL-BL and had access to ALL units not just its descendents. The behavior seems to be dependent on the other roles assigned to the user. This is because of how rice fetches role members when given a role id and user id.
+  * Gayathri Athreya on Thu, 9 Jul 2015 16:57:29 -0700 [View Commit](../../commit/049deab42684b58e0c73f1fb683f3ba64f085ec7)
 
 ##rice-2.5.3.1507.3-kckualico
 *  upgrading ojb to avoid concurrency issues under heavy load

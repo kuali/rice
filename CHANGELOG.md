@@ -138,6 +138,12 @@
 * No Changes
 
 
+##rice-2.5.3.1507.5-kckualico
+* Deleting the broken reloading data dictionary
+  * Travis Schneeberger on Thu, 16 Jul 2015 14:58:01 -0400 [View Commit](../../commit/d31dd4b7625beb447f0cc602db86413f23c38f3a)
+* Deleting the broken reloading data dictionary
+  * Travis Schneeberger on Thu, 16 Jul 2015 15:56:27 -0400 [View Commit](../../commit/d7d61acef4f3b1d9f28be8bc412c0850d9ae25ba)
+
 ##rice-2.5.3.1507.4-kckualico
 *  Fixing role member fetch.
   * "Proposal Creator" role is behaving like a Unit Hierarchy role with descend enabled in stead of Unit role sometimes.

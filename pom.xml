@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>4.3.9</version>
+    <version>4.3.10</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -42,6 +42,8 @@
   <url>http://www.kuali.org/rice</url>
 
   <properties>
+    <kuali.repo>https://nexus.kuali.co/nexus/content/groups/public/</kuali.repo>
+
     <project.java.version>1.8</project.java.version>
     <project.compile.source>${project.java.version}</project.compile.source>
     <project.compile.target>${project.java.version}</project.compile.target>
@@ -67,8 +69,8 @@
     <gmaven.compile.phase>compile</gmaven.compile.phase>
     <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
-    <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
-    <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
+    <oracle.jdbc.version>12.1.0.2</oracle.jdbc.version>
+    <oracle.jdbc.artifactId>ojdbc7</oracle.jdbc.artifactId>
     <mysql.jdbc.version>5.1.24</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
 
@@ -132,7 +134,7 @@
     <cxf.version>2.7.12</cxf.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
-    <dwr.version>3.0.RC2</dwr.version>
+    <dwr.version>3.0.0-RELEASE</dwr.version>
     <eclipselink.version>2.6.0</eclipselink.version>
     <ehcache.version>2.6.9</ehcache.version>
     <freemarker.version>2.3.20-patch2</freemarker.version>
@@ -197,7 +199,7 @@
     <velocity.tools.version>2.0</velocity.tools.version>
     <wss4j.version>1.6.18</wss4j.version>
     <xalan.version>2.7.2</xalan.version>
-    <xapool.version>1.5.0-patch6</xapool.version>
+    <xapool.version>1.5.1.1507.01</xapool.version>
     <xercesImpl.version>2.11.0</xercesImpl.version>
     <!-- need v. 1.4.01 of xml-apis with xercesImpl 2.11.0 -->
     <xml-apis.version>1.4.01</xml-apis.version>
@@ -322,13 +324,13 @@
         <issueManagement.system>github</issueManagement.system>
         <issueManagement.url>https://github.com/kualico/kc-rice/issues</issueManagement.url>
 
-        <dm.snapshotRepository.id>rsmart.snapshot.repo</dm.snapshotRepository.id>
-        <dm.snapshotRepository.name>rsmart snapshot repository</dm.snapshotRepository.name>
-        <dm.snapshotRepository.url>s3://rsmart-dev/artifacts/maven/snapshot</dm.snapshotRepository.url>
+        <dm.snapshotRepository.id>kualico.nexus</dm.snapshotRepository.id>
+        <dm.snapshotRepository.name>KualiCo Nexus Research Snapshot Repository</dm.snapshotRepository.name>
+        <dm.snapshotRepository.url>https://nexus.kuali.co/nexus/content/repositories/research-snapshot/</dm.snapshotRepository.url>
 
-        <dm.repository.id>rsmart.release.repo</dm.repository.id>
-        <dm.repository.name>rsmart release repository</dm.repository.name>
-        <dm.repository.url>s3://rsmart-dev/artifacts/maven/release</dm.repository.url>
+        <dm.repository.id>kualico.nexus</dm.repository.id>
+        <dm.repository.name>KualiCo Nexus Research Release Repository</dm.repository.name>
+        <dm.repository.url>https://nexus.kuali.co/nexus/content/repositories/research-repo/</dm.repository.url>
 
         <ciManagement.url>https://res-deploy.kuali.co/</ciManagement.url>
 
@@ -344,9 +346,9 @@
 
       <repositories>
         <repository>
-          <id>rsmart-dev</id>
-          <name>rSmart Nexus Repository Manager</name>
-          <url>https://nexus.rsmart.com/nexus/content/groups/public/</url>
+          <id>kualico.nexus</id>
+          <name>KualiCo Nexus Research Releases</name>
+          <url>https://nexus.kuali.co/nexus/content/groups/research-repos/</url>
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
@@ -358,15 +360,15 @@
 
       <pluginRepositories>
         <pluginRepository>
-          <id>rsmart-dev</id>
-          <name>rSmart Nexus Repository Manager</name>
-          <url>https://nexus.rsmart.com/nexus/content/groups/public/</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
+          <id>kualico.nexus</id>
+          <name>Research Releases</name>
+          <url>https://nexus.kuali.co/nexus/content/groups/research-repos/</url>
           <snapshots>
             <enabled>true</enabled>
           </snapshots>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
         </pluginRepository>
       </pluginRepositories>
     </profile>
@@ -1668,20 +1670,6 @@
     <module>dist</module>
   </modules>
 
-  <repositories>
-    <repository>
-      <id>kuali.nexus</id>
-      <name>Nexus Repository Manager</name>
-      <url>http://nexus.kuali.org/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
   <dependencyManagement>
     <dependencies>
 
@@ -2550,9 +2538,19 @@
       </dependency>
       <dependency>
         <!-- groupid was changed to com.experlog in later versions -->
-        <groupId>xapool</groupId>
+        <groupId>co.kuali</groupId>
         <artifactId>xapool</artifactId>
         <version>${xapool.version}</version>
+	<exclusions>
+	  <exclusion>
+	    <groupId>commons-logging</groupId>
+	    <artifactId>commons-logging</artifactId>
+	  </exclusion>
+      <exclusion>
+        <groupId>com.oracle</groupId>
+        <artifactId>ojdbc7</artifactId>
+      </exclusion>
+	</exclusions>
       </dependency>
 
       <!-- explicitly including xercesImpl to change version number from what maven would have resolved it to -->

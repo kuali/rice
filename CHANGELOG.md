@@ -101,6 +101,8 @@
   * Travis Schneeberger on Thu, 16 Jul 2015 14:58:01 -0400 [View Commit](../../commit/d31dd4b7625beb447f0cc602db86413f23c38f3a)
 * Deleting the broken reloading data dictionary
   * Travis Schneeberger on Thu, 16 Jul 2015 15:56:27 -0400 [View Commit](../../commit/d7d61acef4f3b1d9f28be8bc412c0850d9ae25ba)
+*  changing nexus config
+  * Travis Schneeberger on Fri, 17 Jul 2015 13:42:59 -0400 [View Commit](../../commit/6ef1a89951212c90bf484c3a23c1232c79cea9d0)
 
 ##rice-2.5.4.6-kckualico
 * No Changes
@@ -135,6 +137,10 @@
   * Gayathri on Thu, 9 Apr 2015 15:03:09 -0700 [View Commit](../../commit/ac7f7f10d76d54315eede9c3ceca0857db2563d7)
 
 ##rice-2.5.4.0-kckualico
+* No Changes
+
+
+##rice-2.5.3.1507.6-kckualico
 * No Changes
 
 

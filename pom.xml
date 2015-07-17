@@ -295,13 +295,13 @@
     <issueManagement.system>github</issueManagement.system>
     <issueManagement.url>https://github.com/kuali/kc-rice/issues</issueManagement.url>
 
-    <dm.snapshotRepository.id>kuali.snapshot</dm.snapshotRepository.id>
-    <dm.snapshotRepository.name>Main Kuali Repository</dm.snapshotRepository.name>
-    <dm.snapshotRepository.url>scp://test.kuali.org:/opt/m2/repository</dm.snapshotRepository.url>
+    <dm.snapshotRepository.id>kualico.nexus.snapshots</dm.snapshotRepository.id>
+    <dm.snapshotRepository.name>KualiCo Nexus Snapshots Repository</dm.snapshotRepository.name>
+    <dm.snapshotRepository.url>https://nexus.kuali.co/nexus/content/repositories/snapshots</dm.snapshotRepository.url>
 
-    <dm.repository.id>kuali.snapshot</dm.repository.id>
-    <dm.repository.name>Kuali Snapshot Repository</dm.repository.name>
-    <dm.repository.url>s3://maven.kuali.org/snapshot</dm.repository.url>
+    <dm.repository.id>kualico.nexus.releases</dm.repository.id>
+    <dm.repository.name>KualiCo Nexus Releases Repository</dm.repository.name>
+    <dm.repository.url>https://nexus.kuali.co/nexus/content/repositories/releases</dm.repository.url>
 
     <ciManagement.url>https://ci.kuali.org/</ciManagement.url>
   </properties>
@@ -324,13 +324,13 @@
         <issueManagement.system>github</issueManagement.system>
         <issueManagement.url>https://github.com/kualico/kc-rice/issues</issueManagement.url>
 
-        <dm.snapshotRepository.id>kualico.nexus</dm.snapshotRepository.id>
-        <dm.snapshotRepository.name>KualiCo Nexus Research Snapshot Repository</dm.snapshotRepository.name>
-        <dm.snapshotRepository.url>https://nexus.kuali.co/nexus/content/repositories/research-snapshot/</dm.snapshotRepository.url>
+        <dm.snapshotRepository.id>kualico.nexus.research.snapshots</dm.snapshotRepository.id>
+        <dm.snapshotRepository.name>KualiCo Nexus Research Snapshots Repository</dm.snapshotRepository.name>
+        <dm.snapshotRepository.url>https://nexus.kuali.co/nexus/content/repositories/research-snapshots/</dm.snapshotRepository.url>
 
-        <dm.repository.id>kualico.nexus</dm.repository.id>
-        <dm.repository.name>KualiCo Nexus Research Release Repository</dm.repository.name>
-        <dm.repository.url>https://nexus.kuali.co/nexus/content/repositories/research-repo/</dm.repository.url>
+        <dm.repository.id>kualico.nexus.research.releases</dm.repository.id>
+        <dm.repository.name>KualiCo Nexus Research Releases Repository</dm.repository.name>
+        <dm.repository.url>https://nexus.kuali.co/nexus/content/repositories/research-releases/</dm.repository.url>
 
         <ciManagement.url>https://res-deploy.kuali.co/</ciManagement.url>
 
@@ -346,8 +346,8 @@
 
       <repositories>
         <repository>
-          <id>kualico.nexus</id>
-          <name>KualiCo Nexus Research Releases</name>
+          <id>kualico.nexus.research</id>
+          <name>KualiCo Nexus Research Group</name>
           <url>https://nexus.kuali.co/nexus/content/groups/research-repos/</url>
           <snapshots>
             <enabled>true</enabled>
@@ -360,8 +360,8 @@
 
       <pluginRepositories>
         <pluginRepository>
-          <id>kualico.nexus</id>
-          <name>Research Releases</name>
+          <id>kualico.nexus.research</id>
+          <name>KualiCo Nexus Research Group</name>
           <url>https://nexus.kuali.co/nexus/content/groups/research-repos/</url>
           <snapshots>
             <enabled>true</enabled>

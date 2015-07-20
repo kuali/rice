@@ -423,7 +423,7 @@
               </execution>
             </executions>
           </plugin>
-          <plugin>
+         <!-- <plugin>
             <artifactId>maven-jar-plugin</artifactId>
             <executions>
               <execution>
@@ -448,7 +448,7 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
+          </plugin>-->
         </plugins>
       </build>
     </profile>

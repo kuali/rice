@@ -140,6 +140,10 @@
 * No Changes
 
 
+##rice-2.5.3.1507.8-kckualico
+* No Changes
+
+
 ##rice-2.5.3.1507.7-kckualico
 *  changing nexus config
   * Travis Schneeberger on Fri, 17 Jul 2015 13:42:59 -0400 [View Commit](../../commit/6ef1a89951212c90bf484c3a23c1232c79cea9d0)

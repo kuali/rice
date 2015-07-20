@@ -55,7 +55,7 @@
 
     <!--added for KualiCo's release process -->
     <maven-scm-provider-gitexe.version>1.9.4</maven-scm-provider-gitexe.version>
-    <maven-release-plugin.version>2.5.1</maven-release-plugin.version>
+    <maven-release-plugin.version>2.5.2</maven-release-plugin.version>
 
 
     <!-- These properties modify the release process -->
@@ -71,7 +71,7 @@
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.jdbc.version>12.1.0.2</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc7</oracle.jdbc.artifactId>
-    <mysql.jdbc.version>5.1.24</mysql.jdbc.version>
+    <mysql.jdbc.version>5.1.36</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
 
     <jmeter.phase>verify</jmeter.phase>
@@ -281,10 +281,10 @@
       -javaagent:${spring-instrument.jar}
     </spring-instrument-javaagent>
 
-    <jdk.source.version>1.6</jdk.source.version>
-    <jdk.target.version>1.6</jdk.target.version>
+    <jdk.source.version>1.8</jdk.source.version>
+    <jdk.target.version>1.8</jdk.target.version>
 
-    <error_prone_core.version>2.0.2</error_prone_core.version>
+    <error_prone_core.version>2.0.4</error_prone_core.version>
     <plexus-compiler-javac.version>2.5</plexus-compiler-javac.version>
     <plexus-compiler-javac-errorprone.version>2.5</plexus-compiler-javac-errorprone.version>
 
@@ -304,155 +304,9 @@
     <dm.repository.url>https://nexus.kuali.co/nexus/content/repositories/releases</dm.repository.url>
 
     <ciManagement.url>https://ci.kuali.org/</ciManagement.url>
-
-    <!--<kuali.release.profiles>kualico-release</kuali.release.profiles>-->
   </properties>
 
   <profiles>
-
-    <!-- copied profile from org.kuali.pom:kuali-pom:4.3.10:pom to override the release profile to fix: http://stackoverflow.com/questions/24806948/maven-deploy-nexus-failed-on-bad-request
-    <profile>
-      <id>kualico-release</id>
-      <properties>
-        <license.phase>generate-resources</license.phase>
-        <decrypt.phase>initialize</decrypt.phase>
-        <project.augment.phase>validate</project.augment.phase>
-        <maven.scm.update>true</maven.scm.update>
-      </properties>
-      <build>
-        <plugins>
-
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>properties-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>decrypt</id>
-                <goals>
-                  <goal>decryptall</goal>
-                </goals>
-                <phase>${decrypt.phase}</phase>
-                <configuration>
-                  <quiet>true</quiet>
-                  <password>${enc.password}</password>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>metadata</id>
-                <goals>
-                  <goal>maven-version</goal>
-                  <goal>parse-version</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.kuali.maven.plugins</groupId>
-            <artifactId>license-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>licenses</id>
-                <goals>
-                  <goal>add-third-party</goal>
-                </goals>
-                <phase>${license.phase}</phase>
-                <configuration>
-                  <thirdPartyFilename>META-INF/THIRD-PARTY.txt</thirdPartyFilename>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>gpg</id>
-                <phase>${kuali.gpg.phase}</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-                <configuration>
-                  <passphrase>${kuali.gpg.passphrase}</passphrase>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>javadoc</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>${plugin.nexus.version}</version>
-            <extensions>true</extensions>
-            <configuration>
-              <serverId>${kuali.repo.release.id}</serverId>
-              <nexusUrl>${kuali.repo.release.url}</nexusUrl>
-              <skipStaging>${nexus.staging.skip}</skipStaging>
-            </configuration>
-          </plugin>
-          <plugin>
-            <artifactId>maven-site-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>descriptor</id>
-                <phase>${kuali.site.descriptor.phase}</phase>
-                <goals>
-                  <goal>attach-descriptor</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-         <plugin>
-            <artifactId>maven-jar-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>default-jar</id>
-                <phase>${kuali.testjar.phase}</phase>
-                <goals>
-                  <goal>test-jar</goal>
-                </goals>
-                <configuration>
-                  <skipIfEmpty>${kuali.testjar.skipIfEmpty}</skipIfEmpty>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-sources</id>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>-->
-
     <profile>
       <id>grm</id>
       <!-- comment out activation section to turn this profile off permanently -->

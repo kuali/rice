@@ -140,6 +140,10 @@
 * No Changes
 
 
+##rice-2.5.3.1507.12-kckualico
+* No Changes
+
+
 ##rice-2.5.3.1507.11-kckualico
 * No Changes
 

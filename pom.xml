@@ -427,7 +427,7 @@
             <artifactId>maven-jar-plugin</artifactId>
             <executions>
               <execution>
-                <id>testjar</id>
+                <id>default-jar</id>
                 <phase>${kuali.testjar.phase}</phase>
                 <goals>
                   <goal>test-jar</goal>

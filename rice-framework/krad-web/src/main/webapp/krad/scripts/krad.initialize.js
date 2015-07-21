@@ -309,8 +309,13 @@ function initFieldHandlers() {
                 initActionData(action);
 
                 // Dirty check (if enabled)
-                if (action.data(kradVariables.PERFORM_DIRTY_VALIDATION) === true && dirtyFormState.checkDirty(e)) {
-                    return;
+                if (action.data(kradVariables.PERFORM_DIRTY_VALIDATION) === true) {
+                    dirtyFormState.skipDirtyChecks = false;
+                    if (dirtyFormState.checkDirty(e)) {
+                        return;
+                    }
+                } else {
+                    dirtyFormState.skipDirtyChecks = true;
                 }
 
                 var functionData = action.data(kradVariables.ACTION_ONCLICK_DATA);

@@ -20,17 +20,26 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
-		<property name="transactionManager" ref="transactionManager${connection.pool.impl}" />
-		<property name="driverClassName" value="${rice.datasource.driver.name}" />
-		<property name="url" value="${rice.datasource.url}" />
-		<property name="maxSize" value="${rice.datasource.pool.maxSize}" />
-		<property name="minSize" value="${rice.datasource.pool.minSize}" />
-		<property name="maxWait" value="${rice.datasource.pool.maxWait}" />
-		<property name="validationQuery" value="${rice.datasource.pool.validationQuery}" />
-		<property name="username" value="${rice.datasource.username}" />
-		<property name="password" value="${rice.datasource.password}" />
-	</bean>
+  <bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+        destroy-method="close" lazy-init="true">
+    <property name="className" value="${rice.datasource.pool.class.non.xa}" />
+    <property name="uniqueName" value="#{T(org.apache.commons.lang3.RandomStringUtils).randomAlphanumeric(20)}_CLIENT_NAME" />
+    <property name="minPoolSize" value="${rice.datasource.pool.minSize}" />
+    <property name="maxPoolSize" value="${rice.datasource.pool.maxSize}" />
+    <property name="enableJdbc4ConnectionTest" value="true" />
+    <property name="shareTransactionConnections" value="true" />
+    <property name="allowLocalTransactions" value="true" />
+    <property name="deferConnectionRelease" value="true" />
+    <property name="allowLocalTransactions" value="true" />
+    <property name="driverProperties">
+      <props>
+        <prop key="Url">${rice.datasource.url}</prop>
+        <prop key="driverClassName">${rice.datasource.driver.name}</prop>
+        <prop key="user">${rice.datasource.username}</prop>
+        <prop key="password">${rice.datasource.password}</prop>
+      </props>
+    </property>
+  </bean>
 	
 	<bean id="${PROJECT_NAME}DataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
 		<property name="transactionManager" ref="transactionManager${connection.pool.impl}" />

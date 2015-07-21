@@ -56,8 +56,6 @@ Copyright 2005-2014 The Kuali Foundation. All rights reserved. Kuali is licensed
 
 <p>This product includes software developed by the Indiana University Extreme&#33; Lab (<a href="http://www.extreme.indiana.edu/" rel="nofollow">http://www.extreme.indiana.edu/</a>). <!-- Rice 1.0.0 --></p>
 
-<p>This product includes software developed by the JOTM project (<a href="http://jotm.objectweb.org/bsd_license.html" rel="nofollow">http://jotm.objectweb.org/bsd_license.html</a>). <!-- Rice 1.0.0 --></p>
-
 <p>This product includes software developed by the JA-SIG Collaborative (<a href="http://www.ja-sig.org/" rel="nofollow">http://www.ja-sig.org/</a>). <!-- Rice 1.0.0 --></p>
 
 <p>This product includes software developed by Yale University (<a href="http://www.yale.edu/tp/cas/LICENSE" rel="nofollow">http://www.yale.edu/tp/cas/LICENSE</a>). <!-- Rice 1.0.0 --></p>

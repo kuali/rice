@@ -342,18 +342,6 @@
       <artifactId>commons-io</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>co.kuali</groupId>
-      <artifactId>xapool</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.kuali.jotm</groupId>
-      <artifactId>jotm-core</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-
     <!-- bitronix -->
     <dependency>
       <groupId>org.codehaus.btm</groupId>

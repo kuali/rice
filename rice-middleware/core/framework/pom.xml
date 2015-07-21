@@ -97,14 +97,6 @@
       <artifactId>spring-jdbc</artifactId>
     </dependency>
     <dependency>
-      <groupId>co.kuali</groupId>
-      <artifactId>xapool</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.kuali.jotm</groupId>
-      <artifactId>jotm-core</artifactId>
-    </dependency>
-    <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
     </dependency>

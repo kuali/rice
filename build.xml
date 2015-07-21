@@ -74,7 +74,7 @@
 		</condition>
 
 		<property name="oracle.driver.version" value="10.2.0.3.0"/>
-		<property name="default.jta.excludes" value="**/xapool*.jar, **/jotm*.jar, **/connector*.jar, **/howl*.jar, **/jta*.jar, **/jts*.jar, **/ow_carol*.jar, **/carol.properties"/>
+		<property name="default.jta.excludes" value="**/connector*.jar, **/howl*.jar, **/jta*.jar, **/jts*.jar, **/ow_carol*.jar, **/carol.properties"/>
 		<property environment="env"/>
 		<!-- if the M2_HOME is already defined in the environment, use it -->
 		<property name="maven.home.directory" value="${env.M2_HOME}"/>

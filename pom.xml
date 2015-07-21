@@ -156,7 +156,6 @@
     <jetty.version>8.1.15.v20140411</jetty.version>
     <joda-time.version>2.4</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
-    <jotm.version>2.1.10-kuali-1</jotm.version>
     <jpa.version>2.1.0</jpa.version>
     <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>
@@ -199,7 +198,6 @@
     <velocity.tools.version>2.0</velocity.tools.version>
     <wss4j.version>1.6.18</wss4j.version>
     <xalan.version>2.7.2</xalan.version>
-    <xapool.version>1.5.1.1507.4</xapool.version>
     <xercesImpl.version>2.11.0</xercesImpl.version>
     <!-- need v. 1.4.01 of xml-apis with xercesImpl 2.11.0 -->
     <xml-apis.version>1.4.01</xml-apis.version>
@@ -956,10 +954,11 @@
 
                   <bannedDependencies>
                     <excludes>
+                      <!-- using bitronix over xapool and jotm -->
+                      <exclude>*:xapool</exclude>
+                      <exclude>*:jotm-core</exclude>
                       <!-- using the kuali version of ojb -->
                       <exclude>ojb</exclude>
-                      <!-- using the kuali version of jotm-core -->
-                      <exclude>org.ow2.jotm:jotm-core</exclude>
 
                       <!-- renamed (decrecated) groupids -->
                       <exclude>struts</exclude>
@@ -2488,30 +2487,6 @@
         <scope>test</scope>
       </dependency>
 
-      <dependency>
-        <groupId>org.kuali.jotm</groupId>
-        <artifactId>jotm-core</artifactId>
-        <version>${jotm.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging-api</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>org.ow2.spec.ee</groupId>
-            <artifactId>ow2-jta-1.1-spec</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-
       <!-- bitronix -->
       <dependency>
         <groupId>org.codehaus.btm</groupId>
@@ -2535,22 +2510,6 @@
             <artifactId>xml-apis</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <!-- groupid was changed to com.experlog in later versions -->
-        <groupId>co.kuali</groupId>
-        <artifactId>xapool</artifactId>
-        <version>${xapool.version}</version>
-	<exclusions>
-	  <exclusion>
-	    <groupId>commons-logging</groupId>
-	    <artifactId>commons-logging</artifactId>
-	  </exclusion>
-      <exclusion>
-        <groupId>com.oracle</groupId>
-        <artifactId>ojdbc7</artifactId>
-      </exclusion>
-	</exclusions>
       </dependency>
 
       <!-- explicitly including xercesImpl to change version number from what maven would have resolved it to -->

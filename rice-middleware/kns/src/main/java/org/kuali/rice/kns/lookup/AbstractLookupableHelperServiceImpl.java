@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
+import java.util.function.Function;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -354,10 +356,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     /**
      * Build a maintenance url.
-     *
-     * @param bo           - business object representing the record for maint.
-     * @param methodToCall - maintenance action
-     * @return
      */
     final public String getMaintenanceUrl(BusinessObject businessObject, HtmlData htmlData, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
         htmlData.setTitle(getActionUrlTitleText(businessObject, htmlData.getDisplayText(), pkNames, businessObjectRestrictions));
@@ -369,7 +367,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * It calls the method getCustomActionUrls to get html data, calls getMaintenanceUrl to get the actual html tag,
      * and returns a formatted/concatenated string of action urls.
      *
-     * @see LookupableHelperService#getActionUrls(org.kuali.rice.krad.bo.BusinessObject)
      */
     final public String getActionUrls(BusinessObject businessObject, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
         StringBuffer actions = new StringBuffer();
@@ -401,7 +398,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @returns This default implementation returns links to edit and copy maintenance action for
      * the current maintenance record if the business object class has an associated maintenance document.
      * Also checks value of allowsNewOrCopy in maintenance document xml before rendering the copy link.
-     * @see LookupableHelperService#getCustomActionUrls(org.kuali.rice.krad.bo.BusinessObject, java.util.List, java.util.List pkNames)
      */
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
         List<HtmlData> htmlDataList = new ArrayList<HtmlData>();
@@ -757,7 +753,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     /**
      * This method is for lookupable implementations
      *
-     * @see LookupableHelperService#getReturnUrl(org.kuali.rice.krad.bo.BusinessObject, java.util.Map, java.lang.String, java.util.List)
      */
     final public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
         String href = getReturnHref(businessObject, fieldConversions, lookupImpl, returnKeys);
@@ -785,9 +780,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return "";
     }
 
-    /**
-     * @see LookupableHelperService#getReturnUrl(org.kuali.core.bo.BusinessObject, java.util.Map, java.lang.String)
-     */
     public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
         Properties parameters = getParameters(businessObject, lookupForm.getFieldConversions(),
                 lookupForm.getLookupableImplServiceName(), returnKeys);
@@ -1129,6 +1121,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
         // iterate through result list and wrap rows with return url and action
         // urls
+        final Map<String, Class<?>> typeCache = new HashMap<>();
         for (BusinessObject element : displayList) {
             BusinessObject baseElement = element;
             //if ebo, then use base BO to get lookupId and find restrictions
@@ -1167,10 +1160,22 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
                 Column col = (Column) iterator.next();
 
                 String propValue = ObjectUtils.getFormattedPropertyValue(element, col.getPropertyName(), col.getFormatter());
-                Class propClass = getPropertyClass(element, col.getPropertyName());
 
-                col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
-                col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
+                Class<?> cachedPropClass = typeCache.get(col.getPropertyName());
+                if (cachedPropClass == null) {
+                    Class propClass = getPropertyClass(element, col.getPropertyName());
+                    if (TypeUtils.isStringClass(propClass)) {
+                        if (areAllValuesIntegral(displayList, col.getPropertyName())) {
+                            propClass = BigInteger.class;
+                        } else if (areAllValuesDecimal(displayList, col.getPropertyName())) {
+                            propClass = BigDecimal.class;
+                        }
+                    }
+                    typeCache.put(col.getPropertyName(), propClass);
+                    cachedPropClass = propClass;
+                }
+                col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(cachedPropClass));
+                col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(cachedPropClass));
 
                 String propValueBeforePotientalMasking = propValue;
                 propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue,
@@ -1231,6 +1236,28 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         lookupForm.setHasReturnableRow(hasReturnableRow);
 
         return displayList;
+    }
+
+    private boolean areAllValuesIntegral(Collection<?> elements, String propertyName) {
+        return areAllValuesOf(elements, propertyName, BigInteger::new);
+    }
+
+    private boolean areAllValuesDecimal(Collection<?> elements, String propertyName) {
+        return areAllValuesOf(elements, propertyName, BigDecimal::new);
+    }
+
+    private boolean areAllValuesOf(Collection<?> elements, String propertyName, Function<String,?> stringCtor) {
+        return elements.stream().allMatch(el -> {
+            final Object val = ObjectUtils.getPropertyValue(el, propertyName);
+            if (val instanceof CharSequence) {
+                try {
+                    stringCtor.apply(String.valueOf(val));
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+            return true;
+        });
     }
 
     /**
@@ -1321,9 +1348,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         return KRADConstants.NOT_AVAILABLE_STRING;
     }
 
-    /**
-     * @see LookupableHelperService#isResultReturnable(org.kuali.core.bo.BusinessObject)
-     */
     public boolean isResultReturnable(BusinessObject object) {
         return true;
     }
@@ -1331,7 +1355,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     /**
      * This method does the logic for the clear action.
      *
-     * @see LookupableHelperService#performClear()
      */
     public void performClear(LookupForm lookupForm) {
         for (Iterator iter = this.getRows().iterator(); iter.hasNext();) {
@@ -1403,7 +1426,6 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
     /**
      * Functional requirements state that users are able to perform searches using criteria values that they are not allowed to view.
      *
-     * @see LookupableHelperService#applyFieldAuthorizationsFromNestedLookups(org.kuali.rice.krad.web.ui.Field)
      */
     public void applyFieldAuthorizationsFromNestedLookups(Field field) {
         BusinessObjectAuthorizationService boAuthzService = this.getBusinessObjectAuthorizationService();

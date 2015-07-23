@@ -105,6 +105,8 @@
   * Travis Schneeberger on Fri, 17 Jul 2015 13:42:59 -0400 [View Commit](../../commit/6ef1a89951212c90bf484c3a23c1232c79cea9d0)
 * moving completely to bitronix. Removing xapool & jotm support
   * Travis Schneeberger on Tue, 21 Jul 2015 13:23:21 -0400 [View Commit](../../commit/8fa0c7eca5a5f5b80d9ed8e217a80cf05e576aa4)
+*  on a lookup, if the type is a string but all the values are integral or decimal treat the table sort behavior as integral or decimal
+  * Travis Schneeberger on Wed, 22 Jul 2015 13:05:32 -0400 [View Commit](../../commit/36a59211aec6df59bae6b1e25669842164e09674)
 
 ##rice-2.5.4.6-kckualico
 * No Changes
@@ -141,6 +143,10 @@
 ##rice-2.5.4.0-kckualico
 * No Changes
 
+
+##rice-2.5.3.1507.16-kckualico
+* moving completely to bitronix. Removing xapool & jotm support
+  * Travis Schneeberger on Tue, 21 Jul 2015 13:23:21 -0400 [View Commit](../../commit/8fa0c7eca5a5f5b80d9ed8e217a80cf05e576aa4)
 
 ##rice-2.5.3.1507.15-kckualico
 * No Changes

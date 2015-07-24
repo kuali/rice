@@ -18,18 +18,18 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
          updateCheck="false"
-         Name="kewCacheManager"
+         name="kewCacheManager"
          monitoring="autodetect"
          dynamicConfig="true">
 
-  <defaultCache maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <defaultCache maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
 
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleTemplateType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleDelegationType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RuleResponsibilityType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/DocumentTypeType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/RoutePathType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/kew/v2_0/ExtensionDefinitionType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleTemplateType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleDelegationType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RuleResponsibilityType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/DocumentTypeType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/RoutePathType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/kew/v2_0/ExtensionDefinitionType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
   
 </ehcache>

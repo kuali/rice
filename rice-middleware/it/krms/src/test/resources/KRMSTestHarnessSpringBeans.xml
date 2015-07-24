@@ -75,18 +75,25 @@
         <property name="properties" value="#{config.getProperties()}" />
     </bean>
 
-    <!--<bean id="riceDataSourceXAPool" class="org.kuali.rice.core.framework.persistence.jdbc.datasource.XAPoolDataSource">
-        <property name="transactionManager" ref="transactionManagerXAPool" />
-        <property name="driverClassName" value="${datasource.driver.name}" />
-        <property name="url" value="${datasource.url}" />
-        <property name="maxSize" value="${datasource.pool.maxSize}" />
-        <property name="minSize" value="${datasource.pool.minSize}" />
-        <property name="maxWait" value="${datasource.pool.maxWait}" />
-        <property name="validationQuery" value="${datasource.pool.validationQuery}" />
-        <property name="username" value="${datasource.username}" />
-        <property name="password" value="${datasource.password}" />
-    </bean>
-
+    <!--  <bean id="riceDataSourceBitronix" class="bitronix.tm.resource.jdbc.PoolingDataSource" init-method="init"
+        destroy-method="close" lazy-init="true">
+    <property name="className" value="${datasource.pool.class.non.xa}" />
+    <property name="uniqueName" value="#{T(org.apache.commons.lang3.RandomStringUtils).randomAlphanumeric(20)}_RICE_TEST_KRMS" />
+    <property name="minPoolSize" value="${datasource.pool.minSize}" />
+    <property name="maxPoolSize" value="${datasource.pool.maxSize}" />
+        <property name="enableJdbc4ConnectionTest" value="true" />
+        <property name="shareTransactionConnections" value="true" />
+        <property name="allowLocalTransactions" value="true" />
+        <property name="deferConnectionRelease" value="true" />
+    <property name="driverProperties">
+      <props>
+        <prop key="Url">${datasource.url}</prop>
+        <prop key="driverClassName">${datasource.driver.name}</prop>
+        <prop key="user">${datasource.username}</prop>
+        <prop key="password">${datasource.password}</prop>
+      </props>
+    </property>
+  </bean>
     <alias alias="krmsDataSource"  name="riceDataSource${connection.pool.impl}"/>
 
     <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">

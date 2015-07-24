@@ -86,6 +86,7 @@ public class KradEclipseLinkEntityManagerFactoryBeanTest {
         SimpleConfig config = new SimpleConfig();
         config.putProperty("rice.krad.jpa.global.randomProperty", "randomValue");
         config.putProperty("rice.krad.jpa.global.eclipselink.weaving", "false");
+        config.putProperty("rice.krad.jpa.global.jpa.vendor.adapter.class", "org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter");
         ConfigContext.init(config);
     }
 

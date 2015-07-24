@@ -198,10 +198,15 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             return "Document of status '" + docStatus + "' cannot taken action '" + KewApiConstants.ACTION_TAKEN_RETURNED_TO_PREVIOUS + "' to node name "+nodeName;
         }
         List<ActionRequestValue> filteredActionRequests = findApplicableActionRequests(actionRequests);
-        if (! isActionCompatibleRequest(filteredActionRequests) && ! isSuperUserUsage()) {
+        if (! isActionCompatibleRequest(filteredActionRequests) && ! isSuperUserUsage() && ! canReturnToPreviousNode()) {
             return "No request for the user is compatible with the " + ActionType.fromCode(this.getActionTakenCode()).getLabel() + " action";
         }
         return "";
+    }
+
+    protected boolean canReturnToPreviousNode() {
+        return KEWServiceLocator.getDocumentTypePermissionService().canReturnToPreviousRouteNode(this.getPrincipal().getPrincipalId(),
+                this.getRouteHeader());
     }
 
     /**

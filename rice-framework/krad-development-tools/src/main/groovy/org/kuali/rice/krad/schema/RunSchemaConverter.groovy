@@ -21,7 +21,7 @@ import org.apache.log4j.Logger
 import org.apache.log4j.PatternLayout
 import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.framework.config.property.SimpleConfig
-import org.kuali.rice.krad.devtools.datadictionary.FactoryExposingDataDictionary
+import org.kuali.rice.krad.datadictionary.DataDictionary
 
 XML_FILE_SUFFIX = ".xml"
 
@@ -83,7 +83,7 @@ config.putProperty("rice.version", "null")
 
 ConfigContext.init(config)
 
-FactoryExposingDataDictionary dataDictionary = new FactoryExposingDataDictionary()
+DataDictionary dataDictionary = new DataDictionary()
 
 def inputFile = new File(dictionaryFileListPath)
 inputFile.eachLine { line ->

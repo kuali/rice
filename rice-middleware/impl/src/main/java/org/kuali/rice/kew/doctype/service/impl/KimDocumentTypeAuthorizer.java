@@ -67,6 +67,9 @@ public class KimDocumentTypeAuthorizer extends DocumentActionsPermissionBase imp
                     case SAVE:
                         success = canSave(principalId, DocumentRouteHeaderValue.from(document));
                         break;
+                    case RETURN_TO_PREVIOUS:
+                        success = canReturnToPreviousRouteNode(principalId, DocumentRouteHeaderValue.from(document));
+                        break;
                     default:
                         throw new RuntimeException("Unknown document action check");
                 }
@@ -76,4 +79,5 @@ public class KimDocumentTypeAuthorizer extends DocumentActionsPermissionBase imp
         }
         return new Authorization(success);
     }
+
 }

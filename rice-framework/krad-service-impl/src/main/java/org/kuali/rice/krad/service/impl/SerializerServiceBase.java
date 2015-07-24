@@ -1,12 +1,12 @@
 /**
  * Copyright 2005-2015 The Kuali Foundation
- *
+ * <p/>
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.opensource.org/licenses/ecl2.php
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,6 @@ import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.mapper.Mapper;
 import com.thoughtworks.xstream.mapper.MapperWrapper;
-
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
@@ -36,11 +35,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.AutoPopulatingList;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Default implementation of the {@link DocumentSerializerService}.  If no &lt;workflowProperties&gt; have been defined in the
@@ -51,9 +46,9 @@ import java.util.Map;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class SerializerServiceBase implements SerializerService  {
+public abstract class SerializerServiceBase implements SerializerService {
 
-	protected LegacyDataAdapter legacyDataAdapter;
+    protected LegacyDataAdapter legacyDataAdapter;
     protected XmlObjectSerializerService xmlObjectSerializerService;
 
     protected XStream xstream;
@@ -65,9 +60,9 @@ public abstract class SerializerServiceBase implements SerializerService  {
         evaluators = new ThreadLocal<PropertySerializabilityEvaluator>();
 
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider()) {
-        	protected MapperWrapper wrapMapper(final MapperWrapper next) {
-        		return new CustomListProxyMapper(next);
-        	}
+            protected MapperWrapper wrapMapper(final MapperWrapper next) {
+                return new CustomListProxyMapper(next);
+            }
         };
         xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
         xstream.registerConverter(new DateTimeConverter());
@@ -124,7 +119,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
             SerializationState state = serializationStates.get();
             PropertySerializabilityEvaluator evaluator = evaluators.get();
 
-            for (Iterator iterator = fieldDictionary.serializableFieldsFor(object.getClass()); iterator.hasNext();) {
+            for (Iterator iterator = fieldDictionary.serializableFieldsFor(object.getClass()); iterator.hasNext(); ) {
                 Field field = (Field) iterator.next();
                 if (!fieldModifiersSupported(field)) {
                     continue;
@@ -166,17 +161,17 @@ public abstract class SerializerServiceBase implements SerializerService  {
 
     public class AutoPopulatingListConverter extends CollectionConverter {
 
-    	public AutoPopulatingListConverter(Mapper mapper){
-    		super(mapper);
-    	}
+        public AutoPopulatingListConverter(Mapper mapper) {
+            super(mapper);
+        }
 
         @Override
-    	public boolean canConvert(Class clazz) {
-    		return clazz.equals(AutoPopulatingList.class);
+        public boolean canConvert(Class clazz) {
+            return clazz.equals(AutoPopulatingList.class);
         }
 
     }
-    
+
     /**
      * XStream Mapper that takes known persistence layer proxies or managed lists and
      * serializes them as plain lists. Additionally serializes any previously serialized
@@ -186,60 +181,75 @@ public abstract class SerializerServiceBase implements SerializerService  {
      */
     @SuppressWarnings("rawtypes")
     public class CustomListProxyMapper extends MapperWrapper {
-		final private Map<Class, Class> collectionMap = new HashMap<>();
-    	public CustomListProxyMapper(final MapperWrapper mapper) {
-    		super(mapper);
-    		try {
-    			Class ojbProxy = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
-    			collectionMap.put(ojbProxy, ArrayList.class);
-    			Class manageableArray = Class.forName("org.apache.ojb.broker.util.collections.ManageableArrayList");
-    			collectionMap.put(manageableArray, ArrayList.class);
-    		} catch (Exception ex) {
-    			//do nothing if classes cannot be registered
-    		}
-    		try {
-    			Class jpaProxy = Class.forName("org.eclipse.persistence.indirection.IndirectList");
-    			collectionMap.put(jpaProxy, ArrayList.class);
-    			jpaProxy = Class.forName("org.eclipse.persistence.indirection.IndirectMap");
-    			collectionMap.put(jpaProxy, HashMap.class);
-    			jpaProxy = Class.forName("org.eclipse.persistence.indirection.IndirectSet");
-    			collectionMap.put(jpaProxy, HashSet.class);
-    		} catch (Exception ex) {
-    			//do nothing if classes cannot be registered
-    		}
-    	}
-    	
-    	public Class defaultImplementationOf(final Class clazz) {
-    		if (collectionMap.containsKey(clazz)) {
-    			return super.defaultImplementationOf(collectionMap.get(clazz));
-    		} else {
-    			return super.defaultImplementationOf(clazz);
-    		}
-    	}
-    	
-    	public String serializedClass(final Class clazz) {
-    		if (clazz != null && collectionMap.containsKey(clazz)) {
-    			return super.serializedClass(collectionMap.get(clazz));
-    		} else {
-    			return super.serializedClass(clazz);
-    		}
-    	}
-    	
-    	/**
-    	 * If any versions of the proxy lists were serialized this will
-    	 * ensure they are deserialized as their default implementation
-    	 * instead of the proxied version
-    	 */
-    	public Class realClass(final String elementName) {
-    		for (Map.Entry<Class, Class> entry : collectionMap.entrySet()) {
-    			if (entry.getKey().getCanonicalName().equals(elementName)) {
-    				return entry.getValue();
-    			}
-    		}
-    		return super.realClass(elementName);
-    	}
+        final private Map<Class, Class> collectionMap = new HashMap<>();
+
+        public CustomListProxyMapper(final MapperWrapper mapper) {
+            super(mapper);
+            try {
+                Class ojbProxy = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
+                collectionMap.put(ojbProxy, ArrayList.class);
+                Class manageableArray = Class.forName("org.apache.ojb.broker.util.collections.ManageableArrayList");
+                collectionMap.put(manageableArray, ArrayList.class);
+            } catch (Exception ex) {
+                //do nothing if classes cannot be registered
+            }
+            try {
+                Class jpaProxy = Class.forName("org.eclipse.persistence.indirection.IndirectList");
+                collectionMap.put(jpaProxy, ArrayList.class);
+                jpaProxy = Class.forName("org.eclipse.persistence.indirection.IndirectMap");
+                collectionMap.put(jpaProxy, HashMap.class);
+                jpaProxy = Class.forName("org.eclipse.persistence.indirection.IndirectSet");
+                collectionMap.put(jpaProxy, HashSet.class);
+
+            } catch (Exception|Error ex) {
+                //do nothing if classes cannot be registered
+            }
+
+            try {
+                //jdk8 versions
+                Class jpaProxy = Class.forName("org.eclipse.persistence.internal.indirection.jdk8.IndirectList");
+                collectionMap.put(jpaProxy, ArrayList.class);
+                jpaProxy = Class.forName("org.eclipse.persistence.internal.indirection.jdk8.IndirectMap");
+                collectionMap.put(jpaProxy, HashMap.class);
+                jpaProxy = Class.forName("org.eclipse.persistence.internal.indirection.jdk8.IndirectSet");
+                collectionMap.put(jpaProxy, HashSet.class);
+
+            } catch (Exception|Error ex) {
+                //do nothing if classes cannot be registered
+            }
+        }
+
+        public Class defaultImplementationOf(final Class clazz) {
+            if (collectionMap.containsKey(clazz)) {
+                return super.defaultImplementationOf(collectionMap.get(clazz));
+            } else {
+                return super.defaultImplementationOf(clazz);
+            }
+        }
+
+        public String serializedClass(final Class clazz) {
+            if (clazz != null && collectionMap.containsKey(clazz)) {
+                return super.serializedClass(collectionMap.get(clazz));
+            } else {
+                return super.serializedClass(clazz);
+            }
+        }
+
+        /**
+         * If any versions of the proxy lists were serialized this will
+         * ensure they are deserialized as their default implementation
+         * instead of the proxied version
+         */
+        public Class realClass(final String elementName) {
+            for (Map.Entry<Class, Class> entry : collectionMap.entrySet()) {
+                if (entry.getKey().getCanonicalName().equals(elementName)) {
+                    return entry.getValue();
+                }
+            }
+            return super.realClass(elementName);
+        }
     }
-    
+
     protected XmlObjectSerializerService getXmlObjectSerializerService() {
         return this.xmlObjectSerializerService;
     }
@@ -254,8 +264,8 @@ public abstract class SerializerServiceBase implements SerializerService  {
     }
 
     @Required
-	public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
-		this.legacyDataAdapter = legacyDataAdapter;
-	}
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
+    }
 }
 

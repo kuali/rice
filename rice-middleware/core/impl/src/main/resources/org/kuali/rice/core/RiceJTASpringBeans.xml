@@ -56,11 +56,8 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean id="transactionManagerXAPool" class="org.kuali.rice.core.impl.util.spring.RiceJotmFactoryBean">
-    <property name="defaultTimeout" value="${transaction.timeout}"/>
-  </bean>
-
   <bean id="btmConfig" factory-method="getConfiguration" class="bitronix.tm.TransactionManagerServices" lazy-init="true">
+      <property name="serverId" value="#{T(org.apache.commons.lang3.RandomStringUtils).randomAlphanumeric(20)}_TM_RICE"/>
   </bean>
 
   <bean id="transactionManagerBitronix" class="bitronix.tm.TransactionManagerServices"

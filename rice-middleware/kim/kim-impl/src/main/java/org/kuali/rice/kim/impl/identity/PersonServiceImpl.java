@@ -213,7 +213,8 @@ public class PersonServiceImpl implements PersonService {
 			return null;
 		}
 
-		final List<Person> people = findPeople( Collections.singletonMap(KIMPropertyConstants.Person.EMPLOYEE_ID, employeeId) );
+		final List<Person> people = findPeople(Collections.singletonMap(KIMPropertyConstants.Person.EMPLOYEE_ID,
+				employeeId));
 		if ( !people.isEmpty() ) {
 			return people.get(0);
 
@@ -354,22 +355,28 @@ public class PersonServiceImpl implements PersonService {
 		// convert the criteria to a form that can be used by the ORM layer
 
         //TODO convert this to the new criteria predicates
-		Map<String,String> entityCriteria = convertPersonPropertiesToEntityProperties( criteria );
+		Map<String,String> entityCriteria = convertPersonPropertiesToEntityProperties(criteria);
 
         Predicate predicate = PredicateUtils.convertMapToPredicate(entityCriteria);
 
         QueryByCriteria.Builder queryBuilder = QueryByCriteria.Builder.create();
         queryBuilder.setPredicates(predicate);
+		List<Person> people;
 
 		if (!unbounded) {
+			queryBuilder.setCountFlag(CountFlag.INCLUDE);
+			Long matchingResultsCount = new Long(getIdentityService(). findEntityDefaults(queryBuilder.build()).getTotalRowCount());
+			people = new CollectionIncomplete<Person>(new ArrayList<Person>(),matchingResultsCount);
 			Integer searchResultsLimit = org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit(PersonImpl.class);
     		if (searchResultsLimit != null && searchResultsLimit >= 0) {
     			queryBuilder.setMaxResults(searchResultsLimit);
-    			queryBuilder.setCountFlag(CountFlag.INCLUDE);
+
 			}
+		} else {
+			people = new ArrayList<Person>();
 		}
 
-		List<Person> people = new ArrayList<Person>();
+
 
 		EntityDefaultQueryResults qr = getIdentityService().findEntityDefaults( queryBuilder.build() );
 

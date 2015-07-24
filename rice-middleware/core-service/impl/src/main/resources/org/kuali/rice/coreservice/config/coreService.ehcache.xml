@@ -19,14 +19,14 @@
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
          monitoring="autodetect"
          updateCheck="false"
-         Name="coreServiceCacheManager"
-         dynamicConfig="true" >
+         name="coreServiceCacheManager"
+         dynamicConfig="true">
 
-  <defaultCache maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <defaultCache maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
 
-  <cache name="http://rice.kuali.org/core/v2_0/ParameterType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/core/v2_0/NamespaceType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/core/v2_0/ComponentType" maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
-  <cache name="http://rice.kuali.org/core/v2_0/StyleType"     maxEntriesLocalHeap="500" timeToLiveSeconds="300"/>
+  <cache name="http://rice.kuali.org/core/v2_0/ParameterType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/core/v2_0/NamespaceType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/core/v2_0/ComponentType" maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
+  <cache name="http://rice.kuali.org/core/v2_0/StyleType"     maxEntriesLocalHeap="500" timeToLiveSeconds="300" statistics="true"/>
 
 </ehcache>

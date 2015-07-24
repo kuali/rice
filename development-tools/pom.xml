@@ -24,14 +24,14 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice</artifactId>
-   <version>2.5.3.1505.3-kckualico-SNAPSHOT</version>
+   <version>2.5.3.1507.18-kckualico-SNAPSHOT</version>
   </parent>
   <artifactId>rice-development-tools</artifactId>
   <properties>
     <generateReports>false</generateReports>
     <codemodel.version>2.4.1</codemodel.version>
     <javaparser.version>1.0.9</javaparser.version>
-    <db-ojb.version>1.0.4-patch8</db-ojb.version>
+    <db-ojb.version>1.0.4-patch9</db-ojb.version>
   </properties>
   <dependencies>
     <dependency>
@@ -47,10 +47,6 @@
       <groupId>com.sun.codemodel</groupId>
       <artifactId>codemodel</artifactId>
       <version>${codemodel.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>no.geosoft</groupId>
-      <artifactId>filemonitor</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.code.javaparser</groupId>

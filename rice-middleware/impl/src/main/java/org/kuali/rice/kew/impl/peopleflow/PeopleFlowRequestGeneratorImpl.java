@@ -66,6 +66,7 @@ import java.util.Map;
  */
 public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerator {
 
+    public static final String PEOPLE_FLOW_NAME = "PeopleFlow Name: ";
     private KewTypeRepositoryService typeRepositoryService;
     private RoleService roleService;
 
@@ -87,10 +88,13 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             ActionRequestValue actionRequest = context.getActionRequestFactory().addRootActionRequest(
                     context.getActionRequested().getCode(), member.getPriority(), toRecipient(member), "",
                     member.getResponsibilityId(), member.getForceAction(), getActionRequestPolicyCode(member), null);
+            actionRequest.setAnnotation(context.getPeopleFlow().getNamespaceCode() + " " + context.getPeopleFlow().getName());
 
             if (actionRequest != null) {
                 generateDelegationRequests(context, Collections.singletonList(actionRequest), member);
             }
+
+            actionRequest.setAnnotation(PEOPLE_FLOW_NAME + context.getPeopleFlow().getName() + System.getProperty("line.separator"));
         }
     }
 
@@ -225,7 +229,7 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
             throw new RiceIllegalStateException("MemberType unknown: " + delegate.getMemberType());
         }
 
-        String delegationAnnotation = generateDelegationAnnotation(memberRequest, member, delegate);
+        String delegationAnnotation = generateDelegationAnnotation(memberRequest, member, delegate, context.getPeopleFlow());
 
         context.getActionRequestFactory().addDelegationRequest(memberRequest, recipient,
                 delegate.getResponsibilityId(), member.getForceAction(),
@@ -296,38 +300,14 @@ public class PeopleFlowRequestGeneratorImpl implements PeopleFlowRequestGenerato
      * @param parentRequest an action request that was generated for the given member
      * @param member the PeopleFlow member
      * @param delegate the delegate
+     * @param peopleFlowDefinition
      * @return the annotation string
      */
     private String generateDelegationAnnotation(ActionRequestValue parentRequest, PeopleFlowMember member,
-            PeopleFlowDelegate delegate) {
+                                                PeopleFlowDelegate delegate, PeopleFlowDefinition peopleFlowDefinition) {
 
-        StringBuffer annotation = new StringBuffer( "Delegation of: " );
+        StringBuffer annotation = new StringBuffer( "Delegates of Approver in " );
         annotation.append( parentRequest.getAnnotation() );
-        annotation.append( " to " );
-
-        if (delegate.getMemberType() == MemberType.PRINCIPAL) {
-            annotation.append( "principal " );
-            Principal principal = KimApiServiceLocator.getIdentityService().getPrincipal(delegate.getMemberId());
-
-            if ( principal != null ) {
-                annotation.append( principal.getPrincipalName() );
-            } else {
-                annotation.append( member.getMemberId() );
-            }
-        } else if (delegate.getMemberType() == MemberType.GROUP) {
-            annotation.append( "group " );
-            Group group = KimApiServiceLocator.getGroupService().getGroup(delegate.getMemberId());
-
-            if ( group != null ) {
-                annotation.append( group.getNamespaceCode() ).append( '/' ).append( group.getName() );
-            } else {
-                annotation.append( member.getMemberId() );
-            }
-        } else {
-            annotation.append( "?????? '" );
-            annotation.append( member.getMemberId() );
-            annotation.append( "'" );
-        }
 
         return annotation.toString();
     }

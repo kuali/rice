@@ -22,6 +22,6 @@
          monitoring="autodetect"
          dynamicConfig="true">
 
-  <defaultCache maxEntriesLocalHeap="5000" timeToLiveSeconds="3600"/>
+  <defaultCache maxEntriesLocalHeap="5000" timeToLiveSeconds="3600" statistics="true"/>
 
 </ehcache>

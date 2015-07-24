@@ -49,18 +49,21 @@
 
     <param name="datasource.ojb.platform" override="false">Oracle9i</param>
 
+    <param name="datasource.pool.class.Oracle" override="false">oracle.jdbc.xa.client.OracleXADataSource</param>
     <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.OracleDriver</param>
     <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle" override="false">select 1 from dual</param>
 
+    <param name="datasource.pool.class.Oracle9i" override="false">oracle.jdbc.xa.client.OracleXADataSource</param>
     <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.OracleDriver</param>
     <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle9i" override="false">select 1 from dual</param>
 
+    <param name="datasource.pool.class.MySQL" override="false">com.mysql.jdbc.jdbc2.optional.MysqlXADataSource</param>
     <param name="datasource.driver.name.MySQL" override="false">com.mysql.jdbc.Driver</param>
     <param name="datasource.platform.MySQL" override="false">org.kuali.rice.core.framework.persistence.platform.MySQLDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
@@ -78,12 +81,11 @@
     <param name="datasource.ojb.sequenceManager" override="false">${datasource.ojb.sequenceManager.${datasource.ojb.platform}}</param>
     <param name="datasource.ojb.sequenceManager.className" override="false">${datasource.ojb.sequenceManager.className.${datasource.ojb.platform}}</param>
     <param name="datasource.pool.validationQuery" override="false">${datasource.pool.validationQuery.${datasource.ojb.platform}}</param>
+    <param name="datasource.pool.class" override="false">${datasource.pool.class.${datasource.ojb.platform}}</param>
 
     <!-- datasource.btm.journal can be "null", "disk", or a class name -->
     <param name="datasource.btm.journal" override="false">null</param>
     <param name="datasource.btm.transactionTimeout" override="false">120</param>
-
-    <param name="datasource.pool.class" override="false">oracle.jdbc.xa.client.OracleXADataSource</param>
     <param name="datasource.pool.class.non.xa" override="false">bitronix.tm.resource.jdbc.lrc.LrcXADataSource</param>
 
 	<param name="rice.jpa.persistence.provider" override="false">eclipselink</param>
@@ -92,8 +94,7 @@
     <!-- this parameter doesn't matter in a prod environment, as the serialization won't occur in prod environment -->
     <param name="enableSerializationCheck" override="false">false</param>
 
-    <!--<param name="connection.pool.impl" override="false">Bitronix</param>-->
-    <param name="connection.pool.impl" override="false">XAPool</param>
+    <param name="connection.pool.impl" override="false">Bitronix</param>
 
     <!-- Action List Outbox -->
     <param name="actionlist.outbox.default.preference.on" override="false">true</param>

@@ -17,11 +17,11 @@ package org.kuali.rice.krad.schema
 
 import org.apache.commons.lang.StringUtils
 import org.apache.log4j.Logger
+import org.kuali.rice.krad.datadictionary.DataDictionary
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttribute
 import org.kuali.rice.krad.datadictionary.parse.BeanTagAttributeInfo
 import org.kuali.rice.krad.datadictionary.parse.BeanTagInfo
 import org.kuali.rice.krad.datadictionary.parse.CustomTagAnnotations
-import org.kuali.rice.krad.devtools.datadictionary.FactoryExposingDataDictionary
 import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.util.xml.DomUtils
 import org.w3c.dom.Document
@@ -78,9 +78,9 @@ class SchemaConverter {
     boolean hasUtilNamespace
 
     String[] scanPackages
-    FactoryExposingDataDictionary dataDictionary
+    DataDictionary dataDictionary
 
-    def SchemaConverter(File fileToConvert, String[] scanPackages, FactoryExposingDataDictionary dataDictionary) {
+    def SchemaConverter(File fileToConvert, String[] scanPackages, DataDictionary dataDictionary) {
         this.scanPackages = scanPackages
         this.dataDictionary = dataDictionary
 

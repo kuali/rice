@@ -110,6 +110,11 @@ public class DocumentTypePermissionServiceAuthorizerImpl extends DocumentTypePer
     }
 
     @Override
+    public boolean canReturnToPreviousRouteNode(String principalId, DocumentRouteHeaderValue document) {
+        return getDocumentTypeAuthorizer(document.getDocumentType()).isActionAuthorized(new AuthorizableAction(ActionType.RETURN_TO_PREVIOUS), principalId, org.kuali.rice.kew.api.doctype.DocumentType.Builder.create(document.getDocumentType()).build(), Document.Builder.create(document).build(), Collections.EMPTY_MAP).isAuthorized();
+    }
+
+    @Override
     public boolean canSave(String principalId, DocumentRouteHeaderValue document) {
         validateDocument(document);
         return getDocumentTypeAuthorizer(document.getDocumentType()).isActionAuthorized(new AuthorizableAction(ActionType.SAVE), principalId, org.kuali.rice.kew.api.doctype.DocumentType.Builder.create(document.getDocumentType()).build(), Document.Builder.create(document).build(), Collections.EMPTY_MAP).isAuthorized();
@@ -144,4 +149,7 @@ public class DocumentTypePermissionServiceAuthorizerImpl extends DocumentTypePer
         actionParams.put(DocumentTypeAuthorizer.ActionArgument.DOCSTATUS, routeStatusCode);
         return getDocumentTypeAuthorizer(documentType).isActionAuthorized(new AuthorizableAction(AuthorizableAction.CheckType.SU_APPROVE_ACTION_REQUEST), principalId, org.kuali.rice.kew.api.doctype.DocumentType.Builder.create(documentType).build(), null, actionParams).isAuthorized();
     }
+
+
+
 }

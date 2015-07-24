@@ -17,6 +17,7 @@ package org.kuali.rice.krms.framework.engine.expression;
 
 import java.math.BigInteger;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -26,7 +27,6 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class ComparisonOperatorTest {
     @Test
     public void testEquals() {
@@ -35,11 +35,6 @@ public class ComparisonOperatorTest {
         assertTrue(op.compare("StringOne", "StringOne"));
         assertTrue(op.compare(123, "123"));
         assertTrue(op.compare(BigInteger.TEN, "10"));
-//        assertFalse(op.compare(11, "elf"));  // throws:
-// org.kuali.rice.krms.api.engine.IncompatibleTypeException: Could not coerce String to Integer = -> Type should have been one of [java.lang.Integer] but was java.lang.String
-//        at org.kuali.rice.krms.framework.engine.expression.ComparisonOperator.coerceRhsHelper
-//        at org.kuali.rice.krms.framework.engine.expression.ComparisonOperator.coerceRhs
-//        at org.kuali.rice.krms.framework.engine.expression.ComparisonOperator.compare
     }
 
     @Test
@@ -96,15 +91,15 @@ public class ComparisonOperatorTest {
     public void testExists() {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.EXISTS.toString());
         op.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
-        assertTrue(op.compare("123", "0"));
-        assertFalse(op.compare("123", null));
+        assertTrue(op.compare("123", null));
+        assertFalse(op.compare(null, null));
     }
 
     @Test
     public void testDoesNotExists() {
         ComparisonOperator op = ComparisonOperator.fromCode(ComparisonOperator.DOES_NOT_EXIST.toString());
         op.setComparisonOperatorService(ComparisonOperatorServiceImpl.getInstance());
-        assertFalse(op.compare("123", "0"));
-        assertTrue(op.compare("123", null));
+        assertFalse(op.compare("123", null));
+        assertTrue(op.compare(null, null));
     }
 }

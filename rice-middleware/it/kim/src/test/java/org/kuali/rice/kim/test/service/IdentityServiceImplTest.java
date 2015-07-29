@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
+import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.CodedAttribute;
@@ -44,7 +44,10 @@ import org.kuali.rice.kim.impl.identity.entity.EntityBo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.krad.data.KradDataServiceLocator;
+import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
+
+import static org.junit.Assert.*;
 
 /**
  *
@@ -204,6 +207,28 @@ public class IdentityServiceImplTest extends KIMTestCase {
         for (EntityVisa entityVisa : createdEntityVisas) {
             assertNotNull("entityVisa entityId must not be null", entityVisa.getEntityId());
         }
+
+        // Adding the following lines so more complicated joins will be created.  This is to
+        // test the changes made for KULRICE-14269.
+
+        Map<String, Object> criteriaToAnd = new HashMap<String, Object>(3);
+        criteriaToAnd.put("employmentInformation.employeeId", Arrays.asList("1234test", "xxxxtest", "zzzztest"));
+        criteriaToAnd.put("employmentInformation.primaryDepartmentCode", Arrays.asList("BL-CHEM", "BL-ART", "BL-MY"));
+        criteriaToAnd.put("active", Boolean.TRUE);
+        QueryByCriteria finalCriteria = QueryByCriteria.Builder.andAttributes(criteriaToAnd).build();
+        List<EntityBo> results = KRADServiceLocator.getDataObjectService().findMatching(EntityBo.class,
+                finalCriteria).getResults();
+        assertTrue(results.size() == 1);
+
+        //  The following SQL cares about data from two different nested collections.  (emp info and affiliations)
+        Map<String, Object> criteriaToAnd2 = new HashMap<String, Object>(3);
+        criteriaToAnd2.put("employmentInformation.employeeId", Arrays.asList("1234test", "xxxxtest", "zzzztest"));
+        criteriaToAnd2.put("affiliations.campusCode", Arrays.asList("BL", "MX", "UT"));
+        criteriaToAnd2.put("active", Boolean.TRUE);
+        QueryByCriteria finalCriteria2 = QueryByCriteria.Builder.andAttributes(criteriaToAnd2).build();
+        List<EntityBo> results2 = KRADServiceLocator.getDataObjectService().findMatching(EntityBo.class,
+                finalCriteria2).getResults();
+        assertTrue(results2.size() == 1);
     }
 
     @Test

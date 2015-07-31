@@ -21,7 +21,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
 
-  	<bean id="rice.kim.ldap.import.parameterService"
+    <bean id="rice.kim.ldap.import.parameterService"
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="parameterService"/>
 
@@ -211,8 +211,7 @@
       <property name="parameterService" ref="rice.kim.ldap.import.parameterService" />
       <property name="kimConstants"     ref="kimConstants" />
 
-      <property name="contextMappers">
-        <map>
+      <property name="contextMappers">        <map>
 			<entry key="Principal" value-ref="ContextMapper-Principal" />
 			<entry key="EntityAddress" value-ref="ContextMapper-EntityAddress" />
 			<entry key="EntityAffiliation" value-ref="ContextMapper-EntityAffiliation" />
@@ -229,6 +228,14 @@
         </map>
       </property>
     </bean>
+    
+     <bean id="rice.kim.import.businessObjectService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="businessObjectService"/>
+
+     <bean id="rice.kim.import.criteriaLookupService"
+        class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
+        p:serviceName="criteriaLookupService"/>
 
     <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl"
     	p:businessObjectService-ref="rice.kim.import.businessObjectService"
@@ -236,6 +243,6 @@
       <property name="principalDao" ref="ldapPrincipalDao" />
     </bean>
 
-<!--     <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.LdapUiDocumentServiceImpl" /> -->
-    
+    <!-- **AZ UPGRADE 3.0-6.0** -->
+    <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.LdapUiDocumentServiceImpl" /> 
 </beans>

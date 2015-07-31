@@ -17,28 +17,21 @@ package org.kuali.rice.kim.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javax.jws.WebParam;
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.criteria.CriteriaValue;
-import org.kuali.rice.core.api.criteria.EqualPredicate;
-import org.kuali.rice.core.api.criteria.Predicate;
-import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.exception.RiceIllegalArgumentException;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
-import org.kuali.rice.kim.api.identity.entity.EntityDefaultQueryResults;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.dao.LdapPrincipalDao;
 import org.kuali.rice.kim.impl.identity.IdentityServiceImpl;
-import org.kuali.rice.kim.impl.identity.entity.EntityBo;
-
-import javax.jws.WebParam;
+import org.kuali.rice.kim.service.LdapIdentityService;
 
 /**
  * Implementation of {@link IdentityService} that communicates with and serves information
@@ -47,9 +40,10 @@ import javax.jws.WebParam;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
+// **AZ UPGRADE 3.0-6.0** - implement LdapIdentityService interface
+public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl implements LdapIdentityService {
     private LdapPrincipalDao principalDao;
-
+    
     @Override
 	public Entity getEntity(String entityId) {
         if (StringUtils.isBlank(entityId)) {
@@ -119,8 +113,7 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
         final EntityDefault retval = getPrincipalDao().getEntityDefaultByPrincipalId(principalId);
         if (retval != null) {
             return retval;
-        }
-        else {
+        } else {
             return super.getEntityDefaultByPrincipalId(principalId);
         }
 	}
@@ -133,8 +126,8 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
 
         final EntityDefault retval = getPrincipalDao().getEntityDefaultByPrincipalName(principalName);
         if (retval != null) {
-            return retval;
-        }
+        return retval;
+	}
         else {
             return super.getEntityDefaultByPrincipalName(principalName);
         }
@@ -182,7 +175,8 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
         }
 
         final Principal edsInfo = getPrincipalDao().getPrincipal(principalId);
-            if (edsInfo != null) {
+        
+        if (edsInfo != null) {
 	        return edsInfo;
 	    } else {
 	        return super.getPrincipal(principalId);
@@ -190,15 +184,15 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
     }
 
     /**
-     * Gets a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} from a string list of principalId.
+     * Gets a list of {@link Principal} from a string list of principalId.
      *
      * <p>
      * This method will only return principals that exist.  It will return null if the none of the principals exist.
      * </p>
      *
      * @param principalIds the unique id to retrieve the principal by. cannot be null.
-     * @return a list of {@link org.kuali.rice.kim.api.identity.principal.Principal} or null
-     * @throws org.kuali.rice.core.api.exception.RiceIllegalArgumentException if the principalId is blank
+     * @return a list of {@link Principal} or null
+     * @throws RiceIllegalArgumentException if the principalId is blank
      */
     @Override
     public List<Principal> getPrincipals(@WebParam(name = "principalIds") List<String> principalIds) {
@@ -234,4 +228,14 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl {
     public LdapPrincipalDao getPrincipalDao() {
         return principalDao;
     } 
+    
+    // begin **AZ UPGRADE 3.0-6.0** - implement LdapIdentityService interface
+    public List<EntityDefault> findEntityDefaults(Map<String, String> criteria, boolean unbounded) {
+        return principalDao.lookupEntityDefault(criteria, unbounded);
+    }
+    
+    public EntityDefault getSystemEntityByPrincipalName(String principalName) {
+        return super.getEntityDefaultByPrincipalName(principalName);
+    }
+    // end - **AZ UPGRADE 3.0-5.3**
 }

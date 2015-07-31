@@ -15,16 +15,13 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import static org.kuali.rice.core.util.BufferedLogger.debug;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import static org.kuali.rice.core.util.BufferedLogger.debug;
 import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
-import org.kuali.rice.kim.util.Constants;
 import org.springframework.ldap.core.DirContextOperations;
 
 /**
@@ -54,7 +51,14 @@ public class EntityTypeContactInfoMapper extends BaseMapper<EntityTypeContactInf
         final List<EntityEmail.Builder> email = new ArrayList<EntityEmail.Builder>();
         email.add(getEmailMapper().mapBuilderFromContext(context));
         final List<EntityPhone.Builder> phone = new ArrayList<EntityPhone.Builder>();
-        phone.add(getPhoneMapper().mapBuilderFromContext(context));
+        
+        EntityPhone.Builder b = getPhoneMapper().mapBuilderFromContext(context);
+        
+        // **AZ UPGRADE 3.0-6.0** -  only add if not null
+        if (b != null) {
+            phone.add(b);
+        }
+        
         builder.setAddresses(addresses);
         builder.setEmailAddresses(email);
         builder.setPhoneNumbers(phone);

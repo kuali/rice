@@ -15,7 +15,19 @@
  */
 package org.kuali.rice.kim.dao.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.naming.NameClassPair;
+import javax.naming.directory.SearchControls;
 import org.apache.commons.lang.StringUtils;
+import static org.kuali.rice.core.util.BufferedLogger.debug;
+import static org.kuali.rice.core.util.BufferedLogger.info;
+import static org.kuali.rice.core.util.BufferedLogger.warn;
 import org.kuali.rice.coreservice.framework.parameter.ParameterService;
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
@@ -26,6 +38,7 @@ import org.kuali.rice.kim.dao.LdapPrincipalDao;
 import org.kuali.rice.kim.impl.identity.PersonImpl;
 import org.kuali.rice.kim.ldap.InvalidLdapEntityException;
 import org.kuali.rice.kim.util.Constants;
+import static org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit;
 import org.springframework.ldap.SizeLimitExceededException;
 import org.springframework.ldap.core.ContextMapper;
 import org.springframework.ldap.core.ContextMapperCallbackHandler;
@@ -35,19 +48,6 @@ import org.springframework.ldap.filter.AndFilter;
 import org.springframework.ldap.filter.LikeFilter;
 import org.springframework.ldap.filter.NotFilter;
 import org.springframework.ldap.filter.OrFilter;
-
-import javax.naming.NameClassPair;
-import javax.naming.directory.SearchControls;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.kuali.rice.core.util.BufferedLogger.*;
-import static org.kuali.rice.kns.lookup.LookupUtils.getSearchResultsLimit;
 
 /**
  * Integrated Data Access via LDAP to EDS. Provides implementation to interface method
@@ -130,8 +130,8 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
             }
         };
         
-        info("Using filter ", filter);
-
+        info("Using filter ", filter.encode());
+        
         debug("Looking up mapper for ", type.getSimpleName());
         final ContextMapper customMapper = contextMappers.get(type.getSimpleName());
 

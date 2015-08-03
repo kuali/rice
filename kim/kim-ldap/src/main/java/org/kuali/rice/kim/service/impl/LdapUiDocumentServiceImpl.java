@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2015 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ import java.util.Map;
  *
  * @author Leo Przybylski (przybyls@arizona.edu)
  */
-public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.UiDocumentServiceImpl {
+public class LdapUiDocumentServiceImpl extends UiDocumentServiceImpl {
 
 	/**
 	 *
@@ -378,7 +378,7 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
     /**
      * Overridden to only check permission - users should not be able to edit themselves.
      * 
-     * @see org.kuali.rice.kim.service.impl.UiDocumentServiceImpl#canModifyEntity(java.lang.String, java.lang.String)
+     * @see UiDocumentServiceImpl#canModifyEntity(String, String)
      */
     @Override
 	public boolean canModifyEntity( String currentUserPrincipalId, String toModifyPrincipalId ){

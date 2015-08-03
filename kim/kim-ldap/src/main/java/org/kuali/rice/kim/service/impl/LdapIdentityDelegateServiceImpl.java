@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2015 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.jws.WebParam;
@@ -40,7 +41,7 @@ import org.kuali.rice.kim.service.LdapIdentityService;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-// **AZ UPGRADE 3.0-6.0** - implement LdapIdentityService interface
+// **AZ UPGRADE 3.0-5.3** - implement LdapIdentityService interface
 public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl implements LdapIdentityService {
     private LdapPrincipalDao principalDao;
     
@@ -196,15 +197,9 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
      */
     @Override
     public List<Principal> getPrincipals(@WebParam(name = "principalIds") List<String> principalIds) {
-        List<Principal>  ret = new ArrayList<Principal>();
-        for(String p: principalIds) {
-            Principal principalInfo = getPrincipal(p);
-
-            if (principalInfo != null) {
-                ret.add(principalInfo) ;
-            }
-        }
-        return ret;
+        Map <String, Object> criteria = new HashMap<String, Object>();
+        criteria.put(principalDao.getKimConstants().getKimLdapIdProperty(), principalIds);
+        return principalDao.search(Principal.class, criteria);
     }
 
     @Override
@@ -229,13 +224,18 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
         return principalDao;
     } 
     
-    // begin **AZ UPGRADE 3.0-6.0** - implement LdapIdentityService interface
+    // begin **AZ UPGRADE 3.0-5.3** - implement LdapIdentityService interface
+    @Override
     public List<EntityDefault> findEntityDefaults(Map<String, String> criteria, boolean unbounded) {
         return principalDao.lookupEntityDefault(criteria, unbounded);
     }
     
-    public EntityDefault getSystemEntityByPrincipalName(String principalName) {
-        return super.getEntityDefaultByPrincipalName(principalName);
+    //UAF-6 - Performance improvements to improve user experience for AWS deployment
+    @Override
+    public List<EntityDefault> getEntityDefaultsByPrincipalIds(Collection<String> principalIds) {
+        Map <String, Object> criteria = new HashMap<String, Object>();
+        criteria.put(principalDao.getKimConstants().getKimLdapIdProperty(), principalIds);
+        return principalDao.search(EntityDefault.class, criteria);
     }
-    // end - **AZ UPGRADE 3.0-5.3**
+// end - **AZ UPGRADE 3.0-5.3**
 }

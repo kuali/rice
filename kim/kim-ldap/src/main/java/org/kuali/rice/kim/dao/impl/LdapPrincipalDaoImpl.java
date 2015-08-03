@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2015 The Kuali Foundation
+ * Copyright 2005-2014 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,21 +132,28 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
         
         info("Using filter ", filter.encode());
         
-        debug("Looking up mapper for ", type.getSimpleName());
-        final ContextMapper customMapper = contextMappers.get(type.getSimpleName());
-
-        ContextMapperCallbackHandler callbackHandler = new CustomContextMapperCallbackHandler(customMapper);
+        List retval = new ArrayList();
         
-        try {
-            getLdapTemplate().search(DistinguishedName.EMPTY_PATH, 
-                                     filter.encode(), 
-                                     getSearchControls(), callbackHandler);
-        }
-        catch (SizeLimitExceededException e) {
-            // Ignore this. We want to limit our results.
-        }
+        // UAF-6 defensice programming - no search with empty filter
+        if (StringUtils.isNotBlank(filter.encode())) {
+            debug("Looking up mapper for ", type.getSimpleName());
+            final ContextMapper customMapper = contextMappers.get(type.getSimpleName());
 
-        return callbackHandler.getList();
+            ContextMapperCallbackHandler callbackHandler = new CustomContextMapperCallbackHandler(customMapper);
+
+            try {
+                getLdapTemplate().search(DistinguishedName.EMPTY_PATH, 
+                                         filter.encode(), 
+                                         getSearchControls(), callbackHandler);
+            }
+            catch (SizeLimitExceededException e) {
+                // Ignore this. We want to limit our results.
+            }
+
+            retval = callbackHandler.getList();
+        }
+        
+        return retval;
     }
 
     protected SearchControls getSearchControls() {
@@ -280,30 +287,34 @@ public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
             debug(String.format("Searching with criteria %s = %s", criteriaEntry.getKey(), criteriaEntry.getValue()));
             String valueName = criteriaEntry.getKey();            
             Object value = criteriaEntry.getValue();
-            if (!criteriaEntry.getValue().equals("*")) {
-                valueName = String.format("%s.%s", criteriaEntry.getKey(), criteriaEntry.getValue());
-            }
-
-            if (!value.equals("*") && isMapped(valueName)) {
-                value = getLdapValue(valueName);
-                debug(value, " mapped to valueName ", valueName);
-            }
-        
-            if (isMapped(criteriaEntry.getKey())) {
-                debug(String.format("Setting attribute to (%s, %s)", 
-                                    getLdapAttribute(criteriaEntry.getKey()), 
-                                    value));
-                final String key = getLdapAttribute(criteriaEntry.getKey());
-                if (!criteria.containsKey(key)) {
-                    criteria.put(key, value);
+            
+            // UAF-6 - defensive programming - handle null
+            if (value != null) {
+                if (!value.equals("*")) {
+                    valueName = String.format("%s.%s", criteriaEntry.getKey(), value);
                 }
-            }
-            else if (criteriaEntry.getKey().equalsIgnoreCase(getKimConstants().getExternalIdProperty())) {
-                criteria.put(getKimConstants().getKimLdapIdProperty(), value);
-            }
-            else if (criteriaEntry.getKey().equalsIgnoreCase(getKimConstants().getExternalIdTypeProperty()) 
-                     && value.toString().equals(getKimConstants().getTaxExternalIdTypeCode())) {
-                hasTaxId = true;
+
+                if (!value.equals("*") && isMapped(valueName)) {
+                    value = getLdapValue(valueName);
+                    debug(value, " mapped to valueName ", valueName);
+                }
+
+                if (isMapped(criteriaEntry.getKey())) {
+                    debug(String.format("Setting attribute to (%s, %s)", 
+                                        getLdapAttribute(criteriaEntry.getKey()), 
+                                        value));
+                    final String key = getLdapAttribute(criteriaEntry.getKey());
+                    if (!criteria.containsKey(key)) {
+                        criteria.put(key, value);
+                    }
+                }
+                else if (criteriaEntry.getKey().equalsIgnoreCase(getKimConstants().getExternalIdProperty())) {
+                    criteria.put(getKimConstants().getKimLdapIdProperty(), value);
+                }
+                else if (criteriaEntry.getKey().equalsIgnoreCase(getKimConstants().getExternalIdTypeProperty()) 
+                         && value.toString().equals(getKimConstants().getTaxExternalIdTypeCode())) {
+                    hasTaxId = true;
+                }
             }
         }
         return criteria;

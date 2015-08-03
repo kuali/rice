@@ -16,13 +16,15 @@
 
 package org.kuali.rice.kim.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 
-// **' 3.0-6.0** - add findEntityDefaults(Map<String, String> criteria, boolean unbounded) method to base IdentityService interface
+// **AZ UPGRADE 3.0-5.3** - add findEntityDefaults(Map<String, String> criteria, boolean unbounded) method to base IdentityService interface
 public interface LdapIdentityService extends IdentityService {
     public List<EntityDefault> findEntityDefaults(Map<String, String> criteria, boolean unbounded);
-    public EntityDefault getSystemEntityByPrincipalName(String principalName);
+    // UAF-6 - Performance improvements to improve user experience for AWS deployment
+    public List<EntityDefault> getEntityDefaultsByPrincipalIds(Collection<String> principalIds);
 }

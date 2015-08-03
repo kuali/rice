@@ -17,7 +17,6 @@ package org.kuali.rice.kim.dao;
 
 import java.util.List;
 import java.util.Map;
-
 import org.kuali.rice.kim.api.identity.entity.Entity;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.principal.EntityNamePrincipalName;
@@ -73,7 +72,10 @@ public interface LdapPrincipalDao {
 
 	EntityDefault getEntityDefaultByPrincipalName(String principalName);
 
-	List<String> lookupEntityIds(Map<String,String> searchCriteria);
+	List<String> lookupEntityIds(Map<String, String> searchCriteria);
+    
+    // **AZ UPGRADE 3.0-6.0** - expose this method for ldap implementation
+    List<EntityDefault> lookupEntityDefault(Map<String, String> searchCriteria, boolean unbounded);
 
 	EntityPrivacyPreferences getEntityPrivacyPreferences(String entityId);
 	

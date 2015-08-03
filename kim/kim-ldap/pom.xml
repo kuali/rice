@@ -24,9 +24,11 @@
     <version>2.1.10</version>
   </parent>
   <artifactId>rice-kim-ldap</artifactId>
+  <version>ua-release1-SNAPSHOT</version>
 
   <properties>
     <spring.ldap.version>1.3.1.RELEASE</spring.ldap.version>
+    <rice.parent.version>2.1.10</rice.parent.version>
   </properties>
 
   <dependencies>
@@ -59,86 +61,120 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-api</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-kew-api</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-kim-impl</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-framework</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-impl</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-web</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-location-api</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-location-framework</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-location-impl</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-location-web</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-ksb-api</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-edl-framework</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-app-framework</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-web-framework</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-kns</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-impl</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>ua-ksd</classifier>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
+  <distributionManagement>
+    <repository>
+      <id>deployment</id>
+      <name>Internal Releases</name>
+      <url>https://ka-tools.mosaic.arizona.edu/nexus/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>deployment</id>
+      <name>Internal Releases</name>
+      <url>https://ka-tools.mosaic.arizona.edu/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

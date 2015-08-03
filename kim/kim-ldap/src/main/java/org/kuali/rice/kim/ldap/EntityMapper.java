@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.kim.ldap;
 
-import static org.apache.commons.lang.StringUtils.contains;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.commons.lang.StringUtils;
+import static org.apache.commons.lang.StringUtils.contains;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.entity.Entity;
@@ -79,24 +78,32 @@ public class EntityMapper extends BaseMapper<Entity> {
         person.setNames(names);
         person.setId(entityId);
         
-        final EntityEmployment.Builder employmentInfo = (EntityEmployment.Builder) getEmploymentMapper().mapFromContext(context);
+        // **AZ UPGRADE 3.0-6.0** - original call did not return Builder so got ClassCastException
+        final EntityEmployment.Builder employmentInfo = (EntityEmployment.Builder) getEmploymentMapper().mapBuilderFromContext(context);
         final EntityAffiliation.Builder employeeAffiliation = getAffiliation(getConstants().getEmployeeAffiliationCodes(), person);
         
         //only add employee information if we have an employee affiliation, otherwise ignore
         if (employeeAffiliation != null && employmentInfo != null) {
             employeeAffiliation.getAffiliationType().setEmploymentAffiliationType(true);
             employmentInfo.setEntityAffiliation(employeeAffiliation);
+            
+            if (person.getEmploymentInformation() == null) {
+                person.setEmploymentInformation(new ArrayList<EntityEmployment.Builder>());
+            }
             person.getEmploymentInformation().add(employmentInfo);
         }
         
         person.setPrincipals(new ArrayList<Principal.Builder>());
         person.setActive(true);
         
-        final Principal.Builder defaultPrincipal = Principal.Builder.create(principalName);
-        defaultPrincipal.setPrincipalId(entityId);
-        defaultPrincipal.setEntityId(entityId);
-        
-        person.getPrincipals().add(defaultPrincipal);
+        // **AZ UPGRADE 3.0-6.0** - don't add principal with no name - causes exception
+        if (StringUtils.isNotBlank(principalName)) {
+            final Principal.Builder defaultPrincipal = Principal.Builder.create(principalName);
+            defaultPrincipal.setPrincipalId(entityId);
+            defaultPrincipal.setEntityId(entityId);
+            defaultPrincipal.setActive(true);
+            person.getPrincipals().add(defaultPrincipal);
+        }
         
         return person;
     }

@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.ldap;
 
 import java.util.ArrayList;
-
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;
 import org.kuali.rice.kim.api.identity.external.EntityExternalIdentifier;
@@ -73,14 +73,18 @@ public class EntityDefaultMapper extends BaseMapper<EntityDefault> {
 
         person.setEntityId(entityId);
         person.setPrincipals(new ArrayList<Principal.Builder>()); 
+        
         //inactivate unless we find a matching affiliation
         person.setActive(true);
-        
-        final Principal.Builder defaultPrincipal = Principal.Builder.create(principalName);
-        defaultPrincipal.setPrincipalId(entityId);
-        defaultPrincipal.setEntityId(entityId);
-
-        person.getPrincipals().add(defaultPrincipal);
+ 
+        // **AZ UPGRADE 3.0-6.0** - don't add principal with no name - causes exception
+        if (StringUtils.isNotBlank(principalName)) {
+            final Principal.Builder defaultPrincipal = Principal.Builder.create(principalName);
+            defaultPrincipal.setPrincipalId(entityId);
+            defaultPrincipal.setEntityId(entityId);
+            defaultPrincipal.setActive(true);
+            person.getPrincipals().add(defaultPrincipal);
+        }
         
         return person;
     }

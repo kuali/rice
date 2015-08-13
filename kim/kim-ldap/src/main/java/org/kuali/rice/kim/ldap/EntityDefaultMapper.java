@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.ldap;
 
 import java.util.ArrayList;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.entity.EntityDefault;

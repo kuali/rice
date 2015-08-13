@@ -83,7 +83,7 @@
     </property>
   </bean>
 
-  <bean id="personService" class="org.kuali.rice.kim.impl.identity.PersonServiceImpl">
+  <bean id="personService" class="edu.arizona.kim.service.impl.UaPersonService">
     <property name="personEntityTypeCodes">
       <list>
         <value>PERSON</value>

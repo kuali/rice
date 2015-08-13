@@ -3,3 +3,4 @@ overlays/
 .gitignore
 .idea/
 *.iml
+**/*.prefs

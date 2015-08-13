@@ -32,7 +32,7 @@
         <property name="authenticationSource" ref="authenticationSource" />
     </bean>
 
-    <bean id="kimPlatformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
+    <bean id="kimPlatformAwareDao" abstract="true" class="org.kuali.rice.core.framework.persistence.ojb.dao.PlatformAwareDaoBaseOjb">
         <property name="jcdAlias" value="kimDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
@@ -45,7 +45,7 @@
     </bean>
 
     <bean id="springSecurityAuthenticationSource"
-      class="org.springframework.security.ldap.authentication.SpringSecurityAuthenticationSource" />
+      class="edu.arizona.kim.ldap.authentication.UaKualiAuthenticationSource" />
 
     <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
         <constructor-arg ref="contextSource" />
@@ -210,8 +210,8 @@
       <property name="ldapTemplate"     ref="ldapTemplate" />
       <property name="parameterService" ref="rice.kim.ldap.import.parameterService" />
       <property name="kimConstants"     ref="kimConstants" />
-
-      <property name="contextMappers">        <map>
+      <property name="contextMappers">
+          <map>
 			<entry key="Principal" value-ref="ContextMapper-Principal" />
 			<entry key="EntityAddress" value-ref="ContextMapper-EntityAddress" />
 			<entry key="EntityAffiliation" value-ref="ContextMapper-EntityAffiliation" />
@@ -237,12 +237,14 @@
         class="org.kuali.rice.krad.config.GlobalResourceLoaderServiceFactoryBean"
         p:serviceName="criteriaLookupService"/>
 
-    <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl"
+    <bean id="kimIdentityDelegateService" class="edu.arizona.kim.service.impl.UaEdsIdentityService"
     	p:businessObjectService-ref="rice.kim.import.businessObjectService"
         p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService">
       <property name="principalDao" ref="ldapPrincipalDao" />
     </bean>
 
-    <!-- **AZ UPGRADE 3.0-6.0** -->
-    <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.LdapUiDocumentServiceImpl" /> 
+    <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.LdapUiDocumentServiceImpl" />
+
+
+
 </beans>

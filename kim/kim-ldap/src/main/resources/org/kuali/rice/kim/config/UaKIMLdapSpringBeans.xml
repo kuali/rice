@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- was: <?xml version="1.0" encoding="UTF-8"?> -->
+<!--
+ Copyright 2014 The Kuali Foundation
+
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.opensource.org/licenses/ecl2.php
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!-- UA UPGRADE - enable ldap for upgrade -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <import resource="KIMLdapSpringBeans.xml" />
+
+    <bean id="authenticationSource" class="edu.arizona.kim.ldap.authentication.UaKualiAuthenticationSource" >
+        <property name="principal" value="${rice.ldap.username}" />
+        <property name="credentials" value="${rice.ldap.password}" />
+    </bean>
+
+    <bean id="edsConstants" class="edu.arizona.kim.eds.UaEdsConstants">
+        <!-- Keys into the EDS Schema -->
+        <property name="uaIdContextKey"                                value="uaId" />
+        <property name="uidContextKey"                                 value="uid" />
+        <property name="personAffiliationContextKey"                   value="eduPersonAffiliation" />
+        <property name="employeeDeptCodeContextKey"                    value="employeePrimaryDept" />
+        <property name="employeeStatusCodeContextKey"                  value="employeeStatus" />
+        <property name="employeeTypeCodeContextKey"                    value="employeeType" />
+        <property name="dccRelationContextKey"                         value="dccRelation" />
+        <property name="givenNameContextKey"                           value="givenName" />
+        <property name="cnContextKey"                                  value="cn" />
+        <property name="snContextKey"                                  value="sn" />
+        <property name="employeePhoneContextKey"                       value="employeePhone" />
+        <property name="mailContextKey"                                value="mail" />
+        <property name="employeePrimaryDeptNameContextKey"             value="employeePrimaryDeptName" />
+        <property name="employeePoBoxContextKey"                       value="employeePoBox" />
+        <property name="employeeCityContextKey"                        value="employeeCity" />
+        <property name="employeeStateContextKey"                       value="employeeState" />
+        <property name="employeeZipContextKey"                         value="employeeZip" />
+        <property name="emplIdContextKey"                              value="emplId" />
+        <!-- KFS Settings for EDS Params -->
+        <property name="parameterNamespaceCode"                         value="KFS-SYS" />
+        <property name="parameterDetailTypeCode"                        value="Lookup" />
+        <!-- Keys into KFS for params containing EDS values  -->
+        <property name="edsRespectedAndOrderedAffsParamKey"            value="EDS_RESPECTED_AND_ORDERED_AFFS" />
+        <property name="edsUnrespectedAndOrderedAffsParamKey"          value="EDS_UNRESPECTED_AND_ORDERED_AFFS" />
+        <property name="edsNonEmployeeAffsParamKey"                    value="EDS_NON_EMPLOYEE_AFFS" />
+        <property name="edsProfessionalAffsParamKey"                   value="EDS_PROFESSIONAL_AFFS" />
+        <property name="edsOrderedActiveStatusIndicatorsParamKey"      value="EDS_ORDERED_ACTIVE_STATUS_INDICATORS" />
+        <property name="edsEmployeeTypesParamKey"                      value="EDS_EMPLOYEE_TYPES" />
+        <property name="edsDefaultEmployeeTypeParamKey"                value="EDS_DEFAULT_EMPLOYEE_TYPE" />
+        <property name="edsRestrictedEmployeeTypesParamKey"            value="EDS_RESTRICTED_EMPLOYEE_TYPES" />
+        <!-- The delimeter to be used for EDS values stored in KFS Parameters -->
+        <property name="kfsParamDelimiter"                             value=";" />
+    </bean>
+
+    <bean id="personService" class="edu.arizona.kim.service.impl.UaPersonService">
+        <property name="ldapIdentityService" ref="kimIdentityDelegateService"/>
+        <property name="personEntityTypeCodes">
+            <list>
+                <value>PERSON</value>
+                <value>SYSTEM</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- //////////////////////////////////////////////////////////////// -->
+    <!-- // Start of Mapping Overrides                                 // -->
+    <!-- //////////////////////////////////////////////////////////////// -->
+    <bean id="ContextMapper-EntityAddress-parentBean"                 abstract="true" class="edu.arizona.kim.ldap.UaEntityAddressMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+    </bean>
+
+    <bean id="ContextMapper-EntityAffiliation-parentBean"             abstract="true" class="edu.arizona.kim.ldap.UaEntityAffiliationMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+    </bean>
+
+    <bean id="ContextMapper-EntityDefault-parentBean"                 abstract="true" class="edu.arizona.kim.ldap.UaEntityDefaultMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+        <property name="affiliationMapper"                            ref="ContextMapper-EntityAffiliation" />
+        <property name="entityTypeContactInfoDefaultMapper"           ref="ContextMapper-EntityTypeContactInfoDefault" />
+        <property name="defaultNameMapper"                            ref="ContextMapper-EntityName" />
+        <property name="employmentMapper"                             ref="ContextMapper-EntityEmployment" />
+    </bean>
+
+    <bean id="ContextMapper-EntityEmail-parentBean"                   abstract="true" class="edu.arizona.kim.ldap.UaEntityEmailMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+    </bean>
+
+    <bean id="ContextMapper-EntityEmployment-parentBean"              abstract="true" class="edu.arizona.kim.ldap.UaEntityEmploymentMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+        <property name="parameterService"                             ref="rice.kim.ldap.import.parameterService" />
+        <property name="affiliationMapper"                            ref="ContextMapper-EntityAffiliation" />
+    </bean>
+
+    <bean id="ContextMapper-Entity-parentBean"                        abstract="true" class="edu.arizona.kim.ldap.UaEntityMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+        <property name="affiliationMapper"                            ref="ContextMapper-EntityAffiliation" />
+        <property name="entityTypeContactInfoMapper"                  ref="ContextMapper-EntityTypeContactInfo" />
+        <property name="defaultNameMapper"                            ref="ContextMapper-EntityName" />
+        <property name="employmentMapper"                             ref="ContextMapper-EntityEmployment" />
+    </bean>
+
+    <bean id="ContextMapper-EntityName-parentBean"                    abstract="true" class="edu.arizona.kim.ldap.UaEntityNameMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+    </bean>
+
+    <bean id="ContextMapper-EntityNamePrincipalName-parentBean"       abstract="true" class="edu.arizona.kim.ldap.UaEntityNamePrincipalNameMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+        <property name="defaultNameMapper"                            ref="ContextMapper-EntityName" />
+    </bean>
+
+    <bean id="ContextMapper-EntityPhone-parentBean"                   abstract="true" class="edu.arizona.kim.ldap.UaEntityPhoneMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+    </bean>
+
+    <bean id="ContextMapper-EntityPrivacyPreferences-parentBean"      abstract="true" class="edu.arizona.kim.ldap.UaEntityPrivacyPreferencesMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+    </bean>
+
+    <bean id="ContextMapper-EntityTypeContactInfoDefault-parentBean"  abstract="true" class="edu.arizona.kim.ldap.UaEntityTypeContactInfoDefaultMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+        <property name="addressMapper"                                ref="ContextMapper-EntityAddress"   />
+        <property name="phoneMapper"                                  ref="ContextMapper-EntityPhone" />
+        <property name="emailMapper"                                  ref="ContextMapper-EntityEmail" />
+    </bean>
+
+    <bean id="ContextMapper-EntityTypeContactInfo-parentBean"         abstract="true" class="edu.arizona.kim.ldap.UaEntityTypeContactInfoMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+        <property name="addressMapper"                                ref="ContextMapper-EntityAddress" />
+        <property name="phoneMapper"                                  ref="ContextMapper-EntityPhone" />
+        <property name="emailMapper"                                  ref="ContextMapper-EntityEmail" />
+    </bean>
+
+    <bean id="ContextMapper-Principal-parentBean"                     abstract="true" class="edu.arizona.kim.ldap.UaPrincipalMapper" >
+        <property name="constants"                                    ref="kimConstants" />
+        <property name="edsConstants"                                 ref="edsConstants" />
+    </bean>
+
+    <!-- //////////////////////////////////////////////////////////////// -->
+    <!-- // End   of Mapping Overrides                                 // -->
+    <!-- //////////////////////////////////////////////////////////////// -->
+</beans>
+
+

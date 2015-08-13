@@ -55,13 +55,13 @@ import org.springframework.ldap.filter.OrFilter;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LdapPrincipalDaoImpl implements LdapPrincipalDao { 
-    private Constants kimConstants;
-    private LdapTemplate template;
-    private ParameterService parameterService;
+public class LdapPrincipalDaoImpl implements LdapPrincipalDao {
+    protected Constants kimConstants;
+    protected LdapTemplate template;
+    protected ParameterService parameterService;
 
     
-    private Map<String, ContextMapper> contextMappers;    
+    protected Map<String, ContextMapper> contextMappers;
     
     public LdapPrincipalDaoImpl() {
     }

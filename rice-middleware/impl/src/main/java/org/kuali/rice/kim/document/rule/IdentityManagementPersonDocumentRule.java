@@ -352,7 +352,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	boolean valid = true;
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
-	    		if (affiliation.getAffiliationType() .isEmploymentAffiliationType() && affiliation.getEmpInfos().isEmpty()) {
+	    		if (affiliation.getAffiliationType().isEmploymentAffiliationType() && affiliation.isDflt() && affiliation.getEmpInfos().isEmpty()) {
 			     		GlobalVariables.getMessageMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "Employment Information");
 			     		valid = false;
 	    		}

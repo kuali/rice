@@ -448,7 +448,9 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentRole personDocumentRole = personDocumentForm.getPersonDocument().getRoles().get(getLineToDelete(request));
         Calendar cal = Calendar.getInstance();
-        personDocumentRole.getRolePrncpls().get(0).setActiveToDate(new Timestamp(cal.getTimeInMillis()));
+        for(KimDocumentRoleMember member : personDocumentRole.getRolePrncpls()) {
+        	member.setActiveToDate(new Timestamp(cal.getTimeInMillis()));
+        }
         personDocumentForm.getPersonDocument().getRoles().set(getLineToDelete(request), personDocumentRole);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }

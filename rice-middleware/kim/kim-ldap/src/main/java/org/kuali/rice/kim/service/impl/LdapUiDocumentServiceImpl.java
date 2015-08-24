@@ -402,26 +402,39 @@ public class LdapUiDocumentServiceImpl extends org.kuali.rice.kim.service.impl.U
         identityManagementRoleDocument.setKimType(KimApiServiceLocator.getKimTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
         KimTypeService kimTypeService = KimFrameworkServiceLocator.getKimTypeService(identityManagementRoleDocument.getKimType());
 
-        if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
-            for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){
+        if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getModifiedMembers())){
+            for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getModifiedMembers()){
                 origRoleMemberImplTemp = null;
 
                 newRoleMember = new RoleMemberBo();
                 KimCommonUtilsInternal.copyProperties(newRoleMember, documentRoleMember);
                 newRoleMember.setRoleId(identityManagementRoleDocument.getRoleId());
+                newRoleMember.setTypeCode(documentRoleMember.getMemberTypeCode());
                 if(ObjectUtils.isNotNull(origRoleMembers)){
                     for(RoleMemberBo origRoleMemberImpl: origRoleMembers){
                         if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
                             (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
                             (origRoleMemberImpl.getType()!=null && org.apache.commons.lang.ObjectUtils.equals(origRoleMemberImpl.getType(), newRoleMember.getType())) &&
-                            !origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis())) &&
-                            !kimTypeService.validateUniqueAttributes(identityManagementRoleDocument.getKimType().getId(),
-                                    documentRoleMember.getQualifierAsMap(), origRoleMemberImpl.getAttributes()).isEmpty()) {
+                            origRoleMemberImpl.isActive(new Timestamp(System.currentTimeMillis()))) {
 
                             //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
+                        	
+                        	boolean toBeInactivated = !documentRoleMember.isActive();
+                        	if(origRoleMemberImpl.getId()!=null && !StringUtils.equals(origRoleMemberImpl.getId(), documentRoleMember.getRoleMemberId()) && toBeInactivated) {
+                        		if(origRoleMemberImpl.getRoleRspActions() == null) {
+                        			origRoleMemberImpl.setRoleRspActions(new ArrayList<RoleResponsibilityActionBo>());//must not be null
+                        		}
+                            	origRoleMemberImpl.setActiveToDateValue(documentRoleMember.getActiveToDate());
+                            	roleMembers.add(origRoleMemberImpl);
+                            }
 
                             newRoleMemberIdAssigned = newRoleMember.getId();
-                            newRoleMember.setId(origRoleMemberImpl.getId());
+                            if(toBeInactivated) {
+                            	newRoleMember.setId(documentRoleMember.getRoleMemberId());
+                            }
+                            else {
+                            	newRoleMember.setId(origRoleMemberImpl.getId());
+                            }
                             activatingInactive = true;
                         }
                         if(origRoleMemberImpl.getId()!=null && StringUtils.equals(origRoleMemberImpl.getId(), newRoleMember.getId())){

@@ -20,7 +20,7 @@
 
   <bean id="IdentityManagementPersonDocument-parentBean" abstract="true" parent="TransactionalDocumentEntry">
     <property name="documentTypeName" value="IdentityManagementPersonDocument"/>
-    <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementPersonDocument"/>
+    <property name="documentClass" value="edu.arizona.kim.document.UaIdentityManagementPersonDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.IdentityManagementPersonDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer"/>
     <property name="documentPresentationControllerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase"/>

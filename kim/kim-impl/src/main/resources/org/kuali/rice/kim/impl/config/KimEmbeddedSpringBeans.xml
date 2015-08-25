@@ -53,7 +53,7 @@
         Identity Service
   -->
 
-  <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.impl.identity.IdentityServiceImpl"
+  <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl"
         p:businessObjectService-ref="rice.kim.import.businessObjectService"
         p:criteriaLookupService-ref="rice.kim.import.criteriaLookupService"/>
 
@@ -62,7 +62,7 @@
         p:kualiConfigurationService-ref="rice.kim.import.kualiConfigurationService"
         p:transactionManager-ref="transactionManager"/>
 
-  <bean id="kimIdentityService" class="org.kuali.rice.kim.impl.identity.IdentityCurrentAndArchivedServiceImpl">
+  <bean id="kimIdentityService" class="edu.arizona.kim.identity.impl.UaIdentityCurrentAndArchivedServiceImpl">
     <constructor-arg ref="kimIdentityArchiveService"/>
     <constructor-arg ref="kimIdentityDelegateService"/>
   </bean>

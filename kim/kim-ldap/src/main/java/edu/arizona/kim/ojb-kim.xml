@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<descriptor-repository version="1.0">
+	<jdbc-connection-descriptor jcd-alias="kimDataSource" default-connection="false" jdbc-level="3.0" eager-release="false" batch-mode="false"
+		useAutoCommit="0" ignoreAutoCommitExceptions="false">
+		<sequence-manager className="org.kuali.rice.core.ojb.ConfigurableSequenceManager">
+			<attribute attribute-name="property.prefix" attribute-value="datasource.ojb.sequenceManager" />
+		</sequence-manager>
+		<object-cache class="org.apache.ojb.broker.cache.ObjectCachePerBrokerImpl" />
+	</jdbc-connection-descriptor>
+
+  <!-- Ua PersonDocument -->
+  <class-descriptor class="edu.arizona.kim.document.UaIdentityManagementPersonDocument" table="KRIM_PERSON_DOCUMENT_T">
+		<field-descriptor name="documentNumber" column="FDOC_NBR"     jdbc-type="VARCHAR" primarykey="true" />
+		<field-descriptor name="entityId"       column="entity_id"    jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_ENTITY_ID_S" />
+		<field-descriptor name="principalId"    column="prncpl_id"    jdbc-type="VARCHAR" autoincrement="true" sequence-name="KRIM_PRNCPL_ID_S" />
+		<field-descriptor name="principalName"  column="prncpl_nm"    jdbc-type="VARCHAR" />
+		<field-descriptor name="taxId"          column="tax_id"       jdbc-type="VARCHAR" />
+		<field-descriptor name="univId"         column="univ_id"      jdbc-type="VARCHAR" />
+		<field-descriptor name="password"       column="prncpl_pswd"  jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbKualiHashFieldConversion" />
+		<field-descriptor name="active"         column="ACTV_IND"     jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
+		<field-descriptor name="versionNumber"  column="VER_NBR"      jdbc-type="BIGINT"  locking="true" />
+		<field-descriptor name="objectId"       column="OBJ_ID"       jdbc-type="VARCHAR" index="true" />
+    <collection-descriptor name="affiliations" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+    <collection-descriptor name="names" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentName" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+    <collection-descriptor name="emails" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentEmail" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+    <collection-descriptor name="phones" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentPhone" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+    <collection-descriptor name="addrs" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentAddress" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+    	<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object" auto-delete="object">
+        	<foreignkey field-ref="documentNumber" />
+    	</reference-descriptor>
+    	<reference-descriptor name="privacy" class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy" auto-retrieve="true" auto-update="object" auto-delete="object">
+        	<foreignkey field-ref="documentNumber" />
+    	</reference-descriptor>
+    <collection-descriptor name="names" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentName" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+    <collection-descriptor name="roles" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentRole" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+    <collection-descriptor name="groups" element-class-ref="org.kuali.rice.kim.bo.ui.PersonDocumentGroup" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+	<collection-descriptor name="delegations" element-class-ref="org.kuali.rice.kim.bo.ui.RoleDocumentDelegation" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="false">
+      <inverse-foreignkey field-ref="documentNumber" />
+    </collection-descriptor>
+  </class-descriptor>
+
+</descriptor-repository>

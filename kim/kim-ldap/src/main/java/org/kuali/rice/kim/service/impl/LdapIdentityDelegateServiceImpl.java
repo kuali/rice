@@ -198,8 +198,8 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
     @Override
     public List<Principal> getPrincipals(@WebParam(name = "principalIds") List<String> principalIds) {
         Map <String, Object> criteria = new HashMap<String, Object>();
-        criteria.put(principalDao.getKimConstants().getKimLdapIdProperty(), principalIds);
-        return principalDao.search(Principal.class, criteria);
+        criteria.put(getPrincipalDao().getKimConstants().getKimLdapIdProperty(), principalIds);
+        return getPrincipalDao().search(Principal.class, criteria);
     }
 
     @Override
@@ -227,7 +227,7 @@ public class LdapIdentityDelegateServiceImpl extends IdentityServiceImpl impleme
     // begin **AZ UPGRADE 3.0-5.3** - implement LdapIdentityService interface
     @Override
     public List<EntityDefault> findEntityDefaults(Map<String, String> criteria, boolean unbounded) {
-        return principalDao.lookupEntityDefault(criteria, unbounded);
+        return getPrincipalDao().lookupEntityDefault(criteria, unbounded);
     }
     
     //UAF-6 - Performance improvements to improve user experience for AWS deployment

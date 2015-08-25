@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	<!-- KFSI-4627 - adding employee ID property to make available to document search -->
+  <bean id="IdentityManagementPersonDocument" parent="IdentityManagementPersonDocument-parentBean">
+    <property name="documentClass" value="edu.arizona.kim.document.UaIdentityManagementPersonDocument" />
+    <property name="workflowAttributes" ref="IdentityManagementPersonDocument-workflowAttributes"/>
+    <property name="attributes">
+    	<list merge="true">
+    		<bean parent="DocEmploymentInfo-employeeId" />
+    	</list>
+    </property>
+  </bean>
+
+	<bean id="IdentityManagementPersonDocument-searchingAttribute" abstract="true" class="org.kuali.rice.kns.datadictionary.SearchingAttribute" 
+		p:businessObjectClassName="edu.arizona.kim.document.UaIdentityManagementPersonDocument"
+		p:showAttributeInSearchCriteria="true"
+		p:showAttributeInResultSet="true" />
+
+	<!-- workflow attributes -->
+  	<bean id="IdentityManagementPersonDocument-workflowAttributes" parent="WorkflowAttributes">
+		
+		<property name="searchingTypeDefinitions">
+    		<list>
+    			<bean class="org.kuali.rice.kns.datadictionary.SearchingTypeDefinition">
+    				<property name="searchingAttribute">
+    					<bean p:attributeName="principalName" parent="IdentityManagementPersonDocument-searchingAttribute" />
+    				</property>
+    				<property name="documentValues">
+    					<list><value>principalName</value></list>
+    				</property>
+    			</bean>
+
+    			<bean class="org.kuali.rice.kns.datadictionary.SearchingTypeDefinition">
+    				<property name="searchingAttribute">
+    					<bean p:attributeName="employeeId" p:businessObjectClassName="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo" parent="IdentityManagementPersonDocument-searchingAttribute" />
+    				</property>
+    				<property name="documentValues">
+    					<list>
+    						<value>employeeId</value>
+    					</list>
+    				</property>
+    			</bean>
+    		</list>
+    	</property>
+	</bean>
+
+</beans>

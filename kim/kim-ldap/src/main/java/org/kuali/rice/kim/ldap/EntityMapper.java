@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kim.ldap;
 
+import static org.apache.commons.lang.StringUtils.contains;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
-import static org.apache.commons.lang.StringUtils.contains;
 import org.kuali.rice.kim.api.identity.affiliation.EntityAffiliation;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
 import org.kuali.rice.kim.api.identity.entity.Entity;
@@ -40,7 +42,7 @@ public class EntityMapper extends BaseMapper<Entity> {
     private EntityEmploymentMapper employmentMapper;
     
     @Override
-    Entity mapDtoFromContext(DirContextOperations context) {
+    public Entity mapDtoFromContext(DirContextOperations context) {
     	Entity.Builder builder = mapBuilderFromContext(context);
         return builder != null ? builder.build() : null;
     }

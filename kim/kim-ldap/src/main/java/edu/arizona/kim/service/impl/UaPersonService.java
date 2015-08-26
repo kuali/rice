@@ -47,11 +47,13 @@ public class UaPersonService extends PersonServiceImpl implements PersonService 
 		List<EntityDefault> entities = ldapIdentityService.findEntityDefaults(criteria, unbounded);
 		if (!entities.isEmpty()) {
 			for (EntityDefault e : entities) {
-				// get to get all principals for the identity as well
-				for (Principal p : e.getPrincipals()) {
-					PersonImpl person = convertEntityToPerson(e, p);
-					person.setActive(e.isActive());
-					retval.add(person);
+				if (e != null) {
+					// get to get all principals for the identity as well
+					for (Principal p : e.getPrincipals()) {
+						PersonImpl person = convertEntityToPerson(e, p);
+						person.setActive(e.isActive());
+						retval.add(person);
+					}
 				}
 			}
 		}

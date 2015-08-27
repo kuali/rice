@@ -23,6 +23,7 @@ import org.kuali.rice.kim.api.identity.address.EntityAddress;
 import org.kuali.rice.kim.api.identity.email.EntityEmail;
 import org.kuali.rice.kim.api.identity.phone.EntityPhone;
 import org.kuali.rice.kim.api.identity.type.EntityTypeContactInfo;
+import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.ldap.core.DirContextOperations;
 
 import edu.arizona.kim.eds.UaEdsRecord;
@@ -56,15 +57,21 @@ public class UaEntityTypeContactInfoMapper extends UaBaseMapper<EntityTypeContac
 
 		List<EntityAddress.Builder> addresses = new ArrayList<EntityAddress.Builder>();
 		EntityAddress.Builder entityAddress = getAddressMapper().mapBuilderFromContext(context);
-		addresses.add(entityAddress);
+		if ( ObjectUtils.isNotNull(entityAddress) ) {
+			addresses.add(entityAddress);
+		}
 
 		List<EntityEmail.Builder> emails = new ArrayList<EntityEmail.Builder>();
 		EntityEmail.Builder entityEmail = getEmailMapper().mapBuilderFromContext(context);
-		emails.add(entityEmail);
+		if ( ObjectUtils.isNotNull(entityEmail) ) {
+			emails.add(entityEmail);
+		}
 
 		List<EntityPhone.Builder> phoneNumbers = new ArrayList<EntityPhone.Builder>();
 		EntityPhone.Builder entityPhone = getPhoneMapper().mapBuilderFromContext(context);
-		phoneNumbers.add(entityPhone);
+		if ( ObjectUtils.isNotNull(entityPhone) ) {
+			phoneNumbers.add(entityPhone);
+		}
 
 		final EntityTypeContactInfo.Builder builder = EntityTypeContactInfo.Builder.create(entityId, entityTypeCode);
 

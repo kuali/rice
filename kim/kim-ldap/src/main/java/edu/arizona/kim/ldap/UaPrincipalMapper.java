@@ -27,7 +27,12 @@ public class UaPrincipalMapper extends UaBaseMapper<Principal> {
 			LOG.debug("No active and valid EDS eduPersonAffiliation found for context: " + context.getAttributes());
 			return null;
 		}
-		final Principal.Builder person = Principal.Builder.create(edsRecord.getUid());
+		//For records that do not have a netid, use the uaid for principal name.
+		String principalName = edsRecord.getUid();
+		if ( principalName == null ) {
+			principalName = edsRecord.getUaId();
+		}
+		final Principal.Builder person = Principal.Builder.create(principalName);
 
 		person.setPrincipalId(edsRecord.getUaId());
 		person.setEntityId(edsRecord.getUaId());

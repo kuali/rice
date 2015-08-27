@@ -97,7 +97,9 @@ public class UaEntityDefaultMapper extends UaBaseMapper<EntityDefault> {
 
 		defaultPrincipal.setPrincipalId(entityId);
 		defaultPrincipal.setEntityId(entityId);
-		defaultPrincipal.setPrincipalName(principalName);
+		if ( principalName != null ) {
+			defaultPrincipal.setPrincipalName(principalName);
+		}
 
 		List<Principal.Builder> entityPrincipals = person.getPrincipals();
 		entityPrincipals.add(defaultPrincipal);

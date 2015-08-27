@@ -27,7 +27,7 @@ limitations under the License.
     <para>Welcome to Rice ${project.version}! </para>
     <section>
       <title>Release Highlights</title>
-      <para>This release consists of security fixes, AFT fixes and some cleanup. There are no database changes and it should be a drop-in replacement.</para>
+      <para>This release consists of security and AFT fixes. There are no database changes and it should be a drop-in replacement.</para>
     </section>
     <section>
       <title>Download</title>
@@ -63,31 +63,10 @@ limitations under the License.
     <section><title>        Bug Fix
     </title>
       <para><itemizedlist>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14155'>KULRICE-14155</link>] - rice-2.6-docbook-install ci job failing
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14159'>KULRICE-14159</link>] - Fix testDemoEnterKeySupportTables2 AFT
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14177'>KULRICE-14177</link>] - Apache WSS4J update to version 1.6.17
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14248'>KULRICE-14248</link>] - Fixed document help icon of Document Search 
-        </para></listitem>
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14273'>KULRICE-14273</link>] - Html escape error message and stack trace</para></listitem>
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14274'>KULRICE-14274</link>] - Store incident info in user session</para></listitem>
+        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14255'>KULRICE-14255</link>] - Fix PersonServiceImplTest and RoleRouteModuleTest</para></listitem>
       </itemizedlist></para>
     </section>
-
-    <section><title>        Task
-    </title>
-      <para><itemizedlist>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14147'>KULRICE-14147</link>] - Remove library samples from jscalendar-1.0
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14148'>KULRICE-14148</link>] - Clean up DemoTravelAccountLookUpAft.testXss
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14160'>KULRICE-14160</link>] - Document how we want to handle testing and verification of pull requests from external entities
-        </para></listitem>
-        <listitem><para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14179'>KULRICE-14179</link>] - Update IntelliJ XML Files for update 2.5.2 to 2.5.3
-        </para></listitem>
-      </itemizedlist></para>
-    </section>
-
-
   </section>
 </article>

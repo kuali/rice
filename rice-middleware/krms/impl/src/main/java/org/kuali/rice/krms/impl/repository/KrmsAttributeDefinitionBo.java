@@ -34,7 +34,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_ATTR_DEFN_T")
 public class KrmsAttributeDefinitionBo implements KrmsAttributeDefinitionContract, MutableInactivatable, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1l;
 
     @PortableSequenceGenerator(name = "KRMS_ATTR_DEFN_S")
     @GeneratedValue(generator = "KRMS_ATTR_DEFN_S")

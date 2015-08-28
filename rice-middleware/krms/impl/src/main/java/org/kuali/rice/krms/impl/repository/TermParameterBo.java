@@ -33,7 +33,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_TERM_PARM_T")
 public class TermParameterBo implements TermParameterDefinitionContract, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1l;
 
     public static final String TERM_PARM_SEQ_NAME = "KRMS_TERM_PARM_S";
 

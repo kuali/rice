@@ -70,7 +70,6 @@ public class PropertiesUtils {
      * @throws IOException
      * @deprecated {@see #loadProperties(String)}
      */
-    @Deprecated
     public Properties loadProperties(String fileLocation, String resourceLocation) throws IOException {
         Properties props = null;
         InputStream in = null;

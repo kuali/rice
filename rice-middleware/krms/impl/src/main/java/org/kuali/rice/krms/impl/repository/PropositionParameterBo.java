@@ -40,7 +40,7 @@ import java.util.List;
 @Table(name = "KRMS_PROP_PARM_T")
 public class PropositionParameterBo implements PropositionParameterContract, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1l;
 
     @PortableSequenceGenerator(name = "KRMS_PROP_PARM_S")
     @GeneratedValue(generator = "KRMS_PROP_PARM_S")
@@ -65,7 +65,7 @@ public class PropositionParameterBo implements PropositionParameterContract, Ser
     private TermDefinition termValue;
 
     @Column(name = "VER_NBR")
-    private Long versionNumber = 0L;
+    private Long versionNumber = 0l;
 
     public TermDefinition getTermValue() {
         return termValue;
@@ -135,7 +135,7 @@ public class PropositionParameterBo implements PropositionParameterContract, Ser
         bo.sequenceNumber = im.getSequenceNumber();
 
         if (im.getVersionNumber() == null) {
-            bo.setVersionNumber(0L);
+            bo.setVersionNumber(0l);
         } else {
             bo.setVersionNumber(im.getVersionNumber());
         }

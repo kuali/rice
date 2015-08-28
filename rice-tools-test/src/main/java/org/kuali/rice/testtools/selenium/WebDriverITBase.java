@@ -36,7 +36,6 @@ import java.util.concurrent.TimeUnit;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @deprecated see WebDriverAftBase
  */
-@Deprecated
 public abstract class WebDriverITBase {
 
     public WebDriver driver;

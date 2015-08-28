@@ -35,7 +35,7 @@ import java.util.List;
 @Table(name = "KRMS_CTGRY_T")
 public class CategoryBo implements CategoryDefinitionContract, Versioned, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1l;
 
     @PortableSequenceGenerator(name = "KRMS_CTGRY_S")
     @GeneratedValue(generator = "KRMS_CTGRY_S")

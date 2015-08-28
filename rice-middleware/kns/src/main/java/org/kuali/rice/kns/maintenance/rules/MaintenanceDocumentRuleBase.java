@@ -67,7 +67,6 @@ import org.springframework.util.AutoPopulatingList;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -1172,7 +1171,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
                     LOG.error(e.getKey().toString() + " = " + em.getErrorKey());
                 } else {
                     LOG.error(e.getKey().toString() + " = " + em.getErrorKey() + " : " +
-                            Arrays.toString(em.getMessageParameters()));
+                            em.getMessageParameters().toString());
                 }
             }
         }

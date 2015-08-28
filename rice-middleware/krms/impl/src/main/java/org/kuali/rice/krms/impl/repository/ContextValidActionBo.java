@@ -33,7 +33,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_CNTXT_VLD_ACTN_TYP_T")
 public class ContextValidActionBo implements Versioned, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1l;
 
     @PortableSequenceGenerator(name = "KRMS_CNTXT_VLD_ACTN_TYP_S")
     @GeneratedValue(generator = "KRMS_CNTXT_VLD_ACTN_TYP_S")

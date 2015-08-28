@@ -63,7 +63,6 @@ public interface ActionItemContract {
      * @return always returns null
      * @deprecated actionItemIndex is never used
      */
-    @Deprecated
     Integer getActionItemIndex();
 
 

@@ -522,12 +522,12 @@ public class RuleManagementAgendaTest extends RuleManagementBaseTest {
      * @return the prototype AgendaDefinition
      */
     private AgendaDefinition getPrototypeAgendaDefinition() {
-        // Create a prototype AgendaDefinition that we'll tweak to test equality                                              Ï
+        // Create a prototype AgendaDefinition that we'll tweak to test equality
         AgendaDefinition.Builder protoBuilder = AgendaDefinition.Builder.create("123", "name", "typeId", "contextId");
         protoBuilder.setActive(true);
         protoBuilder.setAttributes(Collections.singletonMap("attrKey", "attrValue"));
         protoBuilder.setFirstItemId("234");
-        protoBuilder.setVersionNumber(1L);
+        protoBuilder.setVersionNumber(1l);
         AgendaDefinition prototype = protoBuilder.build();
 
         return prototype;

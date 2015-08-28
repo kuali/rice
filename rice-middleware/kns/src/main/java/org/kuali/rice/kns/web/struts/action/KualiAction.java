@@ -678,7 +678,7 @@ public abstract class KualiAction extends DispatchAction {
             // TODO : create a method for this to be used by both lookup & inquiry ?
             String[] inquiryParams = parameterFields.split(KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
             if ( LOG.isDebugEnabled() ) {
-                LOG.debug( "inquiryParams: " + Arrays.toString(inquiryParams) );
+                LOG.debug( "inquiryParams: " + inquiryParams );
             }
             Class<? extends BusinessObject> boClass = (Class<? extends BusinessObject>) Class.forName(boClassName);
             for (String inquiryParam : inquiryParams) {
@@ -1073,7 +1073,7 @@ public abstract class KualiAction extends DispatchAction {
             String[] textAreaParams = parameterFields.split(
                     KRADConstants.FIELD_CONVERSIONS_SEPARATOR);
             if ( LOG.isDebugEnabled() ) {
-                LOG.debug( "lookupParams: " + Arrays.toString(textAreaParams) );
+                LOG.debug( "lookupParams: " + textAreaParams );
             }
             for (final String textAreaParam : textAreaParams) {
                 keyValue = textAreaParam.split(KRADConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);

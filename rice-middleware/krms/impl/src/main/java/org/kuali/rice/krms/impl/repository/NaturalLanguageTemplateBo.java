@@ -56,7 +56,7 @@ import java.util.Set;
 @Table(name = "KRMS_NL_TMPL_T")
 public class NaturalLanguageTemplateBo implements NaturalLanguageTemplateContract, Versioned, Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1l;
 
     @Transient
     private Map<String, String> attributes;

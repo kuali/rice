@@ -237,7 +237,7 @@ public class RuleManagementServiceMockImpl implements RuleManagementService {
         if (copy.getId() == null) {
             copy.setId(UUID.randomUUID().toString());
         }
-        copy.setVersionNumber(0L);
+        copy.setVersionNumber(0l);
         agendaDefinition = copy.build();
         agendaMap.put(agendaDefinition.getId(), agendaDefinition);
         return agendaDefinition;

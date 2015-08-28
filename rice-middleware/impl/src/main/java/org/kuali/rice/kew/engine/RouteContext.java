@@ -106,7 +106,6 @@ public class RouteContext implements Serializable {
 	/**
 	 * @deprecated use getDocument() instead
 	 */
-	@Deprecated
 	public DocumentRouteHeaderValue getRouteHeader() {
 		return routeHeader;
 	}
@@ -114,7 +113,6 @@ public class RouteContext implements Serializable {
 	/**
 	 * @deprecated user setDocument() instead
 	 */
-	@Deprecated
 	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
 		this.routeHeader = routeHeader;
 	}

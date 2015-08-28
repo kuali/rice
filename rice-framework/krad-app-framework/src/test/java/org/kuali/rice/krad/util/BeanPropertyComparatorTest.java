@@ -77,19 +77,16 @@ public class BeanPropertyComparatorTest {
         A a = new A("something", new Integer(0), Boolean.valueOf(false));
         B b = new B("something else", new Integer(1), Boolean.valueOf(true));
 
-        // boolean failedAsExpected = false;
+        boolean failedAsExpected = false;
         try {
-            // bpc.compare(a, b);
-            int lessThan = bpc.compare(a, b);
-            Assert.assertTrue(lessThan < 0);
+            bpc.compare(a, b);
         }
         catch (BeanComparisonException e) {
             if (e.getCause() instanceof NullPointerException) {
-              // failedAsExpected = true;
-              throw new Error(e);
+                failedAsExpected = true;
             }
         }
-        // Assert.assertTrue(failedAsExpected);
+        Assert.assertTrue(failedAsExpected);
     }
 
     @Test
@@ -130,18 +127,16 @@ public class BeanPropertyComparatorTest {
         A a = new A("something", new Integer(0), Boolean.valueOf(false));
 
 
-        // boolean failedAsExpected = false;
+        boolean failedAsExpected = false;
         try {
-            // bpc.compare(c, a);
-            int lessThan = bpc.compare(c, a);
-            Assert.assertTrue(lessThan < 0);
+            bpc.compare(c, a);
         }
         catch (BeanComparisonException e) {
             if (e.getCause() instanceof NullPointerException) {
-                throw new Error(e);
+                failedAsExpected = true;
             }
         }
-        // Assert.assertTrue(failedAsExpected);
+        Assert.assertTrue(failedAsExpected);
     }
 
 

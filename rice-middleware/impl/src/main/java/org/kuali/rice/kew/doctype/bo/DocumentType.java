@@ -816,7 +816,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      *
      * @deprecated
      */
-    @Deprecated
     public void setDisplayableUnresolvedDocHandlerUrl(String displayableUnresolvedDocHandlerUrl) {
         // do nothing
     }
@@ -852,7 +851,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      *
      * @deprecated
      */
-    @Deprecated
     public void setDocHandlerUrl(java.lang.String docHandlerUrl) {
         setUnresolvedDocHandlerUrl(docHandlerUrl);
     }
@@ -1005,7 +1003,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      *
      * @deprecated
      */
-    @Deprecated
     public void setDisplayablePostProcessorName(String displayablePostProcessorName) {
         // do nothing
     }
@@ -1488,7 +1485,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      *
      * @deprecated
      */
-    @Deprecated
     public void setDisplayableNotificationFromAddress(String displayableNotificationFromAddress) {
         // do nothing
     }
@@ -1536,7 +1532,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Mutab
      *
      * @deprecated
      */
-    @Deprecated
     public void setNotificationFromAddress(String notificationFromAddress) {
         setActualNotificationFromAddress(notificationFromAddress);
     }

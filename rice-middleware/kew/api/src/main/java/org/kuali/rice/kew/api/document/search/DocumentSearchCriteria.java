@@ -869,7 +869,6 @@ public final class DocumentSearchCriteria extends AbstractDataTransferObject imp
          * @deprecated use {@link #setInitiatorPrincipalId(String)} instead
          * @param initiatorPrincipalName
          */
-        @Deprecated
         public void setInitiatorPrincipalName(String initiatorPrincipalName) {
             this.initiatorPrincipalName = initiatorPrincipalName;
         }

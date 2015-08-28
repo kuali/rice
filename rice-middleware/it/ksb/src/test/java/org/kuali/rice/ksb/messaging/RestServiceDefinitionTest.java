@@ -49,7 +49,7 @@ public class RestServiceDefinitionTest extends KSBTestCase {
     	String a = "a";
     	String b = "b";
     	String c = "c";
-    	Long l = Long.valueOf(123L);
+    	Long l = Long.valueOf(123l);
     	
     	List<Object> restResources = new ArrayList<Object>();
     	restResources.add(a);

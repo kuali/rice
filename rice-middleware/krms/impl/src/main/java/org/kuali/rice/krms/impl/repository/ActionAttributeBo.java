@@ -31,7 +31,7 @@ import java.io.Serializable;
 @Table(name = "KRMS_ACTN_ATTR_T")
 public class ActionAttributeBo extends BaseAttributeBo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1l;
 
     @PortableSequenceGenerator(name = "KRMS_ACTN_ATTR_S")
     @GeneratedValue(generator = "KRMS_ACTN_ATTR_S")

@@ -21,24 +21,19 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.web.struts.form.KualiExceptionIncidentForm;
+import org.kuali.rice.krad.exception.ExceptionIncident;
 import org.kuali.rice.krad.exception.KualiExceptionIncident;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +48,16 @@ import java.util.Map;
 public class KualiExceptionHandlerAction extends Action {
     private static final Logger LOG = Logger
             .getLogger(KualiExceptionHandlerAction.class);
+
+    private static final String EXCEPTION_TIME_STAMP = "exception-timeStamp";
+    private static final String EXCEPTION_DOCUMENT_ID = "exception-" + ExceptionIncident.DOCUMENT_ID;
+    private static final String EXCEPTION_USER_EMAIL = "exception-" + ExceptionIncident.USER_EMAIL;
+    private static final String EXCEPTION_USER_NAME = "exception-" + ExceptionIncident.USER_NAME;
+    private static final String EXCEPTION_UUID = "exception-" + ExceptionIncident.UUID;
+    private static final String EXCEPTION_COMPONENT_NAME = "exception-" + ExceptionIncident.COMPONENT_NAME;
+    private static final String EXCEPTION_EXCEPTION_REPORT_SUBJECT = "exception-" + ExceptionIncident.EXCEPTION_REPORT_SUBJECT;
+    private static final String EXCEPTION_EXCEPTION_MESSAGE = "exception-" + ExceptionIncident.EXCEPTION_MESSAGE;
+    private static final String EXCEPTION_STACK_TRACE = "exception-" + ExceptionIncident.STACK_TRACE;
 
     /**
      * This overridden method dispatches action to be taken based on
@@ -126,22 +131,26 @@ public class KualiExceptionHandlerAction extends Action {
                     }
 
                     // Sensitive data stored in user session
-                    JsonReader jsonReader = Json.createReader(new ByteArrayInputStream(GlobalVariables.
-                            getUserSession().getObjectMap().get("exception").toString().getBytes()));
-                    JsonObject jsonException = jsonReader.readObject();
-                    jsonReader.close();
+                    Map<String, Object> userSessionMap = GlobalVariables.getUserSession().getObjectMap();
 
                     // Only display if this is the right exception
-                    if(jsonException.getString("displayMessage").equals(reducedMap.get("displayMessage"))) {
-                        reducedMap.put("documentId", jsonException.getString("documentId"));
-                        reducedMap.put("userEmail", jsonException.getString("userEmail"));
-                        reducedMap.put("principalName", jsonException.getString("principalName"));
-                        reducedMap.put("stackTrace", jsonException.getString("stackTrace"));
-                        reducedMap.put("userName", jsonException.getString("userName"));
-                        reducedMap.put("exceptionMessage", jsonException.getString("exceptionMessage"));
+                    if(userSessionMap.get("EXCEPTION_TIME_STAMP").toString().equals(reducedMap.get(ExceptionIncident.STACK_TRACE))) {
+                        reducedMap.put(ExceptionIncident.DOCUMENT_ID, userSessionMap.get("EXCEPTION_DOCUMENT_ID").toString());
+                        reducedMap.put(ExceptionIncident.USER_EMAIL, userSessionMap.get("EXCEPTION_USER_EMAIL").toString());
+                        reducedMap.put(ExceptionIncident.USER_NAME, userSessionMap.get("EXCEPTION_USER_NAME").toString());
+                        reducedMap.put(ExceptionIncident.UUID, userSessionMap.get("EXCEPTION_UUID").toString());
+                        reducedMap.put(ExceptionIncident.COMPONENT_NAME, userSessionMap.get("EXCEPTION_COMPONENT_NAME").toString());
+                        reducedMap.put(ExceptionIncident.EXCEPTION_REPORT_SUBJECT, userSessionMap.get("EXCEPTION_EXCEPTION_REPORT_SUBJECT").toString());
+                        reducedMap.put(ExceptionIncident.EXCEPTION_MESSAGE, userSessionMap.get("EXCEPTION_EXCEPTION_MESSAGE").toString());
+                        reducedMap.put(ExceptionIncident.STACK_TRACE, userSessionMap.get("EXCEPTION_STACK_TRACE").toString());
+
+                    } else {
+                        reducedMap.put(ExceptionIncident.STACK_TRACE,"Not available.");
                     }
 
-                    KualiExceptionIncident exceptionIncident = reporterService.getExceptionIncident(reducedMap);
+                    KualiExceptionIncident exceptionIncident = reporterService
+                            .getExceptionIncident(reducedMap);
+
                     // Report the incident
                     reporterService.report(exceptionIncident);
                 } else {
@@ -206,26 +215,28 @@ public class KualiExceptionHandlerAction extends Action {
                 exception, properties);
 
         // Add sensitive data to user session
-        Map<String, String> prodProperties = ei.toProperties();
-        JsonObjectBuilder exceptionBuilder = Json.createObjectBuilder();
-        exceptionBuilder.add("displayMessage", ei.getProperty("displayMessage"));
-        exceptionBuilder.add("documentId", ei.getProperty("documentId"));
-        exceptionBuilder.add("userEmail", ei.getProperty("userEmail"));
-        exceptionBuilder.add("principalName", ei.getProperty("principalName"));
-        exceptionBuilder.add("stackTrace", ei.getProperty("stackTrace"));
-        exceptionBuilder.add("userName", ei.getProperty("userName"));
-        exceptionBuilder.add("exceptionMessage", ei.getProperty("exceptionMessage"));
-        JsonObject jsonException = exceptionBuilder.build();
-        GlobalVariables.getUserSession().addObject("exception", jsonException.toString());
+        String exceptionTimeStamp = String.valueOf(System.currentTimeMillis());
+        GlobalVariables.getUserSession().addObject("EXCEPTION_TIME_STAMP", exceptionTimeStamp);
+        GlobalVariables.getUserSession().addObject("EXCEPTION_DOCUMENT_ID", ei.getProperty(ExceptionIncident.DOCUMENT_ID));
+        GlobalVariables.getUserSession().addObject("EXCEPTION_USER_EMAIL", ei.getProperty(ExceptionIncident.USER_EMAIL));
+        GlobalVariables.getUserSession().addObject("EXCEPTION_USER_NAME", ei.getProperty(ExceptionIncident.USER_NAME));
+        GlobalVariables.getUserSession().addObject("EXCEPTION_UUID", ei.getProperty(ExceptionIncident.UUID));
+        GlobalVariables.getUserSession().addObject("EXCEPTION_COMPONENT_NAME", ei.getProperty(ExceptionIncident.COMPONENT_NAME));
+        GlobalVariables.getUserSession().addObject("EXCEPTION_EXCEPTION_REPORT_SUBJECT", ei.getProperty(ExceptionIncident.EXCEPTION_REPORT_SUBJECT));
+        GlobalVariables.getUserSession().addObject("EXCEPTION_EXCEPTION_MESSAGE", ei.getProperty(ExceptionIncident.EXCEPTION_MESSAGE));
+        GlobalVariables.getUserSession().addObject("EXCEPTION_STACK_TRACE", ei.getProperty(ExceptionIncident.STACK_TRACE));
 
         // Hide sensitive data from form in production only
         if(ConfigContext.getCurrentContextConfig().isProductionEnvironment()) {
-            prodProperties.put("documentId", "");
-            prodProperties.put("userEmail", "");
-            prodProperties.put("principalName", "");
-            prodProperties.put("stackTrace", "");
-            prodProperties.put("userName", "");
-            prodProperties.put("exceptionMessage", "");
+            Map<String, String> prodProperties = ei.toProperties();
+            prodProperties.put(ExceptionIncident.DOCUMENT_ID, "");
+            prodProperties.put(ExceptionIncident.USER_EMAIL, "");
+            prodProperties.put(ExceptionIncident.USER_NAME, "");
+            prodProperties.put(ExceptionIncident.UUID, "");
+            prodProperties.put(ExceptionIncident.COMPONENT_NAME, "");
+            prodProperties.put(ExceptionIncident.EXCEPTION_REPORT_SUBJECT, "");
+            prodProperties.put(ExceptionIncident.EXCEPTION_MESSAGE, "");
+            prodProperties.put(ExceptionIncident.STACK_TRACE, exceptionTimeStamp);
             ei = reporterService.getExceptionIncident(
                     null, prodProperties);
         }

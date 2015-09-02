@@ -21,7 +21,7 @@
   <parent>
     <artifactId>rice-middleware</artifactId>
     <groupId>org.kuali.rice</groupId>
-    <version>2.5.4-SNAPSHOT</version>
+    <version>2.5.4-20150902-94ea7c4819</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 

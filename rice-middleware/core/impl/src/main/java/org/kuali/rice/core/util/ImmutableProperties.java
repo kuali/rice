@@ -24,7 +24,12 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * This is a description of what this class does - g don't forget to fill this in. 
+ * This is a wrapper for the Properties class that prevents other objects from making
+ * changes to the properties stored within it by throwing a UnsupportedOperationException.
+ *
+ * Any default Properties in the Properties passed into ImmutableProperties(Properties)} will
+ * not be added to the ImmutableProperties as keySet is used to copy properties rather than
+ * propertyNames.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

@@ -45,13 +45,12 @@ class UberResponsibilityBo extends ResponsibilityBo {
     public String getAssignedToRolesToDisplay() {
         StringBuffer assignedToRolesToDisplay = new StringBuffer()
         for (RoleBo roleImpl: assignedToRoles) {
-            assignedToRolesToDisplay.append(getRoleDetailsToDisplay(roleImpl))
+            assignedToRolesToDisplay.append(roleImpl.getNamespaceCode().trim())
+            .append(" ")
+            .append(roleImpl.getName().trim())
+            .append(KimConstants.KimUIConstants.COMMA_SEPARATOR)
         }
         return StringUtils.chomp(assignedToRolesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR)
-    }
-
-    public String getRoleDetailsToDisplay(RoleBo roleImpl) {
-        return roleImpl.getNamespaceCode().trim() + " " + roleImpl.getName().trim() + KimConstants.KimUIConstants.COMMA_SEPARATOR
     }
 }
 

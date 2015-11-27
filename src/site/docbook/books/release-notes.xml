@@ -27,7 +27,7 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para>This release consists of security and AFT fixes. There are no database changes and it should be a drop-in replacement.</para>
+            <para>This release consists of a single security fix. There are no database changes and it should be a drop-in replacement.</para>
         </section>
         <section>
             <title>Download</title>
@@ -64,13 +64,7 @@
         <para>
           <itemizedlist>
             <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14273'>KULRICE-14273</link>] - Html escape error message and stack trace</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14274'>KULRICE-14274</link>] - Store incident info in user session</para>
-            </listitem>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14255'>KULRICE-14255</link>] - Fix PersonServiceImplTest and RoleRouteModuleTest</para>
+              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14278'>KULRICE-14278</link>] - Update commons-collections to latest</para>
             </listitem>
           </itemizedlist>
         </para>

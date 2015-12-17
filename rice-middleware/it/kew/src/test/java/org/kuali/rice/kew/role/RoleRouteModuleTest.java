@@ -159,7 +159,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         role.setActive(true);
         role.setKimTypeId(kimType.getId());
 
-        String roleMemberId1 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
+        String roleMemberId1 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_MBR_ID_S");
         RoleMemberBo adminRolePrincipal = new RoleMemberBo();
         adminRolePrincipal.setId(roleMemberId1);
         adminRolePrincipal.setRoleId(roleId);
@@ -168,7 +168,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         adminRolePrincipal.setMemberId(adminPrincipal.getPrincipalId());
         adminRolePrincipal.setType( MemberType.PRINCIPAL );
 
-        String roleMemberId2 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
+        String roleMemberId2 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_MBR_ID_S");
         RoleMemberBo user2RolePrincipal = new RoleMemberBo();
         user2RolePrincipal.setId(roleMemberId2);
         user2RolePrincipal.setRoleId(roleId);
@@ -177,7 +177,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         user2RolePrincipal.setMemberId(user2Principal.getPrincipalId());
         user2RolePrincipal.setType( MemberType.PRINCIPAL );
 
-        String roleMemberId3 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
+        String roleMemberId3 = "" + KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_MBR_ID_S");
         RoleMemberBo user1RolePrincipal = new RoleMemberBo();
         user1RolePrincipal.setId(roleMemberId3);
         user1RolePrincipal.setRoleId(roleId);

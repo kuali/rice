@@ -15,26 +15,33 @@
  */
 package org.kuali.rice.edl.impl.components;
 
+import java.io.StringWriter;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
+
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.edl.impl.EDLContext;
 import org.kuali.rice.edl.impl.EDLModelComponent;
-import org.kuali.rice.kew.api.KEWPropertyConstants;
 import org.kuali.rice.kew.api.WorkflowRuntimeException;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpressionException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.StringTokenizer;
 
 public class PerformLookupComponent implements EDLModelComponent {
 
@@ -56,7 +63,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 		
 		Properties parameters = new Properties();
 		parameters.put(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, getBusinessObjectClassName(dom, configElement, edlContext));
-		parameters.put(KEWPropertyConstants.DOC_FORM_KEY, edlContext.getUserSession().addObjectWithGeneratedKey(dom));
+		parameters.put(KRADConstants.DOC_FORM_KEY, edlContext.getUserSession().addObjectWithGeneratedKey(convertDocumentToSerializable(dom)));
 		parameters.put(KRADConstants.RETURN_LOCATION_PARAMETER, constructReturnUrl(dom, configElement, edlContext));
 		parameters.putAll(getLookupParameters(dom, configElement, edlContext));
 		parameters.put(KRADConstants.CONVERSION_FIELDS_PARAMETER, getFieldConversions(dom, configElement, edlContext));
@@ -164,5 +171,19 @@ public class PerformLookupComponent implements EDLModelComponent {
 		
 		String url = UrlFactory.parameterizeUrl(baseUrl.toString(), parameters);
 		return url;
+	}
+	
+	protected String convertDocumentToSerializable(Document document) {
+		try {
+			DOMSource domSource = new DOMSource(document);
+			StringWriter writer = new StringWriter();
+			StreamResult result = new StreamResult(writer);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.transform(domSource, result);
+			return writer.toString();
+		} catch (TransformerException e) {
+			throw new WorkflowRuntimeException("Caught exception transforming document into string for session serialization", e);
+		}
 	}
 }

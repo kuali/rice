@@ -208,6 +208,7 @@
     <plugin.gmaven.version>1.5</plugin.gmaven.version>
     <plugin.http.version>1.0.5</plugin.http.version>
     <plugin.jetty.version>9.2.1.v20140609</plugin.jetty.version>
+    <plugin.maven-eclipse.version>2.8</plugin.maven-eclipse.version>
     <plugin.jmeter.version>1.8.1</plugin.jmeter.version>
     <plugin.saucelabs.connect.version>1.0.19</plugin.saucelabs.connect.version>
     <plugin.selenium.version>2.3</plugin.selenium.version>
@@ -279,6 +280,40 @@
   </properties>
 
   <profiles>
+    <!-- this profile ensures that when building in eclipse with m2e that the groovy project nature and source folders are added -->
+    <profile>
+      <id>m2e</id>
+      <activation>      
+        <property>
+          <name>m2e.version</name>
+        </property>
+        <file>
+          <exists>src/test/groovy</exists>
+        </file>
+      </activation>
+      <build>        
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <compilerId>groovy-eclipse-compiler</compilerId>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>2.9.2-01</version>
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-batch</artifactId>
+                <version>2.4.3-01</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>    
     <!-- This profile will be used unless -DskipOracleProfile is passed as a parameter -->
     <profile>
       <id>usingOracle</id>
@@ -722,6 +757,11 @@
     </testResources>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>${plugin.maven-eclipse.version}</version>
+        </plugin>
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>

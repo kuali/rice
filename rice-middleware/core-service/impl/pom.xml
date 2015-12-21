@@ -146,6 +146,12 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
     </dependency>
+    
+    <!-- provided-scoped dependencies -->
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+    </dependency>
 
     <!-- test-scoped dependencies: -->
 

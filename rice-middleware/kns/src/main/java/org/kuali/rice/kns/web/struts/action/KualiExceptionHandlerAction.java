@@ -15,6 +15,14 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.Action;
@@ -31,12 +39,6 @@ import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.service.KualiExceptionIncidentService;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This is the struts action class for handling the exception for Kuali
@@ -131,7 +133,7 @@ public class KualiExceptionHandlerAction extends Action {
                     }
 
                     // Sensitive data stored in user session
-                    Map<String, Object> userSessionMap = GlobalVariables.getUserSession().getObjectMap();
+                    Map<String, Serializable> userSessionMap = GlobalVariables.getUserSession().getObjectMap();
 
                     // Only display if this is the right exception
                     if(userSessionMap.get("EXCEPTION_TIME_STAMP").toString().equals(reducedMap.get(ExceptionIncident.STACK_TRACE))) {

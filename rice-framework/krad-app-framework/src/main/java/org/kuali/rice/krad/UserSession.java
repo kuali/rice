@@ -37,12 +37,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class UserSession implements Serializable {
     private static final long serialVersionUID = 4532616762540067557L;
 
-    private static final Object NULL_VALUE = new Object();
+    private static final String NULL_VALUE = "NULL";
 
     private Person person;
     private Person backdoorUser;
     private AtomicInteger nextObjectKey;
-    private ConcurrentHashMap<String, Object> objectMap;
+    private ConcurrentHashMap<String, Serializable> objectMap;
     private String kualiSessionId;
 
     /**
@@ -70,7 +70,7 @@ public class UserSession implements Serializable {
     public UserSession(String principalName) {
         initPerson(principalName);
         this.nextObjectKey = new AtomicInteger(0);
-        this.objectMap = new ConcurrentHashMap<String, Object>();
+        this.objectMap = new ConcurrentHashMap<String, Serializable>();
     }
 
     /**
@@ -216,7 +216,7 @@ public class UserSession implements Serializable {
      *
      * @param object
      */
-    public String addObjectWithGeneratedKey(Object object) {
+    public String addObjectWithGeneratedKey(Serializable object) {
         String objectKey = nextObjectKey.incrementAndGet() + "";
         addObject(objectKey, object);
         return objectKey;
@@ -229,7 +229,7 @@ public class UserSession implements Serializable {
      * @param key the mapping key
      * @param object the object to store
      */
-    public void addObject(String key, Object object) {
+    public void addObject(String key, Serializable object) {
         if (object != null) {
             objectMap.put(key, object);
         } else {
@@ -246,7 +246,7 @@ public class UserSession implements Serializable {
      * @param key the mapping key
      * @param object the object to store
      */
-    public void addObjectIfAbsent(String key, Object object) {
+    public void addObjectIfAbsent(String key, Serializable object) {
         if (object != null) {
             objectMap.putIfAbsent(key, object);
         } else {
@@ -400,7 +400,7 @@ public class UserSession implements Serializable {
     /**
      * retrieves an unmodifiable view of the objectMap.
      */
-    public Map<String, Object> getObjectMap() {
+    public Map<String, Serializable> getObjectMap() {
         return Collections.unmodifiableMap(this.objectMap);
     }
 
@@ -408,6 +408,6 @@ public class UserSession implements Serializable {
      * clear the objectMap
      */
     public void clearObjectMap() {
-        this.objectMap = new ConcurrentHashMap<String, Object>();
+        this.objectMap = new ConcurrentHashMap<String, Serializable>();
     }
 }

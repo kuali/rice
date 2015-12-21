@@ -18,7 +18,6 @@ package org.kuali.rice.kew.notes.service.impl;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.logging.Logger;
 
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.AttachmentService;
@@ -39,7 +38,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 	private static final String ATTACHMENT_PREPEND = "wf_att_";
 	
 	private String attachmentDir;
-
+	
 	public void persistAttachedFileAndSetAttachmentBusinessObjectValue(Attachment attachment) throws Exception {
 		createStorageDirIfNecessary();
 		String uniqueId = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();

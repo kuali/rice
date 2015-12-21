@@ -96,7 +96,7 @@ public class NoteServiceImpl implements NoteService {
 	}
 	
 	public Resource findAttachmentResource(Attachment attachment) {
-		return new FileSystemResource(findAttachmentFile(attachment));
+		return attachmentService.findAttachedResource(attachment);
 	}
 
 	public Attachment findAttachment(String attachmentId) {

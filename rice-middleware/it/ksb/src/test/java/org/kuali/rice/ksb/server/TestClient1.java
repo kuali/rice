@@ -20,11 +20,15 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
-import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.api.config.property.Config;
@@ -80,20 +84,31 @@ public class TestClient1 extends BaseTestServer {
 
         Server server = new Server();
 
-        SelectChannelConnector connector0 = new SelectChannelConnector();
-        connector0.setPort(configConstants.SERVER_HTTP_PORT);
-        connector0.setMaxIdleTime(30000);
-        connector0.setRequestHeaderSize(8192);
+        HttpConfiguration httpConfig = new HttpConfiguration();
+        httpConfig.setSecureScheme("https");
+        httpConfig.setSecurePort(configConstants.SERVER_HTTPS_PORT);
+        httpConfig.setOutputBufferSize(32768);
+        
+        ServerConnector http = new ServerConnector(server, new HttpConnectionFactory(httpConfig));
+        http.setPort(configConstants.SERVER_HTTP_PORT);
+        http.setIdleTimeout(30000);
+        
+        SslContextFactory sslContextFactory = new SslContextFactory();
+        sslContextFactory.setKeyStorePath(configConstants.KEYSTORE_PATH);
+        sslContextFactory.setKeyStorePassword(configConstants.KEYSTORE_PASS);
+        sslContextFactory.setKeyManagerPassword(configConstants.KEYSTORE_PASS);
+        
+        HttpConfiguration httpsConfig = new HttpConfiguration(httpConfig);
+        httpsConfig.addCustomizer(new SecureRequestCustomizer());
+        
+        ServerConnector https = new ServerConnector(server,
+        		new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
+        		new HttpConnectionFactory(httpsConfig));
+        https.setPort(configConstants.SERVER_HTTPS_PORT);
+        https.setIdleTimeout(500000);
+                
 
-        SslSelectChannelConnector ssl_connector = new SslSelectChannelConnector();
-
-        ssl_connector.setPort(configConstants.SERVER_HTTPS_PORT);
-        SslContextFactory cf = ssl_connector.getSslContextFactory();
-        cf.setKeyStorePath(configConstants.KEYSTORE_PATH);
-        cf.setKeyStorePassword(configConstants.KEYSTORE_PASS);
-        cf.setKeyManagerPassword(configConstants.KEYSTORE_PASS);
-
-        server.setConnectors(new Connector[]{connector0, ssl_connector});
+        server.setConnectors(new Connector[]{ http, https });
 
         URL webRoot = getClass().getClassLoader().getResource(configConstants.WEB_ROOT);
         String location = webRoot.getPath();

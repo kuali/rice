@@ -1,19 +1,22 @@
 package org.kuali.rice.kew.notes.service.impl;
 
 import java.io.File;
+import java.util.UUID;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.AttachmentService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.WritableResource;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 
 /**
  * An {@link AttachmentService} implementation which utilizes AWS Simple Storage Service.
@@ -44,14 +47,19 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService, Initial
 
 	@Override
 	public void persistAttachedFileAndSetAttachmentBusinessObjectValue(Attachment attachment) throws Exception {
-		attachment.setFileLoc(s3Url(attachment));		
-		WritableResource resource = (WritableResource)findAttachedResource(attachment);
-		IOUtils.copy(attachment.getAttachedObject(), resource.getOutputStream());		
+		if (attachment.getFileLoc() == null) {
+			String s3Url = generateS3Url(attachment);
+			attachment.setFileLoc(s3Url);
+		}
+		TransferManager manager = new TransferManager(this.amazonS3);
+		ObjectMetadata metadata = new ObjectMetadata();
+		Upload upload = manager.upload(this.bucketName, parseObjectKey(attachment.getFileLoc()), attachment.getAttachedObject(), metadata);
+		upload.waitForCompletion();
 	}
 
 	@Override
 	public File findAttachedFile(Attachment attachment) throws Exception {
-		return findAttachedResource(attachment).getFile();
+		throw new UnsupportedOperationException("S3 Attachment Service implementation cannot provide a file, please you \"findAttachedResource\" instead.");
 	}
 	
 	@Override
@@ -67,28 +75,25 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService, Initial
 
 	@Override
 	public void deleteAttachedFile(Attachment attachment) throws Exception {
-		amazonS3.deleteObject(new DeleteObjectRequest(this.bucketName, generateObjectName(attachment)));
+		amazonS3.deleteObject(new DeleteObjectRequest(this.bucketName, parseObjectKey(attachment.getFileLoc())));
 	}
 		
-	private String s3Url(Attachment attachment) {
-		if (StringUtils.isBlank(this.bucketName)) {
-			throw new NullPointerException("No bucket name available.");
-		}
-		if (StringUtils.isBlank(attachment.getAttachmentId())) {
-			throw new IllegalArgumentException("Attachment id cannot be null.");
-		}
-
-		return "s3://" + this.bucketName + "/" + generateObjectName(attachment);
+	private String generateS3Url(Attachment attachment) {
+		return generateS3Prefix() + folderName + "/" + UUID.randomUUID();		
 	}
 	
-	private String generateObjectName(Attachment attachment) {
-		if (StringUtils.isBlank(attachment.getAttachmentId())) {
-			throw new IllegalStateException("Attachment must have an attachment ID in order to receieve a file name.");
-		}
-		return this.folderName + "/" + attachment.getAttachmentId();
+	private String generateS3Prefix() {
+		return "s3://" + this.bucketName + "/";
 	}
-
+	
+	private String parseObjectKey(String s3Url) {
+		String prefix = generateS3Prefix();
+		String objectKey = s3Url.substring(prefix.length());
+		return objectKey;
+	}
+	
 	@Required
+	@Autowired
 	public void setResourceLoader(ResourceLoader resourceLoader) {
 		this.resourceLoader = resourceLoader;
 	}
@@ -104,6 +109,7 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService, Initial
 	}
 
 	@Required
+	@Autowired
 	public void setAmazonS3(AmazonS3 amazonS3) {
 		this.amazonS3 = amazonS3;
 	}

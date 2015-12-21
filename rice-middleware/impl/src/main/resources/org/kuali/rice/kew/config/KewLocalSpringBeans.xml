@@ -26,6 +26,8 @@
   <import resource="classpath:org/kuali/rice/kew/config/KewEmbeddedSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewLocalServiceBusSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kew/config/_KewJpaSpringBeans.xml"/>
+  <import resource="classpath:org/kuali/rice/kew/config/_KewLocalSpringBeans_AttachmentService_File.xml"/>
+  <import resource="classpath:org/kuali/rice/kew/config/_KewLocalSpringBeans_AttachmentService_S3.xml"/>
 
   <!-- the distributed cache manager that calls into the kewCacheAdminService on the ksb -->
   <bean id="kewDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
@@ -95,11 +97,7 @@
   <!--  NoteService -->
   <bean id="enNoteService" class="org.kuali.rice.kew.notes.service.impl.NoteServiceImpl">
     <property name="noteDAO" ref="enNoteDAO"/>
-    <property name="attachmentService">
-      <bean class="org.kuali.rice.kew.notes.service.impl.AttachmentServiceImpl">
-        <property name="attachmentDir" value="${attachment.dir.location}"/>
-      </bean>
-    </property>
+    <property name="attachmentService" ref="rice.kew.attachmentService"/>
     <property name="dataObjectService" ref="dataObjectService"/>
   </bean>
 

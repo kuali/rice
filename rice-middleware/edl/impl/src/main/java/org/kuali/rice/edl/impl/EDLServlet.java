@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.edl.impl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -22,6 +23,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -35,6 +39,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -85,8 +90,7 @@ public class EDLServlet extends HttpServlet {
 		        if (documentId == null) {
 		        	String docFormKey = requestParser.getParameterValue(KRADConstants.DOC_FORM_KEY);
 		        	if (docFormKey != null) {
-		        		Document document = (Document) GlobalVariables.getUserSession().retrieveObject(docFormKey);
-		        		Element documentState = EDLXmlUtils.getDocumentStateElement(document);
+		        		Element documentState = EDLXmlUtils.getDocumentStateElement(getDocumentFromSession(docFormKey));
 		        		documentId = EDLXmlUtils.getChildElementTextValue(documentState, "docId");
 		        		requestParser.setAttribute(KRADConstants.DOC_FORM_KEY, docFormKey);
 		        	}
@@ -127,6 +131,19 @@ public class EDLServlet extends HttpServlet {
 			IncidentReportUtils.populateRequestForIncidentReport(exception, "" + documentId, "eDoc Lite", request);
 	        RequestDispatcher rd = getServletContext().getRequestDispatcher(request.getServletPath() + "/../../kr/kualiExceptionIncidentReport.do");
 	        rd.forward(request, response);
+	}
+	
+	private Document getDocumentFromSession(String docFormKey) {
+		try {
+	    	String serializedDocument = (String)GlobalVariables.getUserSession().retrieveObject(docFormKey);
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+		    factory.setNamespaceAware(true);
+		    DocumentBuilder builder = factory.newDocumentBuilder();
+			return builder.parse(new ByteArrayInputStream(serializedDocument.getBytes()));
+		} catch (SAXException | IOException | ParserConfigurationException e) {
+			throw new WorkflowRuntimeException("Caught exception while deserializing document from session", e);
+		}
 	}
 
 }

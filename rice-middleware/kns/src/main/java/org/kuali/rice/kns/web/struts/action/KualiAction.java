@@ -827,7 +827,7 @@ public abstract class KualiAction extends DispatchAction {
         
         // KULRICE-8077: PO Quote Limitation of Only 9 Vendors
         String questionTextAttributeName = KRADConstants.QUESTION_TEXT_ATTRIBUTE_NAME + questionId;
-        GlobalVariables.getUserSession().addObject(questionTextAttributeName, (Object)questionText);
+        GlobalVariables.getUserSession().addObject(questionTextAttributeName, questionText);
 
         String questionUrl = UrlFactory.parameterizeUrl(getApplicationBaseUrl() + "/kr/" + KRADConstants.QUESTION_ACTION, parameters);
         return new ActionForward(questionUrl, true);

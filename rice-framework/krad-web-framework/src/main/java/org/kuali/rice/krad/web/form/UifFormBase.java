@@ -208,6 +208,7 @@ public class UifFormBase implements ViewModel {
     protected Map<String, Boolean> actionFlags;
     protected Map<String, Boolean> editModes;
 
+    @SessionTransient
     protected HttpServletRequest request;
 
     private Object dialogDataObject;

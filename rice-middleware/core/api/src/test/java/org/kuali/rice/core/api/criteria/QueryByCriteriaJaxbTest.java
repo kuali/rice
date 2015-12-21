@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,6 +62,7 @@ public class QueryByCriteriaJaxbTest {
         predicateSamplesMap.put(EqualPredicate.class, PredicateFactory.equal("foo", "val"));
         predicateSamplesMap.put(EqualIgnoreCasePredicate.class, PredicateFactory.equalIgnoreCase("foo", "val"));
         predicateSamplesMap.put(ExistsSubQueryPredicate.class, PredicateFactory.existsSubquery("SubQueryDataObjectClass", PredicateFactory.equalsProperty("subQueryProp", "ParentQueryDataObjectClass", "parentProp")));
+        predicateSamplesMap.put(NotExistsSubQueryPredicate.class, PredicateFactory.notExistsSubquery("SubQueryDataObjectClass2", PredicateFactory.equalsProperty("subQueryProp", "ParentQueryDataObjectClass", "parentProp")));
         predicateSamplesMap.put(GreaterThanPredicate.class, PredicateFactory.greaterThan("foo", 10));
         predicateSamplesMap.put(GreaterThanOrEqualPredicate.class, PredicateFactory.greaterThanOrEqual("foo", 10));
         predicateSamplesMap.put(InPredicate.class, PredicateFactory.in("foo", "val"));
@@ -88,7 +90,7 @@ public class QueryByCriteriaJaxbTest {
         for (Class<?> discoveredPredicateClass : discoveredPredicateClasses) {
             // create a query containing a sample of this predicate type
             Predicate sample = predicateSamplesMap.get(discoveredPredicateClass);
-            LOG.debug("Predicate:");
+            LOG.debug("Predicate for " + discoveredPredicateClass + ": ");
             LOG.debug( sample.toString() );
 
             QueryByCriteria queryByCriteria = wrapInQueryByCriteria(sample);
@@ -129,8 +131,8 @@ public class QueryByCriteriaJaxbTest {
 
         String lowerCaseXml = xml.toLowerCase(); // lower case makes searching simpler
 
-        Assert.assertEquals("unmarshalled XML produces a non-equivalent object", queryByCriteria, unMarshall(xml));
-
+        Assert.assertEquals("unmarshalled XML produces a non-equivalent object", queryByCriteria, unMarshall(xml));      
+        
         for (Class<?> discoveredPredicateClass : discoveredPredicateClasses) {
             String className = discoveredPredicateClass.getSimpleName();
             String shortenedClassName = className.substring(0, className.length() - "predicate".length());
@@ -383,17 +385,16 @@ public class QueryByCriteriaJaxbTest {
      * @param discoveredPredicateClasses
      * @return
      */
-    private Predicate buildSampleCompositePredicate(ArrayList<Class<?>> discoveredPredicateClasses) {// add samples of all simple predicate types to our argument array
-        Predicate[] predicateArray = new Predicate[discoveredPredicateClasses.size()];
+    private Predicate buildSampleCompositePredicate(List<Class<?>> discoveredPredicateClasses) {// add samples of all simple predicate types to our argument array
+        List<Predicate> predicates = new ArrayList<>();
 
-        for (int i=0; i<predicateArray.length; i++) {
-            Class<?> discoveredPredicateClass = discoveredPredicateClasses.get(i);
+        for (Class<?> discoveredPredicateClass : discoveredPredicateClasses) {
             Predicate p = predicateSamplesMap.get(discoveredPredicateClass);
             Assert.assertNotNull("no sample predicate for " + discoveredPredicateClass, p);
-            predicateArray[i] = p;
+            predicates.add(p);
         }
 
-        return PredicateFactory.and(predicateArray);
+        return PredicateFactory.and(predicates.toArray(new Predicate[predicates.size()]));
     }
 
     /**

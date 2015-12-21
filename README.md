@@ -69,9 +69,6 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
     <param name="datasource.pool.maxOpenPreparedStatements">500</param>
     <param name="datasource.platform">${datasource.platform.MySQL}</param>
     <param name="datasource.ojb.platform">MySQL</param>
-
-    <param name="rice.cxf.client.connectionTimeout">0</param>
-    <param name="rice.cxf.client.receiveTimeout">20000</param>
     
     <param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter</param>
     <param name="filtermapping.login.1">/*</param>
@@ -113,7 +110,5 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
 * You will now have a mysql database for purposes of continuous integration created with the name, username, and password of "RICECI"
 * Next, run "prepare-unit-test-environment" from the Ant build.xml file in the root of the project
   * Note that if you already have a unit test config file in place this will fail
-* 
-
- 
-   
+* To run the integration tests from the command line, execute the following:
+```mvn -Pitests verify```

@@ -5,3 +5,9 @@ overlays/
 *.iml
 rice-framework/krad-web/src/main/webapp/krad/min
 velocity.log
+
+
+# Eclipse Metadata
+.settings
+.classpath
+.project

@@ -26,6 +26,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.springframework.core.io.Resource;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -78,7 +79,7 @@ public class AttachmentServlet extends HttpServlet {
 				
 				NoteService noteService = KEWServiceLocator.getNoteService(); 
 				Attachment attachment = noteService.findAttachment(attachmentId);
-				File file = noteService.findAttachmentFile(attachment);
+				Resource attachmentResource = noteService.findAttachmentResource(attachment);
 				
 				DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(noteService.getNoteByNoteId(attachment.getNoteId()).getDocumentId());
 				
@@ -90,11 +91,10 @@ public class AttachmentServlet extends HttpServlet {
                         customAttributeAuthorized = routeHeader.getCustomNoteAttribute().isAuthorizedToRetrieveAttachments();
                     }                    
                     if(!secureChecks || (authorized && customAttributeAuthorized)){//If this user can see this document, they can get the attachment(s)						
-                    	response.setContentLength((int)file.length());
+                    	response.setContentLength((int)attachmentResource.contentLength());
 						response.setContentType(attachment.getMimeType());
 						response.setHeader("Content-disposition", "attachment; filename=\"" + attachment.getFileName() + "\"");
-						FileInputStream attachmentFile = new FileInputStream(file);
-						BufferedInputStream inputStream = new BufferedInputStream(attachmentFile);
+						BufferedInputStream inputStream = new BufferedInputStream(attachmentResource.getInputStream());
 						OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
 
 						try {

@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.AttachmentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 
 
 /**
@@ -73,6 +75,20 @@ public class AttachmentServiceImpl implements AttachmentService {
 		return new File(attachment.getFileLoc());
 	}
 	
+	
+	
+	@Override
+	public Resource findAttachedResource(Attachment attachment) {
+		try {
+			return new UrlResource(findAttachedFile(attachment).toURI());
+		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				throw (RuntimeException)e;
+			}
+			throw new RuntimeException("Failed to converted attachment file to a Resource", e);
+		}
+	}
+
 	public void deleteAttachedFile(Attachment attachment) throws Exception {
 		File file = new File(attachment.getFileLoc());
 		if (! file.delete()) {

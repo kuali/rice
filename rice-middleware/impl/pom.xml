@@ -316,6 +316,18 @@
       <artifactId>spring-security-core</artifactId>
       <scope>runtime</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-aws-context</artifactId>
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>            
+    </dependency>
 
     <dependency>
       <groupId>javax.transaction</groupId>

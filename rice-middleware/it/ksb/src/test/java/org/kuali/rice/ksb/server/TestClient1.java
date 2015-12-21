@@ -15,15 +15,17 @@
  */
 package org.kuali.rice.ksb.server;
 
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -32,10 +34,6 @@ import org.kuali.rice.core.api.security.credentials.CredentialsSource;
 import org.kuali.rice.core.api.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.ksb.BaseTestServer;
 import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentialsSource;
-
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
 
 public class TestClient1 extends BaseTestServer {
 
@@ -91,7 +89,7 @@ public class TestClient1 extends BaseTestServer {
 
         ssl_connector.setPort(configConstants.SERVER_HTTPS_PORT);
         SslContextFactory cf = ssl_connector.getSslContextFactory();
-        cf.setKeyStore(configConstants.KEYSTORE_PATH);
+        cf.setKeyStorePath(configConstants.KEYSTORE_PATH);
         cf.setKeyStorePassword(configConstants.KEYSTORE_PASS);
         cf.setKeyManagerPassword(configConstants.KEYSTORE_PASS);
 

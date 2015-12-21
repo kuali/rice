@@ -26,6 +26,8 @@ import org.kuali.rice.kew.notes.service.AttachmentService;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 
 public class NoteServiceImpl implements NoteService {
 
@@ -91,6 +93,10 @@ public class NoteServiceImpl implements NoteService {
 			throw new RuntimeException(e);
 		}
 
+	}
+	
+	public Resource findAttachmentResource(Attachment attachment) {
+		return new FileSystemResource(findAttachmentFile(attachment));
 	}
 
 	public Attachment findAttachment(String attachmentId) {

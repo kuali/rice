@@ -54,7 +54,6 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
 * Create the file at that location using the following template:
 ```
 <config>
-
     <param name="appserver.url">http://localhost:8080</param>
     <param name="app.context.name">rice-standalone</param>
     
@@ -68,6 +67,8 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
     <param name="datasource.driver.name">${datasource.driver.name.MySQL}</param>
     <param name="datasource.pool.minSize">3</param>
     <param name="datasource.pool.maxOpenPreparedStatements">500</param>
+    <param name="datasource.platform">${datasource.platform.MySQL}</param>
+    <param name="datasource.ojb.platform">MySQL</param>
 
     <param name="rice.cxf.client.connectionTimeout">0</param>
     <param name="rice.cxf.client.receiveTimeout">20000</param>
@@ -80,12 +81,25 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
 
 ### Development in Eclipse
 
-* Download and install the latest version of Eclise for J2EE developers
+* Download and install the latest version of Eclipse for J2EE developers
 * Increase the max memory used when launching eclipse from 1024 (the default) to at least 2048.
-* Install the Groovy eclipse and m2e connector plugins from the Eclipse Marketplace
-  * [](http://dist.springsource.org/snapshot/GRECLIPSE/e4.5/)
+* Install the Groovy eclipse and m2e connector plugins from the following url in the Eclipse Marketplace: http://dist.springsource.org/snapshot/GRECLIPSE/e4.5/
 * Disable all validators globally in Eclipse
+* Add an Ant property pointing to your Eclipse workspace
+  * Eclipse -> Preferences -> Ant -> Runtime -> Properties -> Add Property
+  * Set name as "eclipse.workspace" and value as "${workspace_loc}"
 * File -> Import.. -> Existing Maven Projects
 * Then browse the folder where you cloned the repo and ensure that all of the various pom.xml modules are selected and click "Finish"
-* After approximately one year of waiting, the build should complete and hopefully there will be no errors 
+* After approximately one year of waiting, the build should complete and hopefully there will be no errors
+
+### Running Rice Standalone in Eclipse
+
+* In the Servers tab, add a new Server (preferably Tomcat 8)
+* Drag-and-drop the "rice-standalone" to the new tomcat server in the servers view, this will publish it
+* Because of issues with m2e-wtp plugin (maven and web tools integration), the overlays and filtering on the rice-standalone module don't work :( We have created an Ant target in the root of the project that can be run that will deploy the proper files. It is called "m2e-wtp-deploy-standalone", execute that target via Eclipase and it will copy the appropriate files
+* Right-click on the server and start it
+* Rice Standalone should (hopefully) start up successfully
+* Go to http://localhost:8080/rice-standalone and you should see the Kuali Rice "portal" 
+
+ 
    

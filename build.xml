@@ -550,6 +550,14 @@ in order to package the various Rice datasets.
 		<fail if="common-test-config.exists" message="The file ${common-test-config} already exists!  You must delete it first if you want it to be recreated."/>
 		<copy file="config/templates/common-test-config.template.xml" tofile="${common-test-config}"/>
 	</target>
+	
+	<target name="m2e-wtp-deploy-standalone" depends="init" description="Copy rice standalone expanded war files to wtp directory">
+		<fail unless="eclipse.workspace" message="Please ensure that you have added a property named eclipse.workspace that points to your eclipse workspace location via the Eclipse -> Preferences -> Ant -> Runtime"/>
+		<echo message="Using eclipse workspace ${eclipse.workspace}"/>
+		<copy todir="${eclipse.workspace}/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/rice-standalone" overwrite="true">
+		  <fileset dir="rice-middleware/standalone/target/rice-standalone-${maven.project.version}"/>
+		</copy>
+    </target>
 
 	<macrodef name="maven">
 		<attribute name="goals" />

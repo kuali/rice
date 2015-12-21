@@ -39,6 +39,7 @@
     <kuali.generate.reports>false</kuali.generate.reports>
     <saucelabs.connect.includes>**/*Aft.java</saucelabs.connect.includes>
     <stests.includes>**/*Aft.java</stests.includes>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 
   <build>

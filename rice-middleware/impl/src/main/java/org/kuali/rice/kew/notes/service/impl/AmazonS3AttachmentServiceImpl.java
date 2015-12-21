@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.AttachmentService;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -24,12 +25,23 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
  * the attachments managed by this service.
  * 
  */
-public class AmazonS3AttachmentServiceImpl implements AttachmentService {
+public class AmazonS3AttachmentServiceImpl implements AttachmentService, InitializingBean {
 
 	private ResourceLoader resourceLoader;
 	private String bucketName;
+	private String folderName;
 	private AmazonS3 amazonS3;
 	
+	@Override
+	public void afterPropertiesSet() {
+		if (StringUtils.isBlank(folderName)) {
+			throw new IllegalStateException("S3 attachment service must be configured with a non-blank folder name");
+		}
+		if (StringUtils.isBlank(bucketName)) {
+			throw new IllegalStateException("S3 attachment service must be configured with a non-blank bucket name");
+		}		
+	}
+
 	@Override
 	public void persistAttachedFileAndSetAttachmentBusinessObjectValue(Attachment attachment) throws Exception {
 		attachment.setFileLoc(s3Url(attachment));		
@@ -55,7 +67,7 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
 
 	@Override
 	public void deleteAttachedFile(Attachment attachment) throws Exception {
-		amazonS3.deleteObject(new DeleteObjectRequest(this.bucketName, attachment.getAttachmentId()));
+		amazonS3.deleteObject(new DeleteObjectRequest(this.bucketName, generateObjectName(attachment)));
 	}
 		
 	private String s3Url(Attachment attachment) {
@@ -66,7 +78,14 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
 			throw new IllegalArgumentException("Attachment id cannot be null.");
 		}
 
-		return "s3://" + this.bucketName + "/" + attachment.getAttachmentId();
+		return "s3://" + this.bucketName + "/" + generateObjectName(attachment);
+	}
+	
+	private String generateObjectName(Attachment attachment) {
+		if (StringUtils.isBlank(attachment.getAttachmentId())) {
+			throw new IllegalStateException("Attachment must have an attachment ID in order to receieve a file name.");
+		}
+		return this.folderName + "/" + attachment.getAttachmentId();
 	}
 
 	@Required
@@ -74,6 +93,10 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
 		this.resourceLoader = resourceLoader;
 	}
 
+	@Required
+	public void setFolderName(String folderName) {
+		this.folderName = folderName;
+	}
 
 	@Required
 	public void setBucketName(String bucketName) {

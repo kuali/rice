@@ -99,7 +99,21 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
 * Because of issues with m2e-wtp plugin (maven and web tools integration), the overlays and filtering on the rice-standalone module don't work :( We have created an Ant target in the root of the project that can be run that will deploy the proper files. It is called "m2e-wtp-deploy-standalone", execute that target via Eclipase and it will copy the appropriate files
 * Right-click on the server and start it
 * Rice Standalone should (hopefully) start up successfully
-* Go to http://localhost:8080/rice-standalone and you should see the Kuali Rice "portal" 
+* Go to http://localhost:8080/rice-standalone and you should see the Kuali Rice "portal"
+
+### Setting up Dev Environment for Running Integration Tests
+
+* Change directory to `db/impex/master` in directory where you cloned the repository
+* Run the following to ensure that you can connect to your mysql instance
+  * ```mvn validate -Pdb,mysql -Dimpex.dba.password=[root password]```
+  * if you have no root passwords use `NONE` for the password
+  * if this does not work, make sure your MySQL database is up and running and try again
+* Execute the following from the root of your project:
+```mvn clean install -Pdb,mysql,integration-test -Dimpex.dba.password=[root password] -Dimpex.username=RICECI```
+* You will now have a mysql database for purposes of continuous integration created with the name, username, and password of "RICECI"
+* Next, run "prepare-unit-test-environment" from the Ant build.xml file in the root of the project
+  * Note that if you already have a unit test config file in place this will fail
+* 
 
  
    

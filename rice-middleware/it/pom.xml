@@ -42,6 +42,7 @@
     <module>remote</module>
     <module>vc</module>
     <module>rice-it-kew-s3</module>
+    <module>rice-it-krad-s3</module>
   </modules>
   <properties>
     <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->

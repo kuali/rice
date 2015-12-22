@@ -129,7 +129,12 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
 
     @Override
 	public void moveAttachmentWherePending(Note note) {
-    	// do nothing, we are not leveraging "pending" directories with the S3 implementation
+    	// do nothing, we are not leveraging "pending" directories within the S3 implementation
+    }
+    
+    @Override
+	public void deletePendingAttachmentsModifiedBefore(long modificationTime) {        
+    	// do nothing, we are not leveraging "pending" directories within the S3 implementation
     }
 
     @Override
@@ -143,14 +148,6 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
     @Override
 	public InputStream retrieveAttachmentContents(Attachment attachment) throws IOException {
     	return findAttachmentResource(s3Url(attachment.getAttachmentIdentifier())).getInputStream();
-    }
-
-    /**
-     * @see org.kuali.rice.krad.service.AttachmentService#deletePendingAttachmentsModifiedBefore(long)
-     */
-    @Override
-	public void deletePendingAttachmentsModifiedBefore(long modificationTime) {        
-    	throw new UnsupportedOperationException("S3 implementation of AttachmentService does not support deletePendingAttachmentsModifiedBefore");
     }
     
     private String s3Url(String uniqueFileNameGuid) {

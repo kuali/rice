@@ -30,12 +30,149 @@
     <maven.skip.packaging>false</maven.skip.packaging>
   </properties>
 
+  <build>
+    <plugins>
+      <plugin>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>integration-test</id>
+              <phase>${failsafe.phase}</phase>
+              <goals>
+                <goal>integration-test</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <systemPropertyVariables>
+              <remote.public.url>http://localhost:8080/kr-dev/</remote.public.url>
+            </systemPropertyVariables>
+            <skip>${maven.failsafe.skip}</skip>
+            <additionalClasspathElements>
+              <additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
+              <additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
+            </additionalClasspathElements>
+            <useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
+            <useFile>false</useFile>
+            <failIfNoTests>false</failIfNoTests>
+            <includes>
+              <include>${maven.failsafe.includes}</include>
+              <includesFile>${maven.failsafe.includes.file}</includesFile>
+            </includes>
+            <excludes>
+              <exclude>${maven.failsafe.excludes}</exclude>
+              <excludesFile>${maven.failsafe.excludes.file}</excludesFile>
+            </excludes>
+            <forkMode>${maven.failsafe.forkmode}</forkMode>
+            <forkedProcessTimeoutInSeconds>${maven.failsafe.forkedProcessTimeoutInSeconds}
+            </forkedProcessTimeoutInSeconds>
+            <reportFormat>plain</reportFormat>
+            <argLine>-Dspring.profiles.active=s3 -Dalt.config.location="${build.alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m
+              -XX:+UseConcMarkSweepGC
+              -XX:+CMSClassUnloadingEnabled ${spring-instrument-javaagent} -Dspring.instrument.javaagent="${spring-instrument-javaagent}"
+            </argLine>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>${mysql.jdbc.artifactId}</artifactId>
+              <version>${mysql.jdbc.version}</version>
+            </dependency>
+            <!-- Adding as a provided scope dependency so that I can ensure that it is downloaded to our Maven repository -->
+            <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>spring-instrument</artifactId>
+              <version>${spring.version}</version>
+              <scope>runtime</scope>
+            </dependency>
+          </dependencies>
+        </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-impl</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-core-impl</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-it-internal-tools</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-edl-impl</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-kim-api</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-kim-impl</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-krms-impl</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-kew-impl</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-development-tools</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>${mysql.jdbc.artifactId}</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <scope>test</scope>
+    </dependency>  
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-aws-context</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>test</scope>            
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rice-it-kew</artifactId>
+      <version>${project.version}</version>
+      <classifier>tests</classifier>
+      <scope>test</scope>      
     </dependency>
     <dependency>
       <groupId>junit</groupId>

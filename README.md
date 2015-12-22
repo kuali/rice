@@ -76,6 +76,22 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
 </config>
 ```
 
+### Running with S3 Attachments
+
+If you want to use S3 for attachments for KEW and KRAD you will need to do the following:
+
+1. Pass a `-Dspring.profiles.active=s3` parameter to the startup of the JVM for Tomcat
+2. Add configuration to your rice-config.xml file for S3 as follows:
+
+```
+<param name="cloud.aws.credentials.accessKey">...</param>
+<param name="cloud.aws.credentials.secretKey">...</param>
+<param name="rice.kew.attachments.s3.bucketName">rice-bucket-name</param>
+<param name="rice.kew.attachments.s3.folderName">dev/kew</param>
+```
+
+Note that the access and secret keys will need to allow read/write access to the configured bucket. Additionally, KEW will store it's attachments under the specified folder (`dev/kew` in the above example). Be sure to set this appropriately, especially if reusing buckets across environments.
+
 ### Development in Eclipse
 
 * Download and install the latest version of Eclipse for J2EE developers
@@ -97,22 +113,6 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
 * Right-click on the server and start it
 * Rice Standalone should (hopefully) start up successfully
 * Go to http://localhost:8080/rice-standalone and you should see the Kuali Rice "portal"
-
-### Running with S3 Attachments
-
-If you want to use S3 for attachments for KEW and KRAD you will need to do the following:
-
-1. Pass a `-Dspring.profiles.active=s3` parameter to the startup of the JVM for Tomcat
-2. Add configuration to your rice-config.xml file for S3 as follows:
-
-```
-<param name="cloud.aws.credentials.accessKey">...</param>
-<param name="cloud.aws.credentials.secretKey">...</param>
-<param name="rice.kew.attachments.s3.bucketName">rice-bucket-name</param>
-<param name="rice.kew.attachments.s3.folderName">dev/kew</param>
-```
-
-Note that the access and secret key's will need to allow read/write access to the configured bucket. Additionally, KEW will store it's attachments under the specified folder (`dev/kew` in the above example). Be sure to set this appropriately, especially if reusing buckets across environments.
 
 ### Setting up Dev Environment for Running Integration Tests
 

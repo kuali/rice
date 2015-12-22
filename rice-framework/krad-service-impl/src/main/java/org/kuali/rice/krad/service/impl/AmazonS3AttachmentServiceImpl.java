@@ -17,9 +17,9 @@ package org.kuali.rice.krad.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.UUID;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.mo.common.GloballyUnique;
@@ -27,6 +27,7 @@ import org.kuali.rice.krad.bo.Attachment;
 import org.kuali.rice.krad.bo.Note;
 import org.kuali.rice.krad.data.DataObjectService;
 import org.kuali.rice.krad.service.AttachmentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.WritableResource;
@@ -34,6 +35,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 
 /**
  * An {@link AttachmentService} implementation which utilizes AWS Simple Storage Service.
@@ -52,6 +56,7 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
 
 	private ResourceLoader resourceLoader;
 	private String bucketName;
+	private String folderName;
 	private AmazonS3 amazonS3;
     protected DataObjectService dataObjectService;
 
@@ -95,10 +100,18 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
         
         String uniqueFileNameGuid = UUID.randomUUID().toString();
         
-		String url = s3Url(uniqueFileNameGuid);		
-		WritableResource resource = findAttachmentResource(url);
-		IOUtils.copy(fileContents, resource.getOutputStream());		
-
+		TransferManager manager = new TransferManager(this.amazonS3);
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentType(mimeType);
+		metadata.setContentDisposition("attachment; filename=" + URLEncoder.encode(uploadedFileName, "UTF-8"));
+		metadata.setContentLength(fileSize);
+		Upload upload = manager.upload(this.bucketName, generateObjectKey(uniqueFileNameGuid), fileContents, metadata);
+		try {
+			upload.waitForCompletion();
+		} catch(InterruptedException e) {
+			throw new IllegalStateException("Failed to upload file to s3", e);
+		}
+		
         // create DocumentAttachment
         Attachment attachment = new Attachment();
         attachment.setAttachmentIdentifier(uniqueFileNameGuid);
@@ -116,7 +129,7 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
 
     @Override
 	public void moveAttachmentWherePending(Note note) {
-    	throw new UnsupportedOperationException("S3 implementation of AttachmentService does not support moveAttachmentWherePending");
+    	// do nothing, we are not leveraging "pending" directories with the S3 implementation
     }
 
     @Override
@@ -124,7 +137,7 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
     	if (attachment.getNote() == null) {
     		throw new RuntimeException("Attachment.note must be set in order to delete the attachment");
     	}
-    	amazonS3.deleteObject(new DeleteObjectRequest(this.bucketName, attachment.getAttachmentIdentifier()));
+    	amazonS3.deleteObject(new DeleteObjectRequest(this.bucketName, generateObjectKey(attachment.getAttachmentIdentifier())));
     }
     
     @Override
@@ -142,14 +155,25 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
     
     private String s3Url(String uniqueFileNameGuid) {
     	if (StringUtils.isBlank(this.bucketName)) {
-			throw new NullPointerException("No bucket name available.");
+			throw new IllegalStateException("No bucket name available.");
 		}
+    	if (StringUtils.isBlank(this.folderName)) {
+    		throw new IllegalStateException("No folder name available.");
+    	}
 		if (StringUtils.isBlank(uniqueFileNameGuid)) {
 			throw new IllegalArgumentException("GUID cannot be null.");
 		}
 
-		return "s3://" + this.bucketName + "/" + uniqueFileNameGuid;
+		return generateS3Prefix() + generateObjectKey(uniqueFileNameGuid);
     }
+    
+    private String generateObjectKey(String uniqueFileNameGuid) {
+    	return this.folderName + "/" + uniqueFileNameGuid;
+    }
+    
+    private String generateS3Prefix() {
+		return "s3://" + this.bucketName + "/";
+	}
     
 	private WritableResource findAttachmentResource(String url) {
 		if (url == null) {
@@ -158,13 +182,28 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService {
 		return (WritableResource)this.resourceLoader.getResource(url);		
 	}	
 	
+	@Required
     public void setBucketName(String bucketName) {
 		this.bucketName = bucketName;
 	}
+	
+	@Required
+	public void setFolderName(String folderName) {
+		this.folderName = folderName;
+	}
 
+    @Required
+    @Autowired
 	public void setAmazonS3(AmazonS3 amazonS3) {
 		this.amazonS3 = amazonS3;
 	}
+    
+	@Required
+	@Autowired
+	public void setResourceLoader(ResourceLoader resourceLoader) {
+		this.resourceLoader = resourceLoader;
+	}
+
 
 	@Required
     public void setDataObjectService(DataObjectService dataObjectService) {

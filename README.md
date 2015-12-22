@@ -88,6 +88,8 @@ If you want to use S3 for attachments for KEW and KRAD you will need to do the f
 <param name="cloud.aws.credentials.secretKey">...</param>
 <param name="rice.kew.attachments.s3.bucketName">rice-bucket-name</param>
 <param name="rice.kew.attachments.s3.folderName">dev/kew</param>
+<param name="rice.krad.attachments.s3.bucketName">rice-bucket-name</param>
+<param name="rice.krad.attachments.s3.folderName">dev/krad</param>
 ```
 
 Note that the access and secret keys will need to allow read/write access to the configured bucket. Additionally, KEW will store it's attachments under the specified folder (`dev/kew` in the above example). Be sure to set this appropriately, especially if reusing buckets across environments.
@@ -126,6 +128,6 @@ Note that the access and secret keys will need to allow read/write access to the
 * You will now have a mysql database for purposes of continuous integration created with the name, username, and password of "RICECI"
 * Next, run "prepare-unit-test-environment" from the Ant build.xml file in the root of the project
   * Note that if you already have a unit test config file in place this will fail
-* If you want the S3-related tests to pass, then you will need to add configuration to your common-test-config.xml file for S3 attachment configuration as specified above. Be sure to use an appropriate folder name for your integration tests so that it does not conflict with your development or other testing environments. There is no need to manually pass `-Dspring.profiles.active=s3` when running your integration tests as the appropriate integration test modules will set this profile when forking the JVM for the test run.
+* If you want the S3-related tests to pass, then you will need to add configuration to your common-test-config.xml file for S3 attachment configuration as specified earlier. Be sure to use an appropriate folder name for your integration tests so that it does not conflict with your development or other testing environments. There is no need to manually pass `-Dspring.profiles.active=s3` when running your integration tests as the appropriate integration test modules will set this profile when forking the JVM for the test run.
 * To run the integration tests from the command line, execute the following:
 ```mvn -Pitests verify```

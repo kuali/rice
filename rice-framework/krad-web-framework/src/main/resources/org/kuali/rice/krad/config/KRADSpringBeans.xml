@@ -27,6 +27,9 @@
 
   <import resource="classpath:org/kuali/rice/krad/uif/PropertyEditors.xml"/>
 
+  <import resource="classpath:org/kuali/rice/krad/config/_KRADSpringBeans_AttachmentService_File.xml"/>
+  <import resource="classpath:org/kuali/rice/krad/config/_KRADSpringBeans_AttachmentService_S3.xml"/>
+
   <bean id="dateTimeService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="dateTimeService"/>
   </bean>
@@ -222,10 +225,6 @@
   <bean id="noteService" class="org.kuali.rice.krad.service.impl.NoteServiceImpl"
         p:dataObjectService-ref="dataObjectService"
         p:attachmentService-ref="attachmentService" />
-
-  <bean id="attachmentService" class="org.kuali.rice.krad.service.impl.AttachmentServiceImpl"
-        p:dataObjectService-ref="dataObjectService"
-        p:kualiConfigurationService-ref="kualiConfigurationService" />
 
   <bean id="dictionaryValidationDefinitionConstraintResolver"
         class="org.kuali.rice.krad.datadictionary.validation.constraint.resolver.DefinitionConstraintResolver"/>

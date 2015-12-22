@@ -98,6 +98,22 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
 * Rice Standalone should (hopefully) start up successfully
 * Go to http://localhost:8080/rice-standalone and you should see the Kuali Rice "portal"
 
+### Running with S3 Attachments
+
+If you want to use S3 for attachments for KEW and KRAD you will need to do the following:
+
+1. Pass a `-Dspring.profiles.active=s3` parameter to the startup of the JVM for Tomcat
+2. Add configuration to your rice-config.xml file for S3 as follows:
+
+```
+<param name="cloud.aws.credentials.accessKey">...</param>
+<param name="cloud.aws.credentials.secretKey">...</param>
+<param name="rice.kew.attachments.s3.bucketName">rice-bucket-name</param>
+<param name="rice.kew.attachments.s3.folderName">dev/kew</param>
+```
+
+Note that the access and secret key's will need to allow read/write access to the configured bucket. Additionally, KEW will store it's attachments under the specified folder (`dev/kew` in the above example). Be sure to set this appropriately, especially if reusing buckets across environments.
+
 ### Setting up Dev Environment for Running Integration Tests
 
 * Change directory to `db/impex/master` in directory where you cloned the repository
@@ -110,5 +126,6 @@ Contributions are welcome. The Rice Project strives for a simple and quick contr
 * You will now have a mysql database for purposes of continuous integration created with the name, username, and password of "RICECI"
 * Next, run "prepare-unit-test-environment" from the Ant build.xml file in the root of the project
   * Note that if you already have a unit test config file in place this will fail
+* If you want the S3-related tests to pass, then you will need to add configuration to your common-test-config.xml file for S3 attachment configuration as specified above. Be sure to use an appropriate folder name for your integration tests so that it does not conflict with your development or other testing environments. There is no need to manually pass `-Dspring.profiles.active=s3` when running your integration tests as the appropriate integration test modules will set this profile when forking the JVM for the test run.
 * To run the integration tests from the command line, execute the following:
 ```mvn -Pitests verify```

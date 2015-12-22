@@ -53,6 +53,9 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService, Initial
 		}
 		TransferManager manager = new TransferManager(this.amazonS3);
 		ObjectMetadata metadata = new ObjectMetadata();
+		if (attachment.getMimeType() != null) {
+			metadata.setContentType(attachment.getMimeType());
+		}
 		Upload upload = manager.upload(this.bucketName, parseObjectKey(attachment.getFileLoc()), attachment.getAttachedObject(), metadata);
 		upload.waitForCompletion();
 	}

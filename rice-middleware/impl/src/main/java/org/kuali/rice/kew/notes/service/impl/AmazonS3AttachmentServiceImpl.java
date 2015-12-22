@@ -1,6 +1,7 @@
 package org.kuali.rice.kew.notes.service.impl;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +56,9 @@ public class AmazonS3AttachmentServiceImpl implements AttachmentService, Initial
 		ObjectMetadata metadata = new ObjectMetadata();
 		if (attachment.getMimeType() != null) {
 			metadata.setContentType(attachment.getMimeType());
+		}
+		if (attachment.getFileName() != null) {
+			metadata.setContentDisposition("attachment; filename=" + URLEncoder.encode(attachment.getFileName(), "UTF-8"));
 		}
 		Upload upload = manager.upload(this.bucketName, parseObjectKey(attachment.getFileLoc()), attachment.getAttachedObject(), metadata);
 		upload.waitForCompletion();

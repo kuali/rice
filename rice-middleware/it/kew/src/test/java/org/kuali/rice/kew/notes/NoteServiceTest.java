@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.FileReader;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -29,6 +30,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.krad.service.KRADServiceLocator;
+import org.springframework.core.io.Resource;
 
 public class NoteServiceTest extends KEWTestCase {
 		
@@ -66,6 +68,19 @@ public class NoteServiceTest extends KEWTestCase {
         }
         //i'm being lazy and knowing what's in the source file
         assertEquals("Attached file content should equal source file content", "I'm an attached file", stringWriter.getBuffer().toString());
+        
+        // adding a test for findAttachmentResource, it should return the same thing as the previous test
+        Resource resource = noteService.findAttachmentResource(attachment);
+        InputStream inputStream = resource.getInputStream();
+        
+        stringWriter = new StringWriter();
+        int data;
+        while ((data = inputStream.read()) != -1) {
+        	stringWriter.write(data);
+        }
+        //i'm being lazy and knowing what's in the source file
+        assertEquals("Attached file content should equal source file content", "I'm an attached file", stringWriter.getBuffer().toString());
+
 	}
 
 }

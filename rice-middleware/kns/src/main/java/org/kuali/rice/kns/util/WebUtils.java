@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -367,9 +368,12 @@ public class WebUtils {
 
 		// write to output
 		OutputStream out = response.getOutputStream();
-		while (inStream.available() > 0) {
-			out.write(inStream.read());
+		BufferedInputStream is = new BufferedInputStream(inStream);
+		int data;
+		while ((data = is.read()) != -1) {
+			out.write(data);
 		}
+		is.close();
 		out.flush();
 	}
 

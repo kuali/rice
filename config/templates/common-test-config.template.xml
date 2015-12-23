@@ -17,15 +17,15 @@
 -->
 <config>
 
-	<param name="kr.incident.mailing.list"></param>
-
-	<param name="datasource.ojb.platform">Oracle9i</param>
-	<param name="datasource.platform">org.kuali.rice.core.framework.persistence.platform.OracleDatabasePlatform</param>
-	<param name="datasource.driver.name">oracle.jdbc.OracleDriver</param>
-
-	<param name="datasource.url">jdbc:oracle:thin:@esdbk02.uits.indiana.edu:1521:KUALI</param>	
-	<param name="datasource.username">RICE094CI</param>
-	<param name="datasource.password"><!-- Fill in Password Here! --></param>
-	<param name="datasource.pool.validationQuery">select 1 from dual</param>
+    <param name="kr.incident.mailing.list"></param>
+  
+    <param name="datasource.url">jdbc:mysql://localhost:3306/RICECI</param>
+    <param name="datasource.username">RICECI</param>
+    <param name="datasource.password">RICECI</param>
+    <param name="datasource.driver.name">${datasource.driver.name.MySQL}</param>
+    <param name="datasource.pool.minSize">3</param>
+    <param name="datasource.pool.maxOpenPreparedStatements">500</param>
+    <param name="datasource.platform">${datasource.platform.MySQL}</param>
+    <param name="datasource.ojb.platform">MySQL</param>
 
 </config>

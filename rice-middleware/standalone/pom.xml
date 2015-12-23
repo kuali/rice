@@ -95,5 +95,16 @@
       <artifactId>rice-edl-impl</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- Add dependency to spring-cloud-aws-context so standalone server can use AWS S3 -->
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-aws-context</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>            
+    </dependency>
   </dependencies>
 </project>

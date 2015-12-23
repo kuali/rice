@@ -147,8 +147,8 @@
     <javassist.version>3.18.2-GA</javassist.version>
     <jaxen.version>1.1.6</jaxen.version>
     <jdom.version>1.1.3</jdom.version>
-    <jetty.version>8.1.15.v20140411</jetty.version>
-    <joda-time.version>2.4</joda-time.version>
+    <jetty.version>9.3.6.v20151106</jetty.version>
+    <joda-time.version>2.9.1</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jackson-datatype-joda.version>2.4.0</jackson-datatype-joda.version>
     <jotm.version>2.1.10-kuali-1</jotm.version>
@@ -186,6 +186,7 @@
     <soa.model.core.version>1.2.2</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>4.1.4.RELEASE</spring.version>
+    <spring.cloud.version>1.0.3.RELEASE</spring.cloud.version>
     <spring.security.version>3.2.4.RELEASE</spring.security.version>
     <struts.version>1.3.10</struts.version>
     <subethasmtp.version>3.1.7</subethasmtp.version>
@@ -207,7 +208,7 @@
     <plugin.build-helper.version>1.8</plugin.build-helper.version>
     <plugin.gmaven.version>1.5</plugin.gmaven.version>
     <plugin.http.version>1.0.5</plugin.http.version>
-    <plugin.jetty.version>9.2.1.v20140609</plugin.jetty.version>
+    <plugin.jetty.version>9.3.6.v20151106</plugin.jetty.version>
     <plugin.maven-eclipse.version>2.8</plugin.maven-eclipse.version>
     <plugin.jmeter.version>1.8.1</plugin.jmeter.version>
     <plugin.saucelabs.connect.version>1.0.19</plugin.saucelabs.connect.version>
@@ -1100,7 +1101,7 @@
         </plugin>
 
         <plugin>
-          <groupId>org.mortbay.jetty</groupId>
+          <groupId>org.eclipse.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <version>${plugin.jetty.version}</version>
           <configuration>
@@ -2399,7 +2400,15 @@
           </exclusion>
         </exclusions>
       </dependency>
-
+      
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-aws</artifactId>
+        <version>${spring.cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      
       <dependency>
         <groupId>com.google.code.findbugs</groupId>
         <artifactId>jsr305</artifactId>

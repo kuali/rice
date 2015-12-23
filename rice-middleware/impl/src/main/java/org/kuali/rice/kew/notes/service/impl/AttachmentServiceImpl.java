@@ -18,11 +18,12 @@ package org.kuali.rice.kew.notes.service.impl;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.logging.Logger;
 
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.service.AttachmentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 
 
 /**
@@ -37,7 +38,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 	private static final String ATTACHMENT_PREPEND = "wf_att_";
 	
 	private String attachmentDir;
-
+	
 	public void persistAttachedFileAndSetAttachmentBusinessObjectValue(Attachment attachment) throws Exception {
 		createStorageDirIfNecessary();
 		String uniqueId = KEWServiceLocator.getResponsibilityIdService().getNewResponsibilityId();
@@ -73,6 +74,20 @@ public class AttachmentServiceImpl implements AttachmentService {
 		return new File(attachment.getFileLoc());
 	}
 	
+	
+	
+	@Override
+	public Resource findAttachedResource(Attachment attachment) {
+		try {
+			return new UrlResource(findAttachedFile(attachment).toURI());
+		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				throw (RuntimeException)e;
+			}
+			throw new RuntimeException("Failed to converted attachment file to a Resource", e);
+		}
+	}
+
 	public void deleteAttachedFile(Attachment attachment) throws Exception {
 		File file = new File(attachment.getFileLoc());
 		if (! file.delete()) {

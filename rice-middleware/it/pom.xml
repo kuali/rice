@@ -15,8 +15,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <name>Rice Integration Test</name>
   <modelVersion>4.0.0</modelVersion>
   <parent>
@@ -42,14 +41,14 @@
     <module>krms</module>
     <module>remote</module>
     <module>vc</module>
+    <module>rice-it-kew-s3</module>
+    <module>rice-it-krad-s3</module>
   </modules>
   <properties>
     <!-- there are no "unit" tests in any of the test submodules skip the surefire plugin -->
     <maven.surefire.skip>true</maven.surefire.skip>
     <maven.failsafe.skip>true</maven.failsafe.skip>
     <graph.skip>true</graph.skip>
-    <!-- decrease jetty version for it tests to remain compatible with jstl-impl -->
-    <jetty.version>8.1.15.v20140411</jetty.version>
   </properties>
 
   <dependencyManagement>

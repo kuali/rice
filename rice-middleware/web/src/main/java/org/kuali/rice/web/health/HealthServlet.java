@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.StringWriter;
 
 /**
  * Implements an endpoint for providing health information for a Kuali Rice server.
@@ -33,6 +34,10 @@ public class HealthServlet extends HttpServlet {
             resp.setContentType("application/json");
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(resp.getOutputStream(), status);
+
+            StringWriter writer = new StringWriter();
+            mapper.writeValue(writer, status);
+            System.out.println("WRITE VALUE: " + writer.toString());
         } else {
             if (status.isOk()) {
                 resp.setStatus(204);

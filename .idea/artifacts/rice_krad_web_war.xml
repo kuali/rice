@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="rice-krad-web:war">
-    <output-path>$PROJECT_DIR$/rice-framework/krad-web/target</output-path>
-    <root id="archive" name="rice-krad-web-2.6.0-M1-SNAPSHOT.war">
-      <element id="artifact" artifact-name="rice-krad-web:war exploded" />
-    </root>
-  </artifact>
-</component>

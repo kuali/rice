@@ -7,10 +7,10 @@ public class HealthMetric {
     @JsonProperty("Measure")
     private String measure;
 
-    @JsonProperty("Measure")
+    @JsonProperty("Metric")
     private String metric;
 
-    @JsonProperty("Measure")
+    @JsonProperty("Value")
     private Object value;
 
     public HealthMetric(String measure, String metric, Object value) {

@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 package org.kuali.rice.config.at
-
-import org.junit.Test
-import org.junit.Before
-import org.junit.After
-
-import static org.junit.Assert.*
-import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
-import org.junit.Ignore
-import org.junit.BeforeClass
 import groovy.sql.Sql
-
+import org.junit.*
+import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
 /**
  * Test for the quickstart archetype.  Executes maven commands.
  */
@@ -51,6 +43,7 @@ class QuickStartTest {
      */
     @Before
     public void createTargetDir() {
+        removeTargetDir()
         targetDir = new File(basedir + "/target/projects")
         if (!targetDir.exists()) {
             targetDir.mkdir()
@@ -137,8 +130,8 @@ class QuickStartTest {
             silent: false,
             failOnError: true,
             deleteTempPom: true,
-            stdOutWriter: new StringWriter(),
-            stdErrWriter: new StringWriter(),
+            stdOutWriter: new OutputStreamWriter(System.out),
+            stdErrWriter: new OutputStreamWriter(System.err),
             overrideMavenOpts: null)
     }
 
@@ -159,14 +152,7 @@ class QuickStartTest {
     }
 
     private executeMaven(context) {
-        try {
-            new OutputAwareMvnExecutor().execute(context)
-        } catch (Throwable t) {
-            //debugging info
-            println context.stdOutWriter
-            System.err.println context.stdErrWriter
-            throw t;
-        }
+        new OutputAwareMvnExecutor().execute(context)
     }
 
     /**
@@ -179,12 +165,6 @@ class QuickStartTest {
         context.projectProperties = properties
         context.properties = properties.keySet() as List
         executeMaven(context)
-
-        if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 1) {
-            fail("the output did not contain one occurances of BUILD SUCCESS \n ${context.stdOutWriter} \n ${context.stdErrWriter}")
-        }
-
-        assertEquals("output written to std err", "", context.stdErrWriter.toString().trim())
     }
 
     /**
@@ -200,12 +180,6 @@ class QuickStartTest {
         context.properties = properties.keySet() as List
 
         executeMaven(context)
-
-        if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 2) {
-            fail("the output did not contain two occurances of BUILD SUCCESS ${context.stdOutWriter} \n ${context.stdErrWriter}")
-        }
-
-        assertEquals("output written to std err", "", context.stdErrWriter.toString().trim())
     }
 
 
@@ -230,7 +204,7 @@ class QuickStartTest {
         properties["datasource_password"] = getDatasourcePassword()
 
         //turn on integration tests, set jetty.port for integration test run
-        properties["goals"] = "clean install -X -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
+        properties["goals"] = "clean install -Dmaven.failsafe.skip=false -Djetty.port=" + getJettyPort()
         context.projectProperties = properties
         context.properties = properties.keySet() as List
 
@@ -240,26 +214,6 @@ class QuickStartTest {
         fixQuartzTriggerTable();
 
         executeMaven(context)
-
-        System.out.println(">>>>>>>> Begin: Maven output of Quickstart Integration Test <<<<<<<<<<<")
-        System.out.println(context.stdOutWriter.toString());
-        System.out.println(">>>>>>>>  End: Maven output of Quickstart Integration Test  <<<<<<<<<<<")
-
-        if (context.stdOutWriter.toString().count("BUILD SUCCESS") != 2) {
-            fail("the output did not contain two occurances of BUILD SUCCESS \n ${context.stdOutWriter} \n ${context.stdErrWriter}")
-        }
-
-        assertEquals("output written to std err", context.stdErrWriter.toString().trim(), "")
     }
 
-    @Test @Ignore("http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4770092")
-    void test_quickstart_gen_clean_install_jetty_run() {
-        /*
-          this test was suppose to run the jetty:run command to make sure it is properly configured and jetty can startup.
-          the problem is the child processes being created were not being destroyed.
-          it is probably ok that we do not have this test because successful startup is being tested
-          by the test_quickstart_gen_clean_install_int_tests when it executes the generated project's
-          integration test
-        */
-    }
 }

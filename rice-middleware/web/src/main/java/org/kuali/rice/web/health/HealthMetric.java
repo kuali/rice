@@ -13,6 +13,16 @@ public class HealthMetric {
     @JsonProperty("Value")
     private Object value;
 
+    public HealthMetric(String name, Object value) {
+        String[] nameParts = name.split(":");
+        if (nameParts.length != 2) {
+            throw new IllegalArgumentException("Metric name was not valid, should be two parts separated by ':'. Instead was " + name);
+        }
+        this.measure = nameParts[0];
+        this.metric = nameParts[1];
+        this.value = value;
+    }
+
     public HealthMetric(String measure, String metric, Object value) {
         this.measure = measure;
         this.metric = metric;

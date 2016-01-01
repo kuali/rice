@@ -62,7 +62,6 @@ public class HealthServlet extends HttpServlet {
         monitorRuntime();
         monitorDataSources();
         monitorAmazonS3();
-        monitorRedis();
     }
 
     @Override
@@ -215,10 +214,6 @@ public class HealthServlet extends HttpServlet {
             this.metricRegistry.register(name, gauge);
             this.healthCheckRegistry.register(name, gauge);
         }
-    }
-
-    private void monitorRedis() {
-        // TODO
     }
 
     @SuppressWarnings("unchecked")

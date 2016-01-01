@@ -36,22 +36,16 @@ import java.util.Map;
  * Implements an endpoint for providing health information for a Kuali Rice server.
  */
 public class HealthServlet extends HttpServlet {
-
-    // TODO make these defaults and then make them configurable
-    private static final double HEAP_MEMORY_THRESHOLD = 0.95;
-    private static final double NON_HEAP_MEMORY_THRESHOLD = 0.95;
-    private static final double TOTAL_MEMORY_THRESHOLD = 0.95;
-    private static final int DEADLOCK_THRESHOLD = 1;
-    private static final double FILE_DESCRIPTOR_THRESHOLD = 0.95;
-    private static final double POOL_USAGE_THRESHOLD = 1.0;
-
+    
     private MetricRegistry metricRegistry;
     private HealthCheckRegistry healthCheckRegistry;
+    private Config config;
 
     @Override
     public void init() throws ServletException {
         this.metricRegistry = new MetricRegistry();
         this.healthCheckRegistry = new HealthCheckRegistry();
+        this.config = new Config();
 
         monitorMemoryUsage();
         monitorThreads();
@@ -92,8 +86,8 @@ public class HealthServlet extends HttpServlet {
 
     @SuppressWarnings("unchecked")
     private void monitorMemoryUsage() {
-        // registry memory metrics, we are going to rename this slightly using our format given the two name nature
-        // of the metrics required by the health detail specification
+        // registry memory metrics, we are going to rename this slightly using our format given the format required
+        // by the health detail specification
         MemoryUsageGaugeSet gaugeSet = new MemoryUsageGaugeSet();
         Map<String, Metric> metrics = gaugeSet.getMetrics();
         for (String metricName : metrics.keySet()) {
@@ -103,13 +97,13 @@ public class HealthServlet extends HttpServlet {
         Gauge<Double> heapUsage = this.metricRegistry.getGauges().get("memory:heap.usage");
         Gauge<Long> heapMaxMemory = this.metricRegistry.getGauges().get("memory:heap.max");
         if (heapMaxMemory.getValue() != -1) {
-            this.healthCheckRegistry.register("memory:heap.usage", new MemoryUsageHealthCheck(heapUsage, HEAP_MEMORY_THRESHOLD));
+            this.healthCheckRegistry.register("memory:heap.usage", new MemoryUsageHealthCheck(heapUsage, config.heapMemoryUsageThreshold()));
         }
 
         Gauge<Double> nonHeapUsage = this.metricRegistry.getGauges().get("memory:non-heap.usage");
         Gauge<Long> nonHeapMaxMemory = this.metricRegistry.getGauges().get("memory:non-heap.max");
         if (nonHeapMaxMemory.getValue() != -1) {
-            this.healthCheckRegistry.register("memory:non-heap.usage", new MemoryUsageHealthCheck(nonHeapUsage, NON_HEAP_MEMORY_THRESHOLD));
+            this.healthCheckRegistry.register("memory:non-heap.usage", new MemoryUsageHealthCheck(nonHeapUsage, config.nonHeapMemoryUsageThreshold()));
         }
 
         Gauge<Long> totalUsedMemory = this.metricRegistry.getGauges().get("memory:total.used");
@@ -117,7 +111,7 @@ public class HealthServlet extends HttpServlet {
         if (totalMaxMemory.getValue() != -1) {
             MemoryUsageRatio totalMemoryRatio = new MemoryUsageRatio(totalUsedMemory, totalMaxMemory);
             this.metricRegistry.register("memory:total.usage", totalMemoryRatio);
-            this.healthCheckRegistry.register("memory:total.usage", new MemoryUsageHealthCheck(totalMemoryRatio, TOTAL_MEMORY_THRESHOLD));
+            this.healthCheckRegistry.register("memory:total.usage", new MemoryUsageHealthCheck(totalMemoryRatio, config.totalMemoryUsageThreshold()));
         }
     }
 
@@ -136,8 +130,8 @@ public class HealthServlet extends HttpServlet {
             @Override
             protected Result check() throws Exception {
                 int numDeadlocks = deadlockCount.getValue();
-                if (numDeadlocks >= DEADLOCK_THRESHOLD) {
-                    return Result.unhealthy("There are " + numDeadlocks + " deadlocked threads which is greater than or equal to the threshold of " + DEADLOCK_THRESHOLD);
+                if (numDeadlocks >= config.deadlockThreshold()) {
+                    return Result.unhealthy("There are " + numDeadlocks + " deadlocked threads which is greater than or equal to the threshold of " + config.deadlockThreshold());
                 }
                 return Result.healthy();
             }
@@ -177,8 +171,8 @@ public class HealthServlet extends HttpServlet {
             @Override
             protected Result check() throws Exception {
                 double value = gauge.getValue();
-                if (value >= FILE_DESCRIPTOR_THRESHOLD) {
-                    return Result.unhealthy("File descriptor usage ratio of " + value + " was greater than or equal to threshold of " + FILE_DESCRIPTOR_THRESHOLD);
+                if (value >= config.fileDescriptorUsageThreshold()) {
+                    return Result.unhealthy("File descriptor usage ratio of " + value + " was greater than or equal to threshold of " + config.fileDescriptorUsageThreshold());
                 }
                 return Result.healthy();
             }
@@ -200,24 +194,13 @@ public class HealthServlet extends HttpServlet {
         DataSource nonTransactionalDataSource = (DataSource)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ);
         DataSource serverDataSource = (DataSource)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SERVER_DATASOURCE_OBJ);
         DatabasePlatform databasePlatform = GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
-        monitorDataSource("database.primary:", dataSource, databasePlatform);
-        monitorDataSource("database.non-transactional:", nonTransactionalDataSource, databasePlatform);
-        monitorDataSource("database.server:", serverDataSource, databasePlatform);
-    }
-
-    private void monitorAmazonS3() {
-        // AmazonS3 may or may not be enabled, we will check
-        AmazonS3 amazonS3 = GlobalResourceLoader.getService("amazonS3");
-        if (amazonS3 != null) {
-            AmazonS3ConnectionHealthGauge gauge = new AmazonS3ConnectionHealthGauge(amazonS3);
-            String name = "amazonS3:connected";
-            this.metricRegistry.register(name, gauge);
-            this.healthCheckRegistry.register(name, gauge);
-        }
+        monitorDataSource("database.primary:", dataSource, databasePlatform, config.primaryConnectionPoolUsageThreshold());
+        monitorDataSource("database.non-transactional:", nonTransactionalDataSource, databasePlatform, config.nonTransactionalConnectionPoolUsageThreshold());
+        monitorDataSource("database.server:", serverDataSource, databasePlatform, config.serverConnectionPoolUsageThreshold());
     }
 
     @SuppressWarnings("unchecked")
-    private void monitorDataSource(String namePrefix, DataSource dataSource, DatabasePlatform databasePlatform) {
+    private void monitorDataSource(String namePrefix, DataSource dataSource, DatabasePlatform databasePlatform, double threshold) {
         if (databasePlatform != null && dataSource != null) {
             // register connection metric
             String name = namePrefix + "connected";
@@ -231,8 +214,19 @@ public class HealthServlet extends HttpServlet {
             this.metricRegistry.registerAll(poolMetrics);
             Gauge<Double> poolUsage = this.metricRegistry.getGauges().get(poolUsageName);
             if (poolUsage != null) {
-                this.healthCheckRegistry.register(poolUsageName, new DatabaseConnectionPoolHealthCheck(poolUsage, POOL_USAGE_THRESHOLD));
+                this.healthCheckRegistry.register(poolUsageName, new DatabaseConnectionPoolHealthCheck(poolUsage, threshold));
             }
+        }
+    }
+
+    private void monitorAmazonS3() {
+        // AmazonS3 may or may not be enabled, we will check
+        AmazonS3 amazonS3 = GlobalResourceLoader.getService("amazonS3");
+        if (amazonS3 != null) {
+            AmazonS3ConnectionHealthGauge gauge = new AmazonS3ConnectionHealthGauge(amazonS3);
+            String name = "amazonS3:connected";
+            this.metricRegistry.register(name, gauge);
+            this.healthCheckRegistry.register(name, gauge);
         }
     }
 
@@ -295,6 +289,75 @@ public class HealthServlet extends HttpServlet {
             Timer timer = timers.get(name);
             status.getMetrics().add(new HealthMetric(name, timer.getCount()));
         }
+    }
+    
+    static final class Config {
+
+        private static final String HEAP_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.heap.usageThreshold";
+        private static final String NON_HEAP_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.nonHeap.usageThreshold";
+        private static final String TOTAL_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.total.usageThreshold";
+        private static final String DEADLOCK_THRESHOLD_PROPERTY = "rice.health.thread.deadlockThreshold";
+        private static final String FILE_DESCRIPTOR_THRESHOLD_PROPERTY = "rice.health.fileDescriptor.usageThreshold";
+        private static final String PRIMARY_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.primary.connectionPoolUsageThreshold";
+        private static final String NON_TRANSACTIONAL_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.nonTransactional.connectionPoolUsageThreshold";
+        private static final String SERVER_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.server.connectionPoolUsageThreshold";
+
+        private static final double HEAP_MEMORY_THRESHOLD_DEFAULT = 0.95;
+        private static final double NON_HEAP_MEMORY_THRESHOLD_DEFAULT = 0.95;
+        private static final double TOTAL_MEMORY_THRESHOLD_DEFAULT = 0.95;
+        private static final int DEADLOCK_THRESHOLD_DEFAULT = 1;
+        private static final double FILE_DESCRIPTOR_THRESHOLD_DEFAULT = 0.95;
+        private static final double POOL_USAGE_THRESHOLD_DEFAULT = 1.0;
+
+
+        double heapMemoryUsageThreshold() {
+            return getDouble(HEAP_MEMORY_THRESHOLD_PROPERTY, HEAP_MEMORY_THRESHOLD_DEFAULT);
+        }
+
+        double nonHeapMemoryUsageThreshold() {
+            return getDouble(NON_HEAP_MEMORY_THRESHOLD_PROPERTY, NON_HEAP_MEMORY_THRESHOLD_DEFAULT);
+        }
+
+        double totalMemoryUsageThreshold() {
+            return getDouble(TOTAL_MEMORY_THRESHOLD_PROPERTY, TOTAL_MEMORY_THRESHOLD_DEFAULT);
+        }
+
+        int deadlockThreshold() {
+            return getInt(DEADLOCK_THRESHOLD_PROPERTY, DEADLOCK_THRESHOLD_DEFAULT);
+        }
+
+        double fileDescriptorUsageThreshold() {
+            return getDouble(FILE_DESCRIPTOR_THRESHOLD_PROPERTY, FILE_DESCRIPTOR_THRESHOLD_DEFAULT);
+        }
+
+        double primaryConnectionPoolUsageThreshold() {
+            return getDouble(PRIMARY_POOL_USAGE_THRESHOLD_PROPERTY, POOL_USAGE_THRESHOLD_DEFAULT);
+        }
+
+        double nonTransactionalConnectionPoolUsageThreshold() {
+            return getDouble(NON_TRANSACTIONAL_POOL_USAGE_THRESHOLD_PROPERTY, POOL_USAGE_THRESHOLD_DEFAULT);
+        }
+
+        double serverConnectionPoolUsageThreshold() {
+            return getDouble(SERVER_POOL_USAGE_THRESHOLD_PROPERTY, POOL_USAGE_THRESHOLD_DEFAULT);
+        }
+
+        private double getDouble(String propertyName, double defaultValue) {
+            String propertyValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+            if (propertyValue != null) {
+                return Double.parseDouble(propertyValue);
+            }
+            return defaultValue;
+        }
+
+        private int getInt(String propertyName, int defaultValue) {
+            String propertyValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+            if (propertyValue != null) {
+                return Integer.parseInt(propertyValue);
+            }
+            return defaultValue;
+        }
+        
     }
 
 }

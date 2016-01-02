@@ -7,6 +7,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
+/**
+ * A combination of health check and gauge which will check for successful connection to the given {@link DataSource}
+ * using the validation query defined on the given {@link DatabasePlatform}.
+ *
+ * @author Eric Westfall (ewestfal@gmail.com)
+ */
 public class DatabaseConnectionHealthGauge extends HealthCheck implements Gauge<Boolean> {
 
     private final DataSource dataSource;
@@ -27,7 +33,7 @@ public class DatabaseConnectionHealthGauge extends HealthCheck implements Gauge<
     protected Result check() throws Exception {
         JdbcTemplate template = new JdbcTemplate(dataSource);
         template.execute(platform.getValidationQuery());
-        // if it's unhealthy, above method will throw exception
+        // if it's unhealthy, above method will throw an exception
         return Result.healthy();
     }
 

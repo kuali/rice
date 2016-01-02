@@ -14,6 +14,16 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A set of metrics that indicate min, max, and active number of connections in the pool as well as the percentage of
+ * connection pool usage.
+ *
+ * Supports XAPool, Bitronix, and DBCP datasources. Will attempt to unwrap the underlying DataSource implementation if
+ * the given DataSource is a wrapper for one of these types. If the given DataSource is of an unknown type, this class
+ * will silently fail and invocations of {@link #getMetrics()} will return an empty map.
+ *
+ * @author Eric Westfall (ewestfal@gmail.com)
+ */
 public class DatabaseConnectionPoolMetricSet implements MetricSet {
 
     private static final Logger LOG = Logger.getLogger(DatabaseConnectionPoolMetricSet.class);
@@ -26,6 +36,11 @@ public class DatabaseConnectionPoolMetricSet implements MetricSet {
     private final String namePrefix;
     private final DataSource dataSource;
 
+    /**
+     * Construct a new database connection pool metric set.
+     * @param namePrefix the prefix to use for all metric names, will prepend this to all metric names in this set
+     * @param dataSource the DataSource from which to extract the metrics in this metric set
+     */
     public DatabaseConnectionPoolMetricSet(String namePrefix, DataSource dataSource) {
         this.namePrefix = namePrefix;
         this.dataSource = dataSource;

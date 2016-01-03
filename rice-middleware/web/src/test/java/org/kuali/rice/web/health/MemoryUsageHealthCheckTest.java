@@ -8,19 +8,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Unit test for {@link DatabaseConnectionPoolHealthCheck}
+ * Unit test for {@link MemoryUsageHealthCheck}
  *
  * @author Eric Westfall (ewestfal@gmail.com)
  */
-public class DatabaseConnectionPoolHealthCheckTest {
+public class MemoryUsageHealthCheckTest {
 
-    private DatabaseConnectionPoolHealthCheck healthCheck;
+    private MemoryUsageHealthCheck healthCheck;
     private TestGauge gauge;
 
     @Before
     public void setUp() {
         this.gauge = new TestGauge();
-        this.healthCheck = new DatabaseConnectionPoolHealthCheck(gauge, 0.5);
+        this.healthCheck = new MemoryUsageHealthCheck(gauge, 0.5);
     }
 
     @Test

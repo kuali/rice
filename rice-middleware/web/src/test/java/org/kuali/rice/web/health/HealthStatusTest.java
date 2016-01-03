@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Unit test for {@link HealthStatus}
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class HealthStatusTest {
 

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit test for {@link AmazonS3ConnectionHealthGauge}.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AmazonS3ConnectionHealthGaugeTest {

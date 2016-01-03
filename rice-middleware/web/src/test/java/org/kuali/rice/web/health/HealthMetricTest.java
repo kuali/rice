@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNull;
 /**
  * Unit test for {@link HealthMetric}
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class HealthMetricTest {
 

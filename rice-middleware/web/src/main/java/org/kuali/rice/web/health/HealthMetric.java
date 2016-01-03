@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
  *
  * This class is annotated such that it should serialize to JSON when using the Jackson library.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class HealthMetric {
 

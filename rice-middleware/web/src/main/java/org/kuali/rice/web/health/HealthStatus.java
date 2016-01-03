@@ -13,7 +13,7 @@ import java.util.List;
  * Can be one of either {@link #OK} or {@link #FAILED}. This class is designed to be serializable to JSON if using
  * the Jackson library.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class HealthStatus {
 

@@ -5,7 +5,7 @@ import com.codahale.metrics.Gauge;
 /**
  * A simple and mutable gauge that returns a Double value.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 class TestGauge implements Gauge<Double> {
 

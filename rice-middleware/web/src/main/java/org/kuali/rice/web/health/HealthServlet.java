@@ -34,6 +34,8 @@ import java.util.Map;
 
 /**
  * Implements an endpoint for providing health information for a Kuali Rice server.
+ *
+ * @author Eric Westfall
  */
 public class HealthServlet extends HttpServlet {
     

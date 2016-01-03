@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Unit test for {@link DatabaseConnectionPoolHealthCheck}
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class DatabaseConnectionPoolHealthCheckTest {
 

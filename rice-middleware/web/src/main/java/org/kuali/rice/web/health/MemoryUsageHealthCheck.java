@@ -7,7 +7,7 @@ import com.codahale.metrics.health.HealthCheck;
  * A health check that checks whether the given {@link Gauge} (which should represent percentage usage of memory)
  * returns a value that is below the supplied unhealthy threshold.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class MemoryUsageHealthCheck extends HealthCheck {
 

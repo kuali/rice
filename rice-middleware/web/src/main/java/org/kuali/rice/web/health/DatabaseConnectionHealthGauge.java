@@ -11,7 +11,7 @@ import javax.sql.DataSource;
  * A combination of health check and gauge which will check for successful connection to the given {@link DataSource}
  * using the validation query defined on the given {@link DatabasePlatform}.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class DatabaseConnectionHealthGauge extends HealthCheck implements Gauge<Boolean> {
 

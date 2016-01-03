@@ -22,7 +22,7 @@ import java.util.Map;
  * the given DataSource is a wrapper for one of these types. If the given DataSource is of an unknown type, this class
  * will silently fail and invocations of {@link #getMetrics()} will return an empty map.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class DatabaseConnectionPoolMetricSet implements MetricSet {
 

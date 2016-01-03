@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit test for {@link DatabaseConnectionHealthGauge}.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseConnectionHealthGaugeTest {

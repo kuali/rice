@@ -11,7 +11,7 @@ import java.util.List;
  * A combination of health check and gauge which will check connection with Amazon's S3 service using the provided
  * {@link AmazonS3} client.
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 public class AmazonS3ConnectionHealthGauge extends HealthCheck implements Gauge<Boolean> {
 

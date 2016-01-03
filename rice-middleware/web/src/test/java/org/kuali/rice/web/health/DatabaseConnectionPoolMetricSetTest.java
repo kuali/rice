@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit test for {@link DatabaseConnectionPoolMetricSet}
  *
- * @author Eric Westfall (ewestfal@gmail.com)
+ * @author Eric Westfall
  */
 @RunWith(MockitoJUnitRunner.class)
 public class DatabaseConnectionPoolMetricSetTest {

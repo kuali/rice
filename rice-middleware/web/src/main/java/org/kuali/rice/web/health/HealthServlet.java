@@ -293,16 +293,16 @@ public class HealthServlet extends HttpServlet {
         }
     }
     
-    static final class Config {
+    public static final class Config {
 
-        private static final String HEAP_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.heap.usageThreshold";
-        private static final String NON_HEAP_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.nonHeap.usageThreshold";
-        private static final String TOTAL_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.total.usageThreshold";
-        private static final String DEADLOCK_THRESHOLD_PROPERTY = "rice.health.thread.deadlockThreshold";
-        private static final String FILE_DESCRIPTOR_THRESHOLD_PROPERTY = "rice.health.fileDescriptor.usageThreshold";
-        private static final String PRIMARY_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.primary.connectionPoolUsageThreshold";
-        private static final String NON_TRANSACTIONAL_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.nonTransactional.connectionPoolUsageThreshold";
-        private static final String SERVER_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.server.connectionPoolUsageThreshold";
+        public static final String HEAP_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.heap.usageThreshold";
+        public static final String NON_HEAP_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.nonHeap.usageThreshold";
+        public static final String TOTAL_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.total.usageThreshold";
+        public static final String DEADLOCK_THRESHOLD_PROPERTY = "rice.health.thread.deadlockThreshold";
+        public static final String FILE_DESCRIPTOR_THRESHOLD_PROPERTY = "rice.health.fileDescriptor.usageThreshold";
+        public static final String PRIMARY_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.primary.connectionPoolUsageThreshold";
+        public static final String NON_TRANSACTIONAL_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.nonTransactional.connectionPoolUsageThreshold";
+        public static final String SERVER_POOL_USAGE_THRESHOLD_PROPERTY = "rice.health.database.server.connectionPoolUsageThreshold";
 
         private static final double HEAP_MEMORY_THRESHOLD_DEFAULT = 0.95;
         private static final double NON_HEAP_MEMORY_THRESHOLD_DEFAULT = 0.95;

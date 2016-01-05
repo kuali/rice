@@ -8,7 +8,7 @@
         <title>Health API Usage</title>
         <para>The health endpoint provides an API that can be used for either a simple ping or for
             retrieving a detailed representation of application metrics. The API is defined as
-            follows: </para>
+            follows:</para>
         <para><itemizedlist>
                 <listitem>
                     <para><emphasis role="bold">Ping</emphasis>: GET /{server base}/health </para>

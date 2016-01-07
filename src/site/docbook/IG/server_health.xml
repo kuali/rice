@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="server_health" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://docbook.org/ns/docbook"  version="5.0">    
+    <title>Monitoring Server Health</title>
+    <para>Kuali Rice includes a server endpoint URL that provides an unathenticated API which can be
+        used to check if a Kuali Rice server is healthy or not, as well as retrieving additional
+        health metrics. </para>
+    <section>
+        <title>Health API Usage</title>
+        <para>The health endpoint provides an API that can be used for either a simple ping or for
+            retrieving a detailed representation of application metrics. The API is defined as
+            follows:</para>
+        <para><itemizedlist>
+                <listitem>
+                    <para><emphasis role="bold">Ping</emphasis>: GET /{server base}/health </para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Detail</emphasis>: GET/{server
+                        base}/health?detail=true</para>
+                </listitem>
+            </itemizedlist>"Ping" will return a 204 (No Content) response if successful and "Detail"
+            will return a 200 (Ok) response if successful and include a JSON payload with health and
+            metrics details.</para>
+    </section>
+    <section>
+        <title>Ping</title>
+        <para>The Ping API can be used to validate if the Kuali Rice server is healthy and
+            functional. It behaves as follows:<itemizedlist>
+                <listitem>
+                    <para>If healthy, return a "204 No Content" HTTP status, with no response
+                        body</para>
+                </listitem>
+                <listitem>
+                    <para>If unhealthy, return a "503 Service Unavailable"</para>
+                </listitem>
+            </itemizedlist>There is never any additional detail returned when simply pinging the
+            health API, it is merely used to indicate whether or not the server is healthy. If
+            additional detail is required, use the Detail API which will be described in the next
+            section.</para>
+    </section>
+    <section>
+        <title>Detail</title>
+        <para>The Detail API can be used to validate if the Kuali Rice server is healthy and
+            functional as well as providing detailed metrics in a JSON response. These metrics can
+            be useful in monitoring, debugging, and building graphs. It behaves as follows:<itemizedlist>
+                <listitem>
+                    <para>If healthy, return a "200 Ok" HTTP status, the response body will include
+                        a JSON payload with detailed information</para>
+                </listitem>
+                <listitem>
+                    <para>If unhealthy, return a "503 Service Unavailable" HTTP status, the response
+                        body will include a JSON payload with detailed information, including a
+                        message that indicates why the server might be unhealthy</para>
+                </listitem>
+            </itemizedlist>The general format of the JSON returned is as follows: </para>
+        <programlisting>{
+  "Status": "Failed",
+  "Message": "...",
+  "Metrics": [
+    {
+      "Measure": "...",
+      "Metric": "...",
+      "Value": "..."
+    },
+    ...
+  ]
+}</programlisting>
+        <para>These different attributes are defined as follows:<itemizedlist>
+                <listitem>
+                    <para><emphasis role="bold">Status</emphasis> - one of "Ok" or "Failed"
+                        depending on if the server is healthy or not.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Message</emphasis> - if status is "Ok" no message
+                        will be present, if status is "Failed" then this attribute will include a
+                        message indicating why the check(s) failed.</para>
+                </listitem>
+                <listitem>
+                    <para><emphasis role="bold">Metrics</emphasis> - an array of all metrics
+                        reported by Kuali Rice, each metric will have a measure name, metric name,
+                        and a value. The combination of the measure and metric names uniquely
+                        identifies the metric. Specfics on the metrics reported by Kuali Rice can be
+                        found in the next section.</para>
+                </listitem>
+            </itemizedlist></para>
+    </section>
+    <section>
+        <title>Metrics</title>
+        <para>Kuali Rice will return metrics related to the following:<itemizedlist>
+                <listitem>
+                    <para>Memory</para>
+                </listitem>
+                <listitem>
+                    <para>Threads</para>
+                </listitem>
+                <listitem>
+                    <para>Garbage Collection</para>
+                </listitem>
+                <listitem>
+                    <para>Buffer Pools</para>
+                </listitem>
+                <listitem>
+                    <para>Class Loading</para>
+                </listitem>
+                <listitem>
+                    <para>File Descriptors</para>
+                </listitem>
+                <listitem>
+                    <para>Runtime Information</para>
+                </listitem>
+                <listitem>
+                    <para>Database Connections</para>
+                </listitem>
+                <listitem>
+                    <para>Amazon S3 Connections</para>
+                </listitem>
+            </itemizedlist>The following sub-sections will define the specfic metrics that are
+            included in the detailed response.</para>
+        <section>
+            <title>Memory Metrics</title>
+            <para>Memory metrics are provided that report on heap, non-heap, and
+                total memory usage. Additionally, any specific memory pools allocated by the JVM
+                will be reported on. These pool names could be different depending on JVM
+                implementation as well as runtime configuration.</para>
+            <para>An example of the memory-related metrics that are returned is
+                below:<programlisting>{  
+  "Measure":"memory",
+  "Metric":"heap.init",
+  "Value":268435456
+},
+{  
+  "Measure":"memory",
+  "Metric":"heap.committed",
+  "Value":2065694720
+},
+{  
+  "Measure":"memory",
+  "Metric":"heap.used",
+  "Value":268904856
+},
+{  
+  "Measure":"memory",
+  "Metric":"heap.max",
+  "Value":3817865216
+},
+{  
+  "Measure":"memory",
+  "Metric":"heap.usage",
+  "Value":0.07043330258833318
+},
+{  
+  "Measure":"memory",
+  "Metric":"non-heap.init",
+  "Value":2555904
+},
+{  
+  "Measure":"memory",
+  "Metric":"non-heap.committed",
+  "Value":212127744
+},
+{  
+  "Measure":"memory",
+  "Metric":"non-heap.used",
+  "Value":165199160
+},
+{  
+  "Measure":"memory",
+  "Metric":"non-heap.max",
+  "Value":-1
+},
+{  
+  "Measure":"memory",
+  "Metric":"non-heap.usage",
+  "Value":-1.65199096E8
+}, 
+{  
+  "Measure":"memory",
+  "Metric":"total.init",
+  "Value":270991360
+},
+{  
+  "Measure":"memory",
+  "Metric":"total.committed",
+  "Value":2277822464
+},
+{  
+  "Measure":"memory",
+  "Metric":"total.used",
+  "Value":434104496
+},
+{  
+  "Measure":"memory",
+  "Metric":"total.max",
+  "Value":3817865215
+},
+{  
+  "Measure":"memory",
+  "Metric":"total.usage",
+  "Value":0.11370346294427788
+}
+</programlisting>In
+                addition to these, there will be a full set of memory metrics for each memory pool
+                that exists within the JVM, those will show up in the following format (with one set
+                for each pool
+                name):<programlisting>{  
+  "Measure":"memory",
+  "Metric":"pools.&lt;pool-name>.init",
+  "Value":2555904
+},
+{  
+  "Measure":"memory",
+  "Metric":"pools.&lt;pool-name>.committed",
+  "Value":44433408
+},
+{  
+  "Measure":"memory",
+  "Metric":"pools.&lt;pool-name>.used",
+  "Value":43257920
+},
+{  
+  "Measure":"memory",
+  "Metric":"pools.&lt;pool-name>.max",
+  "Value":251658240
+},
+{  
+  "Measure":"memory",
+  "Metric":"pools.&lt;pool-name>.usage",
+  "Value":0.17189153035481772
+}</programlisting></para>
+            <para>Common pool names that you might see include "Code-Cache",
+                "Compressed-Class-Space", "Metaspace", "PS-Eden-Space", "PS-Old-Gen", and
+                "PS-Survivor-Space".</para>
+        </section>
+        <section>
+            <title>Thread Metrics</title>
+            <para>Thread-related metrics include a total count of all threads, a count of threads in
+                each possible thread state, as well as counts on the number of deadlocked threads.
+                Additionally, if there are deadlocked threads, then the name of the deadlocked
+                threads will also be included in a metric.</para>
+            <para>An example of the thread-related metrics that are returned is
+                below:<programlisting>{  
+  "Measure":"thread",
+  "Metric":"count",
+  "Value":66
+},
+{  
+  "Measure":"thread",
+  "Metric":"daemon.count",
+  "Value":34
+},
+{  
+  "Measure":"thread",
+  "Metric":"deadlock.count",
+  "Value":0
+},
+{  
+  "Measure":"thread",
+  "Metric":"deadlocks",
+  "Value":[]
+},
+{  
+  "Measure":"thread",
+  "Metric":"new.count",
+  "Value":0
+},
+{  
+  "Measure":"thread",
+  "Metric":"runnable.count",
+  "Value":14
+},
+{  
+  "Measure":"thread",
+  "Metric":"blocked.count",
+  "Value":0
+},
+{  
+  "Measure":"thread",
+  "Metric":"waiting.count",
+  "Value":12
+},
+{  
+  "Measure":"thread",
+  "Metric":"timed_waiting.count",
+  "Value":40
+},
+{  
+  "Measure":"thread",
+  "Metric":"terminated.count",
+  "Value":0
+}</programlisting></para>
+        </section>
+        <section>
+            <title>Garbage Collection Metrics</title>
+            <para>Garbage collection metrics include a count of the number of garbage collections as
+                well as approximate accumulated time spent garbage collecting for each garbage
+                collector in the JVM runtime. An example of what these metrics might look like is
+                below:<programlisting>{  
+  "Measure":"garbage-collector",
+  "Metric":"PS-MarkSweep.count",
+  "Value":8
+},
+{  
+  "Measure":"garbage-collector",
+  "Metric":"PS-MarkSweep.time",
+  "Value":1726
+},
+{  
+  "Measure":"garbage-collector",
+  "Metric":"PS-Scavenge.count",
+  "Value":23
+},
+{  
+  "Measure":"garbage-collector",
+  "Metric":"PS-Scavenge.time",
+  "Value":901
+}</programlisting>In
+                this example, we have two garbage collectors running our JVM named "PS-MarkSweep"
+                and "PS-Scavenge". Depending on options passed to the JVM on startup, you may see
+                different garbage collector metrics.</para>
+        </section>
+        <section>
+            <title>Buffer Pool Metrics</title>
+            <para>Buffer pool metrics provide information about the capacity, count, and usage of
+                direct and mapped buffer pools. An example of these metrics is
+                below:<programlisting>{  
+  "Measure":"buffer-pool",
+  "Metric":"direct.capacity",
+  "Value":8192
+},
+{  
+  "Measure":"buffer-pool",
+  "Metric":"direct.count",
+  "Value":1
+},
+{  
+  "Measure":"buffer-pool",
+  "Metric":"direct.used",
+  "Value":8192
+},
+{  
+  "Measure":"buffer-pool",
+  "Metric":"mapped.capacity",
+  "Value":0
+},
+{  
+  "Measure":"buffer-pool",
+  "Metric":"mapped.count",
+  "Value":0
+},
+{  
+  "Measure":"buffer-pool",
+  "Metric":"mapped.used",
+  "Value":0
+}</programlisting></para>
+        </section>
+        <section>
+            <title>Class Loading Metrics</title>
+            <para>Class loading metrics provide information on the number of classes that have been
+                loaded and unloaded by ClassLoaders within the JVM
+                runtime:<programlisting>{  
+  "Measure":"classloader",
+  "Metric":"loaded",
+  "Value":37791
+},
+{  
+  "Measure":"classloader",
+  "Metric":"unloaded",
+  "Value":19473
+}</programlisting></para>
+        </section>
+        <section>
+            <title>File Descriptor Metrics</title>
+            <para>There is only a single file descriptor metric which reports the percentage of
+                available file descriptors that are in use (as a number between 0 and
+                1.0):<programlisting>{  
+  "Measure":"file-descriptor",
+  "Metric":"usage",
+  "Value":0.01240234375
+}</programlisting></para>
+        </section>
+        <section>
+            <title>Runtime Metrics</title>
+            <para>There is a only a single runtime-related metric which reports the amount of uptime
+                for the JVM in
+                milliseconds:<programlisting>{  
+  "Measure":"runtime",
+  "Metric":"uptime",
+  "Value":187961
+}</programlisting></para>
+        </section>
+        <section>
+            <title>Database Connection Metrics</title>
+            <para>A Kuali Rice application can have up to three different databases connection pools
+                that are configured within it. These are:<itemizedlist>
+                    <listitem>
+                        <para><emphasis role="bold">primary</emphasis> - the main client application
+                            datasource that is used by all of the Kuali Rice modules, this will be a
+                            JTA-compatible datasource</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">non-transactional</emphasis> - the client
+                            application datasource that is used whenever non-transactional database
+                            operations need to be performed (specifically by the Quartz library).
+                            This is a plain datasource that does not interact with a JTA transaction
+                            manager. It will usually point to the same database as the primary
+                            datasource</para>
+                    </listitem>
+                    <listitem>
+                        <para><emphasis role="bold">server</emphasis> - for a Kuali Rice client
+                            application, this is the datasource that points to the Kuali Rice server
+                            (used when integrating with KEW and KIM in "embedded" mode). This
+                            datasource will not be present on the Kuali Rice standalone
+                            server</para>
+                    </listitem>
+                </itemizedlist>For each of these datasources, metrics will be reported on whether or
+                not Kuali Rice can successfully connect to those databases as well as connection
+                pooling information. The metrics support datasources that use either XAPool,
+                Bitronix, or Apache DBCP. These are the standard types of datasources supported by
+                Kuali Rice out of the box.</para>
+            <para>An example of these metrics is as
+                follows:<programlisting>{  
+  "Measure":"database.primary",
+  "Metric":"connected",
+  "Value":true
+},
+{  
+  "Measure":"database.primary",
+  "Metric":"pool.active",
+  "Value":0
+},
+{  
+  "Measure":"database.primary",
+  "Metric":"pool.max",
+  "Value":50
+},
+{  
+  "Measure":"database.primary",
+  "Metric":"pool.min",
+  "Value":10
+},
+{  
+  "Measure":"database.primary",
+  "Metric":"pool.usage",
+  "Value":0.0
+},
+{  
+  "Measure":"database.non-transactional",
+  "Metric":"connected",
+  "Value":true
+},
+{  
+  "Measure":"database.non-transactional",
+  "Metric":"pool.active",
+  "Value":0
+},
+{  
+  "Measure":"database.non-transactional",
+  "Metric":"pool.max",
+  "Value":10
+},
+{  
+  "Measure":"database.non-transactional",
+  "Metric":"pool.min",
+  "Value":5
+},
+{  
+  "Measure":"database.non-transactional",
+  "Metric":"pool.usage",
+  "Value":0.0
+}</programlisting>In
+                the case where a server datasource is present, there will be an additional set of
+                metrics that use the measure name "database.server".</para>
+        </section>
+        <section>
+            <title>Amazon S3 Metrics</title>
+            <para>If using Amazon S3 for attachments in Kuali Rice, then there is a single metric that
+                will be reported which indicates if Kuali Rice can successfully connect to Amazon S3 and
+                has access to one or more buckets. This metric looks like the
+                following:<programlisting>{  
+  "Measure":"amazonS3",
+  "Metric":"connected",
+  "Value":true
+}</programlisting>If
+                Kuali Rice is configured to use the file system or another mechanism for attachments,
+                then this metric will not be included in the response.</para>
+        </section>
+    </section>    
+    <section>
+        <title>Health Checks</title>
+        <para>Using the metrics that are available to it, Kuali Rice will execute a number of health
+            checks that will be used to determine if a status of "Ok" or "Failed" will be returned.
+            The following health checks will be executed when determining application health:<itemizedlist>
+                <listitem>
+                    <para>Ensure that <emphasis role="bold">memory:heap.usage</emphasis> is below a
+                        specified threshold.</para>
+                </listitem>
+                <listitem>
+                    <para>Ensure that <emphasis role="bold">memory:non-heap.usage</emphasis> is
+                        below a specified threshold. Note that non-heap memory often has no max
+                        (which reports as "-1" from the non-heap.max metric) in which case this
+                        health check will not be executed.</para>
+                </listitem>
+                <listitem>
+                    <para>Ensure that <emphasis role="bold">memory:total.usage</emphasis> is below a
+                        specified threshold.</para>
+                </listitem>
+                <listitem>
+                    <para>Ensure that <emphasis role="bold">thread:deadlock.count</emphasis> is
+                        below a specified number.</para>
+                </listitem>
+                <listitem>
+                    <para>Ensure that <emphasis role="bold">file-descriptor:usage</emphasis> is
+                        below a specified threshold.</para>
+                </listitem>
+                <listitem>
+                    <para>Ensure that <emphasis role="bold">database.primary:connected</emphasis>,
+                            <emphasis role="bold">database.non-transactional:connected</emphasis>,
+                        and <emphasis role="bold">database.server:connected</emphasis> (if a server
+                        database is configured) are all "true".</para>
+                </listitem>
+                <listitem>
+                    <para> Ensure that <emphasis role="bold">database.primary:pool.usage</emphasis>,
+                            <emphasis role="bold">database.non-transactional:pool.usage</emphasis>,
+                        and <emphasis role="bold">database.server:pool.usage</emphasis> (if
+                        configured) are below their specified thresholds.</para>
+                </listitem>
+                <listitem>
+                    <para>Ensure that <emphasis role="bold">amazonS3:connected</emphasis> is "true"
+                        if Amazon S3 is configured and enabled.</para>
+                </listitem>
+            </itemizedlist>There are defaults for each of the health check thresholds mentioned
+            earlier and they can be configured as well using the standard Kuali Rice configuration
+            mechanism. The next section will describe this in detail.</para>
+    </section>
+    <section>
+        <title>Configuration</title>
+        <para>Note that for the various "usage" metrics, they will return a value between 0.0 and
+            1.0 where 0.0 means 0% usage and 1.0 means 100% usage. So when configuring these
+            threshold values, a number between 0.0 and 1.0 (inclusive) should be used.</para>
+        <para>There are defaults for each of the health check configuration parameters if they are
+            not customized. The configuration parameters and their default values are listed below:<itemizedlist>
+                <listitem>
+                    <para>rice.health.memory.heap.usageThreshold = 0.95</para>
+                </listitem>
+                <listitem>
+                    <para>rice.health.memory.nonHeap.usageThreshold = 0.95</para>
+                </listitem>
+                <listitem>
+                    <para>rice.health.memory.total.usageThreshold = 0.95</para>
+                </listitem>
+                <listitem>
+                    <para>rice.health.fileDescriptor.usageThreshold = 0.95</para>
+                </listitem>
+                <listitem>
+                    <para>rice.health.database.primary.connectionPoolUsageThreshold = 1.0</para>
+                </listitem>
+                <listitem>
+                    <para>rice.health.database.nonTransactional.connectionPoolUsageThreshold =
+                        1.0</para>
+                </listitem>
+                <listitem>
+                    <para>rice.health.database.server.connectionPoolUsageThreshold = 1.0 </para>
+                </listitem>
+                <listitem>
+                    <para>rice.health.thread.deadlockThreshold = 1</para>
+                </listitem>
+            </itemizedlist></para>
+    </section>
+</chapter>

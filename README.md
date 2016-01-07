@@ -20,7 +20,7 @@ Developers can contribute to Kuali Rice at https://github.com/kuali/rice
 ## Contributions
 
 Contributions are welcome. The Rice Project strives for a simple and quick contribution process.  However, there are some specific requirements we need to enforce:
-* Please report all security issues to security@kuali.org. 
+* Please report all security issues to security@kuali.org.  
 * It is recommended to contact the Kuali Rice development team before starting work on a pull request.  Send the contribution proposal to the collaboration mailing list (rice.collab@kuali.org). The Kuali Rice team will evaluate the proposal, assign a Jira issue, and respond via email.
 * Every contributor must have a Contributor License Agreement (CLA on File with Kuali).  To submit the CLA:
   * Create an account at http://kis.kuali.org/ (details: [Create a KIS account] (https://wiki.kuali.org/display/KULFOUND/Create+a+KIS+account)).

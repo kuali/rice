@@ -5,7 +5,7 @@ overlays/
 *.iml
 rice-framework/krad-web/src/main/webapp/krad/min
 velocity.log
-
+.DS_Store
 
 # Eclipse Metadata
 .settings

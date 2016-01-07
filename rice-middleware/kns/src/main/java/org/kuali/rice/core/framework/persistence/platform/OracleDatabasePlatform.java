@@ -173,4 +173,10 @@ public class OracleDatabasePlatform extends ANSISqlDatabasePlatform {
             		time).append("', 'YYYY-MM-DD HH24:MI:SS')").toString(); 
         }
 	}
+
+    @Override
+    public String getValidationQuery() {
+        return "select 1 from dual";
+    }
+
 }

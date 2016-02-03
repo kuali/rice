@@ -177,17 +177,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
       <!-- Enable static weaving using META-INF/persistence-weaving.xml for this module -->
       <plugin>
         <groupId>au.com.alderaan</groupId>

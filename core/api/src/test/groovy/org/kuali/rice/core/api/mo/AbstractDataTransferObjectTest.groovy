@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2015 The Kuali Foundation
+ * Copyright 2005-2016 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 package org.kuali.rice.core.api.mo
-
-import javax.xml.bind.JAXBContext
 import org.apache.commons.lang.SerializationUtils
 import org.junit.Test
-import org.kuali.rice.core.api.util.io.SerializationUtils
-import org.apache.commons.lang.SerializationUtils
 
+import javax.xml.bind.JAXBContext
 /**
  * This test verifies that AbstractDataTransferObjects work the way they are expected to work in terms of JAXB
  * marshalling/unmarshalling and standard java serialization/deserialization.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -32,7 +29,7 @@ class AbstractDataTransferObjectTest {
 
     private final shouldFail = new GroovyTestCase().&shouldFail
 
-	private static final String XML_WITH_FUTURE_ELEMENTS = """
+    private static final String XML_WITH_FUTURE_ELEMENTS = """
 <sampleDataTransferObject xmlns="http://rice.kuali.org/core/v2_0">
   <name>myName</name>
   <values>
@@ -46,7 +43,7 @@ class AbstractDataTransferObjectTest {
   <theseAreSomeFutureElements>which shouldn't get included in the unmarshalled version</theseAreSomeFutureElements>
 </sampleDataTransferObject>
     """
-    
+
     private static final JAXBContext JAXB = JAXBContext.newInstance(SampleDataTransferObject.class)
 
     private SampleDataTransferObject createDto() {
@@ -94,7 +91,9 @@ class AbstractDataTransferObjectTest {
         SampleDataTransferObject deserializedDto = SerializationUtils.deserialize(serialized)
         assert dto == deserializedDto
         byte[] serializedAgain = SerializationUtils.serialize(deserializedDto)
-        assert serialized == serializedAgain
+        SampleDataTransferObject data1 = SerializationUtils.deserialize(serialized)
+        SampleDataTransferObject data2 = SerializationUtils.deserialize(serializedAgain)
+        assert data1.equals(data2);
         SampleDataTransferObject deserializedAgainDto = SerializationUtils.deserialize(serializedAgain)
         assert deserializedDto == deserializedAgainDto
     }

@@ -668,7 +668,7 @@ public class DocumentSearchTest extends KEWTestCase {
 
         // Test the wildcards on the document/notification ID attribute. The string wildcards should work, since the doc ID is not a string.
         searchStrings = new String[] {"!"+docIds[0], docIds[1]+"|"+docIds[2], "<="+docIds[1], ">="+docIds[2], "<"+docIds[0]+"&&>"+docIds[2],
-                ">"+docIds[1], "<"+docIds[2]+"&&!"+docIds[0], docIds[0]+".."+docIds[2], "?"+docIds[1]+"*", "?"+docIds[1].substring(1)+"*", "?9*7"};
+                ">"+docIds[1], "<"+docIds[2]+"&&!"+docIds[0], docIds[0]+".."+docIds[2], "?"+docIds[1]+"*", "?"+docIds[1].substring(1)+"*", "?9*7abc"};
         expectedResults = new int[] {2, 2, 2, 1, 0, 1, 1, 3, 0, 1, 0};
         for (int i = 0; i < searchStrings.length; i++) {
             criteria = DocumentSearchCriteria.Builder.create();

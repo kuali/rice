@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.core.framework.persistence.jdbc.dao;
 
-import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
 import org.kuali.rice.core.framework.persistence.dao.PlatformAwareDao;
-import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.kuali.rice.core.framework.persistence.platform.DatabasePlatform;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
-public abstract class PlatformAwareDaoBaseJdbc extends SimpleJdbcDaoSupport implements PlatformAwareDao {
+public abstract class PlatformAwareDaoBaseJdbc extends JdbcDaoSupport implements PlatformAwareDao {
     private DatabasePlatform dbPlatform;
     
     public DatabasePlatform getDbPlatform(){

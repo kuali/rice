@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.core.framework.persistence.jta;
 
-import java.lang.reflect.Method;
-
 import org.apache.log4j.Logger;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 
@@ -29,15 +29,13 @@ import org.springframework.transaction.support.DefaultTransactionStatus;
  *
  */
 public class KualiTransactionInterceptor extends TransactionInterceptor {
-	private static final Logger LOG = Logger.getLogger(KualiTransactionInterceptor.class);
+
+    private static final Logger LOG = Logger.getLogger(KualiTransactionInterceptor.class);
 	
-	/**
-     * @see org.springframework.transaction.interceptor.TransactionAspectSupport#createTransactionIfNecessary(java.lang.reflect.Method,
-     *      java.lang.Class)
-     */
 	@Override
-    protected TransactionInfo createTransactionIfNecessary(Method method, Class targetClass) {
-        TransactionInfo txInfo = super.createTransactionIfNecessary(method, targetClass);
+    protected TransactionInfo createTransactionIfNecessary(PlatformTransactionManager tm, TransactionAttribute txAttr,
+                                                           final String joinpointIdentification) {
+        TransactionInfo txInfo = super.createTransactionIfNecessary(tm, txAttr, joinpointIdentification);
 
         // using INFO level since DEBUG level turns on the (somewhat misleading) log statements of the superclass
         if (logger.isDebugEnabled()) {
@@ -63,10 +61,6 @@ public class KualiTransactionInterceptor extends TransactionInterceptor {
         return txInfo;
     }
 
-    /**
-     * @see org.springframework.transaction.interceptor.TransactionAspectSupport#doCloseTransactionAfterThrowing(org.springframework.transaction.interceptor.TransactionAspectSupport.TransactionInfo,
-     *      java.lang.Throwable)
-     */
 	@Override
     protected void completeTransactionAfterThrowing(TransactionInfo txInfo, Throwable ex) {
         if (txInfo.getTransactionAttribute().rollbackOn(ex)) {
@@ -97,9 +91,6 @@ public class KualiTransactionInterceptor extends TransactionInterceptor {
         super.completeTransactionAfterThrowing(txInfo, ex);
     }
 	
-	/**
-     * @see org.springframework.transaction.interceptor.TransactionAspectSupport#doCommitTransactionAfterReturning(org.springframework.transaction.interceptor.TransactionAspectSupport.TransactionInfo)
-     */
     @Override
     protected void commitTransactionAfterReturning(TransactionInfo txInfo) {
         // using INFO level since DEBUG level turns on the (somewhat misleading) log statements of the superclass
@@ -125,4 +116,7 @@ public class KualiTransactionInterceptor extends TransactionInterceptor {
 
         super.commitTransactionAfterReturning(txInfo);
     }
+
+
+
 }

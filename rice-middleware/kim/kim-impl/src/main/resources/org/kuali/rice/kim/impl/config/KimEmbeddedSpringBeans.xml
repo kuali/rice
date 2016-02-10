@@ -99,6 +99,7 @@
 
   <bean id="kimResponsibilityService" class="org.kuali.rice.kim.impl.responsibility.ResponsibilityServiceImpl"
         p:dataObjectService-ref="dataObjectService"
+        p:responsibilityDao-ref="responsibilityDao"
         p:defaultResponsibilityTypeService-ref="defaultResponsibilityTypeService"
         p:kimTypeInfoService-ref="kimTypeInfoService"
         p:roleService-ref="kimRoleService"/>

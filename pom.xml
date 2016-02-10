@@ -1347,13 +1347,8 @@
           <dependencies>
             <dependency>
               <groupId>org.eclipse.persistence</groupId>
-              <artifactId>eclipselink</artifactId>
+              <artifactId>org.eclipse.persistence.jpa</artifactId>
               <version>${eclipselink.version}</version>
-            </dependency>
-            <dependency>
-              <groupId>org.eclipse.persistence</groupId>
-              <artifactId>javax.persistence</artifactId>
-              <version>${jpa.version}</version>
             </dependency>
           </dependencies>
         </plugin>

@@ -28,8 +28,7 @@ public final class RiceConstants {
 
     public static final String RICE_JPA_ENABLED = "rice.jpa.enabled";
     public static final String JPA_ENABLED_SUFFIX = ".jpa.enabled";
-    public static final String RICE_JPA_LTW_ENABLED = "rice.jpa.loadTimeWeaving.enabled";
-    
+
     public static final String SERVICES_TO_CACHE = "rice.resourceloader.servicesToCache";
     public static final String RICE_LOGGING_CONFIGURE = "rice.logging.configure";
 

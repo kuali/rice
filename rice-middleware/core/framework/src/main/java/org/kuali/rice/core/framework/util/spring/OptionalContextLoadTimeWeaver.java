@@ -16,7 +16,6 @@
 package org.kuali.rice.core.framework.util.spring;
 
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.util.RiceConstants;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.weaving.DefaultContextLoadTimeWeaver;
@@ -44,6 +43,8 @@ import java.lang.instrument.ClassFileTransformer;
  */
 public class OptionalContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLoaderAware, DisposableBean {
 
+    private static final String RICE_LTW_ENABLED = "rice.loadTimeWeaving.enabled";
+
     private DefaultContextLoadTimeWeaver loadTimeWeaver;
     private boolean loadTimeWeaverLoaded;
     private ClassLoader beanClassLoader;
@@ -54,7 +55,7 @@ public class OptionalContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassL
 
     @Override
     public void setBeanClassLoader(ClassLoader beanClassLoader) {
-        boolean enableLtw = ConfigContext.getCurrentContextConfig().getBooleanProperty(RiceConstants.RICE_JPA_LTW_ENABLED, true);
+        boolean enableLtw = ConfigContext.getCurrentContextConfig().getBooleanProperty(RICE_LTW_ENABLED, true);
         if (enableLtw) {
             try {
                 this.beanClassLoader = beanClassLoader;

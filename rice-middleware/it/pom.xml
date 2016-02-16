@@ -27,7 +27,6 @@
   <packaging>pom</packaging>
   <modules>
     <module>internal-tools</module>
-    <module>config</module>
     <module>core</module>
     <module>kns</module>
     <module>ksb</module>

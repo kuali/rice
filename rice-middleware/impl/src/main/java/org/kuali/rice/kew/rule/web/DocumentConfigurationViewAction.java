@@ -28,7 +28,6 @@ import org.kuali.rice.kew.engine.node.ProcessDefinitionBo;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.permission.Permission;
@@ -49,12 +48,10 @@ import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -62,7 +59,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 
 
 /**
@@ -194,15 +192,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		DocumentType docType = form.getDocumentType();
 		List<ResponsibilityForDisplay> responsibilities = new ArrayList<ResponsibilityForDisplay>();
 		while ( docType != null) {
-            QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-            Predicate p = and(
-                equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
-                equal("template.name", KewApiConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME),
-                equal("active", Boolean.TRUE),
-                equal("attributes[documentTypeName]", docType.getName())
-            );
-            builder.setPredicates(p);
-			List<Responsibility> resps = getResponsibilityService().findResponsibilities(builder.build()).getResults();
+			List<Responsibility> resps = getResponsibilityService().findWorkflowExceptionResponsibilities(docType.getName());
 			
 			for ( Responsibility r : resps ) {
 				if ( responsibilities.isEmpty() ) {
@@ -305,15 +295,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
             Set<Responsibility> responsibilities = new HashSet<Responsibility>();
             Map<String,List<ResponsibilityForDisplay>> nodeToRespMap = new LinkedHashMap<String, List<ResponsibilityForDisplay>>();
             while ( docType != null) {
-                QueryByCriteria.Builder builder = QueryByCriteria.Builder.create();
-                Predicate p = and(
-                        equal("template.namespaceCode", KRADConstants.KUALI_RICE_WORKFLOW_NAMESPACE),
-                        equal("template.name", KewApiConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME),
-                        equal("active", Boolean.TRUE),
-                        equal("attributes[documentTypeName]", docType.getName())
-                );
-                builder.setPredicates(p);
-                List<Responsibility> resps = getResponsibilityService().findResponsibilities(builder.build()).getResults();
+                List<Responsibility> resps = getResponsibilityService().findWorkflowResponsibilities(docType.getName());
 			
                 for ( Responsibility r : resps ) {
                     String routeNodeName = r.getAttributes().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME);

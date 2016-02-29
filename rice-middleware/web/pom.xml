@@ -89,6 +89,12 @@
     <dependency>
       <groupId>co.kuali</groupId>
       <artifactId>core-filter</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jul-to-slf4j</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>mysql</groupId>

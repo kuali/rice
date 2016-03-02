@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -156,6 +142,18 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -2616,6 +2614,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementRoleDocument.getDelegations()){
 				newKimDelegation = new DelegateTypeBo();
 				KimCommonUtilsInternal.copyProperties(newKimDelegation, roleDocumentDelegation);
+				newKimDelegation.setVersionNumber(null);
 				newKimDelegation.setRoleId(identityManagementRoleDocument.getRoleId());
 				if(ObjectUtils.isNotNull(origDelegations)){
 					for(DelegateTypeBo origDelegationImpl: origDelegations){
@@ -2657,6 +2656,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for(RoleDocumentDelegationMember delegationMember: delegationMembers){
 				newDelegationMemberImpl = new DelegateMemberBo();
 				KimCommonUtilsInternal.copyProperties(newDelegationMemberImpl, delegationMember);
+				newDelegationMemberImpl.setVersionNumber(null);
                 newDelegationMemberImpl.setType(MemberType.fromCode(delegationMember.getMemberTypeCode()));
 				if(ObjectUtils.isNotNull(origDelegationMembers)){
 					for(DelegateMemberBo origDelegationMember: origDelegationMembers){
@@ -2691,7 +2691,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                     newDelegationMemberImpl.setAttributeDetails(getDelegationMemberAttributeData(delegationMember.getQualifiers(), origAttributes, activatingInactive, delegationMemberId));
                     newDelegationMemberImpl.setActiveFromDateValue(delegationMember.getActiveFromDate());
                     newDelegationMemberImpl.setActiveToDateValue(delegationMember.getActiveToDate());
-                    newDelegationMemberImpl.setVersionNumber(null);
                     delegationsMembersList.add(newDelegationMemberImpl);
 			}
 		}

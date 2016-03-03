@@ -15,20 +15,10 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.lang.reflect.InvocationTargetException;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.core.api.data.DataType;
 import org.kuali.rice.core.api.encryption.EncryptionService;
@@ -101,6 +91,17 @@ import org.kuali.rice.krad.util.KRADPropertyConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.kuali.rice.krad.valuefinder.ValueFinder;
+
+import java.lang.reflect.InvocationTargetException;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -1903,6 +1904,10 @@ public final class FieldUtils {
     }
 
     public static Formatter getFormatterForDataType(DataType dataType) {
+		// if the datatype is DATETIME, we want to make sure it gets formatted with a date *and* time component
+		if (dataType.equals(DataType.DATETIME)) {
+			return Formatter.getFormatter(DateTime.class);
+		}
         return Formatter.getFormatter(dataType.getType());
     }
 

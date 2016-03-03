@@ -20,14 +20,15 @@ package org.kuali.rice.core.web.format;
 // begin Kuali Foundation modification
 // import order changed, and java.util.Calendar, org.kuali.KeyConstants and org.kuali.rice.kradServiceLocatorInternal added
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.util.Calendar;
-
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
+
+import java.sql.Date;
+import java.text.ParseException;
+import java.util.Calendar;
 
 /**
  * begin Kuali Foundation modification
@@ -95,6 +96,9 @@ public class DateFormatter extends Formatter {
         // begin Kuali Foundation modification
         if ("".equals(value)) {
             return null;
+        }
+        if (value instanceof DateTime) {
+            value = ((DateTime)value).toDate();
         }
         return getDateTimeService().toDateString((java.util.Date) value);
         // end Kuali Foundation modification

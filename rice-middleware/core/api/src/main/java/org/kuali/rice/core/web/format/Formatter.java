@@ -19,6 +19,7 @@ package org.kuali.rice.core.web.format;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.type.AbstractKualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
@@ -37,8 +38,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 
 
@@ -106,6 +107,7 @@ public class Formatter implements Serializable {
         registerFormatter(KualiPercent.class, PercentageFormatter.class);
         registerFormatter(BigDecimal.class, BigDecimalFormatter.class);
         registerFormatter(Date.class, DateFormatter.class);
+        registerFormatter(java.util.Date.class, DateFormatter.class);
         registerFormatter(Integer.class, IntegerFormatter.class);
         registerFormatter(int.class, IntegerFormatter.class);
         registerFormatter(int[].class, IntegerFormatter.class);
@@ -116,6 +118,7 @@ public class Formatter implements Serializable {
         registerFormatter(Timestamp.class, DateViewTimestampObjectFormatter.class);
         registerFormatter(boolean.class, LittleBooleanFormatter.class);
         registerFormatter(Collection.class, ArrayFormatter.class);
+        registerFormatter(DateTime.class, DateTimeFormatter.class);
         // end Kuali Foundation modification
     }
 

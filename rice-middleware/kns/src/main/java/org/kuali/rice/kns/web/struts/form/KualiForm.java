@@ -484,7 +484,7 @@ public class KualiForm extends PojoFormBase {
 	 * @return the backLocation
 	 */
 	public String getBackLocation() {
-		return this.backLocation;
+		return WebUtils.sanitizeBackLocation(this.backLocation);
 	}
 
 	/**

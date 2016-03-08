@@ -52,6 +52,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm;
@@ -737,7 +738,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
      * @return Returns the backLocation.
      */
     public String getBackLocation() {
-        return backLocation;
+        return WebUtils.sanitizeBackLocation(backLocation);
     }
 
     /**

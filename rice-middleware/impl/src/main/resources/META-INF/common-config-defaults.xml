@@ -136,7 +136,7 @@
     <param name="rice.portal.allowed.regex" override="false">^${application.url}(/.*|)</param>
     
     <!-- Back Location parameters -->
-    <param name="rice.backLocation.allowed.regex" override="false">^(${application.url}|${rice.url}|${appserver.url})(/.*|)</param>
+    <param name="rice.backLocation.allowed.regex" override="false">^(${application.url}|${rice.server.url}|${appserver.url})(/.*|)</param>
     <param name="rice.backLocation.default.url" override="false">${application.url}</param>
 
     <!-- App specific parameters -->

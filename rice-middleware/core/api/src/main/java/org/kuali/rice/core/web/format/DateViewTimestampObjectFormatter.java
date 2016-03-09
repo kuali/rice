@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.core.web.format;
 
+import org.joda.time.DateTime;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -33,6 +35,9 @@ public class DateViewTimestampObjectFormatter extends DateFormatter {
 		if (value == null) {
             return null;
         }
+		if (value instanceof DateTime) {
+			value = new Timestamp(((DateTime)value).getMillis());
+		}
 		return getDateTimeService().toDateTimeString((Timestamp) value);
 
 	}

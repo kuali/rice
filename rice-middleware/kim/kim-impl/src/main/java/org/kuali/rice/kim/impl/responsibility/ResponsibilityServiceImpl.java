@@ -56,7 +56,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.kuali.rice.core.api.criteria.PredicateFactory.*;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.or;
 
 public class ResponsibilityServiceImpl implements ResponsibilityService {
 
@@ -66,6 +69,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
     private ResponsibilityTypeService defaultResponsibilityTypeService;
     private KimTypeInfoService kimTypeInfoService;
     private RoleService roleService;
+    private ResponsibilityDao responsibilityDao;
 
     private DataObjectService dataObjectService;
 
@@ -523,6 +527,28 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
         return Collections.unmodifiableList(ims);
     }
 
+    @Override
+    public List<Responsibility> findWorkflowResponsibilities(String documentTypeName) {
+        incomingParamCheck(documentTypeName, "documentTypeName");
+        List<ResponsibilityBo> responsibilityBos = getResponsibilityDao().findWorkflowResponsibilities(documentTypeName);
+        List<Responsibility> responsibilities = new ArrayList<>();
+        for (ResponsibilityBo responsibilityBo : responsibilityBos) {
+            responsibilities.add(ResponsibilityBo.to(responsibilityBo));
+        }
+        return Collections.unmodifiableList(responsibilities);
+    }
+
+    @Override
+    public List<Responsibility> findWorkflowExceptionResponsibilities(String documentTypeName) {
+        incomingParamCheck(documentTypeName, "documentTypeName");
+        List<ResponsibilityBo> responsibilityBos = getResponsibilityDao().findWorkflowExceptionResponsibilities(documentTypeName);
+        List<Responsibility> responsibilities = new ArrayList<>();
+        for (ResponsibilityBo responsibilityBo : responsibilityBos) {
+            responsibilities.add(ResponsibilityBo.to(responsibilityBo));
+        }
+        return Collections.unmodifiableList(responsibilities);
+    }
+
     public void setDefaultResponsibilityTypeService(final ResponsibilityTypeService defaultResponsibilityTypeService) {
         this.defaultResponsibilityTypeService = defaultResponsibilityTypeService;
     }
@@ -575,5 +601,13 @@ public class ResponsibilityServiceImpl implements ResponsibilityService {
 
     public void setDataObjectService(DataObjectService dataObjectService) {
         this.dataObjectService = dataObjectService;
+    }
+
+    public ResponsibilityDao getResponsibilityDao() {
+        return responsibilityDao;
+    }
+
+    public void setResponsibilityDao(ResponsibilityDao responsibilityDao) {
+        this.responsibilityDao = responsibilityDao;
     }
 }

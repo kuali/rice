@@ -53,7 +53,6 @@ import org.kuali.rice.kim.impl.KIMPropertyConstants;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleBo;
 import org.kuali.rice.kim.impl.role.RoleMemberBo;
-import org.kuali.rice.kim.impl.role.RoleResponsibilityBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
 import org.kuali.rice.kim.impl.type.KimTypeBo;
@@ -72,7 +71,6 @@ import org.kuali.rice.krad.util.UrlFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -370,6 +368,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
             roleMember.setMemberId(personDocumentForm.getPrincipalId());
             roleMember.setMemberTypeCode(MemberType.PRINCIPAL.getCode());
             roleMember.setRoleId(newRole.getRoleId());
+            roleMember.setActiveFromDate(newRole.getNewRolePrncpl().getActiveFromDate());
+            roleMember.setActiveToDate(newRole.getNewRolePrncpl().getActiveToDate());
             newRole.setNewRolePrncpl(roleMember);
          if(!validateRoleAssignment(personDocumentForm.getPersonDocument(), newRole)){
           return mapping.findForward(RiceConstants.MAPPING_BASIC);

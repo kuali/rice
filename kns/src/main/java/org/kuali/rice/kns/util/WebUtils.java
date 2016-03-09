@@ -50,6 +50,7 @@ import org.apache.struts.upload.CommonsMultipartRequestHandler;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -60,9 +61,7 @@ import org.kuali.rice.kns.datadictionary.KNSDocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.web.struts.action.KualiAction;
 import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
-import org.kuali.rice.kns.web.struts.form.InquiryForm;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
@@ -953,4 +952,12 @@ public class WebUtils {
         return base + path;
     }
 
+    public static String sanitizeBackLocation(String backLocation) {
+        Pattern pattern = Pattern.compile(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX));
+        if(pattern.matcher(backLocation).matches()) {
+            return backLocation;
+        } else {
+            return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_DEFAULT_URL);
+        }
+    }
 }

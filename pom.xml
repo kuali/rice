@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2015 The Kuali Foundation
+    Copyright 2005-2016 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>3.0.9</version>
+    <version>5.0.6</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -59,7 +59,7 @@
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
-    <mysql.jdbc.version>5.1.18</mysql.jdbc.version>
+    <mysql.jdbc.version>5.1.38</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
     <maven.skip.packaging>false</maven.skip.packaging>
     <maven.failsafe.forkmode>once</maven.failsafe.forkmode>

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2015 The Kuali Foundation
+ * Copyright 2005-2016 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -230,6 +230,44 @@ public class SearchableAttributeStringValue implements CaseAwareSearchableAttrib
     @Override
     public DocumentAttributeString toDocumentAttribute() {
         return DocumentAttributeFactory.createStringAttribute(getSearchableAttributeKey(), getSearchableAttributeValue());
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.documentId == null) ? 0 : this.documentId.hashCode());
+        result = prime * result + ((this.searchableAttributeKey == null) ? 0 : this.searchableAttributeKey.hashCode());
+        result = prime * result
+                + ((this.searchableAttributeValue == null) ? 0 : this.searchableAttributeValue.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SearchableAttributeStringValue other = (SearchableAttributeStringValue) obj;
+        if (this.documentId == null) {
+            if (other.documentId != null)
+                return false;
+        } else if (!this.documentId.equals(other.documentId))
+            return false;
+        if (this.searchableAttributeKey == null) {
+            if (other.searchableAttributeKey != null)
+                return false;
+        } else if (!this.searchableAttributeKey.equals(other.searchableAttributeKey))
+            return false;
+        if (this.searchableAttributeValue == null) {
+            if (other.searchableAttributeValue != null)
+                return false;
+        } else if (!this.searchableAttributeValue.equals(other.searchableAttributeValue))
+            return false;
+        return true;
     }
 }
 

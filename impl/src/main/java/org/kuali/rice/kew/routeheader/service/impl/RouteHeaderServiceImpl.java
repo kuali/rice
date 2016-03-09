@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2015 The Kuali Foundation
+ * Copyright 2005-2016 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,13 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.action.ActionItem;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
@@ -36,7 +38,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueContent;
 import org.kuali.rice.kew.routeheader.dao.DocumentRouteHeaderDAO;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 
@@ -104,12 +105,21 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     public void clearRouteHeaderSearchValues(String documentId) {
         getRouteHeaderDAO().clearRouteHeaderSearchValues(documentId);
     }
-    
+
     public void updateRouteHeaderSearchValues(String documentId, List<SearchableAttributeValue> searchAttributes) {
-    	getRouteHeaderDAO().clearRouteHeaderSearchValues(documentId);
-    	for (SearchableAttributeValue searchAttribute : searchAttributes) {
-    		getRouteHeaderDAO().save(searchAttribute);
-    	}
+        getRouteHeaderDAO().clearRouteHeaderSearchValues(documentId);
+        HashSet<String> uniqueAttributes = new HashSet<String>();
+        //"de-dupe" for value,key,and doc header id
+        for (SearchableAttributeValue searchAttribute : searchAttributes) {
+            if(searchAttribute != null) {
+                String fakeKey = searchAttribute.getSearchableAttributeKey() + "-" + searchAttribute.getSearchableAttributeValue();
+                if(!uniqueAttributes.contains(fakeKey)){
+                    getRouteHeaderDAO().save(searchAttribute);
+                    uniqueAttributes.add(fakeKey);
+                }
+            }
+        }
+        LOG.info("Deduplication adjusted incoming SearchableAttributeValue list from original: " + searchAttributes.size() + " entries into : "  + (searchAttributes.size() - uniqueAttributes.size()) + " entries.");
     }
 
     public void validateRouteHeader(DocumentRouteHeaderValue routeHeader){

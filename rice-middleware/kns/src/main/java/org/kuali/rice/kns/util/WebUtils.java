@@ -960,6 +960,9 @@ public class WebUtils {
     }
     
     public static String sanitizeBackLocation(String backLocation) {
+        if(StringUtils.isBlank(backLocation)) {
+            return backLocation;
+        }
         Pattern pattern = Pattern.compile(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX));
         if(pattern.matcher(backLocation).matches()) {
             return backLocation;

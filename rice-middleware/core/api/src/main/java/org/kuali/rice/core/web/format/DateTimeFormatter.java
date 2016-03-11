@@ -16,8 +16,9 @@ public class DateTimeFormatter extends DateFormatter {
     public Object format(Object value) {
         if (value == null) {
             return null;
-        }
-        if (value instanceof java.util.Date) {
+        } else if (value instanceof String) {
+            return value;
+        } else if (value instanceof java.util.Date) {
             return getDateTimeService().toDateTimeString((java.util.Date)value);
         } else {
             return getDateTimeService().toDateTimeString(((DateTime) value).toDate());

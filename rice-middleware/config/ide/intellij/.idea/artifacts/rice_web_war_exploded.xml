@@ -19,7 +19,7 @@
             <element id="module-output" name="rice-core-api" />
           </element>
           <element id="library" level="project" name="Maven: org.kuali.db.ojb:db-ojb:1.0.4-patch8" />
-          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.2" />
           <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
           <element id="library" level="project" name="Maven: commons-pool:commons-pool:1.5.7" />
           <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.6" />

@@ -15,7 +15,18 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.List;
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.type.KimAttributeField;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
+import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.kuali.rice.krad.document.TransactionalDocumentBase;
+import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -26,18 +37,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
-
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.type.KimAttributeField;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
-import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
-import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
-import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
-import org.kuali.rice.krad.document.TransactionalDocumentBase;
-import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
-import org.springframework.util.AutoPopulatingList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -61,28 +61,34 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	protected List<RoleDocumentDelegationMember> delegationMembers = new AutoPopulatingList<RoleDocumentDelegationMember>(RoleDocumentDelegationMember.class);
 	
 	protected void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
+		RoleBo role = delegationMember.getRoleBo();
 		RoleDocumentDelegation delegation;
-		if(DelegationType.PRIMARY.getCode().equals(delegationMember.getDelegationTypeCode())){
-			delegation = getPrimaryDelegation();
-		} else{
-			delegation = getSecondaryDelegation();
+		if (DelegationType.PRIMARY.getCode().equals(delegationMember.getDelegationTypeCode())) {
+			delegation = getPrimaryDelegation(role);
+			// if the delegation type was changed on the document, we need to make sure we remove the member from the secondary delegation
+			getSecondaryDelegation(role).getMembers().remove(delegationMember);
+		} else {
+			delegation = getSecondaryDelegation(role);
+			// if the delegation type was changed on the document, we need to make sure we remove the member from the primary delegation
+			getPrimaryDelegation(role).getMembers().remove(delegationMember);
 		}
 		delegationMember.setDelegationId(delegation.getDelegationId());
-    	delegation.getMembers().add(delegationMember);
-		delegation.setRoleId(delegationMember.getRoleBo().getId());
-		delegation.setKimTypeId(delegationMember.getRoleBo().getKimTypeId());
-
+		if (!delegation.getMembers().contains(delegationMember)) {
+			delegation.getMembers().add(delegationMember);
+		}
 	}
 
-	protected RoleDocumentDelegation getPrimaryDelegation(){
+	protected RoleDocumentDelegation getPrimaryDelegation(RoleBo role) {
 		RoleDocumentDelegation primaryDelegation = null;
 		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationPrimary()) {
+			if(role.getId().equals(delegation.getRoleId()) && delegation.isDelegationPrimary()) {
 				primaryDelegation = delegation;
             }
 		}
-		if(primaryDelegation==null){
+		if(primaryDelegation == null) {
 			primaryDelegation = new RoleDocumentDelegation();
+			primaryDelegation.setRoleId(role.getId());
+			primaryDelegation.setKimTypeId(role.getKimTypeId());
 			primaryDelegation.setDelegationId(getDelegationId());
 			primaryDelegation.setDelegationTypeCode(DelegationType.PRIMARY.getCode());
             primaryDelegation.setDocumentNumber(getDocumentNumber());
@@ -96,15 +102,17 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
         return incrementer.nextStringValue();
 	}
 	
-	protected RoleDocumentDelegation getSecondaryDelegation(){
+	protected RoleDocumentDelegation getSecondaryDelegation(RoleBo role) {
 		RoleDocumentDelegation secondaryDelegation = null;
-		for(RoleDocumentDelegation delegation: getDelegations()){
-			if(delegation.isDelegationSecondary()) {
+		for (RoleDocumentDelegation delegation: getDelegations()) {
+			if (role.getId().equals(delegation.getRoleId()) && delegation.isDelegationSecondary()) {
 				secondaryDelegation = delegation;
             }
 		}
-		if(secondaryDelegation==null){
+		if(secondaryDelegation == null) {
 			secondaryDelegation = new RoleDocumentDelegation();
+			secondaryDelegation.setRoleId(role.getId());
+			secondaryDelegation.setKimTypeId(role.getKimTypeId());
 			secondaryDelegation.setDelegationId(getDelegationId());
 			secondaryDelegation.setDelegationTypeCode(DelegationType.SECONDARY.getCode());
             secondaryDelegation.setDocumentNumber(getDocumentNumber());

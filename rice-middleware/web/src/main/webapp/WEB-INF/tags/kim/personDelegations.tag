@@ -104,7 +104,7 @@
 					<td>
 						<div align=center>&nbsp;
 			        	     <c:choose>
-				        	       <c:when test="${role.edit or readOnly}">
+				        	       <c:when test="${delegationMember.edit or readOnly}">
 				        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
 				        	       </c:when>
 				        	       <c:otherwise>

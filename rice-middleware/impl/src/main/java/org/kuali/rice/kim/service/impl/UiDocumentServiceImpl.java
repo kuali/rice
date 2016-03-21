@@ -26,6 +26,7 @@ import org.kuali.rice.core.api.criteria.PredicateFactory;
 import org.kuali.rice.core.api.criteria.PredicateUtils;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 import org.kuali.rice.core.api.datetime.DateTimeService;
+import org.kuali.rice.core.api.delegation.DelegationType;
 import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.uif.RemotableCheckbox;
@@ -265,8 +266,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	        List <DelegateTypeBo> personDelegations = populateDelegations(identityManagementPersonDocument);
 	        List <RoleResponsibilityActionBo> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
 	        List <Object> bos = new ArrayList<Object>();
-	        //if(ObjectUtils.isNotNull(kimEntity.getPrivacyPreferences()))
-	        //	bos.add(kimEntity.getPrivacyPreferences());
 	        bos.addAll(groupPrincipals);
 	        bos.addAll(rolePrincipals);
 	        bos.addAll(roleRspActions);
@@ -452,8 +451,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                     pndMember.setDelegationMemberId(member.getDelegationMemberId());
                     pndMember.setMemberTypeCode(member.getType().getCode());
                     pndMember.setDelegationId(member.getDelegationId());
-                    pndMember.setVersionNumber(member.getVersionNumber());
-                    pndMember.setObjectId(member.getObjectId());
 
 					pndMember.setRoleMemberId(member.getRoleMemberId());
 					roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
@@ -1481,45 +1478,133 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected List<DelegateTypeBo> populateDelegations(IdentityManagementPersonDocument identityManagementPersonDocument){
-		List<DelegateTypeBo> origDelegations = getPersonDelegations(identityManagementPersonDocument.getPrincipalId());
-		List<DelegateTypeBo> kimDelegations = new ArrayList<DelegateTypeBo>();
-		DelegateTypeBo newKimDelegation;
-		DelegateTypeBo origDelegationImplTemp = null;
-		List<DelegateMemberBo> origMembers;
-		boolean activatingInactive = false;
-		String newDelegationIdAssigned = "";
+
+		List<DelegateTypeBo> originalDelegations = getPersonDelegations(identityManagementPersonDocument.getPrincipalId());
+		List<DelegateTypeBo> delegations = combineAndCreateMissingDelegations(identityManagementPersonDocument, originalDelegations);
+		adjustForDelegationTypeChange(delegations, identityManagementPersonDocument.getDelegations());
+
 		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getDelegations())){
-			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementPersonDocument.getDelegations()){
-				newKimDelegation = new DelegateTypeBo();
-				KimCommonUtilsInternal.copyProperties(newKimDelegation, roleDocumentDelegation);
-				newKimDelegation.setRoleId(roleDocumentDelegation.getRoleId());
-				if(ObjectUtils.isNotNull(origDelegations)){
-					for(DelegateTypeBo origDelegationImpl: origDelegations){
-						if((origDelegationImpl.getRoleId()!=null && StringUtils.equals(origDelegationImpl.getRoleId(), newKimDelegation.getRoleId())) &&
-								(origDelegationImpl.getDelegationId()!=null && StringUtils.equals(origDelegationImpl.getDelegationId(), newKimDelegation.getDelegationId()))){
-							//TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
-							newDelegationIdAssigned = newKimDelegation.getDelegationId();
-							newKimDelegation.setDelegationId(origDelegationImpl.getDelegationId());
-							activatingInactive = true;
-						}
-						if(origDelegationImpl.getDelegationId()!=null && StringUtils.equals(origDelegationImpl.getDelegationId(), newKimDelegation.getDelegationId())){
-							newKimDelegation.setVersionNumber(origDelegationImpl.getVersionNumber());
-							origDelegationImplTemp = origDelegationImpl;
-						}
+			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementPersonDocument.getDelegations()) {
+				for (DelegateTypeBo delegation : delegations) {
+					if (roleDocumentDelegation.getDelegationId().equals(delegation.getDelegationId())) {
+						delegation.setMembers(populateDelegationMembers(delegation, roleDocumentDelegation));
 					}
 				}
-				origMembers = (origDelegationImplTemp==null || origDelegationImplTemp.getMembers()==null)?
-									new ArrayList<DelegateMemberBo>():origDelegationImplTemp.getMembers();
-				newKimDelegation.setMembers(getDelegationMembers(roleDocumentDelegation.getMembers(), origMembers, null, activatingInactive, newDelegationIdAssigned));
-                newKimDelegation.setVersionNumber(null);
-				kimDelegations.add(newKimDelegation);
-				activatingInactive = false;
 			}
 		}
-		return kimDelegations;
+
+		return delegations;
 	}
 
-    protected List <RoleMemberAttributeDataBo> getBlankRoleMemberAttrs(List <RoleMemberBo> rolePrncpls) {
+	protected List<DelegateTypeBo> combineAndCreateMissingDelegations(IdentityManagementPersonDocument identityManagementPersonDocument, List<DelegateTypeBo> originalDelegations) {
+		List<DelegateTypeBo> delegations = new ArrayList<>(originalDelegations);
+		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getDelegations())){
+			outer:for(RoleDocumentDelegation roleDocumentDelegation: identityManagementPersonDocument.getDelegations()){
+				for (DelegateTypeBo delegation : delegations) {
+					if (delegation.getDelegationId().equals(roleDocumentDelegation.getDelegationId())) {
+						continue outer;
+					}
+				}
+				DelegateTypeBo newDelegation = new DelegateTypeBo();
+				newDelegation.setDelegationId(roleDocumentDelegation.getDelegationId());
+				newDelegation.setKimTypeId(roleDocumentDelegation.getKimTypeId());
+				newDelegation.setDelegationTypeCode(roleDocumentDelegation.getDelegationTypeCode());
+				newDelegation.setRoleId(roleDocumentDelegation.getRoleId());
+				delegations.add(newDelegation);
+			}
+		}
+		return delegations;
+	}
+
+	protected void adjustForDelegationTypeChange(List<DelegateTypeBo> delegations, List<RoleDocumentDelegation> documentDelegations) {
+		Map<String, Map<DelegationType, DelegateTypeBo>> roleDelegationTypeIndex = indexDelegationsByRoleAndType(delegations);
+		Map<String, DelegateTypeBo> memberDelegationIndex = indexDelegationsByMemberId(delegations);
+		Map<String, DelegateMemberBo> delegationMemberIndex = indexDelegationMembersByMemberId(delegations);
+		for (RoleDocumentDelegation documentDelegation : documentDelegations) {
+			Map<DelegationType, DelegateTypeBo> delegationTypeMap = roleDelegationTypeIndex.get(documentDelegation.getRoleId());
+			if (delegationTypeMap != null) {
+				for (RoleDocumentDelegationMember documentMember : documentDelegation.getMembers()) {
+					DelegateTypeBo originalMemberDelegation = memberDelegationIndex.get(documentMember.getDelegationMemberId());
+					// if the following happens, we know that this document member changed it's delegation type
+					if (originalMemberDelegation != null && !originalMemberDelegation.getDelegationTypeCode().equals(documentDelegation.getDelegationTypeCode())) {
+						DelegateMemberBo delegateMember = delegationMemberIndex.get(documentMember.getDelegationMemberId());
+						// remove the original member from the original delegation and move it to the target one
+						originalMemberDelegation.getMembers().remove(delegateMember);
+						delegationTypeMap.get(DelegationType.fromCode(documentDelegation.getDelegationTypeCode())).getMembers().add(delegateMember);
+					}
+				}
+			}
+
+		}
+	}
+
+	private Map<String, Map<DelegationType, DelegateTypeBo>> indexDelegationsByRoleAndType(List<DelegateTypeBo> delegations) {
+		Map<String, Map<DelegationType, DelegateTypeBo>> index = new HashMap<>();
+		for (DelegateTypeBo delegation : delegations) {
+			String roleId = delegation.getRoleId();
+			if (!index.containsKey(roleId)) {
+				index.put(roleId, new HashMap<DelegationType, DelegateTypeBo>());
+			}
+			Map<DelegationType, DelegateTypeBo> delegationTypeMap = index.get(roleId);
+			delegationTypeMap.put(delegation.getDelegationType(), delegation);
+		}
+		return index;
+	}
+
+	private Map<String, DelegateTypeBo> indexDelegationsByMemberId(List<DelegateTypeBo> delegations) {
+		Map<String, DelegateTypeBo> index = new HashMap<>();
+		for (DelegateTypeBo delegation : delegations) {
+			for (DelegateMemberBo member : delegation.getMembers()) {
+				index.put(member.getDelegationMemberId(), delegation);
+			}
+		}
+		return index;
+	}
+
+	private Map<String, DelegateMemberBo> indexDelegationMembersByMemberId(List<DelegateTypeBo> delegations) {
+		Map<String, DelegateMemberBo> index = new HashMap<>();
+		for (DelegateTypeBo delegation : delegations) {
+			for (DelegateMemberBo member : delegation.getMembers()) {
+				index.put(member.getDelegationMemberId(), member);
+			}
+		}
+		return index;
+	}
+
+	protected List<DelegateMemberBo> populateDelegationMembers(DelegateTypeBo delegation, RoleDocumentDelegation documentDelegation) {
+		List<DelegateMemberBo> delegationMembers = delegation.getMembers();
+
+		if(CollectionUtils.isNotEmpty(documentDelegation.getMembers())) {
+			for (RoleDocumentDelegationMember documentDelegationMember : documentDelegation.getMembers()) {
+				DelegateMemberBo originalMember = null;
+				DelegateMemberBo newMember = new DelegateMemberBo();
+				for (DelegateMemberBo anOriginalMember : delegationMembers) {
+					if (StringUtils.equals(anOriginalMember.getDelegationMemberId(), documentDelegationMember.getDelegationMemberId())) {
+						newMember = originalMember = anOriginalMember;
+					}
+				}
+				if (originalMember == null) {
+					delegationMembers.add(newMember);
+				}
+				// set the delegation id to that of the parent delegation
+				newMember.setDelegationId(delegation.getDelegationId());
+				// set the rest of the values
+				newMember.setDelegationMemberId(documentDelegationMember.getDelegationMemberId());
+				newMember.setRoleMemberId(documentDelegationMember.getRoleMemberId());
+				newMember.setMemberId(documentDelegationMember.getMemberId());
+				newMember.setTypeCode(documentDelegationMember.getMemberTypeCode());
+				newMember.setActiveFromDateValue(documentDelegationMember.getActiveFromDate());
+				newMember.setActiveToDateValue(documentDelegationMember.getActiveToDate());
+
+				// TODO still need to deal with attributes on delegate members...
+				// newMember.setAttributeDetails(..., originalMember, ...);
+			}
+		}
+		return delegationMembers;
+
+	}
+
+	protected List <RoleMemberAttributeDataBo> getBlankRoleMemberAttrs(List <RoleMemberBo> rolePrncpls) {
 
 		List <RoleMemberAttributeDataBo>  blankRoleMemberAttrs = new ArrayList<RoleMemberAttributeDataBo>();
 		if(ObjectUtils.isNotNull(rolePrncpls)){
@@ -1700,7 +1785,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
                                 member.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getType(), roleMember.getMemberId()));
                             }
                         }
-                        member.setEdit(true);
+                        member.setEdit(false);
                         identityManagementRoleDocument.getDelegationMembers().add(member);
                     }
                 }
@@ -2192,9 +2277,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return pndMemberRoleQualifiers;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
-	 */
 	@Override
     public void saveRole(IdentityManagementRoleDocument identityManagementRoleDocument) {
 		String roleId = identityManagementRoleDocument.getRoleId();
@@ -2293,6 +2375,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				newRoleResponsibility.setActive(documentRoleResponsibility.isActive());
 				newRoleResponsibility.setRoleId(identityManagementRoleDocument.getRoleId());
                 newRoleResponsibility.setVersionNumber(null);
+				newRoleResponsibility.setObjectId(null);
 				if(ObjectUtils.isNotNull(origRoleResponsibilities)){
 					for(RoleResponsibilityBo origResponsibilityImpl: origRoleResponsibilities){
 						if(!StringUtils.equals(origResponsibilityImpl.getRoleId(), newRoleResponsibility.getRoleId()) &&
@@ -2610,11 +2693,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         List<DelegateMemberBo> allOrigMembers = new ArrayList<DelegateMemberBo>();;
         boolean activatingInactive = false;
 		String newDelegationIdAssigned = "";
-            if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
+		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
 			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementRoleDocument.getDelegations()){
 				newKimDelegation = new DelegateTypeBo();
 				KimCommonUtilsInternal.copyProperties(newKimDelegation, roleDocumentDelegation);
 				newKimDelegation.setVersionNumber(null);
+				newKimDelegation.setObjectId(null);
 				newKimDelegation.setRoleId(identityManagementRoleDocument.getRoleId());
 				if(ObjectUtils.isNotNull(origDelegations)){
 					for(DelegateTypeBo origDelegationImpl: origDelegations){
@@ -2657,6 +2741,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				newDelegationMemberImpl = new DelegateMemberBo();
 				KimCommonUtilsInternal.copyProperties(newDelegationMemberImpl, delegationMember);
 				newDelegationMemberImpl.setVersionNumber(null);
+				newDelegationMemberImpl.setObjectId(null);
                 newDelegationMemberImpl.setType(MemberType.fromCode(delegationMember.getMemberTypeCode()));
 				if(ObjectUtils.isNotNull(origDelegationMembers)){
 					for(DelegateMemberBo origDelegationMember: origDelegationMembers){
@@ -2833,9 +2918,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return pndGroupQualifiers;
 	}
 
-	/**
-	 * @see org.kuali.rice.kim.service.UiDocumentService#saveEntityPerson(IdentityManagementPersonDocument)
-	 */
 	@Override
     public void saveGroup(IdentityManagementGroupDocument identityManagementGroupDocument) {
 		GroupBo kimGroup = new GroupBo();

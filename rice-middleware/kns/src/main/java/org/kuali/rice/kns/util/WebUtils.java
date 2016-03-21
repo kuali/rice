@@ -51,6 +51,7 @@ import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.core.api.CoreApiServiceLocator;
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.config.property.ConfigurationService;
 import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kew.api.action.ActionRequest;
@@ -951,4 +952,15 @@ public class WebUtils {
         return base + path;
     }
 
+    public static String sanitizeBackLocation(String backLocation) {
+        if(StringUtils.isBlank(backLocation)) {
+            return backLocation;
+        }
+        Pattern pattern = Pattern.compile(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX));
+        if(pattern.matcher(backLocation).matches()) {
+            return backLocation;
+        } else {
+            return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_DEFAULT_URL);
+        }
+    }
 }

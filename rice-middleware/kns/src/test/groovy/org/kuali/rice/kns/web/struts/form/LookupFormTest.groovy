@@ -54,6 +54,7 @@ class LookupFormTest {
     void setupFakeEnv() {
         def config = new SimpleConfig()
         config.putProperty(CoreConstants.Config.APPLICATION_ID, "APPID");
+        config.putProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX, ".*");
         ConfigContext.init(config);
 
         GlobalResourceLoader.stop();
@@ -97,6 +98,7 @@ class LookupFormTest {
         req.addParameter(KRADConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, TestBO.class.getName())
         req.addParameter(LookupForm.HEADER_BAR_ENABLED_PARAM, "false")
         req.addParameter(LookupForm.SEARCH_CRITERIA_ENABLED_PARAM, "false")
+		req.addParameter(KRADConstants.RETURN_LOCATION_PARAMETER, "http://test");
 
         form.populate(req)
 

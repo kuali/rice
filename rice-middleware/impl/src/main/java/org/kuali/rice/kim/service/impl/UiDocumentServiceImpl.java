@@ -1477,14 +1477,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleMembers;
 	}
 
-	protected List<DelegateTypeBo> populateDelegations(IdentityManagementPersonDocument identityManagementPersonDocument){
+	protected List<DelegateTypeBo> populateDelegations(IdentityManagementRoleDocument identityManagementRoleDocument,
+													   List<DelegateTypeBo> originalDelegations){
+		List<DelegateTypeBo> delegations = combineAndCreateMissingDelegations(identityManagementRoleDocument.getDelegations(), originalDelegations);
+		adjustForDelegationTypeChange(delegations, identityManagementRoleDocument.getDelegations());
 
-		List<DelegateTypeBo> originalDelegations = getPersonDelegations(identityManagementPersonDocument.getPrincipalId());
-		List<DelegateTypeBo> delegations = combineAndCreateMissingDelegations(identityManagementPersonDocument, originalDelegations);
-		adjustForDelegationTypeChange(delegations, identityManagementPersonDocument.getDelegations());
-
-		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getDelegations())){
-			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementPersonDocument.getDelegations()) {
+		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getDelegations())){
+			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementRoleDocument.getDelegations()) {
 				for (DelegateTypeBo delegation : delegations) {
 					if (roleDocumentDelegation.getDelegationId().equals(delegation.getDelegationId())) {
 						delegation.setMembers(populateDelegationMembers(delegation, roleDocumentDelegation));
@@ -1496,21 +1495,54 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return delegations;
 	}
 
-	protected List<DelegateTypeBo> combineAndCreateMissingDelegations(IdentityManagementPersonDocument identityManagementPersonDocument, List<DelegateTypeBo> originalDelegations) {
-		List<DelegateTypeBo> delegations = new ArrayList<>(originalDelegations);
+
+	protected List<DelegateTypeBo> populateDelegations(IdentityManagementPersonDocument identityManagementPersonDocument){
+
+		List<DelegateTypeBo> originalDelegations = getPersonDelegations(identityManagementPersonDocument.getPrincipalId());
+		List<DelegateTypeBo> delegations = combineAndCreateMissingDelegations(identityManagementPersonDocument.getDelegations(), originalDelegations);
+		adjustForDelegationTypeChange(delegations, identityManagementPersonDocument.getDelegations());
+
 		if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getDelegations())){
-			outer:for(RoleDocumentDelegation roleDocumentDelegation: identityManagementPersonDocument.getDelegations()){
+			for(RoleDocumentDelegation roleDocumentDelegation: identityManagementPersonDocument.getDelegations()) {
+				for (DelegateTypeBo delegation : delegations) {
+					boolean sameDelegation = roleDocumentDelegation.getDelegationId().equals(delegation.getDelegationId());
+					boolean similarDelegation = roleDocumentDelegation.getRoleId().equals(delegation.getRoleId()) &&
+							roleDocumentDelegation.getDelegationTypeCode().equals(delegation.getDelegationTypeCode());
+					if (sameDelegation || similarDelegation) {
+						delegation.setMembers(populateDelegationMembers(delegation, roleDocumentDelegation));
+					}
+				}
+			}
+		}
+
+		return delegations;
+	}
+
+	protected List<DelegateTypeBo> combineAndCreateMissingDelegations(List<RoleDocumentDelegation> documentDelegations, List<DelegateTypeBo> originalDelegations) {
+		List<DelegateTypeBo> delegations = new ArrayList<>(originalDelegations);
+		if(CollectionUtils.isNotEmpty(documentDelegations)){
+			outer:for(RoleDocumentDelegation roleDocumentDelegation: documentDelegations){
 				for (DelegateTypeBo delegation : delegations) {
 					if (delegation.getDelegationId().equals(roleDocumentDelegation.getDelegationId())) {
 						continue outer;
 					}
 				}
-				DelegateTypeBo newDelegation = new DelegateTypeBo();
-				newDelegation.setDelegationId(roleDocumentDelegation.getDelegationId());
-				newDelegation.setKimTypeId(roleDocumentDelegation.getKimTypeId());
-				newDelegation.setDelegationTypeCode(roleDocumentDelegation.getDelegationTypeCode());
-				newDelegation.setRoleId(roleDocumentDelegation.getRoleId());
-				delegations.add(newDelegation);
+				// first, let's make sure there's not already a delegation defined for the given role with the given
+				// delegation type
+				List<DelegateTypeBo> matchingDelegations =
+						getDataObjectService().findMatching(DelegateTypeBo.class, QueryByCriteria.Builder.fromPredicates(
+								PredicateFactory.equal(KimConstants.PrimaryKeyConstants.SUB_ROLE_ID, roleDocumentDelegation.getRoleId()),
+								PredicateFactory.equal(KIMPropertyConstants.Delegation.DELEGATION_TYPE_CODE, roleDocumentDelegation.getDelegationTypeCode()))).getResults();
+				if (matchingDelegations.isEmpty()) {
+					DelegateTypeBo newDelegation = new DelegateTypeBo();
+					newDelegation.setDelegationId(roleDocumentDelegation.getDelegationId());
+					newDelegation.setKimTypeId(roleDocumentDelegation.getKimTypeId());
+					newDelegation.setDelegationTypeCode(roleDocumentDelegation.getDelegationTypeCode());
+					newDelegation.setRoleId(roleDocumentDelegation.getRoleId());
+					delegations.add(newDelegation);
+				} else {
+					delegations.add(matchingDelegations.get(0));
+				}
 			}
 		}
 		return delegations;
@@ -2345,7 +2377,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			updateRoleMembers( roleBo.getId(), roleBo.getKimTypeId(), identityManagementRoleDocument.getModifiedMembers(), roleBo.getMembers());
 
 			objectsToSave.addAll(getRoleMemberResponsibilityActions(roleBo.getMembers()));
-			objectsToSave.addAll(getRoleDelegations(identityManagementRoleDocument, origRoleDelegations));
+			objectsToSave.addAll(populateDelegations(identityManagementRoleDocument, origRoleDelegations));
 		}
         for ( Object bo : objectsToSave ) {
             getDataObjectService().save(bo);

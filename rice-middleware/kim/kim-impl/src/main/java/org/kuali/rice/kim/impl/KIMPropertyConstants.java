@@ -165,6 +165,7 @@ public final class KIMPropertyConstants {
 	public static final class Delegation {
 		public static final String ROLE_ID = "roleId";
 		public static final String DELEGATION_ID = "delegationId";
+		public static final String DELEGATION_TYPE_CODE = "delegationTypeCode";
 		public static final String ACTIVE = KRADPropertyConstants.ACTIVE;
 		
 		private Delegation() {

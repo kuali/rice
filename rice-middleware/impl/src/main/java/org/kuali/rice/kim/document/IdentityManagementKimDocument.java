@@ -61,6 +61,9 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	protected List<RoleDocumentDelegationMember> delegationMembers = new AutoPopulatingList<RoleDocumentDelegationMember>(RoleDocumentDelegationMember.class);
 	
 	protected void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){
+		// the statement below will lazily load the RoleBo onto our delegation member so that we have access to i
+		delegationMember.loadTransientRoleFields();
+		// now that we've done that we can fetch the RoleBo
 		RoleBo role = delegationMember.getRoleBo();
 		RoleDocumentDelegation delegation;
 		if (DelegationType.PRIMARY.getCode().equals(delegationMember.getDelegationTypeCode())) {
@@ -83,6 +86,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 		for(RoleDocumentDelegation delegation: getDelegations()){
 			if(role.getId().equals(delegation.getRoleId()) && delegation.isDelegationPrimary()) {
 				primaryDelegation = delegation;
+				break;
             }
 		}
 		if(primaryDelegation == null) {
@@ -107,6 +111,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 		for (RoleDocumentDelegation delegation: getDelegations()) {
 			if (role.getId().equals(delegation.getRoleId()) && delegation.isDelegationSecondary()) {
 				secondaryDelegation = delegation;
+				break;
             }
 		}
 		if(secondaryDelegation == null) {

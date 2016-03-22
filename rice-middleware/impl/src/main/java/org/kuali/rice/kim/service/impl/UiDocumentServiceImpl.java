@@ -1581,6 +1581,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				for (DelegateMemberBo anOriginalMember : delegationMembers) {
 					if (StringUtils.equals(anOriginalMember.getDelegationMemberId(), documentDelegationMember.getDelegationMemberId())) {
 						newMember = originalMember = anOriginalMember;
+						break;
 					}
 				}
 				if (originalMember == null) {
@@ -1595,13 +1596,38 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				newMember.setTypeCode(documentDelegationMember.getMemberTypeCode());
 				newMember.setActiveFromDateValue(documentDelegationMember.getActiveFromDate());
 				newMember.setActiveToDateValue(documentDelegationMember.getActiveToDate());
-
-				// TODO still need to deal with attributes on delegate members...
-				// newMember.setAttributeDetails(..., originalMember, ...);
+				newMember.setAttributeDetails(populateDelegateMemberAttributes(newMember, documentDelegationMember));
 			}
 		}
 		return delegationMembers;
 
+	}
+
+	protected List<DelegateMemberAttributeDataBo> populateDelegateMemberAttributes(DelegateMemberBo member, RoleDocumentDelegationMember documentMember) {
+		List<DelegateMemberAttributeDataBo> originalAttributes = member.getAttributeDetails();
+		List<DelegateMemberAttributeDataBo> newAttributes = new ArrayList<>();
+		if (CollectionUtils.isNotEmpty(documentMember.getQualifiers())) {
+			for (RoleDocumentDelegationMemberQualifier qualifier : documentMember.getQualifiers()) {
+				DelegateMemberAttributeDataBo newAttribute = new DelegateMemberAttributeDataBo();
+				for (DelegateMemberAttributeDataBo originalAttribute : originalAttributes) {
+					// they will have the same id if they represent the same attribute
+					if (StringUtils.equals(originalAttribute.getId(), qualifier.getAttrDataId())) {
+						newAttribute = originalAttribute;
+						break;
+					}
+				}
+				// only save an attribute if it has an actual value
+				if (StringUtils.isNotBlank(qualifier.getAttrVal())) {
+					newAttribute.setId(qualifier.getAttrDataId());
+					newAttribute.setAttributeValue(qualifier.getAttrVal());
+					newAttribute.setAssignedToId(qualifier.getDelegationMemberId());
+					newAttribute.setKimTypeId(qualifier.getKimTypId());
+					newAttribute.setKimAttributeId(qualifier.getKimAttrDefnId());
+					newAttributes.add(newAttribute);
+				}
+			}
+		}
+		return newAttributes;
 	}
 
 	protected List <RoleMemberAttributeDataBo> getBlankRoleMemberAttrs(List <RoleMemberBo> rolePrncpls) {

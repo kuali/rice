@@ -441,28 +441,31 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		RoleMemberBo roleMember;
 		if(ObjectUtils.isNotNull(members)){
 			for(DelegateMemberBo member: members){
-				pndMember = new RoleDocumentDelegationMember();
-				pndMember.setActiveFromDate(member.getActiveFromDateValue());
-				pndMember.setActiveToDate(member.getActiveToDateValue());
-				pndMember.setActive(member.isActive( getDateTimeService().getCurrentTimestamp() ));
-				pndMember.setRoleBo( RoleBo.from(roleImpl) );
-				if(pndMember.isActive()){
-                    pndMember.setMemberId(member.getMemberId());
-                    pndMember.setDelegationMemberId(member.getDelegationMemberId());
-                    pndMember.setMemberTypeCode(member.getType().getCode());
-                    pndMember.setDelegationId(member.getDelegationId());
+				// only include delegation members that match the person
+				if (MemberType.PRINCIPAL.equals(member.getType()) && member.getMemberId().equals(identityManagementPersonDocument.getPrincipalId())) {
+					pndMember = new RoleDocumentDelegationMember();
+					pndMember.setActiveFromDate(member.getActiveFromDateValue());
+					pndMember.setActiveToDate(member.getActiveToDateValue());
+					pndMember.setActive(member.isActive(getDateTimeService().getCurrentTimestamp()));
+					pndMember.setRoleBo(RoleBo.from(roleImpl));
+					if (pndMember.isActive()) {
+						pndMember.setMemberId(member.getMemberId());
+						pndMember.setDelegationMemberId(member.getDelegationMemberId());
+						pndMember.setMemberTypeCode(member.getType().getCode());
+						pndMember.setDelegationId(member.getDelegationId());
 
-					pndMember.setRoleMemberId(member.getRoleMemberId());
-					roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
-					if(roleMember!=null){
-						pndMember.setRoleMemberName(getMemberName(roleMember.getType(), roleMember.getMemberId()));
-						pndMember.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getType(), roleMember.getMemberId()));
+						pndMember.setRoleMemberId(member.getRoleMemberId());
+						roleMember = getRoleMemberForRoleMemberId(member.getRoleMemberId());
+						if (roleMember != null) {
+							pndMember.setRoleMemberName(getMemberName(roleMember.getType(), roleMember.getMemberId()));
+							pndMember.setRoleMemberNamespaceCode(getMemberNamespaceCode(roleMember.getType(), roleMember.getMemberId()));
+						}
+						pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getType(), member.getMemberId()));
+						pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
+						pndMember.setEdit(true);
+						pndMember.setQualifiers(loadDelegationMemberQualifiers(identityManagementPersonDocument, pndMember.getAttributesHelper().getDefinitions(), member.getAttributeDetails()));
+						pndMembers.add(pndMember);
 					}
-					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getType(), member.getMemberId()));
-					pndMember.setMemberName(getMemberName(member.getType(), member.getMemberId()));
-					pndMember.setEdit(true);
-					pndMember.setQualifiers(loadDelegationMemberQualifiers(identityManagementPersonDocument, pndMember.getAttributesHelper().getDefinitions(), member.getAttributeDetails()));
-					pndMembers.add(pndMember);
 				}
 			}
 		}

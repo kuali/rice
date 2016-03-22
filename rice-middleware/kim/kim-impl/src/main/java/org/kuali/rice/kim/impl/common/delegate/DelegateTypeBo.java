@@ -63,9 +63,9 @@ public class DelegateTypeBo extends DataObjectBase implements DelegateTypeContra
     @Column(name = "DLGN_TYP_CD")
     private String delegationTypeCode;
 
-    @JoinFetch(value= JoinFetchType.OUTER)
+    @JoinFetch(value = JoinFetchType.OUTER)
     @OneToMany(targetEntity = DelegateMemberBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "DLGN_ID", referencedColumnName = "DLGN_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "DLGN_ID", referencedColumnName = "DLGN_ID")
     private List<DelegateMemberBo> members = new AutoPopulatingList<DelegateMemberBo>(DelegateMemberBo.class);
 
     public void setDelegationType(DelegationType type) {

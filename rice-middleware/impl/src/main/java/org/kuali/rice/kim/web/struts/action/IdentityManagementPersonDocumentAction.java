@@ -44,6 +44,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
@@ -126,6 +127,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
 		IdentityManagementPersonDocument personDoc = personDocumentForm.getPersonDocument();
 		populateRoleInformation(personDoc);
+        personDoc.resyncTransientState();
 	}
 
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
@@ -506,9 +508,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         RoleDocumentDelegationMember newDelegationMember = personDocumentForm.getNewDelegationMember();
         KimTypeAttributesHelper attrHelper = newDelegationMember.getAttributesHelper();
         if (getKualiRuleService().applyRules(new AddPersonDelegationMemberEvent("", personDocumentForm.getPersonDocument(), newDelegationMember))) {
-	        //RoleImpl roleBo = (RoleImpl)getUiDocumentService().getMember(KimApiConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleDao().getRoleId());
-	        Role role;
-        	role = KimApiServiceLocator.getRoleService().getRole(newDelegationMember.getRoleBo().getId());
+	        Role role = KimApiServiceLocator.getRoleService().getRole(newDelegationMember.getRoleBo().getId());
 	        if (role != null) {
 		        if(!validateRole(newDelegationMember.getRoleBo().getId(),role, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 		        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
@@ -536,8 +536,23 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     }
     
     public ActionForward deleteDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        personDocumentForm.getPersonDocument().getDelegationMembers().remove(getLineToDelete(request));
+        IdentityManagementPersonDocument personDocument = ((IdentityManagementPersonDocumentForm)form).getPersonDocument();
+        int lineToDelete = getLineToDelete(request);
+        RoleDocumentDelegationMember deletedMember = personDocument.getDelegationMembers().remove(lineToDelete);
+
+        // determine if we just deleted the last member from the role delegation, there should only be one but we will
+        // use a list just to make sure we get any delegations that no longer have any members
+        List<RoleDocumentDelegation> delegationsToRemove = new ArrayList<>();
+        for (RoleDocumentDelegation delegation : personDocument.getDelegations()) {
+            delegation.getMembers().remove(deletedMember);
+            if (delegation.getMembers().isEmpty()) {
+                delegationsToRemove.add(delegation);
+            }
+        }
+        for (RoleDocumentDelegation delegationToRemove : delegationsToRemove) {
+            personDocument.getDelegations().remove(delegationToRemove);
+        }
+
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

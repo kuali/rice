@@ -638,13 +638,19 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         // user3 should not have an approval request since they initiated the document
         document.switchPrincipal(user3);
 
-        // document should only send requests to the first people flow which should be user1 and user2
-        // But only user1 request should be activated
+        // document should activate requests at the first priority level across all peopleflows which should be 6 root requests
+        // however user1, testuser1, and TestWorkgroup (ewestfal is a member) should be activated first
+        // testuser1 and testuser2 from PeopleFlow2 are acknowledgements
 
         List<ActionRequest> rootActionRequests = document.getRootActionRequests();
-        assertEquals("Should have 2 root action requests", 2, rootActionRequests.size());
+        assertEquals("Should have 6 root action requests", 6, rootActionRequests.size());
         ActionRequest user1Request = null;
         ActionRequest user2Request = null;
+        ActionRequest testuser1Request = null;
+        ActionRequest testuser2Request = null;
+        ActionRequest testuser3Request = null;
+        ActionRequest testWorkgroupRequest = null;
+
         for (ActionRequest actionRequest : rootActionRequests) {
             RecipientType recipientType = actionRequest.getRecipientType();
             if (recipientType == RecipientType.PRINCIPAL) {
@@ -652,57 +658,73 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
                     user1Request = actionRequest;
                 } else if (user2.equals(actionRequest.getPrincipalId())) {
                     user2Request = actionRequest;
+                } else if (testuser1.equals(actionRequest.getPrincipalId())) {
+                    testuser1Request = actionRequest;
+                } else if (testuser2.equals(actionRequest.getPrincipalId())) {
+                    testuser2Request = actionRequest;
+                } else if (testuser3.equals(actionRequest.getPrincipalId())) {
+                    testuser3Request = actionRequest;
+                }
+            } else if (recipientType == RecipientType.GROUP) {
+                if (testWorkgroup.equals(actionRequest.getGroupId())) {
+                    testWorkgroupRequest = actionRequest;
                 }
             }
         }
+
         // now let's ensure we got the requests we wanted
         assertNotNull(user1Request);
         assertEquals(ActionRequestStatus.ACTIVATED, user1Request.getStatus());
         assertNotNull(user2Request);
         assertEquals(ActionRequestStatus.INITIALIZED, user2Request.getStatus());
+        assertNotNull(testuser3Request);
+        assertEquals(ActionRequestStatus.INITIALIZED, testuser3Request.getStatus());
+        assertNotNull(testuser1Request);
+        assertEquals(ActionRequestStatus.ACTIVATED, testuser1Request.getStatus());
+        assertNotNull(testuser2Request);
+        assertEquals(ActionRequestStatus.INITIALIZED, testuser2Request.getStatus());
+        assertNotNull(testWorkgroupRequest);
+        assertEquals(ActionRequestStatus.ACTIVATED, testWorkgroupRequest.getStatus());
 
         // now approve as user1
         document.switchPrincipal(user1);
-        document.approve("");
-        document.switchPrincipal(user2);
         assertTrue(document.isApprovalRequested());
         document.approve("");
-
-        // at this point, it should transition to the next people flow and generate Acknowledge requests to testuser1 and testuser2,
-        // and then generate an activated approve request to TestWorkgroup (of which "ewestfal" is a member) and then an
-        // initialized approve request to testuser3
-        assertTrue(document.isEnroute());
-        assertApproveRequested(document, ewestfal);
-        assertApproveNotRequested(document, user1, user2, testuser1, testuser2, testuser3);
-        assertAcknowledgeRequested(document, testuser1, testuser2);
-
-        // now load as ewestfal (member of TestWorkgroup) and approve
-        document.switchPrincipal(ewestfal);
-        assertTrue(document.isApprovalRequested());
-        document.approve("");
-        assertTrue(document.isEnroute());
-
-        // now the only remaining approval request should be to testuser3
-        assertApproveRequested(document, testuser3);
-        // just for fun, let's take testuser2's acknowledge action
-        document.switchPrincipal(testuser2);
-        assertTrue(document.isAcknowledgeRequested());
-        document.acknowledge("");
-        assertTrue(document.isEnroute());
-
-        // testuser3 should still have an approve request, let's take it
-        assertApproveRequested(document, testuser3);
-        document.switchPrincipal(testuser3);
-        document.approve("");
-
-        // document should now be in the processed state
-        assertTrue(document.isProcessed());
-        // load the last ack to testuser1 and take it
         document.switchPrincipal(testuser1);
         assertTrue(document.isAcknowledgeRequested());
         document.acknowledge("");
+        document.switchPrincipal(ewestfal);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
 
-        // now the document should be final!
+        // at this point, it should transition to priority 2
+        assertTrue(document.isEnroute());
+        assertApproveRequested(document, user2);
+        assertAcknowledgeRequested(document, testuser2);
+        // it should not be routed to testuser3 yet
+        assertApproveNotRequested(document, testuser3);
+
+        // now let's approve it as user2
+        document.switchPrincipal(user2);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+        assertTrue(document.isEnroute());
+
+        // at this point we had the ack to testuser2 but it should go ahead and activate priority 10 to send approve request to testuser3
+        assertApproveRequested(document, testuser3);
+        document.switchPrincipal(testuser3);
+        assertTrue(document.isApprovalRequested());
+        document.approve("");
+
+        // now we should just have an ack remaining to testuser2, let's make sure the status is correct
+        assertTrue(document.isProcessed());
+
+        // ack as testuser2
+        document.switchPrincipal(testuser2);
+        assertTrue(document.isAcknowledgeRequested());
+        document.acknowledge("");
+
+        // now the document should be final
         assertTrue(document.isFinal());
     }
 
@@ -1511,7 +1533,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
      * @return the PeopleFlowDefinition created
      */
     private PeopleFlowDefinition createSimpleRoleDelegatePeopleFlow(String peopleFlowName, String memberRoleId, String delegateRoleId,
-            DelegationType delegationType) {
+                                                                    DelegationType delegationType) {
         PeopleFlowDefinition.Builder peopleFlow = PeopleFlowDefinition.Builder.create(NAMESPACE_CODE, peopleFlowName);
 
         // build stop 1
@@ -1846,7 +1868,7 @@ public class PeopleFlowRoutingTest extends KEWTestCase {
         // after approving as admin, the last of the two role requests have been completed, document should be final
         assertTrue(document.isFinal());
     }
-    
+
     private void assertApproveRequested(WorkflowDocument document, String... principalIds) {
         for (String principalId : principalIds) {
             document.switchPrincipal(principalId);

@@ -21,14 +21,13 @@ import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.core.api.util.xml.XmlJotter;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.api.action.ActionRequestType;
+import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowDefinition;
 import org.kuali.rice.kew.api.peopleflow.PeopleFlowService;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNodeUtils;
-import org.kuali.rice.kew.api.exception.WorkflowException;
 import org.kuali.rice.kew.routemodule.RouteModule;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.w3c.dom.Element;
 
@@ -46,7 +45,6 @@ public class PeopleFlowRouteModule implements RouteModule {
 
     private static final String PEOPLE_FLOW_PROPERTY = "peopleFlow";
 
-    private static final String PEOPLE_FLOW_ITERATION_KEY = "peopleFlowIteration";
     public static final String PEOPLE_FLOW_SEQUENCE = "peopleFlowSequence";
 
     private static final JAXBContext jaxbContext;
@@ -63,28 +61,18 @@ public class PeopleFlowRouteModule implements RouteModule {
 
     @Override
     public List<ActionRequestValue> findActionRequests(RouteContext context) throws Exception {
-        int iteration = incrementIteration(context);
         List<PeopleFlowConfig> configurations = parsePeopleFlowConfiguration(context);
         List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
-        int index = 0;
         for (PeopleFlowConfig configuration : configurations) {
-            if (index++ == iteration) {
-                PeopleFlowDefinition peopleFlow = loadPeopleFlow(configuration);
-                actionRequests.addAll(getPeopleFlowRequestGenerator().generateRequests(context, peopleFlow, configuration.actionRequested));
-                break;
-            }
+            PeopleFlowDefinition peopleFlow = loadPeopleFlow(configuration);
+            actionRequests.addAll(getPeopleFlowRequestGenerator().generateRequests(context, peopleFlow, configuration.actionRequested));
         }
         return actionRequests;
     }
 
     @Override
     public boolean isMoreRequestsAvailable(RouteContext context) {
-        Integer currentIteration = getCurrentIteration(context);
-        if (currentIteration == null) {
-            return false;
-        }
-        List<PeopleFlowConfig> configurations = parsePeopleFlowConfiguration(context);
-        return currentIteration.intValue() < configurations.size();
+        return false;
     }
 
     @Override
@@ -148,33 +136,6 @@ public class PeopleFlowRouteModule implements RouteModule {
         }
     }
 
-    protected int incrementIteration(RouteContext context) {
-        int nextIteration = 0;
-        NodeState nodeState = context.getNodeInstance().getNodeState(PEOPLE_FLOW_ITERATION_KEY);
-        if (nodeState == null) {
-            nodeState = new NodeState();
-            nodeState.setNodeInstance(context.getNodeInstance());
-            nodeState.setKey(PEOPLE_FLOW_ITERATION_KEY);
-            context.getNodeInstance().addNodeState(nodeState);
-        } else {
-            int currentIteration = Integer.parseInt(nodeState.getValue());
-            nextIteration = currentIteration + 1;
-        }
-        nodeState.setValue(Integer.toString(nextIteration));
-        if (!context.isSimulation()) {
-            KEWServiceLocator.getRouteNodeService().save(nodeState);
-        }
-        return nextIteration;
-    }
-
-    protected Integer getCurrentIteration(RouteContext context) {
-        NodeState nodeState = context.getNodeInstance().getNodeState(PEOPLE_FLOW_ITERATION_KEY);
-        if (nodeState == null) {
-            return null;
-        }
-        return Integer.valueOf(nodeState.getValue());
-    }
-
     public PeopleFlowService getPeopleFlowService() {
         return peopleFlowService;
     }
@@ -198,8 +159,8 @@ public class PeopleFlowRouteModule implements RouteModule {
         ActionRequestType actionRequested;
 
         @XmlElements(value = {
-            @XmlElement(name = "name", type = NameConfig.class),
-            @XmlElement(name = "id", type = String.class)
+                @XmlElement(name = "name", type = NameConfig.class),
+                @XmlElement(name = "id", type = String.class)
         })
         Object peopleFlowIdentifier;
 
@@ -217,7 +178,7 @@ public class PeopleFlowRouteModule implements RouteModule {
         String getId() {
             return (String)peopleFlowIdentifier;
         }
-        
+
     }
 
     private static class NameConfig {

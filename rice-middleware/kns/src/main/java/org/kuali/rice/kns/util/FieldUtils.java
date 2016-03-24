@@ -1888,7 +1888,7 @@ public final class FieldUtils {
 				} else {
 					column.setFormatter(Formatter.getFormatter(formatterClass));
 				}
-            } catch (ClassNotFoundException|InstantiationException|IllegalAccessException e) {
+            } catch (FormatException|ClassNotFoundException|InstantiationException|IllegalAccessException e) {
                   LOG.error("Unable to find formatter class: " + attributeField.getFormatterName());
                   // Fall back to datatype based formatter
                 column.setFormatter(FieldUtils.getFormatterForDataType(dataType));

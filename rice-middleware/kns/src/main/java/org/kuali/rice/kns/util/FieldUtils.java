@@ -1880,8 +1880,15 @@ public final class FieldUtils {
 
         if(StringUtils.isNotEmpty(attributeField.getFormatterName())) {
             try  {
-                  column.setFormatter(Formatter.getFormatter(Class.forName(attributeField.getFormatterName())));
-            } catch (ClassNotFoundException e) {
+				Class<?> formatterClass = Class.forName(attributeField.getFormatterName());
+				if (Formatter.class.isAssignableFrom(formatterClass)) {
+					Formatter formatter = (Formatter)formatterClass.newInstance();
+					formatter.setPropertyType(dataType.getType());
+					column.setFormatter(formatter);
+				} else {
+					column.setFormatter(Formatter.getFormatter(formatterClass));
+				}
+            } catch (FormatException|ClassNotFoundException|InstantiationException|IllegalAccessException e) {
                   LOG.error("Unable to find formatter class: " + attributeField.getFormatterName());
                   // Fall back to datatype based formatter
                 column.setFormatter(FieldUtils.getFormatterForDataType(dataType));

@@ -100,10 +100,10 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     protected String memberName;
 
     @JoinFetch(value= JoinFetchType.OUTER)
-    @OneToMany(targetEntity = RoleDocumentDelegationMemberQualifier.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
+    @OneToMany(targetEntity = RoleDocumentDelegationMemberQualifier.class, orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinColumns({ 
-        @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 
-        @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID", insertable = false, updatable = false) })
+        @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR"),
+        @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID") })
     protected List<RoleDocumentDelegationMemberQualifier> qualifiers = new AutoPopulatingList<RoleDocumentDelegationMemberQualifier>(RoleDocumentDelegationMemberQualifier.class);
 
     @Transient

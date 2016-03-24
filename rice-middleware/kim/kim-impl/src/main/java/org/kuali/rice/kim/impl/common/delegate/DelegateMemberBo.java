@@ -58,7 +58,7 @@ public class DelegateMemberBo extends AbstractMemberBo implements DelegateMember
 
     @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = DelegateMemberAttributeDataBo.class, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID")
     private List<DelegateMemberAttributeDataBo> attributeDetails = new AutoPopulatingList<DelegateMemberAttributeDataBo>(DelegateMemberAttributeDataBo.class);
 
     @Transient

@@ -57,18 +57,40 @@
         </section>
     </section>
     <section xml:id="items_addressed_in_rice">
-        <title>Items Addressed in Rice ${project.version}</title>
-      
-      <section>
-        <title>Bug Fix</title>
-        <para>
-          <itemizedlist>
-            <listitem>
-              <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14278'>KULRICE-14278</link>] - Update commons-collections to latest</para>
-            </listitem>
-          </itemizedlist>
-        </para>
-      </section>
-      
+    <title>Items Addressed in Rice ${project.version}</title>
+
+
+    <section>
+      <title>Bug Fix</title>
+      <para><itemizedlist>        
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14279'>KULRICE-14279</link>] - Fix XSS vulnerability in returnLocation parameter</para>
+        </listitem>
+      </itemizedlist></para>
     </section>
+  </section>
+  
+  <section xml:id="impacting_changes">
+    <title>Impacting Changes</title>
+    <section>
+      <title>Fix XSS vulnerability in returnLocation parameter</title>
+      <para>This fixes a security issue which has two attack vectors:</para>
+      <para>
+        <itemizedlist>
+          <listitem>Embedded JavaScript inside of the returnLocation parameter</listitem>
+          <listitem>Using the returnLocation parameter to return the user to an unexpected domain</listitem>
+        </itemizedlist>
+      </para>
+      <para>The fix to both of these issues involves a new whitelist approach to the values allowed in the returnLocation parameter similar to the whitelist used for pages displayed in the portal.  There is a new configuration property named <code>rice.backLocation.allowed.regex</code> which controls the URLs which are allowed to be present in the returnLocation parameter.  It defaults to a regular expression which would allow URLs which start with the following configuration properties:</para>
+      <para>
+        <itemizedlist>
+          <listitem><code>application.url</code> (e.g. my.edu/kfs or my.edu/rice on a standalone Rice server)</listitem>
+          <listitem><code>rice.server.url</code> (e.g. my.edu/rice)</listitem>
+          <listitem><code>appserver.url</code> (e.g. my.edu)</listitem>
+        </itemizedlist>
+      </para>
+      <para>When bringing in this fix you should also ensure the three values above are set appropriately. The third path is intended to be a general "catch all" which would allow any return locations on the same domain as your application. The value for this regular expression may need to be modified if you are using multiple domains for different applications (e.g. rice.my.edu, kfs.my.edu, etc.), especially on the Rice standalone server since it will need to be configured to allow the user to return to any application which sends the user to the Rice server (e.g. for document search, action list, person lookup, etc.). If the returnLocation does not match one of these paths it will return the user to a configurable location with the <code>rice.backLocation.default.url</code> property which defaults to the <code>application.url</code>. This value should be customized to return the user to a reasonable location in the case that they attempt to follow an invalid return location.</para>
+      <para>Bringing in this patch does not guarantee your codebase is immediately secure from this attack. If the <code>getBackLocation</code> method on the <code>KualiForm</code> or <code>LookupableHelperService</code> classes has been overridden in your application you will need to sanitize the return location by invoking the <code>WebUtils#sanitizeBackLocation</code> method in order for it to be secure.</para>
+    </section>
+  </section>
 </article>

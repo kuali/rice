@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-core-service</artifactId>
-    <version>2.5.6-SNAPSHOT</version>
+    <version>2.5.6-20160326-db71a2c080</version>
   </parent>
 
 

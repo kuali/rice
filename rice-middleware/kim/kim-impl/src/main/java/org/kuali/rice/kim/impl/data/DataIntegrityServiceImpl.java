@@ -13,6 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * An implementation of DataIntegrityService which repairs two common data issues with delegations that occurred
+ * because of bad code in KIM.
+ *
+ * The first issue is one where duplicate delegations for a given role, delegation type, and KIM type exist. This can
+ * cause issues with the role document when editing delegations.
+ *
+ * The second issue is one where delegation members point to a role member for a role that doesn't match the role of
+ * their delegation.
+ *
+ * @author Eric Westfall
+ */
 public class DataIntegrityServiceImpl implements DataIntegrityService, InitializingBean {
 
     private static final String DUPLICATE_DELEGATIONS = "select role_id, dlgn_typ_cd, kim_typ_id, count(*) cnt from krim_dlgn_t where actv_ind = 'Y' group by role_id, dlgn_typ_cd, kim_typ_id having cnt > 1";

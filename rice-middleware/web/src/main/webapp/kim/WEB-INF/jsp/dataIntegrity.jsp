@@ -13,32 +13,44 @@
             document.forms[0].submit();
         }
     </script>
+    <div class="headerarea" id="headerarea">
+        <h1>Data Integrity Repair Utility</h1>
+    </div>
     <html-el:form action="dataIntegrity">
         <html-el:hidden property="methodToCall" value=""/>
-        <div>
-            <input type="button" value="Run Data Check" onclick="check()"/>
-        </div>
-        <c:if test="${! empty checkMessages}">
+        <div style="margin-left:20px">
+            <p>Use the buttons below to run data integrity checks and repair on KIM delegation data.</p>
+            <br/>
+
             <div>
-                <ul>
-                    <c:forEach var="message" items="${checkMessages}">
-                        <li><c:out value="${message}" escapeXml="true"/></li>
-                    </c:forEach>
-                </ul>
+                <input type="button" value="Run Data Integrity Check" onclick="check()"/>
             </div>
-        </c:if>
-        <div>
-            <input type="button" value="Run Data Repair" onclick="repair()"/>
-        </div>
-        <c:if test="${! empty repairMessages}">
+            <br/>
+            <c:if test="${! empty checkMessages}">
+                <div>
+                    <ul>
+                        <c:forEach var="message" items="${checkMessages}">
+                            <li><c:out value="${message}" escapeXml="true"/></li>
+                        </c:forEach>
+                    </ul>
+                </div>
+                <br/>
+            </c:if>
             <div>
-                <ul>
-                    <c:forEach var="message" items="${repairMessages}">
-                        <li><c:out value="${message}" escapeXml="true"/></li>
-                    </c:forEach>
-                </ul>
+                <input type="button" value="Run Data Repair" onclick="repair()"/>
             </div>
-        </c:if>
+            <br/>
+            <c:if test="${! empty repairMessages}">
+                <div>
+                    <ul>
+                        <c:forEach var="message" items="${repairMessages}">
+                            <li><c:out value="${message}" escapeXml="true"/></li>
+                        </c:forEach>
+                    </ul>
+                </div>
+                <br/>
+            </c:if>
+        </div>
     </html-el:form>
 
 </kul:page>

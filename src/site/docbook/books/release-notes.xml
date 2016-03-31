@@ -27,7 +27,7 @@ limitations under the License.
     <para>Welcome to Rice ${project.version}! </para>
     <section>
       <title>Release Highlights</title>
-      <para>This release consists of a single security fix. There are no database changes and it should be a drop-in replacement.</para>
+      <para>This release consists of a single security fix as well as a number of other bug fixes. The packaged standalone server for this version of Kuali Rice also includes a JAR file for the core-auth-servlet-filter which allows for integration with the CORE authentication service. There are no database changes and it should be a drop-in replacement.</para>
     </section>
     <section>
       <title>Download</title>
@@ -66,8 +66,37 @@ limitations under the License.
         <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14279'>KULRICE-14279</link>] - Fix XSS vulnerability in returnLocation parameter</para>
         </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14035'>KULRICE-14035</link>] - Issues with document operation screen when trying to open a document that is in EXCEPTION and while deleting branch states</para>
+        </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14280'>KULRICE-14280</link>] - Problem with JPA and wanting to do left outer join on entity bo</para>
+        </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14281'>KULRICE-14281</link>] - Can&#39;t inactivate a role delegation on a person - optimistic lock exception</para>
+        </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14283'>KULRICE-14283</link>] - routing and identity management document hierarchy broken</para>
+        </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14284'>KULRICE-14284</link>] - Fix Date (without time) formatting in custom document search result columns</para>
+        </listitem>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14285'>KULRICE-14285</link>] - The Active From Date is not retained when adding a role to a Person.</para>
+        </listitem>
       </itemizedlist></para>
     </section>
+
+    <section>
+      <title>New Feature</title>
+      <para><itemizedlist>
+        <listitem>
+          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14282'>KULRICE-14282</link>] - Add CORE Auth filter to Rice pom.xml</para>
+        </listitem>
+      </itemizedlist></para>
+    </section>
+
+
   </section>
   
   <section xml:id="impacting_changes">

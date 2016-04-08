@@ -41,10 +41,6 @@
   </description>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
 
-  <ciManagement>
-    <url>http://ci.rice.kuali.org</url>
-  </ciManagement>
-
   <properties>
     <properties.resolve>false</properties.resolve>
     <!-- These properties modify the release process -->
@@ -195,6 +191,17 @@
 
     <!-- Directory wsdl's get generated into -->
     <wsdl.dir>${project.build.directory}/wsdl</wsdl.dir>
+
+    <!-- Override properties from the parent pom for deploying to Maven repositories -->
+    <!-- These are the Kuali repository settings for an official release -->
+    <kuali.repo.release.id>kualico.nexus.core.releases</kuali.repo.release.id>
+    <kuali.repo.release.name>KualiCo Core Release Repository</kuali.repo.release.name>
+    <kuali.repo.release.url>https://nexus.kuali.co/nexus/content/repositories/core-releases-public/</kuali.repo.release.url>
+    <!-- These are the Kuali repository settings for snapshot builds -->
+    <kuali.repo.snapshot.id>kualico.nexus.core.releases</kuali.repo.snapshot.id>
+    <kuali.repo.snapshot.name>KualiCo Core Snapshot Repository</kuali.repo.snapshot.name>
+    <kuali.repo.snapshot.url>https://nexus.kuali.co/nexus/content/repositories/core-snapshots-public/</kuali.repo.snapshot.url>
+
   </properties>
 
   <profiles>
@@ -2080,11 +2087,6 @@
 
     </dependencies>
   </dependencyManagement>
-
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.kuali.org/</url>
-  </issueManagement>
 
   <scm>
     <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>

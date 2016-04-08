@@ -29,19 +29,6 @@
     <impex.username>RICE</impex.username>
     <impex.password>RICE</impex.password>
   </properties>
-  <repositories>
-    <repository>
-      <id>kuali.nexus</id>
-      <name>Nexus Repository Manager</name>
-      <url>http://nexus.kuali.org/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
   <profiles>
     <profile>
       <id>commitmaster</id>

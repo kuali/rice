@@ -26,19 +26,6 @@
   <artifactId>rice-deploy</artifactId>
   <packaging>jar</packaging>
   <name>Rice Deploy</name>
-  <repositories>
-    <repository>
-      <id>kuali.nexus</id>
-      <name>Nexus Repository Manager</name>
-      <url>http://nexus.kuali.org/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
   <properties>
     <!-- Turn off a bunch of stuff -->
     <kuali.testjar.phase>none</kuali.testjar.phase>

@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -42,7 +43,40 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         super.setUpAfterDataLoad();
         routeHeaderService = KEWServiceLocator.getRouteHeaderService();
     }
-    
+
+    /**
+     * Tests that getRoutedByDisplayName works in it's various cases
+     */
+    @Test
+    public void testGetRoutedByDisplayName() {
+        DocumentRouteHeaderValue document = new DocumentRouteHeaderValue();
+
+        // when there is no routed by user and the doc is not enroute, it should return empty string
+        assertEquals("", document.getRoutedByDisplayName());
+
+        // switch the document to enroute status, should still return empty string because we don't have an initiator id yet
+        document.setDocRouteStatus(DocumentStatus.ENROUTE.getCode());
+        assertEquals("", document.getRoutedByDisplayName());
+
+        // now set an initiator, it should use that instead when displaying the routed by display name
+        // also, not sure why but for whatever reason KIM adds an extra space to the end of the display name (maybe because of missing middle name?)
+        document.setInitiatorWorkflowId(getPrincipalIdForName("ewestfal"));
+        assertEquals("Westfall, Eric ", document.getRoutedByDisplayName());
+
+        // yeah it's weird, but for some reason it only falls back to initiator id if the document is enroute, let's
+        // switch it back to initiated and make sure it returns empty string again
+        document.setDocRouteStatus(DocumentStatus.INITIATED.getCode());
+        assertEquals("", document.getRoutedByDisplayName());
+
+        // now let's set that routed by id! also switch it back to ENROUTE status and make sure it still gives us the
+        // routed by user and not the initiator
+        document.setRoutedByUserWorkflowId(getPrincipalIdForName("administrator"));
+        assertEquals("administrator, administrator ", document.getRoutedByDisplayName());
+        document.setDocRouteStatus(DocumentStatus.ENROUTE.getCode());
+        assertEquals("administrator, administrator ", document.getRoutedByDisplayName());
+
+    }
+
     /**
      * Tests the saving of a document with large XML content.  This verifies that large CLOBs (> 4000 bytes)
      * can be saved by OJB.  This can cause paticular issues with Oracle and OJB has to unwrap the native jdbc

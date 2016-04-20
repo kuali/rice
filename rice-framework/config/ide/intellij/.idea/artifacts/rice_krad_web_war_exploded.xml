@@ -22,7 +22,7 @@
           <element id="library" level="project" name="Maven: com.thoughtworks.xstream:xstream:1.2.2" />
           <element id="library" level="project" name="Maven: commons-chain:commons-chain:1.2" />
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.6" />
-          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.2" />
           <element id="library" level="project" name="Maven: commons-dbcp:commons-dbcp:1.4" />
           <element id="library" level="project" name="Maven: commons-digester:commons-digester:2.0" />
           <element id="library" level="project" name="Maven: commons-fileupload:commons-fileupload:1.2.2" />

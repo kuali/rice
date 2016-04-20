@@ -1120,7 +1120,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         }
 
         RoleTypeService getRoleTypeService(String kimTypeId) {
-            return getVersionedRoleTypeService(kimTypeId).getService();
+            final VersionedService<RoleTypeService> versionedService = getVersionedRoleTypeService(kimTypeId);
+            return (versionedService == null) ? null : versionedService.getService();
         }
 
         VersionedService<RoleTypeService> getVersionedRoleTypeService(String kimTypeId) {

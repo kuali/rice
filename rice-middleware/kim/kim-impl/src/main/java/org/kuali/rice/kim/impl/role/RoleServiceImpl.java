@@ -1135,6 +1135,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     roleTypeService = getVersionedRoleTypeServiceByName(KimTypeUtils.resolveKimTypeServiceName(roleType.getServiceName()));
                 }
             }
+            if (roleTypeService == null) {
+                roleTypeService = new VersionedService<RoleTypeService>("1", KimImplServiceLocator.getDefaultRoleTypeService());
+            }
             roleTypeServiceCache.put(kimTypeId, roleTypeService);
             return roleTypeService;
         }
@@ -1248,7 +1251,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     List<RoleMembership> roleMemberships = convertToRoleMemberships(matchingPrincipalRoleMembers, matchingGroupRoleMembers);
                     try {
                         RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
-                        if (!roleTypeService.getMatchingRoleMemberships(qualification, roleMemberships).isEmpty()) {
+                        if (roleTypeService != null && !roleTypeService.getMatchingRoleMemberships(qualification, roleMemberships).isEmpty()) {
                             return putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);
                         }
                     } catch (Exception ex) {
@@ -1314,7 +1317,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
                     boolean isDerivedRoleType = context.isDerivedRoleType(role.getKimTypeId());
                     if (isDerivedRoleType) {
                         RoleTypeService roleTypeService = context.getRoleTypeService(role.getKimTypeId());
-                        if (roleTypeService.hasDerivedRole(principalId,
+                        if (roleTypeService != null && roleTypeService.hasDerivedRole(principalId,
                                 context.getPrincipalGroupIds(), role.getNamespaceCode(), role.getName(), qualification)) {
                             if (!roleTypeService.dynamicRoleMembership(role.getNamespaceCode(), role.getName())) {
                                 putPrincipalHasRoleInCache(true, principalId, role.getId(), qualification, checkDelegations);

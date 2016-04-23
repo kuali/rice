@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.framework.util.spring;
 
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.weaving.DefaultContextLoadTimeWeaver;
@@ -42,20 +43,26 @@ import java.lang.instrument.ClassFileTransformer;
  */
 public class OptionalContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLoaderAware, DisposableBean {
 
+    private static final String WEAVING_TYPE_PROP = "rice.jpa.weaving.type";
+
     private DefaultContextLoadTimeWeaver loadTimeWeaver;
     private boolean loadTimeWeaverLoaded;
     private ClassLoader beanClassLoader;
+    private WeavingType weavingType;
 
     public OptionalContextLoadTimeWeaver() {
         this.loadTimeWeaver = new DefaultContextLoadTimeWeaver();
+        this.weavingType = WeavingType.valueOf(ConfigContext.getCurrentContextConfig().getProperty(WEAVING_TYPE_PROP));
     }
 
     @Override
     public void setBeanClassLoader(ClassLoader beanClassLoader) {
         try {
             this.beanClassLoader = beanClassLoader;
-            this.loadTimeWeaver.setBeanClassLoader(beanClassLoader);
-            loadTimeWeaverLoaded = true;
+            if (weavingType == WeavingType.LOADTIME) {
+                this.loadTimeWeaver.setBeanClassLoader(beanClassLoader);
+                loadTimeWeaverLoaded = true;
+            }
         } catch (IllegalStateException e) {
             // this would happen in the default weaver class if no load-time weaver could be determined, in our case we
             // want to make the LTW optional, so we will ignore this and allow the LTW to be null
@@ -93,4 +100,5 @@ public class OptionalContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassL
             this.loadTimeWeaver.destroy();
         }
     }
+
 }

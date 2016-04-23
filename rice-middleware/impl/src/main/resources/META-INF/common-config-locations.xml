@@ -23,4 +23,5 @@
   <param name="config.location">${external.config.home}/common-config.xml</param>
   <param name="config.location">${external.config.home}/${module.name}-config.xml</param>
   <param name="config.location">classpath:META-INF/${rice.jpa.persistence.provider}-config-defaults.xml</param>
+  <param name="config.location">classpath:META-INF/rice-config.xml</param>
 </config>

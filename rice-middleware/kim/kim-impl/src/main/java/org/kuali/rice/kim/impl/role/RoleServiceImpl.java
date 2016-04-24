@@ -1128,15 +1128,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             if (roleTypeServiceCache.containsKey(kimTypeId)) {
                 return roleTypeServiceCache.get(kimTypeId);
             }
-            VersionedService<RoleTypeService> roleTypeService = null;
+            VersionedService<RoleTypeService> roleTypeService = getDefaultVersionedRoleTypeService();
             if (kimTypeId != null) {
                 KimType roleType = KimApiServiceLocator.getKimTypeInfoService().getKimType(kimTypeId);
                 if (roleType != null && StringUtils.isNotBlank(roleType.getServiceName())) {
                     roleTypeService = getVersionedRoleTypeServiceByName(KimTypeUtils.resolveKimTypeServiceName(roleType.getServiceName()));
                 }
-            }
-            if (roleTypeService == null) {
-                roleTypeService = new VersionedService<RoleTypeService>("UNSPECIFIED", KimImplServiceLocator.getDefaultRoleTypeService());
             }
             roleTypeServiceCache.put(kimTypeId, roleTypeService);
             return roleTypeService;

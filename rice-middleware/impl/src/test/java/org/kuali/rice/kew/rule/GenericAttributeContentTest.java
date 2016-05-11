@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2015 The Kuali Foundation
+ * Copyright 2005-2016 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,39 +19,51 @@ import org.junit.Test;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class GenericAttributeContentTest {
     private static final String ATTRIB1_CONTENT = "    <boringAttribute>" +
-                                                  "      <field>" +
-                                                  "        <name>color</name>" +
-                                                  "        <value>green</value>" +
-                                                  "      </field>" +
-                                                  "      <field>" +
-                                                  "        <name>shape</name>" +
-                                                  "        <value>circle</value>" +
-                                                  "      </field>" +
-                                                  "    </boringAttribute>";
+            "      <field>" +
+            "        <name>color</name>" +
+            "        <value>green</value>" +
+            "      </field>" +
+            "      <field>" +
+            "        <name>shape</name>" +
+            "        <value>circle</value>" +
+            "      </field>" +
+            "    </boringAttribute>";
     private static final String ATTRIB2_CONTENT = "    <coolAttribute>" +
-                                                  "      <field>" +
-                                                  "        <name>car</name>" +
-                                                  "        <value>KIT</value>" +
-                                                  "      </field>" +
-                                                  "      <field>" +
-                                                  "        <name>driver</name>" +
-                                                  "        <value>hasselhof</value>" +
-                                                  "      </field>" +
-                                                  "    </coolAttribute>";
+            "      <field>" +
+            "        <name>car</name>" +
+            "        <value>KIT</value>" +
+            "      </field>" +
+            "      <field>" +
+            "        <name>driver</name>" +
+            "        <value>hasselhof</value>" +
+            "      </field>" +
+            "    </coolAttribute>";
+    private static final String ATTRIB2_CONTENT_REVERSED = "    <coolAttribute>" +
+            "      <field>" +
+            "        <name>driver</name>" +
+            "        <value>hasselhof</value>" +
+            "      </field>" +
+            "      <field>" +
+            "        <name>car</name>" +
+            "        <value>KIT</value>" +
+            "      </field>" +
+            "    </coolAttribute>";
     private static final String TEST_CONTENT = "<documentContent>" +
-                                               "  <attributeContent>" +
-                                               ATTRIB1_CONTENT +
-                                               ATTRIB2_CONTENT +
-                                               "  </attributeContent>" +
-                                               "</documentContent>";
-                                            
+            "  <attributeContent>" +
+            ATTRIB1_CONTENT +
+            ATTRIB2_CONTENT +
+            "  </attributeContent>" +
+            "</documentContent>";
+
     @Test public void testGenerateContent() throws Exception {
         DocumentContent dc = new StandardDocumentContent(TEST_CONTENT);
         GenericAttributeContent gac = new GenericAttributeContent("boringAttribute");
@@ -72,6 +84,11 @@ public class GenericAttributeContentTest {
         assertEquals("hasselhof", properties.get("driver"));
         assertEquals("KIT", properties.get("car"));
         content = gac.generateContent(properties);
-        assertEquals(content.replaceAll("\\s+", ""), ATTRIB2_CONTENT.replaceAll("\\s+", ""));
+
+        // order is not guaranteed
+        List<String> validValues = Arrays.asList(ATTRIB2_CONTENT.replaceAll("\\s+", ""), ATTRIB2_CONTENT_REVERSED.replaceAll(
+                "\\s+", ""));
+        content = content.replaceAll("\\s+", "");
+        assertTrue(validValues.contains(content));
     }
 }

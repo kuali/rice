@@ -44,7 +44,6 @@ import org.kuali.rice.krad.uif.service.ViewDictionaryService;
 import org.kuali.rice.krad.uif.util.ObjectPropertyUtils;
 import org.kuali.rice.krad.util.ObjectUtils;
 import org.springframework.beans.BeanWrapper;
-import sun.util.LocaleServiceProviderPool;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +25,12 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests {@link MessageFetcher}. Turn messaging off but leave persistence on.
@@ -73,8 +71,18 @@ public class MessageFetcherTest extends KSBTestCase {
             sendMessage();
         }
 
-        // make sure all async calls land in the db
-        Thread.sleep(5000);
+        // make sure all async calls land in the db, wait up to 60 seconds checking periodically
+        long start = System.currentTimeMillis();
+        while ((System.currentTimeMillis() - start) < (60 * 1000)) {
+            messages = KSBServiceLocator.getMessageQueueService().getNextDocuments(null);
+            if (messages.size() < TestHarnessSharedTopic.CALL_COUNT_NOTIFICATION_THRESHOLD) {
+                System.out.println(messages.size() + " messages were found in the database");
+            } else {
+                break;
+            }
+            Thread.sleep(1000);
+        }
+
 
         messages = KSBServiceLocator.getMessageQueueService().getNextDocuments(null);
         assertEquals("Should have 500 messages in the queue.", 500, messages.size());

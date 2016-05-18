@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.kuali.rice</groupId>
     <artifactId>rice-framework</artifactId>
-    <version>2.3.10-SNAPSHOT</version>
+    <version>2.3.10-1605.0008-SNAPSHOT</version>
   </parent>
 
   <artifactId>rice-krad-development-tools</artifactId>

@@ -137,7 +137,7 @@
 					</td>
 					<td align="left">
 						<div align="left">
-							<font color="red">${displayMessage}</font>
+							<font color="red"><c:out value="${displayMessage}"/></font>
 						</div>
 					</td>
 				</tr>
@@ -192,7 +192,7 @@
 			<tr>
 				<td align="left" valign="top" colspan="2">
 					<div align="left">
-						<pre>${stackTrace}</pre>
+						<pre><c:out value="${stackTrace}"/></pre>
 					</div>
 				</td>
 			</tr>

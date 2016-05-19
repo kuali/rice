@@ -168,6 +168,9 @@
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
 
+    <!-- Override the version of the nexus-staging-maven-plugin so that it works on java 8 -->
+    <plugin.nexus.version>1.6.7</plugin.nexus.version>
+
     <!-- Override the maven-site-plugin version to 3.4 so that it works on java 8 -->
     <plugin.site.version>3.4</plugin.site.version>
 

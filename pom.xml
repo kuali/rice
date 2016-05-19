@@ -168,6 +168,9 @@
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
 
+    <!-- Override the maven-site-plugin version to 3.4 so that it works on java 8 -->
+    <plugin.site.version>3.4</plugin.site.version>
+
     <!-- Connect documentation generation to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
     <rice.docbook.phase.html>${rice.docbook.phase}</rice.docbook.phase.html>
@@ -878,23 +881,26 @@
           <artifactId>maven-http-plugin</artifactId>
           <version>1.0.2</version>
         </plugin>
+
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <additionalparam>-Xdoclint:none</additionalparam>
+            <additionalDependencies>
+              <additionalDependency>
+                <groupId>com.ibm.websphere</groupId>
+                <artifactId>com.springsource.com.ibm.websphere.uow</artifactId>
+                <version>6.0.2.17</version>
+              </additionalDependency>
+            </additionalDependencies>
+          </configuration>
+        </plugin>
       </plugins>
+
+
     </pluginManagement>
 
     <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <additionalparam>-Xdoclint:none</additionalparam>
-          <additionalDependencies>
-            <additionalDependency>
-              <groupId>com.ibm.websphere</groupId>
-              <artifactId>com.springsource.com.ibm.websphere.uow</artifactId>
-              <version>6.0.2.17</version>
-            </additionalDependency>
-          </additionalDependencies>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>

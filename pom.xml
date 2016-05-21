@@ -195,7 +195,7 @@
     <plugin.nexus.version>1.6.7</plugin.nexus.version>
 
     <!-- Override the maven-site-plugin version to 3.4 so that it works on java 8 -->
-    <plugin.site.version>3.4</plugin.site.version>
+    <plugin.site.version>3.5.1</plugin.site.version>
 
     <!-- Connect documentation generation to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
@@ -232,8 +232,30 @@
     <kuali.repo.snapshot.name>KualiCo Core Snapshot Repository</kuali.repo.snapshot.name>
     <kuali.repo.snapshot.url>https://nexus.kuali.co/nexus/content/repositories/core-snapshots-public/</kuali.repo.snapshot.url>
 
+    <!-- set the kuali site url for publishing the documentation -->
+    <kuali.site.publish.url>s3://site.origin.kuali.org/rice/${project.version}</kuali.site.publish.url>
 
   </properties>
+
+  <!-- duplicating distributionManagement from parent pom because site plugin doesn't properly allow overriding for the site url -->
+  <distributionManagement>
+    <downloadUrl>${kuali.site.download.url}</downloadUrl>
+    <site>
+      <id>${kuali.site.server.id}</id>
+      <name>Kuali Maven Site</name>
+      <url>${kuali.site.publish.url}</url>
+    </site>
+    <repository>
+      <id>${kuali.repo.release.id}</id>
+      <name>${kuali.repo.release.name}</name>
+      <url>${kuali.repo.release.url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>${kuali.repo.snapshot.id}</id>
+      <name>${kuali.repo.snapshot.name}</name>
+      <url>${kuali.repo.snapshot.url}</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <profiles>
     <!-- Setup the dependency tree needed by the deploy logic -->

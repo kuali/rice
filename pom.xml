@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>4.3.9</version>
+    <version>5.0.6</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -242,6 +242,12 @@
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
 
+    <!-- Override the version of the nexus-staging-maven-plugin so that it works on java 8 -->
+    <plugin.nexus.version>1.6.7</plugin.nexus.version>
+
+    <!-- Override the maven-site-plugin version to 3.4 so that it works on java 8 -->
+    <plugin.site.version>3.5.1</plugin.site.version>
+
     <!-- Connect documentation generation to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
     <rice.docbook.phase.html>${rice.docbook.phase}</rice.docbook.phase.html>
@@ -274,7 +280,41 @@
       -javaagent:${spring-instrument.jar}
     </spring-instrument-javaagent>
 
+    <!-- Override properties from the parent pom for deploying to Maven repositories -->
+    <!-- These are the Kuali repository settings for an official release -->
+    <kuali.repo.release.id>kualico.nexus.core.releases</kuali.repo.release.id>
+    <kuali.repo.release.name>KualiCo Core Release Repository</kuali.repo.release.name>
+    <kuali.repo.release.url>https://nexus.kuali.co/nexus/content/repositories/core-releases-public/</kuali.repo.release.url>
+    <!-- These are the Kuali repository settings for snapshot builds -->
+    <kuali.repo.snapshot.id>kualico.nexus.core.releases</kuali.repo.snapshot.id>
+    <kuali.repo.snapshot.name>KualiCo Core Snapshot Repository</kuali.repo.snapshot.name>
+    <kuali.repo.snapshot.url>https://nexus.kuali.co/nexus/content/repositories/core-snapshots-public/</kuali.repo.snapshot.url>
+
+
+    <!-- set the kuali site url for publishing the documentation -->
+    <kuali.site.publish.url>s3://site.origin.kuali.org/rice/${project.version}</kuali.site.publish.url>
+
   </properties>
+
+  <!-- duplicating distributionManagement from parent pom because site plugin doesn't properly allow overriding for the site url -->
+  <distributionManagement>
+    <downloadUrl>${kuali.site.download.url}</downloadUrl>
+    <site>
+      <id>${kuali.site.server.id}</id>
+      <name>Kuali Maven Site</name>
+      <url>${kuali.site.publish.url}</url>
+    </site>
+    <repository>
+      <id>${kuali.repo.release.id}</id>
+      <name>${kuali.repo.release.name}</name>
+      <url>${kuali.repo.release.url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>${kuali.repo.snapshot.id}</id>
+      <name>${kuali.repo.snapshot.name}</name>
+      <url>${kuali.repo.snapshot.url}</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <profiles>
     <!-- Optimize the nightly build -->
@@ -1311,23 +1351,23 @@
             </dependency>
           </dependencies>
         </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <additionalparam>-Xdoclint:none</additionalparam>
+            <additionalDependencies>
+              <additionalDependency>
+                <groupId>com.ibm.websphere</groupId>
+                <artifactId>com.springsource.com.ibm.websphere.uow</artifactId>
+                <version>6.0.2.17</version>
+              </additionalDependency>
+            </additionalDependencies>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
 
     <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <additionalparam>-Xdoclint:none</additionalparam>
-          <additionalDependencies>
-            <additionalDependency>
-              <groupId>com.ibm.websphere</groupId>
-              <artifactId>com.springsource.com.ibm.websphere.uow</artifactId>
-              <version>6.0.2.17</version>
-            </additionalDependency>
-          </additionalDependencies>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>

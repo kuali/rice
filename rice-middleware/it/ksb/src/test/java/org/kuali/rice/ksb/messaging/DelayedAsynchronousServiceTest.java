@@ -39,11 +39,11 @@ import static org.junit.Assert.assertTrue;
 public class DelayedAsynchronousServiceTest extends KSBTestCase {
 
     public boolean startClient1() {
-	    return true;
+        return true;
     }
 
     public boolean startClient2() {
-	    return true;
+        return true;
     }
 
     @Test public void testDelayedAsynchronousServiceCall() throws Exception {
@@ -53,7 +53,7 @@ public class DelayedAsynchronousServiceTest extends KSBTestCase {
 
         // Queue up the service to be called asynchronously after 5 seconds
         KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, "context", "value1", "value2", 5000);
-    	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
+        testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
         verifyServiceCalls(serviceName, false);
 
         // sleep for 1 second, should not have been called
@@ -76,31 +76,46 @@ public class DelayedAsynchronousServiceTest extends KSBTestCase {
         // to allow for the use of callbacks for delayed asynchronous services but that's not something I wanted to try
         // to tackle at the moment
 
-        // now sleep for 3 more seconds, the call should be invoked
-        Thread.sleep(3000);
-        verifyServiceCalls(serviceName, true);
+        // now keep trying for 60 more seconds
+        verifyServiceCalls(serviceName, true, 60000);
 
     }
 
     private void verifyServiceCalls(QName serviceName, boolean shouldHaveBeenCalled) throws Exception {
+        verifyServiceCalls(serviceName, shouldHaveBeenCalled, 0);
+    }
+
+    private void verifyServiceCalls(QName serviceName, boolean shouldHaveBeenCalled, long wait) throws Exception {
         BAMService bamService = KSBServiceLocator.getBAMService();
-        List<BAMTargetEntry> bamCalls = bamService.getCallsForService(serviceName);
-        if (!shouldHaveBeenCalled) {
-            assertTrue("A service call should not have been recorded yet.", bamCalls.size() == 0);
-        } else {
-            assertTrue("No service call recorded", bamCalls.size() > 0);
-            boolean foundClientCall = false;
-            boolean foundServiceCall = false;
-            for (BAMTargetEntry bamEntry : bamCalls) {
-                if (bamEntry.getServerInvocation()) {
-                    foundServiceCall = true;
-                } else {
-                    foundClientCall = true;
+        long start = System.currentTimeMillis();
+        int numBamCalls = 0;
+        boolean foundClientCall = false;
+        boolean foundServiceCall = false;
+        do {
+            List<BAMTargetEntry> bamCalls = bamService.getCallsForService(serviceName);
+            numBamCalls = bamCalls.size();
+            if (!shouldHaveBeenCalled) {
+                assertTrue("A service call should not have been recorded yet.", numBamCalls == 0);
+                break;
+            } else {
+                for (BAMTargetEntry bamEntry : bamCalls) {
+                    if (bamEntry.getServerInvocation()) {
+                        foundServiceCall = true;
+                    } else {
+                        foundClientCall = true;
+                    }
+                }
+                if (foundServiceCall && foundClientCall) {
+                    break;
                 }
             }
+            Thread.sleep(1000);
+        } while ((System.currentTimeMillis() - start) < wait);
+        if (shouldHaveBeenCalled) {
+            assertTrue("No service call recorded", numBamCalls > 0);
             assertTrue("No client call recorded", foundClientCall);
             assertTrue("No service call recorded", foundServiceCall);
-            assertEquals("Wrong number of calls recorded", 2, bamCalls.size());
+            assertEquals("Wrong number of calls recorded", 2, numBamCalls);
         }
     }
 

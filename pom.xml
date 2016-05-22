@@ -41,10 +41,6 @@
   </description>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
 
-  <ciManagement>
-    <url>http://ci.rice.kuali.org</url>
-  </ciManagement>
-
   <properties>
     <project.java.version>1.7</project.java.version>
     <tools.jar.path>${java.home}/../lib/tools.jar</tools.jar.path>
@@ -289,7 +285,6 @@
     <kuali.repo.snapshot.id>kualico.nexus.core.releases</kuali.repo.snapshot.id>
     <kuali.repo.snapshot.name>KualiCo Core Snapshot Repository</kuali.repo.snapshot.name>
     <kuali.repo.snapshot.url>https://nexus.kuali.co/nexus/content/repositories/core-snapshots-public/</kuali.repo.snapshot.url>
-
 
     <!-- set the kuali site url for publishing the documentation -->
     <kuali.site.publish.url>s3://site.origin.kuali.org/rice/${project.version}</kuali.site.publish.url>
@@ -2597,11 +2592,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.kuali.org/</url>
-  </issueManagement>
 
   <scm>
     <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>

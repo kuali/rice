@@ -27,7 +27,7 @@ limitations under the License.
     <para>Welcome to Rice ${project.version}! </para>
     <section>
       <title>Release Highlights</title>
-      <para>This release consists of a single security fix as well as a number of other bug fixes. The packaged standalone server for this version of Kuali Rice also includes a JAR file for the core-auth-servlet-filter which allows for integration with the CORE authentication service. There are no database changes and it should be a drop-in replacement.</para>
+      <para>This release consists of a security fix as well as a number of other bug fixes. The packaged standalone server for this version of Kuali Rice also includes a JAR file for the core-auth-servlet-filter which allows for integration with the CORE authentication service. Additionally, work was done on this release of Kuali Rice to allow for it to be compiled, packaged, and released using a Java 8 compiler. Previous versions supported running on Java 8 but were still being compiled with a Java 7 JDK. Java 7 is still supported in this version of Rice. There are no database changes and this release should be a drop-in replacement.</para>
     </section>
     <section>
       <title>Download</title>

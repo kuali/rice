@@ -27,17 +27,16 @@
   <artifactId>rice-kns</artifactId>
 
   <properties>
-    <db-ojb.version>1.0.4-patch8</db-ojb.version>
+    <db-ojb.version>1.0.4-patch9</db-ojb.version>
   </properties>
 
   <build>
   	<plugins>
-	  <!-- Enable static weaving using META-INF/persistence-weaving.xml for this module -->
+      <!-- Enable static weaving using META-INF/persistence-weaving.xml for this module -->
       <plugin>
-        <groupId>au.com.alderaan</groupId>
-        <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
+        <groupId>de.empulse.eclipselink</groupId>
+        <artifactId>staticweave-maven-plugin</artifactId>
       </plugin>
-  	
   	</plugins>
   </build>
 
@@ -130,6 +129,11 @@
     <dependency>
       <groupId>org.springmodules</groupId>
       <artifactId>spring-modules-ojb</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
     </dependency>
 
     <!-- test-scoped dependencies: -->

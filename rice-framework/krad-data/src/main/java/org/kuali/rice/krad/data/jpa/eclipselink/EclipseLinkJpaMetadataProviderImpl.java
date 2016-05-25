@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2015 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,28 +71,28 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(EclipseLinkJpaMetadataProviderImpl.class);
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void populateImplementationSpecificEntityLevelMetadata(DataObjectMetadataImpl metadata,
-			EntityType<?> entityType) {
+																	 EntityType<?> entityType) {
 		if ( entityType instanceof EntityTypeImpl ) {
 			metadata.setBackingObjectName(((EntityTypeImpl<?>) entityType).getDescriptor().getTableName());
 		}
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void populateImplementationSpecificAttributeLevelMetadata(DataObjectAttributeImpl attribute,
-			SingularAttribute<?, ?> attr) {
+																		SingularAttribute<?, ?> attr) {
 
 		if (attr instanceof SingularAttributeImpl) {
 			DatabaseMapping mapping = ((SingularAttributeImpl<?, ?>) attr).getMapping();
 			if (mapping != null && mapping.getField() != null) {
-                attribute.setReadOnly(mapping.isReadOnly());
+				attribute.setReadOnly(mapping.isReadOnly());
 				attribute.setBackingObjectName(mapping.getField().getName());
 				if (mapping.getField().getLength() != 0) {
 					attribute.setMaxLength((long) mapping.getField().getLength());
@@ -127,12 +127,12 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		}
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void populateImplementationSpecificCollectionLevelMetadata(DataObjectCollectionImpl collection,
-			PluralAttribute<?, ?, ?> cd) {
+																		 PluralAttribute<?, ?, ?> cd) {
 		// OJB stores the related class object name. We need to go into the repository and grab the table name.
 		Class<?> collectionElementClass = cd.getElementType().getJavaType();
 		EntityType<?> elementEntityType = entityManager.getMetamodel().entity(collectionElementClass);
@@ -150,7 +150,7 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 
 			if (collectionMapping instanceof OneToManyMapping) {
 				OneToManyMapping otm = (OneToManyMapping) collectionMapping;
-                populateInverseRelationship(otm, collection);
+				populateInverseRelationship(otm, collection);
 				Map<DatabaseField, DatabaseField> keyMap = otm.getSourceKeysToTargetForeignKeys();
 				List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
 				for (Map.Entry<DatabaseField, DatabaseField> keyRel : keyMap.entrySet()) {
@@ -207,28 +207,28 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		collection.setDefaultCollectionOrderingAttributeNames(sortAttributes);
 	}
 
-    /**
-     * Returns the property name on the given entity type which the given database column is mapped to.
-     *
-     * <p>
-     * If no field on the given type is mapped to this field (which is common in cases of a JPA relationship without an
-     * actual {@link javax.persistence.Column} annotated field to represent the foreign key) then this method will
-     * return null.
-     * </p>
-     *
-     * @param entityType the entity type on which to search for a property that is mapped to the given column
-     * @param databaseColumnName the name of the database column
-     *
-     * @return the name of the property on the given entity type which maps to the given column, or null if no such
-     *         mapping exists
-     */
+	/**
+	 * Returns the property name on the given entity type which the given database column is mapped to.
+	 *
+	 * <p>
+	 * If no field on the given type is mapped to this field (which is common in cases of a JPA relationship without an
+	 * actual {@link javax.persistence.Column} annotated field to represent the foreign key) then this method will
+	 * return null.
+	 * </p>
+	 *
+	 * @param entityType the entity type on which to search for a property that is mapped to the given column
+	 * @param databaseColumnName the name of the database column
+	 *
+	 * @return the name of the property on the given entity type which maps to the given column, or null if no such
+	 *         mapping exists
+	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-    protected String getPropertyNameFromDatabaseColumnName(ManagedType entityType, String databaseColumnName) {
+	protected String getPropertyNameFromDatabaseColumnName(ManagedType entityType, String databaseColumnName) {
 		for (SingularAttributeImpl attr : (Set<SingularAttributeImpl>) entityType.getSingularAttributes()) {
 			if (!attr.isAssociation()) {
 				if (!(attr.getClass().isAssignableFrom(EmbeddableTypeImpl.class)) &&
-                        !(attr.getMapping().getClass().isAssignableFrom(AggregateObjectMapping.class)) &&
-                        attr.getMapping().getField().getName().equals(databaseColumnName)) {
+						!(attr.getMapping().getClass().isAssignableFrom(AggregateObjectMapping.class)) &&
+						attr.getMapping().getField().getName().equals(databaseColumnName)) {
 					return attr.getName();
 				}
 			}
@@ -236,12 +236,12 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		return null;
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void populateImplementationSpecificRelationshipLevelMetadata(DataObjectRelationshipImpl relationship,
-			SingularAttribute<?, ?> rd) {
+																		   SingularAttribute<?, ?> rd) {
 		// We need to go into the repository and grab the table name.
 		Class<?> referencedClass = rd.getBindableJavaType();
 		EntityType<?> referencedEntityType = entityManager.getMetamodel().entity(referencedClass);
@@ -265,30 +265,35 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 					&& relationshipMapping.isLazy());
 
 			List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
-			for (DatabaseField parentField : relationshipMapping.getForeignKeyFields()) {
-				String parentFieldName = getPropertyNameFromDatabaseColumnName(rd.getDeclaringType(),
-						parentField.getName());
-                if (parentFieldName != null) {
-				    DatabaseField childField = relationshipMapping.getSourceToTargetKeyFields().get(parentField);
-				    if (childField != null) {
-					    // the target field is always done by column name. So, we need to get into the target entity and
-					    // find the associated field :-(
-					    // If the lookup fails, we will at least have the column name
-					    String childFieldName = getPropertyNameFromDatabaseColumnName(referencedEntityType,
-                                childField.getName());
-                        if (childFieldName != null) {
-					        attributeRelationships
-                                    .add(new DataObjectAttributeRelationshipImpl(parentFieldName, childFieldName));
-                        }
-				    } else {
-					    LOG.warn("Unable to find child field reference.  There may be a JPA mapping problem on "
-						    	+ rd.getDeclaringType().getJavaType() + ": " + relationship);
-				    }
-                }
+			List<String> referencedEntityPkFields = getPrimaryKeyAttributeNames(referencedEntityType);
+
+			for (String referencedEntityPkField : referencedEntityPkFields) {
+				for (Map.Entry<DatabaseField, DatabaseField> entry :
+						relationshipMapping.getTargetToSourceKeyFields().entrySet()) {
+					DatabaseField childDatabaseField = entry.getKey();
+					String childFieldName = getPropertyNameFromDatabaseColumnName(referencedEntityType,
+							childDatabaseField.getName());
+
+					if (referencedEntityPkField.equalsIgnoreCase(childFieldName)) {
+						DatabaseField parentDatabaseField = entry.getValue();
+						String parentFieldName = getPropertyNameFromDatabaseColumnName(rd.getDeclaringType(),
+								parentDatabaseField.getName());
+
+						if (parentFieldName != null) {
+							attributeRelationships
+									.add(new DataObjectAttributeRelationshipImpl(parentFieldName, childFieldName));
+							break;
+						} else {
+							LOG.warn("Unable to find parent field reference.  There may be a JPA mapping problem on " +
+									referencedEntityType.getJavaType() + ": " + relationship);
+						}
+					}
+				}
 			}
+
 			relationship.setAttributeRelationships(attributeRelationships);
 
-            populateInverseRelationship(relationshipMapping, relationship);
+			populateInverseRelationship(relationshipMapping, relationship);
 
 		} else {
 			// get what we can based on JPA values (note that we just set some to have values here)
@@ -300,94 +305,94 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		}
 	}
 
-    /**
-     * Populates the inverse relationship for a given relationship.
-     *
-     * @param mapping the {@link DatabaseMapping} that defines the relationship.
-     * @param relationship the relationship of which to populate the other side.
-     */
-    protected void populateInverseRelationship(DatabaseMapping mapping, MetadataChildBase relationship) {
-        DatabaseMapping relationshipPartner = findRelationshipPartner(mapping);
-        if (relationshipPartner != null) {
-            Class<?> partnerType = relationshipPartner.getDescriptor().getJavaClass();
-            DataObjectMetadata partnerMetadata = masterMetadataMap.get(partnerType);
-            // if the target metadata is not null, it means that entity has already been processed,
-            // so we can go ahead and establish the inverse relationship
-            if (partnerMetadata != null) {
-                // first check if it's a relationship
-                MetadataChildBase relationshipPartnerMetadata =
-                        (MetadataChildBase)partnerMetadata.getRelationship(relationshipPartner.getAttributeName());
-                if (relationshipPartnerMetadata == null) {
-                    relationshipPartnerMetadata =
-                            (MetadataChildBase)partnerMetadata.getCollection(relationshipPartner.getAttributeName());
-                }
-                if (relationshipPartnerMetadata != null) {
-                    relationshipPartnerMetadata.setInverseRelationship(relationship);
-                    relationship.setInverseRelationship(relationshipPartnerMetadata);
-                }
+	/**
+	 * Populates the inverse relationship for a given relationship.
+	 *
+	 * @param mapping the {@link DatabaseMapping} that defines the relationship.
+	 * @param relationship the relationship of which to populate the other side.
+	 */
+	protected void populateInverseRelationship(DatabaseMapping mapping, MetadataChildBase relationship) {
+		DatabaseMapping relationshipPartner = findRelationshipPartner(mapping);
+		if (relationshipPartner != null) {
+			Class<?> partnerType = relationshipPartner.getDescriptor().getJavaClass();
+			DataObjectMetadata partnerMetadata = masterMetadataMap.get(partnerType);
+			// if the target metadata is not null, it means that entity has already been processed,
+			// so we can go ahead and establish the inverse relationship
+			if (partnerMetadata != null) {
+				// first check if it's a relationship
+				MetadataChildBase relationshipPartnerMetadata =
+						(MetadataChildBase)partnerMetadata.getRelationship(relationshipPartner.getAttributeName());
+				if (relationshipPartnerMetadata == null) {
+					relationshipPartnerMetadata =
+							(MetadataChildBase)partnerMetadata.getCollection(relationshipPartner.getAttributeName());
+				}
+				if (relationshipPartnerMetadata != null) {
+					relationshipPartnerMetadata.setInverseRelationship(relationship);
+					relationship.setInverseRelationship(relationshipPartnerMetadata);
+				}
 
-            }
-        }
-    }
+			}
+		}
+	}
 
-    /**
-     * Gets the inverse mapping of the given {@link DatabaseMapping}.
-     *
-     * @param databaseMapping the {@link DatabaseMapping} of which to get the inverse.
-     * @return the inverse mapping of the given {@link DatabaseMapping}.
-     */
-    protected DatabaseMapping findRelationshipPartner(DatabaseMapping databaseMapping) {
-        if (databaseMapping instanceof OneToManyMapping) {
-            OneToManyMapping mapping = (OneToManyMapping)databaseMapping;
-            if (mapping.getMappedBy() != null) {
-                Class<?> referenceClass = mapping.getReferenceClass();
-                ClassDescriptor referenceClassDescriptor = getClassDescriptor(referenceClass);
-                return referenceClassDescriptor.getMappingForAttributeName(mapping.getMappedBy());
-            }
-        } else if (databaseMapping instanceof ManyToOneMapping) {
-            // one odd thing just to note here, for ManyToOne mappings with an inverse OneToMany, for some reason the
-            // getMappedBy method still returns the mappedBy from the OneToMany side, so we can't use nullness of
-            // mappedBy to infer which side of the relationship we are on, oddly enough, that's not the way it works
-            // for OneToOne mappings (see below)...go figure
-            //
-            // I have to assume this is some sort of bug in EclipseLink metadata
-            ManyToOneMapping mapping = (ManyToOneMapping)databaseMapping;
-            Class<?> referenceClass = mapping.getReferenceClass();
-            ClassDescriptor referenceClassDescriptor = getClassDescriptor(referenceClass);
-            // find the OneToMany mapping which points back to this ManyToOne
-            for (DatabaseMapping referenceMapping : referenceClassDescriptor.getMappings()) {
-                if (referenceMapping instanceof OneToManyMapping) {
-                    OneToManyMapping oneToManyMapping = (OneToManyMapping)referenceMapping;
-                    if (mapping.getAttributeName().equals(oneToManyMapping.getMappedBy())) {
-                        return oneToManyMapping;
-                    }
-                }
-            }
-        } else if (databaseMapping instanceof OneToOneMapping) {
-            OneToOneMapping mapping = (OneToOneMapping)databaseMapping;
-            // well for reasons I can't quite fathom, mappedBy is always null on OneToOne relationships,
-            // thankfully it's OneToOne so it's pretty easy to figure out the inverse
-            ClassDescriptor referenceClassDescriptor = getClassDescriptor(mapping.getReferenceClass());
-            // let's check if theres a OneToOne pointing back to us
-            for (DatabaseMapping referenceMapping : referenceClassDescriptor.getMappings()) {
-                if (referenceMapping instanceof OneToOneMapping) {
-                    OneToOneMapping oneToOneMapping = (OneToOneMapping)referenceMapping;
-                    if (oneToOneMapping.getReferenceClass().equals(mapping.getDescriptor().getJavaClass())) {
-                        return oneToOneMapping;
-                    }
-                }
-            }
-        }
-        // TODO need to implement for bi-directional OneToOne and ManyToMany
-        return null;
-    }
+	/**
+	 * Gets the inverse mapping of the given {@link DatabaseMapping}.
+	 *
+	 * @param databaseMapping the {@link DatabaseMapping} of which to get the inverse.
+	 * @return the inverse mapping of the given {@link DatabaseMapping}.
+	 */
+	protected DatabaseMapping findRelationshipPartner(DatabaseMapping databaseMapping) {
+		if (databaseMapping instanceof OneToManyMapping) {
+			OneToManyMapping mapping = (OneToManyMapping)databaseMapping;
+			if (mapping.getMappedBy() != null) {
+				Class<?> referenceClass = mapping.getReferenceClass();
+				ClassDescriptor referenceClassDescriptor = getClassDescriptor(referenceClass);
+				return referenceClassDescriptor.getMappingForAttributeName(mapping.getMappedBy());
+			}
+		} else if (databaseMapping instanceof ManyToOneMapping) {
+			// one odd thing just to note here, for ManyToOne mappings with an inverse OneToMany, for some reason the
+			// getMappedBy method still returns the mappedBy from the OneToMany side, so we can't use nullness of
+			// mappedBy to infer which side of the relationship we are on, oddly enough, that's not the way it works
+			// for OneToOne mappings (see below)...go figure
+			//
+			// I have to assume this is some sort of bug in EclipseLink metadata
+			ManyToOneMapping mapping = (ManyToOneMapping)databaseMapping;
+			Class<?> referenceClass = mapping.getReferenceClass();
+			ClassDescriptor referenceClassDescriptor = getClassDescriptor(referenceClass);
+			// find the OneToMany mapping which points back to this ManyToOne
+			for (DatabaseMapping referenceMapping : referenceClassDescriptor.getMappings()) {
+				if (referenceMapping instanceof OneToManyMapping) {
+					OneToManyMapping oneToManyMapping = (OneToManyMapping)referenceMapping;
+					if (mapping.getAttributeName().equals(oneToManyMapping.getMappedBy())) {
+						return oneToManyMapping;
+					}
+				}
+			}
+		} else if (databaseMapping instanceof OneToOneMapping) {
+			OneToOneMapping mapping = (OneToOneMapping)databaseMapping;
+			// well for reasons I can't quite fathom, mappedBy is always null on OneToOne relationships,
+			// thankfully it's OneToOne so it's pretty easy to figure out the inverse
+			ClassDescriptor referenceClassDescriptor = getClassDescriptor(mapping.getReferenceClass());
+			// let's check if theres a OneToOne pointing back to us
+			for (DatabaseMapping referenceMapping : referenceClassDescriptor.getMappings()) {
+				if (referenceMapping instanceof OneToOneMapping) {
+					OneToOneMapping oneToOneMapping = (OneToOneMapping)referenceMapping;
+					if (oneToOneMapping.getReferenceClass().equals(mapping.getDescriptor().getJavaClass())) {
+						return oneToOneMapping;
+					}
+				}
+			}
+		}
+		// TODO need to implement for bi-directional OneToOne and ManyToMany
+		return null;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public DataObjectRelationship addExtensionRelationship(Class<?> entityClass, String extensionPropertyName,
-			Class<?> extensionEntityClass) {
+														   Class<?> extensionEntityClass) {
 		ClassDescriptor entityDescriptor = getClassDescriptor(entityClass);
 		ClassDescriptor extensionEntityDescriptor = getClassDescriptor(extensionEntityClass);
 
@@ -407,83 +412,83 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 		dm.setIsOneToOneRelationship(true);
 		dm.setRequiresTransientWeavedFields(false);
 
-        OneToOneMapping inverse = findExtensionInverse(extensionEntityDescriptor, entityClass);
-        dm.setMappedBy(inverse.getAttributeName());
-        for (DatabaseField sourceField : inverse.getSourceToTargetKeyFields().keySet()) {
-            DatabaseField targetField = inverse.getSourceToTargetKeyFields().get(sourceField);
-            // reverse them, pass the source from the inverse as our target and the target from the inverse as our source
-            dm.addTargetForeignKeyField(sourceField, targetField);
-        }
+		OneToOneMapping inverse = findExtensionInverse(extensionEntityDescriptor, entityClass);
+		dm.setMappedBy(inverse.getAttributeName());
+		for (DatabaseField sourceField : inverse.getSourceToTargetKeyFields().keySet()) {
+			DatabaseField targetField = inverse.getSourceToTargetKeyFields().get(sourceField);
+			// reverse them, pass the source from the inverse as our target and the target from the inverse as our source
+			dm.addTargetForeignKeyField(sourceField, targetField);
+		}
 
-        dm.preInitialize(getEclipseLinkEntityManager().getDatabaseSession());
+		dm.preInitialize(getEclipseLinkEntityManager().getDatabaseSession());
 		dm.initialize(getEclipseLinkEntityManager().getDatabaseSession());
 		entityDescriptor.addMapping(dm);
 		entityDescriptor.getObjectBuilder().initialize(getEclipseLinkEntityManager().getDatabaseSession());
 
-        // build the data object relationship
-        ManagedTypeImpl<?> managedType = (ManagedTypeImpl<?>)getEntityManager().getMetamodel().managedType(entityClass);
-        SingularAttributeImpl<?, ?> singularAttribute = new SingularAttributeLocal(managedType, dm);
-        return getRelationshipMetadata(singularAttribute);
+		// build the data object relationship
+		ManagedTypeImpl<?> managedType = (ManagedTypeImpl<?>)getEntityManager().getMetamodel().managedType(entityClass);
+		SingularAttributeImpl<?, ?> singularAttribute = new SingularAttributeLocal(managedType, dm);
+		return getRelationshipMetadata(singularAttribute);
 	}
 
-    /**
-     * Provides a local implementation of {@link SingularAttributeImpl}.
-     */
-    class SingularAttributeLocal extends SingularAttributeImpl {
+	/**
+	 * Provides a local implementation of {@link SingularAttributeImpl}.
+	 */
+	class SingularAttributeLocal extends SingularAttributeImpl {
 
-        /**
-         * Creates a local implementation of {@link SingularAttributeImpl}.
-         *
-         * @param managedType the {@link ManagedType}.
-         * @param mapping the {@link DatabaseMapping}.
-         */
-        SingularAttributeLocal(ManagedTypeImpl managedType, DatabaseMapping mapping) {
-            super(managedType, mapping);
-        }
-    }
+		/**
+		 * Creates a local implementation of {@link SingularAttributeImpl}.
+		 *
+		 * @param managedType the {@link ManagedType}.
+		 * @param mapping the {@link DatabaseMapping}.
+		 */
+		SingularAttributeLocal(ManagedTypeImpl managedType, DatabaseMapping mapping) {
+			super(managedType, mapping);
+		}
+	}
 
-    /**
-     * Gets the inverse extension of the given {@link ClassDescriptor}.
-     *
-     * @param extensionEntityDescriptor the {@link ClassDescriptor} of which to get the inverse.
-     * @param entityType the type of the entity.
-     * @return the inverse extension of the given {@link ClassDescriptor}.
-     */
-    protected OneToOneMapping findExtensionInverse(ClassDescriptor extensionEntityDescriptor, Class<?> entityType) {
-        Collection<DatabaseMapping> derivedIdMappings = extensionEntityDescriptor.getDerivesIdMappinps();
-        String extensionInfo = "(" + extensionEntityDescriptor.getJavaClass().getName() + " -> " + entityType.getName()
-                + ")";
-        if (derivedIdMappings == null || derivedIdMappings.isEmpty()) {
-            throw new MetadataConfigurationException("Attempting to use extension framework, but extension "
-                    + extensionInfo + " does not have a valid inverse OneToOne Id mapping back to the extended data "
-                    + "object. Please ensure it is annotated property for use of the extension framework with JPA.");
-        } else if (derivedIdMappings.size() > 1) {
-            throw new MetadataConfigurationException("When attempting to determine the inverse relationship for use "
-                    + "with extension framework " + extensionInfo + " encountered more than one 'derived id' mapping, "
-                    + "there should be only one!");
-        }
-        DatabaseMapping inverseMapping = derivedIdMappings.iterator().next();
-        if (!(inverseMapping instanceof OneToOneMapping)) {
-            throw new MetadataConfigurationException("Identified an inverse derived id mapping for extension "
-                    + "relationship " + extensionInfo + " but it was not a one-to-one mapping: " + inverseMapping);
-        }
-        return (OneToOneMapping)inverseMapping;
-    }
+	/**
+	 * Gets the inverse extension of the given {@link ClassDescriptor}.
+	 *
+	 * @param extensionEntityDescriptor the {@link ClassDescriptor} of which to get the inverse.
+	 * @param entityType the type of the entity.
+	 * @return the inverse extension of the given {@link ClassDescriptor}.
+	 */
+	protected OneToOneMapping findExtensionInverse(ClassDescriptor extensionEntityDescriptor, Class<?> entityType) {
+		Collection<DatabaseMapping> derivedIdMappings = extensionEntityDescriptor.getDerivesIdMappinps();
+		String extensionInfo = "(" + extensionEntityDescriptor.getJavaClass().getName() + " -> " + entityType.getName()
+				+ ")";
+		if (derivedIdMappings == null || derivedIdMappings.isEmpty()) {
+			throw new MetadataConfigurationException("Attempting to use extension framework, but extension "
+					+ extensionInfo + " does not have a valid inverse OneToOne Id mapping back to the extended data "
+					+ "object. Please ensure it is annotated property for use of the extension framework with JPA.");
+		} else if (derivedIdMappings.size() > 1) {
+			throw new MetadataConfigurationException("When attempting to determine the inverse relationship for use "
+					+ "with extension framework " + extensionInfo + " encountered more than one 'derived id' mapping, "
+					+ "there should be only one!");
+		}
+		DatabaseMapping inverseMapping = derivedIdMappings.iterator().next();
+		if (!(inverseMapping instanceof OneToOneMapping)) {
+			throw new MetadataConfigurationException("Identified an inverse derived id mapping for extension "
+					+ "relationship " + extensionInfo + " but it was not a one-to-one mapping: " + inverseMapping);
+		}
+		return (OneToOneMapping)inverseMapping;
+	}
 
-    /**
-     * Gets the descriptor for the entity type.
-     *
-     * @param entityClass the type of the enty.
-     * @return the descriptor for the entity type.
-     */
-    protected ClassDescriptor getClassDescriptor(Class<?> entityClass) {
+	/**
+	 * Gets the descriptor for the entity type.
+	 *
+	 * @param entityClass the type of the enty.
+	 * @return the descriptor for the entity type.
+	 */
+	protected ClassDescriptor getClassDescriptor(Class<?> entityClass) {
 		return getEclipseLinkEntityManager().getDatabaseSession().getDescriptor(entityClass);
 	}
 
-    /**
-     * The entity manager for interacting with the database.
-     * @return the entity manager for interacting with the database.
-     */
+	/**
+	 * The entity manager for interacting with the database.
+	 * @return the entity manager for interacting with the database.
+	 */
 	protected JpaEntityManager getEclipseLinkEntityManager() {
 		return (JpaEntityManager) entityManager;
 	}

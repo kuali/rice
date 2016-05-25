@@ -103,7 +103,7 @@ public class AgendaEditorBusRule extends MaintenanceDocumentRuleBase {
 
                 // attempt to do a lookup, see if this object already exists by these Primary Keys
                 PersistableBusinessObject testBo = findSingleMatching(getDataObjectService(),
-                        dataObjectClass.asSubclass(PersistableBusinessObject.class), newPkFields);
+                        (Class<PersistableBusinessObject>)dataObjectClass.asSubclass(PersistableBusinessObject.class), newPkFields);
 
                 // if the retrieve was successful, then this object already exists, and we need
                 // to complain

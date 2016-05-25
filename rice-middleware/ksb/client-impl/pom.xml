@@ -129,6 +129,16 @@
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-frontend-jaxws</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>asm</artifactId>
+          <groupId>asm</groupId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-javamail_1.4_spec</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>
@@ -181,9 +191,8 @@
     </dependency>
     <!-- ASM as an explicit dependency, see KULRICE-6353 -->
     <dependency>
-      <groupId>asm</groupId>
+      <groupId>${asm.group.string}</groupId>
       <artifactId>asm</artifactId>
-      <scope>runtime</scope>
     </dependency>
 
     <!-- test-scope dependencies: -->
@@ -214,8 +223,8 @@
     <plugins>
       <!-- Enable static weaving using META-INF/persistence-weaving.xml for this module -->
       <plugin>
-        <groupId>au.com.alderaan</groupId>
-        <artifactId>eclipselink-staticweave-maven-plugin</artifactId>
+        <groupId>de.empulse.eclipselink</groupId>
+        <artifactId>staticweave-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

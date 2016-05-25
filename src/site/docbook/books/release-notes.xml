@@ -84,6 +84,24 @@ limitations under the License.
         <listitem>
           <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14285'>KULRICE-14285</link>] - The Active From Date is not retained when adding a role to a Person.</para>
         </listitem>
+        <listitem>
+          <para>Fixed issues in UIDocumentService that were causing member-level role responsibility actions in KIM to not save.</para>
+        </listitem>
+        <listitem>
+          <para>Fixed NPE from calling DocumentRouteHeaderValue.getRoutedByDisplayName where there is no "routed by principal id".</para>
+        </listitem>
+        <listitem>
+          <para>Fixed an issue where the nested role qualifiers were being converted by the role type of the nested role and not the owning role.</para>
+        </listitem>
+        <listitem>
+          <para>Fixed various issues that were preventing Rice and it's associated documentation from being packaged and deployed to Maven Central and site.kuali.org using JDK 1.8</para>
+        </listitem>
+        <listitem>
+          <para>Updated EclipseLinkJpaMetadataProviderImpl, JpaMetadataProviderTest,  so that it would properly in the face of different collection order under JDK 1.8</para>
+        </listitem>
+        <listitem>
+          <para>Added cglib-nodep dependency to KNS module so that it would build properly under JDK 1.8</para>
+        </listitem>
       </itemizedlist></para>
     </section>
 
@@ -91,7 +109,31 @@ limitations under the License.
       <title>New Feature</title>
       <para><itemizedlist>
         <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14282'>KULRICE-14282</link>] - Add CORE Auth filter to Rice pom.xml</para>
+          <para>Added dependency to the "Core" authentication filter (co.kuali:core-filter) in the POM file for the rice-web module. This allows for applications to use Kuali Core for authentication if desired.</para>
+        </listitem>
+      </itemizedlist></para>
+    </section>
+
+    <section>
+      <title>Improvement</title>
+      <para><itemizedlist>
+        <listitem>
+          <para>Upgraded from 1.0.4-patch8 to 1.0.4-patch9 for OJB</para>
+        </listitem>
+        <listitem>
+          <para>JDK 1.8 fix - Improved javadoc maven plugin so that it could build Kuali Rice javadocs on JDK 1.8.</para>
+        </listitem>
+        <listitem>
+          <para>JDK 1.8 fix - Upgraded from ASM 3.3.1 to 5.0.3, this included ensuring the old version of asm was excluded from some dependencies (such as cxf-rt-frontend-jaxws in the KSB client impl module)</para>
+        </listitem>
+        <listitem>
+          <para>JDK 1.8 fix - Upgraded from Eclipselink 2.5.2 to 2.6.3 due to the following bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=429992</para>
+        </listitem>
+        <listitem>
+          <para>JDK 1.8 fix - Updated maven-compiler-plugin configuration to better specify compiling on JDK 1.8 but targeting 1.7 for source and binary compatibility</para>
+        </listitem>
+        <listitem>
+          <para>JDK 1.8 fix - Switched from au.com.alderaan:eclipselink-staticweave-maven-plugin to de.empulse.eclipselink:staticweave-maven-plugin for better static bytecode weaving with JDK 1.8</para>
         </listitem>
       </itemizedlist></para>
     </section>

@@ -501,7 +501,7 @@ public final class EntityName extends AbstractDataTransferObject
                     lastNameTemp = lastNameTemp + ", ";
                 }
 
-                setCompositeName(lastNameTemp + firstNameTemp + (getMiddleName()==null?"":" " + getMiddleName()));
+                setCompositeName(lastNameTemp + firstNameTemp + (StringUtils.isBlank(getMiddleName()) ? "" : " " + getMiddleName()));
         	}
             return this.compositeName;
         }

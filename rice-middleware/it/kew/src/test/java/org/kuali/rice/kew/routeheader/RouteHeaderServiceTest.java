@@ -61,7 +61,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         // now set an initiator, it should use that instead when displaying the routed by display name
         // also, not sure why but for whatever reason KIM adds an extra space to the end of the display name (maybe because of missing middle name?)
         document.setInitiatorWorkflowId(getPrincipalIdForName("ewestfal"));
-        assertEquals("Westfall, Eric ", document.getRoutedByDisplayName());
+        assertEquals("Westfall, Eric", document.getRoutedByDisplayName());
 
         // yeah it's weird, but for some reason it only falls back to initiator id if the document is enroute, let's
         // switch it back to initiated and make sure it returns empty string again
@@ -71,9 +71,9 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         // now let's set that routed by id! also switch it back to ENROUTE status and make sure it still gives us the
         // routed by user and not the initiator
         document.setRoutedByUserWorkflowId(getPrincipalIdForName("administrator"));
-        assertEquals("administrator, administrator ", document.getRoutedByDisplayName());
+        assertEquals("administrator, administrator", document.getRoutedByDisplayName());
         document.setDocRouteStatus(DocumentStatus.ENROUTE.getCode());
-        assertEquals("administrator, administrator ", document.getRoutedByDisplayName());
+        assertEquals("administrator, administrator", document.getRoutedByDisplayName());
 
     }
 

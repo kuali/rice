@@ -2355,13 +2355,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         params.put("permissionId", permissionId);
         params.put("active", Boolean.TRUE);
         QueryResults<RolePermissionBo> rolePermissionBos = getDataObjectService().findMatching(RolePermissionBo.class, QueryByCriteria.Builder.andAttributes(params).build());
-        List<RolePermissionBo> rolePermsToSave = new ArrayList<RolePermissionBo>();
         for (RolePermissionBo rolePerm : rolePermissionBos.getResults()) {
             rolePerm.setActive(false);
-            rolePermsToSave.add(rolePerm);
+            getDataObjectService().save(rolePerm);
         }
-
-        getDataObjectService().save(rolePermsToSave);
     }
 
     protected void addMemberAttributeData(RoleMemberBo roleMember, Map<String, String> qualifier, String kimTypeId) {

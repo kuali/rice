@@ -14,29 +14,27 @@
  * limitations under the License.
  */
 package org.kuali.rice.kns.util
-
-import org.kuali.rice.kns.web.ui.Section
-import org.junit.Test
-import org.kuali.rice.kns.web.ui.Row
-import org.kuali.rice.kns.web.ui.Field
-
-import static org.junit.Assert.assertEquals
 import org.apache.struts.action.ActionForm
 import org.apache.struts.config.ControllerConfig
 import org.junit.Before
-import org.kuali.rice.core.framework.config.property.SimpleConfig
+import org.junit.Test
 import org.kuali.rice.core.api.CoreConstants
 import org.kuali.rice.core.api.config.property.ConfigContext
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
+import org.kuali.rice.core.framework.config.property.SimpleConfig
 import org.kuali.rice.core.framework.resourceloader.BaseResourceLoader
-import javax.xml.namespace.QName
-import org.kuali.rice.krad.util.KRADConstants
 import org.kuali.rice.coreservice.framework.parameter.ParameterService
 import org.kuali.rice.kim.api.identity.PersonService
 import org.kuali.rice.kim.impl.identity.TestPerson
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm
-import org.kuali.rice.kew.api.KewApiConstants
+import org.kuali.rice.kns.web.ui.Field
+import org.kuali.rice.kns.web.ui.Row
+import org.kuali.rice.kns.web.ui.Section
+import org.kuali.rice.krad.util.KRADConstants
 
+import javax.xml.namespace.QName
+
+import static org.junit.Assert.assertEquals
 /**
  * Unit tests WebUtils
  *
@@ -47,7 +45,10 @@ class WebUtilsTest {
 	
 	private static final String DEFAULT_URL = "default";
 	private static final String TEST_URL = "http://test/url";
-	
+    private static final String RELATIVE_URL_1 = "relative";
+    private static final String RELATIVE_URL_2 = "/relative";
+    private static final String RELATIVE_URL_3 = "/relative/url";
+
     def strutsControllerConfig = { "250M" } as ControllerConfig;
     String maxUploadSize;
     String maxAttachmentSize;
@@ -203,4 +204,17 @@ class WebUtilsTest {
 		
 		assertEquals(DEFAULT_URL, WebUtils.sanitizeBackLocation("javascript:alert('test')"));
 	}
+
+    @Test
+    void testSanitizeBackLocationWithRelativeUrls() {
+        def config = new SimpleConfig()
+        config.putProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX, "^http://test.*");
+        config.putProperty(KRADConstants.BACK_LOCATION_DEFAULT_URL, DEFAULT_URL);
+        ConfigContext.init(config);
+
+        assertEquals(RELATIVE_URL_1, WebUtils.sanitizeBackLocation(RELATIVE_URL_1));
+        assertEquals(RELATIVE_URL_2, WebUtils.sanitizeBackLocation(RELATIVE_URL_2));
+        assertEquals(RELATIVE_URL_3, WebUtils.sanitizeBackLocation(RELATIVE_URL_3));
+    }
+
 }

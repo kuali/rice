@@ -15,30 +15,6 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -83,6 +59,31 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.MessageMap;
 import org.kuali.rice.krad.util.ObjectUtils;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * General helper methods for handling requests.
@@ -958,17 +959,26 @@ public class WebUtils {
         }
         return base + path;
     }
-    
-    public static String sanitizeBackLocation(String backLocation) {
-        if(StringUtils.isBlank(backLocation)) {
-            return backLocation;
-        }
-        Pattern pattern = Pattern.compile(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX));
-        if(pattern.matcher(backLocation).matches()) {
-            return backLocation;
-        } else {
-            return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_DEFAULT_URL);
-        }
-    }
+
+	public static String sanitizeBackLocation(String backLocation) {
+		if(StringUtils.isBlank(backLocation)) {
+			return backLocation;
+		}
+		// if it's a relative URL then we should be good regardless
+		try {
+			URI uri = new URI(backLocation);
+			if (!uri.isAbsolute()) {
+				return backLocation;
+			}
+		} catch (URISyntaxException e) {
+			// move on to the other checks if it doesn't parse up as a URI for some reason
+		}
+		Pattern pattern = Pattern.compile(ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX));
+		if(pattern.matcher(backLocation).matches()) {
+			return backLocation;
+		} else {
+			return ConfigContext.getCurrentContextConfig().getProperty(KRADConstants.BACK_LOCATION_DEFAULT_URL);
+		}
+	}
 
 }

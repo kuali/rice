@@ -30,7 +30,7 @@ Preface
 -----
 This file is included in each of the three types of distributed archives
 available from the Kuali Rice website (http://rice.kuali.org/download). Its
-contents are generic and do not vary between archives.
+contents are generic and do not vary between archives. 
 
 
 Licensing and Licenses

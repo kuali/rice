@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2015 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.framework.util.spring;
 
+import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.weaving.DefaultContextLoadTimeWeaver;
@@ -35,27 +36,33 @@ import java.lang.instrument.ClassFileTransformer;
  * this would be an application which is using static weaving at build-time but falling back to load-time weaving for
  * development purposes (since the IDE itself can't do the weaving for us when it compiles). This is what the Kuali Rice
  * project does currently. Having this optional weaver allows this configuration to be maintained but allows a Kuali
- * Rice client appliction to rely on the static weaving that is provided without being required to also configure and
+ * Rice client application to rely on the static weaving that is provided without being required to also configure and
  * enable load-time weaving.</p>
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class OptionalContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLoaderAware, DisposableBean {
 
+    private static final String LTW_ENABLED_PROP = "rice.jpa.ltw.enabled";
+
     private DefaultContextLoadTimeWeaver loadTimeWeaver;
     private boolean loadTimeWeaverLoaded;
     private ClassLoader beanClassLoader;
+    private boolean ltwEnabled;
 
     public OptionalContextLoadTimeWeaver() {
         this.loadTimeWeaver = new DefaultContextLoadTimeWeaver();
+        this.ltwEnabled = ConfigContext.getCurrentContextConfig().getBooleanProperty(LTW_ENABLED_PROP, false);
     }
 
     @Override
     public void setBeanClassLoader(ClassLoader beanClassLoader) {
         try {
             this.beanClassLoader = beanClassLoader;
-            this.loadTimeWeaver.setBeanClassLoader(beanClassLoader);
-            loadTimeWeaverLoaded = true;
+            if (ltwEnabled) {
+                this.loadTimeWeaver.setBeanClassLoader(beanClassLoader);
+                loadTimeWeaverLoaded = true;
+            }
         } catch (IllegalStateException e) {
             // this would happen in the default weaver class if no load-time weaver could be determined, in our case we
             // want to make the LTW optional, so we will ignore this and allow the LTW to be null
@@ -93,4 +100,5 @@ public class OptionalContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassL
             this.loadTimeWeaver.destroy();
         }
     }
+
 }

@@ -44,7 +44,8 @@ public class TravelCompany extends DataObjectBase implements MutableInactivatabl
 
     private static final long serialVersionUID = 6853317217732768445L;
 
-    @Id @Column(name = "CO_ID", length = 40)
+    @Id
+    @Column(name = "CO_ID", length = 40)
     @GeneratedValue(generator = "TRVL_CO_ID_S")
     @PortableSequenceGenerator(name = "TRVL_CO_ID_S")
     @Label("Id")

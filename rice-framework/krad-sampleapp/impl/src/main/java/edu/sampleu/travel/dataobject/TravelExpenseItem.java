@@ -59,7 +59,8 @@ public class TravelExpenseItem extends DataObjectBase implements Serializable {
 
     private static final long serialVersionUID = -4092206384418712220L;
 
-    @Id @Column(name = "EXP_ITM_ID", length = 10)
+    @Id
+    @Column(name = "EXP_ITM_ID", length = 10)
     @GeneratedValue(generator = "TRVL_EXP_ITM_ID_S")
     @PortableSequenceGenerator(name = "TRVL_EXP_ITM_ID_S")
     @Label("Id")

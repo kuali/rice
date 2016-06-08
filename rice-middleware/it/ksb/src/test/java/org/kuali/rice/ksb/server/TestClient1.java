@@ -17,13 +17,11 @@ package org.kuali.rice.ksb.server;
 
 import org.apache.log4j.Logger;
 import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.handler.DefaultHandler;
+import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
@@ -91,7 +89,7 @@ public class TestClient1 extends BaseTestServer {
 
         ssl_connector.setPort(configConstants.SERVER_HTTPS_PORT);
         SslContextFactory cf = ssl_connector.getSslContextFactory();
-        cf.setKeyStore(configConstants.KEYSTORE_PATH);
+        cf.setKeyStorePath(configConstants.KEYSTORE_PATH);
         cf.setKeyStorePassword(configConstants.KEYSTORE_PASS);
         cf.setKeyManagerPassword(configConstants.KEYSTORE_PASS);
 

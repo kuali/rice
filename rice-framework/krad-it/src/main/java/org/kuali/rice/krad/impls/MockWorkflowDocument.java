@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.krad.impls;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.joda.time.DateTime;
 import org.kuali.rice.core.api.uif.RemotableAttributeErrorContract;
 import org.kuali.rice.kew.api.WorkflowDocument;
@@ -38,6 +34,10 @@ import org.kuali.rice.kew.api.document.DocumentDetail;
 import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.api.document.node.RouteNodeInstance;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * MockWorkflowDocument is the base class for a MockWorkflowDocument

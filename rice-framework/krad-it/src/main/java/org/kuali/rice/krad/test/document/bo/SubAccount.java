@@ -16,7 +16,6 @@
 package org.kuali.rice.krad.test.document.bo;
 
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.krad.data.provider.annotation.Label;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

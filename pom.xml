@@ -126,7 +126,7 @@
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
-    <eclipselink.version>2.6.3</eclipselink.version>
+    <eclipselink.version>2.6.2</eclipselink.version>
     <ehcache.version>2.6.9</ehcache.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <freemarker.version>2.3.20-patch2</freemarker.version>

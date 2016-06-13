@@ -20,11 +20,6 @@
 <c:set var="roleDocumentDelegationMemberQualifier" value="${DataDictionary.RoleDocumentDelegationMemberQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
 
-<%--<c:if test="${KualiForm.anchor ne '' && KualiForm.anchor ne 'topOfForm'}">
-	<script type="text/javascript">
-		jumpToAnchorName('<c:out value="${KualiForm.anchor}"/>');
-	</script>
-</c:if>	--%>
 <c:if test="${!(empty KualiForm.document.delegationMembers) || canModifyAssignees}">
 <kul:tab tabTitle="Delegations" defaultOpen="true" tabErrorKey="document.delegationMember*,delegationMember.*">
 	<div class="tab-container" align="center">    

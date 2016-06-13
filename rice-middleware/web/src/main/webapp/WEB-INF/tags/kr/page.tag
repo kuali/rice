@@ -175,8 +175,9 @@ jQuery(function(){
 	<c:otherwise>
 		<c:if test="${not empty KualiForm.anchor}">
 			<c:if test="${ConfigProperties.test.mode ne 'true'}">
+				<c:set var="anchorValue"><esapi:encodeForJavaScript>${KualiForm.anchor}</esapi:encodeForJavaScript></c:set>
 				<c:set var="anchorScript"
-					value="jumpToAnchor('${KualiForm.anchor}');" />
+					value="jumpToAnchor('${anchorValue}');" />
 			</c:if>
 		</c:if>
 		<c:if test="${empty anchorScript}">

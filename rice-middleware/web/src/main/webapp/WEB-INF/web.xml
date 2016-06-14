@@ -42,6 +42,11 @@
     <param-value>${bootstrap.spring.psc}</param-value>
   </context-param>
 
+  <context-param>
+    <param-name>Owasp.CsrfGuard.Config</param-name>
+    <param-value>WEB-INF/Owasp.CsrfGuard.properties</param-value>
+  </context-param>
+
   ${monitoring.filter}
 
   <filter>
@@ -101,6 +106,11 @@
   <filter>
     <filter-name>DummyLoginFilter</filter-name>
     <filter-class>org.kuali.rice.krad.web.filter.DummyLoginFilter</filter-class>
+  </filter>
+
+  <filter>
+    <filter-name>CSRFGuard</filter-name>
+    <filter-class>org.owasp.csrfguard.CsrfGuardFilter</filter-class>
   </filter>
 
   ${monitoring.mapping}
@@ -241,6 +251,17 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!--<filter-mapping>-->
+    <!--<filter-name>CSRFGuard</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
+  <!--</filter-mapping>-->
+
+  <filter-mapping>
+    <filter-name>CSRFGuard</filter-name>
+    <servlet-name>action</servlet-name>
+  </filter-mapping>
+
+
   ${monitoring.listener}
 
   <listener>
@@ -265,6 +286,14 @@
 
   <listener>
     <listener-class>org.kuali.rice.core.framework.config.module.WebModuleLoaderListener</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>org.owasp.csrfguard.CsrfGuardServletContextListener</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>org.owasp.csrfguard.CsrfGuardHttpSessionListener</listener-class>
   </listener>
 
   <servlet>

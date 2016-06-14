@@ -65,9 +65,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.HttpMethod;
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * This class handles setup of user session and restoring of action form.
@@ -97,10 +95,6 @@ public class KualiRequestProcessor extends RequestProcessor {
                 LOG.info(new StringBuffer("Started processing request: '").append(request.getRequestURI()).append(
                         "' w/ query string: '").append(request.getQueryString()).append("'"));
             }
-
-			if (!validateCsrf(request, response)) {
-				return;
-			}
 
             try {
                 strutsProcess(request, response);
@@ -787,20 +781,4 @@ public class KualiRequestProcessor extends RequestProcessor {
         return instance;
 	}
 
-	protected boolean validateCsrf(HttpServletRequest request, HttpServletResponse response) {
-		if (HttpMethod.POST.equals(request.getMethod())) {
-			// if it's a POST, then we need to check CSRF token
-			String givenCsrf = request.getParameter(CSRF_PARAM);
-			String actualCsrf = (String)request.getSession().getAttribute(CSRF_ATTRIBUTE);
-			if (!StringUtils.equals(givenCsrf, actualCsrf)) {
-				LOG.error("CSRF check failed, actual value was: " + actualCsrf + ", given value was: " + givenCsrf + ", requested URL was: " + request.getRequestURL());
-				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-				return false;
-			}
-		} else if (HttpMethod.GET.equals(request.getMethod())) {
-			// if it's a GET, then we need to generate a CSRF token
-			request.getSession().setAttribute(CSRF_ATTRIBUTE, UUID.randomUUID().toString());
-		}
-		return true;
-	}
 }

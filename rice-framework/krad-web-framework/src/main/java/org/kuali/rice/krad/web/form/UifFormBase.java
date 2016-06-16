@@ -208,6 +208,8 @@ public class UifFormBase implements ViewModel {
     protected Map<String, Boolean> actionFlags;
     protected Map<String, Boolean> editModes;
 
+    protected String csrfToken;
+
     protected HttpServletRequest request;
 
     private Object dialogDataObject;
@@ -253,6 +255,9 @@ public class UifFormBase implements ViewModel {
         } else {
             setRequestedFormKey(formKeyParam);
         }
+
+        String csrfToken = (String)request.getSession().getAttribute(UifParameters.CSRF_TOKEN);
+        setCsrfToken(csrfToken);
 
         this.request = request;
     }
@@ -1522,4 +1527,13 @@ public class UifFormBase implements ViewModel {
                 this.formKey).append(", requestedFormKey=").append(this.requestedFormKey).append("]");
         return builder.toString();
     }
+
+    public String getCsrfToken() {
+        return csrfToken;
+    }
+
+    public void setCsrfToken(String csrfToken) {
+        this.csrfToken = csrfToken;
+    }
+
 }

@@ -155,6 +155,7 @@ if (textAreaFieldLabel == null) {
 	<html:hidden property="formKey" value="${formKey}"/>
 	<html:hidden property="docFormKey" value="${docFormKey}"/>
 	<html:hidden property="refreshCaller" value="TextAreaRefresh"/>
+	<input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
     <c:if test="${not empty parameters}">
       <c:forEach items="${parameters}" var="mapEntry" >

@@ -32,6 +32,7 @@ public class UifParameters {
     public static final String CLIENT_VIEW_STATE = "clientViewState";
     public static final String CONVERSION_FIELDS = "conversionFields";
     public static final String CONFIG_PROPERTIES = "ConfigProperties";
+    public static final String CSRF_TOKEN = "OWASP_CSRFGUARD_KEY";
     public static final String DATA_OBJECT_CLASS_NAME = "dataObjectClassName";
     public static final String DIALOG_ID = "dialogId";
     public static final String RENDER_CRITERIA_ACTIONS = "renderCriteriaActions";

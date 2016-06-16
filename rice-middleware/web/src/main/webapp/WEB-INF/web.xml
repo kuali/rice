@@ -251,16 +251,15 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!--<filter-mapping>-->
-    <!--<filter-name>CSRFGuard</filter-name>-->
-    <!--<url-pattern>/*</url-pattern>-->
-  <!--</filter-mapping>-->
-
   <filter-mapping>
     <filter-name>CSRFGuard</filter-name>
     <servlet-name>action</servlet-name>
   </filter-mapping>
 
+  <filter-mapping>
+    <filter-name>CSRFGuard</filter-name>
+    <servlet-name>krad</servlet-name>
+  </filter-mapping>
 
   ${monitoring.listener}
 

@@ -21,6 +21,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%--KULRICE-12287: Included the kul taglib to let us use the testBanner tag on this page --%>
 <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
 
@@ -51,6 +52,8 @@
 
 
 <html-el:form action="/JavaSecurityManagement.do">
+
+    <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
 <table width="100%" border=0 cellspacing=0 cellpadding=0>
   <tr>

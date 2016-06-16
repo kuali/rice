@@ -42,6 +42,8 @@
 
 		<html-el:form action="Feedback.do">
 
+			<input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
+
 			<table width="100%" border=0 cellspacing=0 cellpadding=0>
 				<tr>
 					<td width="20" height="30">

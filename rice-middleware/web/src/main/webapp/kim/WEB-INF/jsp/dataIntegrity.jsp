@@ -35,6 +35,7 @@
     </div>
     <html-el:form action="dataIntegrity">
         <html-el:hidden property="methodToCall" value=""/>
+        <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
         <div style="margin-left:20px">
             <p>Use the buttons below to run data integrity checks and repair on KIM delegation data.</p>
             <br/>

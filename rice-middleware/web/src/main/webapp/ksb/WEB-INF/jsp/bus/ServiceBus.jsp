@@ -21,6 +21,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
 <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
 
 <html-el:html>
@@ -50,6 +51,7 @@
 
 <html-el:form action="/ServiceBus.do">
 <html-el:hidden property="methodToCall" />
+	<input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 
   <table width="100%" border=0 cellspacing=0 cellpadding=0>
   <tr>

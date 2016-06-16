@@ -425,7 +425,7 @@ jQuery(function(){
     <html:hidden property="docNum" value="${KualiForm.document.documentNumber}" />
 </c:if>
 <kul:editablePropertiesGuid />
-
+	<input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
 </html:form>
 <div id="formComplete"></div>
 </div>

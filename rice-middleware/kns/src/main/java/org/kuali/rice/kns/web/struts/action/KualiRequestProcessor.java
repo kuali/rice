@@ -77,8 +77,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 	
 	private static final String MDC_DOC_ID = "docId";
 	private static final String PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID_PARAMETER_NAME = "actionEditablePropertiesGuid";
-	private static final String CSRF_PARAM = "_csrf";
-	private static final String CSRF_ATTRIBUTE = "csrfToken";
 
 	private static Logger LOG = Logger.getLogger(KualiRequestProcessor.class);
 

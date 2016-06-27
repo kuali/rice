@@ -24,19 +24,23 @@ String textAreaFieldLabel = request.getParameter(KualiAction.TEXT_AREA_FIELD_LAB
 if (textAreaFieldLabel == null) {
     textAreaFieldLabel = (String) request.getAttribute(KualiAction.TEXT_AREA_FIELD_LABEL);
 }
+pageContext.setAttribute(KualiAction.TEXT_AREA_FIELD_LABEL, textAreaFieldLabel);
 %>
 <c:if test="${empty textAreaFieldName}">
 	<c:set var="textAreaFieldName"
 		value="<%=request.getParameter(KualiAction.TEXT_AREA_FIELD_NAME)%>" />
 </c:if>
 
-<head>
+<c:set var="textAreaFieldNameJS"><esapi:encodeForJavaScript>${textAreaFieldName}</esapi:encodeForJavaScript></c:set>
+<c:set var="textAreaFieldNameAttribute"><esapi:encodeForHTMLAttribute>${textAreaFieldName}</esapi:encodeForHTMLAttribute></c:set>
+
+	<head>
 <link href="${pageContext.request.contextPath}/kr/css/kuali.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="${pageContext.request.contextPath}/kr/scripts/core.js"></script>
 </head>
-<body onload="setTextArea('${textAreaFieldName}')">
+<body onload="setTextArea('${textAreaFieldNameJS}')">
 <div class="headerarea" id="headerarea-small">
-<h1><%=textAreaFieldLabel%></h1>
+<h1><c:out value="${textAreaFieldLabel}"/></h1>
 </div>
 
 <c:set var="parameters"	value="<%=request.getParameterMap()%>" />
@@ -108,7 +112,7 @@ if (textAreaFieldLabel == null) {
 			    <%-- cannot use struts form tags here b/c some id values will not be valid properties --%>
 			    <c:choose>
 			    	<c:when test="${textAreaReadOnly == 'true'}" >
-			            <textarea id="${textAreaFieldName}" name="${textAreaFieldName}"
+			            <textarea id="${textAreaFieldNameAttribute}" name="${textAreaFieldNameAttribute}"
                         	rows="${attributeEntry.control.rows}"
                             cols="${attributeEntry.control.cols}"
                             readonly="readonly"
@@ -116,7 +120,7 @@ if (textAreaFieldLabel == null) {
 			    	</c:when>
 			    	<c:otherwise>
 			    		${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
-			            <textarea id="${textAreaFieldName}" name="${textAreaFieldName}"
+			            <textarea id="${textAreaFieldNameAttribute}" name="${textAreaFieldNameAttribute}"
                         	rows="${attributeEntry.control.rows}"
                             cols="${attributeEntry.control.cols}"
                             maxlength="${textAreaMaxLength}"
@@ -141,7 +145,7 @@ if (textAreaFieldLabel == null) {
 					<c:otherwise>
 						<html:image
 							property="methodToCall.postTextAreaToParent.anchor${textAreaFieldAnchor}"
-							onclick="javascript:postValueToParentWindow('${textAreaFieldName}');return false"
+							onclick="javascript:postValueToParentWindow('${textAreaFieldNameJS}');return false"
 							src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_continue.gif"
 							styleClass="globalbuttons" title="return" alt="return" />
 					</c:otherwise>

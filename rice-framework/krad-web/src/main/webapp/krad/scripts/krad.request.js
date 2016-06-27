@@ -396,9 +396,9 @@ KradRequest.prototype = {
         }
 
         // always add the CSRF token if it's there
-        var csrfField = jQuery("[name='OWASP_CSRFGUARD']:input");
+        var csrfField = jQuery("[name='csrfToken']:input");
         if (csrfField.length) {
-            jQuery.extend(data, {OWASP_CSRFGUARD: csrfField.val()});
+            jQuery.extend(data, {csrfToken: csrfField.val()});
         }
 
         var updateParent;

@@ -17,6 +17,6 @@
 -->
 <#macro csrfToken>
 
-  <input type="hidden" name="OWASP_CSRFGUARD" value="${KualiForm.csrfToken!}"/>
+  <input type="hidden" name="csrfToken" value="${KualiForm.csrfToken!}"/>
 
 </#macro>

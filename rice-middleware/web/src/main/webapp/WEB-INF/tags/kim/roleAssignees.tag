@@ -325,7 +325,7 @@
       <table cellpadding="0" cellspacing="0" summary="">
         <tr>
           <br />
-          <b>No unmodified members have a member name starting with the given search criteria.  Criteria: ${memberSearchValue}</b>
+          <b>No unmodified members have a member name starting with the given search criteria.  Criteria: <c:out value="${memberSearchValue}"/></b>
           <br />
         </tr>
       </table>
@@ -335,7 +335,7 @@
     <c:if test="${(!empty memberSearchValue) && (!empty KualiForm.document.searchResultMembers)}">
     <table cellpadding="0" cellspacing="0" summary="">
       <tr>
-        <td colspan="100%" class="tab-subhead">Members who have a name starting with ${memberSearchValue}:</td>
+        <td colspan="100%" class="tab-subhead">Members who have a name starting with <c:out value="${memberSearchValue}"/>:</td>
       </tr>
       <tr>
         <th>&nbsp;<input type="hidden" id="sortMethodToCallPlaceholder" name="sortMethodToCallPlaceholder" value="placeholder"/></th>
@@ -465,7 +465,7 @@
       <table cellpadding="0" cellspacing="0" summary="">
         <tr>
           <br />
-          <b>More than 200 members matched the given search criteria. The first 200 members are shown above.  Criteria: ${memberSearchValue}</b>
+          <b>More than 200 members matched the given search criteria. The first 200 members are shown above.  Criteria: <c:out value="${memberSearchValue}"/></b>
           <br />
         </tr>
       </table>

@@ -29,6 +29,7 @@ import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
+import org.kuali.rice.krad.util.CsrfValidator;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.springframework.web.multipart.MultipartFile;
@@ -256,7 +257,7 @@ public class UifFormBase implements ViewModel {
             setRequestedFormKey(formKeyParam);
         }
 
-        String csrfToken = (String)request.getSession().getAttribute(UifParameters.CSRF_TOKEN);
+        String csrfToken = CsrfValidator.getSessionToken(request);
         setCsrfToken(csrfToken);
 
         this.request = request;

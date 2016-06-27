@@ -39,7 +39,7 @@
     <c:when test="${fn:trim(ConfigProperties.environment) == fn:trim(ConfigProperties.production.environment.code)}" >
       <html:form action="/logout.do" method="post" style="margin:0; display:inline">
         <input name="imageField" type="submit" value="Logout" class="go" title="Click to logout.">
-        <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
+        <kul:csrf/>
       </html:form>
     </c:when>
     <c:otherwise> 
@@ -49,13 +49,13 @@
           <input name="backdoorId" type="text" class="searchbox" size="10" title="Enter your backdoor ID here.">
           <input name="imageField" type="submit" value="Login" class="go" title="Click to login.">
           <input name="methodToCall" type="hidden" value="login" />
-          <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
+          <kul:csrf/>
         </html:form>
       </c:if>
       <html:form action="/backdoorlogin.do" method="post" style="margin:0; display:inline">
         <input name="imageField" type="submit" value="Logout" class="go" title="Click to logout.">
         <input name="methodToCall" type="hidden" value="logout" />
-        <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
+        <kul:csrf/>
       </html:form>
     </c:otherwise> 
   </c:choose>

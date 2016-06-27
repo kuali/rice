@@ -21,8 +21,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
-<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
-
 
 <html>
   <head>
@@ -35,7 +33,7 @@
   <body>
 
     <html-el:form action="/MessageQueue.do">
-		<input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
+		<kul:csrf />
     <html-el:hidden name="MessageQueueForm" property="methodToCall" />
     <html-el:hidden name="MessageQueueForm" property="showEdit" />
     <html-el:hidden name="MessageQueueForm" property="messageId" />

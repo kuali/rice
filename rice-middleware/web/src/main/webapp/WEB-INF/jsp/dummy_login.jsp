@@ -89,7 +89,7 @@
 
 <form name="loginForm" action="" method="post">
 
-    <input type="hidden" name="<csrf:tokenname/>" value="<csrf:tokenvalue/>"/>
+    <kul:csrf />
 
 <div class="body">
         <table id="login" cellspacing="0" cellpadding="0" align="center">

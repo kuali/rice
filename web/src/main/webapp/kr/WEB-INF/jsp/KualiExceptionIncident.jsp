@@ -124,7 +124,7 @@
 					</td>
 					<td align="left" valign="top">
 						<div align="left">
-							<font color="green">${documentId}</font>
+							<font color="green"><c:out value="${documentId}"/></font>
 						</div>
 					</td>
 				</tr>

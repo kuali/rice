@@ -19,6 +19,7 @@
 
 <html-el:form action="/WorkflowDocHandler.do" >
   <html-el:hidden property="lookupableImplServiceName" value="${ActionForm.lookupableImplServiceName}" />
+	<kul:csrf />
   <table align="center" width="100%" border="0" cellpadding="0" cellspacing="0" class="bord-r-t">
     <c:if test="${(! ActionForm.superUserSearch) && (ActionForm.command != 'displayActionListInlineView') && (ActionForm.workflowDocument.approvalRequested || ActionForm.workflowDocument.completionRequested ||
                  ActionForm.showBlanketApproveButton || ActionForm.workflowDocument.FYIRequested || ActionForm.workflowDocument.acknowledgeRequested)}">

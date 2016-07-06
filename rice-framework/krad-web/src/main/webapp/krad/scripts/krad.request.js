@@ -395,6 +395,12 @@ KradRequest.prototype = {
             actionParent = jQuery(this.$action).parents("[data-omit_group='true']");
         }
 
+        // always add the CSRF token if it's there
+        var csrfField = jQuery("[name='csrfToken']:input");
+        if (csrfField.length) {
+            jQuery.extend(data, {csrfToken: csrfField.val()});
+        }
+
         var updateParent;
         if (request.refreshId) {
             var updateComponent = jQuery('#' + request.refreshId);

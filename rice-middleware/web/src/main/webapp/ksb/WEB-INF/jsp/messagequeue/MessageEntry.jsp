@@ -34,6 +34,7 @@
   <body>
 
     <html-el:form action="/MessageQueue.do">
+		<kul:csrf />
     <html-el:hidden name="MessageQueueForm" property="methodToCall" />
     <html-el:hidden name="MessageQueueForm" property="showEdit" />
     <html-el:hidden name="MessageQueueForm" property="messageId" />

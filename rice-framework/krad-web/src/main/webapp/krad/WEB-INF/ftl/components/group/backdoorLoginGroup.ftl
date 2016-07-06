@@ -30,6 +30,8 @@
             <#dyncall templateName templateParms/>
         </#if>
 
+        <@krad.csrfToken/>
+
     </form>
 
 </#macro>

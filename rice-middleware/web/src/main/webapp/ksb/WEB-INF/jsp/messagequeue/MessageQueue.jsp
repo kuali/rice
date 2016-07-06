@@ -59,6 +59,7 @@
 
 
 <html-el:form action="/MessageQueue.do">
+	<kul:csrf />
 <html-el:hidden property="methodToCall" />
 
   <table width="100%" border=0 cellspacing=0 cellpadding=0>

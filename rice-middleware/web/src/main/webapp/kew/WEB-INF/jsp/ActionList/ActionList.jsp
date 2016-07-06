@@ -184,6 +184,7 @@
 	</c:if>
 	<html-el:form action="ActionList">
 		<html-el:hidden property="methodToCall" value="" />
+		<kul:csrf />
 		<table width="100%">
 			<tr>
 			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"

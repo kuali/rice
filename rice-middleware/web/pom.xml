@@ -96,6 +96,10 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+       <groupId>org.owasp.esapi</groupId>
+       <artifactId>esapi</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.kuali.rice</groupId>
       <version>${project.version}</version>
       <artifactId>rice-kim-ldap</artifactId>

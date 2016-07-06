@@ -118,6 +118,7 @@
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
     <ehcache.version>2.5.0</ehcache.version>
+    <esapi.version>2.1.0.1</esapi.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
     <freemarker.version>2.3.20-patch2</freemarker.version>
     <plexus-utils.version>3.0.10</plexus-utils.version>
@@ -2258,6 +2259,38 @@
           <groupId>org.apache.velocity</groupId>
           <artifactId>velocity</artifactId>
           <version>${velocity.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.owasp.esapi</groupId>
+        <artifactId>esapi</artifactId>
+        <version>${esapi.version}</version>
+        <!-- exclude as much as we can from esapi transitive dependencies so we don't get a bunch of junk -->
+        <exclusions>
+          <exclusion>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xom</groupId>
+            <artifactId>xom</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.beanshell</groupId>
+            <artifactId>bsh-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.owasp.antisamy</groupId>
+            <artifactId>antisamy</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-css</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
     </dependencies>
   </dependencyManagement>

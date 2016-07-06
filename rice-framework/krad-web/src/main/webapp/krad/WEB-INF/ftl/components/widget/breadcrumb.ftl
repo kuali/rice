@@ -26,7 +26,7 @@
     <#if element.render && element.label?has_content && element.label != "&nbsp;">
     <li>
         <#if element.renderAsLink>
-            <a ${id} data-role="breadcrumb" href="${element.url.href}" ${krad.attrBuild(element)}>${element.label}</a>
+            <a ${id} data-role="breadcrumb" href="${element.url.href?html}" ${krad.attrBuild(element)}>${element.label}</a>
         <#else>
             <span data-role="breadcrumb" ${id} ${krad.attrBuild(element)}>${element.label}</span>
         </#if>

@@ -125,7 +125,7 @@ if (attributeEntry == null) {
      <c:otherwise>
         <c:choose>
 		<c:when test="${displayMask}" >
-			${displayMaskValue}
+            <c:out value="${displayMaskValue}"/>
 		</c:when>
          <c:otherwise>
          <logic:empty name="KualiForm" property="${property}">
@@ -217,11 +217,11 @@ if (attributeEntry == null) {
 			 <c:if test="${empty readOnlyAlternateDisplay}">
 		       <bean:write name="KualiForm" property="${property}"/>
              </c:if>
-             ${readOnlyAlternateDisplay}
+             <c:out value="${readOnlyAlternateDisplay}"/>
 		    </c:when>
 			<c:otherwise>
               <html:hidden write="${empty readOnlyAlternateDisplay ? 'true' : 'false'}" property="${property}" style="${textStyle}" />
-              ${readOnlyAlternateDisplay}
+             <c:out value="${readOnlyAlternateDisplay}"/>
             </c:otherwise>
 		  </c:choose>
          </c:if>

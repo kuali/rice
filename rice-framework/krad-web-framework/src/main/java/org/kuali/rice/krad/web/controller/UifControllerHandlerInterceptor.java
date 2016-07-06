@@ -19,13 +19,14 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
-import org.kuali.rice.krad.web.form.HistoryManager;
-import org.kuali.rice.krad.web.form.UifFormManager;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
 import org.kuali.rice.krad.uif.view.View;
+import org.kuali.rice.krad.util.CsrfValidator;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
+import org.kuali.rice.krad.web.form.HistoryManager;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.kuali.rice.krad.web.form.UifFormManager;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -60,6 +61,10 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
         final UserSession session = KRADUtils.getUserSessionFromRequest(request);
+
+        if (!CsrfValidator.validateCsrf(request, response)) {
+            return false;
+        }
 
         GlobalVariables.setUserSession(session);
         GlobalVariables.clear();

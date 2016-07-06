@@ -2599,28 +2599,28 @@
         <!-- exclude as much as we can from esapi transitive dependencies so we don't get a bunch of junk -->
         <exclusions>
           <exclusion>
-            <artifactId>commons-logging</artifactId>
             <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
           </exclusion>
           <exclusion>
-            <artifactId>commons-beanutils</artifactId>
-            <groupId>commons-beanutils-core</groupId>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils-core</artifactId>
           </exclusion>
           <exclusion>
-            <artifactId>xom</artifactId>
             <groupId>xom</groupId>
+            <artifactId>xom</artifactId>
           </exclusion>
           <exclusion>
-            <artifactId>org.beanshell</artifactId>
-            <groupId>bsh-core</groupId>
+            <groupId>org.beanshell</groupId>
+            <artifactId>bsh-core</artifactId>
           </exclusion>
           <exclusion>
-            <artifactId>org.owasp.antisamy</artifactId>
-            <groupId>antisamy</groupId>
+            <groupId>org.owasp.antisamy</groupId>
+            <artifactId>antisamy</artifactId>
           </exclusion>
           <exclusion>
-            <artifactId>org.apache.xmlgraphics</artifactId>
-            <groupId>batik-css</groupId>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-css</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

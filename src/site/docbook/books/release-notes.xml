@@ -27,7 +27,21 @@ limitations under the License.
     <para>Welcome to Rice ${project.version}! </para>
     <section>
       <title>Release Highlights</title>
-      <para>This release consists of a security fix as well as a number of other bug fixes. The packaged standalone server for this version of Kuali Rice also includes a JAR file for the core-auth-servlet-filter which allows for integration with the CORE authentication service. Additionally, work was done on this release of Kuali Rice to allow for it to be compiled, packaged, and released using a Java 8 compiler. Previous versions supported running on Java 8 but were still being compiled with a Java 7 JDK. Java 7 is still supported in this version of Rice. There are no database changes and this release should be a drop-in replacement.</para>
+      <para>This release consists of a number of security fixes to both the KNS as well as KRAD, including the following:</para>
+      <para><itemizedlist>
+        <listitem>
+          <para>Cross-Site Request Forgery (CSRF) protection added to the KNS</para>
+        </listitem>
+        <listitem>
+          <para>Cross-Site Request Forgery (CSRF) protection added to the KRAD platform</para>
+        </listitem>
+        <listitem>
+          <para>Fixed a number of XSS vulnerabilities in the KNS and KRAD</para>
+        </listitem>
+        </itemizedlist>
+      </para>
+      <para>Depending on your use of the KNS and/or KRAD this may be a drop-in replacement. However see below for
+      information on potential impact related to the CSRF implementation.</para>
     </section>
     <section>
       <title>Download</title>
@@ -56,112 +70,34 @@ limitations under the License.
         Please indicate that you are using the ${project.version} version of Rice.</para>
     </section>
   </section>
-  <section xml:id="items_addressed_in_rice">
-    <title>Items Addressed in Rice ${project.version}</title>
 
-
-    <section>
-      <title>Bug Fix</title>
-      <para><itemizedlist>        
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14279'>KULRICE-14279</link>] - Fix XSS vulnerability in returnLocation parameter</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14035'>KULRICE-14035</link>] - Issues with document operation screen when trying to open a document that is in EXCEPTION and while deleting branch states</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14280'>KULRICE-14280</link>] - Problem with JPA and wanting to do left outer join on entity bo</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14281'>KULRICE-14281</link>] - Can&#39;t inactivate a role delegation on a person - optimistic lock exception</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14283'>KULRICE-14283</link>] - routing and identity management document hierarchy broken</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14284'>KULRICE-14284</link>] - Fix Date (without time) formatting in custom document search result columns</para>
-        </listitem>
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14285'>KULRICE-14285</link>] - The Active From Date is not retained when adding a role to a Person.</para>
-        </listitem>
-        <listitem>
-          <para>Fixed issues in UIDocumentService that were causing member-level role responsibility actions in KIM to not save.</para>
-        </listitem>
-        <listitem>
-          <para>Fixed NPE from calling DocumentRouteHeaderValue.getRoutedByDisplayName where there is no "routed by principal id".</para>
-        </listitem>
-        <listitem>
-          <para>Fixed an issue where the nested role qualifiers were being converted by the role type of the nested role and not the owning role.</para>
-        </listitem>
-        <listitem>
-          <para>Fixed various issues that were preventing Rice and it's associated documentation from being packaged and deployed to Maven Central and site.kuali.org using JDK 1.8</para>
-        </listitem>
-        <listitem>
-          <para>Updated EclipseLinkJpaMetadataProviderImpl, JpaMetadataProviderTest,  so that it would properly in the face of different collection order under JDK 1.8</para>
-        </listitem>
-        <listitem>
-          <para>Added cglib-nodep dependency to KNS module so that it would build properly under JDK 1.8</para>
-        </listitem>
-      </itemizedlist></para>
-    </section>
-
-    <section>
-      <title>New Feature</title>
-      <para><itemizedlist>
-        <listitem>
-          <para>Added dependency to the "Core" authentication filter (co.kuali:core-filter) in the POM file for the rice-web module. This allows for applications to use Kuali Core for authentication if desired.</para>
-        </listitem>
-      </itemizedlist></para>
-    </section>
-
-    <section>
-      <title>Improvement</title>
-      <para><itemizedlist>
-        <listitem>
-          <para>Upgraded from 1.0.4-patch8 to 1.0.4-patch9 for OJB</para>
-        </listitem>
-        <listitem>
-          <para>JDK 1.8 fix - Improved javadoc maven plugin so that it could build Kuali Rice javadocs on JDK 1.8.</para>
-        </listitem>
-        <listitem>
-          <para>JDK 1.8 fix - Upgraded from ASM 3.3.1 to 5.0.3, this included ensuring the old version of asm was excluded from some dependencies (such as cxf-rt-frontend-jaxws in the KSB client impl module)</para>
-        </listitem>
-        <listitem>
-          <para>JDK 1.8 fix - Upgraded from Eclipselink 2.5.2 to 2.6.3 due to the following bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=429992</para>
-        </listitem>
-        <listitem>
-          <para>JDK 1.8 fix - Updated maven-compiler-plugin configuration to better specify compiling on JDK 1.8 but targeting 1.7 for source and binary compatibility</para>
-        </listitem>
-        <listitem>
-          <para>JDK 1.8 fix - Switched from au.com.alderaan:eclipselink-staticweave-maven-plugin to de.empulse.eclipselink:staticweave-maven-plugin for better static bytecode weaving with JDK 1.8</para>
-        </listitem>
-      </itemizedlist></para>
-    </section>
-
-
-  </section>
-  
   <section xml:id="impacting_changes">
     <title>Impacting Changes</title>
     <section>
-      <title>Fix XSS vulnerability in returnLocation parameter</title>
-      <para>This fixes a security issue which has two attack vectors:</para>
-      <para>
-        <itemizedlist>
-          <listitem>Embedded JavaScript inside of the returnLocation parameter</listitem>
-          <listitem>Using the returnLocation parameter to return the user to an unexpected domain</listitem>
-        </itemizedlist>
-      </para>
-      <para>The fix to both of these issues involves a new whitelist approach to the values allowed in the returnLocation parameter similar to the whitelist used for pages displayed in the portal.  There is a new configuration property named <code>rice.backLocation.allowed.regex</code> which controls the URLs which are allowed to be present in the returnLocation parameter.  It defaults to a regular expression which would allow URLs which start with the following configuration properties:</para>
-      <para>
-        <itemizedlist>
-          <listitem><code>application.url</code> (e.g. my.edu/kfs or my.edu/rice on a standalone Rice server)</listitem>
-          <listitem><code>rice.server.url</code> (e.g. my.edu/rice)</listitem>
-          <listitem><code>appserver.url</code> (e.g. my.edu)</listitem>
-        </itemizedlist>
-      </para>
-      <para>When bringing in this fix you should also ensure the three values above are set appropriately. The third path is intended to be a general "catch all" which would allow any return locations on the same domain as your application. The value for this regular expression may need to be modified if you are using multiple domains for different applications (e.g. rice.my.edu, kfs.my.edu, etc.), especially on the Rice standalone server since it will need to be configured to allow the user to return to any application which sends the user to the Rice server (e.g. for document search, action list, person lookup, etc.). If the returnLocation does not match one of these paths it will return the user to a configurable location with the <code>rice.backLocation.default.url</code> property which defaults to the <code>application.url</code>. This value should be customized to return the user to a reasonable location in the case that they attempt to follow an invalid return location.</para>
-      <para>Bringing in this patch does not guarantee your codebase is immediately secure from this attack. If the <code>getBackLocation</code> method on the <code>KualiForm</code> or <code>LookupableHelperService</code> classes has been overridden in your application you will need to sanitize the return location by invoking the <code>WebUtils#sanitizeBackLocation</code> method in order for it to be secure.</para>
+      <title>CSRF Protection for KNS Applications</title>
+      <para>This release implements CSRF protection within the KNS. For most standard uses of the framework, no action
+      will be required since the fix for this issue has been incorporated into the KNS's <code>page.tag</code> library.
+      However, if you are using the KNS with custom JSP pages or HTML and have custom <code>&lt;form&gt;</code> elements
+      then you will need to ensure that you are submitting a hidden form input field that contains the CSRF token.</para>
+      <para>The CSRF token is stored in the session in an attribute called <code>csrfSessionToken</code>. There is a
+      new TAG library in the set of KNS tags called "csrf" which will insert the hidden form field and can be used as
+      follows:</para>
+      <programlisting>&lt;kul:csrf/&gt;</programlisting>
+      <para>This simply resolves to the following HTML:</para>
+      <programlisting>&lt;input type="hidden" name="csrfToken" value="${sessionScope.csrfSessionToken}"/&gt;</programlisting>
+    </section>
+    <section>
+      <title>CSRF Protection for KRAD Applications</title>
+      <para>This release implements CSRF protection within KRAD. For most standard uses of the framework, no action
+        will be required since the fix for this issue has been incorporated into KRAD's standard <code>form.ftl</code>
+        freemarker template. However, if you are using KRAD with custom freemarker pages and creating forms without
+        using the supplied KRAD UIF form component, then you will need to ensure that you are submitting a hidden form
+        input field that contains the CSRF token.</para>
+      <para>In order to do this, a custom freemarker template has been implemented that will insert the CSRF form field
+        for you. It can be used as follows:</para>
+      <programlisting>&lt;@krad.csrfToken/&gt;</programlisting>
+      <para>This simply resolves to the following:</para>
+      <programlisting>&lt;input type="hidden" name="csrfToken" value="${KualiForm.csrfToken!}"/&gt;</programlisting>
     </section>
   </section>
 </article>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2013 The Kuali Foundation
+Copyright 2005-2014 The Kuali Foundation
 
-    Licensed under the Educational Community License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Educational Community License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-    http://www.opensource.org/licenses/ecl2.php
+http://www.opensource.org/licenses/ecl2.php
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
 <article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
@@ -27,7 +27,21 @@
         <para>Welcome to Rice ${project.version}! </para>
         <section>
             <title>Release Highlights</title>
-            <para>This release consists of a single security fix. There are no database changes and it should be a drop-in replacement.</para>
+            <para>This release consists of a number of security fixes to both the KNS as well as KRAD, including the following:</para>
+            <para><itemizedlist>
+                <listitem>
+                    <para>Cross-Site Request Forgery (CSRF) protection added to the KNS</para>
+                </listitem>
+                <listitem>
+                    <para>Cross-Site Request Forgery (CSRF) protection added to the KRAD platform</para>
+                </listitem>
+                <listitem>
+                    <para>Fixed a number of XSS vulnerabilities in the KNS and KRAD</para>
+                </listitem>
+            </itemizedlist>
+            </para>
+            <para>Depending on your use of the KNS and/or KRAD this may be a drop-in replacement. However see below for
+                information on potential impact related to the CSRF implementation.</para>
         </section>
         <section>
             <title>Download</title>
@@ -37,14 +51,14 @@
                 more details on each of these distributions.</para>
             <para>Applications can also consume Rice from the maven site at <link
                     xlink:href="http://search.maven.org/#search|ga|1|org.kuali.rice"
-                    >http://search.maven.org/#search|ga|1|org.kuali.rice</link>.</para>
+            >http://search.maven.org/#search|ga|1|org.kuali.rice</link>.</para>
         </section>
         <section>
             <title>Documentation</title>
             <para>API Documentation can be found at <link xlink:show="new" xlink:href="http://site.kuali.org/rice/${project.version}/apidocs/index.html">http://site.kuali.org/rice/${project.version}/apidocs/index.html</link></para>
             <para>Formal documentation can be found at <link xlink:show="new"
-                    xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/index.html"
-                    >http://site.kuali.org/rice/${project.version}/reference/html/index.html</link>.
+                                                             xlink:href="http://site.kuali.org/rice/${project.version}/reference/html/index.html"
+            >http://site.kuali.org/rice/${project.version}/reference/html/index.html</link>.
                 This documentation is still in the process of review and update  which will continue
                 through subsequent releases, so please follow the notes in each document to report
                 any outdated information.</para>
@@ -56,41 +70,34 @@
                 Please indicate that you are using the ${project.version} version of Rice.</para>
         </section>
     </section>
-    <section xml:id="items_addressed_in_rice">
-    <title>Items Addressed in Rice ${project.version}</title>
 
-
-    <section>
-      <title>Bug Fix</title>
-      <para><itemizedlist>        
-        <listitem>
-          <para>[<link xlink:href='https://jira.kuali.org/browse/KULRICE-14279'>KULRICE-14279</link>] - Fix XSS vulnerability in returnLocation parameter</para>
-        </listitem>
-      </itemizedlist></para>
+    <section xml:id="impacting_changes">
+        <title>Impacting Changes</title>
+        <section>
+            <title>CSRF Protection for KNS Applications</title>
+            <para>This release implements CSRF protection within the KNS. For most standard uses of the framework, no action
+                will be required since the fix for this issue has been incorporated into the KNS's <code>page.tag</code> library.
+                However, if you are using the KNS with custom JSP pages or HTML and have custom <code>&lt;form&gt;</code> elements
+                then you will need to ensure that you are submitting a hidden form input field that contains the CSRF token.</para>
+            <para>The CSRF token is stored in the session in an attribute called <code>csrfSessionToken</code>. There is a
+                new TAG library in the set of KNS tags called "csrf" which will insert the hidden form field and can be used as
+                follows:</para>
+            <programlisting>&lt;kul:csrf/&gt;</programlisting>
+            <para>This simply resolves to the following HTML:</para>
+            <programlisting>&lt;input type="hidden" name="csrfToken" value="${sessionScope.csrfSessionToken}"/&gt;</programlisting>
+        </section>
+        <section>
+            <title>CSRF Protection for KRAD Applications</title>
+            <para>This release implements CSRF protection within KRAD. For most standard uses of the framework, no action
+                will be required since the fix for this issue has been incorporated into KRAD's standard <code>form.ftl</code>
+                freemarker template. However, if you are using KRAD with custom freemarker pages and creating forms without
+                using the supplied KRAD UIF form component, then you will need to ensure that you are submitting a hidden form
+                input field that contains the CSRF token.</para>
+            <para>In order to do this, a custom freemarker template has been implemented that will insert the CSRF form field
+                for you. It can be used as follows:</para>
+            <programlisting>&lt;@krad.csrfToken/&gt;</programlisting>
+            <para>This simply resolves to the following:</para>
+            <programlisting>&lt;input type="hidden" name="csrfToken" value="${KualiForm.csrfToken!}"/&gt;</programlisting>
+        </section>
     </section>
-  </section>
-  
-  <section xml:id="impacting_changes">
-    <title>Impacting Changes</title>
-    <section>
-      <title>Fix XSS vulnerability in returnLocation parameter</title>
-      <para>This fixes a security issue which has two attack vectors:</para>
-      <para>
-        <itemizedlist>
-          <listitem>Embedded JavaScript inside of the returnLocation parameter</listitem>
-          <listitem>Using the returnLocation parameter to return the user to an unexpected domain</listitem>
-        </itemizedlist>
-      </para>
-      <para>The fix to both of these issues involves a new whitelist approach to the values allowed in the returnLocation parameter similar to the whitelist used for pages displayed in the portal.  There is a new configuration property named <code>rice.backLocation.allowed.regex</code> which controls the URLs which are allowed to be present in the returnLocation parameter.  It defaults to a regular expression which would allow URLs which start with the following configuration properties:</para>
-      <para>
-        <itemizedlist>
-          <listitem><code>application.url</code> (e.g. my.edu/kfs or my.edu/rice on a standalone Rice server)</listitem>
-          <listitem><code>rice.server.url</code> (e.g. my.edu/rice)</listitem>
-          <listitem><code>appserver.url</code> (e.g. my.edu)</listitem>
-        </itemizedlist>
-      </para>
-      <para>When bringing in this fix you should also ensure the three values above are set appropriately. The third path is intended to be a general "catch all" which would allow any return locations on the same domain as your application. The value for this regular expression may need to be modified if you are using multiple domains for different applications (e.g. rice.my.edu, kfs.my.edu, etc.), especially on the Rice standalone server since it will need to be configured to allow the user to return to any application which sends the user to the Rice server (e.g. for document search, action list, person lookup, etc.). If the returnLocation does not match one of these paths it will return the user to a configurable location with the <code>rice.backLocation.default.url</code> property which defaults to the <code>application.url</code>. This value should be customized to return the user to a reasonable location in the case that they attempt to follow an invalid return location.</para>
-      <para>Bringing in this patch does not guarantee your codebase is immediately secure from this attack. If the <code>getBackLocation</code> method on the <code>KualiForm</code> or <code>LookupableHelperService</code> classes has been overridden in your application you will need to sanitize the return location by invoking the <code>WebUtils#sanitizeBackLocation</code> method in order for it to be secure.</para>
-    </section>
-  </section>
 </article>

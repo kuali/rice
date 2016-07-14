@@ -384,6 +384,16 @@
     <load-on-startup>5</load-on-startup>
   </servlet>
 
+  <servlet>
+    <servlet-name>health</servlet-name>
+    <servlet-class>org.kuali.rice.web.health.HealthServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>health</servlet-name>
+    <url-pattern>/health</url-pattern>
+  </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>remoting</servlet-name>
     <url-pattern>/remoting/*</url-pattern>

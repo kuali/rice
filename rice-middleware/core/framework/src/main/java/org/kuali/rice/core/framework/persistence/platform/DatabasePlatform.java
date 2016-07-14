@@ -128,6 +128,8 @@ public interface DatabasePlatform {
     
     // Methods Imported from KualiDBPlatform
 
-    public String applyLimitSql(Integer limit);
+    String applyLimitSql(Integer limit);
+
+    String getValidationQuery();
 
 }

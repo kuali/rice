@@ -128,5 +128,11 @@ public class MySQLDatabasePlatform extends ANSISqlDatabasePlatform {
      */
     public String escapeString(String sqlString) {
     	return (sqlString != null) ? BSLASH_PAT.matcher(APOS_PAT.matcher(sqlString).replaceAll("''")).replaceAll(Matcher.quoteReplacement("\\\\")) : null;
-    } 
+    }
+
+    @Override
+    public String getValidationQuery() {
+        return "select 1";
+    }
+
 }

@@ -78,4 +78,10 @@ public class DerbyDatabasePlatform extends ANSISqlDatabasePlatform {
         // derby has no such concept
         return null;
     }
+
+    @Override
+    public String getValidationQuery() {
+        return "values 1";
+    }
+
 }

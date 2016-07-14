@@ -27,6 +27,7 @@
       <list>
         <ref bean="KimAttributes-methodToCall"/>
         <ref bean="KimAttributes-beanName"/>
+        <ref bean="KimAttributes-buttonName"/>
         <ref bean="KimAttributes-actionClass"/>
         <ref bean="KimAttributes-namespaceCode"/>
         <ref bean="KimAttributes-componentName"/>
@@ -173,6 +174,15 @@
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
   </bean>
+
+  <bean id="KimAttributes-buttonName" parent="KimAttributes-buttonName-parentBean"/>
+  <bean id="KimAttributes-buttonName-parentBean" parent="AttributeDefinition" abstract="true" p:name="buttonName"
+        p:forceUppercase="false" p:label="Button Name" p:shortLabel="Button Name" p:maxLength="80" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="20"/>
+    </property>
+  </bean>
+
 
   <bean id="KimAttributes-actionClass" parent="KimAttributes-actionClass-parentBean"/>
   <bean id="KimAttributes-actionClass-parentBean" parent="AttributeDefinition" abstract="true" p:name="actionClass"

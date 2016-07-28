@@ -38,10 +38,19 @@ limitations under the License.
         <listitem>
           <para>Fixed a number of XSS vulnerabilities in the KNS and KRAD</para>
         </listitem>
-        </itemizedlist>
+        <listitem>
+          <para>Upgraded commons-fileupload to version 1.3.2</para>
+        </listitem>
+      </itemizedlist>
       </para>
       <para>Depending on your use of the KNS and/or KRAD this may be a drop-in replacement. However see below for
-      information on potential impact related to the CSRF implementation.</para>
+        information on potential impact related to the CSRF implementation.
+      </para>
+      <para>You will also want to be sure that if you
+        have established dependencies in your own project to commons-fileupload that you upgrade those as well.
+        The specific vulnerability in commons-fileupload is detailed here:
+        <link xlink:href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-3092">http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-3092</link>
+      </para>
     </section>
     <section>
       <title>Download</title>

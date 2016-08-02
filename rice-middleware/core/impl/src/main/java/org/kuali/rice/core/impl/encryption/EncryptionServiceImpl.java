@@ -64,7 +64,7 @@ public class EncryptionServiceImpl implements EncryptionService, InitializingBea
 
     @Override
     public void afterPropertiesSet() throws GeneralSecurityException {
-        initializEncryptionStrategy();
+        initializeEncryptionStrategy();
         // note that the following method depends on the encryption strategy being established, so it must come second
         initializeSecretKey();
         initialized = true;
@@ -84,7 +84,7 @@ public class EncryptionServiceImpl implements EncryptionService, InitializingBea
         }
     }
 
-    private void initializEncryptionStrategy() {
+    private void initializeEncryptionStrategy() {
         if (getEncryptionStrategy() == null) {
             String algorithm = ConfigContext.getCurrentContextConfig().getProperty(ENCRYPTION_ALGORITHM_PARAM);
             if (StringUtils.isBlank(algorithm)) {

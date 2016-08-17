@@ -15,18 +15,9 @@
  */
 package org.kuali.rice.kew.preferences.web;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.struts.action.*;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
@@ -40,6 +31,12 @@ import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -90,7 +87,14 @@ public class PreferencesAction extends KewKualiAction {
         GlobalVariables.getUserSession().removeObject(KewApiConstants.PREFERENCES);
         
         if (! StringUtils.isEmpty(prefForm.getReturnMapping())) {
-            return mapping.findForward(prefForm.getReturnMapping());
+            ActionForward forward = mapping.findForward(prefForm.getReturnMapping());
+            if ("viewActionList".equals(prefForm.getReturnMapping())) {
+                // make sure we pass the targetSpec back to the ActionList
+                ActionRedirect redirect = new ActionRedirect(forward);
+                redirect.addParameter("targetSpec", prefForm.getTargetSpec());
+                forward = redirect;
+            }
+            return forward;
         }
         return mapping.findForward("basic");
     }
@@ -101,6 +105,11 @@ public class PreferencesAction extends KewKualiAction {
         getPrimaryDelegateFilterChoices(request);
         PreferencesForm prefForm = (PreferencesForm)form;
         prefForm.setShowOutbox(ConfigContext.getCurrentContextConfig().getOutBoxOn());
+        // make sure the back location includes the targetSpec for the Action List
+        if (!StringUtils.isBlank(prefForm.getBackLocation()) && !StringUtils.isBlank(prefForm.getTargetSpec())) {
+            URI uri = new URIBuilder(prefForm.getBackLocation()).addParameter("targetSpec", prefForm.getTargetSpec()).build();
+            prefForm.setBackLocation(uri.toString());
+        }
         return null;
     }
 

@@ -118,7 +118,10 @@ import static org.kuali.rice.kew.api.doctype.DocumentTypePolicy.*;
                 "SELECT DISTINCT dt.name, dt.label FROM DocumentType dt, DocumentRouteHeaderValue drhv " +
                 "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId "
                 + "AND dt.active = true AND dt.currentInd = true " +
-                "ORDER BY UPPER(dt.label)")
+                "ORDER BY UPPER(dt.label)"),
+        @NamedQuery(name = "DocumentType.parentNameByName",
+                query = "SELECT pdt.name FROM DocumentType dt, DocumentType pdt " +
+                "WHERE dt.docTypeParentId=pdt.documentTypeId AND dt.name = :docTypeName AND dt.currentInd = true")
 })
 public class DocumentType extends PersistableBusinessObjectBase implements MutableInactivatable, DocumentTypeEBO, DocumentTypeContract {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);

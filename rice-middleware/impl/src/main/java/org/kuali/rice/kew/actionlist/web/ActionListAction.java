@@ -15,34 +15,11 @@
  */
 package org.kuali.rice.kew.actionlist.web;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.*;
 import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
@@ -78,6 +55,12 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Action doing Action list stuff
@@ -812,7 +795,9 @@ public class ActionListAction extends KualiAction {
      */
     public ActionForward viewFilter(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         start(mapping, actionForm, request, response);
-        return mapping.findForward("viewFilter");
+        ActionRedirect redirect = new ActionRedirect(mapping.findForward("viewFilter"));
+        redirect.addParameter("targetSpec", ((ActionListForm)actionForm).getTargetSpec());
+        return redirect;
     }
 
     /**
@@ -820,7 +805,9 @@ public class ActionListAction extends KualiAction {
      */
     public ActionForward viewPreferences(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         start(mapping, actionForm, request, response);
-        return mapping.findForward("viewPreferences");
+        ActionRedirect redirect = new ActionRedirect(mapping.findForward("viewPreferences"));
+        redirect.addParameter("targetSpec", ((ActionListForm)actionForm).getTargetSpec());
+        return redirect;
     }
 
     private boolean isActionCompatibleRequest(ActionItemBase actionItem, String actionTakenCode) {

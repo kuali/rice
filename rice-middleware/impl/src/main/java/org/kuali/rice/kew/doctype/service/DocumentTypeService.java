@@ -57,4 +57,5 @@ public interface DocumentTypeService extends DocumentTypeQueryService, XmlExport
      * @return
      */
     DocumentType findByNameCaseInsensitive(String name);
+
 }

@@ -48,6 +48,7 @@ public class PreferencesForm extends KualiForm {
     private boolean showOutbox = true;
     private String documentTypePreferenceName;
     private String documentTypePreferenceValue;
+    private String targetSpec;
 
     // KULRICE-3137: Added a backLocation parameter similar to the one from lookups.
     private String backLocation;
@@ -120,8 +121,16 @@ public class PreferencesForm extends KualiForm {
     public void setDocumentTypeNotificationPreference(String documentType, String preferenceValue) {
         preferences.addDocumentTypeNotificationPreference(documentType, preferenceValue);
     }
-	
-	/**
+
+    public String getTargetSpec() {
+        return targetSpec;
+    }
+
+    public void setTargetSpec(String targetSpec) {
+        this.targetSpec = targetSpec;
+    }
+
+    /**
 	 * Retrieves the "returnLocation" parameter after calling "populate" on the superclass.
 	 * 
 	 * @see org.kuali.rice.krad.web.struts.form.KualiForm#populate(javax.servlet.http.HttpServletRequest)

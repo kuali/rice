@@ -104,8 +104,6 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     private static final boolean DOCUMENT_HANDLER_POPUP_DEFAULT = true;
     private static final boolean ROUTE_LOG_POPUP_DEFAULT = true;
 
-
-
     // injected services
 
     private DocumentSearchService documentSearchService;
@@ -123,12 +121,13 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     @Override
     public void setParameters(Map<String, String[]> parameters) {
         super.setParameters(parameters);
+        populateTargets();
+    }
 
-        // let's populate the DocumentTypeWindowTargets
+    private void populateTargets() {
         String defaultDocumentTarget = isDocumentHandlerPopup() ? "_blank" : "_self";
         String defaultRouteLogTarget = isRouteLogPopup() ? "_blank" : "_self";
-
-        String targetSpec = StringUtils.join(parameters.get(TARGET_SPEC_NAME_PARAM), ",");
+        String targetSpec = StringUtils.join(getParameters().get(TARGET_SPEC_NAME_PARAM), ",");
         this.targets = new DocumentTypeWindowTargets(targetSpec,
                 defaultDocumentTarget, defaultRouteLogTarget, KEWServiceLocator.getDocumentTypeService());
     }

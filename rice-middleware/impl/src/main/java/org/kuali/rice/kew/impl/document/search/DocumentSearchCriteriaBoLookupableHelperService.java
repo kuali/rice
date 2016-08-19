@@ -51,6 +51,7 @@ import org.kuali.rice.kew.framework.document.search.StandardResultField;
 import org.kuali.rice.kew.lookup.valuefinder.SavedSearchValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.util.DocumentTypeWindowTargets;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -92,6 +93,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     static final String SAVED_SEARCH_NAME_PARAM = "savedSearchToLoadAndExecute";
     static final String DOCUMENT_TYPE_NAME_PARAM = "documentTypeName";
+    static final String TARGET_SPEC_NAME_PARAM = "targetSpec";
 
     // warning message keys
 
@@ -101,6 +103,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     private static final boolean DOCUMENT_HANDLER_POPUP_DEFAULT = true;
     private static final boolean ROUTE_LOG_POPUP_DEFAULT = true;
+
+
 
     // injected services
 
@@ -113,6 +117,21 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     // (in theory these could be replaced with some threadlocal subterfuge, but keeping as-is for simplicity)
     private DocumentSearchResults searchResults = null;
     private DocumentSearchCriteria criteria = null;
+
+    private DocumentTypeWindowTargets targets;
+
+    @Override
+    public void setParameters(Map<String, String[]> parameters) {
+        super.setParameters(parameters);
+
+        // let's populate the DocumentTypeWindowTargets
+        String defaultDocumentTarget = isDocumentHandlerPopup() ? "_blank" : "_self";
+        String defaultRouteLogTarget = isRouteLogPopup() ? "_blank" : "_self";
+
+        String targetSpec = StringUtils.join(parameters.get(TARGET_SPEC_NAME_PARAM), ",");
+        this.targets = new DocumentTypeWindowTargets(targetSpec,
+                defaultDocumentTarget, defaultRouteLogTarget, KEWServiceLocator.getDocumentTypeService());
+    }
 
     @Override
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
@@ -511,9 +530,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             return generateDocumentHandlerUrl(criteriaBo.getDocumentId(), criteriaBo.getDocumentType(),
                     isSuperUserSearch());
         } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(propertyName)) {
-            return generateRouteLogUrl(criteriaBo.getDocumentId());
+            return generateRouteLogUrl(criteriaBo.getDocumentId(), criteriaBo.getDocumentType());
         } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR_DISPLAY_NAME.equals(propertyName)) {
-            return generateInitiatorUrl(criteriaBo.getInitiatorPrincipalId());
+            return generateInitiatorUrl(criteriaBo.getInitiatorPrincipalId(), criteriaBo.getDocumentType());
         }
         return super.getInquiryUrl(bo, propertyName);
     }
@@ -525,30 +544,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     protected HtmlData.AnchorHtmlData generateDocumentHandlerUrl(String documentId, DocumentType documentType, boolean superUserSearch) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
         link.setDisplayText(documentId);
-
-        if (isDocumentHandlerPopup()) {
-            org.kuali.rice.kew.doctype.DocumentTypePolicy policy = documentType.getDocSearchTarget();
-            if (policy.getPolicyStringValue() != null) {
-                //if (!policy.getPolicyStringValue().equals("_blank") && !policy.getPolicyStringValue().equals("_self") && !policy.getPolicyStringValue().equals("_parent") && !policy.getPolicyStringValue().equals("_top")) {
-                //throw new ValidationException("Invalid " + KewApiConstants.DOC_SEARCH_TARGET_POLICY + " value: " + policy.getPolicyStringValue());
-                //}
-                link.setTarget(policy.getPolicyStringValue().toLowerCase());
-            }
-            else {
-                link.setTarget("_blank");
-            }
-        } else {
-            org.kuali.rice.kew.doctype.DocumentTypePolicy policy = documentType.getDocSearchTarget();
-            if (policy.getPolicyStringValue() != null) {
-                //if (!policy.getPolicyStringValue().equals("_blank") && !policy.getPolicyStringValue().equals("_self") && !policy.getPolicyStringValue().equals("_parent") && !policy.getPolicyStringValue().equals("_top")) {
-                    //throw new ValidationException("Invalid " + KewApiConstants.DOC_SEARCH_TARGET_POLICY + " value: " + policy.getPolicyStringValue());
-                //}
-                link.setTarget(policy.getPolicyStringValue().toLowerCase());
-            }
-            else {
-                link.setTarget("_self");
-            }
-        }
+        link.setTarget(this.targets.getDocumentTarget(documentType.getName()));
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/";
         if (superUserSearch) {
             if (documentType.getUseWorkflowSuperUserDocHandlerUrl().getPolicyValue().booleanValue()) {
@@ -571,15 +567,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         return link;
     }
 
-    protected HtmlData.AnchorHtmlData generateRouteLogUrl(String documentId) {
+    protected HtmlData.AnchorHtmlData generateRouteLogUrl(String documentId, DocumentType documentType) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
-        // KULRICE-6822 Route log link target parameter always causing pop-up
-        if (isRouteLogPopup()) {
-            link.setTarget("_blank");
-        }
-        else {
-            link.setTarget("_self");
-        }
+        link.setTarget(this.targets.getRouteLogTarget(documentType.getName()));
         link.setDisplayText("Route Log for document " + documentId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/" +
                 "RouteLog.do?documentId=" + documentId;
@@ -587,17 +577,12 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         return link;
     }
 
-    protected HtmlData.AnchorHtmlData generateInitiatorUrl(String principalId) {
+    protected HtmlData.AnchorHtmlData generateInitiatorUrl(String principalId, DocumentType documentType) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
         if (StringUtils.isBlank(principalId) ) {
             return link;
         }
-        if (isRouteLogPopup()) {
-            link.setTarget("_blank");
-        }
-        else {
-            link.setTarget("_self");
-        }
+        link.setTarget(this.targets.getRouteLogTarget(documentType.getName()));
         link.setDisplayText("Initiator Inquiry for User with ID:" + principalId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KIM_URL) + "/" +
                 "identityManagementPersonInquiry.do?principalId=" + principalId;
@@ -711,6 +696,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         //call get rows
         List<Row> rows = getDocumentSearchCriteriaProcessor().getRows(docType,lookupRows, advancedSearch, superUserSearch);
+        addTargetSpecRow(rows);
 
         BusinessObjectEntry boe = (BusinessObjectEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
@@ -720,6 +706,21 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         super.getRows().addAll(FieldUtils.wrapFields(new FormFields(rows).getFieldList(), numCols));
 
+    }
+
+    /**
+     * Add a hidden field to hold the "targetSpec"
+     */
+    private void addTargetSpecRow(List<Row> rows) {
+        Field targetSpecField = new Field();
+        targetSpecField.setPropertyName(TARGET_SPEC_NAME_PARAM);
+        targetSpecField.setPropertyValue(getParameters().get(TARGET_SPEC_NAME_PARAM));
+        targetSpecField.setFieldType(Field.HIDDEN);
+
+        Row hiddenRow = new Row();
+        hiddenRow.setHidden(true);
+        hiddenRow.setFields(Collections.singletonList(targetSpecField));
+        rows.add(hiddenRow);
     }
 
     /**

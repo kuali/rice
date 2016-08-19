@@ -15,36 +15,33 @@
  */
 package org.kuali.rice.kew.impl.document.search
 
-import org.junit.Test
+import org.joda.time.DateTime
 import org.junit.Before
-import org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl
-
-import org.kuali.rice.kew.api.KEWPropertyConstants;
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertEquals
-
+import org.junit.Test
+import org.kuali.rice.core.api.CoreConstants
+import org.kuali.rice.core.api.config.module.RunMode
+import org.kuali.rice.core.api.config.property.ConfigContext
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
+import org.kuali.rice.core.api.resourceloader.ResourceLoader
+import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
+import org.kuali.rice.core.impl.datetime.DateTimeServiceImpl
+import org.kuali.rice.coreservice.framework.parameter.ParameterService
+import org.kuali.rice.kew.api.KEWPropertyConstants
 import org.kuali.rice.kew.api.document.DocumentStatus
 import org.kuali.rice.kew.api.document.DocumentStatusCategory
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria
-import org.kuali.rice.kew.doctype.bo.DocumentType
-import org.kuali.rice.kns.web.ui.Row
-import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor
-import org.kuali.rice.core.impl.config.property.JAXBConfigImpl
-import org.kuali.rice.core.api.CoreConstants
-import org.kuali.rice.core.api.config.property.ConfigContext
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
-import javax.xml.namespace.QName
-import org.kuali.rice.core.impl.datetime.DateTimeServiceImpl
-import org.kuali.rice.core.api.resourceloader.ResourceLoader
-import java.text.SimpleDateFormat
-import org.joda.time.DateTime
-import org.kuali.rice.krad.util.GlobalVariables
-import org.kuali.rice.krad.UserSession
-import java.util.concurrent.Callable
+import org.kuali.rice.kew.docsearch.service.impl.DocumentSearchServiceImpl
 import org.kuali.rice.kew.doctype.service.DocumentTypeService
 import org.kuali.rice.kew.service.KEWServiceLocator
-import org.kuali.rice.core.api.config.module.RunMode
+import org.kuali.rice.krad.UserSession
+import org.kuali.rice.krad.util.GlobalVariables
 
+import javax.xml.namespace.QName
+import java.text.SimpleDateFormat
+import java.util.concurrent.Callable
+
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
 /**
  * Tests parsing of document search criteria form
  */
@@ -64,26 +61,25 @@ class DocumentSearchCriteriaBoLookupableHelperServiceTest {
 
         ConfigContext.init(config);
         GlobalResourceLoader.stop();
-        
+
         def dts = new DateTimeServiceImpl()
         dts.afterPropertiesSet()
+
+        DocumentTypeService documentTypeService = { null } as DocumentTypeService;
+
+        ParameterService ps = [
+                getParameterValueAsBoolean: { String namespaceCode, String componentCode, String parameterName ->
+                    null
+                }
+        ] as ParameterService
+
 
         GlobalResourceLoader.addResourceLoader([
             getName: { -> new QName("Foo", "Bar") },
             getService: { QName name ->
-                [ dateTimeService: dts ][name.getLocalPart()]
+                [ dateTimeService: dts, enDocumentTypeService: documentTypeService, parameterService: ps ][name.getLocalPart()]
             },
             stop: {}
-        ] as ResourceLoader)
-
-        DocumentTypeService documentTypeService = { null } as DocumentTypeService;
-
-        GlobalResourceLoader.addResourceLoader([
-                getName: { -> new QName("Baz", "Bif") },
-                getService: { QName name ->
-                    [ enDocumentTypeService: documentTypeService ][name.getLocalPart()]
-                },
-                stop: {}
         ] as ResourceLoader)
 
         ConfigContext.getCurrentContextConfig().putProperty(KEWServiceLocator.KEW_RUN_MODE_PROPERTY, RunMode.LOCAL.name())

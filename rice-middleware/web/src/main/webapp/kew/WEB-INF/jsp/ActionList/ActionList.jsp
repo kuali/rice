@@ -413,9 +413,23 @@
 						</display:column>
 					</c:if>
 					<display:column title="${routeLogLabel}" class="infocell">
+						<c:set var="routeLogTarget" value="${ActionListForm.targets.getRouteLogTarget(result.docName)}" />
+						<c:choose>
+							<c:when test="${routeLogTarget != '_blank'}">
+								<c:url var="routeLogUrl" value="RouteLog.do">
+								  <c:param name="documentId" value="${result.documentId}"/>
+								  <c:param name="showBackButton" value="true"/>
+								</c:url>
+							</c:when>
+							<c:otherwise>
+								<c:url var="routeLogUrl" value="RouteLog.do">
+								  <c:param name="documentId" value="${result.documentId}"/>
+								</c:url>
+							</c:otherwise>
+						</c:choose>
 						<div align="center"><a
-							href="<c:url value="RouteLog.do"><c:param name="documentId" value="${result.documentId}"/></c:url>"
-							target="<esapi:encodeForHTMLAttribute>${ActionListForm.targets.getRouteLogTarget(result.docName)}</esapi:encodeForHTMLAttribute>">
+							href="${routeLogUrl}"
+							target="<esapi:encodeForHTMLAttribute>${routeLogTarget}</esapi:encodeForHTMLAttribute>">
 						<img alt="Route Log for Document"
 							src="images/my_route_log.gif" /> </a></div>
 					</display:column>

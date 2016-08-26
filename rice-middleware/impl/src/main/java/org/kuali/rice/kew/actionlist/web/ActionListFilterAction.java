@@ -25,11 +25,11 @@ import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -38,7 +38,6 @@ import org.kuali.rice.krad.util.GlobalVariables;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,9 +101,10 @@ public class ActionListFilterAction extends KualiAction {
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
             request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
             ActionForward forward = mapping.findForward("viewActionList");
-            // make sure we pass the targetSpec back to the ActionList
+            // make sure we pass the targetSpecs back to the ActionList
             ActionRedirect redirect = new ActionRedirect(forward);
-            redirect.addParameter("targetSpec", filterForm.getTargetSpec());
+            redirect.addParameter("documentTargetSpec", filterForm.getDocumentTargetSpec());
+            redirect.addParameter("routeLogTargetSpec", filterForm.getRouteLogTargetSpec());
             return redirect;
         }
         return mapping.findForward("viewFilter");    
@@ -136,11 +136,16 @@ public class ActionListFilterAction extends KualiAction {
             filterForm.validateDates();
         }
         // make sure the back location includes the targetSpec for the Action List
-        if (!StringUtils.isBlank(filterForm.getBackLocation()) && !StringUtils.isBlank(filterForm.getTargetSpec())) {
-            URI uri = new URIBuilder(filterForm.getBackLocation()).addParameter("targetSpec", filterForm.getTargetSpec()).build();
-            filterForm.setBackLocation(uri.toString());
+        if (!StringUtils.isBlank(filterForm.getBackLocation())) {
+            URIBuilder uri = new URIBuilder(filterForm.getBackLocation());
+            if (!StringUtils.isBlank(filterForm.getDocumentTargetSpec())) {
+                uri.addParameter("documentTargetSpec", filterForm.getDocumentTargetSpec()).build();
+            }
+            if (!StringUtils.isBlank(filterForm.getRouteLogTargetSpec())) {
+                uri.addParameter("routeLogTargetSpec", filterForm.getRouteLogTargetSpec()).build();
+            }
+            filterForm.setBackLocation(uri.build().toString());
         }
-
     }
 
     private List<? extends KeyValue> getUserWorkgroupsDropDownList(String principalId) {

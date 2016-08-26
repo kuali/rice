@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.actionlist.web;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.kew.actionlist.ActionToTake;
@@ -81,7 +82,8 @@ public class ActionListForm extends KualiForm {
     private Boolean showOutbox;
     private List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
 
-    private String targetSpec;
+    private String documentTargetSpec;
+    private String routeLogTargetSpec;
     private DocumentTypeWindowTargets targets;
 
     public String getHelpDeskActionListUserName() {
@@ -312,12 +314,20 @@ public class ActionListForm extends KualiForm {
         this.headerButtons = headerButtons;
     }
 
-    public String getTargetSpec() {
-        return targetSpec;
+    public String getDocumentTargetSpec() {
+        return documentTargetSpec;
     }
 
-    public void setTargetSpec(String targetSpec) {
-        this.targetSpec = targetSpec;
+    public void setDocumentTargetSpec(String documentTargetSpec) {
+        this.documentTargetSpec = documentTargetSpec;
+    }
+
+    public String getRouteLogTargetSpec() {
+        return routeLogTargetSpec;
+    }
+
+    public void setRouteLogTargetSpec(String routeLogTargetSpec) {
+        this.routeLogTargetSpec = routeLogTargetSpec;
     }
 
     public DocumentTypeWindowTargets getTargets() {
@@ -378,10 +388,23 @@ public class ActionListForm extends KualiForm {
         String defaultDocumentTarget = documentPopup ? "_blank" : "_self";
 
         String[] targetSpecs = request.getParameterValues("targetSpec");
-        if (targetSpecs != null) {
-            setTargetSpec(StringUtils.join(targetSpecs, ","));
+        if (ArrayUtils.isNotEmpty(targetSpecs)) {
+            String targetSpec = StringUtils.join(targetSpecs, ",");
+            setDocumentTargetSpec(targetSpec);
+            setRouteLogTargetSpec(targetSpec);
         }
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets(getTargetSpec(), defaultDocumentTarget, defaultRouteLogTarget, KEWServiceLocator.getDocumentTypeService());
+        String[] documentTargetSpecs = request.getParameterValues("documentTargetSpec");
+        if (ArrayUtils.isNotEmpty(documentTargetSpecs)) {
+            String documentTargetSpec = StringUtils.join(documentTargetSpecs, ",");
+            setDocumentTargetSpec(documentTargetSpec);
+        }
+        String[] routeLogTargetSpecs = request.getParameterValues("routeLogTargetSpec");
+        if (ArrayUtils.isNotEmpty(routeLogTargetSpecs)) {
+            String routeLogTargetSpec = StringUtils.join(routeLogTargetSpecs, ",");
+            setRouteLogTargetSpec(routeLogTargetSpec);
+        }
+
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets(getDocumentTargetSpec(), getRouteLogTargetSpec(), defaultDocumentTarget, defaultRouteLogTarget, KEWServiceLocator.getDocumentTypeService());
         setTargets(targets);
 
         super.populate(request);

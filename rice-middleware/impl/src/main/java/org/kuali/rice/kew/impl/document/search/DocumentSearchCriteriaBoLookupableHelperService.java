@@ -86,7 +86,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     static final String SAVED_SEARCH_NAME_PARAM = "savedSearchToLoadAndExecute";
     static final String DOCUMENT_TYPE_NAME_PARAM = "documentTypeName";
-    static final String TARGET_SPEC_NAME_PARAM = "targetSpec";
+    static final String TARGET_SPEC_PARAM = "targetSpec";
+    static final String DOCUMENT_TARGET_SPEC_PARAM = "documentTargetSpec";
+    static final String ROUTE_LOG_TARGET_SPEC_PARAM = "routeLogTargetSpec";
+    static final String SHOW_SUPER_USER_BUTTON_PARAM = "showSuperUserButton";
 
     // warning message keys
 
@@ -120,8 +123,18 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     private void populateTargets() {
         String defaultDocumentTarget = isDocumentHandlerPopup() ? "_blank" : "_self";
         String defaultRouteLogTarget = isRouteLogPopup() ? "_blank" : "_self";
-        String targetSpec = StringUtils.join(getParameters().get(TARGET_SPEC_NAME_PARAM), ",");
-        this.targets = new DocumentTypeWindowTargets(targetSpec,
+        String targetSpec = StringUtils.join(getParameters().get(TARGET_SPEC_PARAM), ",");
+        String documentTargetSpec = StringUtils.join(getParameters().get(DOCUMENT_TARGET_SPEC_PARAM), ",");
+        String routeLogTargetSpec = StringUtils.join(getParameters().get(ROUTE_LOG_TARGET_SPEC_PARAM), ",");
+        if (documentTargetSpec == null) {
+            documentTargetSpec = targetSpec;
+            getParameters().put(DOCUMENT_TARGET_SPEC_PARAM, getParameters().get(TARGET_SPEC_PARAM));
+        }
+        if (routeLogTargetSpec == null) {
+            routeLogTargetSpec = targetSpec;
+            getParameters().put(ROUTE_LOG_TARGET_SPEC_PARAM, getParameters().get(TARGET_SPEC_PARAM));
+        }
+        this.targets = new DocumentTypeWindowTargets(documentTargetSpec, routeLogTargetSpec,
                 defaultDocumentTarget, defaultRouteLogTarget, KEWServiceLocator.getDocumentTypeService());
     }
 
@@ -692,7 +705,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         //call get rows
         List<Row> rows = getDocumentSearchCriteriaProcessor().getRows(docType,lookupRows, advancedSearch, superUserSearch);
-        addTargetSpecRow(rows);
+        addTargetSpecRows(rows);
+        addShowSuperUserButtonRow(rows);
 
         BusinessObjectEntry boe = (BusinessObjectEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
@@ -707,15 +721,35 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     /**
      * Add a hidden field to hold the "targetSpec"
      */
-    private void addTargetSpecRow(List<Row> rows) {
-        Field targetSpecField = new Field();
-        targetSpecField.setPropertyName(TARGET_SPEC_NAME_PARAM);
-        targetSpecField.setPropertyValue(getParameters().get(TARGET_SPEC_NAME_PARAM));
-        targetSpecField.setFieldType(Field.HIDDEN);
+    private void addTargetSpecRows(List<Row> rows) {
+        Field documentTargetSpecField = new Field();
+        documentTargetSpecField.setPropertyName(DOCUMENT_TARGET_SPEC_PARAM);
+        documentTargetSpecField.setPropertyValue(StringUtils.join(getParameters().get(DOCUMENT_TARGET_SPEC_PARAM), ","));
+        documentTargetSpecField.setFieldType(Field.HIDDEN);
+
+        Field routeLogTargetSpecField = new Field();
+        routeLogTargetSpecField.setPropertyName(ROUTE_LOG_TARGET_SPEC_PARAM);
+        routeLogTargetSpecField.setPropertyValue(StringUtils.join(getParameters().get(ROUTE_LOG_TARGET_SPEC_PARAM), ","));
+        routeLogTargetSpecField.setFieldType(Field.HIDDEN);
 
         Row hiddenRow = new Row();
         hiddenRow.setHidden(true);
-        hiddenRow.setFields(Collections.singletonList(targetSpecField));
+        hiddenRow.setFields(Arrays.asList(documentTargetSpecField, routeLogTargetSpecField));
+        rows.add(hiddenRow);
+    }
+
+    /**
+     * Add a hidden field to hold the "showSuperUserButton"
+     */
+    private void addShowSuperUserButtonRow(List<Row> rows) {
+        Field showSuperUserButtonField = new Field();
+        showSuperUserButtonField.setPropertyName(SHOW_SUPER_USER_BUTTON_PARAM);
+        showSuperUserButtonField.setPropertyValue(getParameters().get(SHOW_SUPER_USER_BUTTON_PARAM));
+        showSuperUserButtonField.setFieldType(Field.HIDDEN);
+
+        Row hiddenRow = new Row();
+        hiddenRow.setHidden(true);
+        hiddenRow.setFields(Collections.singletonList(showSuperUserButtonField));
         rows.add(hiddenRow);
     }
 
@@ -748,9 +782,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         String type = advancedSearch ? "basic" : "detailed";
         suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleAdvancedSearch", KewApiConstants.WEBAPP_DIRECTORY, type, type));
 
-        // Add the superuser-search-toggling button.
-        suppMenuBar.append("&nbsp;");
-        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleSuperUserSearch", KewApiConstants.WEBAPP_DIRECTORY, superUserSearch ? "nonsupu" : "superuser", superUserSearch ? "non-superuser" : "superuser"));
+        if (showSuperUserButton() || superUserSearch) {
+            // Add the superuser-search-toggling button.
+            suppMenuBar.append("&nbsp;");
+            suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleSuperUserSearch", KewApiConstants.WEBAPP_DIRECTORY, superUserSearch ? "nonsupu" : "superuser", superUserSearch ? "non-superuser" : "superuser"));
+        }
 
         // Add the "clear saved searches" button.
         suppMenuBar.append("&nbsp;");
@@ -763,6 +799,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 + "});</script>");
 
         return suppMenuBar.toString();
+    }
+
+    private boolean showSuperUserButton() {
+        String[] showSuperUserButton = getParameters().get(SHOW_SUPER_USER_BUTTON_PARAM);
+        return showSuperUserButton == null || showSuperUserButton.length == 0 || !"false".equals(showSuperUserButton[0]);
     }
 
     @Override

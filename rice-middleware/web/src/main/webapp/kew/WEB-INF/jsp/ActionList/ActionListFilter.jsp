@@ -231,7 +231,8 @@
 </table>
 <br />
 <div align="center">
-    <html-el:hidden property="targetSpec" />
+    <html-el:hidden property="documentTargetSpec" />
+    <html-el:hidden property="routeLogTargetSpec" />
     <html-el:image property="methodToCall.filter" style="border-width:0px" src="images/buttonsmall_filter.gif" align="absmiddle" />&nbsp;&nbsp;
     <html-el:image property="methodToCall.clear" style="border-width:0px" src="images/buttonsmall_clear.gif" align="absmiddle" />&nbsp;&nbsp;
     <a href="javascript:document.forms[0].reset()"><img src="images/buttonsmall_reset.gif" border=0 alt="reset" align="absmiddle"></a>

@@ -79,6 +79,8 @@ public class ActionListAction extends KualiAction {
     /*private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";*/
     private static final String ACTION_ITEM_COUNT_FOR_USER_KEY = "actionList.count";
     private static final String MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY = "actionList.maxActionItemDateAssigned";
+    private static final String DOCUMENT_TARGET_SPEC_KEY = "documentTargetSpec";
+    private static final String ROUTE_LOG_TARGET_SPEC_KEY = "routeLogTargetSpec";
 
     private static final String ACTIONREQUESTCD_PROP = "actionRequestCd";
     private static final String CUSTOMACTIONLIST_PROP = "customActionList";
@@ -796,7 +798,8 @@ public class ActionListAction extends KualiAction {
     public ActionForward viewFilter(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         start(mapping, actionForm, request, response);
         ActionRedirect redirect = new ActionRedirect(mapping.findForward("viewFilter"));
-        redirect.addParameter("targetSpec", ((ActionListForm)actionForm).getTargetSpec());
+        redirect.addParameter(DOCUMENT_TARGET_SPEC_KEY, ((ActionListForm)actionForm).getDocumentTargetSpec());
+        redirect.addParameter(ROUTE_LOG_TARGET_SPEC_KEY, ((ActionListForm)actionForm).getRouteLogTargetSpec());
         return redirect;
     }
 
@@ -806,7 +809,8 @@ public class ActionListAction extends KualiAction {
     public ActionForward viewPreferences(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         start(mapping, actionForm, request, response);
         ActionRedirect redirect = new ActionRedirect(mapping.findForward("viewPreferences"));
-        redirect.addParameter("targetSpec", ((ActionListForm)actionForm).getTargetSpec());
+        redirect.addParameter(DOCUMENT_TARGET_SPEC_KEY, ((ActionListForm)actionForm).getDocumentTargetSpec());
+        redirect.addParameter(ROUTE_LOG_TARGET_SPEC_KEY, ((ActionListForm)actionForm).getRouteLogTargetSpec());
         return redirect;
     }
 

@@ -72,7 +72,8 @@
     <c:param name="currentPage" value="${ActionListForm.currentPage}"/>
     <c:param name="currentSort" value="${ActionListForm.currentSort}"/>
     <c:param name="currentDir" value="${ActionListForm.currentDir}"/>
-	<c:param name="targetSpec" value="${ActionListForm.targetSpec}"/>
+	<c:param name="documentTargetSpec" value="${ActionListForm.documentTargetSpec}"/>
+	<c:param name="routeLogTargetSpec" value="${ActionListForm.routeLogTargetSpec}"/>
   </c:url>
 
 <kul:page headerTitle="Action List" lookup="true"
@@ -141,7 +142,7 @@
       <c:if test="${UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME] != null && UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME].filterOn}">
         <div style="float:left; width:70px">
           <a
-                  href='<c:url value="ActionList.do"><c:param name="methodToCall" value="clearFilter"/><c:param name="targetSpec" value="${ActionListForm.targetSpec}"/></c:url>'  title="clearFilter"><img
+                  href='<c:url value="ActionList.do"><c:param name="methodToCall" value="clearFilter"/><c:param name="documentTargetSpec" value="${ActionListForm.documentTargetSpec}"/><c:param name="routeLogTargetSpec" value="${ActionListForm.routeLogTargetSpec}"/></c:url>'  title="clearFilter"><img
                   src="${ConfigProperties.kr.url}/images/tinybutton-clearfilter.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
                   border="0" /></a>
         </div>
@@ -159,7 +160,8 @@
           <a href="
 					<c:url value="ActionList.do">
 						<c:param name="methodToCall" value="clearHelpDeskActionListUser" />
-						<c:param name="targetSpec" value="${ActionListForm.targetSpec}"/>
+						<c:param name="documentTargetSpec" value="${ActionListForm.documentTargetSpec}"/>
+						<c:param name="routeLogTargetSpec" value="${ActionListForm.routeLogTargetSpec}"/>
 					</c:url>">Clear <c:out value="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME].name}"/>'s List</a>
         </c:if>&nbsp;&nbsp;
       </c:if>
@@ -186,7 +188,8 @@
 	</c:if>
 	<html-el:form action="ActionList">
 		<html-el:hidden property="methodToCall" value="" />
-		<html-el:hidden property="targetSpec" value="${ActionListForm.targetSpec}" />
+		<html-el:hidden property="documentTargetSpec" value="${ActionListForm.documentTargetSpec}" />
+		<html-el:hidden property="routeLogTargetSpec" value="${ActionListForm.routeLogTargetSpec}" />
 		<kul:csrf />
 		<table width="100%">
 			<tr>
@@ -210,7 +213,7 @@
 						<c:choose>
 							<c:when
 								test="${ActionListForm.viewOutbox && ActionListForm.showOutbox}">
-								<a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=false"><c:param name="targetSpec" value="${ActionListForm.targetSpec}"/></c:url>">
+								<a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=false"><c:param name="documentTargetSpec" value="${ActionListForm.documentTargetSpec}"/><c:param name="routeLogTargetSpec" value="${ActionListForm.routeLogTargetSpec}"/></c:url>">
 								    <bean-el:message key="actionList.ActionList.title" /></a>
                                 | <strong><bean-el:message key="actionList.Outbox.title" /></strong>
 							</c:when>
@@ -218,7 +221,7 @@
 								<strong>
 								<bean-el:message key="actionList.ActionList.title" /></strong>
 								<c:if test="${ActionListForm.showOutbox }">
-                                    | <a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=true"><c:param name="targetSpec" value="${ActionListForm.targetSpec}"/></c:url>">
+                                    | <a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=true"><c:param name="documentTargetSpec" value="${ActionListForm.documentTargetSpec}"/><c:param name="routeLogTargetSpec" value="${ActionListForm.routeLogTargetSpec}"/></c:url>">
                                         <bean-el:message key="actionList.Outbox.title" />
                                        </a>
 								</c:if>

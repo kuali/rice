@@ -874,10 +874,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     protected void repopulateSearchTypeFlags() {
         boolean advancedSearch = isAdvancedSearch();
         boolean superUserSearch = isSuperUserSearch();
-        int fieldsRepopulated = 0;
+        boolean showSuperUserButton = showSuperUserButton();
         Map<String, String[]> values = new HashMap<String, String[]>();
         values.put(KRADConstants.ADVANCED_SEARCH_FIELD, new String[] { advancedSearch ? "YES" : "NO" });
         values.put(DocumentSearchCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD, new String[] { superUserSearch ? "YES" : "NO" });
+        values.put(SHOW_SUPER_USER_BUTTON_PARAM, new String[] { Boolean.toString(showSuperUserButton) });
         getFormFields().setFieldValues(values);
     }
 

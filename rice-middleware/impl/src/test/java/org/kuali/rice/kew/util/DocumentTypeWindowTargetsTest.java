@@ -156,13 +156,23 @@ public class DocumentTypeWindowTargetsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testNullDefaultTarget() throws Exception {
+    public void testNullDefaultDocumentTarget() throws Exception {
         new DocumentTypeWindowTargets("", "", null, "rlt", documentTypeService);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testBlankDefaultTarget() throws Exception {
+    public void testNullDefaultRouteLogTarget() throws Exception {
+        new DocumentTypeWindowTargets("", "", "dt", null, documentTypeService);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBlankDefaultDocumentTarget() throws Exception {
         new DocumentTypeWindowTargets("", "", "", "rlt", documentTypeService);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBlankDefaultRouteLogTarget() throws Exception {
+        new DocumentTypeWindowTargets("", "", "dt", "", documentTypeService);
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -311,6 +311,7 @@
                    <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message key="routeLog.RouteLog.newActionMessage.label.actionMessage"/></kul:htmlAttributeHeaderCell>
                    <td class="datacell">
                        <html-el:hidden property="documentId" value="${routeHeader.documentId}" />
+                       <html-el:hidden property="showBackButton" value="${KualiForm.showBackButton}" />
                        <html-el:text property="newRouteLogActionMessage" size="40" />&nbsp;
                        <html-el:image src="${ConfigProperties.kr.url}/images/buttonsmall_log.gif" property="methodToCall.logActionMessageInRouteLog" styleClass="tinybutton" />
                    </td>
@@ -320,6 +321,14 @@
           </kul:tab>
         </c:if>
     <kul:panelFooter />
+
+    <div class="globalbuttons">
+        <c:if test="${KualiForm.showBackButton}"><a
+                href="javascript:history.go(-1)" title="back"><img
+                src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_back.gif" class="tinybutton" alt="back" title="back"
+                border="0" /></a></c:if>
+    </div>
+
 </kul:page>
 
 

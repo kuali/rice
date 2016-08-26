@@ -34,7 +34,6 @@ import org.kuali.rice.krad.util.KRADConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +90,8 @@ public class PreferencesAction extends KewKualiAction {
             if ("viewActionList".equals(prefForm.getReturnMapping())) {
                 // make sure we pass the targetSpec back to the ActionList
                 ActionRedirect redirect = new ActionRedirect(forward);
-                redirect.addParameter("targetSpec", prefForm.getTargetSpec());
+                redirect.addParameter("documentTargetSpec", prefForm.getDocumentTargetSpec());
+                redirect.addParameter("routeLogTargetSpec", prefForm.getRouteLogTargetSpec());
                 forward = redirect;
             }
             return forward;
@@ -106,10 +106,17 @@ public class PreferencesAction extends KewKualiAction {
         PreferencesForm prefForm = (PreferencesForm)form;
         prefForm.setShowOutbox(ConfigContext.getCurrentContextConfig().getOutBoxOn());
         // make sure the back location includes the targetSpec for the Action List
-        if (!StringUtils.isBlank(prefForm.getBackLocation()) && !StringUtils.isBlank(prefForm.getTargetSpec())) {
-            URI uri = new URIBuilder(prefForm.getBackLocation()).addParameter("targetSpec", prefForm.getTargetSpec()).build();
-            prefForm.setBackLocation(uri.toString());
+        if (!StringUtils.isBlank(prefForm.getBackLocation())) {
+            URIBuilder uri = new URIBuilder(prefForm.getBackLocation());
+            if (!StringUtils.isBlank(prefForm.getDocumentTargetSpec())) {
+                uri.addParameter("documentTargetSpec", prefForm.getDocumentTargetSpec()).build();
+            }
+            if (!StringUtils.isBlank(prefForm.getRouteLogTargetSpec())) {
+                uri.addParameter("routeLogTargetSpec", prefForm.getRouteLogTargetSpec()).build();
+            }
+            prefForm.setBackLocation(uri.build().toString());
         }
+
         return null;
     }
 

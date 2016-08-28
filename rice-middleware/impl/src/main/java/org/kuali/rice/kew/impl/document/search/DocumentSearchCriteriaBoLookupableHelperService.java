@@ -802,6 +802,14 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     }
 
     private boolean showSuperUserButton() {
+        // because of the way a "refresh" works after a lookup, the super user button will not be in a parameter, so we
+        // have to check the current field value first
+        Field field = getFormFields().getField(SHOW_SUPER_USER_BUTTON_PARAM);
+        String propertyValue = field.getPropertyValue();
+        if (propertyValue != null) {
+            return Boolean.parseBoolean(propertyValue);
+        }
+        // now fall back to checking the parameters
         String[] showSuperUserButton = getParameters().get(SHOW_SUPER_USER_BUTTON_PARAM);
         return showSuperUserButton == null || showSuperUserButton.length == 0 || !"false".equals(showSuperUserButton[0]);
     }

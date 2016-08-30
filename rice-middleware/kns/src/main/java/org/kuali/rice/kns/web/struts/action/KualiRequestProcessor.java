@@ -39,6 +39,8 @@ import org.kuali.rice.kns.web.struts.form.pojo.PojoForm;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.service.CsrfService;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.*;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -68,6 +70,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 	private SessionDocumentService sessionDocumentService;
 	private PlatformTransactionManager transactionManager;
+	private CsrfService csrfService;
 
     @Override
     public void process(final HttpServletRequest request,
@@ -212,7 +215,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 
         // need to make sure that we don't check CSRF until after the form is populated so that Struts will parse the
         // multipart parameters into the request if it's a multipart request
-        if (!CsrfValidator.validateCsrf(request, response)) {
+        if (!getCsrfService().validateCsrfIfNecessary(request, response)) {
             return;
         }
 
@@ -233,7 +236,6 @@ public class KualiRequestProcessor extends RequestProcessor {
             }
         }
     }
-
 
 	/**
 	 * This method gets the document number from the request.  The request should have been processed already 
@@ -379,7 +381,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 		String docFormKey = request.getParameter(KRADConstants.DOC_FORM_KEY);
 		String methodToCall = request.getParameter(KRADConstants.DISPATCH_REQUEST_PARAMETER);
 		String refreshCaller = request.getParameter(KRADConstants.REFRESH_CALLER);
-//		String searchListRequestKey = request.getParameter(KRADConstants.SEARCH_LIST_REQUEST_KEY);
 		String documentWebScope = request.getParameter(KRADConstants.DOCUMENT_WEB_SCOPE);
 
 		if (mapping.getPath().startsWith(KRADConstants.REFRESH_MAPPING_PREFIX) || KRADConstants.RETURN_METHOD_TO_CALL.equalsIgnoreCase(methodToCall) ||
@@ -752,6 +753,13 @@ public class KualiRequestProcessor extends RequestProcessor {
 			transactionManager = KNSServiceLocator.getTransactionManager();
 		}
 		return this.transactionManager;
+	}
+
+	public CsrfService getCsrfService() {
+		if (csrfService == null) {
+			csrfService = KRADServiceLocatorWeb.getCsrfService();
+		}
+		return csrfService;
 	}
 	
 	private ActionForm createNewActionForm(ActionMapping mapping, HttpServletRequest request) {

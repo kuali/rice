@@ -29,22 +29,13 @@ import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.util.CsrfValidator;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Base form class for views within the KRAD User Interface Framework.
@@ -257,7 +248,7 @@ public class UifFormBase implements ViewModel {
             setRequestedFormKey(formKeyParam);
         }
 
-        String csrfToken = CsrfValidator.getSessionToken(request);
+        String csrfToken = KRADServiceLocatorWeb.getCsrfService().getSessionToken(request);
         setCsrfToken(csrfToken);
 
         this.request = request;

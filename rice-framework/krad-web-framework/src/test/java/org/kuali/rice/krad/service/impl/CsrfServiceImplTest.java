@@ -191,7 +191,7 @@ public class CsrfServiceImplTest {
 
         request.setRequestURI("http://b");
         assertFalse(csrfService.validateCsrfIfNecessary(request, response));
-        assertSame(403, response.getStatus());
+        assertEquals(403, response.getStatus());
 
     }
 

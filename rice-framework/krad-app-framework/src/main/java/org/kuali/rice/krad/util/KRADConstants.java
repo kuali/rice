@@ -119,6 +119,8 @@ public final class KRADConstants {
 
     public static final class ParameterNames {
         public static final String DEFAULT_LOCALE_CODE = "DEFAULT_LOCALE_CODE";
+        public static final String CSRF_EXEMPT_PATHS = "CSRF_EXEMPT_PATHS";
+        public static final String CSRF_ENABLED_IND = "CSRF_ENABLED_IND";
     }
 
     public static final class DocumentFormHeaderFieldIds {
@@ -641,6 +643,8 @@ public final class KRADConstants {
         public static final String KNS_ENABLED = "rice.krad.kns.enabled";
         public static final String ENABLE_LEGACY_DATA_FRAMEWORK = "rice.krad.enableLegacyDataFramework";
         public static final String ENABLE_VIEW_AUTOGENERATION = "rice.krad.views.autoGeneration.enabled";
+        public static final String CSRF_EXEMPT_PATHS = "csrf.exempt.paths";
+        public static final String CSRF_ENABLED = "csrf.enabled";
 
         private Config() {
             throw new UnsupportedOperationException("do not call");

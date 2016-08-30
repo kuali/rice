@@ -89,6 +89,8 @@
     </property>
   </bean>
 
+  <bean id="csrfService" class="org.kuali.rice.krad.service.impl.CsrfServiceImpl"/>
+
   <bean id="uifControllerHandlerInterceptor"
         class="org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor"/>
 

@@ -91,5 +91,32 @@ limitations under the License.
             <para>This simply resolves to the following HTML:</para>
             <programlisting>&lt;input type="hidden" name="csrfToken" value="${sessionScope.csrfSessionToken}"/&gt;</programlisting>
         </section>
+        <section>
+            <title>Customizing CSRF Protection</title>
+            <para>If you want to exempt certain paths or entirely disable CSRF protection in your KNS application,
+                there are some options available to you.</para>
+            <para>The following config parameters can be set:</para>
+            <para><itemizedlist>
+                <listitem>
+                    <para><code>csrf.enabled</code> - enable or disable CSRF protection globally, defaults to “true” if not
+                        specified</para>
+                </listitem>
+                <listitem>
+                    <para><code>csrf.exempt.paths</code> - defaults to no paths exemptions, otherwise this is a comma-separated list
+                        of partial path matches for which CSRF will not be performed</para>
+                </listitem>
+            </itemizedlist></para>
+            <para>Alternatively, System Parameters can be created if you need to customize or configure these at runtime.
+                Note that, if defined, the System Parameters will override any config settings. The system parameters are as
+                follows (both use the <code>KR-SYS</code> namespace and the <code>All</code> component code).</para>
+            <para><itemizedlist>
+                <listitem>
+                    <para><code>CSRF_ENABLED_IND</code> - as per csrf.enabled</para>
+                </listitem>
+                <listitem>
+                    <para><code>CSRF_EXEMPT_PATHS</code> - as per csrf.exempt.paths </para>
+                </listitem>
+            </itemizedlist></para>
+        </section>
     </section>
 </article>

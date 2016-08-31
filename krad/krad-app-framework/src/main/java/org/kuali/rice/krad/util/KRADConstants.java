@@ -125,6 +125,11 @@ public final class KRADConstants {
     	}
     }
 
+    public static final class ParameterNames {
+        public static final String CSRF_EXEMPT_PATHS = "CSRF_EXEMPT_PATHS";
+        public static final String CSRF_ENABLED_IND = "CSRF_ENABLED_IND";
+    }
+
     public static final class DocumentFormHeaderFieldIds {
     	public static final String DOCUMENT_NUMBER = "documentNumber";
     	public static final String DOCUMENT_WORKFLOW_STATUS = "documentStatus";
@@ -607,6 +612,8 @@ public final class KRADConstants {
         public static final String COMPONENT_PUBLISHING_ENABLED = "rice.krad.componentPublishing.enabled";
         public static final String COMPONENT_PUBLISHING_DELAY = "rice.krad.componentPublishing.delay";
         public static final String IGNORE_MISSIONG_FIELDS_ON_DESERIALIZE = "rice.krad.bos.ignoreMissingFieldsOnDeserialize";
+        public static final String CSRF_EXEMPT_PATHS = "csrf.exempt.paths";
+        public static final String CSRF_ENABLED = "csrf.enabled";
 
         private Config() {
     		throw new UnsupportedOperationException("do not call");

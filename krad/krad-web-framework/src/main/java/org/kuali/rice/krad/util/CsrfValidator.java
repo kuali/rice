@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util;
+package org.kuali.rice.krad.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -94,7 +94,7 @@ public class CsrfValidator {
      *
      * @param request the request with the session on which to place the session token if needed
      */
-    private static void placeSessionToken(HttpServletRequest request) {
+    public static void placeSessionToken(HttpServletRequest request) {
         if (getSessionToken(request) == null) {
             request.getSession().setAttribute(CSRF_SESSION_TOKEN, UUID.randomUUID().toString());
         }

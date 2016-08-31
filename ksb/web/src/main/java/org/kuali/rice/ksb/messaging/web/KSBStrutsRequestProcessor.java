@@ -21,7 +21,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.InvalidCancelException;
 import org.apache.struts.action.RequestProcessor;
 import org.kuali.rice.krad.UserSession;
-import org.kuali.rice.kns.util.CsrfValidator;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADUtils;
 
@@ -61,7 +61,7 @@ public class KSBStrutsRequestProcessor extends RequestProcessor {
 	protected boolean processValidate(HttpServletRequest request, HttpServletResponse response, ActionForm form, ActionMapping mapping) throws IOException, ServletException, InvalidCancelException {
 		// need to make sure that we don't check CSRF until after the form is populated so that Struts will parse the
 		// multipart parameters into the request if it's a multipart request
-		if (!CsrfValidator.validateCsrf(request, response)) {
+		if (!KRADServiceLocatorWeb.getCsrfService().validateCsrfIfNecessary(request, response)) {
 			try {
 				return false;
 			} finally {

@@ -20,7 +20,12 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.apache.struts.Globals;
-import org.apache.struts.action.*;
+import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionForm;
+import org.apache.struts.action.ActionForward;
+import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.InvalidCancelException;
+import org.apache.struts.action.RequestProcessor;
 import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.util.RequestUtils;
@@ -30,7 +35,12 @@ import org.kuali.rice.core.api.util.RiceKeyConstants;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
-import org.kuali.rice.kns.util.*;
+import org.kuali.rice.kns.util.ErrorContainer;
+import org.kuali.rice.kns.util.InfoContainer;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSGlobalVariables;
+import org.kuali.rice.kns.util.WarningContainer;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -38,8 +48,10 @@ import org.kuali.rice.kns.web.struts.form.pojo.PojoForm;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.exception.ValidationException;
+import org.kuali.rice.krad.service.CsrfService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.service.KRADServiceLocatorInternal;
+import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.KRADUtils;
@@ -70,6 +82,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 	private SessionDocumentService sessionDocumentService;
 	private PlatformTransactionManager transactionManager;
+	private CsrfService csrfService;
 	
 	@Override
 	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -201,7 +214,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 
 		// need to make sure that we don't check CSRF until after the form is populated so that Struts will parse the
 		// multipart parameters into the request if it's a multipart request
-		if (!CsrfValidator.validateCsrf(request, response)) {
+		if (!getCsrfService().validateCsrfIfNecessary(request, response)) {
 			return;
 		}
 
@@ -718,7 +731,14 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 		return this.transactionManager;
 	}
-	
+
+	public CsrfService getCsrfService() {
+		if (csrfService == null) {
+			csrfService = KRADServiceLocatorWeb.getCsrfService();
+		}
+		return csrfService;
+	}
+
 	private ActionForm createNewActionForm(ActionMapping mapping, HttpServletRequest request) {
         String name = mapping.getName();
         FormBeanConfig config = moduleConfig.findFormBeanConfig(name);

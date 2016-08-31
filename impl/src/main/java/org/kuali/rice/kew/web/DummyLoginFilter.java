@@ -19,6 +19,7 @@ import org.kuali.rice.kim.api.identity.IdentityService;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.util.CsrfValidator;
 import org.kuali.rice.krad.util.KRADUtils;
 
 import javax.servlet.Filter;
@@ -82,6 +83,7 @@ public class DummyLoginFilter implements Filter {
             	
             } else {
                 // no session has been established and this is not a login form submission, so forward to login page
+                CsrfValidator.placeSessionToken(request);
                 request.getRequestDispatcher(loginPath).forward(request, response);
                 return;
             }

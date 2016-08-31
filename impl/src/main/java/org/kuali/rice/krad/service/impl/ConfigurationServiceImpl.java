@@ -71,19 +71,21 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     /**
-     * @see org.kuali.rice.core.api.config.property.ConfigurationService#getPropertyValueAsBoolean(java.lang.String)
+     * @see org.kuali.rice.core.api.config.property.ConfigurationService#getPropertyValueAsBoolean(String)
      */
     @Override
-    public boolean getPropertyValueAsBoolean(String key) {
+    public boolean getPropertyValueAsBoolean(String key, boolean defaultValue) {
         if (key == null) {
             throw new IllegalArgumentException("invalid (null) key");
         }
+
         String property = this.propertyHolder.getProperty(key);
-        Boolean b = Truth.strToBooleanIgnoreCase(property);
-        if (b == null) {
-            return false;
-        }
-        return b;
+        return Truth.strToBooleanIgnoreCase(property, defaultValue);
+    }
+
+    @Override
+    public boolean getPropertyValueAsBoolean(String key) {
+        return getPropertyValueAsBoolean(key, false);
     }
 
     /**

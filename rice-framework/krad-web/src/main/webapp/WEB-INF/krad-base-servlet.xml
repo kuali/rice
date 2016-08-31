@@ -86,8 +86,14 @@
     </property>
   </bean>
 
+  <bean id="csrfService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="csrfService"/>
+  </bean>
+
   <bean id="uifControllerHandlerInterceptor"
-        class="org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor"/>
+        class="org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor">
+    <property name="csrfService" ref="csrfService"/>
+  </bean>
 
   <bean id="moduleLockingHandlerInterceptor" class="org.kuali.rice.krad.web.controller.ModuleLockingHandlerInterceptor">
     <property name="moduleLockedMapping" value="module-locked"/>

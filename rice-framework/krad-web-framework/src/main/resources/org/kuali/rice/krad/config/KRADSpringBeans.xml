@@ -1058,4 +1058,12 @@
 
   <bean id="resourceMessageProvider" class="org.kuali.rice.krad.messages.providers.ResourceMessageProvider"/>
 
+  <bean id="rice.krad.import.parameterService" class="org.kuali.rice.core.api.resourceloader.LazyResourceFactoryBean"
+        p:serviceName="parameterService"
+        p:objectType="org.kuali.rice.coreservice.framework.parameter.ParameterService"/>
+
+  <bean id="csrfService" class="org.kuali.rice.krad.service.impl.CsrfServiceImpl"
+        p:configurationService-ref="kualiConfigurationService"
+        p:parameterService-ref="rice.krad.import.parameterService"/>
+
 </beans>

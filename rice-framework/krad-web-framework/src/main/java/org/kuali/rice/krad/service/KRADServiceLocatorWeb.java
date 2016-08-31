@@ -72,6 +72,7 @@ public class KRADServiceLocatorWeb {
     public static final String MESSAGE_SERVICE = "messageService";
     public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
     public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
+    public static final String CSRF_SERVICE = "csrfService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -192,4 +193,9 @@ public class KRADServiceLocatorWeb {
     public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
     	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
     }
+
+    public static CsrfService getCsrfService() {
+        return getService(CSRF_SERVICE);
+    }
+
 }

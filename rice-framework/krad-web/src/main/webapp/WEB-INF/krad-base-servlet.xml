@@ -89,8 +89,6 @@
     </property>
   </bean>
 
-  <bean id="csrfService" class="org.kuali.rice.krad.service.impl.CsrfServiceImpl"/>
-
   <bean id="uifControllerHandlerInterceptor"
         class="org.kuali.rice.krad.web.controller.UifControllerHandlerInterceptor"/>
 
@@ -193,6 +191,10 @@
 
   <bean id="transactionalDocumentControllerService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
     <property name="serviceName" value="transactionalDocumentControllerService"/>
+  </bean>
+
+  <bean id="csrfService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="csrfService"/>
   </bean>
 
 </beans>

@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
   <name>Rice</name>
   <inceptionYear>2005</inceptionYear>
-  <version>2.1.16</version>
+  <version>2.1.17-SNAPSHOT</version>
   <description>
     The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows
     both Kuali and non-Kuali applications
@@ -2169,7 +2169,7 @@
     <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>
     <connection>scm:git:git@github.com:kuali/rice.git</connection>
     <url>https://github.com/kuali/rice/tree/${project.scm.tag}</url>
-    <tag>rice-2.1.16</tag>
+    <tag>rice-2.1.13</tag>
   </scm>
 
 </project>

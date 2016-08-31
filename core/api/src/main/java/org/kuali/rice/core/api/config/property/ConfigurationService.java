@@ -45,6 +45,19 @@ public interface ConfigurationService {
     boolean getPropertyValueAsBoolean(String key);
 
     /**
+     * Given a property name (key), returns the "booleanized" value associated with that key.
+     *
+     * <p>
+     * true, yes, on, or 1 are translated into <b>true</b> - all other values result in <b>false</b>
+     * </p>
+     *
+     * @param key - key for the message in application resources
+     * @return String associated with the given key if the property exists, will return the default value otherwise
+     * @throws IllegalArgumentException if the key is null
+     */
+    public boolean getPropertyValueAsBoolean(String key, boolean defaultValue);
+
+    /**
      * @return Properties instance containing all (key,value) pairs known to the service
      */
     Map<String, String> getAllProperties();

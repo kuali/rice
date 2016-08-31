@@ -69,6 +69,7 @@ public class KRADServiceLocatorWeb {
     public static final String VIEW_DICTIONARY_SERVICE = "viewDictionaryService";
     public static final String VIEW_VALIDATION_SERVICE = "viewValidationService";
     public static final String ATTRIBUTE_QUERY_SERVICE = "attributeQueryService";
+    public static final String CSRF_SERVICE = "csrfService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -177,4 +178,9 @@ public class KRADServiceLocatorWeb {
     public static DataDictionaryRemoteFieldService getDataDictionaryRemoteFieldService() {
         return (DataDictionaryRemoteFieldService) getService(DATA_DICTIONARY_REMOTE_FIELD_SERVICE);
     }
+
+    public static CsrfService getCsrfService() {
+        return getService(CSRF_SERVICE);
+    }
+
 }

@@ -19,7 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by ewestfal on 8/29/16.
+ * A service which performs CSRF validation and population on a given request if necessary.
+ *
+ * Whether or not CSRF is checked may be dependent on external configuration.
+ *
+ * @author Eric Westfall
  */
 public interface CsrfService {
 

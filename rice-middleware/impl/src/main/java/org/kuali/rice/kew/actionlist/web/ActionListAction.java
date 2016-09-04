@@ -686,7 +686,7 @@ public class ActionListAction extends KualiAction {
         ActionListForm actionListForm = (ActionListForm) form;
         List<? extends ActionItemBase> actionList = (List<? extends ActionItemBase>) request.getSession().getAttribute(ACTION_LIST_KEY);
         if (actionList == null) {
-            return start(mapping, new ActionListForm(), request, response);
+            return start(mapping, cleanForm(actionListForm), request, response);
         }
         ActionMessages messages = new ActionMessages();
         List<ActionInvocation> invocations = new ArrayList<ActionInvocation>();
@@ -709,10 +709,18 @@ public class ActionListAction extends KualiAction {
         KEWServiceLocator.getWorkflowDocumentService().takeMassActions(getUserSession().getPrincipalId(), invocations);
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.processed"));
         saveMessages(request, messages);
-        ActionListForm cleanForm = new ActionListForm();
+        ActionListForm cleanForm = cleanForm(actionListForm);
         request.setAttribute(mapping.getName(), cleanForm);
         request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, cleanForm, request, response);
+    }
+
+    private ActionListForm cleanForm(ActionListForm existingForm) {
+        ActionListForm form = new ActionListForm();
+        form.setDocumentTargetSpec(existingForm.getDocumentTargetSpec());
+        form.setRouteLogTargetSpec(existingForm.getRouteLogTargetSpec());
+        form.setTargets(existingForm.getTargets());
+        return form;
     }
 
     protected ActionItemBase getActionItemFromActionList(List<? extends ActionItemBase> actionList, String actionItemId) {

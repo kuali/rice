@@ -17,6 +17,6 @@
 -->
 <#macro csrfToken>
 
-<input type="hidden" name="csrfToken" value="${KualiForm.csrfToken!}"/>
+<input type="hidden" name="csrfToken" value="${Session.csrfSessionToken!}"/>
 
 </#macro>

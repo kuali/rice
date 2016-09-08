@@ -559,6 +559,9 @@ public class RouteLogAction extends KewKualiAction {
 		fixActionRequestsPositions(routeHeader);
 		request.setAttribute("routeHeader", routeHeader);
 
+		// be sure to increment the internal nav number for the back button
+		routeLogForm.setInternalNavCount(routeLogForm.getNextNavCount());
+
 		return mapping.findForward(getDefaultMapping());
 	}
     

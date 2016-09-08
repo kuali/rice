@@ -50,6 +50,7 @@ public class RouteLogForm extends KualiForm {
     private String newRouteLogActionMessage;
     private boolean enableLogAction = false;
     private boolean showBackButton;
+    private int internalNavCount;
 
     public boolean isShowCloseButton() {
         return showCloseButton;
@@ -166,10 +167,28 @@ public class RouteLogForm extends KualiForm {
         this.showBackButton = showBackButton;
     }
 
+    public int getInternalNavCount() {
+        return internalNavCount;
+    }
+
+    public void setInternalNavCount(int internalNavCount) {
+        this.internalNavCount = internalNavCount;
+    }
+
+    public int getNextNavCount() {
+        return getInternalNavCount() + 1;
+    }
+
+    public int getBackCount() {
+        return - getNextNavCount();
+    }
+
     public String getHeaderMenuBar() {
 		Properties parameters = new Properties();
-        parameters.put("showFuture", isShowFuture());
-        parameters.put("showNotes", isShowNotes());
+        parameters.put("showFuture", Boolean.toString(isShowFuture()));
+        parameters.put("showNotes", Boolean.toString(isShowNotes()));
+        parameters.put("showBackButton", Boolean.toString(isShowBackButton()));
+        parameters.put("internalNavCount", Integer.toString(getNextNavCount()));
 		if (getDocumentId() != null) {
 			parameters.put("documentId", getDocumentId());
 		}

@@ -244,6 +244,8 @@
                                     <c:param name="showFuture" value="${!KualiForm.showFuture}" />
                                     <c:param name="showNotes" value="${KualiForm.showNotes}" />
                                     <c:param name="documentId" value="${KualiForm.documentId}" />
+                                    <c:param name="showBackButton" value="${KualiForm.showBackButton}" />
+                                    <c:param name="internalNavCount" value="${KualiForm.nextNavCount}" />
                                 </c:url>">
                                     <c:if test="${KualiForm.showFuture}">
                                         <img src="images/tinybutton-hide1.gif" title="hide">
@@ -312,6 +314,7 @@
                    <td class="datacell">
                        <html-el:hidden property="documentId" value="${routeHeader.documentId}" />
                        <html-el:hidden property="showBackButton" value="${KualiForm.showBackButton}" />
+                       <html-el:hidden property="internalNavCount" value="${KualiForm.internalNavCount}" />
                        <html-el:text property="newRouteLogActionMessage" size="40" />&nbsp;
                        <html-el:image src="${ConfigProperties.kr.url}/images/buttonsmall_log.gif" property="methodToCall.logActionMessageInRouteLog" styleClass="tinybutton" />
                    </td>
@@ -324,7 +327,7 @@
 
     <div class="globalbuttons">
         <c:if test="${KualiForm.showBackButton}"><a
-                href="javascript:history.go(-1)" title="back"><img
+                href="javascript:history.go(${KualiForm.backCount})" title="back"><img
                 src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_back.gif" class="tinybutton" alt="back" title="back"
                 border="0" /></a></c:if>
     </div>

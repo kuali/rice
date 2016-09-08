@@ -231,6 +231,7 @@
 </table>
 <br />
 <div align="center">
+    <html-el:hidden property="backLocation" />
     <html-el:hidden property="documentTargetSpec" />
     <html-el:hidden property="routeLogTargetSpec" />
     <html-el:image property="methodToCall.filter" style="border-width:0px" src="images/buttonsmall_filter.gif" align="absmiddle" />&nbsp;&nbsp;

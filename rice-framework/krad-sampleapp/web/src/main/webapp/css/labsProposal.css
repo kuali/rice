@@ -146,7 +146,7 @@ input[type="text"], .uif-textAreaControl {
     margin-right: 0;
 }
 
-.fancybox-skin {
+#fancybox-outer {
     padding-left: 0 !important;
     padding-right: 0 !important;
     padding-top: 0 !important;

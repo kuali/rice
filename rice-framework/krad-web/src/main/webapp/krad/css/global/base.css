@@ -1454,7 +1454,7 @@ ul.uif-pageValidationMessage-single {
 }
 
 /***** Lightbox customization ******************************************************************/
-.fancybox-inner form {
+#fancybox-content form {
     height: 100%;
 }
 

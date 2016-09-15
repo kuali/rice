@@ -117,7 +117,7 @@ function handlePageAndCacheRefreshing() {
             navigateToPage(state.pageId);
         }
 
-        if ((!state || (state && state.pageId == getCurrentPageId())) && jQuery.fancybox.isOpen){
+        if ((!state || (state && state.pageId == getCurrentPageId())) && jQuery.fancybox.isOpen()){
             lightboxBackClose = true;
             jQuery.fancybox.close();
         }
@@ -136,7 +136,7 @@ function handlePageAndCacheRefreshing() {
             navigateToPage(pageId);
         }
 
-        if (!inLightbox && jQuery.fancybox.isOpen){
+        if (!inLightbox && jQuery.fancybox.isOpen()){
             lightboxBackClose = true;
             jQuery.fancybox.close();
         }
@@ -206,7 +206,7 @@ function updateRequestUrl(pageId) {
 
         var updatedPageUrl = "?" + queryString + window.location.hash;
 
-        if (!(getContext().fancybox.isOpen)){
+        if (!(getContext().fancybox.isOpen())){
             updatedPageUrl = updatedPageUrl.replace("&" + kradVariables.LIGHTBOX_PARAM + "=true", "");
         }
 

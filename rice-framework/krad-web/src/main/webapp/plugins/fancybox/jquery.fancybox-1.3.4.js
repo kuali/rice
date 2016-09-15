@@ -1032,6 +1032,10 @@
 			}, typeof arguments[0] == 'number' ? arguments[0] : 200);
 	};
 
+	$.fancybox.isOpen = function() {
+		return $("#fancybox-wrap").is(":visible");
+	}
+
 	$.fancybox.init = function() {
 		if ($("#fancybox-wrap").length) {
 			return;

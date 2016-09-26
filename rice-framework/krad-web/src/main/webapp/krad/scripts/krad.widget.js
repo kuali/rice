@@ -344,7 +344,7 @@ function showDirectInquiry(url, paramMap, showInDialog, dialogId) {
 
     if (showInDialog) {
         // Check if this is called within a light box
-        if (!getContext().find('.fancybox-inner', parent.document).length && !renderedInDialog) {
+        if (!getContext().find('#fancybox-content:not(:empty)', parent.document).length && !renderedInDialog) {
 
             queryString = queryString + "&flow=start&renderedInDialog=true";
             url = url + queryString;

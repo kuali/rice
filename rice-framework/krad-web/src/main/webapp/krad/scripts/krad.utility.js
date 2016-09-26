@@ -529,7 +529,7 @@ function coerceValue(name) {
     var value = "";
     var nameSelect = "[name='" + escapeName(name) + "']";
 
-    var fancyBoxWrapper = jQuery(".fancybox-wrap");
+    var fancyBoxWrapper = jQuery("#fancybox-wrap");
     var control;
     // Attempt to get from fancybox first, if it exists
     if (fancyBoxWrapper.length) {
@@ -958,7 +958,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         // ensure that component of KualiForm gets updated after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
-            jQuery("#" + componentId).parents(".fancybox-wrap").unbind("onReset");
+            jQuery("#" + componentId).parents("#fancybox-wrap").unbind("onReset");
 
             // restore original display state and replace placeholder
             jQuery("#" + componentId).css("display", cssDisplay);
@@ -972,7 +972,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         // reattach component to KualiForm after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
-            parent.jQuery("#" + componentId).parents(".fancybox-wrap").unbind("onReset");
+            parent.jQuery("#" + componentId).parents("#fancybox-wrap").unbind("onReset");
 
             // restore original display state and replace placeholder
             jQuery("#" + componentId).css("display", cssDisplay);
@@ -1053,13 +1053,13 @@ function showLightboxUrl(url, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function _initAndOpenLightbox(contentOptions, overrideOptions) {
-    var options = { fitToView: true,
-        openEffect: 'fade',
-        closeEffect: 'fade',
-        openSpeed: 200,
-        closeSpeed: 200,
-        minHeight: 10,
-        helpers: {overlay: {css: {cursor: 'arrow'}, closeClick: false}}
+    var options = { autoScale: true,
+        transitionIn: 'fade',
+        transitionOut: 'fade',
+        speedIn: 200,
+        speedOut: 200,
+        hideOnContentClick: false,
+        padding: 0
     };
 
     // override fancybox content options
@@ -1082,7 +1082,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
  *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
  */
 function setupLightboxForm() {
-    jQuery(".fancybox-inner").children().wrap("<form style='margin:0; padding:0; overflow:auto;' id='kualiLightboxForm'>");
+    jQuery("#fancybox-content").children().wrap("<form style='margin:0; padding:0; overflow:auto;' id='kualiLightboxForm'>");
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);

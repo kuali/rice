@@ -1144,7 +1144,8 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
         transitionOut: 'fade',
         speedIn: 200,
         speedOut: 200,
-        hideOnContentClick: false
+        hideOnContentClick: false,
+        padding: 0
     };
 
     // override fancybox content options

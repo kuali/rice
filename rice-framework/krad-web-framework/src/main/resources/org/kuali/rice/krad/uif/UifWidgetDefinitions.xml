@@ -91,6 +91,7 @@
         <entry key="speedIn" value="200"/>
         <entry key="speedOut" value="200"/>
         <entry key="hideOnContentClick" value="false"/>
+        <entry key="padding" value="0"/>
         <entry key="type" value="iframe"/>
       </map>
     </property>

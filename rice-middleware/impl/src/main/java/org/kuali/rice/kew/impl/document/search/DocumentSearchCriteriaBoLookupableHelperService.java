@@ -806,7 +806,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         // have to check the current field value first
         Field field = getFormFields().getField(SHOW_SUPER_USER_BUTTON_PARAM);
         String propertyValue = field.getPropertyValue();
-        if (propertyValue != null) {
+        if (!StringUtils.isBlank(propertyValue)) {
             return Boolean.parseBoolean(propertyValue);
         }
         // now fall back to checking the parameters

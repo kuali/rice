@@ -92,7 +92,8 @@ class DocumentSearchGeneratorImplTest {
         stubResultSet.demand.getString(1..(TOTAL_RESULT_COUNT * 9)) {
             String columnLabel ->
                 if ("DOC_HDR_ID".equals(columnLabel)) {
-                    return index++;
+                    index++;
+                    return Integer.toString(index);
                 } else if ("INITR_PRNCPL_ID".equals(columnLabel)) {
                     return "admin";
                 } else if ("DOC_TYP_NM".equals(columnLabel)) {
@@ -130,10 +131,10 @@ class DocumentSearchGeneratorImplTest {
                     MAX_RESULT_CAP, results.size());
 
             DocumentSearchResult.Builder firstResultBuilder = results.get(0);
-            Assert.assertEquals(String.valueOf(startAtIndex), firstResultBuilder.getDocument().getDocumentId());
+            Assert.assertEquals(String.valueOf(startAtIndex+1), firstResultBuilder.getDocument().getDocumentId());
 
             DocumentSearchResult.Builder lastResultBuilder = results.get(results.size() - 1);
-            Assert.assertEquals(String.valueOf(endAtIndex), lastResultBuilder.getDocument().getDocumentId());
+            Assert.assertEquals(String.valueOf(endAtIndex+1), lastResultBuilder.getDocument().getDocumentId());
         }
     }
 }

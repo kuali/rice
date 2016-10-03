@@ -55,13 +55,10 @@
     <!-- TODO: remove when updated to 4.4 version of kuali-common -->
     <kuali-core.version>1.0.19</kuali-core.version>
     <appserver.port>8080</appserver.port>
-    <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
-    <gmaven.compile.phase>compile</gmaven.compile.phase>
-    <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
-    <mysql.jdbc.version>5.1.24</mysql.jdbc.version>
+    <mysql.jdbc.version>5.1.39</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
 
     <jmeter.phase>verify</jmeter.phase>
@@ -111,7 +108,7 @@
     <core-auth-servlet-filter.version>1.4</core-auth-servlet-filter.version>
     <closure.version>v20140730</closure.version>
     <cglib.version>3.1</cglib.version>
-    <commons-beanutils.version>1.8.3-kuali-4</commons-beanutils.version>
+    <commons-beanutils.version>1.9.3</commons-beanutils.version>
     <commons-codec.version>1.9</commons-codec.version>
     <commons-collections.version>3.2.2</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
@@ -133,7 +130,7 @@
     <freemarker.version>2.3.20-patch2</freemarker.version>
     <lesscss.version>1.3.3</lesscss.version>
     <glassfish-javax-json.version>1.0.4</glassfish-javax-json.version>
-    <groovy.version>1.8.9</groovy.version>
+    <groovy.version>2.4.7</groovy.version>
     <guava.version>17.0</guava.version>
     <httpclient.version>4.3.5</httpclient.version>
 
@@ -166,7 +163,7 @@
     <junit.version>4.11</junit.version>
     <kuali-mvn.version>1.0.2</kuali-mvn.version>
     <log4j.version>1.2.17</log4j.version>
-    <mail.version>1.5.2</mail.version>
+    <mail.version>1.5.6</mail.version>
     <metrics.version>3.1.2</metrics.version>
     <mockito.version>1.10.19</mockito.version>
     <plexus-utils.version>3.0.17</plexus-utils.version>
@@ -205,7 +202,7 @@
     <!-- Plugin versions: -->
 
     <plugin.build-helper.version>1.8</plugin.build-helper.version>
-    <plugin.gmaven.version>1.5</plugin.gmaven.version>
+    <plugin.gmavenplus.version>1.5</plugin.gmavenplus.version>
     <plugin.http.version>1.0.5</plugin.http.version>
     <plugin.jetty.version>9.2.1.v20140609</plugin.jetty.version>
     <plugin.jmeter.version>1.8.1</plugin.jmeter.version>
@@ -213,6 +210,7 @@
     <plugin.selenium.version>2.3</plugin.selenium.version>
     <!-- Pin the tomcat7 plugin to an explicit version -->
     <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
+    <plugin.dependency-check.version>1.4.3</plugin.dependency-check.version>
 
     <!-- Saucelabs settings (aside from version, which is above): -->
 
@@ -348,9 +346,6 @@
     <profile>
       <id>site</id>
       <properties>
-        <gmaven.stubs.phase>none</gmaven.stubs.phase>
-        <gmaven.compile.phase>none</gmaven.compile.phase>
-        <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
         <skipTests>true</skipTests>
         <enforcer.phase>none</enforcer.phase>
         <failsafe.phase>none</failsafe.phase>
@@ -489,9 +484,6 @@
       <id>license</id>
       <properties>
         <kuali.testjar.phase>none</kuali.testjar.phase>
-        <gmaven.stubs.phase>none</gmaven.stubs.phase>
-        <gmaven.compile.phase>none</gmaven.compile.phase>
-        <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
         <maven.test.skip>true</maven.test.skip>
         <enforcer.phase>none</enforcer.phase>
         <failsafe.phase>none</failsafe.phase>
@@ -956,15 +948,6 @@
                       <exclude>geronimo-spec:geronimo-spec-saaj</exclude>
                       <exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.saaj-api-1.3</exclude>
 
-                      <!--
-                        excluding standard release - we are using a patches kuali version
-                        because of
-                        http://bugs.sun.com/view_bug.do?bug_id=6528714
-                        https://issues.apache.org/jira/browse/BEANUTILS-340
-                      -->
-                      <exclude>commons-beanutils:commons-beanutils</exclude>
-                      <exclude>org.apache.commons:commons-beanutils</exclude>
-
                       <!-- exclude eh cache in general - only allow at a specific scope -->
                       <exclude>net.sf.ehcache</exclude>
 
@@ -1013,53 +996,20 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.gmaven</groupId>
-          <artifactId>gmaven-plugin</artifactId>
-          <version>${plugin.gmaven.version}</version>
-          <configuration>
-            <providerSelection>1.8</providerSelection>
-          </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>org.codehaus.gmaven.runtime</groupId>
-              <artifactId>gmaven-runtime-1.8</artifactId>
-              <version>${plugin.gmaven.version}</version>
-              <exclusions>
-                <exclusion>
-                  <groupId>org.codehaus.groovy</groupId>
-                  <artifactId>groovy-all</artifactId>
-                </exclusion>
-              </exclusions>
-            </dependency>
-            <dependency>
-              <groupId>org.codehaus.groovy</groupId>
-              <artifactId>groovy-all</artifactId>
-              <version>${groovy.version}</version>
-            </dependency>
-          </dependencies>
+          <groupId>org.codehaus.gmavenplus</groupId>
+          <artifactId>gmavenplus-plugin</artifactId>
+          <version>${plugin.gmavenplus.version}</version>
           <executions>
             <execution>
-              <id>gmaven-generate-stubs</id>
-              <phase>${gmaven.stubs.phase}</phase>
               <goals>
+                <goal>addSources</goal>
+                <goal>addTestSources</goal>
                 <goal>generateStubs</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>gmaven-compile-stubs</id>
-              <phase>${gmaven.compile.phase}</phase>
-              <goals>
                 <goal>compile</goal>
-              </goals>
-            </execution>
-            <!-- test stubs aren't needed now since we are not creating
-              groovy test code for reference in java test code -->
-            <!--<goal>generateTestStubs</goal> -->
-            <execution>
-              <id>gmaven-test-compile-stubs</id>
-              <phase>${gmaven.test.compile.phase}</phase>
-              <goals>
+                <goal>testGenerateStubs</goal>
                 <goal>testCompile</goal>
+                <goal>removeStubs</goal>
+                <goal>removeTestStubs</goal>
               </goals>
             </execution>
           </executions>
@@ -1283,9 +1233,9 @@
               <pluginExecutions>
                 <pluginExecution>
                   <pluginExecutionFilter>
-                    <groupId>org.codehaus.gmaven</groupId>
-                    <artifactId>gmaven-plugin</artifactId>
-                    <versionRange>[${plugin.gmaven.version},)</versionRange>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <versionRange>[${plugin.gmavenplus.version},)</versionRange>
                     <goals>
                       <goal>generateStubs</goal>
                       <goal>compile</goal>
@@ -1363,6 +1313,16 @@
             </additionalDependencies>
           </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>${plugin.dependency-check.version}</version>
+          <configuration>
+            <suppressionFile>vulnerability-suppressions.xml</suppressionFile>
+            <failBuildOnCVSS>7</failBuildOnCVSS>
+          </configuration>
+        </plugin>
+
       </plugins>
     </pluginManagement>
 
@@ -1458,8 +1418,8 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.gmaven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
       </plugin>
 
       <plugin>
@@ -1554,6 +1514,11 @@
 
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
       </plugin>
     </plugins>
 
@@ -2178,6 +2143,12 @@
 
       <dependency>
         <groupId>org.codehaus.jackson</groupId>
+        <artifactId>jackson-jaxrs</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.jackson</groupId>
         <artifactId>jackson-mapper-asl</artifactId>
         <version>${jackson.version}</version>
         <scope>compile</scope>
@@ -2247,7 +2218,7 @@
       </dependency>
 
       <dependency>
-        <groupId>org.kuali.commons</groupId>
+        <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
         <version>${commons-beanutils.version}</version>
         <exclusions>
@@ -2652,6 +2623,17 @@
           <exclusion>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-css</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.kuali.common</groupId>
+        <artifactId>kuali-util</artifactId>
+        <version>${kuali-util.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.kuali.commons</groupId>
+            <artifactId>commons-beanutils</artifactId>
           </exclusion>
         </exclusions>
       </dependency>

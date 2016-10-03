@@ -200,7 +200,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
      */
     protected Class<? extends ExternalizableBusinessObject> getExternalizableBusinessObjectClass(Class boClass, String propertyName) {
         try {
-        	return PropertyUtils.getPropertyType(
+        	return (Class<? extends ExternalizableBusinessObject>)PropertyUtils.getPropertyType(
 					boClass.newInstance(), StringUtils.substringBeforeLast( propertyName, "." ) );
         } catch (Exception e) {
         	LOG.debug("Unable to determine type of property for " + boClass.getName() + "/" + propertyName, e );

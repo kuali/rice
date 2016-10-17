@@ -19,6 +19,7 @@ import org.junit.Assert
 import org.junit.Test
 import org.kuali.rice.core.test.JAXBAssert
 import org.kuali.rice.kew.api.rule.Rule
+import org.kuali.rice.kew.api.rule.RuleContract
 import org.kuali.rice.kew.api.rule.RuleDelegation
 import org.junit.Ignore
 
@@ -49,23 +50,28 @@ class RuleValidationContextTest {
  	 	"""
 
     @Test(expected=IllegalArgumentException.class)
- 	void test_Builder_create_fail_null_rule() {
- 	    RuleValidationContext.Builder.create(null, null, null)
- 	}
+    void test_Builder_create_fail_null_rule() {
+        RuleValidationContext.Builder.create(null, null, null)
+    }
 
     @Test(expected=IllegalArgumentException.class)
- 	void test_Builder_create_fail_null_source() {
- 	    RuleValidationContext.Builder.create(null)
- 	}
+    void test_Builder_create_fail_null_source() {
+        RuleValidationContext.Builder.create((RuleContract)null)
+    }
+
+    @Test(expected=NullPointerException.class)
+    void test_Builder_create_fail_null_source2() {
+        RuleValidationContext.Builder.create((RuleValidationContextContract)null)
+    }
 
     @Test
     void test_Builder_create_success_optional_properties() {
         Rule rule = Rule.Builder.create().build()
- 	    RuleValidationContext ctx = RuleValidationContext.Builder.create(rule, null, null).build()
- 	    Assert.assertEquals(rule, ctx.getRule())
+        RuleValidationContext ctx = RuleValidationContext.Builder.create(rule, null, null).build()
+        Assert.assertEquals(rule, ctx.getRule())
         Assert.assertNull(ctx.getRuleDelegation())
         Assert.assertNull(ctx.getRuleAuthorPrincipalId())
- 	}
+    }
 
     @Test
     void test_Builder_create_success() {
@@ -76,7 +82,7 @@ class RuleValidationContextTest {
         Assert.assertEquals(rule, ctx.getRule())
         Assert.assertEquals(ruleDelegation, ctx.getRuleDelegation())
         Assert.assertEquals(principalId, ctx.getRuleAuthorPrincipalId())
- 	}
+    }
 
     @Test
     void test_Builder_create_copy_success() {
@@ -85,26 +91,26 @@ class RuleValidationContextTest {
         String principalId = "principalId"
         def src = RuleValidationContext.Builder.create(rule, ruleDelegation, principalId).build()
         def ctx = RuleValidationContext.Builder.create(src).build()
- 	    Assert.assertEquals(rule, ctx.getRule())
+        Assert.assertEquals(rule, ctx.getRule())
         Assert.assertEquals(ruleDelegation, ctx.getRuleDelegation())
         Assert.assertEquals(principalId, ctx.getRuleAuthorPrincipalId())
- 	}
+    }
 
     @Test
     @Ignore // groovy.lang.MissingMethodException: No signature of method: static org.kuali.rice.kew.api.rule.Rule$Builder.create() is applicable for argument types: (java.lang.String) values: [ruleName]
- 	void test_Xml_Marshal_Unmarshal() {
+    void test_Xml_Marshal_Unmarshal() {
         Rule rule = Rule.Builder.create("ruleName").build()
         RuleDelegation ruleDelegation = RuleDelegation.Builder.create().build()
         String principalId = "principalId"
         def ctx = RuleValidationContext.Builder.create(rule, ruleDelegation, principalId).build()
- 	    JAXBAssert.assertEqualXmlMarshalUnmarshal(ctx, RVC, RuleValidationContext.class)
- 	}
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(ctx, RVC, RuleValidationContext.class)
+    }
 
     @Test
     @Ignore // groovy.lang.MissingMethodException: No signature of method: static org.kuali.rice.kew.api.rule.Rule$Builder.create() is applicable for argument types: (java.lang.String) values: [ruleName]
- 	void test_Xml_Marshal_Unmarshal_just_rule() {
+    void test_Xml_Marshal_Unmarshal_just_rule() {
         Rule rule = Rule.Builder.create("ruleName").build()
         def ctx = RuleValidationContext.Builder.create(rule, null, null).build()
- 	    JAXBAssert.assertEqualXmlMarshalUnmarshal(ctx, RVC_RULE_ONLY, RuleValidationContext.class)
- 	}
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(ctx, RVC_RULE_ONLY, RuleValidationContext.class)
+    }
 }

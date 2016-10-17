@@ -103,7 +103,7 @@
     <asm.group.string>org.ow2.asm</asm.group.string>
     <asm.version>5.0.3</asm.version>
     <aspectj.version>1.8.1</aspectj.version>
-    <bcprov.version>1.46</bcprov.version>
+    <bcprov.version>1.55</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
     <core-auth-servlet-filter.version>1.4</core-auth-servlet-filter.version>
     <closure.version>v20140730</closure.version>
@@ -119,7 +119,7 @@
     <commons-pool.version>1.6</commons-pool.version>
     <commons-digester.version>2.1</commons-digester.version>
     <commons-validator.version>1.4.0</commons-validator.version>
-    <cxf.version>2.7.12</cxf.version>
+    <cxf.version>2.7.18</cxf.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
@@ -869,10 +869,11 @@
 
                       <!-- already including cglib-nodep -->
                       <exclude>cglib:cglib</exclude>
-                      <!-- already including the jdk16 version -->
+
+                      <!-- already including the jdk15on version of bouncy castle -->
                       <exclude>org.bouncycastle:bcprov-jdk14</exclude>
-                      <!-- already including the jdk16 version -->
                       <exclude>org.bouncycastle:bcprov-jdk15</exclude>
+                      <exclude>org.bouncycastle:bcprov-jdk16</exclude>
 
                       <!-- excluding old jstl implementations which can cause hard-to-detect errors -->
                       <exclude>taglibs:standard</exclude>
@@ -2125,7 +2126,7 @@
 
       <dependency>
         <groupId>org.bouncycastle</groupId>
-        <artifactId>bcprov-jdk16</artifactId>
+        <artifactId>bcprov-jdk15on</artifactId>
         <version>${bcprov.version}</version>
       </dependency>
 

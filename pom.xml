@@ -130,7 +130,7 @@
     <freemarker.version>2.3.20-patch2</freemarker.version>
     <lesscss.version>1.3.3</lesscss.version>
     <glassfish-javax-json.version>1.0.4</glassfish-javax-json.version>
-    <groovy.version>2.4.7</groovy.version>
+    <groovy.version>2.3.11</groovy.version>
     <guava.version>17.0</guava.version>
     <httpclient.version>4.5.2</httpclient.version>
 
@@ -181,7 +181,7 @@
     <serializer.version>2.7.2</serializer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.7</slf4j.version>
-    <soa.model.core.version>1.2.2</soa.model.core.version>
+    <soa.model.core.version>1.5.4</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>3.2.12.RELEASE</spring.version>
     <spring.security.version>3.2.4.RELEASE</spring.security.version>

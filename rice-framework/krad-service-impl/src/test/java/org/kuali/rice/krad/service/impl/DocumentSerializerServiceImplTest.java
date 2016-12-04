@@ -55,9 +55,8 @@ public class DocumentSerializerServiceImplTest {
 
         // now serialize it
 
-        //String xml = serializerService.serializeDocumentToXmlForRouting(document);
-        //XMLAssert.assertXMLEqual(SIMPLE_DOCUMENT_FULL_XML, xml);
-        //System.out.println(xml);
+        String xml = serializerService.serializeDocumentToXmlForRouting(document);
+        XMLAssert.assertXMLEqual(SIMPLE_DOCUMENT_FULL_XML, xml);
 
         // now let's try again with a partial set of things to serialize
 
@@ -67,9 +66,8 @@ public class DocumentSerializerServiceImplTest {
         document = new WrappedDocument(evaluator);
         document.setDocumentProperty1("value1");
         document.setDocumentProperty2(2);
-        String xml = serializerService.serializeDocumentToXmlForRouting(document);
-        System.out.println(xml);
 
+        xml = serializerService.serializeDocumentToXmlForRouting(document);
         XMLAssert.assertXMLEqual(SIMPLE_DOCUMENT_PROPERTY_1, xml);
     }
 

@@ -197,12 +197,13 @@ public abstract class SerializerServiceBase implements SerializerService  {
             String parentPathString = pathString.substring(0, indexOfLastSlash);
             SerializationState parentState = pathToSerializationState.get(parentPathString);
             if (parentState == null && parentPathString.isEmpty()) {
-                parentState = new SerializationState();
+                state = new SerializationState();
             } else if (parentState == null) {
-                throw new IllegalStateException("No parent state found");
+                throw new IllegalStateException("No parent state found for a parent path that should have it: " + parentPathString);
+            } else {
+                state = new SerializationState(parentState);
+                state.addSerializedProperty(pathTracker.peekElement(), evaluator.determinePropertyType(object));
             }
-            state = new SerializationState(parentState);
-            state.addSerializedProperty(pathTracker.peekElement(), evaluator.determinePropertyType(object));
             pathToSerializationState.put(pathString, state);
         }
         return state;

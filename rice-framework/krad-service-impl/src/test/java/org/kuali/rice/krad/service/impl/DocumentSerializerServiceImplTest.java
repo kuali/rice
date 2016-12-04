@@ -71,6 +71,80 @@ public class DocumentSerializerServiceImplTest {
         XMLAssert.assertXMLEqual(SIMPLE_DOCUMENT_PROPERTY_1, xml);
     }
 
+    @Test
+    public void testSerializeDocumentToXmlForRouting_DeepObjectGraph() throws Exception {
+        // set up a simple document that is set up with a serializability evaluator that serializes everything
+        WrappedDocument document = setupDeepDocument();
+        document.setEvaluator(new MakeItSoPropertySerializibilityEvaluator());
+        // now serialize it
+
+        String xml = serializerService.serializeDocumentToXmlForRouting(document);
+        XMLAssert.assertXMLEqual(DEEP_DOCUMENT_FULL_XML, xml);
+
+        // now let's try again with a partial set of things to serialize
+
+        PropertySerializerTrie metadata = new PropertySerializerTrie();
+        metadata.addSerializablePropertyName("document.child1", false);
+        metadata.addSerializablePropertyName("document.child2.grandchild2", false);
+        metadata.addSerializablePropertyName("document.child2.grandchild3", false);
+        MetadataPropertySerializabilityEvaluator evaluator = new MetadataPropertySerializabilityEvaluator(metadata);
+        document.setEvaluator(evaluator);
+
+        xml = serializerService.serializeDocumentToXmlForRouting(document);
+        XMLAssert.assertXMLEqual(DEEP_DOCUMENT_PARTIAL_XML, xml);
+    }
+
+    private WrappedDocument setupDeepDocument() {
+        WrappedDocument document = new WrappedDocument(new MakeItSoPropertySerializibilityEvaluator());
+        document.setDocumentProperty1("value1");
+        document.setDocumentProperty2(1);
+
+        // child 1
+        Child child1 = new Child();
+        document.setChild1(child1);
+        child1.setProperty1("child1property1");
+        Grandchild child1grandchild1 = new Grandchild();
+        Grandchild child1grandchild2 = new Grandchild();
+        Grandchild child1grandchild3 = new Grandchild();
+        child1.setGrandchild1(child1grandchild1);
+        child1.setGrandchild2(child1grandchild2);
+        child1.setGrandchild3(child1grandchild3);
+
+        // grandchild1
+        child1grandchild1.setProperty1("child1grandchild1");
+        child1grandchild1.setProperty2(true);
+        // grandchild2
+        child1grandchild2.setProperty1("child1grandchild2");
+        child1grandchild2.setProperty2(false);
+        // grandchild3
+        child1grandchild3.setProperty1("child1grandchild3");
+        child1grandchild3.setProperty2(true);
+
+        // child 2
+        Child child2 = new Child();
+        document.setChild2(child2);
+        child2.setProperty1("child2property1");
+        Grandchild child2grandchild1 = new Grandchild();
+        Grandchild child2grandchild2 = new Grandchild();
+        Grandchild child2grandchild3 = new Grandchild();
+        child2.setGrandchild1(child2grandchild1);
+        child2.setGrandchild2(child2grandchild2);
+        child2.setGrandchild3(child2grandchild3);
+
+        // grandchild1
+        child2grandchild1.setProperty1("child2grandchild1");
+        child2grandchild1.setProperty2(false);
+        // grandchild2
+        child2grandchild2.setProperty1("child2grandchild2");
+        child2grandchild2.setProperty2(true);
+        // grandchild3
+        child2grandchild3.setProperty1("child2grandchild3");
+        child2grandchild3.setProperty2(false);
+
+        return document;
+    }
+
+
     public static class WrappedDocument extends TransactionalDocumentBase {
 
         private String documentProperty1;
@@ -443,35 +517,122 @@ public class DocumentSerializerServiceImplTest {
 
     private static final String SIMPLE_DOCUMENT_FULL_XML = new StringBuilder()
             .append("<org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
-            .append("<kualiTransactionalDocumentInformation>")
-            .append("<documentInitiator>")
-            .append("<person class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$MockPerson\">")
-            .append("<id>johndoe</id>")
-            .append("</person>")
-            .append("</documentInitiator>")
-            .append("</kualiTransactionalDocumentInformation>")
-            .append("<document class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$WrappedDocument\">")
-            .append("<newCollectionRecord>false</newCollectionRecord>")
-            .append("<documentHeader>")
-            .append("<newCollectionRecord>false</newCollectionRecord>")
-            .append("</documentHeader>")
-            .append("<pessimisticLocks/>")
-            .append("<adHocRoutePersons/>")
-            .append("<adHocRouteWorkgroups/>")
-            .append("<notes/>")
-            .append("<superUserAnnotation></superUserAnnotation>")
-            .append("<documentProperty1>value1</documentProperty1>")
-            .append("<documentProperty2>2</documentProperty2>")
-            .append("</document>")
-            .append("</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>").toString();
+            .append("  <kualiTransactionalDocumentInformation>")
+            .append("    <documentInitiator>")
+            .append("      <person class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$MockPerson\">")
+            .append("        <id>johndoe</id>")
+            .append("      </person>")
+            .append("    </documentInitiator>")
+            .append("  </kualiTransactionalDocumentInformation>")
+            .append("  <document class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$WrappedDocument\">")
+            .append("    <documentProperty1>value1</documentProperty1>")
+            .append("    <documentProperty2>2</documentProperty2>")
+            .append("    <documentHeader>")
+            .append("      <newCollectionRecord>false</newCollectionRecord>")
+            .append("    </documentHeader>")
+            .append("    <pessimisticLocks/>")
+            .append("    <adHocRoutePersons/>")
+            .append("    <adHocRouteWorkgroups/>")
+            .append("    <notes/>")
+            .append("    <superUserAnnotation></superUserAnnotation>")
+            .append("    <newCollectionRecord>false</newCollectionRecord>")
+            .append("  </document>")
+            .append("</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
+            .toString();
 
     private static final String SIMPLE_DOCUMENT_PROPERTY_1 = new StringBuilder()
             .append("<org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
-            .append("<document class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$WrappedDocument\">")
-            .append("<documentProperty1>value1</documentProperty1>")
-            .append("</document>")
-            .append("</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>").toString();
+            .append("  <document class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$WrappedDocument\">")
+            .append("    <documentProperty1>value1</documentProperty1>")
+            .append("  </document>")
+            .append("</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
+            .toString();
 
+    private static final String DEEP_DOCUMENT_FULL_XML = new StringBuilder()
+            .append("<org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
+            .append("  <kualiTransactionalDocumentInformation>")
+            .append("    <documentInitiator>")
+            .append("      <person class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$MockPerson\">")
+            .append("        <id>johndoe</id>")
+            .append("      </person>")
+            .append("    </documentInitiator>")
+            .append("  </kualiTransactionalDocumentInformation>")
+            .append("  <document class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$WrappedDocument\">")
+            .append("    <documentProperty1>value1</documentProperty1>")
+            .append("    <documentProperty2>1</documentProperty2>")
+            .append("    <child1>")
+            .append("      <property1>child1property1</property1>")
+            .append("      <grandchild1>")
+            .append("        <property1>child1grandchild1</property1>")
+            .append("        <property2>true</property2>")
+            .append("      </grandchild1>")
+            .append("      <grandchild2>")
+            .append("        <property1>child1grandchild2</property1>")
+            .append("        <property2>false</property2>")
+            .append("      </grandchild2>")
+            .append("      <grandchild3>")
+            .append("        <property1>child1grandchild3</property1>")
+            .append("        <property2>true</property2>")
+            .append("      </grandchild3>")
+            .append("    </child1>")
+            .append("    <child2>")
+            .append("      <property1>child2property1</property1>")
+            .append("      <grandchild1>")
+            .append("        <property1>child2grandchild1</property1>")
+            .append("        <property2>false</property2>")
+            .append("      </grandchild1>")
+            .append("      <grandchild2>")
+            .append("        <property1>child2grandchild2</property1>")
+            .append("        <property2>true</property2>")
+            .append("      </grandchild2>")
+            .append("      <grandchild3>")
+            .append("        <property1>child2grandchild3</property1>")
+            .append("        <property2>false</property2>")
+            .append("      </grandchild3>")
+            .append("    </child2>")
+            .append("    <documentHeader>")
+            .append("      <newCollectionRecord>false</newCollectionRecord>")
+            .append("    </documentHeader>")
+            .append("    <pessimisticLocks/>")
+            .append("    <adHocRoutePersons/>")
+            .append("    <adHocRouteWorkgroups/>")
+            .append("    <notes/>")
+            .append("    <superUserAnnotation></superUserAnnotation>")
+            .append("    <newCollectionRecord>false</newCollectionRecord>")
+            .append("  </document>")
+            .append("</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
+            .toString();
 
+    private static final String DEEP_DOCUMENT_PARTIAL_XML = new StringBuilder()
+            .append("<org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
+            .append("  <document class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$WrappedDocument\">")
+            .append("    <child1>")
+            .append("      <property1>child1property1</property1>")
+            .append("      <grandchild1>")
+            .append("        <property1>child1grandchild1</property1>")
+            .append("        <property2>true</property2>")
+            .append("      </grandchild1>")
+            .append("      <grandchild2>")
+            .append("        <property1>child1grandchild2</property1>")
+            .append("        <property2>false</property2>")
+            .append("      </grandchild2>")
+            .append("      <grandchild3>")
+            .append("        <property1>child1grandchild3</property1>")
+            .append("        <property2>true</property2>")
+            .append("      </grandchild3>")
+            .append("    </child1>")
+            .append("    <child2>")
+            .append("      <grandchild2>")
+            .append("        <property1>child2grandchild2</property1>")
+            .append("        <property2>true</property2>")
+            .append("      </grandchild2>")
+            .append("      <grandchild3>")
+            .append("        <property1>child2grandchild3</property1>")
+            .append("        <property2>false</property2>")
+            .append("      </grandchild3>")
+            .append("    </child2>")
+            .append("  </document>")
+            .append("</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
+            .toString();
 
 }

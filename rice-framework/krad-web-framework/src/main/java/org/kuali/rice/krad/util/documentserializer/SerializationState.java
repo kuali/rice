@@ -52,6 +52,11 @@ public class SerializationState {
         pathElements = new ArrayList<SerializationPropertyElement>();
     }
 
+    public SerializationState(SerializationState stateToCopy) {
+        this();
+        this.pathElements.addAll(stateToCopy.pathElements);
+    }
+
     /**
      * The number of property elements in this state object.
      *

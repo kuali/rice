@@ -39,15 +39,16 @@ import org.kuali.rice.krad.service.XmlObjectSerializerService;
 import org.kuali.rice.krad.service.util.DateTimeConverter;
 import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
-import org.kuali.rice.krad.util.documentserializer.PropertyType;
 import org.kuali.rice.krad.util.documentserializer.SerializationState;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.AutoPopulatingList;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Default implementation of the {@link DocumentSerializerService}.  If no &lt;workflowProperties&gt; have been defined in the
@@ -64,18 +65,22 @@ public abstract class SerializerServiceBase implements SerializerService  {
     protected XmlObjectSerializerService xmlObjectSerializerService;
 
     protected XStream xstream;
-    protected ThreadLocal<SerializationState> serializationStates;
+    //protected ThreadLocal<SerializationState> serializationStates;
     protected ThreadLocal<PropertySerializabilityEvaluator> evaluators;
 
-    protected ThreadLocal<PathTracker> pathTracker;
+    // this ThreadLocal stores a reference to the PathTracker being tracked by XStream
+    protected ThreadLocal<PathTracker> currentPathTracker;
+
+    protected Map<String, SerializationState> pathToSerializationState;
 
     public SerializerServiceBase() {
-        serializationStates = new ThreadLocal<SerializationState>();
-        evaluators = new ThreadLocal<PropertySerializabilityEvaluator>();
-        pathTracker = new ThreadLocal<PathTracker>();
+        //serializationStates = new ThreadLocal<SerializationState>();
+        evaluators = new ThreadLocal<>();
+        currentPathTracker = new ThreadLocal<>();
+        pathToSerializationState = new HashMap<>();
 
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
-        xstream.setMarshallingStrategy(new PathAwareReferenceByXPathMarshallingStrategy(pathTracker));
+        xstream.setMarshallingStrategy(new PathAwareReferenceByXPathMarshallingStrategy(currentPathTracker));
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
         try {
         	Class<?> objListProxyClass = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
@@ -95,8 +100,8 @@ public abstract class SerializerServiceBase implements SerializerService  {
         PropertySerializabilityEvaluator propertySerizabilityEvaluator =
                 getPropertySerizabilityEvaluator(businessObject);
         evaluators.set(propertySerizabilityEvaluator);
-        SerializationState state = new SerializationState(); //createNewDocumentSerializationState(document);
-        serializationStates.set(state);
+        //SerializationState state = new SerializationState(); //createNewDocumentSerializationState(document);
+        //serializationStates.set(state);
 
         //Object xmlWrapper = null;//wrapDocumentWithMetadata(document);
         String xml;
@@ -107,7 +112,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
         }
 
         evaluators.set(null);
-        serializationStates.set(null);
+        //serializationStates.set(null);
         return xml;
     }
 
@@ -132,6 +137,76 @@ public abstract class SerializerServiceBase implements SerializerService  {
      * @return the evaluator
      */
     protected abstract PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object dataObject);
+
+    protected PathTracker getCurrentPathTracker() {
+        PathTracker pathTracker = currentPathTracker.get();
+        if (pathTracker == null) {
+            throw new IllegalStateException("No XStream PathTracker is bound to the current thread");
+        }
+        return pathTracker;
+    }
+
+//    protected SerializationState constructStateFromPathTracker(PathTracker pathTracker, PropertyType propertyType) {
+//        SerializationState serializationState = new SerializationState();
+//        serializationState.addSerializedProperty(pathTracker.peekElement(), propertyType);
+//        pathTracker.getPath()
+//    }
+
+//    public class PathTrackerSerializationState extends SerializationState {
+//
+//        private final PathTracker pathTracker;
+//
+//        public PathTrackerSerializationState(PathTracker pathTracker) {
+//            this.pathTracker = pathTracker;
+//        }
+//
+//        @Override
+//        public int numPropertyElements() {
+//            return pathTracker.depth();
+//        }
+//
+//        @Override
+//        public void addSerializedProperty(String elementName, PropertyType propertyType) {
+//            throw new UnsupportedOperationException("Operation not supported");
+//        }
+//
+//        @Override
+//        public void removeSerializedProperty() {
+//            throw new UnsupportedOperationException("Operation not supported");
+//        }
+//
+//        @Override
+//        public String getElementName(int propertyIndex) {
+//            return pathTracker.peekElement(propertyIndex);
+//        }
+//
+//        @Override
+//        public PropertyType getPropertyType(int propertyIndex) {
+//            return super.getPropertyType(propertyIndex);
+//        }
+//    }
+
+    protected SerializationState registerSerializationState(PathTracker pathTracker, PropertySerializabilityEvaluator evaluator, Object object) {
+        String pathString = pathTracker.getPath().toString();
+        SerializationState state = pathToSerializationState.get(pathString);
+        if (state == null) {
+            int indexOfLastSlash = pathString.lastIndexOf("/");
+            if (indexOfLastSlash == -1) {
+                throw new IllegalStateException("Expected a path");
+            }
+            String parentPathString = pathString.substring(0, indexOfLastSlash);
+            SerializationState parentState = pathToSerializationState.get(parentPathString);
+            if (parentState == null && parentPathString.isEmpty()) {
+                parentState = new SerializationState();
+            } else if (parentState == null) {
+                throw new IllegalStateException("No parent state found");
+            }
+            state = new SerializationState(parentState);
+            state.addSerializedProperty(pathTracker.peekElement(), evaluator.determinePropertyType(object));
+            pathToSerializationState.put(pathString, state);
+        }
+        return state;
+    }
 
     public class ProxyConverter extends ReflectionConverter {
         public ProxyConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
@@ -166,8 +241,9 @@ public abstract class SerializerServiceBase implements SerializerService  {
     public class ProxyAndStateAwareJavaReflectionProvider extends PureJavaReflectionProvider {
         @Override
         public void visitSerializableFields(Object object, Visitor visitor) {
-            SerializationState state = serializationStates.get();
+            PathTracker pathTracker = getCurrentPathTracker();
             PropertySerializabilityEvaluator evaluator = evaluators.get();
+            SerializationState state = registerSerializationState(pathTracker, evaluator, object);
 
             for (Iterator iterator = fieldDictionary.serializableFieldsFor(object.getClass()); iterator.hasNext();) {
                 Field field = (Field) iterator.next();
@@ -197,10 +273,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
                         // resolve proxies after we determine that it's serializable
                         value = legacyDataAdapter.resolveProxy(value);
                     }
-                    PropertyType propertyType = evaluator.determinePropertyType(value);
-                    state.addSerializedProperty(field.getName(), propertyType);
                     visitor.visit(field.getName(), field.getType(), field.getDeclaringClass(), value);
-                    state.removeSerializedProperty();
                 }
             }
         }

@@ -55,26 +55,22 @@ public class DocumentSerializerServiceImplTest {
 
         // now serialize it
 
-        String xml = serializerService.serializeDocumentToXmlForRouting(document);
-        XMLAssert.assertXMLEqual(SIMPLE_DOCUMENT_FULL_XML, xml);
-        System.out.println(xml);
+        //String xml = serializerService.serializeDocumentToXmlForRouting(document);
+        //XMLAssert.assertXMLEqual(SIMPLE_DOCUMENT_FULL_XML, xml);
+        //System.out.println(xml);
 
         // now let's try again with a partial set of things to serialize
 
         PropertySerializerTrie metadata = new PropertySerializerTrie();
-        metadata.addSerializablePropertyName("document", false);
         metadata.addSerializablePropertyName("document.documentProperty1", false);
         MetadataPropertySerializabilityEvaluator evaluator = new MetadataPropertySerializabilityEvaluator(metadata);
         document = new WrappedDocument(evaluator);
-        xml = serializerService.serializeDocumentToXmlForRouting(document);
-
-
-
-//        PropertySerializerTrie trie = new PropertySerializerTrie();
-//        trie.addSerializablePropertyName("documentProperty1");
-//        String xml = serializerService.serializeDocumentToXmlForRouting(document);
+        document.setDocumentProperty1("value1");
+        document.setDocumentProperty2(2);
+        String xml = serializerService.serializeDocumentToXmlForRouting(document);
         System.out.println(xml);
 
+        XMLAssert.assertXMLEqual(SIMPLE_DOCUMENT_PROPERTY_1, xml);
     }
 
     public static class WrappedDocument extends TransactionalDocumentBase {
@@ -470,6 +466,14 @@ public class DocumentSerializerServiceImplTest {
             .append("<documentProperty2>2</documentProperty2>")
             .append("</document>")
             .append("</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>").toString();
+
+    private static final String SIMPLE_DOCUMENT_PROPERTY_1 = new StringBuilder()
+            .append("<org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>")
+            .append("<document class=\"org.kuali.rice.krad.service.impl.DocumentSerializerServiceImplTest$WrappedDocument\">")
+            .append("<documentProperty1>value1</documentProperty1>")
+            .append("</document>")
+            .append("</org.kuali.rice.krad.workflow.KualiDocumentXmlMaterializer>").toString();
+
 
 
 }

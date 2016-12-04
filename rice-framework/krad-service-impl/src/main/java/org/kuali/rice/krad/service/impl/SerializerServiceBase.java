@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.ConverterLookup;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.collections.CollectionConverter;
@@ -23,9 +24,13 @@ import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
+import com.thoughtworks.xstream.core.ReferenceByXPathMarshallingStrategy;
+import com.thoughtworks.xstream.core.TreeMarshaller;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.path.PathTracker;
 import com.thoughtworks.xstream.mapper.Mapper;
+import org.apache.commons.lang.reflect.FieldUtils;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
@@ -62,11 +67,15 @@ public abstract class SerializerServiceBase implements SerializerService  {
     protected ThreadLocal<SerializationState> serializationStates;
     protected ThreadLocal<PropertySerializabilityEvaluator> evaluators;
 
+    protected ThreadLocal<PathTracker> pathTracker;
+
     public SerializerServiceBase() {
         serializationStates = new ThreadLocal<SerializationState>();
         evaluators = new ThreadLocal<PropertySerializabilityEvaluator>();
+        pathTracker = new ThreadLocal<PathTracker>();
 
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
+        xstream.setMarshallingStrategy(new PathAwareReferenceByXPathMarshallingStrategy(pathTracker));
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
         try {
         	Class<?> objListProxyClass = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
@@ -211,6 +220,28 @@ public abstract class SerializerServiceBase implements SerializerService  {
     		return clazz.equals(AutoPopulatingList.class);
         }
 
+    }
+
+    public class PathAwareReferenceByXPathMarshallingStrategy extends ReferenceByXPathMarshallingStrategy {
+        private final ThreadLocal<PathTracker> pathTrackerThreadLocal;
+        public PathAwareReferenceByXPathMarshallingStrategy(ThreadLocal<PathTracker> pathTrackerThreadLocal) {
+            super(ReferenceByXPathMarshallingStrategy.RELATIVE);
+            this.pathTrackerThreadLocal = pathTrackerThreadLocal;
+        }
+        @Override
+        protected TreeMarshaller createMarshallingContext(HierarchicalStreamWriter writer, ConverterLookup converterLookup, Mapper mapper) {
+            TreeMarshaller treeMarshaller = super.createMarshallingContext(writer, converterLookup, mapper);
+            try {
+                PathTracker pathTracker = (PathTracker)FieldUtils.readField(treeMarshaller, "pathTracker", true);
+                if (pathTracker == null) {
+                    throw new IllegalStateException("The pathTracker on xstream marshaller is null");
+                }
+                this.pathTrackerThreadLocal.set(pathTracker);
+                return treeMarshaller;
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException(e);
+            }
+        }
     }
 
     protected XmlObjectSerializerService getXmlObjectSerializerService() {

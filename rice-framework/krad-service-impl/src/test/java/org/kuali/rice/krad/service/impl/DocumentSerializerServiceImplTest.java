@@ -124,6 +124,7 @@ public class DocumentSerializerServiceImplTest {
         document.setEvaluator(evaluator);
 
         xml = serializerService.serializeDocumentToXmlForRouting(document);
+        System.out.println(xml);
         XMLAssert.assertXMLEqual(COLLECTION_DOCUMENT_PARTIAL_XML_2, xml);
     }
 

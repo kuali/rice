@@ -44,7 +44,6 @@ public class DataObjectSerializerServiceImpl extends SerializerServiceBase imple
                 return true;
             }
         };
-
         return evaluator;
     }
 

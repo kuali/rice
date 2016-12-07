@@ -53,6 +53,16 @@ public class SerializationState {
     }
 
     /**
+     * Creates a new SerializationState that is a copy of the given state
+     *
+     * @param stateToCopy the state to copy
+     */
+    public SerializationState(SerializationState stateToCopy) {
+        this();
+        this.pathElements.addAll(stateToCopy.pathElements);
+    }
+
+    /**
      * The number of property elements in this state object.
      *
      * @return

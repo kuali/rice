@@ -80,7 +80,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
         pathToSerializationState = new ThreadLocal<>();
 
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
-        xstream.setMarshallingStrategy(new PathAwareReferenceByXPathMarshallingStrategy(currentPathTracker));
+        xstream.setMarshallingStrategy(new PathTrackerSmugglingMarshallingStrategy(currentPathTracker));
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
         try {
         	Class<?> objListProxyClass = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
@@ -93,6 +93,10 @@ public abstract class SerializerServiceBase implements SerializerService  {
         xstream.registerConverter(new DateTimeConverter());
     }
 
+    /**
+     * Execute the specified {@link Serializer} with the appropriate setup and tear down, and return the serialized XML
+     * when done.
+     */
     protected <T> String doSerialization(PropertySerializabilityEvaluator evaluator, T object, Serializer<T> serializer) {
         try {
             evaluators.set(evaluator);
@@ -153,14 +157,24 @@ public abstract class SerializerServiceBase implements SerializerService  {
         return pathTracker;
     }
 
+    /**
+     * Parse the given explicit XPath expression to find the path to the parent XML element.
+     *
+     * @param pathString
+     * @return the parent path, or empty string if the given path represents the root path of the xml document
+     * @throws IllegalArgumentException if the given path is not a valid path (i.e. doesn't contain a "/")
+     */
     private String parseParentPath(String pathString) {
         int indexOfLastSlash = pathString.lastIndexOf("/");
         if (indexOfLastSlash == -1) {
-            throw new IllegalStateException("Expected a path");
+            throw new IllegalArgumentException("Expected a path");
         }
         return pathString.substring(0, indexOfLastSlash);
     }
 
+    /**
+     * Returns the SerializationState for the given path string
+     */
     private SerializationState determineSerializationState(String pathString) {
         if (pathToSerializationState.get().isEmpty()) {
             pathToSerializationState.get().put(pathString, new SerializationState());
@@ -168,6 +182,9 @@ public abstract class SerializerServiceBase implements SerializerService  {
         return searchSerializationState(pathString, pathString);
     }
 
+    /**
+     * Attempts to find the SerializationState for the given path string, searching the parent paths if none found
+     */
     private SerializationState searchSerializationState(String pathString, String originalPath) {
         if (StringUtils.isBlank(pathString)) {
             throw new IllegalStateException("Failed to find existing SerializationState for path: " + originalPath);
@@ -176,6 +193,9 @@ public abstract class SerializerServiceBase implements SerializerService  {
         return state != null ? state : searchSerializationState(parseParentPath(pathString), originalPath);
     }
 
+    /**
+     * Records the given serialization state if it is not already registered.
+     */
     private void registerSerializationStateForField(SerializationState state, String fieldName, PropertyType propertyType, String parentPath) {
         String path = parentPath + "/" + fieldName;
         if (pathToSerializationState.get().get(path) == null) {
@@ -283,28 +303,41 @@ public abstract class SerializerServiceBase implements SerializerService  {
 
     }
 
-    public class PathAwareReferenceByXPathMarshallingStrategy extends ReferenceByXPathMarshallingStrategy {
+    private static class PathTrackerSmugglingMarshallingStrategy extends ReferenceByXPathMarshallingStrategy {
+
         private final ThreadLocal<PathTracker> pathTrackerThreadLocal;
-        public PathAwareReferenceByXPathMarshallingStrategy(ThreadLocal<PathTracker> pathTrackerThreadLocal) {
+
+        public PathTrackerSmugglingMarshallingStrategy(ThreadLocal<PathTracker> pathTrackerThreadLocal) {
             super(ReferenceByXPathMarshallingStrategy.RELATIVE);
             this.pathTrackerThreadLocal = pathTrackerThreadLocal;
         }
+
         @Override
         protected TreeMarshaller createMarshallingContext(HierarchicalStreamWriter writer, ConverterLookup converterLookup, Mapper mapper) {
             TreeMarshaller treeMarshaller = super.createMarshallingContext(writer, converterLookup, mapper);
+            smugglePathTracker(treeMarshaller);
+            return treeMarshaller;
+        }
+
+        /**
+         * Shhh...don't tell anybody, but we are going to smuggle the PathTracker out of here so we can
+         * reference it during marshalling in our custom reflection provider.
+         *
+         * This is really an XStream internal API so has the potential to break us horribly if they change the
+         * implementation in the future. We are betting on our unit tests catching that if it happens.
+         */
+        private void smugglePathTracker(TreeMarshaller treeMarshaller) {
             try {
-                // shhh...don't tell anybody, but we are going to smuggle this PathTracker out of here so we can
-                // use it during serialization
                 PathTracker pathTracker = (PathTracker)FieldUtils.readField(treeMarshaller, "pathTracker", true);
                 if (pathTracker == null) {
                     throw new IllegalStateException("The pathTracker on xstream marshaller is null");
                 }
                 this.pathTrackerThreadLocal.set(pathTracker);
-                return treeMarshaller;
             } catch (IllegalAccessException e) {
                 throw new IllegalStateException(e);
             }
         }
+
     }
 
     protected XmlObjectSerializerService getXmlObjectSerializerService() {

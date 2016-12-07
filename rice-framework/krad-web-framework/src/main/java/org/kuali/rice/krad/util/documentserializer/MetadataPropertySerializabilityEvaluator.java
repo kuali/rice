@@ -1,7 +1,7 @@
 package org.kuali.rice.krad.util.documentserializer;
 
 /**
- * A very simple implement of {@link PropertySerializabilityEvaluator} which simply uses the
+ * A very simple implementation of {@link PropertySerializabilityEvaluator} which simply uses the
  * provided {@link PropertySerializerTrie} as metadata to define what should be serialized.
  *
  * @author Eric Westfall

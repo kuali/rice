@@ -24,6 +24,9 @@
   <import resource="classpath:org/kuali/rice/kim/impl/config/KimEmbeddedSpringBeans.xml"/>
   <import resource="classpath:org/kuali/rice/kim/impl/config/_KimServiceBusSpringBeans.xml"/>
 
+  <bean id="kimDataIntegrityService" class="org.kuali.rice.kim.impl.data.DataIntegrityServiceImpl"
+        p:dataSource-ref="kimDataSource"/>
+
   <!-- the distributed cache manager that calls into the kimCacheAdminService on the ksb -->
   <bean id="kimDistributedCacheManager" class="org.kuali.rice.core.impl.cache.DistributedCacheManagerDecorator"
         p:cacheManager-ref="kimLocalCacheManager"
@@ -56,6 +59,7 @@
       <list>
         <idref local="kimCacheDistributionQueue" />
         <idref local="kimDistributedCacheManager" />
+        <idref local="kimDataIntegrityService" />
       </list>
     </property>
   </bean>

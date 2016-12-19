@@ -15,12 +15,21 @@
  */
 package org.kuali.rice.core.api.criteria;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.search.SearchOperator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import static org.kuali.rice.core.api.criteria.PredicateFactory.and;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.between;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equal;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.equalIgnoreCase;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThan;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.greaterThanOrEqual;
+import static org.kuali.rice.core.api.criteria.PredicateFactory.in;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.isNotNull;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.isNull;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.lessThan;
@@ -29,14 +38,6 @@ import static org.kuali.rice.core.api.criteria.PredicateFactory.likeIgnoreCase;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.notEqualIgnoreCase;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.notLikeIgnoreCase;
 import static org.kuali.rice.core.api.criteria.PredicateFactory.or;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.search.SearchOperator;
 
 public final class PredicateUtils {
 
@@ -70,19 +71,37 @@ public final class PredicateUtils {
             if (StringUtils.isNotBlank(entry.getValue())) {
                 List<String> values = new ArrayList<String>();
                 getValueRecursive(entry.getValue(), values);
-                List<Predicate> tempPredicates = new ArrayList<Predicate>();
-                p.addAll(tempPredicates);
 
-                // TODO: how to handle different types of data when everything comes in as string....
-                for (String value : values) {
-                    tempPredicates.add(parsePredicate(entry.getKey(), value));
-                }
-                if (entry.getValue().contains(SearchOperator.AND.op())) {
-                    p.add(and(tempPredicates.toArray(new Predicate[tempPredicates.size()])));
-                } else if (entry.getValue().contains(SearchOperator.OR.op())) {
-                    p.add(or(tempPredicates.toArray(new Predicate[tempPredicates.size()])));
+                boolean isOr = entry.getValue().contains(SearchOperator.OR.op());
+                boolean isAnd = entry.getValue().contains(SearchOperator.AND.op());
+
+                if (isOr) {
+                    // to be safe, we split our IN clause into groups of 1000 so Oracle doesn't choke
+                    List<Predicate> inPredicates = new ArrayList<>();
+                    List<String> inValues = new ArrayList<>();
+                    for (String value : values) {
+                        if (inValues.size() == 1000) {
+                            inPredicates.add(in(entry.getKey(), inValues));
+                            inValues = new ArrayList<>();
+                        }
+                        inValues.add(value);
+                    }
+                    inPredicates.add(in(entry.getKey(), inValues));
+                    if (inPredicates.size() == 1) {
+                        p.add(inPredicates.get(0));
+                    } else {
+                        p.add(or(inPredicates.toArray(new Predicate[inPredicates.size()])));
+                    }
                 } else {
-                    p.addAll(tempPredicates);
+                    List<Predicate> tempPredicates = new ArrayList<Predicate>();
+                    for (String value : values) {
+                        tempPredicates.add(parsePredicate(entry.getKey(), value));
+                    }
+                    if (isAnd) {
+                        p.add(and(tempPredicates.toArray(new Predicate[tempPredicates.size()])));
+                    } else {
+                        p.addAll(tempPredicates);
+                    }
                 }
             }
         }
@@ -139,34 +158,34 @@ public final class PredicateUtils {
     }
 
     private static void getValueRecursive(String valueEntered, List<String> lRet) {
- 		if(valueEntered == null) {
- 			return;
- 		}
+        if(valueEntered == null) {
+            return;
+        }
 
- 		valueEntered = valueEntered.trim();
+        valueEntered = valueEntered.trim();
         valueEntered = valueEntered.replaceAll("%", "*");
- 		if(lRet == null){
- 			throw new NullPointerException("The list passed in is by reference and should never be null.");
- 		}
+        if(lRet == null){
+            throw new NullPointerException("The list passed in is by reference and should never be null.");
+        }
 
- 		if (StringUtils.contains(valueEntered, SearchOperator.OR.op())) {
- 			List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.OR.op()));
- 			for(String value : l){
- 				getValueRecursive(value, lRet);
- 			}
- 			return;
- 		}
- 		if (StringUtils.contains(valueEntered, SearchOperator.AND.op())) {
- 			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND.op())));
- 			List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.AND.op()));
- 			for(String value : l){
- 				getValueRecursive(value, lRet);
- 			}
- 			return;
- 		}
+        if (StringUtils.contains(valueEntered, SearchOperator.OR.op())) {
+            List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.OR.op()));
+            for(String value : l){
+                getValueRecursive(value, lRet);
+            }
+            return;
+        }
+        if (StringUtils.contains(valueEntered, SearchOperator.AND.op())) {
+            //splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KRADConstants.AND.op())));
+            List<String> l = Arrays.asList(StringUtils.split(valueEntered, SearchOperator.AND.op()));
+            for(String value : l){
+                getValueRecursive(value, lRet);
+            }
+            return;
+        }
 
- 		// lRet is pass by ref and should NEVER be null
- 		lRet.add(valueEntered);
+        // lRet is pass by ref and should NEVER be null
+        lRet.add(valueEntered);
     }
 
     private static boolean isNot(String value) {

@@ -112,6 +112,7 @@
     <aspectj.version>1.8.1</aspectj.version>
     <bcprov.version>1.54</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
+    <core-auth-servlet-filter.version>1.2</core-auth-servlet-filter.version>
     <closure.version>v20140730</closure.version>
     <cglib.version>3.1</cglib.version>
     <commons-beanutils.version>1.8.3-kuali-4</commons-beanutils.version>
@@ -1585,6 +1586,17 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    <repository>
+      <id>kualico.nexus</id>
+      <name>KualiCo Nexus Repository Manager</name>
+      <url>https://nexus.kuali.co/nexus/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <dependencyManagement>
@@ -2611,7 +2623,11 @@
           </exclusion>
         </exclusions>
       </dependency>
-
+      <dependency>
+        <groupId>co.kuali</groupId>
+        <artifactId>core-filter</artifactId>
+        <version>${core-auth-servlet-filter.version}</version>
+      </dependency>
       <!-- Jetty dependencies -->
       <dependency>
         <groupId>org.eclipse.jetty</groupId>

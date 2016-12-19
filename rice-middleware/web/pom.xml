@@ -87,6 +87,10 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>co.kuali</groupId>
+      <artifactId>core-filter</artifactId>
+    </dependency>
+    <dependency>
       <groupId>mysql</groupId>
       <artifactId>${mysql.jdbc.artifactId}</artifactId>
     </dependency>

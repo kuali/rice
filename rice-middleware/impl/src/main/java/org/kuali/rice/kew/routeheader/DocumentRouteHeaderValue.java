@@ -297,6 +297,10 @@ public class DocumentRouteHeaderValue extends DataObjectBase implements Document
     }
 
     public String getRoutedByDisplayName() {
+        String routedByUserWorkflowId = getRoutedByUserWorkflowId();
+        if (StringUtils.isBlank(routedByUserWorkflowId)) {
+            return "";
+        }
         return KEWServiceLocator.getIdentityHelperService().getPerson(getRoutedByUserWorkflowId()).getName();
     }
 

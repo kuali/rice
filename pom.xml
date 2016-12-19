@@ -41,10 +41,6 @@
   </description>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
 
-  <ciManagement>
-    <url>http://ci.rice.kuali.org</url>
-  </ciManagement>
-
   <properties>
     <project.java.version>1.7</project.java.version>
     <project.compile.source>1.7</project.compile.source>
@@ -2757,11 +2753,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.kuali.org/</url>
-  </issueManagement>
 
   <scm>
     <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>

@@ -15,28 +15,11 @@
  */
 package org.kuali.rice.kim.document;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.persistence.annotations.JoinFetch;
 import org.eclipse.persistence.annotations.JoinFetchType;
+import org.kuali.rice.core.api.membership.MemberType;
 import org.kuali.rice.kew.framework.postprocessor.DocumentRouteStatusChange;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.api.identity.employment.EntityEmployment;
@@ -56,8 +39,11 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
 import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
 import org.kuali.rice.kim.impl.services.KimImplServiceLocator;
 import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -67,8 +53,26 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
 import org.kuali.rice.krad.data.jpa.converters.HashConverter;
 import org.kuali.rice.krad.data.platform.MaxValueIncrementerFactory;
+import org.kuali.rice.krad.rules.rule.event.DocumentEvent;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -84,7 +88,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 
     protected static final long serialVersionUID = -534993712085516925L;
 
-    // principal data                       
+    // principal data
     @Column(name = "PRNCPL_ID")
     protected String principalId;
 
@@ -94,7 +98,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Column(name = "ENTITY_ID")
     protected String entityId;
 
-    //@Type(type="org.kuali.rice.krad.util.HibernateKualiHashType")                       
+    //@Type(type="org.kuali.rice.krad.util.HibernateKualiHashType")
     @Column(name = "PRNCPL_PSWD")
     @Convert(converter = HashConverter.class)
     protected String password;
@@ -102,7 +106,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Column(name = "UNIV_ID")
     protected String univId = "";
 
-    // affiliation data                       
+    // affiliation data
     @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentAffiliation.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
@@ -111,7 +115,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Transient
     protected String campusCode = "";
 
-    // external identifier data                       
+    // external identifier data
     @Transient
     protected Map<String, String> externalIdentifiers = null;
 
@@ -119,11 +123,11 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Convert(converter = BooleanYNConverter.class)
     protected boolean active;
 
-    // citizenship                       
+    // citizenship
     @Transient
     protected List<PersonDocumentCitizenship> citizenships;
 
-    // protected List<DocEmploymentInfo> employmentInformations;                       
+    // protected List<DocEmploymentInfo> employmentInformations;
     @JoinFetch(value= JoinFetchType.OUTER)
     @OneToMany(targetEntity = PersonDocumentName.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
     @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false)
@@ -162,7 +166,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     public IdentityManagementPersonDocument() {
         affiliations = new ArrayList<PersonDocumentAffiliation>();
         citizenships = new ArrayList<PersonDocumentCitizenship>();
-        // employmentInformations = new ArrayList<DocEmploymentInfo>();                       
+        // employmentInformations = new ArrayList<DocEmploymentInfo>();
         names = new ArrayList<PersonDocumentName>();
         addrs = new ArrayList<PersonDocumentAddress>();
         phones = new ArrayList<PersonDocumentPhone>();
@@ -186,7 +190,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     /*
-     * sets the principal name.  
+     * sets the principal name.
      * Principal names are converted to lower case.
      */
     public void setPrincipalName(String principalName) {
@@ -386,15 +390,25 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         if (getDelegationMembers() != null) {
             for (RoleDocumentDelegationMember delegationMember : getDelegationMembers()) {
                 delegationMember.setDocumentNumber(getDocumentNumber());
-                delegationMember.setVersionNumber(null);
-                delegationMember.setObjectId(null);
-
                 for (RoleDocumentDelegationMemberQualifier qualifier : delegationMember.getQualifiers()) {
                     qualifier.setDocumentNumber(getDocumentNumber());
                     qualifier.setKimTypId(delegationMember.getRoleBo().getKimTypeId());
                 }
                 addDelegationMemberToDelegation(delegationMember);
             }
+        }
+        // important to do this after getDelegationMembers since the addDelegationMemberToDelegation method will create
+        // primary and/or secondary delegations for us in a "just-in-time" fashion
+        if (getDelegations() != null) {
+            List<RoleDocumentDelegation> emptyDelegations = new ArrayList<>();
+            for (RoleDocumentDelegation delegation : getDelegations()) {
+                delegation.setDocumentNumber(getDocumentNumber());
+                if (delegation.getMembers().isEmpty()) {
+                    emptyDelegations.add(delegation);
+                }
+            }
+            // remove any empty delegations because we just don't need them
+            getDelegations().removeAll(emptyDelegations);
         }
         if (getAddrs() != null) {
             for (PersonDocumentAddress address : getAddrs()) {
@@ -460,6 +474,43 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
             }
         }
     }
+
+    @Override
+    public void postProcessSave(DocumentEvent event) {
+        super.postProcessSave(event);
+        // after the save has completed, we want to restore any potentially @Transient state that JPA might have
+        // discarded, specifically the delegation members have a lot of this
+        resyncTransientState();
+    }
+
+    public void resyncTransientState() {
+        getDelegationMembers().clear();
+        for (RoleDocumentDelegation delegation : getDelegations()) {
+            for (RoleDocumentDelegationMember delegationMember : delegation.getMembers()) {
+
+                // RoleDocumentDelegationMember has a number of transient fields that are derived from the role member,
+                // we must populate them in order for the person document to work properly when loading an existing
+                // person document
+
+                RoleMemberBo roleMember = getUiDocumentService().getRoleMember(delegationMember.getRoleMemberId());
+                delegationMember.setRoleMemberMemberId(roleMember.getMemberId());
+                delegationMember.setRoleMemberMemberTypeCode(roleMember.getType().getCode());
+                delegationMember.setRoleMemberName(getUiDocumentService().getMemberName(MemberType.fromCode(delegationMember.getRoleMemberMemberTypeCode()), delegationMember.getRoleMemberMemberId()));
+                delegationMember.setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(MemberType.fromCode(delegationMember.getRoleMemberMemberTypeCode()), delegationMember.getRoleMemberMemberId()));
+                delegationMember.setDelegationTypeCode(delegation.getDelegationTypeCode());
+                Role role = KimApiServiceLocator.getRoleService().getRole(roleMember.getRoleId());
+                delegationMember.setRoleBo(RoleBo.from(role));
+
+                // don't want to be able to "delete" existing delegation members from the person document, so we
+                // indicate that we are editing the delegation member, which we are
+                delegationMember.setEdit(true);
+
+                getDelegationMembers().add(delegationMember);
+            }
+        }
+    }
+
+
 
     protected void setEmployeeRecordIds() {
         List<EntityEmployment> empInfos = getUiDocumentService().getEntityEmploymentInformationInfo(getEntityId());

@@ -1377,7 +1377,7 @@
               </goals>
               <phase>process-classes</phase>
               <configuration>
-                <logLevel>FINER</logLevel>
+                <logLevel>FINE</logLevel>
                 <persistenceXMLLocation>META-INF/persistence-weaving.xml</persistenceXMLLocation>
               </configuration>
             </execution>

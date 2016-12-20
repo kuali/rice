@@ -15,13 +15,7 @@
  */
 package org.kuali.rice.kim.impl.identity.name;
 
-import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.kuali.rice.kim.api.KimApiConstants;
 import org.kuali.rice.kim.api.identity.name.EntityNameContract;
@@ -29,6 +23,12 @@ import org.kuali.rice.kim.api.identity.privacy.EntityPrivacyPreferences;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.bo.DataObjectBase;
 import org.kuali.rice.krad.data.jpa.converters.BooleanYNConverter;
+
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import java.sql.Timestamp;
 
 @MappedSuperclass
 public abstract class EntityNameBase extends DataObjectBase implements EntityNameContract {
@@ -162,7 +162,7 @@ public abstract class EntityNameBase extends DataObjectBase implements EntityNam
 
     @Override
     public String getCompositeNameUnmasked() {
-        return getLastName() + ", " + getFirstName() + (getMiddleName() == null ? "" : " " + getMiddleName());
+        return getLastName() + ", " + getFirstName() + (StringUtils.isBlank(getMiddleName()) ? "" : " " + getMiddleName());
     }
 
     @Override

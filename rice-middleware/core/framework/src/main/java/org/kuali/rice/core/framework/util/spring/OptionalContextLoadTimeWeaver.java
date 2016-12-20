@@ -43,23 +43,23 @@ import java.lang.instrument.ClassFileTransformer;
  */
 public class OptionalContextLoadTimeWeaver implements LoadTimeWeaver, BeanClassLoaderAware, DisposableBean {
 
-    private static final String WEAVING_TYPE_PROP = "rice.jpa.weaving.type";
+    private static final String LTW_ENABLED_PROP = "rice.jpa.ltw.enabled";
 
     private DefaultContextLoadTimeWeaver loadTimeWeaver;
     private boolean loadTimeWeaverLoaded;
     private ClassLoader beanClassLoader;
-    private WeavingType weavingType;
+    private boolean ltwEnabled;
 
     public OptionalContextLoadTimeWeaver() {
         this.loadTimeWeaver = new DefaultContextLoadTimeWeaver();
-        this.weavingType = WeavingType.valueOf(ConfigContext.getCurrentContextConfig().getProperty(WEAVING_TYPE_PROP));
+        this.ltwEnabled = ConfigContext.getCurrentContextConfig().getBooleanProperty(LTW_ENABLED_PROP, false);
     }
 
     @Override
     public void setBeanClassLoader(ClassLoader beanClassLoader) {
         try {
             this.beanClassLoader = beanClassLoader;
-            if (weavingType == WeavingType.LOADTIME) {
+            if (ltwEnabled) {
                 this.loadTimeWeaver.setBeanClassLoader(beanClassLoader);
                 loadTimeWeaverLoaded = true;
             }

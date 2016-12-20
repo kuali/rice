@@ -89,10 +89,11 @@
 	<param name="rice.jpa.persistence.provider" override="false">eclipselink</param>
 
     <!--
-      can be 'STATIC' or 'LOADTIME' (all uppercase), note that Rice is configured to do static weaving as part of it's
-      build so 'LOADTIME' is really only useful for development within an IDE
-    -->
-    <param name="rice.jpa.weaving.type" override="false">STATIC</param>
+        Indicates if loadtime weaving is enabled or not, note that Rice is configured to do static weaving as part of
+        it's build so loadtime weaving is really only useful for development within an IDE, therefore this parameter
+        is defaulted to false
+     -->
+    <param name="rice.jpa.ltw.enabled" override="false">false</param>
 
     <!-- developer use only, if set to true, will serialize everything in memory on startup to quickly find objects that aren't serializable -->
     <!-- this parameter doesn't matter in a prod environment, as the serialization won't occur in prod environment -->

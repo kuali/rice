@@ -126,7 +126,7 @@
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
-    <eclipselink.version>2.6.2</eclipselink.version>
+    <eclipselink.version>2.6.3</eclipselink.version>
     <ehcache.version>2.6.10</ehcache.version>
     <esapi.version>2.1.0.1</esapi.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>

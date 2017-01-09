@@ -15,17 +15,7 @@
  */
 package org.kuali.rice.kew.role;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import org.apache.cxf.common.i18n.Exception;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -47,6 +37,7 @@ import org.kuali.rice.kim.api.role.RoleMembership;
 import org.kuali.rice.kim.api.role.RoleResponsibilityAction;
 import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.api.type.KimType;
 import org.kuali.rice.kim.impl.common.attribute.KimAttributeBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateMemberBo;
 import org.kuali.rice.kim.impl.common.delegate.DelegateTypeBo;
@@ -64,6 +55,14 @@ import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests Role-based routing integration between KEW and KIM.
@@ -335,17 +334,17 @@ public class RoleRouteModuleTest extends KEWTestCase {
         nodeNameTypeAttribute = KradDataServiceLocator.getDataObjectService().save(nodeNameTypeAttribute);
 
         createResponsibilityForRoleRouteModuleTest(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal,
-                                                   "FirstApproveReview", "RoleRouteModuleTest1", "resp1", "VoluntaryReview1", ActionRequestPolicy.FIRST);
+                "FirstApproveReview", "RoleRouteModuleTest1", "resp1", "VoluntaryReview1", ActionRequestPolicy.FIRST);
         //createResponsibilityForRoleRouteModuleTest1(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal);
         createResponsibilityForRoleRouteModuleTest(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal,
-                                                   "AllApproveReview", "RoleRouteModuleTest2", "resp2", "VoluntaryReview2", ActionRequestPolicy.ALL);
+                "AllApproveReview", "RoleRouteModuleTest2", "resp2", "VoluntaryReview2", ActionRequestPolicy.ALL);
         //createResponsibilityForRoleRouteModuleTest2(role, documentTypeAttribute, nodeNameAttribute, kimRespType, user1RolePrincipal, user2RolePrincipal, adminRolePrincipal);
 
         suiteDataInitialized = true;
     }
 
     private void createResponsibilityForRoleRouteModuleTest(RoleBo role, KimAttributeBo documentTypeAttribute, KimAttributeBo nodeNameAttribute, KimTypeBo kimRespType, RoleMemberBo user1RolePrincipal, RoleMemberBo user2RolePrincipal, RoleMemberBo adminRolePrincipal,
-                                                            String templateName, String docTypeDetailValue, String responsibilityName, String responsibilityDesc, ActionRequestPolicy actionRequestPolicy) {
+            String templateName, String docTypeDetailValue, String responsibilityName, String responsibilityDesc, ActionRequestPolicy actionRequestPolicy) {
 
         /**
          * Create the responsibility template
@@ -537,7 +536,8 @@ public class RoleRouteModuleTest extends KEWTestCase {
         assertTrue("Approval should be requested.", document.isApprovalRequested());
 
         // examine the action requests
-        List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(document.getDocumentId());
+        List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(
+                document.getDocumentId());
         // there should be 2 root action requests returned here, 1 containing the 2 requests for "BL", and one containing the request for "IN"
         assertEquals("Should have 3 action requests.", 3, actionRequests.size());
         int numRoots = 0;
@@ -766,7 +766,9 @@ public class RoleRouteModuleTest extends KEWTestCase {
                             ROLE_NAME);
                     Map<String, String> criteria = new HashMap<String, String>();
                     criteria.put("roleId", role.getId());
-                    List<RoleMemberBo> roleMembers = KradDataServiceLocator.getDataObjectService().findMatching(RoleMemberBo.class, QueryByCriteria.Builder.forAttribute("roleId", role.getId()).build()).getResults();
+                    List<RoleMemberBo> roleMembers = KradDataServiceLocator.getDataObjectService().findMatching(
+                            RoleMemberBo.class, QueryByCriteria.Builder.forAttribute("roleId", role.getId()).build())
+                            .getResults();
                     assertFalse("role member list should not currently be empty", roleMembers.isEmpty());
                     for (RoleMemberBo roleMember : roleMembers) {
                         //String roleMemberId = roleMember.getRoleMemberId();
@@ -778,11 +780,13 @@ public class RoleRouteModuleTest extends KEWTestCase {
                     // flush deletes on DataObjectService
                     KradDataServiceLocator.getDataObjectService().flush(RoleMemberBo.class);
 
-                    List<RoleMembership> roleMemberInfos = KimApiServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getId()), Collections.<String, String>emptyMap());
+                    List<RoleMembership> roleMemberInfos = KimApiServiceLocator.getRoleService().getRoleMembers(
+                            Collections.singletonList(role.getId()), Collections.<String, String>emptyMap());
                     assertEquals("role member list should be empty now", 0, roleMemberInfos.size());
 
                     // now that we've removed all members from the Role, let's trying routing the doc!
-                    WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest1");
+                    WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName(
+                            "ewestfal"), "RoleRouteModuleTest1");
                     document.route("");
 
                     // the document should be final now, because the role has no members so all nodes should have been skipped for routing purposes
@@ -800,6 +804,120 @@ public class RoleRouteModuleTest extends KEWTestCase {
                 }
             }
         });
+    }
+
+    protected void setupForDuplicateChildRequest() {
+        // Create a derived version of the existing ChartOrg role
+        KimType kimType = KimApiServiceLocator.getKimTypeInfoService().findKimTypeByNameAndNamespace(NAMESPACE, "ChartOrg");
+
+        KimTypeBo derivedKimType = KimTypeBo.from(kimType);
+        derivedKimType.setId(getNextSequenceStringValue("KRIM_TYP_ID_S"));
+        derivedKimType.setName("DerivedChartOrg");
+        derivedKimType.setServiceName("testDuplicateActionRequestRoleTypeService");
+        derivedKimType.setVersionNumber(null);
+        derivedKimType.setObjectId(null);
+        for (KimTypeAttributeBo attribute : derivedKimType.getAttributeDefinitions()) {
+            attribute.setId(getNextSequenceStringValue("KRIM_TYP_ATTR_ID_S"));
+            attribute.setKimTypeId(derivedKimType.getId());
+            attribute.setVersionNumber(null);
+            attribute.setObjectId(null);
+        }
+        derivedKimType = KradDataServiceLocator.getDataObjectService().save(derivedKimType);
+
+        String roleId = "" + getNextSequenceLongValue("KRIM_ROLE_ID_S");
+        RoleBo role = new RoleBo();
+        role.setId(roleId);
+        role.setNamespaceCode(NAMESPACE);
+        role.setDescription("");
+        role.setName("RoleRouteModuleTestDerivedRole");
+        role.setActive(true);
+        role.setKimTypeId(derivedKimType.getId());
+        role = KradDataServiceLocator.getDataObjectService().save(role);
+
+        Long kimRespTypeId = getNextSequenceLongValue("KRIM_TYP_ID_S");
+        KimTypeBo kimRespType = new KimTypeBo();
+        kimRespType.setId("" + kimRespTypeId);
+        kimRespType.setName("RespDetails");
+        kimRespType.setNamespaceCode(NAMESPACE);
+        kimRespType.setServiceName("testBaseResponsibilityTypeService");
+        kimRespType.setActive(true);
+        kimRespType = KradDataServiceLocator.getDataObjectService().save(kimRespType);
+
+        // Create a new responsibility that produces actions for any member of the DerivedChartOrg role
+        String templateId = String.valueOf(getNextSequenceLongValue("KRIM_RSP_TMPL_ID_S"));
+        ResponsibilityTemplateBo template = new ResponsibilityTemplateBo();
+        template.setId(templateId);
+        template.setNamespaceCode(NAMESPACE);
+        template.setName("DuplicateReview");
+        template.setKimTypeId(kimRespType.getId());
+        template.setActive(true);
+        template.setDescription("description");
+        template = KradDataServiceLocator.getDataObjectService().save(template);
+
+        String responsibilityId = "" + getNextSequenceLongValue("KRIM_ROLE_RSP_ID_S");
+
+        List<ResponsibilityAttributeBo> detailObjects = new ArrayList<ResponsibilityAttributeBo>();
+
+        ResponsibilityBo responsibility = new ResponsibilityBo();
+        responsibility.setActive(true);
+        responsibility.setDescription("DuplicateReview");
+        responsibility.setAttributeDetails(detailObjects);
+        responsibility.setName("resp3");
+        responsibility.setNamespaceCode(NAMESPACE);
+        responsibility.setId(responsibilityId);
+        responsibility.setTemplate(template);
+        responsibility.setTemplateId(template.getId());
+        responsibility = KradDataServiceLocator.getDataObjectService().save(responsibility);
+
+        String roleResponsibilityId = "" + getNextSequenceLongValue("KRIM_ROLE_RSP_ID_S");
+        RoleResponsibilityBo roleResponsibility = new RoleResponsibilityBo();
+        roleResponsibility.setRoleResponsibilityId(roleResponsibilityId);
+        roleResponsibility.setActive(true);
+        roleResponsibility.setResponsibilityId(responsibilityId);
+        roleResponsibility.setRoleId(role.getId());
+        roleResponsibility = KradDataServiceLocator.getDataObjectService().save(roleResponsibility);
+
+        String roleResponsibilityActionId = "" + getNextSequenceLongValue("KRIM_ROLE_RSP_ACTN_ID_S");
+        RoleResponsibilityActionBo roleResponsibilityAction1 = new RoleResponsibilityActionBo();
+        roleResponsibilityAction1.setId(roleResponsibilityActionId);
+        roleResponsibilityAction1.setRoleResponsibilityId(roleResponsibilityId);
+        roleResponsibilityAction1.setRoleMemberId("*");
+        roleResponsibilityAction1.setActionTypeCode(KewApiConstants.ACTION_REQUEST_APPROVE_REQ);
+        roleResponsibilityAction1.setActionPolicyCode(ActionRequestPolicy.FIRST.getCode());
+        roleResponsibilityAction1.setPriorityNumber(1);
+        roleResponsibilityAction1.setForceAction(true);
+        roleResponsibilityAction1 = KradDataServiceLocator.getDataObjectService().save(roleResponsibilityAction1);
+    }
+
+    @Test
+    public void testRoleRouteModule_DuplicateChildRequest() {
+        setupForDuplicateChildRequest();
+
+        WorkflowDocument document = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"), "RoleRouteModuleTest3");
+        document.route("");
+
+        // examine the action requests
+        List<ActionRequest> actionRequests = KewApiServiceLocator.getWorkflowDocumentService().getRootActionRequests(
+                document.getDocumentId());
+        // there should be 2 root action requests returned here, 1 containing the 2 requests for "BL", and the other containing 2 requests for "IN"
+        assertEquals("Should have 2 action requests.", 2, actionRequests.size());
+        int numChildren = 0;
+        String rootRequestAnnotation = String.format("%s %s ", NAMESPACE, "RoleRouteModuleTestDerivedRole");
+        for (ActionRequest actionRequest : actionRequests) {
+            // root requests should have the same annotation
+            System.out.println(actionRequest.getAnnotation());
+            assertEquals(rootRequestAnnotation, actionRequest.getAnnotation());
+
+            // each of these should be "first approve"
+            if (actionRequest.getRequestPolicy() != null) {
+                assertEquals(ActionRequestPolicy.FIRST, actionRequest.getRequestPolicy());
+            }
+
+            for (ActionRequest childRequest : actionRequest.getChildRequests()) {
+                numChildren++;
+            }
+        }
+        assertEquals("There should have been 4 child requests.", 4, numChildren);
     }
 
 }

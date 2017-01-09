@@ -24,7 +24,7 @@ import org.kuali.rice.core.api.util.type.KualiPercent
 import org.kuali.rice.core.test.JAXBAssert
 
 /**
- * A test for the {@link EqualPredicate} class.
+ * A test for the {@link ExistsSubQueryPredicate} class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

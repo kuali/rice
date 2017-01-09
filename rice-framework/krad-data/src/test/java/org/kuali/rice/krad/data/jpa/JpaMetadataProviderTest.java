@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.krad.data.jpa;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kuali.rice.core.api.data.DataType;
@@ -153,7 +154,12 @@ public class JpaMetadataProviderTest {
 		assertNotNull("Collections object should not be null", collections);
 		assertEquals("Collections size incorrect", 4, collections.size());
 
-		DataObjectCollection collection = collections.get(0);
+        // order is not guaranteed
+        List<String> collectionNames = Arrays.asList(collections.get(0).getName(), collections.get(1).getName(), collections.get(2).getName(), collections.get(3).getName());
+        int index = collectionNames.indexOf("collectionProperty");
+        assertTrue(index > -1 && index < 4);
+
+		DataObjectCollection collection = collections.get(index);
 		assertEquals("property name incorrect", "collectionProperty", collection.getName());
 		assertEquals("collection backing object incorrect", "KRTST_TEST_COLL_T", collection.getBackingObjectName());
 		assertEquals("collection label incorrect", "Collection Property", collection.getLabel());
@@ -270,14 +276,26 @@ public class JpaMetadataProviderTest {
 
 		assertNotNull("attribute relationships must not be null", relationship.getAttributeRelationships());
 		assertEquals("attribute relationships size incorrect", 2, relationship.getAttributeRelationships().size());
-		DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(0);
-		assertEquals("first parent attribute name mismatch", "stringProperty",
-                linkingAttribute.getParentAttributeName());
-		assertEquals("first child attribute name mismatch", "stringProperty", linkingAttribute.getChildAttributeName());
 
-		linkingAttribute = relationship.getAttributeRelationships().get(1);
-		assertEquals("second parent attribute name mismatch", "dateProperty", linkingAttribute.getParentAttributeName());
-		assertEquals("second child attribute name mismatch", "dateProperty", linkingAttribute.getChildAttributeName());
+        // order is not guaranteed
+		DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(0);
+        if (StringUtils.equals(linkingAttribute.getParentAttributeName(), "stringProperty")) {
+            assertEquals("first parent attribute name mismatch", "stringProperty",
+                    linkingAttribute.getParentAttributeName());
+            assertEquals("first child attribute name mismatch", "stringProperty", linkingAttribute.getChildAttributeName());
+
+            linkingAttribute = relationship.getAttributeRelationships().get(1);
+            assertEquals("second parent attribute name mismatch", "dateProperty", linkingAttribute.getParentAttributeName());
+            assertEquals("second child attribute name mismatch", "dateProperty", linkingAttribute.getChildAttributeName());
+        } else {
+            assertEquals("second parent attribute name mismatch", "dateProperty", linkingAttribute.getParentAttributeName());
+            assertEquals("second child attribute name mismatch", "dateProperty", linkingAttribute.getChildAttributeName());
+
+            linkingAttribute = relationship.getAttributeRelationships().get(1);
+            assertEquals("first parent attribute name mismatch", "stringProperty",
+                    linkingAttribute.getParentAttributeName());
+            assertEquals("first child attribute name mismatch", "stringProperty", linkingAttribute.getChildAttributeName());
+        }
 	}
 
 	@Test
@@ -322,14 +340,26 @@ public class JpaMetadataProviderTest {
 
 		assertNotNull("attribute relationships must not be null", relationship.getAttributeRelationships());
 		assertEquals("attribute relationships size incorrect", 2, relationship.getAttributeRelationships().size());
-		DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(0);
-		assertEquals("first parent attribute name mismatch", "stringProperty",
-                linkingAttribute.getParentAttributeName());
-		assertEquals("first child attribute name mismatch", "stringProperty", linkingAttribute.getChildAttributeName());
 
-		linkingAttribute = relationship.getAttributeRelationships().get(1);
-		assertEquals("second parent attribute name mismatch", "dateProperty", linkingAttribute.getParentAttributeName());
-		assertEquals("second child attribute name mismatch", "dateProperty", linkingAttribute.getChildAttributeName());
+        // order is not guaranteed
+        DataObjectAttributeRelationship linkingAttribute = relationship.getAttributeRelationships().get(0);
+        if (StringUtils.equals(linkingAttribute.getParentAttributeName(), "stringProperty")) {
+            assertEquals("first parent attribute name mismatch", "stringProperty",
+                    linkingAttribute.getParentAttributeName());
+            assertEquals("first child attribute name mismatch", "stringProperty", linkingAttribute.getChildAttributeName());
+
+            linkingAttribute = relationship.getAttributeRelationships().get(1);
+            assertEquals("second parent attribute name mismatch", "dateProperty", linkingAttribute.getParentAttributeName());
+            assertEquals("second child attribute name mismatch", "dateProperty", linkingAttribute.getChildAttributeName());
+        } else {
+            assertEquals("second parent attribute name mismatch", "dateProperty", linkingAttribute.getParentAttributeName());
+            assertEquals("second child attribute name mismatch", "dateProperty", linkingAttribute.getChildAttributeName());
+
+            linkingAttribute = relationship.getAttributeRelationships().get(1);
+            assertEquals("first parent attribute name mismatch", "stringProperty",
+                    linkingAttribute.getParentAttributeName());
+            assertEquals("first child attribute name mismatch", "stringProperty", linkingAttribute.getChildAttributeName());
+        }
 	}
 
     @Test

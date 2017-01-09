@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2006-2015 The Kuali Foundation
+  ~
+  ~ Licensed under the Educational Community License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.opensource.org/licenses/ecl2.php
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>XPathSplitNodeExampleDocType</name>
+      <description>XPath SplitNode Example DocType</description>
+      <label>XPath SplitNode Example DocType</label>
+      <postProcessorName>org.kuali.rice.edl.framework.workflow.EDocLitePostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">WorkflowAdmin</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">WorkflowAdmin</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">WorkflowAdmin</defaultExceptionGroupName>
+      <docHandler>${workflow.url}/EDocLite</docHandler>
+      <active>true</active>
+	  <policies>
+        <policy>
+          <name>DEFAULT_APPROVE</name>
+          <value>false</value>
+        </policy>
+      </policies>
+      <routingVersion>2</routingVersion>
+	   <routePaths>	   
+        <routePath>
+          <start name="Initiated" nextNode="CampusSplit" />
+		  <split name="CampusSplit">
+            <branch name="BloomingtonBranch">
+              <requests name="BloomingtonBranchApproval" nextNode="CampusJoin" />
+            </branch>
+            <branch name="IndianapolisBranch">
+              <requests name="IndianapolisBranchApproval" nextNode="CampusJoin" />
+            </branch>
+			<branch name="OtherCampusBranch">
+              <requests name="OtherCampusApproval" nextNode="CampusJoin" />
+            </branch>
+            <join name="CampusJoin" />
+		   </split>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Initiated">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </start>
+		<split name="CampusSplit">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+          <type>org.kuali.rice.kew.engine.node.XPathSplitNode</type>
+          <branchDecisions>
+            <xpath branchName="BloomingtonBranch" expression="boolean(//data/version[@current='true']/field[@name='campus']/value='BL')" />
+            <xpath branchName="IndianapolisBranch" expression="boolean(//data/version[@current='true']/field[@name='campus']/value='IN')" />
+            <default branchName="OtherCampusBranch" />
+          </branchDecisions>
+        </split>		   
+        <requests name="BloomingtonBranchApproval">
+          <activationType>P</activationType>
+          <mandatoryRoute>true</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+          <ruleTemplate>BloomingtonBranchApprovalRuleTemplate</ruleTemplate>
+        </requests>
+		<requests name="IndianapolisBranchApproval">
+          <activationType>P</activationType>
+          <mandatoryRoute>true</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+          <ruleTemplate>IndianapolisBranchApprovalRuleTemplate</ruleTemplate>
+        </requests>
+		<requests name="OtherCampusApproval">
+          <activationType>P</activationType>
+          <mandatoryRoute>true</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+          <ruleTemplate>OtherCampusBranchApprovalRuleTemplate</ruleTemplate>
+        </requests>
+        <join name="CampusJoin">
+          <activationType>P</activationType>
+          <mandatoryRoute>false</mandatoryRoute>
+          <finalApproval>false</finalApproval>
+        </join>
+      </routeNodes>
+    </documentType>
+  </documentTypes>
+</data>
+

@@ -99,11 +99,11 @@ public class SOAPServiceTest extends KSBTestCase {
 		try{
 			echoService.echo("I can't echo");
 			fail("Expected failure using non-secure client with secure service");
-		} catch (SoapFault sf){
-			sf.printStackTrace();
-			assertTrue("Non-secure client did not get expected exception.",
-					sf.getMessage().startsWith("An error was discovered processing the <wsse:Security> header"));
-		}
+		} catch (SoapFault sf) {
+            sf.printStackTrace();
+            assertTrue("Non-secure client did not get expected exception.", sf.getMessage().startsWith(
+                    "A security error was encountered when verifying the message"));
+        }
 		
 		//Now try a secure client
 		echoService = GlobalResourceLoader.getService(new QName("urn:TestCl1", "soap-echoServiceSecure"));

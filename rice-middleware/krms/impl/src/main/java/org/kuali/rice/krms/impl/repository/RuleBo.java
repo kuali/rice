@@ -392,7 +392,7 @@ public class RuleBo implements RuleDefinitionContract, Versioned, Serializable {
         for (Map.Entry<String, String> entry : im.getAttributes().entrySet()) {
             KrmsAttributeDefinitionBo attrDefBo = KrmsRepositoryServiceLocator.getKrmsAttributeDefinitionService().getKrmsAttributeBo(entry.getKey(), im.getNamespace());
             attributeBo = new RuleAttributeBo();
-            attributeBo.setRule(RuleBo.from(im));
+            attributeBo.setRule(bo);
             attributeBo.setAttributeDefinition(attrDefBo);
             attributeBo.setValue(entry.getValue());
             attributeBo.setAttributeDefinition(attrDefBo);

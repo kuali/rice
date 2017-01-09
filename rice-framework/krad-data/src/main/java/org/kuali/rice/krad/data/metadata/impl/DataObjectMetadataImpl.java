@@ -462,9 +462,9 @@ public class DataObjectMetadataImpl extends MetadataCommonBase implements DataOb
 
 				// last attribute in list linking the objects
 				if (!rel.getAttributeRelationships().isEmpty()) {
-					DataObjectAttributeRelationship relAttr = rel.getAttributeRelationships().get(
-							rel.getAttributeRelationships().size() - 1);
-					lastAttributeToRelationshipMap.put(relAttr.getParentAttributeName(), rel);
+                    DataObjectAttributeRelationship relAttr = rel.getAttributeRelationships().get(
+                            rel.getAttributeRelationships().size() - 1);
+                    lastAttributeToRelationshipMap.put(relAttr.getParentAttributeName(), rel);
 				}
 
 				// all relationships relating to an attribute

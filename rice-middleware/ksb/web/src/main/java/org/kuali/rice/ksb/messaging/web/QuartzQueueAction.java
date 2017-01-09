@@ -24,7 +24,12 @@ import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJob;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
 import org.quartz.Trigger;
+import org.quartz.impl.JobDetailImpl;
+import org.quartz.impl.matchers.GroupMatcher;
+import org.quartz.utils.Key;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,23 +49,25 @@ public class QuartzQueueAction extends KSBAction {
 
     @Override
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-	if ("moveToRouteQueue".equals(request.getParameter("methodToCall")) && request.getAttribute(RENDER_LIST_OVERRIDE) == null) {
-	    return null;
-	}
-	
-	List<QuartzQueueForm> jobs = new ArrayList<QuartzQueueForm>();
-	String[] jobGroups = KSBServiceLocator.getScheduler().getJobGroupNames(); 
-	for (int i = 0; i < jobGroups.length; i++) {
-	    String jobGroup = KSBServiceLocator.getScheduler().getJobGroupNames()[i];
-	    String[] jobNames = KSBServiceLocator.getScheduler().getJobNames(jobGroup);
-	    for (int j = 0; j < jobNames.length; j++) {
-		JobDetail job = KSBServiceLocator.getScheduler().getJobDetail(jobNames[j], jobGroup);
-		Trigger trigger = KSBServiceLocator.getScheduler().getTriggersOfJob(job.getName(), job.getGroup())[0];
-		jobs.add(new QuartzQueueForm(job, trigger));
-	    }
-	}
-	request.setAttribute("jobs", jobs);
-	return null;
+        if ("moveToRouteQueue".equals(request.getParameter("methodToCall")) && request.getAttribute(RENDER_LIST_OVERRIDE) == null) {
+            return null;
+        }
+
+        Scheduler scheduler = KSBServiceLocator.getScheduler();
+        List<QuartzQueueForm> jobs = new ArrayList<QuartzQueueForm>();
+        List<String> jobGroups = KSBServiceLocator.getScheduler().getJobGroupNames();
+
+        for (int i = 0; i < jobGroups.size(); i++) {
+            String jobGroup = KSBServiceLocator.getScheduler().getJobGroupNames().get(i);
+            for(JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(jobGroup))) {
+                Trigger trigger = scheduler.getTriggersOfJob(jobKey).get(0);
+                JobDetail jobDetail = scheduler.getJobDetail(jobKey);
+                jobs.add(new QuartzQueueForm(jobDetail, trigger) );
+            }
+        }
+
+        request.setAttribute("jobs", jobs);
+        return null;
     }
 
     @Override
@@ -72,19 +79,24 @@ public class QuartzQueueAction extends KSBAction {
     public ActionForward moveToRouteQueue(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws Exception {
 	
-	QuartzQueueForm quartzForm = (QuartzQueueForm)form;
+        QuartzQueueForm quartzForm = (QuartzQueueForm)form;
 
-	JobDetail job = KSBServiceLocator.getScheduler().getJobDetail(quartzForm.getJobName(), quartzForm.getJobGroup());
-	PersistedMessageBO message = (PersistedMessageBO)job.getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
-     if(message != null){
-	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
+        JobKey jobKey = new JobKey(quartzForm.getJobName(), quartzForm.getJobGroup());
+        JobDetail job = KSBServiceLocator.getScheduler().getJobDetail(jobKey);
 
-        message = KSBServiceLocator.getMessageQueueService().save(message);
-        KSBServiceLocator.getScheduler().deleteJob(quartzForm.getJobName(), quartzForm.getJobGroup());
-     }
-    request.setAttribute(RENDER_LIST_OVERRIDE, new Object());
-    establishRequiredState(request, form);
-	return mapping.findForward("joblisting");
+        PersistedMessageBO message = (PersistedMessageBO)job.getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
+
+        if(message != null){
+            message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
+
+            message = KSBServiceLocator.getMessageQueueService().save(message);
+            KSBServiceLocator.getScheduler().deleteJob(jobKey);
+        }
+
+        request.setAttribute(RENDER_LIST_OVERRIDE, new Object());
+        establishRequiredState(request, form);
+
+        return mapping.findForward("joblisting");
     }
     
     

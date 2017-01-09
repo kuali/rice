@@ -267,4 +267,8 @@ public abstract class AbstractBaseConfig implements org.kuali.rice.core.api.conf
     public Boolean getXmlPipelineLifeCycleEnabled() {
         return Boolean.valueOf(getProperty(Config.ENABLE_XML_PIPELINE_LIFECYCLE));
     }
+
+    public Boolean getExternalActnListNotificationLifeCycleEnabled() {
+        return Boolean.valueOf(getProperty(Config.ENABLE_EXTERNAL_ACTN_LIST_NOTIFICATION_LIFECYCLE));
+    }
 }

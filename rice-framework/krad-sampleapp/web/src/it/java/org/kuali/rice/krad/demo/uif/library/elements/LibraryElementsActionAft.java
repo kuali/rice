@@ -63,6 +63,7 @@ public class LibraryElementsActionAft extends LibraryBase {
         assertTrue(driver.switchTo().alert().getText().contains("Pre submit call was invoked, returning true"));
         driver.switchTo().alert().accept();
 
+        waitForProgressLoading();
         waitAndClickLinkContainingText("Pre submit returning false Link");
         assertTrue(driver.switchTo().alert().getText().contains("Pre submit call was invoked, returning false"));
         driver.switchTo().alert().accept();

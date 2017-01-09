@@ -1171,7 +1171,9 @@ public abstract class WebDriverAftBase extends JiraAwareAftBase {
     }
 
     protected void selectChildWindow() {
-        selectWindow(driver.getWindowHandles().toArray()[1].toString());
+        if (!driver.getWindowHandles().toArray()[1].toString().isEmpty()) {
+            selectWindow(driver.getWindowHandles().toArray()[1].toString());
+        }
     }
 
     protected void selectParentWindow() {

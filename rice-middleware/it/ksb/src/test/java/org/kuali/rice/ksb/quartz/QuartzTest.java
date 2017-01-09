@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.quartz.*;
+import org.quartz.impl.JobDetailImpl;
 
 import java.util.Date;
 
@@ -37,13 +38,16 @@ public class QuartzTest extends KSBTestCase {
 	Scheduler scheduler = KSBServiceLocator.getScheduler();
 	JobDataMap datMap = new JobDataMap();
 	datMap.put("yo", "yo");
-	JobDetail jobDetail = new JobDetail("myJob", null, TestJob.class);
+	JobDetailImpl jobDetail = new JobDetailImpl("myJob", null, TestJob.class);
 	jobDetail.setJobDataMap(datMap);
-	
-	Trigger trigger = TriggerUtils.makeImmediateTrigger(1, 1);
-	trigger.setStartTime(new Date()); 
-	trigger.setName("i'm a trigger puller");
-	trigger.setJobDataMap(datMap);
+
+    TriggerBuilder triggerBuilder = TriggerBuilder.newTrigger();
+    triggerBuilder.startAt(new Date());
+    triggerBuilder.withIdentity("i'm a trigger puller");
+    triggerBuilder.usingJobData(datMap);
+    triggerBuilder.withSchedule(SimpleScheduleBuilder.simpleSchedule().withRepeatCount(1).withIntervalInMilliseconds(1L));
+
+    Trigger trigger = triggerBuilder.build();
 
 	scheduler.scheduleJob(jobDetail, trigger);
 	

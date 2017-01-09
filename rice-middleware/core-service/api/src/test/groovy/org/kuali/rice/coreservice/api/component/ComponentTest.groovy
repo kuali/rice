@@ -16,6 +16,7 @@
 package org.kuali.rice.coreservice.api.component
 
 import org.junit.Test
+import org.kuali.rice.core.api.config.property.Config
 import org.kuali.rice.coreservice.test.JAXBAssert
 
 class ComponentTest {
@@ -121,18 +122,87 @@ class ComponentTest {
     }
 
     private createWithDefaultComponentSetId() {
-        return createWithComponentSetId(COMPONENT_SET_ID)
+        return createWithComponentSetId(ComponentTest.COMPONENT_SET_ID)
     }
 
     private createWithComponentSetId(String _componentSetId) {
-		return Component.Builder.create(new ComponentContract() {
-				String code = ComponentTest.CODE
-				String name = ComponentTest.NAME
-				String namespaceCode = ComponentTest.NAMESPACE_CODE
-                String componentSetId = _componentSetId
-                boolean active = ComponentTest.ACTIVE
-                Long versionNumber = ComponentTest.VERSION_NUMBER
-				String objectId = ComponentTest.OBJECT_ID
-			}).build()
+         def contract = new DummyComponentContract()
+         contract.with
+         {
+            code = ComponentTest.CODE
+            name = ComponentTest.NAME
+            namespaceCode = ComponentTest.NAMESPACE_CODE
+            componentSetId = _componentSetId
+            active = ComponentTest.ACTIVE
+            versionNumber = ComponentTest.VERSION_NUMBER
+            objectId = ComponentTest.OBJECT_ID
+        }
+        return Component.Builder.create(contract).build()
 	}
+}
+
+class DummyComponentContract implements ComponentContract{
+    String code
+    String name
+    String namespaceCode
+    String componentSetId
+    boolean active
+    Long versionNumber
+    String objectId
+
+    String getCode() {
+        return code
+    }
+
+    void setCode(String code) {
+        this.code = code
+    }
+
+    String getName() {
+        return name
+    }
+
+    void setName(String name) {
+        this.name = name
+    }
+
+    String getNamespaceCode() {
+        return namespaceCode
+    }
+
+    void setNamespaceCode(String namespaceCode) {
+        this.namespaceCode = namespaceCode
+    }
+
+    String getComponentSetId() {
+        return componentSetId
+    }
+
+    void setComponentSetId(String componentSetId) {
+        this.componentSetId = componentSetId
+    }
+
+    boolean isActive() {
+        return active
+    }
+
+    void setActive(boolean active) {
+        this.active = active
+    }
+
+    Long getVersionNumber() {
+        return versionNumber
+    }
+
+    void setVersionNumber(Long versionNumber) {
+        this.versionNumber = versionNumber
+    }
+
+    String getObjectId() {
+        return objectId
+    }
+
+    void setObjectId(String objectId) {
+        this.objectId = objectId
+    }
 }

@@ -35,7 +35,8 @@ import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
-
+import org.quartz.impl.JobDetailImpl;
+import org.quartz.impl.triggers.SimpleTriggerImpl;
 
 /**
  * Default implementation of {@link ExceptionRoutingService}.  Just saves 
@@ -99,17 +100,21 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 		Scheduler scheduler = KSBServiceLocator.getScheduler();
 		JobDataMap jobData = new JobDataMap();
 		jobData.put(MessageServiceExecutorJob.MESSAGE_KEY, messageCopy);
-		JobDetail jobDetail = new JobDetail("Exception_Message_Job " + Math.random(), "Exception Messaging",
+		JobDetailImpl jobDetail = new JobDetailImpl("Exception_Message_Job " + Math.random(), "Exception Messaging",
 			MessageServiceExecutorJob.class);
 		jobDetail.setJobDataMap(jobData);
-		if (!StringUtils.isBlank(description)) {
+
+        if (!StringUtils.isBlank(description)) {
 		    jobDetail.setDescription(description);
 		}
-		jobDetail.addJobListener(MessageServiceExecutorJobListener.NAME);
-		Trigger trigger = new SimpleTrigger("Exception_Message_Trigger " + Math.random(), "Exception Messaging", messageCopy
+
+        scheduler.getListenerManager().addJobListener( new MessageServiceExecutorJobListener());
+
+        SimpleTriggerImpl trigger = new SimpleTriggerImpl("Exception_Message_Trigger " + Math.random(), "Exception Messaging", messageCopy
 			.getQueueDate());
 		trigger.setJobDataMap(jobData);// 1.6 bug required or derby will choke
-		scheduler.scheduleJob(jobDetail, trigger);    
+
+        scheduler.scheduleJob(jobDetail, trigger);
 	}
 		
 }

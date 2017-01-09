@@ -18,7 +18,6 @@ package org.kuali.rice.kew.service;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.api.config.module.RunMode;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.core.api.encryption.EncryptionService;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.edl.framework.extract.ExtractService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -26,6 +25,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actions.ActionRegistry;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.batch.ExternalActnListNotificationService;
 import org.kuali.rice.kew.batch.XmlPollerService;
 import org.kuali.rice.kew.docsearch.DocumentSearchCustomizationMediator;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
@@ -167,6 +167,8 @@ public final class KEWServiceLocator {
 	 */
 	public static final String XML_POLLER_SERVICE = "enXmlPollerService";
 
+	public static final String EXTERNAL_ACTN_LIST_NOTIFICATION_SERVICE = "rice.kew.externalActnListNotificationService";
+
 	public static final String DB_TABLES_LOADER = "enDbTablesLoader";
 
 	public static final String ROUTE_NODE_SERVICE = "enRouteNodeService";
@@ -303,6 +305,10 @@ public final class KEWServiceLocator {
 
 	public static XmlPollerService getXmlPollerService() {
 		return (XmlPollerService) getBean(XML_POLLER_SERVICE);
+	}
+
+	public static ExternalActnListNotificationService getExternalActnListNotificationService() {
+		return (ExternalActnListNotificationService) getBean(EXTERNAL_ACTN_LIST_NOTIFICATION_SERVICE);
 	}
 
 	public static UserOptionsService getUserOptionsService() {

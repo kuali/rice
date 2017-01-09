@@ -33,6 +33,7 @@ import javax.persistence.criteria.Subquery;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.internal.jpa.querydef.PathImpl;
 import org.kuali.rice.core.api.criteria.PropertyPath;
 import org.kuali.rice.core.api.criteria.QueryByCriteria;
 
@@ -161,6 +162,15 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
 		}
 
         /**
+         * Adds a JPA Subquery to the predicates.
+         *
+         * @param subquery the subquery to add.
+         */
+        void addNotExistsSubquery(Subquery<?> subquery) {
+            predicates.add(builder.not( builder.exists(subquery)) );
+        }
+
+        /**
          * Adds an OR clause.
          *
          * @param predicate the predicate to OR.
@@ -207,27 +217,49 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
                 throw new IllegalArgumentException("Encountered an empty attribute path");
             }
 
-			// Tokenize the property string
-            String[] attrArray = attr.split("\\.");
-			// first, check if this is a reference to a field on the parent (outer) query.
-			// If so, and we have a parent (outer) query, then strip off the parent keyword
-			// and resolve the property in that context.
-			if (attrArray.length > 0 && StringUtils.equals(attrArray[0], "parent") && parentTranslationContext != null) {
-				return parentTranslationContext.attr(StringUtils.substringAfter(attr, "."));
-			} else {
-				Path path = root;
-				// split the attribute based on a period for nested property paths, for example if you want to pass an
-				// attribute
-				// like "property1.property2" then JPA will not interpret that properly, you have to split in manually
-				for (String attrElement : attrArray) {
-					if (StringUtils.isBlank(attrElement)) {
-						throw new IllegalArgumentException("Encountered an empty path element in property path: "
-								+ attr);
-					}
-					path = path.get(attrElement);
-				}
-				return path;
+            Path path = root;
+
+            if ( !attr.contains(".")) {
+                //  There is no nested property path so no need to worry about any joins
+                path = path.get(attr);
+            } else {
+                // Tokenize the property string
+                String[] attrArray = attr.split("\\.");
+                // first, check if this is a reference to a field on the parent (outer) query.
+                // If so, and we have a parent (outer) query, then strip off the parent keyword
+                // and resolve the property in that context.
+                if (attrArray.length > 0 && StringUtils.equals(attrArray[0], "parent") && parentTranslationContext != null) {
+                    return parentTranslationContext.attr(StringUtils.substringAfter(attr, "."));
+                } else {
+                    // split the attribute based on a period for nested property paths, for example if you want to
+                    // pass an attribute like "property1.property2" then JPA will not interpret that properly,
+                    // you have to split it manually
+                    for (String attrElement : attrArray) {
+                        if (StringUtils.isBlank(attrElement)) {
+                            throw new IllegalArgumentException("Encountered an empty path element in property path: "
+                                    + attr);
+                        }
+
+                        boolean existingJoinFoundForThisAttrElement = false;
+
+                        // If there is already a join for this attribute then use it as the path
+                        List<PathImpl> listOfJoins = new ArrayList<PathImpl>(root.getJoins());
+
+                        for (PathImpl existingJoin : listOfJoins) {
+                            if (existingJoin.getCurrentNode().getName().equalsIgnoreCase(attrElement)) {
+                                path = existingJoin;
+                                existingJoinFoundForThisAttrElement = true;
+                            }
+                        }
+
+                        if (!existingJoinFoundForThisAttrElement) {
+                            path = path.get(attrElement);
+                        }
+                    }
+                }
             }
+
+            return path;
         }
     }
 
@@ -466,6 +498,29 @@ class NativeJpaQueryTranslator extends QueryTranslatorBase<NativeJpaQueryTransla
 			throw new IllegalArgumentException(subQueryType + " can not be resolved to a class for JPA");
 		}
 	}
+
+    @Override
+    protected void addNotExistsSubquery(TranslationContext criteria, String subQueryType,
+            org.kuali.rice.core.api.criteria.Predicate subQueryPredicate) {
+
+        try {
+            Class<?> subQueryBaseClass = Class.forName(subQueryType);
+            Subquery<?> subquery = criteria.query.subquery(subQueryBaseClass);
+            TranslationContext subQueryJpaPredicate = createCriteriaForSubQuery(subQueryBaseClass, criteria);
+
+            // If a subQueryPredicate is passed, this is a Rice Predicate object and must be translated
+            // into JPA - so we add it to the list this way.
+            if (subQueryPredicate != null) {
+                addPredicate(subQueryPredicate, subQueryJpaPredicate);
+            }
+
+            subquery.where(subQueryJpaPredicate.predicates.toArray(new Predicate[0]));
+            criteria.addNotExistsSubquery(subquery);
+
+        } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException(subQueryType + " can not be resolved to a class for JPA");
+        }
+    }
 
 	/**
 	 * Fixes the search pattern by converting all non-escaped lookup wildcards ("*" and "?") into their respective JPQL

@@ -68,6 +68,8 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.impl.JobDetailImpl;
+import org.quartz.impl.triggers.CronTriggerImpl;
 
 /**
  * ActionListeEmailService which generates messages whose body and subject can be customized via KEW
@@ -741,8 +743,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                 .getProperty(KewApiConstants.DAILY_EMAIL_CRON_EXPRESSION);
         if (!StringUtils.isBlank(dailyCron)) {
             LOG.info("Scheduling Daily Email batch with cron expression: " + dailyCron);
-            CronTrigger dailyTrigger = new CronTrigger(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
-            JobDetail dailyJobDetail = new JobDetail(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
+            CronTriggerImpl dailyTrigger = new CronTriggerImpl(DAILY_TRIGGER_NAME, emailBatchGroup, dailyCron);
+            JobDetailImpl dailyJobDetail = new JobDetailImpl(DAILY_JOB_NAME, emailBatchGroup, DailyEmailJob.class);
             dailyTrigger.setJobName(dailyJobDetail.getName());
             dailyTrigger.setJobGroup(dailyJobDetail.getGroup());
             addJobToScheduler(dailyJobDetail);
@@ -756,8 +758,8 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
                 KewApiConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
         if (!StringUtils.isBlank(weeklyCron)) {
             LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
-            CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
-            JobDetail weeklyJobDetail = new JobDetail(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
+            CronTriggerImpl weeklyTrigger = new CronTriggerImpl(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
+            JobDetailImpl weeklyJobDetail = new JobDetailImpl(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);
             weeklyTrigger.setJobName(weeklyJobDetail.getName());
             weeklyTrigger.setJobGroup(weeklyJobDetail.getGroup());
             addJobToScheduler(weeklyJobDetail);
@@ -772,16 +774,16 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         getScheduler().addJob(jobDetail, true);
     }
 
-    private void addTriggerToScheduler(Trigger trigger) throws SchedulerException {
-        boolean triggerExists = (getScheduler().getTrigger(trigger.getName(), trigger.getGroup()) != null);
+    private void addTriggerToScheduler(CronTriggerImpl trigger) throws SchedulerException {
+        boolean triggerExists = (getScheduler().getTrigger(trigger.getKey()) != null);
         if (!triggerExists) {
             try {
                 getScheduler().scheduleJob(trigger);
             } catch (ObjectAlreadyExistsException ex) {
-                getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+                getScheduler().rescheduleJob(trigger.getKey(),trigger);
             }
         } else {
-            getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+            getScheduler().rescheduleJob(trigger.getKey(),trigger);
         }
     }
 

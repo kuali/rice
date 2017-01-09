@@ -66,6 +66,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.beans.factory.support.ChildBeanDefinition;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -231,9 +232,11 @@ public class DataDictionary {
         factoryPostProcessor.postProcessBeanFactory(ddBeans);
         timer.stop();
 
-        timer.start("Instantiating DD Beans");
-        ddBeans.preInstantiateSingletons();
-        timer.stop();
+        if (ConfigContext.getCurrentContextConfig().getBooleanProperty(KRADConstants.Config.ENABLE_PREINSTANTIATE_BEANS, false)) {
+            timer.start("Instantiating DD Beans");
+            ddBeans.preInstantiateSingletons();
+            timer.stop();
+        }
 
         // Allow the DD to perform final post processing in a controlled order
         // Unlike the Spring post processor, we will only call for these operations on the

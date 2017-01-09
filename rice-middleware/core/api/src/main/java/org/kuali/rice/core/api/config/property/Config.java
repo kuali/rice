@@ -180,7 +180,8 @@ public interface Config {
 
 	public static final String ENABLE_EMAIL_REMINDER_LIFECYCLE = "email.reminder.lifecycle.enabled";
 	public static final String ENABLE_XML_PIPELINE_LIFECYCLE = "xml.pipeline.lifecycle.enabled";
-	
+	public static final String ENABLE_EXTERNAL_ACTN_LIST_NOTIFICATION_LIFECYCLE = "external.actn.list.notification.lifecycle.enabled";
+
 	public static final String OUT_BOX_MODE = "actionlist.outbox";
 
 	public void parseConfig() throws IOException;
@@ -260,6 +261,8 @@ public interface Config {
     public Boolean getEmailReminderLifecycleEnabled();
 
     public Boolean getXmlPipelineLifeCycleEnabled();
+
+	public Boolean getExternalActnListNotificationLifeCycleEnabled();
 
 	public Boolean getDevMode();
 	

@@ -78,15 +78,15 @@ public class KCBInitializer implements BeanFactoryAware, InitializingBean, Dispo
     }
     
     private void addTriggerToScheduler(Trigger trigger) throws SchedulerException {
-		boolean triggerExists = (getScheduler().getTrigger(trigger.getName(), trigger.getGroup()) != null);
+        boolean triggerExists = (getScheduler().getTrigger(trigger.getKey()) != null);
 		if (!triggerExists) {
 			try {
 				getScheduler().scheduleJob(trigger);
 			} catch (ObjectAlreadyExistsException ex) {
-				getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+                getScheduler().rescheduleJob(trigger.getKey(),trigger);
 			}
 		} else {
-		    getScheduler().rescheduleJob(trigger.getName(), trigger.getGroup(), trigger);
+            getScheduler().rescheduleJob(trigger.getKey(),trigger);
 		}
 	}
 

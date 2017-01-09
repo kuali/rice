@@ -264,7 +264,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
         waitAndClickByXpath("//a[@class='agendaNode ruleNode']");
         waitAndClickByXpath("//button[contains(text(),'Edit Rule')]");
         selectFrameIframePortlet();
-        selectByName("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId", selectValue);
+        waitAndSelectByName("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.typeId", selectValue);
 
         if (selectValue.equals("KrmsActionResolverType") || selectValue.equalsIgnoreCase("Validation Action")){
             waitClearAndType("document.newMaintainableObject.dataObject.agendaItemLineRuleAction.name", "ActionName");
@@ -285,6 +285,7 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
     }
 
     protected void waitClearAndType(String name, String value) throws Exception {
+        waitForElementPresent(name);
         clearTextByName(name);
         waitAndTypeByName(name,value);
     }
@@ -302,23 +303,68 @@ public class AgendaEditorAndOrToggleSyncAft extends WebDriverLegacyITBase {
     }
 
     @Test
-    public void testAgendaEditorAddActionsBookmark() throws Exception {
-        String peopleFlowId = getPeopleFlowId();
+    public void  testAgendaEditorEditRuleAddActionsBlankBookmark() throws Exception {
         testAgendaEditorEditRuleAddActionsBlank();
-        testAgendaEditorEditRuleAddActionsKrmsActionResolverType();
-        testAgendaEditorEditRuleAddActionsNotifyPeopleFlow(peopleFlowId);
-        testAgendaEditorEditRuleAddActionsRouteToPeopleFlow(peopleFlowId);
-        testAgendaEditorEditRuleAddActionsValidationAction();
         passed();
     }
 
     @Test
-    public void testAgendaEditorAddActionsNav() throws Exception {
-        String peopleFlowId = getPeopleFlowId();
+    public void testAgendaEditorEditRuleAddActionsBlankNav() throws Exception {
         testAgendaEditorEditRuleAddActionsBlank();
+        passed();
+    }
+
+    @Test
+    public void testAgendaEditorEditRuleAddActionsKrmsActionResolverTypeBookmark() throws Exception {
         testAgendaEditorEditRuleAddActionsKrmsActionResolverType();
+        passed();
+    }
+
+    @Test
+    public void testAgendaEditorEditRuleAddActionsKrmsActionResolverTypeNav() throws Exception {
+        testAgendaEditorEditRuleAddActionsKrmsActionResolverType();
+        passed();
+    }
+
+    @Test
+    public void testAgendaEditorEditRuleAddActionsNotifyPeopleFlowBookmark() throws Exception {
+        String peopleFlowId = getPeopleFlowId();
         testAgendaEditorEditRuleAddActionsNotifyPeopleFlow(peopleFlowId);
+        passed();
+    }
+
+    @Test
+    public void testAgendaEditorEditRuleAddActionsNotifyPeopleFlowNav() throws Exception {
+        String peopleFlowId = getPeopleFlowId();
+        testAgendaEditorEditRuleAddActionsNotifyPeopleFlow(peopleFlowId);
+        passed();
+    }
+
+    @Test
+    public void testAgendaEditorEditRuleAddActionsRouteToPeopleFlowBookmark() throws Exception {
+        String peopleFlowId = getPeopleFlowId();
         testAgendaEditorEditRuleAddActionsRouteToPeopleFlow(peopleFlowId);
+        passed();
+    }
+
+
+    @Test
+    public void testAgendaEditorEditRuleAddActionsRouteToPeopleFlowNav() throws Exception {
+        String peopleFlowId = getPeopleFlowId();
+        testAgendaEditorEditRuleAddActionsRouteToPeopleFlow(peopleFlowId);
+        passed();
+    }
+
+
+    @Test
+    public void testAgendaEditorEditRuleAddActionsValidationActionBookmark() throws Exception {
+        testAgendaEditorEditRuleAddActionsValidationAction();
+        passed();
+    }
+
+
+    @Test
+    public void testAgendaEditorEditRuleAddActionsValidationActionNav() throws Exception {
         testAgendaEditorEditRuleAddActionsValidationAction();
         passed();
     }

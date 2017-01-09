@@ -204,6 +204,7 @@ public class CreateNewAgendaAft extends WebDriverLegacyITBase {
             waitAndClickLabeledQuickFinder(CONTEXT_LABEL);
             waitForProgressLoading();
             gotoIframeByXpath("//iframe");
+            waitAndTypeByName("lookupCriteria[name]", "Context1");
             waitAndClickSearchByText();
             waitAndClickReturnValue(); // Context1
             selectTopFrame();

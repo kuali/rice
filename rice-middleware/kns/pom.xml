@@ -27,7 +27,7 @@
   <artifactId>rice-kns</artifactId>
 
   <properties>
-    <db-ojb.version>1.0.4-patch8</db-ojb.version>
+    <db-ojb.version>1.0.4-patch9</db-ojb.version>
   </properties>
 
   <build>
@@ -131,7 +131,10 @@
       <groupId>org.springmodules</groupId>
       <artifactId>spring-modules-ojb</artifactId>
     </dependency>
-
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+    </dependency>
     <!-- test-scoped dependencies: -->
 
     <dependency>

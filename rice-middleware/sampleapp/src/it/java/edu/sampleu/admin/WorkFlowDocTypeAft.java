@@ -67,7 +67,7 @@ public class WorkFlowDocTypeAft extends AdminTmplMthdAftNavBlanketAppBase {
     protected void createNewLookupDetails() throws InterruptedException {
         inputDetails();
 
-        String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((name:document.newMaintainableObject.parentDocType.name,documentTypeId:document.newMaintainableObject.docTypeParentId,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
+        String parentDocType = "//input[@name='methodToCall.performLookup.(!!org.kuali.rice.kew.doctype.bo.DocumentType!!).(((documentTypeId:document.newMaintainableObject.docTypeParentId,name:document.newMaintainableObject.parentDocType.name,))).((`document.newMaintainableObject.parentDocType.name:name,`)).((<>)).(([])).((**)).((^^)).((&&)).((//)).((~~)).(::::;"
                 + getBaseUrlString() + "/kr/lookup.do;::::).anchor4']";
         waitAndClickByXpath(parentDocType);
         waitAndClickSearch();

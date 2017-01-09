@@ -264,29 +264,34 @@ public class EclipseLinkJpaMetadataProviderImpl extends JpaMetadataProviderImpl 
 			relationship.setLoadedDynamicallyUponUse(relationshipMapping.isCascadeRefresh()
 					&& relationshipMapping.isLazy());
 
-			List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
-			for (DatabaseField parentField : relationshipMapping.getForeignKeyFields()) {
-				String parentFieldName = getPropertyNameFromDatabaseColumnName(rd.getDeclaringType(),
-						parentField.getName());
-                if (parentFieldName != null) {
-				    DatabaseField childField = relationshipMapping.getSourceToTargetKeyFields().get(parentField);
-				    if (childField != null) {
-					    // the target field is always done by column name. So, we need to get into the target entity and
-					    // find the associated field :-(
-					    // If the lookup fails, we will at least have the column name
-					    String childFieldName = getPropertyNameFromDatabaseColumnName(referencedEntityType,
-                                childField.getName());
-                        if (childFieldName != null) {
-					        attributeRelationships
+            List<DataObjectAttributeRelationship> attributeRelationships = new ArrayList<DataObjectAttributeRelationship>();
+            List<String> referencedEntityPkFields = getPrimaryKeyAttributeNames(referencedEntityType);
+
+            for (String referencedEntityPkField : referencedEntityPkFields) {
+                for (Map.Entry<DatabaseField, DatabaseField> entry :
+                        relationshipMapping.getTargetToSourceKeyFields().entrySet()) {
+                    DatabaseField childDatabaseField = entry.getKey();
+                    String childFieldName = getPropertyNameFromDatabaseColumnName(referencedEntityType,
+                            childDatabaseField.getName());
+
+                    if (referencedEntityPkField.equalsIgnoreCase(childFieldName)) {
+                        DatabaseField parentDatabaseField = entry.getValue();
+                        String parentFieldName = getPropertyNameFromDatabaseColumnName(rd.getDeclaringType(),
+                                parentDatabaseField.getName());
+
+                        if (parentFieldName != null) {
+                            attributeRelationships
                                     .add(new DataObjectAttributeRelationshipImpl(parentFieldName, childFieldName));
+                            break;
+                        } else {
+                            LOG.warn("Unable to find parent field reference.  There may be a JPA mapping problem on " +
+                                    referencedEntityType.getJavaType() + ": " + relationship);
                         }
-				    } else {
-					    LOG.warn("Unable to find child field reference.  There may be a JPA mapping problem on "
-						    	+ rd.getDeclaringType().getJavaType() + ": " + relationship);
-				    }
+                    }
                 }
-			}
-			relationship.setAttributeRelationships(attributeRelationships);
+            }
+
+            relationship.setAttributeRelationships(attributeRelationships);
 
             populateInverseRelationship(relationshipMapping, relationship);
 

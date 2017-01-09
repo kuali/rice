@@ -17,9 +17,10 @@ package org.kuali.rice.kew.actiontaken.dao;
 
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.api.action.ActionType;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 
 import java.sql.Timestamp;
-
+import java.util.List;
 
 /**
  * Data Access Object for {@link ActionTakenValue}s.
@@ -43,5 +44,12 @@ public interface ActionTakenDao {
      * @throws IllegalArgumentException if documentId is null or blank, or if actionType is null
      */
     Timestamp getLastActionTakenDate(String documentId, ActionType actionType);
+
+    /**
+     * Returns the actions taken at a route node instance
+     * @param nodeInstance the route node instance
+     * @return the list of actions taken at a route node instance
+     */
+    List<ActionTakenValue> findActionsTakenAtRouteNodeInstance(RouteNodeInstance nodeInstance);
 
 }

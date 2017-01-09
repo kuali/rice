@@ -821,6 +821,25 @@ class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                                 <entry>false </entry>
                             </row>
                             <row>
+                                <entry>external.actn.list.notification.initial.delay.seconds </entry>
+                                <entry>Delay in seconds after system starts up to begin the external action list
+                                    notification service polling </entry>
+                                <entry/>
+                            </row>
+                            <row>
+                                <entry>external.actn.list.notification.lifecycle.enabled</entry>
+                                <entry>If set to true, will notify an external action list of any changes to the
+                                    KREW_ACTN_ITM_T table</entry>
+                                <entry>false</entry>
+                            </row>
+                            <row>
+                                <entry>external.actn.list.notification.poll.interval.seconds </entry>
+                                <entry>Interval in seconds that the external action list notification service
+                                    will poll the KREW_ACTN_ITM_CHANGED_T table to see if any action
+                                    items have changed.</entry>
+                                <entry/>
+                            </row>
+                            <row>
                                 <entry>Identity.useRemoteServices </entry>
                                 <entry><para>Configuration parameter that governs whether a number of
                                     common identity services (user and group service) are exported

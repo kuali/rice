@@ -52,12 +52,13 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         assertActionListRequestPerson(adhocRequests, beforeState, afterState);
     }
 
-    private void assertActionListRequestPerson(String[][] adhocRequests, String beforeState, String afterState) throws Exception {
+    private String assertActionListRequestPerson(String[][] adhocRequests, String beforeState, String afterState) throws Exception {
         String docId = testCreateActionRequestPerson(adhocRequests);
         impersonateUser(adhocRequests[0][0]);
         assertActionList(docId, adhocRequests[0][1], beforeState);
         assertOutbox(docId, afterState);
         selectTopFrame();
+        return docId;
     }
 
     protected String testCreateActionRequestGroup(String user, String namespace, String actionType) throws InterruptedException{
@@ -104,11 +105,12 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
 
     private void reattemptPrimaryKey() throws InterruptedException {
         int attempts = 0;
-        while (hasDocError() && extractErrorText().contains("a record with the same primary key already exists.") &&
-                ++attempts <= 3) {
+        while (isTextPresent("a record with the same primary key already exists.") && ++attempts <= 10) {
             jGrowl("record with the same primary key already exists trying another, attempt: " + attempts);
             clearTextByName("document.newMaintainableObject.code"); // primary key
-            jiraAwareTypeByName("document.newMaintainableObject.code", RandomStringUtils.randomAlphanumeric(2));
+            String randomNumbeForCode = RandomStringUtils.randomNumeric(1);
+            String randomAlphabeticForCode = RandomStringUtils.randomAlphabetic(1);
+            jiraAwareTypeByName("document.newMaintainableObject.code", randomNumbeForCode + randomAlphabeticForCode);
             waitAndClickByName("methodToCall.route");
             waitForProgress("Submitting...");
         }
@@ -142,6 +144,17 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         assertActionList(docId, "K", "ENROUTE");
         assertOutbox(docId, "ENROUTE");
         selectTopFrame();
+
+        // Approve enroute documents so they do not cause "document cannot be Saved or Routed because... locked" errors
+        // in future tests.
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        String mainBrowserHandle = driver.getWindowHandle();
+        closeAllOtherWindows(mainBrowserHandle);
+        impersonateUser("fred");
+        waitAndClickActionList();
+        selectFrameIframePortlet();
+        waitAndClickLinkContainingText("Action List");
+        assertActionList(docId, "A", "ENROUTE");
         passed();
     }
 
@@ -179,7 +192,18 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
      */
     public void testActionListApprovePerson_WithPendingApprove() throws Exception {
         String[][] adhocRequests = new String [][]{{"fred","A"},{"fran","A"}};
-        assertActionListRequestPerson(adhocRequests, "ENROUTE", "ENROUTE");
+        String docId =  assertActionListRequestPerson(adhocRequests, "ENROUTE", "ENROUTE");
+
+        // Approve enroute documents so they do not cause "document cannot be Saved or Routed because... locked" errors
+        // in future tests.
+        driver.navigate().to(WebDriverUtils.getBaseUrlString() + BOOKMARK_URL);
+        String mainBrowserHandle = driver.getWindowHandle();
+        closeAllOtherWindows(mainBrowserHandle);
+        impersonateUser("fran");
+        waitAndClickActionList();
+        selectFrameIframePortlet();
+        waitAndClickLinkContainingText("Action List");
+        assertActionList(docId, "A", "ENROUTE");
         passed();
     }
 
@@ -324,6 +348,15 @@ public abstract class CampusActionListAftBase extends CampusAftBase {
         waitForTextPresent("ENROUTE");
         waitAndClickByName("methodToCall.reload");
         waitForTextPresent(state);
+
+        // Approve enroute documents so they do not cause "document cannot be Saved or Routed because... locked" errors
+        // in future tests.
+        if ("ENROUTE".equalsIgnoreCase(state)) {
+            selectTopFrame();
+            impersonateUser(user);
+            assertActionList(docId, "A", "ENROUTE");
+        }
+
         close();
     }
 

@@ -136,12 +136,13 @@ public class WorkFlowRouteRulesBlanketAppAftBase extends MainTmplMthdSTNavBase{
         assertEquals("Kuali Portal Index", getTitle());
         selectFrameIframePortlet();
         waitAndTypeByName("documentId", docId);
+        Thread.sleep(5000);
         waitAndClickSearch();
 
         // Expect the doc status to be FINAL
         waitForElementPresent(By.linkText(docId));
         if (isElementPresent(By.linkText(docId))) {
-            if (!DOC_STATUS_FINAL.equalsIgnoreCase(getTextByXpath(DOC_STATUS_XPATH_2))) {
+            if (!isTextPresent("FINAL")) {
                 jiraAwareFail("WorkFlowRouteRulesBlanketApp expected:<[FINAL]> but was " + getTextByXpath(DOC_STATUS_XPATH_2));
             }
         } else {

@@ -49,7 +49,8 @@ public class LibraryGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase
     }
     
     protected void testGeneralFeaturesExample2() throws Exception {
-        selectByName("exampleShown", "Sticky Application Header and View Header");
+        waitAndSelectByName("exampleShown", "Sticky Application Header and View Header");
+        waitForElementPresentByXpath("//section[@id='Demo-StickyHeader-Example2']/a");
         waitAndClickByXpath("//section[@id='Demo-StickyHeader-Example2']/a");
         switchToWindow("Kuali :: View Header");
         waitForElementPresentByXpath("//header[@id='Uif-ApplicationHeader-Wrapper' and @data-sticky='true']");
@@ -57,7 +58,7 @@ public class LibraryGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase
     }
     
     protected void testGeneralFeaturesExample3() throws Exception {
-        selectByName("exampleShown", "Sticky Breadcrumbs, Application Header and View Header");
+        waitAndSelectByName("exampleShown", "Sticky Breadcrumbs, Application Header and View Header");
         waitAndClickByXpath("//section[@id='Demo-StickyHeader-Example3']/a");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//header[@data-header_for='Demo-StickyHeaderFooter-View3' and @data-sticky='true']");
@@ -65,7 +66,7 @@ public class LibraryGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase
     }
     
     protected void testGeneralFeaturesExample4() throws Exception {
-        selectByName("exampleShown", "Sticky Application Header, Top Group and View Header");
+        waitAndSelectByName("exampleShown", "Sticky Application Header, Top Group and View Header");
         waitAndClickByXpath("//section[@id='Demo-StickyHeader-Example4']/a");
         switchToWindow("Kuali :: View Header");
         assertElementPresentByXpath("//header[@data-header_for='Demo-StickyHeaderFooter-View4' and @data-sticky='true']");
@@ -73,10 +74,10 @@ public class LibraryGeneralFeaturesStickyHeaderAft extends WebDriverLegacyITBase
     }
     
     protected void testGeneralFeaturesExample5() throws Exception {
-        selectByName("exampleShown", "Sticky Everything");
+        waitAndSelectByName("exampleShown", "Sticky Everything");
         waitAndClickByLinkText("All header content sticky");
         switchToWindow("Kuali :: View Header");
-        waitForElementPresentByXpath("//header[@id='Uif-ApplicationHeader-Wrapper' and @data-sticky='true']");
+        waitForElementPresentByXpath("//header[@data-header_for='Demo-StickyHeaderFooter-View5' and @data-sticky='true']");
         assertElementPresentByXpath("//header[@data-header_for='Demo-StickyHeaderFooter-View5' and @data-sticky='true']");
         switchToWindow("Kuali");
     }

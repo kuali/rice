@@ -27,6 +27,7 @@ import org.kuali.rice.kew.api.WorkflowDocument;
 import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.kew.api.action.InvalidActionTakenException;
 import org.kuali.rice.kew.api.document.DocumentContentUpdate;
+import org.kuali.rice.kew.api.document.DocumentStatus;
 import org.kuali.rice.kew.api.document.PropertyDefinition;
 import org.kuali.rice.kew.api.document.attribute.WorkflowAttributeDefinition;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -568,7 +569,30 @@ public class BlanketApproveTest extends KEWTestCase {
     	// document should now be final
     	assertTrue(document.isFinal());
     }
-    
+
+    @Test
+    public void testBlanketApprovePostProcessorSUApproveAnotherDoc() throws Exception {
+
+        WorkflowDocument document1 = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"),
+                NotifySetup.DOCUMENT_TYPE_NAME);
+        assertEquals("Document should be at start node", "AdHoc", document1.getNodeNames().iterator().next());
+        assertEquals("Document should be initiated", DocumentStatus.INITIATED, document1.getStatus());
+
+        WorkflowDocument document2 = WorkflowDocumentFactory.createDocument(getPrincipalIdForName("ewestfal"),
+                "BAActionSUApproveAnotherDocPostProcessor");
+        assertEquals("Document should be at start node", "AdHoc", document2.getNodeNames().iterator().next());
+        assertEquals("Document should be initiated", DocumentStatus.INITIATED, document2.getStatus());
+
+        document2 = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document2.getDocumentId());
+
+        document2.superUserBlanketApprove("");
+        assertEquals("Document should be Final", DocumentStatus.FINAL, document2.getStatus());
+
+        // Document1 was super user approved in the post processor of document2 so it should have a status of PROCESSED.
+        document1 = WorkflowDocumentFactory.loadDocument(getPrincipalIdForName("rkirkend"), document1.getDocumentId());
+        assertEquals("Document should be Processed", DocumentStatus.PROCESSED, document1.getStatus());
+    }
+
     private RouteNodeService getRouteNodeService() {
         return KEWServiceLocator.getRouteNodeService();
     }

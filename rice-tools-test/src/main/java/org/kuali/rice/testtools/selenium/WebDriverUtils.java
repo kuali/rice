@@ -64,9 +64,9 @@ public class WebDriverUtils {
 
     protected static SauceLabsWebDriverHelper saucelabs;
 
-    public static boolean jGrowlEnabled = false;
+    protected static WebDriverHighlightHelper webDriverHighlightHelper;
 
-    public static boolean jsHighlightEnabled = false;
+    public static boolean jGrowlEnabled = false;
 
     /**
      * http://localhost:8080/kr-dev
@@ -132,46 +132,6 @@ public class WebDriverUtils {
      * TODO upgrade to config via JVM param.
      */
     public static final boolean JGROWL_ERROR_FAILURE = false;
-
-    /**
-     * green (#66FF33)
-     */
-    public static final String JS_HIGHLIGHT_BACKGROUND = "#66FF33";
-
-    /**
-     * green (#66FF33)
-     */
-    public static final String JS_HIGHLIGHT_BOARDER = "#66FF33";
-
-    /**
-     * 400 milliseconds.
-     */
-    public static final int JS_HIGHLIGHT_MS = 400;
-
-    /**
-     * <p>
-     * {@see JS_HIGHLIGHT_MS} as default.
-     * </p><p>
-     * -Dremote.driver.highlight.ms=
-     * </p>
-     */
-    public static final String JS_HIGHLIGHT_MS_PROPERTY = "remote.driver.highlight.ms";
-
-    /**
-     * <p>
-     * Highlighting of elements as selenium runs.
-     * </p><p>
-     * -Dremote.driver.highlight=true
-     * </p>
-     */
-    public static final String JS_HIGHLIGHT_PROPERTY = "remote.driver.highlight";
-
-    /**
-     * TODO: playback for javascript highlighting.
-     *
-     * -Dremote.driver.highlight.input=
-     */
-    public static final String JS_HIGHLIGHT_INPUT_PROPERTY = "remote.driver.highlight.input";
 
     /**
      * <p>
@@ -272,18 +232,7 @@ public class WebDriverUtils {
             jGrowlEnabled = true;
         }
 
-        if ("true".equals(System.getProperty(JS_HIGHLIGHT_PROPERTY, "false"))) {
-            jsHighlightEnabled = true;
-            if (System.getProperty(JS_HIGHLIGHT_INPUT_PROPERTY) != null) {
-                InputStream in = WebDriverUtils.class.getResourceAsStream(System.getProperty(JS_HIGHLIGHT_INPUT_PROPERTY));
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                String line = null;
-                List<String> lines = new LinkedList<String>();
-                while ((line = reader.readLine()) != null) {
-                    lines.add(line);
-                }
-            }
-        }
+        webDriverHighlightHelper = new WebDriverHighlightHelper();
 
         WebDriver driver = null;
         if (System.getProperty(SauceLabsWebDriverHelper.REMOTE_DRIVER_SAUCELABS_PROPERTY) == null) {
@@ -660,23 +609,7 @@ public class WebDriverUtils {
      * @param webElement to highlight
      */
     public static void highlightElement(WebDriver webDriver, WebElement webElement) {
-        if (jsHighlightEnabled && webElement != null) {
-            try {
-                //                System.out.println("highlighting " + webElement.toString() + " on url " + webDriver.getCurrentUrl());
-                JavascriptExecutor js = (JavascriptExecutor) webDriver;
-                String jsHighlight = "element = arguments[0];\n"
-                        + "originalStyle = element.getAttribute('style');\n"
-                        + "element.setAttribute('style', originalStyle + \"; background: "
-                        + JS_HIGHLIGHT_BACKGROUND + "; border: 2px solid " + JS_HIGHLIGHT_BOARDER + ";\");\n"
-                        + "setTimeout(function(){\n"
-                        + "    element.setAttribute('style', originalStyle);\n"
-                        + "}, " + System.getProperty(JS_HIGHLIGHT_MS_PROPERTY, JS_HIGHLIGHT_MS + "") + ");";
-                js.executeScript(jsHighlight, webElement);
-            } catch (Throwable t) {
-                System.out.println("Throwable during javascript highlight element");
-                t.printStackTrace();
-            }
-        }
+        webDriverHighlightHelper.highlightElement(webDriver, webElement);
     }
 
     /**
@@ -774,6 +707,8 @@ public class WebDriverUtils {
      */
     public static void jGrowl(WebDriver driver, String jGrowlHeader, boolean sticky, String message) {
         stepMessage(message);
+        message = message.replace("'", "&#39;");
+        message = message.replace("\"", "&quot;");
         if (jGrowlEnabled) {
             String javascript="jQuery.jGrowl('" + message + "' , {sticky: " + sticky + ", header : '" + jGrowlHeader + "'});";
             try {

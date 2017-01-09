@@ -22,6 +22,7 @@ import org.kuali.rice.core.api.mo.AbstractDataTransferObject;
 import org.kuali.rice.core.api.mo.ModelBuilder;
 import org.kuali.rice.core.api.util.jaxb.DateTimeAdapter;
 import org.kuali.rice.core.api.util.jaxb.MapStringStringAdapter;
+import org.kuali.rice.kew.api.util.UserTextFilterForXml;
 import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -436,7 +437,7 @@ public final class Document extends AbstractDataTransferObject implements Docume
         	if (title == null) {
         		title = "";
         	}
-            this.title = title;
+            this.title = UserTextFilterForXml.cleanInvalidXmlChars(title);
         }
 
         public void setApplicationDocumentId(String applicationDocumentId) {

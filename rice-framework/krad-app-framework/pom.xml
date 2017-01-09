@@ -26,6 +26,25 @@
     </parent>
     <artifactId>rice-krad-app-framework</artifactId>
 
+    <profiles>
+      <!-- This profile will be used unless -DskipOracleProfile is passed as a parameter -->
+      <profile>
+        <id>usingOracle</id>
+        <activation>
+          <property>
+            <name>!skipOracleProfile</name>
+          </property>
+        </activation>
+        <dependencies>
+          <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.oracle</artifactId>
+            <version>${eclipselink.version}</version>
+          </dependency>
+        </dependencies>
+      </profile>
+    </profiles>
+
   <dependencies>
 
     <dependency>
@@ -66,11 +85,6 @@
     <dependency>
       <groupId>org.eclipse.persistence</groupId>
       <artifactId>org.eclipse.persistence.jpa</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.persistence</groupId>
-      <artifactId>org.eclipse.persistence.oracle</artifactId>
     </dependency>
 
     <!-- test-scoped dependencies: -->

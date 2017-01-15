@@ -31,6 +31,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
     protected String methodToCall;
 	protected String beanName;
+	protected String buttonName;
 	protected String actionClass;
 	protected String namespaceCode;
 	protected String componentName;
@@ -100,6 +101,14 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	 */
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
+	}
+
+	public String getButtonName() {
+		return buttonName;
+	}
+
+	public void setButtonName(String buttonName) {
+		this.buttonName = buttonName;
 	}
 
 	/**

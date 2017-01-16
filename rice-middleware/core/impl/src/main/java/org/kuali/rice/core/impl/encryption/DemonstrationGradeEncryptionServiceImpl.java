@@ -31,9 +31,12 @@ import java.security.MessageDigest;
 
 /**
  * Implementation of encryption service for demonstration. 
- * 
+ *
+ * @deprecated use {@link EncryptionServiceImpl} instead with the {@link org.kuali.rice.core.impl.encryption.EncryptionServiceImpl.DESEncryptionStrategy}
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class DemonstrationGradeEncryptionServiceImpl implements EncryptionService {
     public final static String ALGORITHM = "DES/ECB/PKCS5Padding";
     public final static String HASH_ALGORITHM = "SHA"; 

@@ -15,21 +15,6 @@
  */
 package org.kuali.rice.krad.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Matchers.anyMapOf;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.xml.namespace.QName;
-
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Before;
@@ -49,10 +34,23 @@ import org.kuali.rice.krad.document.DocumentBase;
 import org.kuali.rice.krad.service.DataDictionaryService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
 import org.kuali.rice.krad.util.KRADConstants;
+import org.kuali.rice.krad.util.LegacyUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
+
+import javax.xml.namespace.QName;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.Callable;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 /**
  * Unit test for the {@link LegacyDataAdapterImpl}. Tests that the various methods delegate to KNS or KRAD under the
@@ -906,6 +904,8 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(kradLegacyDataAdapter);
     }
 
+    // the hasLocalLookup method only cares if you are checking it within a legacy context or not, the data object
+    // class doesn't matter
     @Test
     public void testHasLocalLookup() throws Exception {
         lda.hasLocalLookup(NonLegacy.class);
@@ -913,14 +913,34 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
+    // the hasLocalLookup method only cares if you are checking it within a legacy context or not, the data object
+    // class doesn't matter
+    @Test
+    public void testHasLocalLookup_NonLegacyClass_In_LegacyContext() throws Exception {
+        enableLegacy();
+        LegacyUtils.doInLegacyContext(new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                lda.hasLocalLookup(NonLegacy.class);
+                verify(knsLegacyDataAdapter).hasLocalLookup(eq(NonLegacy.class));
+                verifyZeroInteractions(kradLegacyDataAdapter);
+                return null;
+            }
+        });
+    }
+
+    // the hasLocalLookup method only cares if you are checking it within a legacy context or not, the data object
+    // class doesn't matter
     @Test
     public void testHasLocalLookup_Legacy() throws Exception {
         enableLegacy();
         lda.hasLocalLookup(Legacy.class);
-        verify(knsLegacyDataAdapter).hasLocalLookup(eq(Legacy.class));
-        verifyZeroInteractions(kradLegacyDataAdapter);
+        verify(kradLegacyDataAdapter).hasLocalLookup(eq(Legacy.class));
+        verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
+    // the hasLocalInquiry method only cares if you are checking it within a legacy context or not, the data object
+    // class doesn't matter
     @Test
     public void testHasLocalInquiry() throws Exception {
         lda.hasLocalInquiry(NonLegacy.class);
@@ -928,12 +948,30 @@ public class LegacyDataAdapterImplTest {
         verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
+    // the hasLocalInquiry method only cares if you are checking it within a legacy context or not, the data object
+    // class doesn't matter
+    @Test
+    public void testHasLocalInquiry_NonLegacyClass_In_LegacyContext() throws Exception {
+        enableLegacy();
+        LegacyUtils.doInLegacyContext(new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                lda.hasLocalInquiry(NonLegacy.class);
+                verify(knsLegacyDataAdapter).hasLocalInquiry(eq(NonLegacy.class));
+                verifyZeroInteractions(kradLegacyDataAdapter);
+                return null;
+            }
+        });
+    }
+
+    // the hasLocalInquiry method only cares if you are checking it within a legacy context or not, the data object
+    // class doesn't matter
     @Test
     public void testHasLocalInquiry_Legacy() throws Exception {
         enableLegacy();
         lda.hasLocalInquiry(Legacy.class);
-        verify(knsLegacyDataAdapter).hasLocalInquiry(eq(Legacy.class));
-        verifyZeroInteractions(kradLegacyDataAdapter);
+        verify(kradLegacyDataAdapter).hasLocalInquiry(eq(Legacy.class));
+        verifyZeroInteractions(knsLegacyDataAdapter);
     }
 
     @Test

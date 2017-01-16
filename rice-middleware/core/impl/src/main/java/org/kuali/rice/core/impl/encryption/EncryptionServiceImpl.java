@@ -49,7 +49,7 @@ import static org.kuali.rice.core.api.config.property.ConfigContext.getCurrentCo
 public class EncryptionServiceImpl implements EncryptionService, InitializingBean {
 
     private static final String HASH_ALGORITHM = "SHA";
-    private static final String CHARSET = "UTF-8";
+    private static final String DEFAULT_CHARSET = "UTF-8";
     private static final String ENCRYPTION_KEY_PARAM = "encryption.key";
     private static final String ENCRYPTION_ALGORITHM_PARAM = "encryption.algorithm";
 
@@ -58,7 +58,7 @@ public class EncryptionServiceImpl implements EncryptionService, InitializingBea
     private transient SecretKey secretKey;
     private transient String secretKeyValue;
 
-    private String charset = CHARSET;
+    private String charset = DEFAULT_CHARSET;
     private boolean isEnabled = false;
     private boolean initialized = false;
 

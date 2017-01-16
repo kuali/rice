@@ -49,6 +49,7 @@ public class RouteLogForm extends KualiForm {
     private boolean showCloseButton = false;
     private String newRouteLogActionMessage;
     private boolean enableLogAction = false;
+    private boolean showBackButton;
 
     public boolean isShowCloseButton() {
         return showCloseButton;
@@ -156,7 +157,15 @@ public class RouteLogForm extends KualiForm {
 	public void setEnableLogAction(boolean enableLogAction) {
 		this.enableLogAction = enableLogAction;
 	}
-	
+
+    public boolean isShowBackButton() {
+        return showBackButton;
+    }
+
+    public void setShowBackButton(boolean showBackButton) {
+        this.showBackButton = showBackButton;
+    }
+
 	public String getHeaderMenuBar() {
 		Properties parameters = new Properties();
         parameters.put("showFuture", isShowFuture());

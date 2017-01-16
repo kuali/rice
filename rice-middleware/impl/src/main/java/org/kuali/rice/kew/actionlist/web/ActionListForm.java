@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kew.actionlist.web;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.config.property.ConfigContext;
-import org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator;
 import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.DocumentTypeWindowTargets;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.api.identity.principal.Principal;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
@@ -29,11 +31,9 @@ import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.util.UrlFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
+
+import static org.kuali.rice.coreservice.framework.CoreFrameworkServiceLocator.getParameterService;
 
 /**
  * Struts form for action ActionListAction
@@ -82,6 +82,9 @@ public class ActionListForm extends KualiForm {
     private boolean outBoxEmpty;
     private Boolean showOutbox;
     private List<ExtraButton> headerButtons = new ArrayList<ExtraButton>();
+
+    private String targetSpec;
+    private DocumentTypeWindowTargets targets;
 
     public String getHelpDeskActionListUserName() {
         return helpDeskActionListUserName;
@@ -311,6 +314,22 @@ public class ActionListForm extends KualiForm {
         this.headerButtons = headerButtons;
     }
 
+    public String getTargetSpec() {
+        return targetSpec;
+    }
+
+    public void setTargetSpec(String targetSpec) {
+        this.targetSpec = targetSpec;
+    }
+
+    public DocumentTypeWindowTargets getTargets() {
+        return targets;
+    }
+
+    public void setTargets(DocumentTypeWindowTargets targets) {
+        this.targets = targets;
+    }
+
     public String getMenuBar() {
         String url = "";
         Properties parameters = new Properties();
@@ -346,41 +365,28 @@ public class ActionListForm extends KualiForm {
         if (isHelpDeskAuthorized) {
             request.setAttribute("helpDeskActionList", "true");
         }
-        //String routeLogPopup = "false";
-        //boolean routeLogPopupInd = Utilities.getKNSParameterBooleanValue(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KewApiConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND);
-        //if (routeLogPopupInd) {
-        //	routeLogPopup = "true";
-        //}
-        //String documentPopup = "false";
-        //boolean documentPopupInd = Utilities.getKNSParameterBooleanValue(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KewApiConstants.ACTION_LIST_DOCUMENT_POPUP_IND);
-        //if (documentPopupInd) {
-        //    documentPopup = "true";
-        //}
-        setRouteLogPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
-                KewApiConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
-        setDocumentPopup(CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
-                KewApiConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
+
         request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(
                 KewApiConstants.ACTION_LIST_NO_REFRESH)));
+
+        Boolean routeLogPopup = getParameterService().getParameterValueAsBoolean(
+                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                KewApiConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND, false);
+        String defaultRouteLogTarget = routeLogPopup ? "_blank" : "_self";
+
+        Boolean documentPopup = getParameterService().getParameterValueAsBoolean(
+                KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE,
+                KewApiConstants.ACTION_LIST_DOCUMENT_POPUP_IND, false);
+        String defaultDocumentTarget = documentPopup ? "_blank" : "_self";
+
+        String[] targetSpecs = request.getParameterValues("targetSpec");
+        if (targetSpecs != null) {
+            setTargetSpec(StringUtils.join(targetSpecs, ","));
+        }
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets(getTargetSpec(), defaultDocumentTarget, defaultRouteLogTarget, KEWServiceLocator.getDocumentTypeService());
+        setTargets(targets);
+
         super.populate(request);
-    }
-
-    public Boolean getRouteLogPopup() {
-        return this.routeLogPopup;
-    }
-
-    public Boolean getDocumentPopup() {
-        return this.documentPopup;
-    }
-
-    public void setRouteLogPopup(Boolean routeLogPopup) {
-        this.routeLogPopup = routeLogPopup;
-    }
-
-    public void setDocumentPopup(Boolean documentPopup) {
-        this.documentPopup = documentPopup;
     }
 
     public Boolean getHasDisplayParameters() {

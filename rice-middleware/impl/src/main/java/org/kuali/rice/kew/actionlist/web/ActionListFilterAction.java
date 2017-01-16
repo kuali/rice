@@ -16,18 +16,20 @@
 package org.kuali.rice.kew.actionlist.web;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kew.api.KewApiServiceLocator;
 import org.kuali.rice.kew.api.preferences.Preferences;
 import org.kuali.rice.kew.api.preferences.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.api.KewApiConstants;
 import org.kuali.rice.kim.api.group.Group;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -36,6 +38,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,11 +61,6 @@ public class ActionListFilterAction extends KualiAction {
         return super.execute(mapping, form, request, response);
     }
 
-    /**
-     * This overridden method ...
-     *
-     * @see org.kuali.rice.krad.web.struts.action.KualiAction#getReturnLocation(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionMapping)
-     */
     @Override
     protected String getReturnLocation(HttpServletRequest request,
                                        ActionMapping mapping)
@@ -103,9 +101,13 @@ public class ActionListFilterAction extends KualiAction {
         uSession.addObject(KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
             request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
-            return mapping.findForward("viewActionList");
+            ActionForward forward = mapping.findForward("viewActionList");
+            // make sure we pass the targetSpec back to the ActionList
+            ActionRedirect redirect = new ActionRedirect(forward);
+            redirect.addParameter("targetSpec", filterForm.getTargetSpec());
+            return redirect;
         }
-        return mapping.findForward("viewFilter");    
+        return mapping.findForward("viewFilter");
     }
 
     public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -133,6 +135,12 @@ public class ActionListFilterAction extends KualiAction {
         if (! filterForm.getMethodToCall().equalsIgnoreCase("clear")) {
             filterForm.validateDates();
         }
+        // make sure the back location includes the targetSpec for the Action List
+        if (!StringUtils.isBlank(filterForm.getBackLocation()) && !StringUtils.isBlank(filterForm.getTargetSpec())) {
+            URI uri = new URIBuilder(filterForm.getBackLocation()).addParameter("targetSpec", filterForm.getTargetSpec()).build();
+            filterForm.setBackLocation(uri.toString());
+        }
+
     }
 
     private List<? extends KeyValue> getUserWorkgroupsDropDownList(String principalId) {

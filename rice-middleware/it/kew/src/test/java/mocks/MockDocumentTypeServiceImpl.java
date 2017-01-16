@@ -108,6 +108,11 @@ public class MockDocumentTypeServiceImpl implements DocumentTypeService {
         return null;
     }
 
+    @Override
+    public String findParentNameByName(String documentTypeName) {
+        return null;
+    }
+
     private void addDocumentType(DocumentType documentType) {
         documentsById.put(documentType.getDocumentTypeId(), documentType);
         documentsByName.put(documentType.getName(), documentType);

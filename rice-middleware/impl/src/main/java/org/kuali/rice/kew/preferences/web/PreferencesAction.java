@@ -15,18 +15,9 @@
  */
 package org.kuali.rice.kew.preferences.web;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.struts.action.*;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
@@ -40,6 +31,12 @@ import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -59,18 +56,18 @@ public class PreferencesAction extends KewKualiAction {
     private static final String DOC_TYPE_PARAM = "documentType";
     private static final String PREFERENCE_VALUE_PARAM = "preferenceValue";
     public static final String SAVE_REMINDER_ATTR = "saveReminder";
-    
+
     private PreferencesService preferencesService;
-    
+
     @Override
-	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         initForm(request, form);
         request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KewApiConstants"));
         return super.execute(mapping, form, request, response);
     }
 
     @Override
-	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PreferencesForm preferencesForm = (PreferencesForm) form;
         org.kuali.rice.kew.api.preferences.Preferences preferences = getPreferencesService().getPreferences(
                 getUserSession().getPrincipalId());
@@ -85,12 +82,19 @@ public class PreferencesAction extends KewKualiAction {
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
             getPreferencesService().savePreferences(getUserSession().getPrincipalId(), prefForm.getPreferences().build());
         }
-        
+
         GlobalVariables.getUserSession().addObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.TRUE);
         GlobalVariables.getUserSession().removeObject(KewApiConstants.PREFERENCES);
-        
+
         if (! StringUtils.isEmpty(prefForm.getReturnMapping())) {
-            return mapping.findForward(prefForm.getReturnMapping());
+            ActionForward forward = mapping.findForward(prefForm.getReturnMapping());
+            if ("viewActionList".equals(prefForm.getReturnMapping())) {
+                // make sure we pass the targetSpec back to the ActionList
+                ActionRedirect redirect = new ActionRedirect(forward);
+                redirect.addParameter("targetSpec", prefForm.getTargetSpec());
+                forward = redirect;
+            }
+            return forward;
         }
         return mapping.findForward("basic");
     }
@@ -101,6 +105,11 @@ public class PreferencesAction extends KewKualiAction {
         getPrimaryDelegateFilterChoices(request);
         PreferencesForm prefForm = (PreferencesForm)form;
         prefForm.setShowOutbox(ConfigContext.getCurrentContextConfig().getOutBoxOn());
+        // make sure the back location includes the targetSpec for the Action List
+        if (!StringUtils.isBlank(prefForm.getBackLocation()) && !StringUtils.isBlank(prefForm.getTargetSpec())) {
+            URI uri = new URIBuilder(prefForm.getBackLocation()).addParameter("targetSpec", prefForm.getTargetSpec()).build();
+            prefForm.setBackLocation(uri.toString());
+        }
         return null;
     }
 
@@ -110,10 +119,10 @@ public class PreferencesAction extends KewKualiAction {
         delegatorFilterChoices.add(new ConcreteKeyValue(KewApiConstants.DELEGATORS_ON_ACTION_LIST_PAGE, KewApiConstants.DELEGATORS_ON_ACTION_LIST_PAGE));
         request.setAttribute("delegatorFilter", delegatorFilterChoices);
     }
-    
+
     public void getPrimaryDelegateFilterChoices(HttpServletRequest request) {
-    	List<KeyValue> primaryDelegateFilterChoices = new ArrayList<KeyValue>();
-    	primaryDelegateFilterChoices.add(new ConcreteKeyValue(KewApiConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE, KewApiConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE));
+        List<KeyValue> primaryDelegateFilterChoices = new ArrayList<KeyValue>();
+        primaryDelegateFilterChoices.add(new ConcreteKeyValue(KewApiConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE, KewApiConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE));
         primaryDelegateFilterChoices.add(new ConcreteKeyValue(KewApiConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE, KewApiConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE));
         request.setAttribute("primaryDelegateFilter", primaryDelegateFilterChoices);
     }
@@ -121,7 +130,7 @@ public class PreferencesAction extends KewKualiAction {
     private static UserSession getUserSession() {
         return GlobalVariables.getUserSession();
     }
-    
+
     public ActionForward addNotificationPreference(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         PreferencesForm preferencesForm = (PreferencesForm) form;
         if(validateAddNotificationPreference(preferencesForm)) {
@@ -133,7 +142,7 @@ public class PreferencesAction extends KewKualiAction {
         }
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     public ActionForward deleteNotificationPreference(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
         PreferencesForm preferencesForm = (PreferencesForm) form;
         String parameterName = (String) request.getAttribute(KRADConstants.METHOD_TO_CALL_ATTRIBUTE);
@@ -143,7 +152,7 @@ public class PreferencesAction extends KewKualiAction {
         request.setAttribute(SAVE_REMINDER_ATTR, "true");
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-    
+
     private boolean validateAddNotificationPreference(PreferencesForm form) {
         if (StringUtils.isEmpty(form.getDocumentTypePreferenceName()) || StringUtils.isEmpty(form.getDocumentTypePreferenceValue())) {
             GlobalVariables.getMessageMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);

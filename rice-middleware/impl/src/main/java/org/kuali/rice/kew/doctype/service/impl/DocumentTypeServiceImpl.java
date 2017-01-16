@@ -163,6 +163,10 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         return documentType;
     }
 
+    public String findParentNameByName(String documentTypeName) {
+        return getDocumentTypeDAO().findParentNameByName(documentTypeName);
+    }
+
     public DocumentType save(DocumentType documentType) {
         // any time that we save a document type, let's grab an optimistic lock on it's parent document type, that's
         // because perhaps another transaction created a new version of the parent doc type, if we don't optimistic

@@ -48,5 +48,14 @@ public interface DocumentTypeQueryService extends XmlLoader {
      */
     @Cacheable(value= org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}' + 'documentId=' + #p0")
     public DocumentType findByDocumentId(String documentId);
+
+    /**
+     * Returns the name fo the parent document type for the document type with the given name, or null
+     * if the specified document type doesn't have a parent document type.
+     * @param documentTypeName the name of the document type for which to find the parent
+     * @return the name of the specified document types parent documenttype, or null if the document type is a root document type
+     */
+    @Cacheable(value = org.kuali.rice.kew.api.doctype.DocumentType.Cache.NAME, key="'{BO}' + 'parentOfName=' + #p0")
+    String findParentNameByName(String documentTypeName);
     
 }

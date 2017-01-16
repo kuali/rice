@@ -72,6 +72,7 @@
     <c:param name="currentPage" value="${ActionListForm.currentPage}"/>
     <c:param name="currentSort" value="${ActionListForm.currentSort}"/>
     <c:param name="currentDir" value="${ActionListForm.currentDir}"/>
+	<c:param name="targetSpec" value="${ActionListForm.targetSpec}"/>
   </c:url>
 
 <kul:page headerTitle="Action List" lookup="true"
@@ -139,10 +140,10 @@
       </c:if>
       <c:if test="${UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME] != null && UserSession.objectMap[KewApiConstants.ACTION_LIST_FILTER_ATTR_NAME].filterOn}">
         <div style="float:left; width:70px">
-          <a
-                  href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
-                  src="${ConfigProperties.kr.url}/images/tinybutton-clearfilter.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
-                  border="0" /></a>
+            <a
+                    href='<c:url value="ActionList.do"><c:param name="methodToCall" value="clearFilter"/><c:param name="targetSpec" value="${ActionListForm.targetSpec}"/></c:url>'  title="clearFilter"><img
+                    src="${ConfigProperties.kr.url}/images/tinybutton-clearfilter.gif" class="tinybutton" alt="clearFilter" title="clearFilter"
+                    border="0" /></a>
         </div>
       </c:if>
 
@@ -158,6 +159,7 @@
           <a href="
 					<c:url value="ActionList.do">
 						<c:param name="methodToCall" value="clearHelpDeskActionListUser" />
+						<c:param name="targetSpec" value="${ActionListForm.targetSpec}"/>
 					</c:url>">Clear <c:out value="${UserSession.objectMap[KewApiConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME].name}"/>'s List</a>
         </c:if>&nbsp;&nbsp;
       </c:if>
@@ -184,6 +186,7 @@
 	</c:if>
 	<html-el:form action="ActionList">
 		<html-el:hidden property="methodToCall" value="" />
+        <html-el:hidden property="targetSpec" value="${ActionListForm.targetSpec}" />
 		<kul:csrf />
 		<table width="100%">
 			<tr>
@@ -207,7 +210,7 @@
 						<c:choose>
 							<c:when
 								test="${ActionListForm.viewOutbox && ActionListForm.showOutbox}">
-								<a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=false" />">
+                                <a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=false"><c:param name="targetSpec" value="${ActionListForm.targetSpec}"/></c:url>">
 								    <bean-el:message key="actionList.ActionList.title" /></a>
                                 | <strong><bean-el:message key="actionList.Outbox.title" /></strong>
 							</c:when>
@@ -215,7 +218,7 @@
 								<strong>
 								<bean-el:message key="actionList.ActionList.title" /></strong>
 								<c:if test="${ActionListForm.showOutbox }">
-                                    | <a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=true" />">
+                                    | <a href="<c:url value="ActionList.do?methodToCall=start&viewOutbox=true"><c:param name="targetSpec" value="${ActionListForm.targetSpec}"/></c:url>">
                                         <bean-el:message key="actionList.Outbox.title" />
                                        </a>
 								</c:if>
@@ -301,15 +304,8 @@
                                      <c:param name="${Constants.DOCUMENT_ID_PARAMETER}" value="${result.documentId}"/>
                                          <c:param name="${Constants.COMMAND_PARAMETER}" value="${Constants.ACTIONLIST_COMMAND}" />
                                              </c:url>"
-                        <c:choose>
-                          <c:when test="${result.target != null}">
-                            target="<c:out value="${result.target}" />"
-                          </c:when>
-                          <c:otherwise>
-                            <c:if test="${ActionListForm.documentPopup}"> target="_blank" </c:if>
-                          </c:otherwise>
-                        </c:choose>
-									class="showvisit"> <c:out value="${result.documentId}" />
+                                    target="<esapi:encodeForHTMLAttribute>${ActionListForm.targets.getDocumentTarget(result.docName)}</esapi:encodeForHTMLAttribute>"
+                                    class="showvisit"> <c:out value="${result.documentId}" />
 								</a>
 							</c:when>
 							<c:otherwise>
@@ -419,7 +415,7 @@
 					<display:column title="${routeLogLabel}" class="infocell">
 						<div align="center"><a
 							href="<c:url value="RouteLog.do"><c:param name="documentId" value="${result.documentId}"/></c:url>"
-							<c:if test="${ActionListForm.routeLogPopup}">target="_blank"</c:if>>
+                            target="<esapi:encodeForHTMLAttribute>${ActionListForm.targets.getRouteLogTarget(result.docName)}</esapi:encodeForHTMLAttribute>">
 						<img alt="Route Log for Document"
 							src="images/my_route_log.gif" /> </a></div>
 					</display:column>

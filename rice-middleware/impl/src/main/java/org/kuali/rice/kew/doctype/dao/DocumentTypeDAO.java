@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.kew.doctype.dao;
 
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+
 import java.util.Collection;
 import java.util.List;
-
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.rule.bo.RuleAttribute;
 
 
 /**
@@ -105,4 +104,7 @@ public interface DocumentTypeDAO {
      * @param documentTypeId the id of the document type for which to increment the version number
      */
     void incrementOptimisticLock(String documentTypeId);
+
+    String findParentNameByName(String documentTypeName);
+
 }

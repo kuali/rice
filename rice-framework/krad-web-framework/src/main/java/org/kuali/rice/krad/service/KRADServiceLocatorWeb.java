@@ -82,6 +82,7 @@ public class KRADServiceLocatorWeb {
     public static final String EXPRESSION_EVALUATOR_FACTORY = "expressionEvaluatorFactory";
     public static final String VIEW_LIFECYCLE_PHASE_BUILDER = "viewLifecyclePhaseBuilder";
     public static final String MODEL_AND_VIEW_SERVICE = "modelAndViewService";
+    public static final String CSRF_SERVICE = "csrfService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -201,6 +202,10 @@ public class KRADServiceLocatorWeb {
 
     public static UifDefaultingService getUifDefaultingService() {
         return getService(UIF_DEFAULTING_SERVICE);
+    }
+
+    public static CsrfService getCsrfService() {
+        return getService(CSRF_SERVICE);
     }
 
     /**

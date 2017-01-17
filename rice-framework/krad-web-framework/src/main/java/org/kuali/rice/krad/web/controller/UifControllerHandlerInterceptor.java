@@ -18,6 +18,7 @@ package org.kuali.rice.krad.web.controller;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.service.CsrfService;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.uif.util.ProcessLogger;
@@ -52,6 +53,9 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     @Autowired
     private ModelAndViewService modelAndViewService;
 
+    @Autowired
+    private CsrfService csrfService;
+
     /**
      * Before the controller executes the user session is set on GlobalVariables
      * and messages are cleared, in addition setup for the history manager and a check on missing session
@@ -64,7 +68,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             Object handler) throws Exception {
         checkHandlerMethodAccess(request, handler);
 
-        if (!CsrfValidator.validateCsrf(request, response)) {
+        if (!getCsrfService().validateCsrfIfNecessary(request, response)) {
             return false;
         }
 
@@ -240,4 +244,13 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
     public void setModelAndViewService(ModelAndViewService modelAndViewService) {
         this.modelAndViewService = modelAndViewService;
     }
+
+    protected CsrfService getCsrfService() {
+        return csrfService;
+    }
+
+    public void setCsrfService(CsrfService csrfService) {
+        this.csrfService = csrfService;
+    }
+
 }

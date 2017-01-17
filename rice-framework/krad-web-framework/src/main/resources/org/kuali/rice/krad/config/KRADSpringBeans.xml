@@ -701,6 +701,10 @@
 
   <bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
 
+  <bean id="csrfService" class="org.kuali.rice.krad.service.impl.CsrfServiceImpl"
+        p:configurationService-ref="kualiConfigurationService"
+        p:parameterService-ref="rice.krad.import.parameterService"/>
+
   <import resource="KRADSpringBeans-data.xml"/>
   <import resource="KRADSpringBeans-jpa.xml"/>
 

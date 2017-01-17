@@ -1,3 +1,18 @@
+/**
+ * Copyright 2005-2016 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kew.util;
 
 import org.junit.Before;
@@ -128,31 +143,41 @@ public class DocumentTypeWindowTargetsTest {
 
     @Test
     public void testNullTargetSpec() throws Exception {
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets(null, _BLANK, "rlt", documentTypeService);
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets(null, null, _BLANK, "rlt", documentTypeService);
         // should always produce the default
         assertEquals(_BLANK, targets.getDocumentTarget("whatever"));
     }
 
     @Test
     public void testBlankTargetSpec() throws Exception {
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("", _SELF, "rlt", documentTypeService);
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("", "", _SELF, "rlt", documentTypeService);
         // should always produce the default
         assertEquals(_SELF, targets.getDocumentTarget("whatever"));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testNullDefaultTarget() throws Exception {
-        new DocumentTypeWindowTargets("", null, "rlt", documentTypeService);
+    public void testNullDefaultDocumentTarget() throws Exception {
+        new DocumentTypeWindowTargets("", "", null, "rlt", documentTypeService);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testBlankDefaultTarget() throws Exception {
-        new DocumentTypeWindowTargets("", "", "rlt", documentTypeService);
+    public void testNullDefaultRouteLogTarget() throws Exception {
+        new DocumentTypeWindowTargets("", "", "dt", null, documentTypeService);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBlankDefaultDocumentTarget() throws Exception {
+        new DocumentTypeWindowTargets("", "", "", "rlt", documentTypeService);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testBlankDefaultRouteLogTarget() throws Exception {
+        new DocumentTypeWindowTargets("", "", "dt", "", documentTypeService);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNullDocumentTypeService() throws Exception {
-        new DocumentTypeWindowTargets("", _TOP, "rlt", null);
+        new DocumentTypeWindowTargets("", "", _TOP, "rlt", null);
     }
 
     /**
@@ -161,7 +186,10 @@ public class DocumentTypeWindowTargetsTest {
      */
     @Test
     public void testFullTargetSpec_NoDefault() throws Exception {
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("B:_blank,G:_top,E:_parent", _SELF, "rlt", documentTypeService);
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("B:_blank,G:_top,E:_parent", "B:custom,G:_parent,E:_top", _SELF, "rlt", documentTypeService);
+
+        // document targets
+
         // everything under B in the hierarchy should be _blank
         assertEquals(_BLANK, targets.getDocumentTarget("B"));
         assertEquals(_BLANK, targets.getDocumentTarget("D"));
@@ -174,6 +202,21 @@ public class DocumentTypeWindowTargetsTest {
         // everything under E in the hierarchy should be _parent
         assertEquals(_PARENT, targets.getDocumentTarget("E"));
         assertEquals(_PARENT, targets.getDocumentTarget("F"));
+
+        // route log targets
+
+        // everything under B in the hierarchy should be "custom"
+        assertEquals("custom", targets.getRouteLogTarget("B"));
+        assertEquals("custom", targets.getRouteLogTarget("D"));
+        assertEquals("custom", targets.getRouteLogTarget("C"));
+        // A should fall back to the default which is "rlt" for the route log
+        assertEquals("rlt", targets.getRouteLogTarget("A"));
+        // everything under G in the hierarchy should be _parent
+        assertEquals(_PARENT, targets.getRouteLogTarget("G"));
+        assertEquals(_PARENT, targets.getRouteLogTarget("H"));
+        // everything under E in the hierarchy should be _top
+        assertEquals(_TOP, targets.getRouteLogTarget("E"));
+        assertEquals(_TOP, targets.getRouteLogTarget("F"));
     }
 
     /**
@@ -182,7 +225,7 @@ public class DocumentTypeWindowTargetsTest {
      */
     @Test
     public void testFullTargetSpec_WithDefinedDefault() throws Exception {
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("B:_blank,G:_top,*:_parent", _SELF, "rlt", documentTypeService);
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("B:_blank,G:_top,*:_parent", null, _SELF, "rlt", documentTypeService);
         // everything under B in the hierarchy should be _blank
         assertEquals(_BLANK, targets.getDocumentTarget("B"));
         assertEquals(_BLANK, targets.getDocumentTarget("D"));
@@ -195,6 +238,12 @@ public class DocumentTypeWindowTargetsTest {
         // everything under E in the hierarchy should be _parent
         assertEquals(_PARENT, targets.getDocumentTarget("E"));
         assertEquals(_PARENT, targets.getDocumentTarget("F"));
+
+        // "rlt" should be the default for route log except for I because of it's document type policy
+        assertEquals("rlt", targets.getRouteLogTarget("A"));
+        assertEquals("rlt", targets.getRouteLogTarget("E"));
+        assertEquals(_PARENT, targets.getRouteLogTarget("I"));
+
     }
 
     /**
@@ -202,36 +251,42 @@ public class DocumentTypeWindowTargetsTest {
      */
     @Test
     public void testInvalidTargetSpec_IsIgnored() {
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("blahblahblah", _BLANK, "rlt", documentTypeService);
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("blahblahblah", "blahblahblah", _BLANK, "rlt", documentTypeService);
         assertEquals(_BLANK, targets.getDocumentTarget("A"));
+        assertEquals("rlt", targets.getRouteLogTarget("A"));
 
-        targets = new DocumentTypeWindowTargets("blah,blah,B:_top", _BLANK, "rlt", documentTypeService);
+        targets = new DocumentTypeWindowTargets("blah,blah,B:_top", "blah,blah,B:_parent", _BLANK, "rlt", documentTypeService);
         assertEquals(_TOP, targets.getDocumentTarget("B"));
         assertEquals(_TOP, targets.getDocumentTarget("C"));
         assertEquals(_TOP, targets.getDocumentTarget("D"));
         assertEquals(_BLANK, targets.getDocumentTarget("A"));
 
+        assertEquals(_PARENT, targets.getRouteLogTarget("B"));
+        assertEquals(_PARENT, targets.getRouteLogTarget("C"));
+        assertEquals(_PARENT, targets.getRouteLogTarget("D"));
+        assertEquals("rlt", targets.getRouteLogTarget("A"));
+
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetTarget_NullValue() {
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("", _SELF, "rlt", documentTypeService);
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("", "", _SELF, "rlt", documentTypeService);
         targets.getDocumentTarget(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetTarget_BlankValue() {
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("", _SELF, "rlt", documentTypeService);
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("", "", _SELF, "rlt", documentTypeService);
         targets.getDocumentTarget("");
     }
 
     @Test
     public void testGetTarget_WithDocumentTypePolicy() {
-        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("", _BLANK, "rlt", documentTypeService);
+        DocumentTypeWindowTargets targets = new DocumentTypeWindowTargets("", "", _BLANK, "rlt", documentTypeService);
         assertEquals(_PARENT, targets.getDocumentTarget("I"));
         assertEquals(_PARENT, targets.getDocumentTarget("J"));
 
-        targets = new DocumentTypeWindowTargets("J:_top", _BLANK, "rlt", documentTypeService);
+        targets = new DocumentTypeWindowTargets("J:_top", null, _BLANK, "rlt", documentTypeService);
         assertEquals(_PARENT, targets.getDocumentTarget("I"));
         assertEquals(_TOP, targets.getDocumentTarget("J"));
     }

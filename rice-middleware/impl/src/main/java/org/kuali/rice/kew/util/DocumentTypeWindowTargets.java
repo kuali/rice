@@ -1,3 +1,18 @@
+/**
+ * Copyright 2005-2016 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.kew.util;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,7 +35,8 @@ public class DocumentTypeWindowTargets {
     private static final Logger LOG = Logger.getLogger(DocumentTypeWindowTargets.class);
     private static final String DEFAULT_KEY = "*";
 
-    private final Map<String, String> targetMappings;
+    private final Map<String, String> documentTargetMappings;
+    private final Map<String, String> routeLogTargetMappings;
     private final DocumentTypeService documentTypeService;
 
     private final String defaultDocumentTarget;
@@ -29,7 +45,7 @@ public class DocumentTypeWindowTargets {
     private final Map<String, String> documentTargetCache = new ConcurrentHashMap<>();
     private final Map<String, String> routeLogTargetCache = new ConcurrentHashMap<>();
 
-    public DocumentTypeWindowTargets(String targetSpec, String defaultDocumentTarget, String defaultRouteLogTarget, DocumentTypeService documentTypeService) {
+    public DocumentTypeWindowTargets(String documentTargetSpec, String routeLogTargetSpec, String defaultDocumentTarget, String defaultRouteLogTarget, DocumentTypeService documentTypeService) {
         if (StringUtils.isBlank(defaultDocumentTarget)) {
             throw new IllegalArgumentException("defaultDocumentTarget must not be blank");
         }
@@ -39,15 +55,17 @@ public class DocumentTypeWindowTargets {
         if (documentTypeService == null) {
             throw new IllegalArgumentException("documentTypeService must not be nulll");
         }
-        this.targetMappings = new HashMap<>();
+        this.documentTargetMappings = new HashMap<>();
+        this.routeLogTargetMappings = new HashMap<>();
         this.documentTypeService = documentTypeService;
         this.defaultDocumentTarget = defaultDocumentTarget;
         this.defaultRouteLogTarget = defaultRouteLogTarget;
 
-        parseTargetSpec(targetSpec);
+        parseTargetSpec(documentTargetSpec, this.documentTargetMappings);
+        parseTargetSpec(routeLogTargetSpec, this.routeLogTargetMappings);
     }
 
-    private void parseTargetSpec(String targetSpec) {
+    private void parseTargetSpec(String targetSpec, Map<String, String> targetMappings) {
         if (!StringUtils.isBlank(targetSpec)) {
             String[] entries = targetSpec.split(",");
             for (String entry : entries) {
@@ -75,6 +93,7 @@ public class DocumentTypeWindowTargets {
         }
         Map<String, String> targetCache = isRouteLog ? routeLogTargetCache : documentTargetCache;
         if (!targetCache.containsKey(documentTypeName)) {
+            Map<String, String> targetMappings = isRouteLog ? routeLogTargetMappings : documentTargetMappings;
             String target = targetMappings.get(documentTypeName);
             if (target == null) {
                 // first if we are at depth 0, check if the doc type has a policy on it

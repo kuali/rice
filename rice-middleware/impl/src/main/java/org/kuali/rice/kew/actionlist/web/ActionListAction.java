@@ -130,8 +130,8 @@ public class ActionListAction extends KualiAction {
     @Override
     public ActionForward refresh(ActionMapping mapping,
                                  ActionForm form,
-                           		 HttpServletRequest request,
-                           		 HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, form, request, response);
     }
@@ -269,50 +269,50 @@ public class ActionListAction extends KualiAction {
                 form.setOutBoxEmpty(actionList.isEmpty());
             } else {
 
-                    SimpleDateFormat dFormatter = new SimpleDateFormat(MAX_ACTION_ITEM_DATE_FORMAT);
-                    if (actionList == null) {
-                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-                        if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
-                            if (countAndMaxDate.isEmpty()) {
-                                countAndMaxDate.add(0, new Date(0));
-                                countAndMaxDate.add(1, 0);
-                            } else {
-                                countAndMaxDate.set(0, new Date(0));
-                            }
-                        }
-                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
-                        // fetch the action list
-                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
-
-                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                    } else if (forceListRefresh) {
-                        // force a refresh... usually based on filter change or parameter specifying refresh needed
-                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
-                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-                        if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
-                            if (countAndMaxDate.isEmpty()) {
-                                countAndMaxDate.add(0, new Date(0));
-                                countAndMaxDate.add(1, 0);
-                            } else {
-                                countAndMaxDate.set(0, new Date(0));
-                            }
-                        }
-                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
-
-                    }else if (refreshList(request,principalId)){
-                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
-                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-
-                    } else {
-                        Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
-                        if (update == null || !update) {
-                            freshActionList = false;
+                SimpleDateFormat dFormatter = new SimpleDateFormat(MAX_ACTION_ITEM_DATE_FORMAT);
+                if (actionList == null) {
+                    List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+                    if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
+                        if (countAndMaxDate.isEmpty()) {
+                            countAndMaxDate.add(0, new Date(0));
+                            countAndMaxDate.add(1, 0);
+                        } else {
+                            countAndMaxDate.set(0, new Date(0));
                         }
                     }
-                    request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
+                    request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
+                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
+                    // fetch the action list
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
+
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+                } else if (forceListRefresh) {
+                    // force a refresh... usually based on filter change or parameter specifying refresh needed
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+                    List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+                    if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
+                        if (countAndMaxDate.isEmpty()) {
+                            countAndMaxDate.add(0, new Date(0));
+                            countAndMaxDate.add(1, 0);
+                        } else {
+                            countAndMaxDate.set(0, new Date(0));
+                        }
+                    }
+                    request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
+                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
+
+                }else if (refreshList(request,principalId)){
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+
+                } else {
+                    Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
+                    if (update == null || !update) {
+                        freshActionList = false;
+                    }
+                }
+                request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
 
             }
             // reset the requery action list key
@@ -384,7 +384,7 @@ public class ActionListAction extends KualiAction {
         List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
         String maxActionItemDateAssignedForUserKey = "";
         if(countAndMaxDate.get(0)!= null){
-           maxActionItemDateAssignedForUserKey = dFormatter.format(countAndMaxDate.get(0));
+            maxActionItemDateAssignedForUserKey = dFormatter.format(countAndMaxDate.get(0));
         }
         request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, maxActionItemDateAssignedForUserKey);
         request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
@@ -686,7 +686,7 @@ public class ActionListAction extends KualiAction {
         ActionListForm actionListForm = (ActionListForm) form;
         List<? extends ActionItemBase> actionList = (List<? extends ActionItemBase>) request.getSession().getAttribute(ACTION_LIST_KEY);
         if (actionList == null) {
-            return start(mapping, new ActionListForm(), request, response);
+            return start(mapping, cleanForm(actionListForm), request, response);
         }
         ActionMessages messages = new ActionMessages();
         List<ActionInvocation> invocations = new ArrayList<ActionInvocation>();
@@ -709,10 +709,18 @@ public class ActionListAction extends KualiAction {
         KEWServiceLocator.getWorkflowDocumentService().takeMassActions(getUserSession().getPrincipalId(), invocations);
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.processed"));
         saveMessages(request, messages);
-        ActionListForm cleanForm = new ActionListForm();
+        ActionListForm cleanForm = cleanForm(actionListForm);
         request.setAttribute(mapping.getName(), cleanForm);
         request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, cleanForm, request, response);
+    }
+
+    private ActionListForm cleanForm(ActionListForm existingForm) {
+        ActionListForm form = new ActionListForm();
+        form.setDocumentTargetSpec(existingForm.getDocumentTargetSpec());
+        form.setRouteLogTargetSpec(existingForm.getRouteLogTargetSpec());
+        form.setTargets(existingForm.getTargets());
+        return form;
     }
 
     protected ActionItemBase getActionItemFromActionList(List<? extends ActionItemBase> actionList, String actionItemId) {

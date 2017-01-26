@@ -148,6 +148,7 @@
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10-kuali-1</jotm.version>
     <jpa.version>2.1.0</jpa.version>
+    <jsch.version>0.1.54</jsch.version>
     <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsr305.version>2.0.3</jsr305.version>
@@ -211,7 +212,7 @@
     <plugin.selenium.version>2.3</plugin.selenium.version>
     <!-- Pin the tomcat7 plugin to an explicit version -->
     <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
-    <plugin.dependency-check.version>1.4.3</plugin.dependency-check.version>
+    <plugin.dependency-check.version>1.4.5</plugin.dependency-check.version>
 
     <!-- Saucelabs settings (aside from version, which is above): -->
 
@@ -1876,6 +1877,12 @@
         <groupId>joda-time</groupId>
         <artifactId>joda-time-jsptags</artifactId>
         <version>${joda-time-jsptags.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.jcraft</groupId>
+        <artifactId>jsch</artifactId>
+        <version>${jsch.version}</version>
       </dependency>
 
       <dependency>

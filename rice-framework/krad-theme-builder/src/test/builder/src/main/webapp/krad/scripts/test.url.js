@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,14 +87,14 @@ function handlePageAndCacheRefreshing() {
     jQuery(document).bind("afterClose", function(e){
         // force a history back on close (if back button wasn't clicked to close)
         if(!lightboxBackClose && history.replaceState &&  window.location &&
-                (window.location).toString().indexOf(kradVariables.LIGHTBOX_PARAM + "=true")){
+            (window.location).toString().indexOf(kradVariables.LIGHTBOX_PARAM + "=true")){
             // TODO webkit incorrectly still stores the history of iframes after removal, back will cause bad behavior
             if (!jQuery.browser.webkit){
                 history.back();
             }
         }
         else if(!lightboxBackClose && window.location.hash &&
-                (window.location.hash).toString().indexOf("lightbox=true")){
+            (window.location.hash).toString().indexOf("lightbox=true")){
             // TODO just removing attribute because IE has a bug with erasing the hash history so back cant be
             // used as we would like it to
             var hash = window.location.hash.toString();
@@ -117,7 +117,7 @@ function handlePageAndCacheRefreshing() {
             navigateToPage(state.pageId);
         }
 
-        if ((!state || (state && state.pageId == getCurrentPageId())) && jQuery.fancybox.isOpen){
+        if ((!state || (state && state.pageId == getCurrentPageId())) && jQuery.fancybox.isOpen()){
             lightboxBackClose = true;
             jQuery.fancybox.close();
         }
@@ -136,7 +136,7 @@ function handlePageAndCacheRefreshing() {
             navigateToPage(pageId);
         }
 
-        if (!inLightbox && jQuery.fancybox.isOpen){
+        if (!inLightbox && jQuery.fancybox.isOpen()){
             lightboxBackClose = true;
             jQuery.fancybox.close();
         }
@@ -206,7 +206,7 @@ function updateRequestUrl(pageId) {
 
         var updatedPageUrl = "?" + queryString + window.location.hash;
 
-        if (!(getContext().fancybox.isOpen)){
+        if (!(getContext().fancybox.isOpen())){
             updatedPageUrl = updatedPageUrl.replace("&" + kradVariables.LIGHTBOX_PARAM + "=true", "");
         }
 

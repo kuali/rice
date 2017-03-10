@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,45 +20,42 @@ import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.XmlObjectSerializerService;
 import org.kuali.rice.krad.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.krad.util.documentserializer.PropertySerializabilityEvaluator;
-import org.kuali.rice.krad.util.documentserializer.SerializationState;
 
 /**
  * Default implementation of the {@link DocumentSerializerService}.  If no &lt;workflowProperties&gt; have been defined in the
- * data dictionary for a document type (i.e. {@link Document#getDocumentPropertySerizabilityEvaluator()} returns an instance of 
+ * data dictionary for a document type (i.e. {@link Document#getDocumentPropertySerizabilityEvaluator()} returns an instance of
  * {@link AlwaysTruePropertySerializibilityEvaluator}), then this service will revert to using the {@link XmlObjectSerializerService}
  * bean, which was the old way of serializing a document for routing.  If workflowProperties are defined, then this implementation
  * will selectively serialize items.
  */
 public class DocumentSerializerServiceImpl extends SerializerServiceBase implements DocumentSerializerService {
-    
+
     /**
      * Serializes a document for routing
-     * 
+     *
      * @see org.kuali.rice.krad.service.DocumentSerializerService#serializeDocumentToXmlForRouting(org.kuali.rice.krad.document.Document)
      */
     public String serializeDocumentToXmlForRouting(Document document) {
-        PropertySerializabilityEvaluator propertySerizabilityEvaluator = document.getDocumentPropertySerizabilityEvaluator();
-        evaluators.set(propertySerizabilityEvaluator);
-        SerializationState state = createNewDocumentSerializationState(document);
-        serializationStates.set(state);
-        
-        Object xmlWrapper = wrapDocumentWithMetadata(document);
-        String xml;
-        if (propertySerizabilityEvaluator instanceof AlwaysTruePropertySerializibilityEvaluator) {
-            xml = getXmlObjectSerializerService().toXml(xmlWrapper);
-        }
-        else {
-            xml = xstream.toXML(xmlWrapper);
-        }
-        
-        evaluators.set(null);
-        serializationStates.set(null);
-        return xml;
+        final PropertySerializabilityEvaluator evaluator = document.getDocumentPropertySerizabilityEvaluator();
+        return doSerialization(evaluator, document, new Serializer<Document>() {
+            @Override
+            public String serialize(Document document) {
+                Object xmlWrapper = wrapDocumentWithMetadata(document);
+                String xml;
+                if (evaluator instanceof AlwaysTruePropertySerializibilityEvaluator) {
+                    xml = getXmlObjectSerializerService().toXml(xmlWrapper);
+                }
+                else {
+                    xml = xstream.toXML(xmlWrapper);
+                }
+                return xml;
+            }
+        });
     }
 
     /**
      * Wraps the document before it is routed.  This implementation defers to {@link Document#wrapDocumentWithMetadataForXmlSerialization()}.
-     * 
+     *
      * @param document
      * @return may return the document, or may return another object that wraps around the document to provide additional metadata
      */

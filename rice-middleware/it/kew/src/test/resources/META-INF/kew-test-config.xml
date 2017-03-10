@@ -61,7 +61,7 @@
   <param name="external.actn.list.notification.poll.interval.seconds">15</param>
   <param name="external.actn.list.notification.initial.delay.seconds">30</param>
 
-	<param name="rice.kew.additionalSpringFiles">classpath:org/kuali/rice/kew/config/TestSpring.xml</param>
+	<param name="rice.kew.additionalSpringFiles">classpath:org/kuali/rice/kew/config/TestSpring.xml,classpath:org/kuali/rice/kew/config/KEWTestSpringBeans.xml</param>
 
     <param name="filter.login.class">org.kuali.rice.krad.web.filter.DummyLoginFilter</param>
     <param name="filtermapping.login.1">/*</param>

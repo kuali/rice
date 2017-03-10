@@ -138,6 +138,9 @@
     <groovy.version>2.3.9</groovy.version>
     <guava.version>17.0</guava.version>
     <httpclient.version>4.3.5</httpclient.version>
+    <mail.version>1.4.4</mail.version>
+    <mockito.version>1.10.8</mockito.version>
+    <powermock.version>1.6.1</powermock.version>
 
     <!-- Can't get rid of this dependency until the JAXB RI in our current JDK is >= this version.
          As of JDK 7, it's 2.2.4 -->
@@ -1884,6 +1887,18 @@
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-module-junit4</artifactId>
+        <version>${powermock.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-api-mockito</artifactId>
+        <version>${powermock.version}</version>
         <scope>test</scope>
       </dependency>
 

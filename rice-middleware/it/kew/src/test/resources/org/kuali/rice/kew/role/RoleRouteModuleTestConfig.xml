@@ -39,11 +39,11 @@
 				<qualifier name="org">
 					<xPathExpression>./org</xPathExpression>
 				</qualifier>
- 			</resolverConfig>
+			</resolverConfig>
 		</ruleAttribute>
 	</ruleAttributes>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
- 		<documentType>
+		<documentType>
 			<name>RoleRouteModuleTest1</name>
 			<label>RoleRouteModuleTest1</label>
 			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
@@ -64,7 +64,7 @@
 				<role name="Role1">
 					<activationType>P</activationType>
 					<qualifierResolver>RoleRouteModule-TestQualifierResolver</qualifierResolver>
-          <responsibilityTemplateName>FirstApproveReview</responsibilityTemplateName>
+					<responsibilityTemplateName>FirstApproveReview</responsibilityTemplateName>
 				</role>
 			</routeNodes>
 		</documentType>
@@ -90,6 +90,31 @@
 					<activationType>P</activationType>
 					<qualifierResolverClass>org.kuali.rice.kew.role.TestQualifierResolver</qualifierResolverClass>
 					<responsibilityTemplateName>AllApproveReview</responsibilityTemplateName>
+				</role>
+			</routeNodes>
+		</documentType>
+		<documentType>
+			<name>RoleRouteModuleTest3</name>
+			<label>RoleRouteModuleTest3</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+			<docHandler>none</docHandler>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Role1"/>
+					<role name="Role1"/>
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<role name="Role1">
+					<activationType>P</activationType>
+					<qualifierResolverClass>org.kuali.rice.kew.role.TestQualifierResolver</qualifierResolverClass>
+					<responsibilityTemplateName>DuplicateReview</responsibilityTemplateName>
 				</role>
 			</routeNodes>
 		</documentType>

@@ -103,7 +103,7 @@
     <asm.group.string>org.ow2.asm</asm.group.string>
     <asm.version>5.0.3</asm.version>
     <aspectj.version>1.8.1</aspectj.version>
-    <bcprov.version>1.54</bcprov.version>
+    <bcprov.version>1.55</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
     <core-auth-servlet-filter.version>1.4</core-auth-servlet-filter.version>
     <closure.version>v20140730</closure.version>

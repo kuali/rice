@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 package org.kuali.rice.core.api.uif
 
 import org.junit.Test
-import static org.junit.Assert.*
 import org.kuali.rice.core.test.JAXBAssert
-import org.junit.Ignore;
+
+import static org.junit.Assert.assertNotNull;
 
 class RemotableSelectTest {
-        private static final String XML1 =
-        """<select xmlns="http://rice.kuali.org/core/v2_0">
+    private static final String XML1 =
+            """<select xmlns="http://rice.kuali.org/core/v2_0">
             <keyLabels>
 		        <entry key="foo">bar</entry>
 	        </keyLabels>
@@ -30,8 +30,8 @@ class RemotableSelectTest {
             <multiple>false</multiple>
           </select>""";
 
-        private static final String XML2 =
-        """<select xmlns="http://rice.kuali.org/core/v2_0">
+    private static final String XML2 =
+            """<select xmlns="http://rice.kuali.org/core/v2_0">
             <groups>
                 <group>
                     <keyLabels>
@@ -102,27 +102,27 @@ class RemotableSelectTest {
 
 
     @Test
-	void testJAXB1() {
-		RemotableSelect o = create().build();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(o, XML1, RemotableSelect.class);
-	}
+    void testJAXB1() {
+        RemotableSelect o = create().build();
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(o, XML1, RemotableSelect.class);
+    }
 
     @Test
-	void testJAXB2() {
-		RemotableSelect o = create2().build();
-		JAXBAssert.assertEqualXmlMarshalUnmarshal(o, XML2, RemotableSelect.class);
-	}
+    void testJAXB2() {
+        RemotableSelect o = create2().build();
+        JAXBAssert.assertEqualXmlMarshalUnmarshal(o, XML2, RemotableSelect.class);
+    }
 
     private RemotableSelect.Builder create() {
-		RemotableSelect.Builder o = RemotableSelect.Builder.create(["foo":"bar"]);
+        RemotableSelect.Builder o = RemotableSelect.Builder.create(["foo":"bar"]);
         o.size = 2
         return o
-	}
+    }
 
     private RemotableSelect.Builder create2() {
-		RemotableSelect.Builder o = RemotableSelect.Builder.create([
+        RemotableSelect.Builder o = RemotableSelect.Builder.create([
                 RemotableSelectGroup.Builder.create(["foo":"bar"], "first_label"), RemotableSelectGroup.Builder.create(["baz":"bin"], "second_label")]);
         o.size = 2
         return o
-	}
+    }
 }

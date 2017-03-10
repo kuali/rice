@@ -157,7 +157,7 @@
       <artifactId>spring-beans</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.kuali.commons</groupId>
+      <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
     </dependency>
     <dependency>

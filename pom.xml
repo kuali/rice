@@ -182,7 +182,7 @@
     <serializer.version>2.7.2</serializer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.7</slf4j.version>
-    <soa.model.core.version>1.2.2</soa.model.core.version>
+    <soa.model.core.version>1.5.4</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>4.1.9.RELEASE</spring.version>
     <spring.cloud.version>1.0.4.RELEASE</spring.cloud.version>

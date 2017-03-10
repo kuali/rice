@@ -26,8 +26,8 @@ import com.predic8.wsdl.diff.WsdlDiffGenerator;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.kuali.rice.core.api.config.property.Config;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.lifecycle.BaseLifecycle;
@@ -96,7 +96,7 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
     protected List<String> verifyWsdlDifferences(Difference diff, String level) {
         List<String> results = new ArrayList<String>();
 
-        if (diff.isBreaks() == true) {
+        if (Boolean.TRUE.equals(diff.breaks())) {
             boolean ignore = false;
             for (String ignoreBreakageRegexp : ignoreBreakageRegexps) {
                 if (diff.getDescription().matches(ignoreBreakageRegexp)) {
@@ -154,10 +154,10 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
      */
     private String checkForOperationBasedChanges(Difference diff) {
         if ("sequence".equals(diff.getType())
-                && diff.getA() != null
-                && diff.getB() != null) {
-            Sequence oldSequence = (Sequence)diff.getA();
-            Sequence newSequence = (Sequence)diff.getB();
+                && diff.getOriginal() != null
+                && diff.getModified() != null) {
+            Sequence oldSequence = (Sequence)diff.getOriginal();
+            Sequence newSequence = (Sequence)diff.getModified();
             if (newSequence.getParent() instanceof ComplexType) {
                 ComplexType parent = (ComplexType)newSequence.getParent();
                 String serviceName = newSequence.getSchema().getDefinitions().getName();
@@ -190,12 +190,12 @@ public abstract class WsdlCompareTestCase extends BaselineTestCase {
     private String checkForFormerlyVoidResponse(Difference diff) {
         // Check for a sequence with a complextype parent whose name ends with response that went from empty to non-empty
 
-        if ( ! "sequence".equals(diff.getType()) || diff.getA() == null || diff.getB() == null) {
+        if ( ! "sequence".equals(diff.getType()) || diff.getOriginal() == null || diff.getModified() == null) {
             return null;
         }
 
-        Sequence oldSequence = (Sequence)diff.getA();
-        Sequence newSequence = (Sequence)diff.getB();
+        Sequence oldSequence = (Sequence)diff.getOriginal();
+        Sequence newSequence = (Sequence)diff.getModified();
 
         if ( ! (newSequence.getParent() instanceof ComplexType)) {
             return null;

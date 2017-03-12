@@ -89,10 +89,11 @@
 	<param name="rice.jpa.persistence.provider" override="false">eclipselink</param>
 
     <!--
-      can be 'STATIC' or 'LOADTIME' (all uppercase), note that Rice is configured to do static weaving as part of it's
-      build so 'LOADTIME' is really only useful for development within an IDE
-    -->
-    <param name="rice.jpa.weaving.type" override="false">STATIC</param>
+        Indicates if loadtime weaving is enabled or not, note that Rice is configured to do static weaving as part of
+        it's build so loadtime weaving is really only useful for development within an IDE, therefore this parameter
+        is defaulted to false
+     -->
+    <param name="rice.jpa.ltw.enabled" override="false">false</param>
 
     <!-- developer use only, if set to true, will serialize everything in memory on startup to quickly find objects that aren't serializable -->
     <!-- this parameter doesn't matter in a prod environment, as the serialization won't occur in prod environment -->
@@ -177,8 +178,8 @@
     <param name="kns.javascript.files" override="false">plugins/jquery/jquery-1.8.3.js,plugins/cookie/jquery.cookie.js,kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
     <param name="kns.css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
 
-    <param name="portal.css.files" override="false">rice-portal/css/portal.css,plugins/fancybox/jquery.fancybox.css,plugins/textpopout/popoutTextarea.css,plugins/jgrowl/jquery.jgrowl.css</param>
-    <param name="portal.javascript.files" override="false">plugins/jquery/jquery-1.8.3.js,plugins/cookie/jquery.cookie.js,plugins/scrollto/jquery.scrollTo-1.4.6.js,plugins/blockUI/jquery.blockUI.js,kr/scripts/my_common.js,plugins/fancybox/jquery.fancybox.pack.js,plugins/easing/jquery.easing-1.3.pack.js,plugins/jgrowl/jquery.jgrowl.js,rice-portal/scripts/portal.initialize.js,rice-portal/scripts/easyXDM/easyXDM.js</param>
+    <param name="portal.css.files" override="false">rice-portal/css/portal.css,plugins/fancybox/jquery.fancybox-kuali-1.4.0.css,plugins/textpopout/popoutTextarea.css,plugins/jgrowl/jquery.jgrowl.css</param>
+    <param name="portal.javascript.files" override="false">plugins/jquery/jquery-1.8.3.js,plugins/cookie/jquery.cookie.js,plugins/scrollto/jquery.scrollTo-1.4.6.js,plugins/blockUI/jquery.blockUI.js,kr/scripts/my_common.js,plugins/fancybox/jquery.fancybox-kuali-1.4.0.js,,plugins/easing/jquery.easing-1.3.pack.js,plugins/jgrowl/jquery.jgrowl.js,rice-portal/scripts/portal.initialize.js,rice-portal/scripts/easyXDM/easyXDM.js</param>
     <param name="portal.title" override="false">Kuali Rice</param>
 
     <param name="transaction.timeout" override="false">30000</param>

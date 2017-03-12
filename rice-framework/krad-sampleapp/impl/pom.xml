@@ -34,6 +34,16 @@
       <artifactId>rice-krad-web-framework</artifactId>
       <version>${project.version}</version>
     </dependency>
-
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Enable static weaving using META-INF/persistence-weaving.xml for this module -->
+      <plugin>
+        <groupId>de.empulse.eclipselink</groupId>
+        <artifactId>staticweave-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>

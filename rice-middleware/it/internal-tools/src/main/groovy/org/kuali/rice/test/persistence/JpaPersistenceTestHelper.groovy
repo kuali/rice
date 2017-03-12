@@ -15,18 +15,15 @@
  */
 package org.kuali.rice.test.persistence
 
-import java.sql.Timestamp
-
-import javax.sql.DataSource
-
 import org.eclipse.persistence.jpa.jpql.parser.DateTime
 import org.junit.Assert
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
 import org.kuali.rice.krad.data.DataObjectService
 import org.kuali.rice.krad.data.KradDataServiceLocator
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
+import org.springframework.jdbc.core.JdbcTemplate
 
-
+import javax.sql.DataSource
+import java.sql.Timestamp
 
 /**
  * Helps with BO persistence tests
@@ -89,7 +86,7 @@ class JpaPersistenceTestHelper {
         }
         def sql = "select * from " + table + " where " + pk + " = '${pk_val}' "
         println "Running Query: $sql"
-        Map row = new SimpleJdbcTemplate(datasource).queryForMap( sql )
+        Map row = new JdbcTemplate(datasource).queryForMap( sql )
         row.keySet().removeAll(ignore)
         fields.keySet().removeAll(ignore)
         /*for (Map.Entry e: fields.entrySet()) {

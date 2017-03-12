@@ -193,4 +193,8 @@
     <property name="serviceName" value="transactionalDocumentControllerService"/>
   </bean>
 
+  <bean id="csrfService" class="org.kuali.rice.core.framework.resourceloader.GlobalResourceLoaderServiceFactoryBean">
+    <property name="serviceName" value="csrfService"/>
+  </bean>
+
 </beans>

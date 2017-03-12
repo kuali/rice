@@ -15,6 +15,7 @@
     limitations under the License.
 
 -->
+<#assign inline_template = "org.kuali.rice.krad.uif.freemarker.TemplateDirective"?new()>
 <#macro template component=[] body='' componentUpdate=false includeSrc=false tmplParms...>
-	<#inline 'template' />
+	<@inline_template component=component body=body componentUpdate=componentUpdate includeSrc=includeSrc tmplParms=tmplParms/>
 </#macro>

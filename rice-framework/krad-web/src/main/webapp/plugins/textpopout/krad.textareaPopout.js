@@ -100,7 +100,8 @@
                             },
                             autoDimensions: true,
                             hideOnOverlayClick: false,
-                            centerOnScroll: true
+                            centerOnScroll: true,
+                            padding: 0
                         };
                     }
 

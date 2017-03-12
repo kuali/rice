@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -456,7 +456,7 @@ function runScriptsForId(id) {
  */
 function evalHiddenScript(jqueryObj) {
     if (jqueryObj.attr("name") === undefined || (jqueryObj.closest("[data-open]").length &&
-            jqueryObj.closest("[data-open]").attr("data-open") === "false")) {
+        jqueryObj.closest("[data-open]").attr("data-open") === "false")) {
         return;
     }
 
@@ -529,7 +529,7 @@ function coerceValue(name) {
     var value = "";
     var nameSelect = "[name='" + escapeName(name) + "']";
 
-    var fancyBoxWrapper = jQuery(".fancybox-wrap");
+    var fancyBoxWrapper = jQuery("#fancybox-wrap");
     var control;
     // Attempt to get from fancybox first, if it exists
     if (fancyBoxWrapper.length) {
@@ -592,7 +592,7 @@ function setValue(name, value) {
     var control = jQuery(nameSelect);
 
     if (value != undefined && !jQuery.isArray(value)
-            && (control.is(":radio") || control.is("select") || control.is(":checkbox"))) {
+        && (control.is(":radio") || control.is("select") || control.is(":checkbox"))) {
         var valueArray = [value];
         control.val(valueArray);
     }
@@ -775,7 +775,7 @@ function time(start, testingText) {
  */
 function deleteLineMouseOver(deleteButton, highlightItemClass) {
     var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
-            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+        + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
     if (innerLayout) {
         if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
             jQuery(deleteButton).closest('tr').addClass(highlightItemClass);
@@ -793,7 +793,7 @@ function deleteLineMouseOver(deleteButton, highlightItemClass) {
  */
 function deleteLineMouseOut(deleteButton, highlightItemClass) {
     var innerLayout = jQuery(deleteButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
-            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+        + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
     if (innerLayout) {
         if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
             jQuery(deleteButton).closest('tr').removeClass(highlightItemClass);
@@ -811,7 +811,7 @@ function deleteLineMouseOut(deleteButton, highlightItemClass) {
  */
 function addLineMouseOver(addButton, highlightItemClass) {
     var innerLayout = jQuery(addButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
-            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+        + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
     if (innerLayout) {
         if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
             jQuery(addButton).parent().find('table').addClass(highlightItemClass);
@@ -829,7 +829,7 @@ function addLineMouseOver(addButton, highlightItemClass) {
  */
 function addLineMouseOut(addButton, highlightItemClass) {
     var innerLayout = jQuery(addButton).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
-            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+        + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
     if (innerLayout) {
         if (innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
             jQuery(addButton).parent().find('table').removeClass(highlightItemClass);
@@ -852,7 +852,7 @@ function collectionLineChanged(inputField, highlightItemClass) {
 
     // Get the innerlayout to see if we are dealing with table or stack group
     var innerLayout = jQuery(inputField).parents('.' + kradVariables.TABLE_COLLECTION_LAYOUT_CLASS
-            + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
+        + ', .' + kradVariables.STACKED_COLLECTION_LAYOUT_CLASS).first().attr('class');
 
     if (innerLayout && innerLayout.indexOf(kradVariables.TABLE_COLLECTION_LAYOUT_CLASS) >= 0) {
         var row = jQuery(inputField).closest('tr');
@@ -925,7 +925,7 @@ function showLightboxComponent(componentId, overrideOptions, alwaysRefresh) {
     }
 
     if (jQuery('#' + componentId).length > 0 && !alwaysRefresh
-            && !jQuery('#' + componentId).hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
+        && !jQuery('#' + componentId).hasClass(kradVariables.CLASSES.PLACEHOLDER)) {
         _showLightboxComponentHelper(componentId, overrideOptions);
     } else {
         createPlaceholderAndRetrieve(componentId, function () {
@@ -958,7 +958,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         // ensure that component of KualiForm gets updated after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
-            jQuery("#" + componentId).parents(".fancybox-wrap").unbind("onReset");
+            jQuery("#" + componentId).parents("#fancybox-wrap").unbind("onReset");
 
             // restore original display state and replace placeholder
             jQuery("#" + componentId).css("display", cssDisplay);
@@ -972,7 +972,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
         // reattach component to KualiForm after fancybox closes
         _appendCallbackFunctions(overrideOptions, {beforeClose: function () {
             // hack fancybox to prevent it from moving the original lightbox content into the body
-            parent.jQuery("#" + componentId).parents(".fancybox-wrap").unbind("onReset");
+            parent.jQuery("#" + componentId).parents("#fancybox-wrap").unbind("onReset");
 
             // restore original display state and replace placeholder
             jQuery("#" + componentId).css("display", cssDisplay);
@@ -986,7 +986,7 @@ function _showLightboxComponentHelper(componentId, overrideOptions) {
 
     // add a dialog placeholder
     component.before("<div id='" + componentId + kradVariables.DIALOG_PLACEHOLDER + "' "
-            + "style='display: none; height: 0; width: 0;'/>");
+        + "style='display: none; height: 0; width: 0;'/>");
 
     // detach and show content
     component = component.detach();
@@ -1038,7 +1038,7 @@ function showLightboxUrl(url, overrideOptions) {
     }
 
     _initAndOpenLightbox({type: 'iframe', href: url, height: '95%', width: '75%', autoSize: false},
-            overrideOptions);
+        overrideOptions);
 }
 
 /**
@@ -1053,13 +1053,13 @@ function showLightboxUrl(url, overrideOptions) {
  * @param overrideOptions the map of option settings (option name/value pairs) for the plugin. This is optional.
  */
 function _initAndOpenLightbox(contentOptions, overrideOptions) {
-    var options = { fitToView: true,
-        openEffect: 'fade',
-        closeEffect: 'fade',
-        openSpeed: 200,
-        closeSpeed: 200,
-        minHeight: 10,
-        helpers: {overlay: {css: {cursor: 'arrow'}, closeClick: false}}
+    var options = { autoScale: true,
+        transitionIn: 'fade',
+        transitionOut: 'fade',
+        speedIn: 200,
+        speedOut: 200,
+        hideOnContentClick: false,
+        padding: 0
     };
 
     // override fancybox content options
@@ -1082,7 +1082,7 @@ function _initAndOpenLightbox(contentOptions, overrideOptions) {
  *  Wrap the div to display in the light box in a form and setup form for validation and dirty checks
  */
 function setupLightboxForm() {
-    jQuery(".fancybox-inner").children().wrap("<form style='margin:0; padding:0; overflow:auto;' id='kualiLightboxForm'>");
+    jQuery("#fancybox-content").children().wrap("<form style='margin:0; padding:0; overflow:auto;' id='kualiLightboxForm'>");
 
     var kualiLightboxForm = jQuery('#kualiLightboxForm');
     setupValidator(kualiLightboxForm);
@@ -1253,7 +1253,7 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
                         // in the display order list (aiDisplay)
                         var lastValue = aaData[aiDisplay[iEnd - 1]][0];
                         if (lastValue && lastValue.toLowerCase() == groupValue && iEnd < aiDisplay.length &&
-                                aaData[aiDisplay[iEnd]][0] && aaData[aiDisplay[iEnd]][0].toLowerCase() == groupValue) {
+                            aaData[aiDisplay[iEnd]][0] && aaData[aiDisplay[iEnd]][0].toLowerCase() == groupValue) {
                             groupTotalRow.hide();
                         }
                         else {
@@ -1263,7 +1263,7 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
                                 var currentRow = aaData[i];
                                 var groupingValue;
                                 var isRowObject = currentRow != null && typeof currentRow === 'object'
-                                        && !jQuery.isArray(currentRow);
+                                    && !jQuery.isArray(currentRow);
                                 //check if row is a rowObject - using mData setting
                                 if (isRowObject) {
                                     groupingValue = currentRow['c0'].val;
@@ -1273,7 +1273,7 @@ function initializeTotalsFooter(nRow, aaData, iStart, iEnd, aiDisplay, columns) 
                                 }
 
                                 if (groupingValue != undefined &&
-                                        normalizeGroupString(groupingValue).toLowerCase() == groupValue) {
+                                    normalizeGroupString(groupingValue).toLowerCase() == groupValue) {
 
                                     if (isRowObject) {
                                         groupCellsToTotal.push(currentRow['c' + columns[c]]);
@@ -1352,7 +1352,7 @@ function calculateGroupTotal(cellsToTotal, totalTd, groupTotalDiv, rowIndex, col
         }
 
         var isAddLine = !isCellObject && currentCell
-                && jQuery(currentCell).find(":input[name^='newCollectionLines']").length;
+            && jQuery(currentCell).find(":input[name^='newCollectionLines']").length;
 
         // skip over add line
         if (!isAddLine) {
@@ -1522,8 +1522,8 @@ function convertComplexNumericValue(value) {
     }
 
     return value.replace("$", "").replace(",", "").replace("&yen;", "").replace("&euro;",
-                    "").replace("&pound;", "").replace("&curren;", "").replace("%", "").replace("&#8355;",
-                    "").replace("&#8356;", "").replace("&#8359;", "").replace("&cent;", "");
+        "").replace("&pound;", "").replace("&curren;", "").replace("%", "").replace("&#8355;",
+        "").replace("&#8356;", "").replace("&#8359;", "").replace("&cent;", "");
 }
 
 /**
@@ -2188,7 +2188,7 @@ function containsAll(subArray, parentArray) {
  */
 function generateQuickGuid() {
     return Math.random().toString(36).substring(2, 15) +
-            Math.random().toString(36).substring(2, 15);
+        Math.random().toString(36).substring(2, 15);
 }
 
 /**
@@ -2309,7 +2309,7 @@ function initStickyContent(currentScroll) {
 
     //make the ViewContentWrapper margin-top reflect the visible header content pixel height
     jQuery(applyMarginToContent).css("marginTop",
-            (totalHeight + navigationHeightAdjust - margin) + "px");
+        (totalHeight + navigationHeightAdjust - margin) + "px");
 
     //set header height global
     currentHeaderHeight = (topOffset - currentScroll);
@@ -2412,7 +2412,7 @@ function handleStickyFooterContent() {
     //early return when no footer content or no application footer or application footer is sticky itself
     //(no need for adjustment)
     if (!stickyFooterContent || stickyFooterContent.length == 0 || !applicationFooter || applicationFooter.length == 0
-            || stickyFooterContent.filter(applicationFooter).length) {
+        || stickyFooterContent.filter(applicationFooter).length) {
         return;
     }
 
@@ -2637,7 +2637,7 @@ function createTruncateTooltips() {
     jQuery('.uif-truncate').each(function() {
         jQuery(this).on("mouseover", function () {
             if ((jQuery('#' + this.id + '_control').text().trim())
-                    && (this.offsetWidth < document.getElementById(this.id + "_control").offsetWidth)) {
+                && (this.offsetWidth < document.getElementById(this.id + "_control").offsetWidth)) {
                 var tooltipElement = jQuery(this);
                 var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
                 if (!popoverData) {
@@ -2654,7 +2654,7 @@ function createTruncateTooltips() {
 
         jQuery(this).on("mouseout", function () {
             if ((jQuery('#' + this.id + '_control').text().trim())
-                    && (this.offsetWidth < document.getElementById(this.id + "_control").offsetWidth)) {
+                && (this.offsetWidth < document.getElementById(this.id + "_control").offsetWidth)) {
                 var tooltipElement = jQuery(this);
                 var popoverData = tooltipElement.data(kradVariables.POPOVER_DATA);
 

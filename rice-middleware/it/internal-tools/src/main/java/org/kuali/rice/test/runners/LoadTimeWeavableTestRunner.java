@@ -65,7 +65,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.junit.internal.runners.rules.RuleFieldValidator.*;
+import static org.junit.internal.runners.rules.RuleMemberValidator.*;
+
 
 /**
  * A JUnit test {@link org.junit.runner.Runner} which uses a custom classloader with a copy of the classpath and allows

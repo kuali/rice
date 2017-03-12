@@ -21,6 +21,7 @@ import org.kuali.rice.core.framework.resourceloader.SpringResourceLoader;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.core.ResolvableType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -175,6 +176,21 @@ public final class CompositeBeanFactory implements BeanFactory {
 				if (b) {
 					return b;
 				}	
+			} catch (BeansException e) {
+				LOG.info("bean exception", e);
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isTypeMatch(String name, ResolvableType typeToMatch) throws NoSuchBeanDefinitionException {
+		for (BeanFactory f : factories) {
+			try {
+				boolean b = f.isTypeMatch(name, typeToMatch);
+				if (b) {
+					return b;
+				}
 			} catch (BeansException e) {
 				LOG.info("bean exception", e);
 			}

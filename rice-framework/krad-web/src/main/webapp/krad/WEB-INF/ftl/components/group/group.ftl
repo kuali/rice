@@ -28,9 +28,9 @@
         <#if group.items?has_content>
             <#-- invoke layout manager -->
             <#local templateName=".main.${group.layoutManager.templateName}"/>
-            <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
+            <#local templateParams="items=group.items manager=group.layoutManager container=group"/>
 
-            <#dyncall templateName templateParms/>
+            <@krad.dyncall templateName=templateName templateParams=templateParams group=group/>
         </#if>
 
     </@krad.groupWrap>

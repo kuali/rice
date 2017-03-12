@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.List;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,12 +31,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.eclipse.persistence.annotations.JoinFetch;
-import org.eclipse.persistence.annotations.JoinFetchType;
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-import org.springframework.util.AutoPopulatingList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -62,7 +61,7 @@ public class RoleDocumentDelegation extends KimDocumentBoActivatableBase {
     protected String delegationTypeCode;
 
     @JoinFetch(value= JoinFetchType.OUTER)
-    @OneToMany(targetEntity = RoleDocumentDelegationMember.class, orphanRemoval = true, cascade = { CascadeType.ALL })
+    @OneToMany(targetEntity = RoleDocumentDelegationMember.class, orphanRemoval = true, cascade = CascadeType.ALL )
     @JoinColumns({ 
         @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 
         @JoinColumn(name = "DLGN_ID", referencedColumnName = "DLGN_ID", insertable = false, updatable = false) })

@@ -1,7 +1,4 @@
 /***** Lightbox customization ******************************************************************/
-.fancybox-inner form {
-  height: 100%;
-}
 
 .uif-lightbox {
   max-width: 800px;
@@ -11,18 +8,11 @@
   opacity: 0.4 !important;
 }
 
-.fancybox-skin {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0px !important;
+#fancybox-wrap {
+  box-sizing: content-box;
 }
 
-.fancybox-skin  .uif-header   {
-
-}
-
-.fancybox-skin  .uif-header .uif-headerText   {
+#fancybox-outer  .uif-header .uif-headerText   {
   background: @gray-lighter;
   padding: 12px;
   margin: 0px;
@@ -45,11 +35,11 @@
   padding-top: 0px;
 }
 
-.fancybox-skin .uif-cssGridGroup, .fancybox-skin .uif-tableCollectionSection {
+#fancybox-outer .uif-cssGridGroup, #fancybox-outer .uif-tableCollectionSection {
   padding: 15px
 }
 
-.fancybox-skin .uif-footer {
+#fancybox-outer .uif-footer {
   margin-bottom: 0px
 }
 

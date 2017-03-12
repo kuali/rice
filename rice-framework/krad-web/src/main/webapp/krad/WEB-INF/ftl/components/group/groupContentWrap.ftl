@@ -16,24 +16,26 @@
 
 -->
 <#include "group.ftl" parse=true/>
+<#assign inline_groupWrapOpen = "org.kuali.rice.krad.uif.freemarker.OpenGroupWrapDirective"?new()>
+<#assign inline_groupWrapClose = "org.kuali.rice.krad.uif.freemarker.CloseGroupWrapDirective"?new()>
 
 <#macro uif_groupContentWrap group>
 
     <@krad.wrap component=group renderAs="${group.wrapperTag}">
 
-        <#inline 'groupWrap-open' />
+        <@inline_groupWrapOpen group=group/>
 
             <div class="${view.contentContainerClassesAsString}">
                 <#if !group.renderLoading>
                     <#-- invoke layout manager -->
                     <#local templateName=".main.${group.layoutManager.templateName}"/>
-                    <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
+                    <#local templateParams="items=group.items manager=group.layoutManager container=group"/>
 
-                    <#dyncall templateName templateParms/>
+                    <@krad.dyncall templateName=templateName templateParams=templateParams group=group/>
                 </#if>
             </div>
 
-        <#inline 'groupWrap-close' />
+        <@inline_groupWrapClose group=group/>
 
     </@krad.wrap>
 

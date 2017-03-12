@@ -15,8 +15,9 @@
     limitations under the License.
 
 -->
+<#assign inline_collectionGroup = "org.kuali.rice.krad.uif.freemarker.CollectionGroupDirective"?new()>
 <#macro uif_collectionGroup group>
     <@krad.wrap component=group renderAs="${group.wrapperTag}">
-	    <#inline 'collectionGroup' />
+        <@inline_collectionGroup group=group/>
     </@krad.wrap>
 </#macro>

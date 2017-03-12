@@ -73,7 +73,6 @@ public class ContentTypeController extends MultiActionController {
    @Override
    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
        // only allow admins access to this controller
-       // yuck, we should implement ACEGI down the road
        String user = request.getRemoteUser();
        if (!notificationAuthzService.isUserAdministrator(user)) {
            response.setStatus(HttpServletResponse.SC_FORBIDDEN);

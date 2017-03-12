@@ -17,12 +17,12 @@ package org.kuali.rice.kew.preferences.web;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.exception.RiceRuntimeException;
 import org.kuali.rice.kew.api.preferences.Preferences;
-import org.kuali.rice.kew.preferences.web.PreferencesConstants;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.exception.ValidationException;
@@ -42,17 +42,19 @@ public class PreferencesForm extends KualiForm {
     private static final long serialVersionUID = 4536869031291955777L;
     private static final String ERR_KEY_REFRESH_RATE_WHOLE_NUM = "preferences.refreshRate";
     private static final String ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM = "preferences.pageSize";
-	private Preferences.Builder preferences;
+    private Preferences.Builder preferences;
     private String methodToCall = "";
     private String returnMapping;
     private boolean showOutbox = true;
     private String documentTypePreferenceName;
     private String documentTypePreferenceValue;
+    private String documentTargetSpec;
+    private String routeLogTargetSpec;
 
     // KULRICE-3137: Added a backLocation parameter similar to the one from lookups.
     private String backLocation;
-    
-	public String getReturnMapping() {
+
+    public String getReturnMapping() {
         return returnMapping;
     }
     public void setReturnMapping(String returnMapping) {
@@ -89,58 +91,74 @@ public class PreferencesForm extends KualiForm {
     public void setShowOutbox(boolean showOutbox) {
         this.showOutbox = showOutbox;
     }
-    
-	public String getBackLocation() {
-		return WebUtils.sanitizeBackLocation(this.backLocation);
-	}
-	public void setBackLocation(String backLocation) {
-		this.backLocation = backLocation;
-	}
-	
-	public String getDocumentTypePreferenceName() {
+
+    public String getBackLocation() {
+        return WebUtils.sanitizeBackLocation(this.backLocation);
+    }
+    public void setBackLocation(String backLocation) {
+        this.backLocation = backLocation;
+    }
+
+    public String getDocumentTypePreferenceName() {
         return documentTypePreferenceName;
     }
-    
+
     public void setDocumentTypePreferenceName(String documentTypePreferenceName) {
         this.documentTypePreferenceName = documentTypePreferenceName;
     }
-    
+
     public String getDocumentTypePreferenceValue() {
         return documentTypePreferenceValue;
     }
-    
+
     public void setDocumentTypePreferenceValue(String documentTypePreferenceValue) {
         this.documentTypePreferenceValue = documentTypePreferenceValue;
     }
-    
+
     public Object getDocumentTypeNotificationPreference(String documentType) {
         return preferences.getDocumentTypeNotificationPreference(documentType);
     }
-    
+
     public void setDocumentTypeNotificationPreference(String documentType, String preferenceValue) {
         preferences.addDocumentTypeNotificationPreference(documentType, preferenceValue);
     }
-	
-	/**
-	 * Retrieves the "returnLocation" parameter after calling "populate" on the superclass.
-	 * 
-	 * @see org.kuali.rice.krad.web.struts.form.KualiForm#populate(javax.servlet.http.HttpServletRequest)
-	 */
-	@Override
-	public void populate(HttpServletRequest request) {
-		super.populate(request);
-		
+
+    public String getDocumentTargetSpec() {
+        return documentTargetSpec;
+    }
+
+    public void setDocumentTargetSpec(String documentTargetSpec) {
+        this.documentTargetSpec = documentTargetSpec;
+    }
+
+    public String getRouteLogTargetSpec() {
+        return routeLogTargetSpec;
+    }
+
+    public void setRouteLogTargetSpec(String routeLogTargetSpec) {
+        this.routeLogTargetSpec = routeLogTargetSpec;
+    }
+
+    /**
+     * Retrieves the "returnLocation" parameter after calling "populate" on the superclass.
+     *
+     * @see org.kuali.rice.krad.web.struts.form.KualiForm#populate(javax.servlet.http.HttpServletRequest)
+     */
+    @Override
+    public void populate(HttpServletRequest request) {
+        super.populate(request);
+
         if (getParameter(request, KRADConstants.RETURN_LOCATION_PARAMETER) != null) {
             String returnLocation = getParameter(request, KRADConstants.RETURN_LOCATION_PARAMETER);
             if(returnLocation.contains(">") || returnLocation.contains("<") || returnLocation.contains("\"")) {
                 returnLocation = returnLocation.replaceAll("\"", "%22");
                 returnLocation = returnLocation.replaceAll("<", "%3C");
                 returnLocation = returnLocation.replaceAll(">","%3E");
-                
+
             }
             setBackLocation(returnLocation);
         }
-	}
+    }
 
     public void validatePreferences() {
         if((!PreferencesConstants.PreferencesDocumentRouteStatusColors.getPreferencesDocumentRouteStatusColors().contains(preferences.getColorSaved()))  ||
@@ -170,12 +188,12 @@ public class PreferencesForm extends KualiForm {
         }
 
         if((!StringUtils.isBlank(preferences.getNotifyPrimaryDelegation())) &&
-           (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getNotifyPrimaryDelegation()))) {
+                (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getNotifyPrimaryDelegation()))) {
             throw new RiceRuntimeException("Invalid value found for checkbox \"Recieve Primary Delegate Email\"");
         }
 
         if((!StringUtils.isBlank(preferences.getNotifySecondaryDelegation())) &&
-           (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getNotifySecondaryDelegation()))) {
+                (!PreferencesConstants.CheckBoxValues.getCheckBoxValues().contains(preferences.getNotifySecondaryDelegation()))) {
             throw new RiceRuntimeException("Invalid value found for checkbox \"Recieve Secondary Delegate Email\"");
         }
 
@@ -206,13 +224,13 @@ public class PreferencesForm extends KualiForm {
             new Integer(preferences.getPageSize().trim());
             if((new Integer(preferences.getPageSize().trim()) <= 0) || (new Integer(preferences.getPageSize().trim()) > 500)) {
                 GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be between 1 and 500");
-            }    
+            }
         } catch (NumberFormatException e) {
             GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be a whole number");
         } catch (NullPointerException e1) {
             GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be a whole number");
         }
-      
+
         if (GlobalVariables.getMessageMap().hasErrors()) {
             throw new ValidationException("errors in preferences");
         }

@@ -66,6 +66,7 @@ public class PeopleFlowActionTypeServiceTest {
     private static final ConfigurationService configurationService = new ConfigurationService() {
         @Override public String getPropertyValueAsString(String key) { return "{0} message"; }
         @Override public boolean getPropertyValueAsBoolean(String key) { return false; }
+        @Override public boolean getPropertyValueAsBoolean(String key, boolean defaultValue) { return false; }
         @Override public Map<String, String> getAllProperties() { return null; }
     };
 

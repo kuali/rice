@@ -28,42 +28,42 @@ import static org.junit.Assert.assertTrue;
 
 public class GenericAttributeContentTest {
     private static final String ATTRIB1_CONTENT = "    <boringAttribute>" +
-                                                  "      <field>" +
-                                                  "        <name>color</name>" +
-                                                  "        <value>green</value>" +
-                                                  "      </field>" +
-                                                  "      <field>" +
-                                                  "        <name>shape</name>" +
-                                                  "        <value>circle</value>" +
-                                                  "      </field>" +
-                                                  "    </boringAttribute>";
+            "      <field>" +
+            "        <name>color</name>" +
+            "        <value>green</value>" +
+            "      </field>" +
+            "      <field>" +
+            "        <name>shape</name>" +
+            "        <value>circle</value>" +
+            "      </field>" +
+            "    </boringAttribute>";
     private static final String ATTRIB2_CONTENT = "    <coolAttribute>" +
-                                                  "      <field>" +
-                                                  "        <name>car</name>" +
-                                                  "        <value>KIT</value>" +
-                                                  "      </field>" +
-                                                  "      <field>" +
-                                                  "        <name>driver</name>" +
-                                                  "        <value>hasselhof</value>" +
-                                                  "      </field>" +
-                                                  "    </coolAttribute>";
+            "      <field>" +
+            "        <name>car</name>" +
+            "        <value>KIT</value>" +
+            "      </field>" +
+            "      <field>" +
+            "        <name>driver</name>" +
+            "        <value>hasselhof</value>" +
+            "      </field>" +
+            "    </coolAttribute>";
     private static final String ATTRIB2_CONTENT_REVERSED = "    <coolAttribute>" +
-                                                           "      <field>" +
-                                                            "        <name>driver</name>" +
-                                                            "        <value>hasselhof</value>" +
-                                                            "      </field>" +
-                                                            "      <field>" +
-                                                            "        <name>car</name>" +
-                                                            "        <value>KIT</value>" +
-                                                            "      </field>" +
-                                                            "    </coolAttribute>";
+            "      <field>" +
+            "        <name>driver</name>" +
+            "        <value>hasselhof</value>" +
+            "      </field>" +
+            "      <field>" +
+            "        <name>car</name>" +
+            "        <value>KIT</value>" +
+            "      </field>" +
+            "    </coolAttribute>";
     private static final String TEST_CONTENT = "<documentContent>" +
-                                               "  <attributeContent>" +
-                                               ATTRIB1_CONTENT +
-                                               ATTRIB2_CONTENT +
-                                               "  </attributeContent>" +
-                                               "</documentContent>";
-                                            
+            "  <attributeContent>" +
+            ATTRIB1_CONTENT +
+            ATTRIB2_CONTENT +
+            "  </attributeContent>" +
+            "</documentContent>";
+
     @Test public void testGenerateContent() throws Exception {
         DocumentContent dc = new StandardDocumentContent(TEST_CONTENT);
         GenericAttributeContent gac = new GenericAttributeContent("boringAttribute");

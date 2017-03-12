@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.workflow;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.kew.api.document.search.DocumentSearchCriteria;
 import org.kuali.rice.kew.api.document.search.DocumentSearchResults;
@@ -26,16 +27,15 @@ import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
+import org.kuali.rice.krad.test.KRADTestCase;
 import org.kuali.rice.krad.test.document.SearchAttributeIndexTestDocument;
 import org.kuali.rice.krad.util.GlobalVariables;
-import org.kuali.rice.krad.test.KRADTestCase;
 
 import static org.junit.Assert.assertEquals;
-import org.junit.Assert;
 
 /**
  * tests that a document, which goes through a regular or blanket approval process, is indexed correctly
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  * @deprecated KNS test class, convert to KRAD equivalent if applicable.
@@ -44,17 +44,17 @@ import org.junit.Assert;
 public class SearchAttributeIndexRequestTest extends KRADTestCase {
 
     private static final String SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE = "SearchAttributeIndexTestDocument";
-	
+
 	private enum DOCUMENT_FIXTURE {
 		NORMAL_DOCUMENT("hippo","routing");
-		
+
 		private String constantString;
 		private String routingString;
 		private DOCUMENT_FIXTURE(String constantString, String routingString) {
 			this.constantString = constantString;
 			this.routingString = routingString;
 		}
-		
+
 		public Document getDocument() throws Exception {
             Document document = KRADServiceLocatorWeb.getDocumentService().getNewDocument(SEARCH_ATTRIBUTE_INDEX_DOCUMENT_TEST_DOC_TYPE);
 			SearchAttributeIndexTestDocument searchAttributeIndexTestDocument = (SearchAttributeIndexTestDocument) document;
@@ -63,7 +63,7 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
             return searchAttributeIndexTestDocument;
 		}
 	}
-	
+
 	/**
 	 * Tests that a document, which goes through a regular approval process, is indexed correctly
 	 */
@@ -158,7 +158,7 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 
         GlobalVariables.setUserSession(null);
     }
-	
+
 	/**
 	 * Tests that a blanket approved document is indexed correctly
 	 */
@@ -195,7 +195,7 @@ public class SearchAttributeIndexRequestTest extends KRADTestCase {
 
         GlobalVariables.setUserSession(null);
     }
-	
+
 	/**
      * A convenience method for testing wildcards on data dictionary searchable attributes.
      *

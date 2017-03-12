@@ -425,10 +425,10 @@ jQuery(function(){
     <html:hidden property="docNum" value="${KualiForm.document.documentNumber}" />
 </c:if>
 <kul:editablePropertiesGuid />
-
+<kul:csrf/>
 </html:form>
 <div id="formComplete"></div>
 </div>
 </body>
-<kul:csrf/>
+
 </html:html>

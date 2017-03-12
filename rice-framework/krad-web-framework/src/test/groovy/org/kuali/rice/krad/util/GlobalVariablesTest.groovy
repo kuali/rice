@@ -15,16 +15,10 @@
  */
 package org.kuali.rice.krad.util
 
-import org.junit.Before
-import org.junit.Test
 import org.junit.After
-import static org.junit.Assert.assertNotNull
-import org.kuali.rice.krad.UserSession
-import org.kuali.rice.kim.api.identity.Person
-import org.springframework.test.AssertThrows
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
-import static org.junit.Assert.assertEquals
+import org.junit.Test
+
+import static org.junit.Assert.*
 
 class GlobalVariablesTest {
     @After
@@ -68,11 +62,9 @@ class GlobalVariablesTest {
         GlobalVariables.popGlobalVariables()
         assertGlobalVariables("a")
 
-        new AssertThrows(NoSuchElementException.class) {
-            public void test() {
-                GlobalVariables.popGlobalVariables()
-            }
-        };
+        GlobalVariables.popGlobalVariables()
+        assertEmptyGlobalVariables()
+
     }
 
     @Test(expected=RuntimeException)

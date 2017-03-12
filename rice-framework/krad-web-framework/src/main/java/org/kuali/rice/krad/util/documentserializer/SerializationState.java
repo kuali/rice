@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,16 @@ public class SerializationState {
 
     public SerializationState(){
         pathElements = new ArrayList<SerializationPropertyElement>();
+    }
+
+    /**
+     * Creates a new SerializationState that is a copy of the given state
+     *
+     * @param stateToCopy the state to copy
+     */
+    public SerializationState(SerializationState stateToCopy) {
+        this();
+        this.pathElements.addAll(stateToCopy.pathElements);
     }
 
     /**

@@ -85,12 +85,13 @@
         <!--<entry key="fitToView" value="true"/>-->
         <!--<entry key="height" value="95%"/>-->
         <!--<entry key="width" value="75%"/>-->
-        <entry key="autoSize" value="true"/>
-        <entry key="openEffect" value="fade"/>
-        <entry key="closeEffect" value="fade"/>
-        <entry key="openSpeed" value="200"/>
-        <entry key="closeSpeed" value="200"/>
-        <entry key="helpers" value="{overlay:{css:{cursor:'arrow'},closeClick:false}}"/>
+        <entry key="autoScale" value="true"/>
+        <entry key="transitionIn" value="fade"/>
+        <entry key="transitionOut" value="fade"/>
+        <entry key="speedIn" value="200"/>
+        <entry key="speedOut" value="200"/>
+        <entry key="hideOnContentClick" value="false"/>
+        <entry key="padding" value="0"/>
         <entry key="type" value="iframe"/>
       </map>
     </property>

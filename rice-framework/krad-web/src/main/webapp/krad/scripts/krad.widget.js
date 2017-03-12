@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -213,7 +213,7 @@ function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
 
     // If menu is already collapsed, show appropriate icon
     jQuery("#" + id + "." + kradVariables.MENU_COLLAPSED
-            + "." + kradVariables.MENU_COLLAPSE_ACTION + " > span").attr("class", kradVariables.MENU_COLLAPSE_ICON_RIGHT);
+        + "." + kradVariables.MENU_COLLAPSE_ACTION + " > span").attr("class", kradVariables.MENU_COLLAPSE_ICON_RIGHT);
 
     // Collapsing handler for when the menu collapse is clicked, swaps icon, classes, and page margin
     jQuery("." + kradVariables.MENU_COLLAPSE_ACTION).click(function () {
@@ -241,7 +241,7 @@ function setupSidebarNavMenu(id, openedToggleIconClass, closedToggleIconClass) {
 
     // Add open toggleClass if the item is active
     jQuery(".nav > li." + kradVariables.ACTIVE_CLASS + " > a > ." + kradVariables.TOGGLE_ARROW_CLASS,
-            navMenu).removeClass(closedToggleIconClass).addClass(openedToggleIconClass);
+        navMenu).removeClass(closedToggleIconClass).addClass(openedToggleIconClass);
 }
 
 function adjustPageLeftMargin() {
@@ -344,7 +344,7 @@ function showDirectInquiry(url, paramMap, showInDialog, dialogId) {
 
     if (showInDialog) {
         // Check if this is called within a light box
-        if (!getContext().find('.fancybox-inner', parent.document).length && !renderedInDialog) {
+        if (!getContext().find('#fancybox-content:not(:empty)', parent.document).length && !renderedInDialog) {
 
             queryString = queryString + "&flow=start&renderedInDialog=true";
             url = url + queryString;
@@ -352,8 +352,8 @@ function showDirectInquiry(url, paramMap, showInDialog, dialogId) {
         } else {
             // If this is already in a lightbox just open in current lightbox
             queryString = queryString + "&flow="
-                    + jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val() + "&renderedInDialog=true";
-           window.open(url + queryString, "_self");
+                + jQuery("input[name='" + kradVariables.FLOW_KEY + "']").val() + "&renderedInDialog=true";
+            window.open(url + queryString, "_self");
         }
     } else {
         window.open(url + queryString, "_blank", "width=640, height=600, scrollbars=yes");
@@ -404,22 +404,22 @@ function createDatePicker(controlId, options, disabled) {
         var datePickerControl = jQuery("#" + controlId);
         datePickerControl.datepicker(options);
         datePickerControl.datepicker('option', 'onClose',
-                function () {
-                    getValidationData(jQuery("#" + fieldId)).messagingEnabled = true;
-                    jQuery(this).trigger("focusout");
-                    jQuery(this).trigger("focus");
-                });
+            function () {
+                getValidationData(jQuery("#" + fieldId)).messagingEnabled = true;
+                jQuery(this).trigger("focusout");
+                jQuery(this).trigger("focus");
+            });
         datePickerControl.datepicker('option', 'beforeShow',
-                function () {
-                    getValidationData(jQuery("#" + fieldId)).messagingEnabled = false;
-                });
+            function () {
+                getValidationData(jQuery("#" + fieldId)).messagingEnabled = false;
+            });
 
         //KULRICE-7310 can't change only month or year with picker (jquery limitation)
         datePickerControl.datepicker('option', 'onChangeMonthYear',
-                function (y, m, i) {
-                    var d = i.selectedDay;
-                    jQuery(this).datepicker('setDate', new Date(y, m - 1, d));
-                });
+            function (y, m, i) {
+                var d = i.selectedDay;
+                jQuery(this).datepicker('setDate', new Date(y, m - 1, d));
+            });
 
         //KULRICE-7261 fix date format passed back.  jquery expecting mm-dd-yy
         if (options.dateFormat == "mm-dd-yy" && datePickerControl[0].getAttribute("value").indexOf("/") != -1) {
@@ -428,7 +428,7 @@ function createDatePicker(controlId, options, disabled) {
         if (disabled === true) {
             datePickerControl.datepicker('disable');
             datePickerControl.next("div").css({"cursor":"not-allowed"}).children(".ui-datepicker-trigger")
-                    .addClass(kradVariables.DISABLED_CLASS).css({"backgroundColor":"#eee"});
+                .addClass(kradVariables.DISABLED_CLASS).css({"backgroundColor":"#eee"});
         }
     });
 
@@ -515,13 +515,13 @@ function createDisclosure(groupId, headerId, widgetId, defaultOpen, collapsedIco
         }
 
         headerText.wrap("<a data-role=" + kradVariables.DATA_ROLES.DISCLOSURE_LINK + " data-linkfor='"
-                + content.attr("id") + "' href='#' "
-                + "id='" + groupToggleLinkId + "' "
-                + "data-open='" + defaultOpen + "' "
-                + "data-widgetid='" + widgetId + "' "
-                + "data-speed='" + animationSpeed + "' "
-                + "data-ajax='" + ajaxRetrieval + "'"
-                + "></a>");
+            + content.attr("id") + "' href='#' "
+            + "id='" + groupToggleLinkId + "' "
+            + "data-open='" + defaultOpen + "' "
+            + "data-widgetid='" + widgetId + "' "
+            + "data-speed='" + animationSpeed + "' "
+            + "data-ajax='" + ajaxRetrieval + "'"
+            + "></a>");
     });
 }
 
@@ -578,7 +578,7 @@ function createMultiFileUploadForCollection(id, collectionId, additionalOptions)
             if (!jQuery("#" + id + "_upload").length) {
                 var $buttons = jQuery("#" + id + " > .fileupload-buttonbar > div");
                 jQuery("<span id='" + id + "_upload' style='display:inline;'/>").text(" Uploading...")
-                        .appendTo($buttons);
+                    .appendTo($buttons);
             }
 
             data.collectionId = collectionId;
@@ -982,7 +982,7 @@ function closeAllDetails(tableId, animate, forceClose) {
 function closeDetails(oTable, row, actionComponent, animate) {
     var fieldGroupWrapper = row.find("> td > [data-role='detailsFieldGroup']");
     var detailsContent = row.next().first().find("> td > [data-role='details'], "
-            + "> td > span[data-role='placeholder']").filter(":first");
+        + "> td > span[data-role='placeholder']").filter(":first");
 
     if (actionComponent && jQuery(actionComponent).data("swap") && jQuery(actionComponent).find("img").length) {
         jQuery(actionComponent).find("img").replaceWith(detailsOpenImage.clone());
@@ -1057,7 +1057,7 @@ function createCopyToClipboard(componentId, copyTriggerId, contentElementId, sho
             //KULRICE-10007 swf file needs to be unique in order to avoid caching.
             var d = new Date();
             ZeroClipboard.setMoviePath(getConfigParam(kradVariables.APPLICATION_URL)
-                    + '/plugins/datatables/copy_cvs_xls_pdf.swf?bogus=' + d.getTime());
+                + '/plugins/datatables/copy_cvs_xls_pdf.swf?bogus=' + d.getTime());
             var clip = new ZeroClipboard.Client();
 
             // copy text on mousedown
@@ -1264,7 +1264,7 @@ function createLocationSuggest(baseUrl, hrefProperty, addUrlProperty, requestPar
     };
 
     createSuggest(controlId, options, queryFieldId, queryParameters, localSource, suggestOptions,
-            labelProp, valueProp, returnCustomObj);
+        labelProp, valueProp, returnCustomObj);
 }
 
 /**
@@ -1392,7 +1392,7 @@ function initializeTooltip(tooltipElement, extendedOptions, additionalClasses) {
 function isControlWithMessages(id) {
     // check if component is or contains a control
     if (jQuery("#" + id).is("[data-role='Control']")
-            || (jQuery("#" + id).is("[data-role='InputField']") && jQuery("#" + id + "_control").is("[data-role='Control']"))) {
+        || (jQuery("#" + id).is("[data-role='InputField']") && jQuery("#" + id + "_control").is("[data-role='Control']"))) {
         return hasMessage(id);
     }
     return false;
@@ -1407,8 +1407,8 @@ function hasMessage(id) {
     var fieldId = getAttributeId(id);
     var messageData = getValidationData(jQuery("#" + fieldId));
     if (messageData && (messageData.serverErrors.length || (messageData.errors && messageData.errors.length)
-            || messageData.serverWarnings.length || (messageData.warnings && messageData.warnings.length)
-            || messageData.serverInfo.length || (messageData.info && messageData.info.length))) {
+        || messageData.serverWarnings.length || (messageData.warnings && messageData.warnings.length)
+        || messageData.serverInfo.length || (messageData.info && messageData.info.length))) {
         return true;
     }
     return false;
@@ -1558,9 +1558,9 @@ function executeFieldQuery(controlId, queryFieldId, queryParameters, queryMethod
 
                 // check for info spans
                 var returnFieldId = returnField.replace(/\./g, "_")
-                        .replace(/\[/g, "-lbrak-")
-                        .replace(/\]/g, "-rbrak-")
-                        .replace(/\'/g, "-quot-");
+                    .replace(/\[/g, "-lbrak-")
+                    .replace(/\]/g, "-rbrak-")
+                    .replace(/\'/g, "-quot-");
                 var infoFieldSpan = jQuery("#" + queryFieldId + "_info_" + returnFieldId);
                 if (infoFieldSpan.length > 0) {
                     infoFieldSpan.html(fieldValue);

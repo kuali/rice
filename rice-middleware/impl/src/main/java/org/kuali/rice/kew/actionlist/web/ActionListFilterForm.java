@@ -49,6 +49,9 @@ public class ActionListFilterForm extends KualiForm {
     private List userWorkgroups;
     private String cssFile = "kuali.css";
     private String test = "";
+    private String documentTargetSpec;
+    private String routeLogTargetSpec;
+
 
     public String getTest(){
     	return test;
@@ -232,5 +235,21 @@ public class ActionListFilterForm extends KualiForm {
 	public void setCssFile(String cssFile) {
 		this.cssFile = cssFile;
 	}
+
+    public String getDocumentTargetSpec() {
+        return documentTargetSpec;
+    }
+
+    public void setDocumentTargetSpec(String documentTargetSpec) {
+        this.documentTargetSpec = documentTargetSpec;
+    }
+
+    public String getRouteLogTargetSpec() {
+        return routeLogTargetSpec;
+    }
+
+    public void setRouteLogTargetSpec(String routeLogTargetSpec) {
+        this.routeLogTargetSpec = routeLogTargetSpec;
+    }
 
 }

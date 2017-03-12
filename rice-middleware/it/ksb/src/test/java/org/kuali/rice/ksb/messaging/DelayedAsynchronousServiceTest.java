@@ -39,11 +39,11 @@ import static org.junit.Assert.assertTrue;
 public class DelayedAsynchronousServiceTest extends KSBTestCase {
 
     public boolean startClient1() {
-	    return true;
+        return true;
     }
 
     public boolean startClient2() {
-	    return true;
+        return true;
     }
 
     @Test public void testDelayedAsynchronousServiceCall() throws Exception {
@@ -53,7 +53,7 @@ public class DelayedAsynchronousServiceTest extends KSBTestCase {
 
         // Queue up the service to be called asynchronously after 5 seconds
         KSBJavaService testJavaAsyncService = (KSBJavaService) KsbApiServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, "context", "value1", "value2", 5000);
-    	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
+        testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
         verifyServiceCalls(serviceName, false);
 
         // sleep for 1 second, should not have been called

@@ -38,75 +38,74 @@
     <maven.failsafe.forkedProcessTimeoutInSeconds>300</maven.failsafe.forkedProcessTimeoutInSeconds>
   </properties>
 
+  <build>
+    <plugins>
+      <!-- Enable static weaving using META-INF/persistence-weaving.xml for this module -->
+      <plugin>
+        <groupId>de.empulse.eclipselink</groupId>
+        <artifactId>staticweave-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-impl</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-location-impl</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-api</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-service-api</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-service-framework</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-core-service-impl</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-it-internal-tools</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-kns</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-app-framework</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-web-framework</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-service-impl</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -137,7 +136,6 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-sampleapp-impl</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- HACK!! this dependency should not be here -->
@@ -153,42 +151,34 @@
     <dependency>
       <groupId>displaytag</groupId>
       <artifactId>displaytag</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.kuali.commons</groupId>
+      <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>jcl-over-slf4j</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -203,7 +193,6 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -213,7 +202,6 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 

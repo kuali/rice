@@ -20,6 +20,7 @@
 
  -->
 
+<#assign inline_stacked = "org.kuali.rice.krad.uif.freemarker.StackedDirective"?new()>
 <#macro uif_stacked items manager container>
-	<#inline 'stacked' />
+	<@inline_stacked items=items manager=manager container=container/>
 </#macro>

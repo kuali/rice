@@ -21,6 +21,7 @@
 <#include "csrfToken.ftl" parse=true/>
 <#include "disable.ftl" parse=true/>
 <#include "div.ftl" parse=true/>
+<#include "dyncall.ftl" parse=true/>
 <#include "eventScript.ftl" parse=true/>
 <#include "form.ftl" parse=true/>
 <#include "grid.ftl" parse=true/>

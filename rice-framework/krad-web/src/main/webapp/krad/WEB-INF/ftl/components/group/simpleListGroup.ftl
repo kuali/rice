@@ -18,8 +18,8 @@
 <#macro uif_simpleListGroup group>
 
     <#local templateName=".main.${group.layoutManager.templateName}"/>
-    <#local templateParms="items=group.items manager=group.layoutManager container=group"/>
+    <#local templateParams="items=group.items manager=group.layoutManager container=group"/>
 
-    <#dyncall templateName templateParms/>
+    <@krad.dyncall templateNametemplateName templateParams=templateParams group=group/>
 
 </#macro>

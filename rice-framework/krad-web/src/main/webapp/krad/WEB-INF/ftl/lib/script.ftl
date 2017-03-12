@@ -15,6 +15,7 @@
     limitations under the License.
 
 -->
+<#assign inline_script = "org.kuali.rice.krad.uif.freemarker.ScriptDirective"?new()>
 <#macro script value component='' role="script">
-	<#inline 'script' />
+	<@inline_script />
 </#macro>

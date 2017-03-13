@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,23 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
+import org.kuali.rice.core.api.delegation.DelegationType;
+import org.kuali.rice.core.api.membership.MemberType;
+import org.kuali.rice.kim.api.KimConstants;
+import org.kuali.rice.kim.api.group.Group;
+import org.kuali.rice.kim.api.role.Role;
+import org.kuali.rice.kim.api.services.KimApiServiceLocator;
+import org.kuali.rice.kim.impl.role.RoleBo;
+import org.kuali.rice.kim.impl.role.RoleMemberBo;
+import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
+import org.kuali.rice.kim.impl.type.KimTypeBo;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
+import org.springframework.util.AutoPopulatingList;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,24 +43,10 @@ import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-import org.eclipse.persistence.annotations.JoinFetch;
-import org.eclipse.persistence.annotations.JoinFetchType;
-import org.kuali.rice.core.api.delegation.DelegationType;
-import org.kuali.rice.core.api.membership.MemberType;
-import org.kuali.rice.kim.api.KimConstants;
-import org.kuali.rice.kim.api.group.Group;
-import org.kuali.rice.kim.api.role.Role;
-import org.kuali.rice.kim.api.services.KimApiServiceLocator;
-import org.kuali.rice.kim.impl.role.RoleBo;
-import org.kuali.rice.kim.impl.type.KimTypeAttributesHelper;
-import org.kuali.rice.kim.impl.type.KimTypeBo;
-import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
-import org.springframework.util.AutoPopulatingList;
+import java.util.List;
 
 /**
- * 
+ *
  * @author Kuali Rice Team (kuali-rice@googleroles.com)
  *
  */
@@ -78,7 +80,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     @Transient
     private KimTypeAttributesHelper attributesHelper;
 
-    //For Person Document UI - flattening the delegation - delegation member hierarchy                       
+    //For Person Document UI - flattening the delegation - delegation member hierarchy
     @Transient
     protected RoleBo roleBo = new RoleBo();
 
@@ -98,14 +100,27 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     protected String memberName;
 
     @JoinFetch(value= JoinFetchType.OUTER)
-    @OneToMany(targetEntity = RoleDocumentDelegationMemberQualifier.class, orphanRemoval = true, cascade = { CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.PERSIST })
-    @JoinColumns({ 
-        @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR", insertable = false, updatable = false), 
-        @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID", insertable = false, updatable = false) })
+    @OneToMany(targetEntity = RoleDocumentDelegationMemberQualifier.class, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumns({
+            @JoinColumn(name = "FDOC_NBR", referencedColumnName = "FDOC_NBR"),
+            @JoinColumn(name = "DLGN_MBR_ID", referencedColumnName = "DLGN_MBR_ID") })
     protected List<RoleDocumentDelegationMemberQualifier> qualifiers = new AutoPopulatingList<RoleDocumentDelegationMemberQualifier>(RoleDocumentDelegationMemberQualifier.class);
 
     @Transient
     protected String delegationTypeCode;
+
+    public void loadTransientRoleFields() {
+        if ((getRoleBo() == null || getRoleBo().getId() == null) && getRoleMemberId() != null) {
+            UiDocumentService uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
+            RoleMemberBo roleMember = uiDocumentService.getRoleMember(getRoleMemberId());
+            setRoleMemberMemberId(roleMember.getMemberId());
+            setRoleMemberMemberTypeCode(roleMember.getType().getCode());
+            setRoleMemberName(uiDocumentService.getMemberName(MemberType.fromCode(getRoleMemberMemberTypeCode()), getRoleMemberMemberId()));
+            setRoleMemberNamespaceCode(uiDocumentService.getMemberNamespaceCode(MemberType.fromCode(getRoleMemberMemberTypeCode()), getRoleMemberMemberId()));
+            Role role = KimApiServiceLocator.getRoleService().getRole(roleMember.getRoleId());
+            setRoleBo(RoleBo.from(role));
+        }
+    }
 
     public String getDelegationTypeCode() {
         return this.delegationTypeCode;
@@ -124,8 +139,8 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     }
 
     /**
-	 * @return the qualifiers
-	 */
+     * @return the qualifiers
+     */
     public List<RoleDocumentDelegationMemberQualifier> getQualifiers() {
         return this.qualifiers;
     }
@@ -140,8 +155,8 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     }
 
     /**
-	 * @param qualifiers the qualifiers to set
-	 */
+     * @param qualifiers the qualifiers to set
+     */
     public void setQualifiers(List<RoleDocumentDelegationMemberQualifier> qualifiers) {
         this.qualifiers = qualifiers;
     }
@@ -151,57 +166,57 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     }
 
     /**
-	 * @return the memberId
-	 */
+     * @return the memberId
+     */
     public String getMemberId() {
         return this.memberId;
     }
 
     /**
-	 * @param memberId the memberId to set
-	 */
+     * @param memberId the memberId to set
+     */
     public void setMemberId(String memberId) {
         this.memberId = memberId;
     }
 
     /**
-	 * @return the memberName
-	 */
+     * @return the memberName
+     */
     public String getMemberName() {
         return this.memberName;
     }
 
     /**
-	 * @param memberName the memberName to set
-	 */
+     * @param memberName the memberName to set
+     */
     public void setMemberName(String memberName) {
         this.memberName = memberName;
     }
 
     /**
-	 * @return the assignedToId
-	 */
+     * @return the assignedToId
+     */
     public String getDelegationMemberId() {
         return this.delegationMemberId;
     }
 
     /**
-	 * @param delegationMemberId the assignedToId to set
-	 */
+     * @param delegationMemberId the assignedToId to set
+     */
     public void setDelegationMemberId(String delegationMemberId) {
         this.delegationMemberId = delegationMemberId;
     }
 
     /**
-	 * @return the memberTypeCode
-	 */
+     * @return the memberTypeCode
+     */
     public String getMemberTypeCode() {
         return this.memberTypeCode;
     }
 
     /**
-	 * @param memberTypeCode the memberTypeCode to set
-	 */
+     * @param memberTypeCode the memberTypeCode to set
+     */
     public void setMemberTypeCode(String memberTypeCode) {
         this.memberTypeCode = memberTypeCode;
     }
@@ -215,8 +230,8 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     }
 
     /**
-	 * @return the memberNamespaceCode
-	 */
+     * @return the memberNamespaceCode
+     */
     public String getMemberNamespaceCode() {
         if (memberNamespaceCode == null) {
             populateDerivedValues();
@@ -225,8 +240,8 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     }
 
     /**
-	 * @param memberNamespaceCode the memberNamespaceCode to set
-	 */
+     * @param memberNamespaceCode the memberNamespaceCode to set
+     */
     public void setMemberNamespaceCode(String memberNamespaceCode) {
         this.memberNamespaceCode = memberNamespaceCode;
     }
@@ -248,15 +263,15 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     }
 
     /**
-	 * @return the roleMemberId
-	 */
+     * @return the roleMemberId
+     */
     public String getRoleMemberId() {
         return this.roleMemberId;
     }
 
     /**
-	 * @param roleMemberId the roleMemberId to set
-	 */
+     * @param roleMemberId the roleMemberId to set
+     */
     public void setRoleMemberId(String roleMemberId) {
         this.roleMemberId = roleMemberId;
     }
@@ -274,86 +289,86 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
     }
 
     /**
-	 * @return the roleMemberName
-	 */
+     * @return the roleMemberName
+     */
     public String getRoleMemberName() {
         return this.roleMemberName;
     }
 
     /**
-	 * @param roleMemberName the roleMemberName to set
-	 */
+     * @param roleMemberName the roleMemberName to set
+     */
     public void setRoleMemberName(String roleMemberName) {
         this.roleMemberName = roleMemberName;
     }
 
     /**
-	 * @return the roleMemberNamespaceCode
-	 */
+     * @return the roleMemberNamespaceCode
+     */
     public String getRoleMemberNamespaceCode() {
         return this.roleMemberNamespaceCode;
     }
 
     /**
-	 * @param roleMemberNamespaceCode the roleMemberNamespaceCode to set
-	 */
+     * @param roleMemberNamespaceCode the roleMemberNamespaceCode to set
+     */
     public void setRoleMemberNamespaceCode(String roleMemberNamespaceCode) {
         this.roleMemberNamespaceCode = roleMemberNamespaceCode;
     }
 
     /**
-	 * @return the roleBo
-	 */
+     * @return the roleBo
+     */
     public RoleBo getRoleBo() {
         return this.roleBo;
     }
 
     /**
-	 * @param roleBo the roleBo to set
-	 */
+     * @param roleBo the roleBo to set
+     */
     public void setRoleBo(RoleBo roleBo) {
         this.roleBo = roleBo;
         setAttributesHelper(new KimTypeAttributesHelper(KimTypeBo.to(roleBo.getKimRoleType())));
     }
 
     /**
-	 * @return the attributesHelper
-	 */
+     * @return the attributesHelper
+     */
     public KimTypeAttributesHelper getAttributesHelper() {
         return this.attributesHelper;
     }
 
     /**
-	 * @param attributesHelper the attributesHelper to set
-	 */
+     * @param attributesHelper the attributesHelper to set
+     */
     public void setAttributesHelper(KimTypeAttributesHelper attributesHelper) {
         this.attributesHelper = attributesHelper;
     }
 
     /**
-	 * @return the roleMemberMemberId
-	 */
+     * @return the roleMemberMemberId
+     */
     public String getRoleMemberMemberId() {
         return this.roleMemberMemberId;
     }
 
     /**
-	 * @param roleMemberMemberId the roleMemberMemberId to set
-	 */
+     * @param roleMemberMemberId the roleMemberMemberId to set
+     */
     public void setRoleMemberMemberId(String roleMemberMemberId) {
         this.roleMemberMemberId = roleMemberMemberId;
     }
 
     /**
-	 * @return the roleMemberMemberTypeCode
-	 */
+     * @return the roleMemberMemberTypeCode
+     */
     public String getRoleMemberMemberTypeCode() {
         return this.roleMemberMemberTypeCode;
     }
 
     /**
-	 * @param roleMemberMemberTypeCode the roleMemberMemberTypeCode to set
-	 */
+     * @param roleMemberMemberTypeCode the roleMemberMemberTypeCode to set
+     */
     public void setRoleMemberMemberTypeCode(String roleMemberMemberTypeCode) {
         this.roleMemberMemberTypeCode = roleMemberMemberTypeCode;
     }

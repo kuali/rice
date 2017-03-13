@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,19 @@ public interface ConfigurationService {
      * @throws IllegalArgumentException if the key is null
      */
     public boolean getPropertyValueAsBoolean(String key);
+
+    /**
+     * Given a property name (key), returns the "booleanized" value associated with that key.
+     *
+     * <p>
+     * true, yes, on, or 1 are translated into <b>true</b> - all other values result in <b>false</b>
+     * </p>
+     *
+     * @param key - key for the message in application resources
+     * @return String associated with the given key if the property exists, will return the default value otherwise
+     * @throws IllegalArgumentException if the key is null
+     */
+    public boolean getPropertyValueAsBoolean(String key, boolean defaultValue);
 
     /**
      * Returns all properties configured for the Rice instance

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.krad.uif.util;
 
+import org.kuali.rice.core.api.config.property.ConfigurationService;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
-
-import org.kuali.rice.core.api.config.property.ConfigurationService;
 
 /**
  * Properties-based configuration service for supporting simple unit testing scenarios.
@@ -62,6 +62,12 @@ public class SimpleConfigurationService implements ConfigurationService {
     @Override
     public boolean getPropertyValueAsBoolean(String key) {
         return "true".equals(properties.getProperty(key));
+    }
+
+    @Override
+    public boolean getPropertyValueAsBoolean(String key, boolean defaultValue) {
+        String propertyValue = properties.getProperty(key);
+        return propertyValue == null ? defaultValue : "true".equals(propertyValue);
     }
 
     /**

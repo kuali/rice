@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,6 +82,7 @@ public class KRADServiceLocatorWeb {
     public static final String EXPRESSION_EVALUATOR_FACTORY = "expressionEvaluatorFactory";
     public static final String VIEW_LIFECYCLE_PHASE_BUILDER = "viewLifecyclePhaseBuilder";
     public static final String MODEL_AND_VIEW_SERVICE = "modelAndViewService";
+    public static final String CSRF_SERVICE = "csrfService";
 
     public static <T extends Object> T getService(String serviceName) {
         return GlobalResourceLoader.<T>getService(serviceName);
@@ -201,6 +202,10 @@ public class KRADServiceLocatorWeb {
 
     public static UifDefaultingService getUifDefaultingService() {
         return getService(UIF_DEFAULTING_SERVICE);
+    }
+
+    public static CsrfService getCsrfService() {
+        return getService(CSRF_SERVICE);
     }
 
     /**

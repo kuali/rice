@@ -1,6 +1,6 @@
 <!--
 
-    Copyright 2005-2016 The Kuali Foundation
+    Copyright 2005-2017 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -239,6 +239,7 @@
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -344,7 +345,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.kuali.commons</groupId>
+      <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
     </dependency>
 
@@ -479,6 +480,18 @@
     </dependency>
 
     <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-krad-service-impl</artifactId>
       <version>${project.version}</version>
@@ -495,7 +508,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-joda</artifactId>
-      <version>${jackson-datatype-joda.version}</version>
     </dependency>
 
     <dependency>

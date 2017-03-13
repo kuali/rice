@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -467,7 +467,7 @@ public class UifViewBeanWrapper extends UifBeanWrapper {
 
         BeanWrapperImpl beanWrapper;
         try {
-            beanWrapper = getBeanWrapperForPropertyPath(propertyPath);
+            beanWrapper = getPropertyAccessorForPropertyPath(propertyPath);
         } catch (NotReadablePropertyException | NullValueInNestedPathException e) {
             LOG.debug("Bean wrapper was not found for " + propertyPath
                     + ", but since it cannot be accessed it will not be set as secure.", e);
@@ -495,8 +495,8 @@ public class UifViewBeanWrapper extends UifBeanWrapper {
      * {@inheritDoc}
      */
     @Override
-    protected BeanWrapperImpl getBeanWrapperForPropertyPath(String propertyPath) {
-        BeanWrapperImpl beanWrapper = super.getBeanWrapperForPropertyPath(propertyPath);
+    protected BeanWrapperImpl getPropertyAccessorForPropertyPath(String propertyPath) {
+        BeanWrapperImpl beanWrapper = (BeanWrapperImpl) super.getPropertyAccessorForPropertyPath(propertyPath);
 
         PropertyTokenHolder tokens = getPropertyNameTokens(propertyPath);
         String canonicalName = tokens.canonicalName;

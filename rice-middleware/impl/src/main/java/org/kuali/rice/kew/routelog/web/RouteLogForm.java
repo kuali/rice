@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,8 @@ public class RouteLogForm extends KualiForm {
     private boolean showCloseButton = false;
     private String newRouteLogActionMessage;
     private boolean enableLogAction = false;
+    private boolean showBackButton;
+    private int internalNavCount;
 
     public boolean isShowCloseButton() {
         return showCloseButton;
@@ -134,45 +136,71 @@ public class RouteLogForm extends KualiForm {
     public void setLookFuture(boolean showFutureLink) {
         this.lookFuture = showFutureLink;
     }
-	public boolean isShowNotes() {
-		return showNotes;
-	}
-	public void setShowNotes(boolean showNotes) {
-		this.showNotes = showNotes;
-	}
-	
-	public String getNewRouteLogActionMessage() {
-		return this.newRouteLogActionMessage;
-	}
-	
-	public void setNewRouteLogActionMessage(String newRouteLogActionMessage) {
-		this.newRouteLogActionMessage = newRouteLogActionMessage;
-	}
-	
-	public boolean isEnableLogAction() {
-		return this.enableLogAction;
-	}
-	
-	public void setEnableLogAction(boolean enableLogAction) {
-		this.enableLogAction = enableLogAction;
-	}
-	
-	public String getHeaderMenuBar() {
-		Properties parameters = new Properties();
-        parameters.put("showFuture", isShowFuture());
-        parameters.put("showNotes", isShowNotes());
-		if (getDocumentId() != null) {
-			parameters.put("documentId", getDocumentId());
-		}
-		if (getDocId() != null) {
-			parameters.put("docId", getDocId());
-		}
-		if (getReturnUrlLocation() != null) {
-			parameters.put("backUrl", getReturnUrlLocation());
-		}
+    public boolean isShowNotes() {
+        return showNotes;
+    }
+    public void setShowNotes(boolean showNotes) {
+        this.showNotes = showNotes;
+    }
+
+    public String getNewRouteLogActionMessage() {
+        return this.newRouteLogActionMessage;
+    }
+
+    public void setNewRouteLogActionMessage(String newRouteLogActionMessage) {
+        this.newRouteLogActionMessage = newRouteLogActionMessage;
+    }
+
+    public boolean isEnableLogAction() {
+        return this.enableLogAction;
+    }
+
+    public void setEnableLogAction(boolean enableLogAction) {
+        this.enableLogAction = enableLogAction;
+    }
+
+    public boolean isShowBackButton() {
+        return showBackButton;
+    }
+
+    public void setShowBackButton(boolean showBackButton) {
+        this.showBackButton = showBackButton;
+    }
+
+    public int getInternalNavCount() {
+        return internalNavCount;
+    }
+
+    public void setInternalNavCount(int internalNavCount) {
+        this.internalNavCount = internalNavCount;
+    }
+
+    public int getNextNavCount() {
+        return getInternalNavCount() + 1;
+    }
+
+    public int getBackCount() {
+        return - getNextNavCount();
+    }
+
+    public String getHeaderMenuBar() {
+        Properties parameters = new Properties();
+        parameters.put("showFuture", Boolean.toString(isShowFuture()));
+        parameters.put("showNotes", Boolean.toString(isShowNotes()));
+        parameters.put("showBackButton", Boolean.toString(isShowBackButton()));
+        parameters.put("internalNavCount", Integer.toString(getNextNavCount()));
+        if (getDocumentId() != null) {
+            parameters.put("documentId", getDocumentId());
+        }
+        if (getDocId() != null) {
+            parameters.put("docId", getDocId());
+        }
+        if (getReturnUrlLocation() != null) {
+            parameters.put("backUrl", getReturnUrlLocation());
+        }
         String url = UrlFactory.parameterizeUrl("RouteLog.do", parameters);
         String krBaseUrl = ConfigContext.getCurrentContextConfig().getKRBaseURL();
         url = "<div class=\"lookupcreatenew\" title=\"Refresh\"><a href=\"" + url + "\"><img src=\""+krBaseUrl+"/images/tinybutton-refresh.gif\" alt=\"refresh\"></a></div>";
         return url;
-	}
+    }
 }

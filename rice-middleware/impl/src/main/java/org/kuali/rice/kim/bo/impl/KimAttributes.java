@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
     protected String methodToCall;
 	protected String beanName;
+	protected String buttonName;
 	protected String actionClass;
 	protected String namespaceCode;
 	protected String componentName;
@@ -100,6 +101,14 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	 */
 	public void setBeanName(String beanName) {
 		this.beanName = beanName;
+	}
+
+	public String getButtonName() {
+		return buttonName;
+	}
+
+	public void setButtonName(String buttonName) {
+		this.buttonName = buttonName;
 	}
 
 	/**

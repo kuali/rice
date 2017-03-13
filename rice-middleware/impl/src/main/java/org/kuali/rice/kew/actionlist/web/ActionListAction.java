@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,34 +15,11 @@
  */
 package org.kuali.rice.kew.actionlist.web;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.*;
 import org.displaytag.pagination.PaginatedList;
 import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
@@ -79,6 +56,12 @@ import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.exception.AuthorizationException;
 import org.kuali.rice.krad.util.GlobalVariables;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
 /**
  * Action doing Action list stuff
  *
@@ -96,6 +79,8 @@ public class ActionListAction extends KualiAction {
     /*private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";*/
     private static final String ACTION_ITEM_COUNT_FOR_USER_KEY = "actionList.count";
     private static final String MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY = "actionList.maxActionItemDateAssigned";
+    private static final String DOCUMENT_TARGET_SPEC_KEY = "documentTargetSpec";
+    private static final String ROUTE_LOG_TARGET_SPEC_KEY = "routeLogTargetSpec";
 
     private static final String ACTIONREQUESTCD_PROP = "actionRequestCd";
     private static final String CUSTOMACTIONLIST_PROP = "customActionList";
@@ -145,8 +130,8 @@ public class ActionListAction extends KualiAction {
     @Override
     public ActionForward refresh(ActionMapping mapping,
                                  ActionForm form,
-                           		 HttpServletRequest request,
-                           		 HttpServletResponse response) throws Exception {
+                                 HttpServletRequest request,
+                                 HttpServletResponse response) throws Exception {
         request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, form, request, response);
     }
@@ -284,50 +269,50 @@ public class ActionListAction extends KualiAction {
                 form.setOutBoxEmpty(actionList.isEmpty());
             } else {
 
-                    SimpleDateFormat dFormatter = new SimpleDateFormat(MAX_ACTION_ITEM_DATE_FORMAT);
-                    if (actionList == null) {
-                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-                        if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
-                            if (countAndMaxDate.isEmpty()) {
-                                countAndMaxDate.add(0, new Date(0));
-                                countAndMaxDate.add(1, 0);
-                            } else {
-                                countAndMaxDate.set(0, new Date(0));
-                            }
-                        }
-                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
-                        // fetch the action list
-                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
-
-                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                    } else if (forceListRefresh) {
-                        // force a refresh... usually based on filter change or parameter specifying refresh needed
-                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
-                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                        List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
-                        if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
-                            if (countAndMaxDate.isEmpty()) {
-                                countAndMaxDate.add(0, new Date(0));
-                                countAndMaxDate.add(1, 0);
-                            } else {
-                                countAndMaxDate.set(0, new Date(0));
-                            }
-                        }
-                        request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
-                        request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
-
-                    }else if (refreshList(request,principalId)){
-                        actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
-                        request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-
-                    } else {
-                        Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
-                        if (update == null || !update) {
-                            freshActionList = false;
+                SimpleDateFormat dFormatter = new SimpleDateFormat(MAX_ACTION_ITEM_DATE_FORMAT);
+                if (actionList == null) {
+                    List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+                    if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
+                        if (countAndMaxDate.isEmpty()) {
+                            countAndMaxDate.add(0, new Date(0));
+                            countAndMaxDate.add(1, 0);
+                        } else {
+                            countAndMaxDate.set(0, new Date(0));
                         }
                     }
-                    request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
+                    request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
+                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
+                    // fetch the action list
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
+
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+                } else if (forceListRefresh) {
+                    // force a refresh... usually based on filter change or parameter specifying refresh needed
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+                    List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
+                    if (countAndMaxDate.isEmpty() || countAndMaxDate.get(0) == null ) {
+                        if (countAndMaxDate.isEmpty()) {
+                            countAndMaxDate.add(0, new Date(0));
+                            countAndMaxDate.add(1, 0);
+                        } else {
+                            countAndMaxDate.set(0, new Date(0));
+                        }
+                    }
+                    request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, dFormatter.format(countAndMaxDate.get(0)));
+                    request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
+
+                }else if (refreshList(request,principalId)){
+                    actionList = new ArrayList<ActionItem>(actionListSrv.getActionList(principalId, filter));
+                    request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
+
+                } else {
+                    Boolean update = (Boolean) uSession.retrieveObject(KewApiConstants.UPDATE_ACTION_LIST_ATTR_NAME);
+                    if (update == null || !update) {
+                        freshActionList = false;
+                    }
+                }
+                request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
 
             }
             // reset the requery action list key
@@ -399,7 +384,7 @@ public class ActionListAction extends KualiAction {
         List<Object> countAndMaxDate = actionListSrv.getMaxActionItemDateAssignedAndCountForUser(principalId);
         String maxActionItemDateAssignedForUserKey = "";
         if(countAndMaxDate.get(0)!= null){
-           maxActionItemDateAssignedForUserKey = dFormatter.format(countAndMaxDate.get(0));
+            maxActionItemDateAssignedForUserKey = dFormatter.format(countAndMaxDate.get(0));
         }
         request.getSession().setAttribute(MAX_ACTION_ITEM_DATE_ASSIGNED_FOR_USER_KEY, maxActionItemDateAssignedForUserKey);
         request.getSession().setAttribute(ACTION_ITEM_COUNT_FOR_USER_KEY, (Long)countAndMaxDate.get(1));
@@ -701,7 +686,7 @@ public class ActionListAction extends KualiAction {
         ActionListForm actionListForm = (ActionListForm) form;
         List<? extends ActionItemBase> actionList = (List<? extends ActionItemBase>) request.getSession().getAttribute(ACTION_LIST_KEY);
         if (actionList == null) {
-            return start(mapping, new ActionListForm(), request, response);
+            return start(mapping, cleanForm(actionListForm), request, response);
         }
         ActionMessages messages = new ActionMessages();
         List<ActionInvocation> invocations = new ArrayList<ActionInvocation>();
@@ -724,10 +709,18 @@ public class ActionListAction extends KualiAction {
         KEWServiceLocator.getWorkflowDocumentService().takeMassActions(getUserSession().getPrincipalId(), invocations);
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.processed"));
         saveMessages(request, messages);
-        ActionListForm cleanForm = new ActionListForm();
+        ActionListForm cleanForm = cleanForm(actionListForm);
         request.setAttribute(mapping.getName(), cleanForm);
         request.getSession().setAttribute(KewApiConstants.REQUERY_ACTION_LIST_KEY, "true");
         return start(mapping, cleanForm, request, response);
+    }
+
+    private ActionListForm cleanForm(ActionListForm existingForm) {
+        ActionListForm form = new ActionListForm();
+        form.setDocumentTargetSpec(existingForm.getDocumentTargetSpec());
+        form.setRouteLogTargetSpec(existingForm.getRouteLogTargetSpec());
+        form.setTargets(existingForm.getTargets());
+        return form;
     }
 
     protected ActionItemBase getActionItemFromActionList(List<? extends ActionItemBase> actionList, String actionItemId) {
@@ -812,7 +805,10 @@ public class ActionListAction extends KualiAction {
      */
     public ActionForward viewFilter(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         start(mapping, actionForm, request, response);
-        return mapping.findForward("viewFilter");
+        ActionRedirect redirect = new ActionRedirect(mapping.findForward("viewFilter"));
+        redirect.addParameter(DOCUMENT_TARGET_SPEC_KEY, ((ActionListForm)actionForm).getDocumentTargetSpec());
+        redirect.addParameter(ROUTE_LOG_TARGET_SPEC_KEY, ((ActionListForm)actionForm).getRouteLogTargetSpec());
+        return redirect;
     }
 
     /**
@@ -820,7 +816,10 @@ public class ActionListAction extends KualiAction {
      */
     public ActionForward viewPreferences(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         start(mapping, actionForm, request, response);
-        return mapping.findForward("viewPreferences");
+        ActionRedirect redirect = new ActionRedirect(mapping.findForward("viewPreferences"));
+        redirect.addParameter(DOCUMENT_TARGET_SPEC_KEY, ((ActionListForm)actionForm).getDocumentTargetSpec());
+        redirect.addParameter(ROUTE_LOG_TARGET_SPEC_KEY, ((ActionListForm)actionForm).getRouteLogTargetSpec());
+        return redirect;
     }
 
     private boolean isActionCompatibleRequest(ActionItemBase actionItem, String actionTakenCode) {

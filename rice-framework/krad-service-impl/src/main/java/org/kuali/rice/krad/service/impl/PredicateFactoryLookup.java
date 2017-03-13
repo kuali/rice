@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -172,7 +172,7 @@ class PredicateFactoryLookup {
         return and(toAnd.toArray(new Predicate[]{}));
     }
 
-    private static Predicate createPredicate(Class<?> clazz, final String key, final Object value) {
+    static Predicate createPredicate(Class<?> clazz, final String key, final Object value) {
         if (value == null) {
             return isNull(key);
         } else if (value instanceof String) {
@@ -220,7 +220,7 @@ class PredicateFactoryLookup {
         return false;
     }
 
-    private static String getFlagsStr(String criteria) {
+    static String getFlagsStr(String criteria) {
         Matcher m = FLAGS_PATTERN.matcher(criteria);
         if (m.find()) {
             return m.group();

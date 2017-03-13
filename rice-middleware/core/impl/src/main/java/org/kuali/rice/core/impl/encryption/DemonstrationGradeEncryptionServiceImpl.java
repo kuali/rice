@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,9 +31,12 @@ import java.security.MessageDigest;
 
 /**
  * Implementation of encryption service for demonstration. 
- * 
+ *
+ * @deprecated use {@link EncryptionServiceImpl} instead with the {@link org.kuali.rice.core.impl.encryption.EncryptionServiceImpl.DESEncryptionStrategy}
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Deprecated
 public class DemonstrationGradeEncryptionServiceImpl implements EncryptionService {
     public final static String ALGORITHM = "DES/ECB/PKCS5Padding";
     public final static String HASH_ALGORITHM = "SHA"; 

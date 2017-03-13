@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,7 @@
  */
 package org.kuali.rice.krad.web.bind;
 
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.InvalidPropertyException;
-import org.springframework.beans.NullValueInNestedPathException;
-import org.springframework.beans.PropertyValue;
+import org.springframework.beans.*;
 
 /**
  * Bean wrapper that will auto grow paths for setting the value but not grow paths for getting
@@ -105,7 +101,7 @@ public class UifBeanWrapper extends BeanWrapperImpl {
      * {@inheritDoc}
      */
     @Override
-    protected BeanWrapperImpl newNestedBeanWrapper(Object object, String nestedPath) {
+    protected BeanWrapperImpl newNestedPropertyAccessor(Object object, String nestedPath) {
         return new UifBeanWrapper(object, nestedPath, this);
     }
 
@@ -118,13 +114,15 @@ public class UifBeanWrapper extends BeanWrapperImpl {
      * {@inheritDoc}
      */
     @Override
-    protected BeanWrapperImpl getBeanWrapperForPropertyPath(String propertyPath) {
+    protected AbstractNestablePropertyAccessor getPropertyAccessorForPropertyPath(String propertyPath) {
         if (this.rootBeanWrapper != null) {
             setAutoGrowNestedPaths(this.rootBeanWrapper.isAutoGrowNestedPaths());
         }
 
-        return super.getBeanWrapperForPropertyPath(propertyPath);
+        return super.getPropertyAccessorForPropertyPath(propertyPath);
     }
+
+
 
     /**
      * Bean wrapper for the root data object, used for setting auto grows on nested bean wrappers.

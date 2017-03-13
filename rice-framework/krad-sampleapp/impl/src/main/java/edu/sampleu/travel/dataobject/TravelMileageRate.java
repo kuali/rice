@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,8 @@ public class TravelMileageRate extends DataObjectBase implements MutableInactiva
 
     private static final long serialVersionUID = 4525338013753227579L;
 
-    @Id @Column(name = "MLG_RT_ID", length = 40)
+    @Id
+    @Column(name = "MLG_RT_ID", length = 40)
     @GeneratedValue(generator = "TRVL_MLG_RT_ID_S")
     @PortableSequenceGenerator(name = "TRVL_MLG_RT_ID_S")
     @Label("Id")

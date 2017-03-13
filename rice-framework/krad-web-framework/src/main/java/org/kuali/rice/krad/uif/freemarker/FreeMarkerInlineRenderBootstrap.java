@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,13 +30,11 @@ import javax.servlet.ServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import freemarker.core.InlineTemplateElement;
 import freemarker.ext.jsp.TaglibFactory;
 import freemarker.ext.servlet.ServletContextHashModel;
 import freemarker.template.Configuration;
@@ -48,7 +46,7 @@ import freemarker.template.TemplateException;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FreeMarkerInlineRenderBootstrap implements InitializingBean, ApplicationContextAware, ServletContextAware {
+public class FreeMarkerInlineRenderBootstrap implements ApplicationContextAware, ServletContextAware {
 
     private static final Logger LOG = Logger.getLogger(FreeMarkerInlineRenderBootstrap.class);
     
@@ -226,21 +224,6 @@ public class FreeMarkerInlineRenderBootstrap implements InitializingBean, Applic
     public void setServletContext(ServletContext servletContext) {
         FreeMarkerInlineRenderBootstrap.servletContext = servletContext;
         finishConfig();
-    }
-
-    /**
-     * Register high-traffic KRAD template adaptors.  
-     * 
-     * {@inheritDoc}
-     */
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        InlineTemplateElement.registerAdaptor("script", new FreeMarkerScriptAdaptor());
-        InlineTemplateElement.registerAdaptor("template", new FreeMarkerTemplateAdaptor());
-        InlineTemplateElement.registerAdaptor("collectionGroup", new FreeMarkerCollectionGroupAdaptor());
-        InlineTemplateElement.registerAdaptor("stacked", new FreeMarkerStackedAdaptor());
-        InlineTemplateElement.registerAdaptor("groupWrap-open", new FreeMarkerOpenGroupWrapAdaptor());
-        InlineTemplateElement.registerAdaptor("groupWrap-close", new FreeMarkerCloseGroupWrapAdaptor());
     }
 
 }

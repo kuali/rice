@@ -1,6 +1,6 @@
 <#--
 
-    Copyright 2005-2016 The Kuali Foundation
+    Copyright 2005-2017 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,16 +15,18 @@
     limitations under the License.
 
 -->
+<#assign inline_groupWrapOpen = "org.kuali.rice.krad.uif.freemarker.OpenGroupWrapDirective"?new()>
+<#assign inline_groupWrapClose = "org.kuali.rice.krad.uif.freemarker.CloseGroupWrapDirective"?new()>
 <#macro groupWrap group>
 
     <@krad.wrap component=group renderAs="${group.wrapperTag!'div'}">
-        <#inline 'groupWrap-open' />
+        <@inline_groupWrapOpen group=group/>
 
         <#if !group.renderLoading>
             <#nested/>
         </#if>
 
-        <#inline 'groupWrap-close' />
+        <@inline_groupWrapClose group=group/>
     </@krad.wrap>
 
 </#macro>

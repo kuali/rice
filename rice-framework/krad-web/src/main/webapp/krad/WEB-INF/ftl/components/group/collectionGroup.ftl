@@ -1,6 +1,6 @@
 <#--
 
-    Copyright 2005-2016 The Kuali Foundation
+    Copyright 2005-2017 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,8 +15,9 @@
     limitations under the License.
 
 -->
+<#assign inline_collectionGroup = "org.kuali.rice.krad.uif.freemarker.CollectionGroupDirective"?new()>
 <#macro uif_collectionGroup group>
     <@krad.wrap component=group renderAs="${group.wrapperTag}">
-	    <#inline 'collectionGroup' />
+        <@inline_collectionGroup group=group/>
     </@krad.wrap>
 </#macro>

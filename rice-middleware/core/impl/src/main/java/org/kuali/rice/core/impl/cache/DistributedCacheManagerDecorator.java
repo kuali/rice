@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -177,6 +178,12 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
         public ValueWrapper get(Object key) {
             final String sKey = coerceStr(key);
             return cache.get(sKey);
+        }
+
+        @Override
+        public <T> T get(Object key, Callable<T> callable) {
+            final String sKey = coerceStr(key);
+            return cache.get(sKey, callable);
         }
 
         @Override
@@ -403,10 +410,11 @@ public final class DistributedCacheManagerDecorator implements CacheManager, Ini
 
         @Override public <T> T get(Object o, Class<T> tClass) { return null; }
 
+        @Override public <T> T get(Object o, Callable<T> callable) { return null; }
+
         @Override public void put(Object key, Object value) { }
 
-        @Override
-        public ValueWrapper putIfAbsent(Object o, Object o2) {
+        @Override public ValueWrapper putIfAbsent(Object o, Object o2) {
             return null;
         }
 

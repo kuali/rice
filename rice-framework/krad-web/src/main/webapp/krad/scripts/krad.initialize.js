@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -674,7 +674,7 @@ function initFieldHandlers() {
             });
 
     // capture leaving a text expand window and force focus back on the control
-    jQuery(document).on("focusout", ".fancybox-skin", function () {
+    jQuery(document).on("focusout", "#fancybox-outer", function () {
         buttonHovered = false;
         if ($currentControl != undefined) {
             $currentControl.focus();

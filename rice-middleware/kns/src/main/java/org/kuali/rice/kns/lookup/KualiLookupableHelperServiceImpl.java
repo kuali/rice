@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -200,7 +200,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
      */
     protected Class<? extends ExternalizableBusinessObject> getExternalizableBusinessObjectClass(Class boClass, String propertyName) {
         try {
-        	return PropertyUtils.getPropertyType(
+        	return (Class<? extends ExternalizableBusinessObject>)PropertyUtils.getPropertyType(
 					boClass.newInstance(), StringUtils.substringBeforeLast( propertyName, "." ) );
         } catch (Exception e) {
         	LOG.debug("Unable to determine type of property for " + boClass.getName() + "/" + propertyName, e );

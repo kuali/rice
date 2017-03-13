@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 package org.kuali.rice.krad.service.impl;
-
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -39,12 +33,7 @@ import org.kuali.rice.krad.data.provider.Provider;
 import org.kuali.rice.krad.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.krad.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.krad.datadictionary.RelationshipDefinition;
-import org.kuali.rice.krad.service.BusinessObjectNotLookupableException;
-import org.kuali.rice.krad.service.KRADServiceLocatorWeb;
-import org.kuali.rice.krad.service.KualiModuleService;
-import org.kuali.rice.krad.service.LegacyDataAdapter;
-import org.kuali.rice.krad.service.LookupService;
-import org.kuali.rice.krad.service.ModuleService;
+import org.kuali.rice.krad.service.*;
 import org.kuali.rice.krad.uif.UifParameters;
 import org.kuali.rice.krad.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -52,6 +41,12 @@ import org.kuali.rice.krad.util.UrlFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+
+import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -352,8 +347,10 @@ public abstract class RemoteModuleServiceBase implements ModuleService {
         }
         Class clazz;
         try {
-            clazz = getExternalizableBusinessObjectImplementation(PropertyUtils.getPropertyType(businessObject,
-                    externalizableRelationshipName));
+            Class<? extends ExternalizableBusinessObject> propertyType =
+                    (Class<? extends ExternalizableBusinessObject>)PropertyUtils.getPropertyType(businessObject,
+                            externalizableRelationshipName);
+            clazz = getExternalizableBusinessObjectImplementation(propertyType);
         } catch (Exception iex) {
             LOG.warn("Exception:"
                     + iex

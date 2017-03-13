@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,6 +51,7 @@ import org.kuali.rice.kew.framework.document.search.StandardResultField;
 import org.kuali.rice.kew.lookup.valuefinder.SavedSearchValuesFinder;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
+import org.kuali.rice.kew.util.DocumentTypeWindowTargets;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -71,14 +72,7 @@ import org.kuali.rice.krad.util.KRADConstants;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,6 +86,10 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
     static final String SAVED_SEARCH_NAME_PARAM = "savedSearchToLoadAndExecute";
     static final String DOCUMENT_TYPE_NAME_PARAM = "documentTypeName";
+    static final String TARGET_SPEC_PARAM = "targetSpec";
+    static final String DOCUMENT_TARGET_SPEC_PARAM = "documentTargetSpec";
+    static final String ROUTE_LOG_TARGET_SPEC_PARAM = "routeLogTargetSpec";
+    static final String SHOW_SUPER_USER_BUTTON_PARAM = "showSuperUserButton";
 
     // warning message keys
 
@@ -113,6 +111,32 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     // (in theory these could be replaced with some threadlocal subterfuge, but keeping as-is for simplicity)
     private DocumentSearchResults searchResults = null;
     private DocumentSearchCriteria criteria = null;
+
+    private DocumentTypeWindowTargets targets;
+
+    @Override
+    public void setParameters(Map<String, String[]> parameters) {
+        super.setParameters(parameters);
+        populateTargets();
+    }
+
+    private void populateTargets() {
+        String defaultDocumentTarget = isDocumentHandlerPopup() ? "_blank" : "_self";
+        String defaultRouteLogTarget = isRouteLogPopup() ? "_blank" : "_self";
+        String targetSpec = StringUtils.join(getParameters().get(TARGET_SPEC_PARAM), ",");
+        String documentTargetSpec = StringUtils.join(getParameters().get(DOCUMENT_TARGET_SPEC_PARAM), ",");
+        String routeLogTargetSpec = StringUtils.join(getParameters().get(ROUTE_LOG_TARGET_SPEC_PARAM), ",");
+        if (documentTargetSpec == null) {
+            documentTargetSpec = targetSpec;
+            getParameters().put(DOCUMENT_TARGET_SPEC_PARAM, getParameters().get(TARGET_SPEC_PARAM));
+        }
+        if (routeLogTargetSpec == null) {
+            routeLogTargetSpec = targetSpec;
+            getParameters().put(ROUTE_LOG_TARGET_SPEC_PARAM, getParameters().get(TARGET_SPEC_PARAM));
+        }
+        this.targets = new DocumentTypeWindowTargets(documentTargetSpec, routeLogTargetSpec,
+                defaultDocumentTarget, defaultRouteLogTarget, KEWServiceLocator.getDocumentTypeService());
+    }
 
     @Override
     protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
@@ -372,7 +396,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             for (Field field: getFormFields().getFields()) {
                 overrideFieldValue(field, this.getParameters(), savedValues);
                 fieldValues.put(field.getPropertyName(), new String[] { field.getPropertyValue() });
-             }
+            }
         }
 
         // unset the clear search param, since this is not really a state, but just an action
@@ -451,8 +475,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                                 Object upperBoundDate = PropertyUtils.getProperty(criteria, upperBoundName);
                                 if (upperBoundDate != null) {
                                     values = new String[] { CoreApiServiceLocator.getDateTimeService().toDateTimeString(
-                                        ((org.joda.time.DateTime)upperBoundDate)
-                                                .toDate()) };
+                                            ((org.joda.time.DateTime)upperBoundDate)
+                                                    .toDate()) };
                                 }
                             }
                         } else {
@@ -511,9 +535,9 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
             return generateDocumentHandlerUrl(criteriaBo.getDocumentId(), criteriaBo.getDocumentType(),
                     isSuperUserSearch());
         } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG.equals(propertyName)) {
-            return generateRouteLogUrl(criteriaBo.getDocumentId());
+            return generateRouteLogUrl(criteriaBo.getDocumentId(), criteriaBo.getDocumentType());
         } else if (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR_DISPLAY_NAME.equals(propertyName)) {
-            return generateInitiatorUrl(criteriaBo.getInitiatorPrincipalId());
+            return generateInitiatorUrl(criteriaBo.getInitiatorPrincipalId(), criteriaBo.getDocumentType());
         }
         return super.getInquiryUrl(bo, propertyName);
     }
@@ -525,30 +549,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     protected HtmlData.AnchorHtmlData generateDocumentHandlerUrl(String documentId, DocumentType documentType, boolean superUserSearch) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
         link.setDisplayText(documentId);
-
-        if (isDocumentHandlerPopup()) {
-            org.kuali.rice.kew.doctype.DocumentTypePolicy policy = documentType.getDocSearchTarget();
-            if (policy.getPolicyStringValue() != null) {
-                //if (!policy.getPolicyStringValue().equals("_blank") && !policy.getPolicyStringValue().equals("_self") && !policy.getPolicyStringValue().equals("_parent") && !policy.getPolicyStringValue().equals("_top")) {
-                //throw new ValidationException("Invalid " + KewApiConstants.DOC_SEARCH_TARGET_POLICY + " value: " + policy.getPolicyStringValue());
-                //}
-                link.setTarget(policy.getPolicyStringValue().toLowerCase());
-            }
-            else {
-                link.setTarget("_blank");
-            }
-        } else {
-            org.kuali.rice.kew.doctype.DocumentTypePolicy policy = documentType.getDocSearchTarget();
-            if (policy.getPolicyStringValue() != null) {
-                //if (!policy.getPolicyStringValue().equals("_blank") && !policy.getPolicyStringValue().equals("_self") && !policy.getPolicyStringValue().equals("_parent") && !policy.getPolicyStringValue().equals("_top")) {
-                    //throw new ValidationException("Invalid " + KewApiConstants.DOC_SEARCH_TARGET_POLICY + " value: " + policy.getPolicyStringValue());
-                //}
-                link.setTarget(policy.getPolicyStringValue().toLowerCase());
-            }
-            else {
-                link.setTarget("_self");
-            }
-        }
+        link.setTarget(this.targets.getDocumentTarget(documentType.getName()));
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/";
         if (superUserSearch) {
             if (documentType.getUseWorkflowSuperUserDocHandlerUrl().getPolicyValue().booleanValue()) {
@@ -571,33 +572,26 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         return link;
     }
 
-    protected HtmlData.AnchorHtmlData generateRouteLogUrl(String documentId) {
+    protected HtmlData.AnchorHtmlData generateRouteLogUrl(String documentId, DocumentType documentType) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
-        // KULRICE-6822 Route log link target parameter always causing pop-up
-        if (isRouteLogPopup()) {
-            link.setTarget("_blank");
-        }
-        else {
-            link.setTarget("_self");
-        }
+        link.setTarget(this.targets.getRouteLogTarget(documentType.getName()));
         link.setDisplayText("Route Log for document " + documentId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KEW_URL) + "/" +
                 "RouteLog.do?documentId=" + documentId;
+        // if the link is not set to open in new window, tell it to render back button
+        if (!"_blank".equals(link.getTarget())) {
+            url += "&showBackButton=true";
+        }
         link.setHref(url);
         return link;
     }
 
-    protected HtmlData.AnchorHtmlData generateInitiatorUrl(String principalId) {
+    protected HtmlData.AnchorHtmlData generateInitiatorUrl(String principalId, DocumentType documentType) {
         HtmlData.AnchorHtmlData link = new HtmlData.AnchorHtmlData();
         if (StringUtils.isBlank(principalId) ) {
             return link;
         }
-        if (isRouteLogPopup()) {
-            link.setTarget("_blank");
-        }
-        else {
-            link.setTarget("_self");
-        }
+        link.setTarget(this.targets.getRouteLogTarget(documentType.getName()));
         link.setDisplayText("Initiator Inquiry for User with ID:" + principalId);
         String url = ConfigContext.getCurrentContextConfig().getProperty(Config.KIM_URL) + "/" +
                 "identityManagementPersonInquiry.do?principalId=" + principalId;
@@ -609,11 +603,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      * Returns true if the document handler should open in a new window.
      */
     protected boolean isDocumentHandlerPopup() {
-      return BooleanUtils.toBooleanDefaultIfNull(
+        return BooleanUtils.toBooleanDefaultIfNull(
                 CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(
-                    KewApiConstants.KEW_NAMESPACE,
-                    KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
-                    KewApiConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND),
+                        KewApiConstants.KEW_NAMESPACE,
+                        KRADConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE,
+                        KewApiConstants.DOCUMENT_SEARCH_DOCUMENT_POPUP_IND),
                 DOCUMENT_HANDLER_POPUP_DEFAULT);
     }
 
@@ -711,6 +705,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         //call get rows
         List<Row> rows = getDocumentSearchCriteriaProcessor().getRows(docType,lookupRows, advancedSearch, superUserSearch);
+        addTargetSpecRows(rows);
+        addShowSuperUserButtonRow(rows);
 
         BusinessObjectEntry boe = (BusinessObjectEntry) KRADServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
@@ -720,6 +716,41 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
 
         super.getRows().addAll(FieldUtils.wrapFields(new FormFields(rows).getFieldList(), numCols));
 
+    }
+
+    /**
+     * Add a hidden field to hold the "targetSpec"
+     */
+    private void addTargetSpecRows(List<Row> rows) {
+        Field documentTargetSpecField = new Field();
+        documentTargetSpecField.setPropertyName(DOCUMENT_TARGET_SPEC_PARAM);
+        documentTargetSpecField.setPropertyValue(StringUtils.join(getParameters().get(DOCUMENT_TARGET_SPEC_PARAM), ","));
+        documentTargetSpecField.setFieldType(Field.HIDDEN);
+
+        Field routeLogTargetSpecField = new Field();
+        routeLogTargetSpecField.setPropertyName(ROUTE_LOG_TARGET_SPEC_PARAM);
+        routeLogTargetSpecField.setPropertyValue(StringUtils.join(getParameters().get(ROUTE_LOG_TARGET_SPEC_PARAM), ","));
+        routeLogTargetSpecField.setFieldType(Field.HIDDEN);
+
+        Row hiddenRow = new Row();
+        hiddenRow.setHidden(true);
+        hiddenRow.setFields(Arrays.asList(documentTargetSpecField, routeLogTargetSpecField));
+        rows.add(hiddenRow);
+    }
+
+    /**
+     * Add a hidden field to hold the "showSuperUserButton"
+     */
+    private void addShowSuperUserButtonRow(List<Row> rows) {
+        Field showSuperUserButtonField = new Field();
+        showSuperUserButtonField.setPropertyName(SHOW_SUPER_USER_BUTTON_PARAM);
+        showSuperUserButtonField.setPropertyValue(getParameters().get(SHOW_SUPER_USER_BUTTON_PARAM));
+        showSuperUserButtonField.setFieldType(Field.HIDDEN);
+
+        Row hiddenRow = new Row();
+        hiddenRow.setHidden(true);
+        hiddenRow.setFields(Collections.singletonList(showSuperUserButtonField));
+        rows.add(hiddenRow);
     }
 
     /**
@@ -751,9 +782,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         String type = advancedSearch ? "basic" : "detailed";
         suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleAdvancedSearch", KewApiConstants.WEBAPP_DIRECTORY, type, type));
 
-        // Add the superuser-search-toggling button.
-        suppMenuBar.append("&nbsp;");
-        suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleSuperUserSearch", KewApiConstants.WEBAPP_DIRECTORY, superUserSearch ? "nonsupu" : "superuser", superUserSearch ? "non-superuser" : "superuser"));
+        if (showSuperUserButton() || superUserSearch) {
+            // Add the superuser-search-toggling button.
+            suppMenuBar.append("&nbsp;");
+            suppMenuBar.append(MessageFormat.format(TOGGLE_BUTTON, "toggleSuperUserSearch", KewApiConstants.WEBAPP_DIRECTORY, superUserSearch ? "nonsupu" : "superuser", superUserSearch ? "non-superuser" : "superuser"));
+        }
 
         // Add the "clear saved searches" button.
         suppMenuBar.append("&nbsp;");
@@ -766,6 +799,19 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 + "});</script>");
 
         return suppMenuBar.toString();
+    }
+
+    private boolean showSuperUserButton() {
+        // because of the way a "refresh" works after a lookup, the super user button will not be in a parameter, so we
+        // have to check the current field value first
+        Field field = getFormFields().getField(SHOW_SUPER_USER_BUTTON_PARAM);
+        String propertyValue = field.getPropertyValue();
+        if (!StringUtils.isBlank(propertyValue)) {
+            return Boolean.parseBoolean(propertyValue);
+        }
+        // now fall back to checking the parameters
+        String[] showSuperUserButton = getParameters().get(SHOW_SUPER_USER_BUTTON_PARAM);
+        return showSuperUserButton == null || showSuperUserButton.length == 0 || !"false".equals(showSuperUserButton[0]);
     }
 
     @Override
@@ -836,10 +882,11 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
     protected void repopulateSearchTypeFlags() {
         boolean advancedSearch = isAdvancedSearch();
         boolean superUserSearch = isSuperUserSearch();
-        int fieldsRepopulated = 0;
+        boolean showSuperUserButton = showSuperUserButton();
         Map<String, String[]> values = new HashMap<String, String[]>();
         values.put(KRADConstants.ADVANCED_SEARCH_FIELD, new String[] { advancedSearch ? "YES" : "NO" });
         values.put(DocumentSearchCriteriaProcessorKEWAdapter.SUPERUSER_SEARCH_FIELD, new String[] { superUserSearch ? "YES" : "NO" });
+        values.put(SHOW_SUPER_USER_BUTTON_PARAM, new String[] { Boolean.toString(showSuperUserButton) });
         getFormFields().setFieldValues(values);
     }
 
@@ -871,8 +918,8 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
      * result row (in cases where columns are added by document search customization, such as searchable attributes).
      */
     protected void executeColumnCustomization(ResultRow resultRow, DocumentSearchResult searchResult,
-            DocumentSearchResultSetConfiguration resultSetConfiguration,
-            DocumentSearchCriteriaConfiguration criteriaConfiguration) {
+                                              DocumentSearchResultSetConfiguration resultSetConfiguration,
+                                              DocumentSearchCriteriaConfiguration criteriaConfiguration) {
         if (resultSetConfiguration == null) {
             resultSetConfiguration = DocumentSearchResultSetConfiguration.Builder.create().build();
         }
@@ -904,7 +951,7 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
                 // TODO - KULRICE-5738 - add check here to make sure the searchable attribute should be displayed in result set
                 // right now this is default always including all searchable attributes!
                 if (searchAttributeField.getAttributeLookupSettings() == null ||
-                    searchAttributeField.getAttributeLookupSettings().isInResults()) {
+                        searchAttributeField.getAttributeLookupSettings().isInResults()) {
                     additionalFieldNamesToInclude.add(searchAttributeField.getName());
                 }
             }
@@ -942,16 +989,12 @@ public class DocumentSearchCriteriaBoLookupableHelperService extends KualiLookup
         populateCustomColumns(customColumns, searchResult);
 
         // if there is an action custom column, always put that before any other field
-        Column columnToRemove = null;
         for (Column column : customColumns){
             if (column.getColumnTitle().equals(KRADConstants.ACTIONS_COLUMN_TITLE)){
                 newColumns.add(0, column);
-                columnToRemove = column;
+                customColumns.remove(column);
                 break;
             }
-        }
-        if (columnToRemove != null) {
-            customColumns.remove(columnToRemove);
         }
 
         // now merge the custom columns into the standard columns right before the route log (if the route log column wasn't removed!)

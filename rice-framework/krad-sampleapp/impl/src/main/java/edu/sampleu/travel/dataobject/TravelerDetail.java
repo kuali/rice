@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.mo.common.active.MutableInactivatable;
 import org.kuali.rice.kim.api.identity.Person;
 import org.kuali.rice.krad.bo.DataObjectBase;
+import org.kuali.rice.krad.data.jpa.PortableSequenceGenerator;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperties;
 import org.kuali.rice.krad.data.provider.annotation.InheritProperty;
 import org.kuali.rice.krad.data.provider.annotation.Label;
@@ -30,7 +31,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,7 +46,7 @@ public class TravelerDetail extends DataObjectBase implements MutableInactivatab
 
     @Id
     @GeneratedValue(generator = "TRVL_TRAVELER_DTL_ID_S")
-    @SequenceGenerator(name = "TRVL_TRAVELER_DTL_ID_S", sequenceName = "TRVL_TRAVELER_DTL_ID_S", allocationSize = 5)
+    @PortableSequenceGenerator(name = "TRVL_TRAVELER_DTL_ID_S")
     @Column(name = "id", length = 40, nullable = false)
 	protected String id;
     @Column(name = "doc_nbr", length=14)

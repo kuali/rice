@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2016 The Kuali Foundation
+    Copyright 2005-2017 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -336,7 +336,7 @@
     </property>
   </bean>
 
-  <bean id="encryptionService" class="org.kuali.rice.core.impl.encryption.DemonstrationGradeEncryptionServiceImpl">
+  <bean id="encryptionService" class="org.kuali.rice.core.impl.encryption.EncryptionServiceImpl">
     <property name="secretKey">
       <bean class="org.kuali.rice.core.impl.config.property.ConfigPropertyFactoryBean">
         <property name="name" value="encryption.key"/>
@@ -700,6 +700,10 @@
         p:legacyDataAdapter-ref="legacyDataAdapter" />
 
   <bean id="expressionEvaluatorFactory" class="org.kuali.rice.krad.uif.view.DefaultExpressionEvaluatorFactory" />
+
+  <bean id="csrfService" class="org.kuali.rice.krad.service.impl.CsrfServiceImpl"
+        p:configurationService-ref="kualiConfigurationService"
+        p:parameterService-ref="rice.krad.import.parameterService"/>
 
   <import resource="KRADSpringBeans-data.xml"/>
   <import resource="KRADSpringBeans-jpa.xml"/>

@@ -15,20 +15,16 @@
  */
 package org.kuali.rice.test.persistence
 
-import org.kuali.rice.kns.service.KNSServiceLocator
-import org.kuali.rice.krad.service.KRADServiceLocator
-import org.kuali.rice.krad.service.BusinessObjectService
-
-import javax.sql.DataSource
-
-import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
-import org.kuali.rice.krad.bo.PersistableBusinessObject
-
-import java.sql.Timestamp
-
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate
 import org.joda.time.DateTime
 import org.junit.Assert
+import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader
+import org.kuali.rice.kns.service.KNSServiceLocator
+import org.kuali.rice.krad.bo.PersistableBusinessObject
+import org.kuali.rice.krad.service.BusinessObjectService
+import org.springframework.jdbc.core.JdbcTemplate
+
+import javax.sql.DataSource
+import java.sql.Timestamp
 
 /**
  * Helps with BO persistence tests
@@ -90,7 +86,7 @@ class PersistenceTestHelper {
         if (!pk_val) {
             throw new RuntimeException("No primary key value found for field: " + pk)
         }
-        Map row = new SimpleJdbcTemplate(datasource).queryForMap("select * from " + table + " where " + pk + "=?", pk_val)
+        Map row = new JdbcTemplate(datasource).queryForMap("select * from " + table + " where " + pk + "=?", pk_val)
         row.keySet().removeAll(ignore)
         /*for (Map.Entry e: fields.entrySet()) {
             println(e.getKey().getClass());

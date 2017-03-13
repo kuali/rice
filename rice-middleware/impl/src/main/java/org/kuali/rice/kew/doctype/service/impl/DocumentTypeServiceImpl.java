@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -161,6 +161,10 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
             }
         }
         return documentType;
+    }
+
+    public String findParentNameByName(String documentTypeName) {
+        return getDocumentTypeDAO().findParentNameByName(documentTypeName);
     }
 
     public DocumentType save(DocumentType documentType) {

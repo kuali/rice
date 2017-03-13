@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,8 @@ public class TravelCompany extends DataObjectBase implements MutableInactivatabl
 
     private static final long serialVersionUID = 6853317217732768445L;
 
-    @Id @Column(name = "CO_ID", length = 40)
+    @Id
+    @Column(name = "CO_ID", length = 40)
     @GeneratedValue(generator = "TRVL_CO_ID_S")
     @PortableSequenceGenerator(name = "TRVL_CO_ID_S")
     @Label("Id")

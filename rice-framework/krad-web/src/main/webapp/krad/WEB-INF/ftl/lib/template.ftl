@@ -1,6 +1,6 @@
 <#--
 
-    Copyright 2005-2016 The Kuali Foundation
+    Copyright 2005-2017 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
     limitations under the License.
 
 -->
+<#assign inline_template = "org.kuali.rice.krad.uif.freemarker.TemplateDirective"?new()>
 <#macro template component=[] body='' componentUpdate=false includeSrc=false tmplParms...>
-	<#inline 'template' />
+	<@inline_template component=component body=body componentUpdate=componentUpdate includeSrc=includeSrc tmplParms=tmplParms/>
 </#macro>

@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package org.kuali.rice.core.web.format;
+
+import org.joda.time.DateTime;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -33,7 +35,10 @@ public class DateViewTimestampObjectFormatter extends DateFormatter {
 		if (value == null) {
             return null;
         }
-		return getDateTimeService().toDateTimeString((Timestamp) value);
-
+        if (value instanceof DateTime) {
+			value = new Timestamp(((DateTime)value).getMillis());
+        }
+        return getDateTimeService().toDateTimeString((Timestamp) value);
 	}
+
 }

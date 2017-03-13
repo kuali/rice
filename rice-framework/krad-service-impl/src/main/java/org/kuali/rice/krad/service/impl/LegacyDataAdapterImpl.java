@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -293,12 +293,12 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
 
     @Override
     public boolean hasLocalLookup(Class<?> dataObjectClass) {
-        return selectAdapter(dataObjectClass).hasLocalLookup(dataObjectClass);
+        return selectContextualAdapter().hasLocalLookup(dataObjectClass);
     }
 
     @Override
     public boolean hasLocalInquiry(Class<?> dataObjectClass) {
-        return selectAdapter(dataObjectClass).hasLocalInquiry(dataObjectClass);
+        return selectContextualAdapter().hasLocalInquiry(dataObjectClass);
     }
 
     @Override
@@ -384,6 +384,19 @@ public class LegacyDataAdapterImpl implements LegacyDataAdapter {
             return getKradLegacyDataAdapter();
         }
 
+    }
+
+    /**
+     * This is used to select the adapter when we only care whether the application is operating within the legacy
+     * context (KNS) or not. It does not factor a data object class into the calculation.
+     *
+     * @return true if the application is currently within a legacy context, false otherwise
+     */
+    protected LegacyDataAdapter selectContextualAdapter() {
+        if (LegacyUtils.isKnsEnabled() && LegacyUtils.isInLegacyContext()) {
+            return getKnsLegacyDataAdapter();
+        }
+        return getKradLegacyDataAdapter();
     }
 
     public LegacyDataAdapter getKradLegacyDataAdapter() {

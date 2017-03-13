@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.api.KimConstants;
 import org.kuali.rice.kim.framework.role.RoleTypeService;
+import org.kuali.rice.kim.impl.data.DataIntegrityService;
 import org.kuali.rice.kim.impl.group.GroupInternalService;
 import org.kuali.rice.kim.impl.responsibility.ResponsibilityInternalService;
 import org.kuali.rice.kim.impl.role.RoleDao;
@@ -39,6 +40,7 @@ public class KimImplServiceLocator {
     public static final String ROLE_INTERNAL_SERVICE = "kimRoleInternalService";
     public static final String LOCAL_CACHE_MANAGER = "kimLocalCacheManager";
     public static final String DEFAULT_ROLE_TYPE_SERVICE = "kimRoleTypeService";
+    public static final String DATA_INTEGRITY_SERVICE = "kimDataIntegrityService";
 
     public static final String KIM_ROLE_DAO = "kimRoleDao";
     public static final String KIM_DATA_SOURCE = "kimDataSource";
@@ -77,6 +79,10 @@ public class KimImplServiceLocator {
 
     public static RoleTypeService getDefaultRoleTypeService() {
         return (RoleTypeService) getService(DEFAULT_ROLE_TYPE_SERVICE);
+    }
+
+    public static DataIntegrityService getDataIntegrityService() {
+        return (DataIntegrityService) getService(DATA_INTEGRITY_SERVICE);
     }
 
     public static RoleDao getRoleDao() {

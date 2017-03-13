@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,6 @@ import org.kuali.rice.krad.uif.service.ViewService;
 import org.kuali.rice.krad.uif.util.SessionTransient;
 import org.kuali.rice.krad.uif.view.View;
 import org.kuali.rice.krad.uif.view.ViewModel;
-import org.kuali.rice.krad.util.CsrfValidator;
 import org.kuali.rice.krad.util.KRADUtils;
 import org.kuali.rice.krad.web.bind.RequestAccessible;
 import org.springframework.web.multipart.MultipartFile;
@@ -250,7 +249,7 @@ public class UifFormBase implements ViewModel {
             setRequestedFormKey(formKeyParam);
         }
 
-        String csrfToken = CsrfValidator.getSessionToken(request);
+        String csrfToken = KRADServiceLocatorWeb.getCsrfService().getSessionToken(request);
         setCsrfToken(csrfToken);
 
         this.request = request;

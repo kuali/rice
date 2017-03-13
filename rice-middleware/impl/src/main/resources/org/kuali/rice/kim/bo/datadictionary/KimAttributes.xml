@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2016 The Kuali Foundation
+    Copyright 2005-2017 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@
       <list>
         <ref bean="KimAttributes-methodToCall"/>
         <ref bean="KimAttributes-beanName"/>
+        <ref bean="KimAttributes-buttonName"/>
         <ref bean="KimAttributes-actionClass"/>
         <ref bean="KimAttributes-namespaceCode"/>
         <ref bean="KimAttributes-componentName"/>
@@ -169,6 +170,14 @@
   <bean id="KimAttributes-beanName" parent="KimAttributes-beanName-parentBean"/>
   <bean id="KimAttributes-beanName-parentBean" parent="AttributeDefinition" abstract="true" p:name="beanName"
         p:forceUppercase="false" p:label="Bean Name" p:shortLabel="Bean Name" p:maxLength="80" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="20"/>
+    </property>
+  </bean>
+
+  <bean id="KimAttributes-buttonName" parent="KimAttributes-buttonName-parentBean"/>
+  <bean id="KimAttributes-buttonName-parentBean" parent="AttributeDefinition" abstract="true" p:name="buttonName"
+        p:forceUppercase="false" p:label="Button Name" p:shortLabel="Button Name" p:maxLength="80" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>

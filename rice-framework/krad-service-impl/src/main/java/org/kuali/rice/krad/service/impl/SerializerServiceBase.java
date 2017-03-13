@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.kuali.rice.krad.service.impl;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.ConverterLookup;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.collections.CollectionConverter;
@@ -23,9 +24,14 @@ import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
+import com.thoughtworks.xstream.core.ReferenceByXPathMarshallingStrategy;
+import com.thoughtworks.xstream.core.TreeMarshaller;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.path.PathTracker;
 import com.thoughtworks.xstream.mapper.Mapper;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.reflect.FieldUtils;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.service.DocumentSerializerService;
 import org.kuali.rice.krad.service.LegacyDataAdapter;
@@ -41,8 +47,10 @@ import org.springframework.util.AutoPopulatingList;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Default implementation of the {@link DocumentSerializerService}.  If no &lt;workflowProperties&gt; have been defined in the
@@ -55,51 +63,68 @@ import java.util.List;
  */
 public abstract class SerializerServiceBase implements SerializerService  {
 
-	protected LegacyDataAdapter legacyDataAdapter;
+    protected LegacyDataAdapter legacyDataAdapter;
     protected XmlObjectSerializerService xmlObjectSerializerService;
 
     protected XStream xstream;
-    protected ThreadLocal<SerializationState> serializationStates;
+
+    // ThreadLocals to track state during serialization
+
     protected ThreadLocal<PropertySerializabilityEvaluator> evaluators;
+    protected ThreadLocal<Map<String, SerializationState>> pathToSerializationState;
+    protected ThreadLocal<PathTracker> currentPathTracker;
 
     public SerializerServiceBase() {
-        serializationStates = new ThreadLocal<SerializationState>();
-        evaluators = new ThreadLocal<PropertySerializabilityEvaluator>();
+        evaluators = new ThreadLocal<>();
+        currentPathTracker = new ThreadLocal<>();
+        pathToSerializationState = new ThreadLocal<>();
 
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
+        xstream.setMarshallingStrategy(new PathTrackerSmugglingMarshallingStrategy(currentPathTracker));
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
         try {
-        	Class<?> objListProxyClass = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
+            Class<?> objListProxyClass = Class.forName("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
             xstream.addDefaultImplementation(ArrayList.class, objListProxyClass);
             xstream.addDefaultImplementation(AutoPopulatingList.class, objListProxyClass);
         } catch ( Exception ex ) {
-        	// Do nothing - this will blow if the OJB class does not exist, which it won't in some installs
+            // Do nothing - this will blow if the OJB class does not exist, which it won't in some installs
         }
         xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
         xstream.registerConverter(new DateTimeConverter());
     }
 
     /**
-     * @see org.kuali.rice.krad.service.DocumentSerializerService#serializeDocumentToXmlForRouting(org.kuali.rice.krad.document.Document)
+     * Execute the specified {@link Serializer} with the appropriate setup and tear down, and return the serialized XML
+     * when done.
      */
-    public String serializeBusinessObjectToXml(Object businessObject) {
-        PropertySerializabilityEvaluator propertySerizabilityEvaluator =
-                getPropertySerizabilityEvaluator(businessObject);
-        evaluators.set(propertySerizabilityEvaluator);
-        SerializationState state = new SerializationState(); //createNewDocumentSerializationState(document);
-        serializationStates.set(state);
-
-        //Object xmlWrapper = null;//wrapDocumentWithMetadata(document);
-        String xml;
-        if (propertySerizabilityEvaluator instanceof AlwaysTruePropertySerializibilityEvaluator) {
-            xml = getXmlObjectSerializerService().toXml(businessObject);
-        } else {
-            xml = xstream.toXML(businessObject);
+    protected <T> String doSerialization(PropertySerializabilityEvaluator evaluator, T object, Serializer<T> serializer) {
+        try {
+            evaluators.set(evaluator);
+            pathToSerializationState.set(new HashMap<String, SerializationState>());
+            currentPathTracker.set(null);
+            return serializer.serialize(object);
+        } finally {
+            evaluators.set(null);
+            pathToSerializationState.set(null);
+            currentPathTracker.set(null);
         }
+    }
 
-        evaluators.set(null);
-        serializationStates.set(null);
-        return xml;
+    public String serializeBusinessObjectToXml(Object businessObject) {
+        final PropertySerializabilityEvaluator propertySerizabilityEvaluator =
+                getPropertySerizabilityEvaluator(businessObject);
+        return doSerialization(propertySerizabilityEvaluator, businessObject, new Serializer<Object>() {
+            @Override
+            public String serialize(Object object) {
+                String xml;
+                if (propertySerizabilityEvaluator instanceof AlwaysTruePropertySerializibilityEvaluator) {
+                    xml = getXmlObjectSerializerService().toXml(object);
+                } else {
+                    xml = xstream.toXML(object);
+                }
+                return xml;
+            }
+        });
     }
 
     /**
@@ -124,17 +149,80 @@ public abstract class SerializerServiceBase implements SerializerService  {
      */
     protected abstract PropertySerializabilityEvaluator getPropertySerizabilityEvaluator(Object dataObject);
 
+    protected PathTracker getCurrentPathTracker() {
+        PathTracker pathTracker = currentPathTracker.get();
+        if (pathTracker == null) {
+            throw new IllegalStateException("No XStream PathTracker is bound to the current thread");
+        }
+        return pathTracker;
+    }
+
+    /**
+     * Parse the given explicit XPath expression to find the path to the parent XML element.
+     *
+     * @param pathString
+     * @return the parent path, or empty string if the given path represents the root path of the xml document
+     * @throws IllegalArgumentException if the given path is not a valid path (i.e. doesn't contain a "/")
+     */
+    private String parseParentPath(String pathString) {
+        int indexOfLastSlash = pathString.lastIndexOf("/");
+        if (indexOfLastSlash == -1) {
+            throw new IllegalArgumentException("Expected a path");
+        }
+        return pathString.substring(0, indexOfLastSlash);
+    }
+
+    /**
+     * Returns the SerializationState for the given path string
+     */
+    private SerializationState determineSerializationState(String pathString) {
+        if (pathToSerializationState.get().isEmpty()) {
+            pathToSerializationState.get().put(pathString, new SerializationState());
+        }
+        return searchSerializationState(pathString, pathString);
+    }
+
+    /**
+     * Attempts to find the SerializationState for the given path string, searching the parent paths if none found
+     */
+    private SerializationState searchSerializationState(String pathString, String originalPath) {
+        if (StringUtils.isBlank(pathString)) {
+            throw new IllegalStateException("Failed to find existing SerializationState for path: " + originalPath);
+        }
+        SerializationState state = pathToSerializationState.get().get(pathString);
+        return state != null ? state : searchSerializationState(parseParentPath(pathString), originalPath);
+    }
+
+    /**
+     * Records the given serialization state if it is not already registered.
+     */
+    private void registerSerializationStateForField(SerializationState state, String fieldName, PropertyType propertyType, String parentPath) {
+        String path = parentPath + "/" + fieldName;
+        if (pathToSerializationState.get().get(path) == null) {
+            SerializationState newState = new SerializationState(state);
+            newState.addSerializedProperty(fieldName, propertyType);
+            pathToSerializationState.get().put(path, newState);
+        }
+    }
+
+    /**
+     * A simple functional interface that defines a method which executes serialization to an XML string
+     */
+    protected interface Serializer<T> {
+        String serialize(T object);
+    }
+
     public class ProxyConverter extends ReflectionConverter {
         public ProxyConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
             super(mapper, reflectionProvider);
         }
         @Override
-		public boolean canConvert(Class clazz) {
+        public boolean canConvert(Class clazz) {
             return clazz.getName().contains("CGLIB") || clazz.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
         }
 
         @Override
-		public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
+        public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
             if (obj.getClass().getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl")) {
                 List copiedList = new ArrayList();
                 List proxiedList = (List) obj;
@@ -149,7 +237,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
         }
 
         @Override
-		public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
+        public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
             return null;
         }
     }
@@ -157,8 +245,11 @@ public abstract class SerializerServiceBase implements SerializerService  {
     public class ProxyAndStateAwareJavaReflectionProvider extends PureJavaReflectionProvider {
         @Override
         public void visitSerializableFields(Object object, Visitor visitor) {
-            SerializationState state = serializationStates.get();
+            PathTracker pathTracker = getCurrentPathTracker();
             PropertySerializabilityEvaluator evaluator = evaluators.get();
+            String currentPath = pathTracker.getPath().toString();
+            SerializationState state = determineSerializationState(currentPath);
+
 
             for (Iterator iterator = fieldDictionary.serializableFieldsFor(object.getClass()); iterator.hasNext();) {
                 Field field = (Field) iterator.next();
@@ -189,9 +280,8 @@ public abstract class SerializerServiceBase implements SerializerService  {
                         value = legacyDataAdapter.resolveProxy(value);
                     }
                     PropertyType propertyType = evaluator.determinePropertyType(value);
-                    state.addSerializedProperty(field.getName(), propertyType);
+                    registerSerializationStateForField(state, field.getName(), propertyType, currentPath);
                     visitor.visit(field.getName(), field.getType(), field.getDeclaringClass(), value);
-                    state.removeSerializedProperty();
                 }
             }
         }
@@ -202,13 +292,50 @@ public abstract class SerializerServiceBase implements SerializerService  {
 
     public class AutoPopulatingListConverter extends CollectionConverter {
 
-    	public AutoPopulatingListConverter(Mapper mapper){
-    		super(mapper);
-    	}
+        public AutoPopulatingListConverter(Mapper mapper){
+            super(mapper);
+        }
 
         @Override
-    	public boolean canConvert(Class clazz) {
-    		return clazz.equals(AutoPopulatingList.class);
+        public boolean canConvert(Class clazz) {
+            return clazz.equals(AutoPopulatingList.class);
+        }
+
+    }
+
+    private static class PathTrackerSmugglingMarshallingStrategy extends ReferenceByXPathMarshallingStrategy {
+
+        private final ThreadLocal<PathTracker> pathTrackerThreadLocal;
+
+        public PathTrackerSmugglingMarshallingStrategy(ThreadLocal<PathTracker> pathTrackerThreadLocal) {
+            super(ReferenceByXPathMarshallingStrategy.RELATIVE);
+            this.pathTrackerThreadLocal = pathTrackerThreadLocal;
+        }
+
+        @Override
+        protected TreeMarshaller createMarshallingContext(HierarchicalStreamWriter writer, ConverterLookup converterLookup, Mapper mapper) {
+            TreeMarshaller treeMarshaller = super.createMarshallingContext(writer, converterLookup, mapper);
+            smugglePathTracker(treeMarshaller);
+            return treeMarshaller;
+        }
+
+        /**
+         * Shhh...don't tell anybody, but we are going to smuggle the PathTracker out of here so we can
+         * reference it during marshalling in our custom reflection provider.
+         *
+         * This is really an XStream internal API so has the potential to break us horribly if they change the
+         * implementation in the future. We are betting on our unit tests catching that if it happens.
+         */
+        private void smugglePathTracker(TreeMarshaller treeMarshaller) {
+            try {
+                PathTracker pathTracker = (PathTracker)FieldUtils.readField(treeMarshaller, "pathTracker", true);
+                if (pathTracker == null) {
+                    throw new IllegalStateException("The pathTracker on xstream marshaller is null");
+                }
+                this.pathTrackerThreadLocal.set(pathTracker);
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException(e);
+            }
         }
 
     }
@@ -222,13 +349,9 @@ public abstract class SerializerServiceBase implements SerializerService  {
         this.xmlObjectSerializerService = xmlObjectSerializerService;
     }
 
-    protected SerializationState createNewDocumentSerializationState(Document document) {
-        return new SerializationState();
-    }
-
     @Required
-	public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
-		this.legacyDataAdapter = legacyDataAdapter;
-	}
+    public void setLegacyDataAdapter(LegacyDataAdapter legacyDataAdapter) {
+        this.legacyDataAdapter = legacyDataAdapter;
+    }
 }
 

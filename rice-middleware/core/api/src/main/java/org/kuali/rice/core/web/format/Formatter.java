@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ package org.kuali.rice.core.web.format;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.kuali.rice.core.api.util.type.AbstractKualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.core.api.util.type.KualiInteger;
@@ -37,8 +38,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 
 
@@ -64,7 +65,7 @@ import java.util.Map.Entry;
  * internal registry to determine which <code>Formatter</code> class to instantiate, and returns a new instance. The StrutsLive
  * framework includes a number of <code>Formatter</code> classes that are registered statically; additional
  * <code>Formatter classes can be registered at compile
- * time or at run time. 
+ * time or at run time.
  * <p>
  * Subclasses of <code>Formatter</code> typically override the callback methods
  * {@link #convertToObject(String)} and {@link #formatObject(Object)}, which
@@ -78,34 +79,35 @@ import java.util.Map.Entry;
 @Deprecated
 public class Formatter implements Serializable {
 
-	// begin Kuali Foundation modification
-	// removed serialVersionUID and logger members
-	// end Kuali Foundation modification
-	
+    // begin Kuali Foundation modification
+    // removed serialVersionUID and logger members
+    // end Kuali Foundation modification
+
     static final String CREATE_MSG = "Couldn't create an instance of class ";
     // begin Kuali Foundation modification
     // registry changed from AppLocal instance to a Map
     private static Map registry = Collections.synchronizedMap(new HashMap());
     // end Kuali Foundation modification
-    
+
     protected Map settings;
-    
+
     // begin Kuali Foundation modification
     // removed keypath and rootObject variables
     // end Kuali Foundation modification
-    
+
     protected Class propertyType;
 
-    static { 
-    	// begin Kuali Foundation modification
+    static {
+        // begin Kuali Foundation modification
         registerFormatter(String.class, Formatter.class);
         registerFormatter(String[].class, Formatter.class);
         registerFormatter(AbstractKualiDecimal.class, BigDecimalFormatter.class);
-        registerFormatter(KualiDecimal.class, CurrencyFormatter.class); 
+        registerFormatter(KualiDecimal.class, CurrencyFormatter.class);
         registerFormatter(KualiInteger.class, KualiIntegerCurrencyFormatter.class);
         registerFormatter(KualiPercent.class, PercentageFormatter.class);
         registerFormatter(BigDecimal.class, BigDecimalFormatter.class);
         registerFormatter(Date.class, DateFormatter.class);
+        registerFormatter(java.util.Date.class, DateFormatter.class);
         registerFormatter(Integer.class, IntegerFormatter.class);
         registerFormatter(int.class, IntegerFormatter.class);
         registerFormatter(int[].class, IntegerFormatter.class);
@@ -116,6 +118,7 @@ public class Formatter implements Serializable {
         registerFormatter(Timestamp.class, DateViewTimestampObjectFormatter.class);
         registerFormatter(boolean.class, LittleBooleanFormatter.class);
         registerFormatter(Collection.class, ArrayFormatter.class);
+        registerFormatter(DateTime.class, DateTimeFormatter.class);
         // end Kuali Foundation modification
     }
 
@@ -127,14 +130,14 @@ public class Formatter implements Serializable {
     // param aType was valueType, comment changes, major code changes
     /**
      * Returns an instance of the Formatter class to be used to format the provided value type.
-     * 
+     *
      * @param type the class of the value to be formatted
      * @param settings parameters used by subclasses to customize behavior
      * @return an instance of Formatter or one of its subclasses
      */
     public static Formatter getFormatter(Class aType, Map settings) {
-    	// original code: return createFormatter(formatterForType(valueType), valueType, settings);
-			
+        // original code: return createFormatter(formatterForType(valueType), valueType, settings);
+
         Class type = formatterForType(aType);
         Formatter formatter = null;
         try {
@@ -160,7 +163,7 @@ public class Formatter implements Serializable {
     /**
      * Binds the provided value type to a Formatter type. Note that a single Formatter class can be associated with more than one
      * type.
-     * 
+     *
      * @param type a value type
      * @param formatterType a Formatter type
      */
@@ -171,7 +174,7 @@ public class Formatter implements Serializable {
     /**
      * Returns <code>true</code> if the provided class is an array type, implements either the {@link List}or {@link Set}
      * interfaces, or is one of the Formatter classes currently registered.
-     * 
+     *
      * @see registerFormatter(Class, Class)
      */
     public static boolean isSupportedType(Class type) {
@@ -190,7 +193,7 @@ public class Formatter implements Serializable {
     /**
      * Return the Formatter associated with the given type, by consulting an internal registry. Additional associations can be made
      * by calling {@link registerFormatter(Class, Class)}.
-     * 
+     *
      * @return a new Formatter instance
      */
     public static Class formatterForType(Class type) {
@@ -202,9 +205,9 @@ public class Formatter implements Serializable {
         return formatterType == null ? Formatter.class : formatterType;
     }
 
-	// Kuali Foundation modification: comment removed
+    // Kuali Foundation modification: comment removed
     public static Class findFormatter(Class type) {
-    	// begin Kuali Foundation modification
+        // begin Kuali Foundation modification
         if (type == null)
             return null;
 
@@ -229,7 +232,7 @@ public class Formatter implements Serializable {
         // end Kuali Foundation modification
     }
 
-	// begin Kuali Foundation modification
+    // begin Kuali Foundation modification
     public String getImplementationClass() {
         return this.getClass().getName();
     }
@@ -251,10 +254,10 @@ public class Formatter implements Serializable {
         this.settings = settings;
     }
 
-	// begin Kuali Foundation modification
-	// removed getKeypath, setKeyPath, getRootObject, setRootObject, hasSettingForKey, settingForKey, typeForKey, getErrorKey
-	// end Kuali Foundation modification
-	
+    // begin Kuali Foundation modification
+    // removed getKeypath, setKeyPath, getRootObject, setRootObject, hasSettingForKey, settingForKey, typeForKey, getErrorKey
+    // end Kuali Foundation modification
+
     /**
      * begin Kuali Foundation modification
      * Returns a String representation of the given value. May be overridden by subclasses to provide customized behavior for
@@ -267,7 +270,7 @@ public class Formatter implements Serializable {
      * <code>format</code>, which serves as an extension point for subclasses; the default implementation simply returns its
      * argument. Overriding <code>format</code> allows subclasses to take advantage of all of the array, primitive type, and
      * Collection handling functionality provided by the base class.
-     * 
+     *
      * @param value the object to be formatted
      * @return a formatted string representation of the given object
      * @see #formatObject(Object)
@@ -277,8 +280,8 @@ public class Formatter implements Serializable {
         if (isNullValue(value))
             return formatNull();
 
-		// begin Kuali Foundation modification
-		// removed code
+        // begin Kuali Foundation modification
+        // removed code
 		/*
 	    // TODO: add registry for non-navigable classes so there's a way to
         // disable formatting selectively for given types contained in arrays
@@ -289,8 +292,8 @@ public class Formatter implements Serializable {
         if (propertyType != null && propertyType.isArray())
             return formatArray(value);
 		*/
-		// end Kuali Foundation modification
-		
+        // end Kuali Foundation modification
+
         return formatObject(value);
     }
 
@@ -315,14 +318,14 @@ public class Formatter implements Serializable {
         // if value is an array, assume it's a wrapper for a primitive type.
         Class<?> type = value.getClass();
         if (type.isArray())
-        	// begin Kuali Foundation modification
+            // begin Kuali Foundation modification
             return ArrayUtils.toString(value, type.getComponentType());
-            // end begin Kuali Foundation modification
+        // end begin Kuali Foundation modification
 
         if (!(isSupportedType(value.getClass())))
             // begin Kuali Foundation modification
             formatBean(value);
-            // end Kuali Foundation modification
+        // end Kuali Foundation modification
 
         return format(value);
     }
@@ -334,7 +337,7 @@ public class Formatter implements Serializable {
     protected Object formatBean(Object bean) {
         Map properties = null;
         try {
-        	// begin Kuali Foundation modification
+            // begin Kuali Foundation modification
             properties = PropertyUtils.describe(bean);
             // end Kuali Foundation modification
         }
@@ -363,7 +366,7 @@ public class Formatter implements Serializable {
     }
 
     public Object formatArray(Object value) {
-    	// begin Kuali Foundation modification
+        // begin Kuali Foundation modification
         Class elementType = value.getClass().getComponentType();
         if (!isSupportedType(elementType))
             return value;
@@ -407,10 +410,10 @@ public class Formatter implements Serializable {
      * <p>
      * If the provided object is an array, uses a Formatter corresponding to the array's component type to convert each of its
      * elements, and returns a new array containing the converted values.
-     * 
+     *
      * May be overidden by subclasses to customize conversion, though ordinarily {@link #convertToObject(String)}is a better choice
      * since it takes advantage of <code>convertFromPresentationFormat</code>'s built-in behavior.
-     * 
+     *
      * @param value the string value to be converted
      * @return the object value corresponding to the provided string value
      * @see convertToObject(String)
@@ -446,7 +449,7 @@ public class Formatter implements Serializable {
      * string.
      */
     protected Object convertToObject(String string) {
-        return string == null ? null : string.replace( "\r\n", "\n" ).trim();        
+        return string == null ? null : string.replace( "\r\n", "\n" ).trim();
     }
 
     /**
@@ -480,7 +483,7 @@ public class Formatter implements Serializable {
     /**
      * Converts an array of strings to an array of objects by calling {@link #convertToObject(String)}on each element of the
      * provided array in turn, using instances of a Formatter class that corresponds to this Formatter's property type.
-     * 
+     *
      * @see #propertyType
      */
     protected Object convertToArray(String[] strings) {
@@ -512,7 +515,7 @@ public class Formatter implements Serializable {
             String wrapper[] = (String[]) target;
             return wrapper.length > 0 ? wrapper[0] : null;
         }
-		// begin Kuali Foundation modification
+        // begin Kuali Foundation modification
         // if target object is null, return a null String
         else if (target == null) {
             return new String();
@@ -530,7 +533,7 @@ public class Formatter implements Serializable {
         if (obj == null)
             return true;
 
-		// begin Kuali Foundation modification
+        // begin Kuali Foundation modification
         if ((obj instanceof String) && StringUtils.isEmpty((String) obj))
             return true;
         // end Kuali Foundation modification
@@ -555,7 +558,7 @@ public class Formatter implements Serializable {
             if (((Object[]) obj)[0] == null)
                 return true;
             if (String.class.isAssignableFrom(compType)) {
-            	// begin Kuali Foundation modification
+                // begin Kuali Foundation modification
                 return StringUtils.isBlank(((String[]) obj)[0]);
                 // end Kuali Foundation modification
             }

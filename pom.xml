@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright 2005-2016 The Kuali Foundation
+    Copyright 2005-2017 The Kuali Foundation
 
     Licensed under the Educational Community License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>4.3.9</version>
+    <version>5.0.6</version>
   </parent>
   <groupId>org.kuali.rice</groupId>
   <artifactId>rice</artifactId>
@@ -41,10 +41,6 @@
   </description>
   <url>http://${kuali.site.hostname}/rice/${project.version}</url>
 
-  <ciManagement>
-    <url>http://ci.rice.kuali.org</url>
-  </ciManagement>
-
   <properties>
     <project.java.version>1.7</project.java.version>
     <project.compile.source>1.7</project.compile.source>
@@ -59,13 +55,10 @@
     <!-- TODO: remove with update to kuali-common 4.4.2 -->
     <kuali-core.version>1.0.19</kuali-core.version>
     <appserver.port>8080</appserver.port>
-    <gmaven.stubs.phase>generate-resources</gmaven.stubs.phase>
-    <gmaven.compile.phase>compile</gmaven.compile.phase>
-    <gmaven.test.compile.phase>test-compile</gmaven.test.compile.phase>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
     <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
     <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
-    <mysql.jdbc.version>5.1.24</mysql.jdbc.version>
+    <mysql.jdbc.version>5.1.41</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
 
     <jmeter.phase>verify</jmeter.phase>
@@ -110,11 +103,12 @@
     <asm.group.string>org.ow2.asm</asm.group.string>
     <asm.version>5.0.3</asm.version>
     <aspectj.version>1.8.1</aspectj.version>
-    <bcprov.version>1.54</bcprov.version>
+    <bcprov.version>1.55</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
+    <core-auth-servlet-filter.version>1.4</core-auth-servlet-filter.version>
     <closure.version>v20140730</closure.version>
     <cglib.version>3.1</cglib.version>
-    <commons-beanutils.version>1.8.3-kuali-4</commons-beanutils.version>
+    <commons-beanutils.version>1.9.3</commons-beanutils.version>
     <commons-codec.version>1.9</commons-codec.version>
     <commons-collections.version>3.2.2</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
@@ -133,27 +127,27 @@
     <ehcache.version>2.6.10</ehcache.version>
     <esapi.version>2.1.0.1</esapi.version>
     <filemonitor.version>1.0-kuali</filemonitor.version>
-    <freemarker.version>2.3.20-patch2</freemarker.version>
+    <freemarker.version>2.3.25-incubating</freemarker.version>
     <lesscss.version>1.3.3</lesscss.version>
     <glassfish-javax-json.version>1.0.4</glassfish-javax-json.version>
-    <groovy.version>2.3.9</groovy.version>
+    <groovy.version>2.4.7</groovy.version>
     <guava.version>17.0</guava.version>
-    <httpclient.version>4.3.5</httpclient.version>
+    <httpclient.version>4.5.2</httpclient.version>
 
     <!-- Can't get rid of this dependency until the JAXB RI in our current JDK is >= this version.
          As of JDK 7, it's 2.2.4 -->
     <jaxb-impl.version>2.2.11</jaxb-impl.version>
 
-    <jackson.version>2.5.0</jackson.version>
+    <jackson.version>2.8.7</jackson.version>
     <javassist.version>3.18.2-GA</javassist.version>
     <jaxen.version>1.1.6</jaxen.version>
     <jdom.version>1.1.3</jdom.version>
     <jetty.version>9.3.6.v20151106</jetty.version>
     <joda-time.version>2.9.1</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
-    <jackson-datatype-joda.version>2.4.0</jackson-datatype-joda.version>
     <jotm.version>2.1.10-kuali-1</jotm.version>
     <jpa.version>2.1.0</jpa.version>
+    <jsch.version>0.1.54</jsch.version>
     <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsr305.version>2.0.3</jsr305.version>
@@ -166,13 +160,15 @@
     <jstl.version>1.2</jstl.version>
 
     <jta.version>1.1</jta.version>
-    <junit.version>4.11</junit.version>
+    <junit.version>4.12</junit.version>
     <kuali-mvn.version>1.0.2</kuali-mvn.version>
     <log4j.version>1.2.17</log4j.version>
-    <mail.version>1.5.2</mail.version>
+    <mail.version>1.5.6</mail.version>
     <metrics.version>3.1.2</metrics.version>
-    <mockito.version>1.9.5</mockito.version>
+    <mockito.version>1.10.19</mockito.version>
+    <netty.version>3.10.6.Final</netty.version>
     <plexus-utils.version>3.0.17</plexus-utils.version>
+    <powermock.version>1.6.5</powermock.version>
     <!-- According to KULRICE-11635 (see comment) we'll need to upgrade this to >= 2.1.4 to get to Spring 4.1-->
     <!-- Quartz 2.0.x is an impacting api and database-level change -->
     <quartz.version>2.2.1</quartz.version>
@@ -181,16 +177,16 @@
     <sauce.junit.version>1.0.19</sauce.junit.version>
     <sauce.rest.version>1.0.11</sauce.rest.version>
     <saucelabs.connect.version>3.1.32</saucelabs.connect.version>
-    <selenium-java.version>2.41.0</selenium-java.version>
+    <selenium-java.version>2.53.1</selenium-java.version>
     <serializer.version>2.7.2</serializer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.7</slf4j.version>
-    <soa.model.core.version>1.2.2</soa.model.core.version>
+    <soa.model.core.version>1.5.4</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-    <spring.version>4.1.9.RELEASE</spring.version>
+    <spring.version>4.3.7.RELEASE</spring.version>
     <spring.cloud.version>1.0.4.RELEASE</spring.cloud.version>
     <spring.security.version>3.2.9.RELEASE</spring.security.version>
-    <struts.version>1.3.10</struts.version>
+    <struts.version>1.3.11-kuali-1</struts.version>
     <subethasmtp.version>3.1.7</subethasmtp.version>
     <validation.version>1.1.0.Final</validation.version>
     <velocity.version>1.7</velocity.version>
@@ -201,14 +197,14 @@
     <xercesImpl.version>2.11.0</xercesImpl.version>
     <!-- need v. 1.4.01 of xml-apis with xercesImpl 2.11.0 -->
     <xml-apis.version>1.4.01</xml-apis.version>
-    <xmlunit.version>1.3</xmlunit.version>
-    <xstream.version>1.2.2</xstream.version>
+    <xmlunit.version>2.3.0</xmlunit.version>
+    <xstream.version>1.4.9</xstream.version>
     <yuicompressor.version>2.4.7</yuicompressor.version>
 
     <!-- Plugin versions: -->
 
     <plugin.build-helper.version>1.8</plugin.build-helper.version>
-    <plugin.gmaven.version>1.5</plugin.gmaven.version>
+    <plugin.gmavenplus.version>1.5</plugin.gmavenplus.version>
     <plugin.http.version>1.0.5</plugin.http.version>
     <plugin.jetty.version>9.3.6.v20151106</plugin.jetty.version>
     <plugin.maven-eclipse.version>2.8</plugin.maven-eclipse.version>
@@ -217,6 +213,7 @@
     <plugin.selenium.version>2.3</plugin.selenium.version>
     <!-- Pin the tomcat7 plugin to an explicit version -->
     <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
+    <plugin.dependency-check.version>1.4.5</plugin.dependency-check.version>
 
     <!-- Saucelabs settings (aside from version, which is above): -->
 
@@ -247,6 +244,12 @@
 
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
+
+    <!-- Override the version of the nexus-staging-maven-plugin so that it works on java 8 -->
+    <plugin.nexus.version>1.6.7</plugin.nexus.version>
+
+    <!-- Override the maven-site-plugin version to 3.4 so that it works on java 8 -->
+    <plugin.site.version>3.5.1</plugin.site.version>
 
     <!-- Connect documentation generation to site generation -->
     <rice.docbook.phase>pre-site</rice.docbook.phase>
@@ -280,7 +283,40 @@
       -javaagent:${spring-instrument.jar}
     </spring-instrument-javaagent>
 
+    <!-- Override properties from the parent pom for deploying to Maven repositories -->
+    <!-- These are the Kuali repository settings for an official release -->
+    <kuali.repo.release.id>kualico.nexus.core.releases</kuali.repo.release.id>
+    <kuali.repo.release.name>KualiCo Core Release Repository</kuali.repo.release.name>
+    <kuali.repo.release.url>https://nexus.kuali.co/nexus/content/repositories/core-releases-public/</kuali.repo.release.url>
+    <!-- These are the Kuali repository settings for snapshot builds -->
+    <kuali.repo.snapshot.id>kualico.nexus.core.releases</kuali.repo.snapshot.id>
+    <kuali.repo.snapshot.name>KualiCo Core Snapshot Repository</kuali.repo.snapshot.name>
+    <kuali.repo.snapshot.url>https://nexus.kuali.co/nexus/content/repositories/core-snapshots-public/</kuali.repo.snapshot.url>
+
+    <!-- set the kuali site url for publishing the documentation -->
+    <kuali.site.publish.url>s3://site.origin.kuali.org/rice/${project.version}</kuali.site.publish.url>
+
   </properties>
+
+  <!-- duplicating distributionManagement from parent pom because site plugin doesn't properly allow overriding for the site url -->
+  <distributionManagement>
+    <downloadUrl>${kuali.site.download.url}</downloadUrl>
+    <site>
+      <id>${kuali.site.server.id}</id>
+      <name>Kuali Maven Site</name>
+      <url>${kuali.site.publish.url}</url>
+    </site>
+    <repository>
+      <id>${kuali.repo.release.id}</id>
+      <name>${kuali.repo.release.name}</name>
+      <url>${kuali.repo.release.url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>${kuali.repo.snapshot.id}</id>
+      <name>${kuali.repo.snapshot.name}</name>
+      <url>${kuali.repo.snapshot.url}</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <profiles>
     <!-- this profile ensures that when building in eclipse with m2e that the groovy project nature and source folders are added -->
@@ -363,9 +399,6 @@
     <profile>
       <id>site</id>
       <properties>
-        <gmaven.stubs.phase>none</gmaven.stubs.phase>
-        <gmaven.compile.phase>none</gmaven.compile.phase>
-        <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
         <skipTests>true</skipTests>
         <enforcer.phase>none</enforcer.phase>
         <failsafe.phase>none</failsafe.phase>
@@ -504,9 +537,6 @@
       <id>license</id>
       <properties>
         <kuali.testjar.phase>none</kuali.testjar.phase>
-        <gmaven.stubs.phase>none</gmaven.stubs.phase>
-        <gmaven.compile.phase>none</gmaven.compile.phase>
-        <gmaven.test.compile.phase>none</gmaven.test.compile.phase>
         <maven.test.skip>true</maven.test.skip>
         <enforcer.phase>none</enforcer.phase>
         <failsafe.phase>none</failsafe.phase>
@@ -977,15 +1007,6 @@
                       <exclude>geronimo-spec:geronimo-spec-saaj</exclude>
                       <exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.saaj-api-1.3</exclude>
 
-                      <!--
-                        excluding standard release - we are using a patches kuali version
-                        because of
-                        http://bugs.sun.com/view_bug.do?bug_id=6528714
-                        https://issues.apache.org/jira/browse/BEANUTILS-340
-                      -->
-                      <exclude>commons-beanutils:commons-beanutils</exclude>
-                      <exclude>org.apache.commons:commons-beanutils</exclude>
-
                       <!-- exclude eh cache in general - only allow at a specific scope -->
                       <exclude>net.sf.ehcache</exclude>
 
@@ -1034,53 +1055,20 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.codehaus.gmaven</groupId>
-          <artifactId>gmaven-plugin</artifactId>
-          <version>${plugin.gmaven.version}</version>
-          <configuration>
-            <providerSelection>1.8</providerSelection>
-          </configuration>
-          <dependencies>
-            <dependency>
-              <groupId>org.codehaus.gmaven.runtime</groupId>
-              <artifactId>gmaven-runtime-1.8</artifactId>
-              <version>${plugin.gmaven.version}</version>
-              <exclusions>
-                <exclusion>
-                  <groupId>org.codehaus.groovy</groupId>
-                  <artifactId>groovy-all</artifactId>
-                </exclusion>
-              </exclusions>
-            </dependency>
-            <dependency>
-              <groupId>org.codehaus.groovy</groupId>
-              <artifactId>groovy-all</artifactId>
-              <version>${groovy.version}</version>
-            </dependency>
-          </dependencies>
+          <groupId>org.codehaus.gmavenplus</groupId>
+          <artifactId>gmavenplus-plugin</artifactId>
+          <version>${plugin.gmavenplus.version}</version>
           <executions>
             <execution>
-              <id>gmaven-generate-stubs</id>
-              <phase>${gmaven.stubs.phase}</phase>
               <goals>
+                <goal>addSources</goal>
+                <goal>addTestSources</goal>
                 <goal>generateStubs</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>gmaven-compile-stubs</id>
-              <phase>${gmaven.compile.phase}</phase>
-              <goals>
                 <goal>compile</goal>
-              </goals>
-            </execution>
-            <!-- test stubs aren't needed now since we are not creating
-              groovy test code for reference in java test code -->
-            <!--<goal>generateTestStubs</goal> -->
-            <execution>
-              <id>gmaven-test-compile-stubs</id>
-              <phase>${gmaven.test.compile.phase}</phase>
-              <goals>
+                <goal>testGenerateStubs</goal>
                 <goal>testCompile</goal>
+                <goal>removeStubs</goal>
+                <goal>removeTestStubs</goal>
               </goals>
             </execution>
           </executions>
@@ -1287,9 +1275,9 @@
               <pluginExecutions>
                 <pluginExecution>
                   <pluginExecutionFilter>
-                    <groupId>org.codehaus.gmaven</groupId>
-                    <artifactId>gmaven-plugin</artifactId>
-                    <versionRange>[${plugin.gmaven.version},)</versionRange>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <versionRange>[${plugin.gmavenplus.version},)</versionRange>
                     <goals>
                       <goal>generateStubs</goal>
                       <goal>compile</goal>
@@ -1341,7 +1329,7 @@
               </goals>
               <phase>process-classes</phase>
               <configuration>
-                <logLevel>FINER</logLevel>
+                <logLevel>FINE</logLevel>
                 <persistenceXMLLocation>META-INF/persistence-weaving.xml</persistenceXMLLocation>
               </configuration>
             </execution>
@@ -1354,23 +1342,32 @@
             </dependency>
           </dependencies>
         </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <additionalparam>-Xdoclint:none</additionalparam>
+            <additionalDependencies>
+              <additionalDependency>
+                <groupId>com.ibm.websphere</groupId>
+                <artifactId>com.springsource.com.ibm.websphere.uow</artifactId>
+                <version>6.0.2.17</version>
+              </additionalDependency>
+            </additionalDependencies>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.owasp</groupId>
+          <artifactId>dependency-check-maven</artifactId>
+          <version>${plugin.dependency-check.version}</version>
+          <configuration>
+            <suppressionFile>vulnerability-suppressions.xml</suppressionFile>
+            <failBuildOnCVSS>7</failBuildOnCVSS>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
 
     <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <additionalparam>-Xdoclint:none</additionalparam>
-          <additionalDependencies>
-            <additionalDependency>
-              <groupId>com.ibm.websphere</groupId>
-              <artifactId>com.springsource.com.ibm.websphere.uow</artifactId>
-              <version>6.0.2.17</version>
-            </additionalDependency>
-          </additionalDependencies>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
@@ -1462,8 +1459,8 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.gmaven</groupId>
-        <artifactId>gmaven-plugin</artifactId>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
       </plugin>
 
       <plugin>
@@ -1559,6 +1556,11 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
       </plugin>
+
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+      </plugin>
     </plugins>
 
   </build>
@@ -1578,6 +1580,17 @@
       <id>kuali.nexus</id>
       <name>Nexus Repository Manager</name>
       <url>http://nexus.kuali.org/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>kualico.nexus</id>
+      <name>KualiCo Nexus Repository Manager</name>
+      <url>https://nexus.kuali.co/nexus/content/groups/public</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -1905,9 +1918,9 @@
       </dependency>
 
       <dependency>
-        <groupId>com.fasterxml.jackson.datatype</groupId>
-        <artifactId>jackson-datatype-joda</artifactId>
-        <version>${jackson-datatype-joda.version}</version>
+        <groupId>com.jcraft</groupId>
+        <artifactId>jsch</artifactId>
+        <version>${jsch.version}</version>
       </dependency>
 
       <dependency>
@@ -1934,6 +1947,20 @@
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-module-junit4</artifactId>
+        <version>${powermock.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-api-mockito</artifactId>
+        <version>${powermock.version}</version>
         <scope>test</scope>
       </dependency>
 
@@ -2196,6 +2223,12 @@
       </dependency>
 
       <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-joda</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>org.directwebremoting</groupId>
         <artifactId>dwr</artifactId>
         <version>${dwr.version}</version>
@@ -2254,7 +2287,7 @@
       </dependency>
 
       <dependency>
-        <groupId>org.kuali.commons</groupId>
+        <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
         <version>${commons-beanutils.version}</version>
         <exclusions>
@@ -2511,8 +2544,15 @@
       </dependency>
 
       <dependency>
-        <groupId>xmlunit</groupId>
-        <artifactId>xmlunit</artifactId>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-core</artifactId>
+        <version>${xmlunit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-legacy</artifactId>
         <version>${xmlunit.version}</version>
         <scope>test</scope>
       </dependency>
@@ -2611,7 +2651,11 @@
           </exclusion>
         </exclusions>
       </dependency>
-
+      <dependency>
+        <groupId>co.kuali</groupId>
+        <artifactId>core-filter</artifactId>
+        <version>${core-auth-servlet-filter.version}</version>
+      </dependency>
       <!-- Jetty dependencies -->
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
@@ -2700,13 +2744,24 @@
           </exclusion>
         </exclusions>
       </dependency>
+      <dependency>
+        <groupId>org.kuali.common</groupId>
+        <artifactId>kuali-util</artifactId>
+        <version>${kuali-util.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.kuali.commons</groupId>
+            <artifactId>commons-beanutils</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty</artifactId>
+        <version>${netty.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
-
-  <issueManagement>
-    <system>JIRA</system>
-    <url>http://jira.kuali.org/</url>
-  </issueManagement>
 
   <scm>
     <developerConnection>scm:git:git@github.com:kuali/rice.git</developerConnection>

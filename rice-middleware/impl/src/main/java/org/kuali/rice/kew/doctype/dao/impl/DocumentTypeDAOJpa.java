@@ -1,5 +1,5 @@
 /**
- * Copyright 2005-2016 The Kuali Foundation
+ * Copyright 2005-2017 The Kuali Foundation
  *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -257,6 +257,16 @@ public class DocumentTypeDAOJpa implements DocumentTypeDAO {
         getEntityManager().lock(documentType, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
     }
 
+    @Override
+    public String findParentNameByName(String documentTypeName) {
+        TypedQuery<String> query = getEntityManager().createNamedQuery("DocumentType.parentNameByName", String.class);
+        query.setParameter("docTypeName", documentTypeName);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
     public DataObjectService getDataObjectService() {
         return dataObjectService;

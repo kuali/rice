@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.krad.data.provider.impl;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -36,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Defines a basic ProviderRegistry implementation.
@@ -65,7 +65,7 @@ public class ProviderRegistryImpl implements ProviderRegistry {
         Iterable<? extends Class> providerInterfaces = Iterables.filter(interfaces, new Predicate<Class>() {
             @Override
             public boolean apply(Class input) {
-            return Provider.class.isAssignableFrom(input);
+                return Provider.class.isAssignableFrom(input);
             }
         });
         return (Iterable<Class<? extends Provider>>) providerInterfaces;

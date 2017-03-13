@@ -153,9 +153,6 @@ PUBLIC DOMAIN
 This product includes software developed by ANTLR (http://www.antlr.org/):
 antlr-2.7.7.jar, v2.7.7. Copyright (c) 2003-2006 Terence Parr, Licensed under the terms of the Antlr license v2 (http://www.antlr2.org/license.html)
 
-This product includes software developed by AOP Alliance (http://aopalliance.sourceforge.net/):
-aopalliance-1.0.jar, v. 1.0. 
-
 This product includes software developed by cglib (http://cglib.sourceforge.net/):
 cglib-nodep-2.2.2.jar, v2.2.2. Copyright (c) 2002-2004 cglib, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 

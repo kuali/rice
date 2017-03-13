@@ -222,11 +222,6 @@
     </dependency>
 
     <dependency>
-      <groupId>aopalliance</groupId>
-      <artifactId>aopalliance</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>javax.ws.rs</groupId>
       <artifactId>jsr311-api</artifactId>
     </dependency>
@@ -280,7 +275,6 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>

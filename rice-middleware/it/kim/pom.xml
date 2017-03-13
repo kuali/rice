@@ -224,12 +224,6 @@
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-ws-security</artifactId>
       <scope>test</scope>
-      <exclusions>
-      	<exclusion>
-      		<artifactId>ehcache</artifactId>
-      		<groupId>net.sf.ehcache</groupId>
-      	</exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.cxf</groupId>

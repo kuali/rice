@@ -23,6 +23,7 @@ import org.kuali.rice.kew.api.WorkflowDocumentFactory;
 import org.kuali.rice.krad.UserSession;
 import org.kuali.rice.krad.bo.DocumentHeader;
 import org.kuali.rice.krad.bo.Note;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.document.Document;
 import org.kuali.rice.krad.document.DocumentBase;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
@@ -253,6 +254,7 @@ public class DocumentServiceTest extends KRADTestCase {
         note2.setNoteTypeCode(NoteType.BUSINESS_OBJECT.getCode());
         try {
             KRADServiceLocator.getNoteService().save(note2);
+            KradDataServiceLocator.getDataObjectService().flush(Note.class);
         } catch (Exception e) {
             fail("Saving a note should not fail");
         }

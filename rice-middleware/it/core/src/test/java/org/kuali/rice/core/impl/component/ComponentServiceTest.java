@@ -41,7 +41,6 @@ import static org.junit.Assert.*;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
 public class ComponentServiceTest extends CORETestCase {
 
     private ComponentService componentService;

@@ -34,8 +34,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.krad.data.PersistenceOption;
 import org.kuali.rice.krad.service.KRADServiceLocator;
-import org.kuali.rice.krad.test.KRADTestCase;
-import org.kuali.rice.test.BaselineTestCase;
 
 import java.util.List;
 

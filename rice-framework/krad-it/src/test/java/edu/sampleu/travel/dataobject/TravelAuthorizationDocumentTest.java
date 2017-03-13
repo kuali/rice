@@ -45,18 +45,6 @@ import edu.sampleu.travel.options.TripType;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.ROLLBACK_CLEAR_DB)
-//@PerTestUnitTestData(
-//        value = @UnitTestData(
-//        sqlStatements = {
-//                @UnitTestSql("create table TRVL_AUTH_DOC_EXT_T ( DOC_HDR_ID VARCHAR(14), ANOTHER_PROP VARCHAR(10) )")
-//        }
-//    ),
-//    tearDown = @UnitTestData(
-//            sqlStatements = {
-//                    @UnitTestSql("drop table TRVL_AUTH_DOC_EXT_T")
-//            }
-//            )
-//)
 public class TravelAuthorizationDocumentTest extends KRADTestCase {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");

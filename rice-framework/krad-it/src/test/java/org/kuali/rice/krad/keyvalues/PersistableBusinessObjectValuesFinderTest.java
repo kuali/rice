@@ -18,6 +18,8 @@ package org.kuali.rice.krad.keyvalues;
 import org.junit.Test;
 import org.kuali.rice.core.api.util.ConcreteKeyValue;
 import org.kuali.rice.core.api.util.KeyValue;
+import org.kuali.rice.krad.data.DataObjectService;
+import org.kuali.rice.krad.data.KradDataServiceLocator;
 import org.kuali.rice.krad.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.krad.test.document.bo.AccountType;
 import org.kuali.rice.test.BaselineTestCase;
@@ -37,23 +39,6 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@PerTestUnitTestData(
-        value = @UnitTestData(
-                order = {UnitTestData.Type.SQL_STATEMENTS, UnitTestData.Type.SQL_FILES},
-                sqlStatements = {
-                        @UnitTestSql("delete from trv_acct_type")
-                },
-                sqlFiles = {
-                        @UnitTestFile(filename = "classpath:testAccountType.sql", delimiter = ";")
-                }
-        ),
-        tearDown = @UnitTestData(
-                sqlStatements = {
-                        @UnitTestSql("delete from trv_acct_type")
-                }
-        )
-)
-@BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
 
     private List<KeyValue> testKeyValues = new ArrayList<KeyValue>();
@@ -71,6 +56,25 @@ public class PersistableBusinessObjectValuesFinderTest extends KRADTestCase {
         testKeyValuesKeyInLabel.add(new ConcreteKeyValue("CAT", "CAT - Clearing Account Type"));
         testKeyValuesKeyInLabel.add(new ConcreteKeyValue("EAT", "EAT - Expense Account Type"));
         testKeyValuesKeyInLabel.add(new ConcreteKeyValue("IAT", "IAT - Income Account Type"));
+    }
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        AccountType cat = new AccountType();
+        cat.setAccountTypeCode("CAT");
+        cat.setName("Clearing Account Type");
+        AccountType eat = new AccountType();
+        eat.setAccountTypeCode("EAT");
+        eat.setName("Expense Account Type");
+        AccountType iat = new AccountType();
+        iat.setAccountTypeCode("IAT");
+        iat.setName("Income Account Type");
+        DataObjectService dataObjectService = KradDataServiceLocator.getDataObjectService();
+        dataObjectService.save(cat);
+        dataObjectService.save(eat);
+        dataObjectService.save(iat);
+        dataObjectService.flush(AccountType.class);
     }
 
     /**

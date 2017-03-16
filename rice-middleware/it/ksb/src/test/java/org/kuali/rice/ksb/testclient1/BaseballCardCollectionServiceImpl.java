@@ -15,22 +15,17 @@
  */
 package org.kuali.rice.ksb.testclient1;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService;
 import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder;
 
-import javax.annotation.Resource;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.xml.ws.WebServiceContext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Implementation for {@link BaseballCardCollectionService}

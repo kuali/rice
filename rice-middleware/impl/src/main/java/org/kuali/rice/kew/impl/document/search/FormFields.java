@@ -22,13 +22,10 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.CoreApiServiceLocator;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.krad.util.KRADConstants;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -69,7 +66,7 @@ class FormFields {
     
     Field getField(final String name) {
         return Iterables.tryFind(getFields(), new Predicate<Field>() {
-            public boolean apply(@Nullable Field input) {
+            public boolean apply(Field input) {
                 return StringUtils.equals(name, input.getPropertyName());
             }
         }).orNull();
@@ -123,7 +120,7 @@ class FormFields {
     Iterable<Field> getFields() {
         return Iterables.concat(Iterables.transform(this.rows, new Function<Row, Iterable<Field>>() {
             @Override
-            public Iterable<Field> apply(@Nullable Row row) {
+            public Iterable<Field> apply(Row row) {
                 return row.getFields();
             }
         }));

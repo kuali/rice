@@ -15,17 +15,7 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.List;
-
-import javax.annotation.Nullable;
-
+import com.google.common.base.Function;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +50,14 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.krad.util.KRADConstants;
 
-import com.google.common.base.Function;
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.
@@ -635,7 +632,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
      */
     private void assertSearchBehavesAsExpected(DocumentType docType, String principalId, String fieldDefKey, final String[] lowBounds, final String[] upBounds, int[] resultSizes) throws Exception {
         assertSearchResults(KEWServiceLocator.getDocumentSearchService(), docType, principalId, fieldDefKey, resultSizes, new Function<Integer, String>() {
-            @Override public String apply(@Nullable Integer index) {
+            @Override public String apply(Integer index) {
                 return createSearchableAttributeRange(lowBounds[index], upBounds[index], true);
             }
         });
@@ -653,7 +650,7 @@ public class StandardGenericXMLSearchableAttributeRangesTest extends DocumentSea
     */
     private void assertSearchBehavesAsExpected(DocumentType docType, String principalId, String fieldDefKey, final String[] expr, int[] resultSizes) throws Exception {
         assertSearchResults(KEWServiceLocator.getDocumentSearchService(), docType, principalId, fieldDefKey, resultSizes, new Function<Integer, String>() {
-            @Override public String apply(@Nullable Integer index) {
+            @Override public String apply(Integer index) {
                 return expr[index];
             }
         });

@@ -50,18 +50,22 @@ public class MailerTest extends KEWTestCase {
 		Wiser smtpServer = new Wiser();
 		smtpServer.setPort(55000);
 		smtpServer.start();
-		
-		// Test that a Mailer can be retrieved via the KEWServiceLocator
-		Mailer mailer = null;
-		mailer = CoreApiServiceLocator.getMailer();
-		assertNotNull(mailer);
-		
-		// Test that an e-mail message gets sent to the SMTP server
-		mailer.sendEmail(new EmailFrom(sender), new EmailTo(recipient), new EmailSubject(subject), new EmailBody(messageBody), false);
-		Assert.assertEquals(1, smtpServer.getMessages().size());
 
-        // Shutdown the SMTP server
-        smtpServer.stop();        
+		try {
+
+			// Test that a Mailer can be retrieved via the KEWServiceLocator
+			Mailer mailer = null;
+			mailer = CoreApiServiceLocator.getMailer();
+			assertNotNull(mailer);
+
+			// Test that an e-mail message gets sent to the SMTP server
+			mailer.sendEmail(new EmailFrom(sender), new EmailTo(recipient), new EmailSubject(subject), new EmailBody(messageBody), false);
+			Assert.assertEquals(1, smtpServer.getMessages().size());
+
+		} finally {
+			// Shutdown the SMTP server
+			smtpServer.stop();
+		}
 	}    
 
 }

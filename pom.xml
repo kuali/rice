@@ -145,7 +145,6 @@
     <jsch.version>0.1.54</jsch.version>
     <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>
-    <jsr305.version>2.0.3</jsr305.version>
     <jsr311-api.version>1.1.1</jsr311-api.version>
 
     <!--
@@ -2360,12 +2359,6 @@
         <version>${spring.cloud.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-      
-      <dependency>
-        <groupId>com.google.code.findbugs</groupId>
-        <artifactId>jsr305</artifactId>
-        <version>${jsr305.version}</version>
       </dependency>
 
       <dependency>

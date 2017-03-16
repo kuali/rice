@@ -135,7 +135,7 @@
     <jaxb-impl.version>2.2.11</jaxb-impl.version>
 
     <jackson.version>2.8.7</jackson.version>
-    <javassist.version>3.18.2-GA</javassist.version>
+    <javassist.version>3.21.0-GA</javassist.version>
     <jaxen.version>1.1.6</jaxen.version>
     <jdom.version>1.1.3</jdom.version>
     <jetty.version>9.4.2.v20170220</jetty.version>
@@ -165,8 +165,6 @@
     <netty.version>3.10.6.Final</netty.version>
     <plexus-utils.version>3.0.17</plexus-utils.version>
     <powermock.version>1.6.5</powermock.version>
-    <!-- According to KULRICE-11635 (see comment) we'll need to upgrade this to >= 2.1.4 to get to Spring 4.1-->
-    <!-- Quartz 2.0.x is an impacting api and database-level change -->
     <quartz.version>2.2.3</quartz.version>
     <reflections.version>0.9.11</reflections.version>
     <sauce.java.common.version>1.0.19</sauce.java.common.version>

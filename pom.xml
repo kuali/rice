@@ -141,7 +141,7 @@
     <joda-time.version>2.9.7</joda-time.version>
     <joda-time-jsptags.version>1.1.1</joda-time-jsptags.version>
     <jotm.version>2.1.10-kuali-1</jotm.version>
-    <jpa.version>2.1.0</jpa.version>
+    <jpa.version>2.1.1</jpa.version>
     <jsch.version>0.1.54</jsch.version>
     <json-api.version>1.0</json-api.version>
     <jsp-api.version>2.1</jsp-api.version>

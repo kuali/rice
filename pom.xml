@@ -167,7 +167,7 @@
     <powermock.version>1.6.5</powermock.version>
     <!-- According to KULRICE-11635 (see comment) we'll need to upgrade this to >= 2.1.4 to get to Spring 4.1-->
     <!-- Quartz 2.0.x is an impacting api and database-level change -->
-    <quartz.version>2.2.1</quartz.version>
+    <quartz.version>2.2.3</quartz.version>
     <reflections.version>0.9.11</reflections.version>
     <sauce.java.common.version>1.0.19</sauce.java.common.version>
     <sauce.junit.version>1.0.19</sauce.junit.version>

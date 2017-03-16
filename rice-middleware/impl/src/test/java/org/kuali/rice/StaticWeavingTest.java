@@ -53,6 +53,7 @@ public class StaticWeavingTest {
     private void assertStaticWeaved(Set<Class<?>>... types) {
         for (Set<Class<?>> typeSet : types) {
             for (Class<?> type : typeSet) {
+                if (!hasValidAnnotation(type)) continue;
                 boolean foundWeaved = false;
                 Method[] methods = type.getDeclaredMethods();
                 for (Method method : methods) {
@@ -70,6 +71,10 @@ public class StaticWeavingTest {
                 }
             }
         }
+    }
+
+    private boolean hasValidAnnotation(Class<?> type) {
+        return type.isAnnotationPresent(Entity.class) || type.isAnnotationPresent(MappedSuperclass.class) || type.isAnnotationPresent(Embeddable.class);
     }
 
 }

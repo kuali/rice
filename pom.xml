@@ -181,7 +181,7 @@
     <validation.version>1.1.0.Final</validation.version>
     <velocity.version>1.7</velocity.version>
     <velocity.tools.version>2.0</velocity.tools.version>
-    <wss4j.version>2.1.4</wss4j.version>
+    <wss4j.version>2.1.8</wss4j.version>
     <xalan.version>2.7.2</xalan.version>
     <xapool.version>1.5.0-patch6</xapool.version>
     <xercesImpl.version>2.11.0</xercesImpl.version>
@@ -189,7 +189,7 @@
     <xml-apis.version>1.4.01</xml-apis.version>
     <xmlunit.version>2.3.0</xmlunit.version>
     <xstream.version>1.4.9</xstream.version>
-    <yuicompressor.version>2.4.7</yuicompressor.version>
+    <yuicompressor.version>2.4.8</yuicompressor.version>
 
     <!-- Plugin versions: -->
 
@@ -2120,32 +2120,32 @@
       </dependency>
 
       <dependency>
-        <groupId> org.apache.wss4j</groupId>
+        <groupId>org.apache.wss4j</groupId>
         <artifactId>wss4j-bindings</artifactId>
         <version>${wss4j.version}</version>
       </dependency>
       <dependency>
-        <groupId> org.apache.wss4j</groupId>
+        <groupId>org.apache.wss4j</groupId>
         <artifactId>wss4j-policy</artifactId>
         <version>${wss4j.version}</version>
       </dependency>
       <dependency>
-        <groupId> org.apache.wss4j</groupId>
+        <groupId>org.apache.wss4j</groupId>
         <artifactId>wss4j-ws-security-common</artifactId>
         <version>${wss4j.version}</version>
       </dependency>
       <dependency>
-        <groupId> org.apache.wss4j</groupId>
+        <groupId>org.apache.wss4j</groupId>
         <artifactId>wss4j-ws-security-stax</artifactId>
         <version>${wss4j.version}</version>
       </dependency>
       <dependency>
-        <groupId> org.apache.wss4j</groupId>
+        <groupId>org.apache.wss4j</groupId>
         <artifactId>wss4j-ws-security-policy-stax</artifactId>
         <version>${wss4j.version}</version>
       </dependency>
       <dependency>
-        <groupId> org.apache.wss4j</groupId>
+        <groupId>org.apache.wss4j</groupId>
         <artifactId>wss4j-ws-security-dom</artifactId>
         <version>${wss4j.version}</version>
       </dependency>

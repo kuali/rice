@@ -97,7 +97,6 @@
 
     <!-- project dependency versions: -->
 
-    <ant.version>1.7.0</ant.version>
     <antlr.version>2.7.7</antlr.version>
     <asm.version>5.2</asm.version>
     <aspectj.version>1.8.1</aspectj.version>

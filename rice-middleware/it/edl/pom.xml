@@ -311,11 +311,6 @@
       <artifactId>javax.mail</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>xalan</groupId>
-      <artifactId>serializer</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
 </project>

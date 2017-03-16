@@ -144,7 +144,7 @@
     <jpa.version>2.1.1</jpa.version>
     <jsch.version>0.1.54</jsch.version>
     <json-api.version>1.0</json-api.version>
-    <jsp-api.version>2.1</jsp-api.version>
+    <jsp-api.version>2.2</jsp-api.version>
     <jsr311-api.version>1.1.1</jsr311-api.version>
 
     <!--
@@ -160,9 +160,8 @@
     <mail.version>1.5.6</mail.version>
     <metrics.version>3.2.1</metrics.version>
     <mockito.version>1.10.19</mockito.version>
-    <netty.version>3.10.6.Final</netty.version>
-    <plexus-utils.version>3.0.17</plexus-utils.version>
-    <powermock.version>1.6.5</powermock.version>
+    <plexus-utils.version>3.0.24</plexus-utils.version>
+    <powermock.version>1.6.6</powermock.version>
     <quartz.version>2.2.3</quartz.version>
     <reflections.version>0.9.11</reflections.version>
     <sauce.java.common.version>1.0.19</sauce.java.common.version>
@@ -170,9 +169,8 @@
     <sauce.rest.version>1.0.11</sauce.rest.version>
     <saucelabs.connect.version>3.1.32</saucelabs.connect.version>
     <selenium-java.version>2.53.1</selenium-java.version>
-    <serializer.version>2.7.2</serializer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
-    <slf4j.version>1.7.7</slf4j.version>
+    <slf4j.version>1.7.24</slf4j.version>
     <soa.model.core.version>1.5.4</soa.model.core.version>
     <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
     <spring.version>4.3.7.RELEASE</spring.version>
@@ -2207,10 +2205,6 @@
             <groupId>jdom</groupId>
             <artifactId>jdom</artifactId>
           </exclusion>
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
         </exclusions>
       </dependency>
 
@@ -2416,17 +2410,6 @@
       </dependency>
 
       <dependency>
-        <groupId>xalan</groupId>
-        <artifactId>serializer</artifactId>
-        <version>${serializer.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
         <!-- groupid was changed to com.experlog in later versions -->
         <groupId>xapool</groupId>
         <artifactId>xapool</artifactId>
@@ -2533,10 +2516,6 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
           </exclusion>
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
         </exclusions>
       </dependency>
       <dependency>
@@ -2548,12 +2527,6 @@
         <groupId>org.reflections</groupId>
         <artifactId>reflections</artifactId>
         <version>${reflections.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
       <dependency>
         <groupId>co.kuali</groupId>
@@ -2658,11 +2631,6 @@
             <artifactId>commons-beanutils</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty</artifactId>
-        <version>${netty.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

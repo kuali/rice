@@ -99,11 +99,10 @@
 
     <antlr.version>2.7.7</antlr.version>
     <asm.version>5.2</asm.version>
-    <aspectj.version>1.8.1</aspectj.version>
     <bcprov.version>1.56</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
     <core-auth-servlet-filter.version>1.4</core-auth-servlet-filter.version>
-    <closure.version>v20140730</closure.version>
+    <closure.version>v20170218</closure.version>
     <cglib.version>3.2.5</cglib.version>
     <commons-beanutils.version>1.9.3</commons-beanutils.version>
     <commons-codec.version>1.10</commons-codec.version>
@@ -1614,17 +1613,6 @@
         <!-- using nodep to resolve a problem with the asm dependency -->
         <artifactId>cglib-nodep</artifactId>
         <version>${cglib.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjrt</artifactId>
-        <version>${aspectj.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.aspectj</groupId>
-        <artifactId>aspectjweaver</artifactId>
-        <version>${aspectj.version}</version>
       </dependency>
 
       <dependency>

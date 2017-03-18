@@ -33,6 +33,7 @@
     <spring.ldap.version>2.3.1.RELEASE</spring.ldap.version>
     <!-- Need to downgrade jetty version in order for cxf-rt-transports-http-jetty to work properly -->
     <jetty.version>9.2.11.v20150529</jetty.version>
+    <apacheds.version>1.5.5</apacheds.version>
   </properties>
 
   <dependencies>
@@ -168,6 +169,39 @@
       <artifactId>spring-context</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- test dependencies for ApacheDS ldap -->
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-core</artifactId>
+      <version>${apacheds.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-core-entry</artifactId>
+      <version>${apacheds.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-protocol-shared</artifactId>
+      <version>${apacheds.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-protocol-ldap</artifactId>
+      <version>${apacheds.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-server-jndi</artifactId>
+      <version>${apacheds.version}</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>

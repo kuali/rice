@@ -340,4 +340,35 @@ public class DateTimeServiceTest extends KRADTestCase {
 
         assertEquals("-5", Integer.toString(CoreApiServiceLocator.getDateTimeService().dateDiff(date1, date2, false)));
     }
+
+    /**
+     * Tests {@link org.kuali.rice.core.api.datetime.DateTimeService#dateDiff(java.util.Date, java.util.Date, boolean)} with dates on or
+     * near the daylight savings time boundary, and with the inclusive flag set to "true". Daylight savings time began on 3/12 in 2017,
+     * so these dates were chosen because they originally exhibited incorrect behavior in relation to the DST date.
+     *
+     * @throws ParseException
+     */
+    @Test public void testDateDiffDaylightSavingsTimeInclusive() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+        Date date1 = sdf.parse("03/13/2017");
+        Date date2 = sdf.parse("03/13/2017");
+
+        assertEquals(1, CoreApiServiceLocator.getDateTimeService().dateDiff(date1, date2, true));
+
+        date1 = sdf.parse("03/13/2017");
+        date2 = sdf.parse("03/14/2017");
+
+        assertEquals(2, CoreApiServiceLocator.getDateTimeService().dateDiff(date1, date2, true));
+
+        date1 = sdf.parse("03/12/2017");
+        date2 = sdf.parse("03/13/2017");
+
+        assertEquals(2, CoreApiServiceLocator.getDateTimeService().dateDiff(date1, date2, true));
+
+        date1 = sdf.parse("03/13/2017");
+        date2 = sdf.parse("03/12/2017");
+
+        assertEquals(-2, CoreApiServiceLocator.getDateTimeService().dateDiff(date1, date2, true));
+    }
 }

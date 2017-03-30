@@ -16,11 +16,10 @@
 package org.kuali.rice.core.impl.datetime;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DurationFormatUtils;
 import org.joda.time.DateTime;
-import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.config.property.ConfigContext;
+import org.kuali.rice.core.api.datetime.DateTimeService;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.sql.Time;
@@ -29,6 +28,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -227,32 +227,11 @@ public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	}
 
 	public int dateDiff(Date startDate, Date endDate, boolean inclusive) {
-		Calendar startDateCalendar = Calendar.getInstance();
-		startDateCalendar.setTime(startDate);
-
-		Calendar endDateCalendar = Calendar.getInstance();
-		endDateCalendar.setTime(endDate);
-
-		int startDateOffset = -(startDateCalendar.get(Calendar.ZONE_OFFSET) + startDateCalendar
-				.get(Calendar.DST_OFFSET))
-				/ (60 * 1000);
-
-		int endDateOffset = -(endDateCalendar.get(Calendar.ZONE_OFFSET) + endDateCalendar
-				.get(Calendar.DST_OFFSET))
-				/ (60 * 1000);
-
-		if (startDateOffset > endDateOffset) {
-			startDateCalendar.add(Calendar.MINUTE, endDateOffset
-					- startDateOffset);
-		}
+		int dateDiff = Days.daysBetween(new LocalDate(startDate), new LocalDate(endDate)).getDays();
 
 		if (inclusive) {
-			startDateCalendar.add(Calendar.DATE, -1);
+			dateDiff += dateDiff >= 0 ? 1 : -1;
 		}
-
-		int dateDiff = Integer.parseInt(DurationFormatUtils.formatDuration(
-				endDateCalendar.getTimeInMillis()
-						- startDateCalendar.getTimeInMillis(), "d", true));
 
 		return dateDiff;
 	}

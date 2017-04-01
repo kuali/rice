@@ -240,10 +240,6 @@
           <groupId>org.bouncycastle</groupId>
           <artifactId>bcprov-jdk15</artifactId>
         </exclusion>
-        <exclusion>
-        	<artifactId>ehcache</artifactId>
-        	<groupId>net.sf.ehcache</groupId>
-        </exclusion>
       </exclusions>
     </dependency>
     <dependency>

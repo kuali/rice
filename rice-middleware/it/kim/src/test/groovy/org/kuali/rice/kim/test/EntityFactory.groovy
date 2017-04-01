@@ -45,6 +45,7 @@ import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentTypeBo
 import org.kuali.rice.kim.impl.identity.employment.EntityEmploymentStatusBo
 import org.joda.time.DateTime
 import java.sql.Timestamp
+import java.time.LocalDate
 
 /**
  * Factory for constructing Entity- objects
@@ -57,11 +58,13 @@ class EntityFactory extends Factory {
 
     def EntityBioDemographicsBo(Map fields) {
         def now = new java.sql.Date(new Date().time)
+        def eightyYears = java.sql.Date.valueOf(LocalDate.now().plusYears(80))
+
         def values = [
             birthDateValue: new java.sql.Date(genDbTimestamp().time),
             genderCode: "M",
             genderChangeCode: "...",
-            deceasedDateValue: new java.sql.Date((long) (genDbTimestamp().time + (1000L * 60 * 60 * 24 * 365 * 80))),
+            deceasedDateValue: eightyYears,
             maritalStatusCode: "S",
             primaryLanguageCode: "EN",
             secondaryLanguageCode: "FR",

@@ -53,6 +53,7 @@ public class StaticWeavingTest {
     private void assertStaticWeaved(Set<Class<?>>... types) {
         for (Set<Class<?>> typeSet : types) {
             for (Class<?> type : typeSet) {
+                if (!hasValidAnnotation(type)) continue;
                 boolean foundWeaved = false;
                 Method[] methods = type.getDeclaredMethods();
                 for (Method method : methods) {
@@ -62,7 +63,8 @@ public class StaticWeavingTest {
                     }
                 }
                 if (!foundWeaved) {
-                    fail("(NOTE: it is expected this test may fail if executed from the IDE instead of command line "
+                    fail("Static weaving not found on " + type.getName() + " (NOTE: it is expected this test may fail "
+                            + "if executed from the IDE instead of command line "
                             + "since the IDE will not execute the static weaving automatically). Found a class which is "
                             + "not bytecode weaved (contains no methods starting with '_persistence'): " + type + " "
                             + "In order to resolve this, please ensure that this type is included in "
@@ -70,6 +72,10 @@ public class StaticWeavingTest {
                 }
             }
         }
+    }
+
+    private boolean hasValidAnnotation(Class<?> type) {
+        return type.isAnnotationPresent(Entity.class) || type.isAnnotationPresent(MappedSuperclass.class) || type.isAnnotationPresent(Embeddable.class);
     }
 
 }

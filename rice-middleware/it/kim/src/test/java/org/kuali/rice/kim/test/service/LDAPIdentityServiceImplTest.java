@@ -37,8 +37,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.ldap.core.DistinguishedName;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
+import org.springframework.ldap.support.LdapUtils;
 import org.springframework.ldap.test.LdapTestUtils;
 
+import javax.naming.NamingException;
+import javax.naming.ldap.LdapName;
 import javax.xml.namespace.QName;
 import java.util.List;
 
@@ -50,19 +53,15 @@ import static org.junit.Assert.assertNotNull;
  */
 @BaselineTestCase.BaselineMode(BaselineTestCase.Mode.NONE)
 public class LDAPIdentityServiceImplTest extends KIMTestCase {
-    private static final DistinguishedName baseName = new DistinguishedName("o=Whoniverse");
-
-    private static final String PRINCIPAL = "uid=admin,ou=system";
-    private static final String CREDENTIALS = "secret";
+    private static final LdapName baseName = LdapUtils.newLdapName("o=Whoniverse");
 
     // This port MUST be free on local host for these unit tests to function.
     private static int PORT = 10389;
     private IdentityService identityService;
 
-
     @BeforeClass
     public static void startLDAPServer() throws Exception {
-        LdapTestUtils.startApacheDirectoryServer(PORT, baseName.toString(), "test", PRINCIPAL, CREDENTIALS, null);
+        LdapTestUtils.startEmbeddedServer(PORT, baseName.toString(), "test");
         LdapContextSource contextSource = new LdapContextSource();
         contextSource.setUrl("ldap://127.0.0.1:" + PORT);
         contextSource.setUserDn("");
@@ -80,7 +79,7 @@ public class LDAPIdentityServiceImplTest extends KIMTestCase {
 
     @AfterClass
     public static void shutdownLDAP() throws Exception {
-        LdapTestUtils.destroyApacheDirectoryServer(PRINCIPAL, CREDENTIALS);
+        LdapTestUtils.shutdownEmbeddedServer();
          System.out.println("____________Shutdown LDAP_________");
     }
 

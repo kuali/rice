@@ -212,10 +212,6 @@
           <artifactId>bcprov-jdk15</artifactId>
         </exclusion>
         <exclusion>
-        	<artifactId>ehcache</artifactId>
-        	<groupId>net.sf.ehcache</groupId>
-        </exclusion>
-        <exclusion>
         	<artifactId>geronimo-javamail_1.4_spec</artifactId>
         	<groupId>org.apache.geronimo.specs</groupId>
         </exclusion>

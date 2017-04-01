@@ -110,10 +110,6 @@ This product includes software developed by the Jackson project (http://jackson.
 jackson-core-asl-1.8.8.jar, v1.8.8. Copyright (c) 2009 FasterXML, LLC, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 jackson-mapper-asl-1.8.8.jar, v1.8.8. Copyright (c) 2009 FasterXML, LLC, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
 
-JAXEN
-This product includes software developed by JAXEN (http://jaxen.codehaus.org/):
-jaxen-1.1.1.jar, v1.1.3. Copyright 2003-2006 The Werken Company, Licensed under the terms of the Jaxen License (http://jaxen.codehaus.org/license.html)
-
 JDOM
 This product includes software developed by the JDOM Project (http://www.jdom.org/):
 dom4j-1.6.1.jar, v1.6.1. Copyright (C) 2000-2002 Jason Hunter & Brett McLaughlin, Licensed under the terms of the JDOM License (http://www.jdom.org/docs/faq.html#a0030)
@@ -152,9 +148,6 @@ plexus-utils-3.0.10.jar, v.3.0.10. Copyright (c) 2001-2009 Codehaus, Licensed un
 PUBLIC DOMAIN
 This product includes software developed by ANTLR (http://www.antlr.org/):
 antlr-2.7.7.jar, v2.7.7. Copyright (c) 2003-2006 Terence Parr, Licensed under the terms of the Antlr license v2 (http://www.antlr2.org/license.html)
-
-This product includes software developed by AOP Alliance (http://aopalliance.sourceforge.net/):
-aopalliance-1.0.jar, v. 1.0. 
 
 This product includes software developed by cglib (http://cglib.sourceforge.net/):
 cglib-nodep-2.2.2.jar, v2.2.2. Copyright (c) 2002-2004 cglib, Licensed under the terms of Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)

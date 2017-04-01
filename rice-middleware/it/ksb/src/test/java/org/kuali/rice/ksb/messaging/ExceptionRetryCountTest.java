@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.ksb.api.KsbApiServiceLocator;
@@ -36,6 +37,7 @@ import static org.junit.Assert.fail;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Ignore
 public class ExceptionRetryCountTest extends KSBTestCase {
 
     private QName retryCountServiceName = new QName("KEW", "testExplodingRetryCount");

@@ -101,10 +101,11 @@
     <asm.version>5.2</asm.version>
     <bcprov.version>1.56</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
-    <core-auth-servlet-filter.version>1.4</core-auth-servlet-filter.version>
+    <core-auth-servlet-filter.version>1.5</core-auth-servlet-filter.version>
     <closure.version>v20170218</closure.version>
     <cglib.version>3.2.5</cglib.version>
     <commons-beanutils.version>1.9.3</commons-beanutils.version>
+    <commons-chain.version>1.2</commons-chain.version>
     <commons-codec.version>1.10</commons-codec.version>
     <commons-collections.version>3.2.2</commons-collections.version>
     <commons-dbcp.version>1.4</commons-dbcp.version>
@@ -2163,30 +2164,20 @@
       </dependency>
 
       <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
-        <scope>compile</scope>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
 
+      <!-- for some reason the annotations version is different (as of March 2017) in the jackson BOM -->
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.version}</version>
-        <scope>compile</scope>
-      </dependency>
-
-      <dependency>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-annotations</artifactId>
-          <version>${jackson.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.fasterxml.jackson.datatype</groupId>
-        <artifactId>jackson-datatype-joda</artifactId>
+        <artifactId>jackson-annotations</artifactId>
         <version>${jackson.version}</version>
       </dependency>
+
 
       <dependency>
         <groupId>org.directwebremoting</groupId>
@@ -2252,6 +2243,12 @@
             <groupId>commons-logging</groupId>
           </exclusion>
         </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>commons-chain</groupId>
+        <artifactId>commons-chain</artifactId>
+        <version>${commons-chain.version}</version>
       </dependency>
 
       <dependency>

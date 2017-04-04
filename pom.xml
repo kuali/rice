@@ -99,6 +99,7 @@
 
     <antlr.version>2.7.7</antlr.version>
     <asm.version>5.2</asm.version>
+    <aspectj.version>1.8.10</aspectj.version>
     <bcprov.version>1.56</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
     <core-auth-servlet-filter.version>1.5</core-auth-servlet-filter.version>
@@ -2330,6 +2331,13 @@
             <groupId>commons-logging</groupId>
           </exclusion>
         </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+        <version>${aspectj.version}</version>
+        <scope>runtime</scope>
       </dependency>
 
       <dependency>

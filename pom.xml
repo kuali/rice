@@ -275,6 +275,9 @@
       -javaagent:${spring-instrument.jar}
     </spring-instrument-javaagent>
 
+    <!-- This allows us to swap out the nexus.kuali.org repository from the parent POM with the nexus.kuali.co repository -->
+    <kuali.repo>https://nexus.kuali.co/nexus/content/groups/public</kuali.repo>
+
     <!-- Override properties from the parent pom for deploying to Maven repositories -->
     <!-- These are the Kuali repository settings for an official release -->
     <kuali.repo.release.id>kualico.nexus.core.releases</kuali.repo.release.id>
@@ -1562,31 +1565,6 @@
     <module>config</module>
     <module>dist</module>
   </modules>
-
-  <repositories>
-    <repository>
-      <id>kuali.nexus</id>
-      <name>Nexus Repository Manager</name>
-      <url>http://nexus.kuali.org/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>kualico.nexus</id>
-      <name>KualiCo Nexus Repository Manager</name>
-      <url>https://nexus.kuali.co/nexus/content/groups/public</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <dependencyManagement>
     <dependencies>

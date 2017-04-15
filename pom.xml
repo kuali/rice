@@ -56,8 +56,8 @@
     <kuali-core.version>1.0.19</kuali-core.version>
     <appserver.port>8080</appserver.port>
     <checkstyle.suppressions.location>/org/kuali/rice/suppressions.xml</checkstyle.suppressions.location>
-    <oracle.jdbc.version>10.2.0.3.0</oracle.jdbc.version>
-    <oracle.jdbc.artifactId>ojdbc14</oracle.jdbc.artifactId>
+    <oracle.jdbc.version>11.2.0.4</oracle.jdbc.version>
+    <oracle.jdbc.artifactId>ojdbc6</oracle.jdbc.artifactId>
     <mysql.jdbc.version>5.1.41</mysql.jdbc.version>
     <mysql.jdbc.artifactId>mysql-connector-java</mysql.jdbc.artifactId>
 
@@ -230,9 +230,9 @@
     <mysql-connector-java.jar.location>
       ${jdbc.drivers.location}/mysql/${mysql.jdbc.artifactId}/${mysql.jdbc.version}/${mysql.jdbc.artifactId}-${mysql.jdbc.version}.jar
     </mysql-connector-java.jar.location>
-    <ojdbc14.jar.location>
+    <ojdbc.jar.location>
       ${jdbc.drivers.location}/com/oracle/${oracle.jdbc.artifactId}/${oracle.jdbc.version}/${oracle.jdbc.artifactId}-${oracle.jdbc.version}.jar
-    </ojdbc14.jar.location>
+    </ojdbc.jar.location>
 
     <cobertura.maven.plugin.version>2.5.1</cobertura.maven.plugin.version>
     <web.launch.context.path>/kr-dev</web.launch.context.path>
@@ -1193,7 +1193,7 @@
             <skip>${maven.failsafe.skip}</skip>
             <additionalClasspathElements>
               <additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
-              <additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
+              <additionalClasspathElement>${ojdbc.jar.location}</additionalClasspathElement>
             </additionalClasspathElements>
             <useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
             <useFile>false</useFile>

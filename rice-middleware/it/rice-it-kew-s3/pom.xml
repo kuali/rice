@@ -51,7 +51,7 @@
             <skip>${maven.failsafe.skip}</skip>
             <additionalClasspathElements>
               <additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
-              <additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
+              <additionalClasspathElement>${ojdbc.jar.location}</additionalClasspathElement>
             </additionalClasspathElements>
             <useSystemClassLoader>${maven.failsafe.useSystemClassLoader}</useSystemClassLoader>
             <useFile>false</useFile>

@@ -733,6 +733,18 @@ public interface WorkflowDocument extends DocumentContract {
      */
     Set<String> getNodeNames();
     /**
+     * Returns the names of the simple route nodes on the document which are currently active.
+     *
+     * <p>If the document has completed its routing (i.e. it is in processed or final status) then this method may
+     * return an empty set since no nodes are active at that time.  In order to get either the active *or* terminal
+     * nodes, use the {@link #getSimpleCurrentNodeNames()} method.</p>
+     *
+     * @return an unmodifiable set containing the names of the active nodes for this document
+     *
+     * @since 2.6
+     */
+    Set<String> getSimpleNodeNames();
+    /**
      * Returns the names of the nodes at which the document is currently at in it's route path.
      *
      * <p>This method differs from {@link #getNodeNames()} in the fact that if there are no active nodes, it will
@@ -743,6 +755,18 @@ public interface WorkflowDocument extends DocumentContract {
      * @return an unmodifiable set containing the names of the nodes at which this document is currently located within it's route path
      */
     Set<String> getCurrentNodeNames();
+    /**
+     * Returns the names of the simple nodes at which the document is currently at in it's route path.
+     *
+     * <p>This method differs from {@link #getSimpleNodeNames()} in the fact that if there are no active nodes, it will
+     * return the last nodes on the document instead (a.k.a. the document's terminal nodes) as long as they are of a
+     * simple type.</p>
+     *
+     * @return an unmodifiable set containing the names of the simple nodes at which this document is currently located within it's route path
+     *
+     * @since 2.6
+     */
+    Set<String> getCurrentSimpleNodeNames();
     /**
      * Returns the list of active route node instances
      * @see org.kuali.rice.kew.api.document.WorkflowDocumentService#getActiveRouteNodeInstances(String)

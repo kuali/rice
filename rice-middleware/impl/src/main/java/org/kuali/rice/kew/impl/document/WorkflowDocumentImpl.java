@@ -774,10 +774,23 @@ public class WorkflowDocumentImpl implements Serializable, WorkflowDocumentProto
         return Collections.unmodifiableSet(new HashSet<String>(names));
     }
 
+    @Override
+    public Set<String> getSimpleNodeNames() {
+        final List<String> names = getWorkflowDocumentService().getActiveSimpleRouteNodeNames(getDocumentId());
+        return Collections.unmodifiableSet(new HashSet<String>(names));
+    }
+
+    @Override
     public Set<String> getCurrentNodeNames() {
     	final List<String> names = getWorkflowDocumentService().getCurrentRouteNodeNames(getDocumentId());
         return Collections.unmodifiableSet(new HashSet<String>(names));
     }
+
+    @Override
+    public Set<String> getCurrentSimpleNodeNames() {
+        final List<String> names = getWorkflowDocumentService().getCurrentSimpleRouteNodeNames(getDocumentId());
+        return Collections.unmodifiableSet(new HashSet<String>(names));}
+
 
     @Override
     public void returnToPreviousNode(String annotation, String nodeName) {

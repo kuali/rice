@@ -312,18 +312,16 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     private void handleAdHocRouteRequests(WorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients, String notificationLabel) throws WorkflowException {
 
         if (adHocRecipients != null && adHocRecipients.size() > 0) {
-            String currentNode = null;
-            Set<String> currentNodes = workflowDocument.getNodeNames();
+
+            Set<String> currentNodes = workflowDocument.getSimpleNodeNames();
             if (currentNodes.isEmpty()) {
-                List<RouteNodeInstance> nodes = KewApiServiceLocator.getWorkflowDocumentService().getTerminalRouteNodeInstances(
-                        workflowDocument.getDocumentId());
-                currentNodes = new HashSet<String>();
-                for (RouteNodeInstance node : nodes) {
-                    currentNodes.add(node.getName());
-                }
+                // let's check simple "terminal" nodes as well if there are no "active" ones
+                currentNodes = workflowDocument.getCurrentSimpleNodeNames();
             }
+
+            String currentNode = null;
             if (!currentNodes.isEmpty()) {
-                // for now just pick a node and go with it...
+                // select the current node, if there are multiple simple nodes on the document, we just pick one to use
                 currentNode = currentNodes.iterator().next();
             }
 

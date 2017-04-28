@@ -82,6 +82,19 @@ public interface RouteNodeService {
     public List<String> getCurrentRouteNodeNames(String documentId);
 
     /**
+     * Retrieves the names of the simple route node instances where the document is currently located
+     * for the document with the given id. This could be active nodes in the document if it is
+     * in the middle of the routing process or it could be the names of the terminal nodes if
+     * the document has completed routing.
+     *
+     * @param documentId of the document
+     * @return list of names of the current simple route node instances
+     * @since 2.6
+     */
+    public List<String> getCurrentSimpleRouteNodeNames(String documentId);
+
+
+    /**
      * Retrieves the names of active node instances for the document with the
      * given id.  The active node instances represent where in the route path
      * the document is currently located.
@@ -90,7 +103,20 @@ public interface RouteNodeService {
      * @since 2.1
      */
     public List<String> getActiveRouteNodeNames(String documentId);
-    
+
+    /**
+     * Retrieves the names of active node instances for simple nodes for the document with the
+     * given id.  The active node instances represent where in the route path
+     * the document is currently located, and simple nodes are only those nodes whose type
+     * extend from {@link org.kuali.rice.kew.engine.node.SimpleNode}.
+     *
+     * @param documentId of the document
+     * @return list of names of the active simple route node instances
+     * @since 2.1
+     */
+    public List<String> getActiveSimpleRouteNodeNames(String documentId);
+
+
     public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document);
     
     /**

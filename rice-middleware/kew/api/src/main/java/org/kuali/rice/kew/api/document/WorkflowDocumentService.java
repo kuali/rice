@@ -746,7 +746,7 @@ public interface WorkflowDocumentService {
      *
      * @since rice 2.6
      */
-    @WebMethod(operationName = "getCurrentSimple˙RouteNodeNames")
+    @WebMethod(operationName = "getCurrentSimpleRouteNodeNames")
     @XmlElementWrapper(name = "nodes", required = true)
     @XmlElement(name = "node", required = false)
     @WebResult(name = "nodes")

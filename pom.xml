@@ -102,7 +102,7 @@
     <aspectj.version>1.8.10</aspectj.version>
     <bcprov.version>1.56</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
-    <core-auth-servlet-filter.version>1.5</core-auth-servlet-filter.version>
+    <core-auth-servlet-filter.version>1.6</core-auth-servlet-filter.version>
     <closure.version>v20170218</closure.version>
     <cglib.version>3.2.5</cglib.version>
     <commons-beanutils.version>1.9.3</commons-beanutils.version>

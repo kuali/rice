@@ -1,3 +1,5 @@
+**This repository is DEPRECATED** - see https://github.com/KualiCo/rice for latest Kuali Rice code
+
 Kuali Rice
 ==========
 Kuali Rice is an application development framework and middleware suite developed for and by the higher education community.  Kuali Rice is being used by several Kuali universiy enterprise applications, for its build in eDocLite document routing, and as basis for custom applications.

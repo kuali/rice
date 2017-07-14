@@ -1322,7 +1322,7 @@
           <version>${plugin.dependency-check.version}</version>
           <configuration>
             <suppressionFile>vulnerability-suppressions.xml</suppressionFile>
-            <failBuildOnCVSS>4</failBuildOnCVSS>
+            <failBuildOnCVSS>7</failBuildOnCVSS>
           </configuration>
         </plugin>
 

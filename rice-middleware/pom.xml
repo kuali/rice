@@ -47,5 +47,14 @@
     <module>standalone</module>
     <module>web</module>
   </modules>
-
+  <dependencies>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.owasp.esapi</groupId>
+      <artifactId>esapi</artifactId>
+    </dependency>
+  </dependencies>
 </project>

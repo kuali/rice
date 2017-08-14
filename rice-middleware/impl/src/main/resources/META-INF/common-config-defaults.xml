@@ -140,6 +140,10 @@
 	  <param name="rice.portal.logout.redirectUrl" override="false">${application.url}/portal.do</param>
     <param name="rice.portal.allowed.regex" override="false">^${application.url}(/.*|)</param>
 
+    <!-- Back Location parameters -->
+    <param name="rice.backLocation.allowed.regex" override="false">^(${application.url}|${rice.server.url}|${appserver.url})(/.*|)</param>
+    <param name="rice.backLocation.default.url" override="false">${application.url}</param>
+
     <!-- App specific parameters -->
     <param name="externalizable.help.url" override="false">${application.url}/kr/static/help/</param>
     <param name="externalizable.images.url" override="false">${application.url}/kr/static/images/</param>

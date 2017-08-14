@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.api.KewApiConstants;
+import org.kuali.rice.kew.stats.Stats;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
@@ -276,7 +278,7 @@ public class StatsForm extends KualiForm {
     }
 
 	public String getBackLocation() {
-		return this.backLocation;
+	    return WebUtils.sanitizeBackLocation(this.backLocation);
 	}
 
 	public void setBackLocation(String backLocation) {

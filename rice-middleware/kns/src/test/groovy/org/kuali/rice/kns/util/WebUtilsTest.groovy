@@ -41,6 +41,10 @@ import org.kuali.rice.kew.api.KewApiConstants
  * Unit tests WebUtils
  */
 class WebUtilsTest {
+
+	private static final String DEFAULT_URL = "default";
+	private static final String TEST_URL = "http://test/url";
+
     def strutsControllerConfig = { "250M" } as ControllerConfig;
     String maxUploadSize;
     String maxAttachmentSize;
@@ -166,4 +170,34 @@ class WebUtilsTest {
         WebUtils.reopenInactiveRecords(sections, tabstates, "containerField")
         assertEquals([containerFieldelementcontainedvalueonecontainedvaluetwocontainedvaluethree:"OPEN"], tabstates)
     }
+
+	@Test
+	void testSanitizeBackLocation() {
+		def config = new SimpleConfig()
+		config.putProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX, "^http://test.*");
+		config.putProperty(KRADConstants.BACK_LOCATION_DEFAULT_URL, DEFAULT_URL);
+		ConfigContext.init(config);
+
+		assertEquals(TEST_URL, WebUtils.sanitizeBackLocation(TEST_URL));
+	}
+
+	@Test
+	void testSanitizeBackLocationWithDisallowedUrl() {
+		def config = new SimpleConfig()
+		config.putProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX, "^http://test.*");
+		config.putProperty(KRADConstants.BACK_LOCATION_DEFAULT_URL, DEFAULT_URL);
+		ConfigContext.init(config);
+
+		assertEquals(DEFAULT_URL, WebUtils.sanitizeBackLocation("http://disallowed"));
+	}
+
+	@Test
+	void testSanitizeBackLocationWithJavaScriptProtocol() {
+		def config = new SimpleConfig()
+		config.putProperty(KRADConstants.BACK_LOCATION_ALLOWED_REGEX, "^http://test.*");
+		config.putProperty(KRADConstants.BACK_LOCATION_DEFAULT_URL, DEFAULT_URL);
+		ConfigContext.init(config);
+
+		assertEquals(DEFAULT_URL, WebUtils.sanitizeBackLocation("javascript:alert('test')"));
+	}
 }

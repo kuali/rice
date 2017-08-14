@@ -89,6 +89,8 @@
 
 <form name="loginForm" action="" method="post">
 
+    <kul:csrf />
+
 <div class="body">
         <table id="login" cellspacing="0" cellpadding="0" align="center">
           <tbody>

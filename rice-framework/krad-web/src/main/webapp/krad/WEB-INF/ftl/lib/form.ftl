@@ -34,6 +34,8 @@
 
           <#nested/>
 
+          <@krad.csrfToken/>
+
           <span id="formComplete"></span>
       </form>
     <#else>

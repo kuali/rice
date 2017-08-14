@@ -28,6 +28,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic-el" prefix="logic-el"%>
 <%@ taglib uri="http://www.joda.org/joda/time/tags" prefix="joda" %>
 <%@ taglib uri="http://www.kuali.org/jsp/jstl/functions" prefix="kfunc"%>
+<%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_Enterprise_Security_API" prefix="esapi" %>
 <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul"%>
 <%@ taglib tagdir="/WEB-INF/tags/kim" prefix="kim"%>
 <%@ taglib tagdir="/WEB-INF/tags/kew" prefix="kew"%>

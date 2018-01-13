@@ -16,8 +16,8 @@
 package org.kuali.rice.ken.xpath;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.xerces.jaxp.JAXPConstants;
 import org.junit.Test;
+import org.kuali.rice.core.api.impex.xml.XmlConstants;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.DocumentNamespaceContext;
 import org.kuali.rice.ken.util.SimpleErrorHandler;
@@ -92,7 +92,7 @@ public class XPathTest extends KENTestCase {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(validate);
         dbf.setNamespaceAware(namespaceAware);
-        dbf.setAttribute(JAXPConstants.JAXP_SCHEMA_LANGUAGE, JAXPConstants.W3C_XML_SCHEMA);
+        dbf.setAttribute(XmlConstants.JAXP_SCHEMA_LANGUAGE, XmlConstants.W3C_XML_SCHEMA);
         DocumentBuilder db = dbf.newDocumentBuilder();
         LOG.info("Setting entityresolver");
         db.setEntityResolver(Util.getNotificationEntityResolver(services.getNotificationContentTypeService()));

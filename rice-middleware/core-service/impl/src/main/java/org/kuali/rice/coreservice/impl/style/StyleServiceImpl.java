@@ -68,27 +68,8 @@ public class StyleServiceImpl implements StyleService {
             return null;
         }
 
-        boolean useXSLTC = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsBoolean(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KewApiConstants.EDL_USE_XSLTC_IND);
-        if (useXSLTC) {
-            LOG.info("using xsltc to compile stylesheet");
-            String key = "javax.xml.transform.TransformerFactory";
-            String value = "org.apache.xalan.xsltc.trax.TransformerFactoryImpl";
-            Properties props = System.getProperties();
-            props.put(key, value);
-            System.setProperties(props);
-        }
-
         TransformerFactory factory = TransformerFactory.newInstance();
         factory.setURIResolver(new StyleUriResolver(this));
-
-        if (useXSLTC) {
-            factory.setAttribute("translet-name",name);
-            factory.setAttribute("generate-translet",Boolean.TRUE);
-            String debugTransform = CoreFrameworkServiceLocator.getParameterService().getParameterValueAsString(KewApiConstants.KEW_NAMESPACE, KRADConstants.DetailTypes.EDOC_LITE_DETAIL_TYPE, KewApiConstants.EDL_DEBUG_TRANSFORM_IND);
-            if (debugTransform.trim().equals("Y")) {
-                factory.setAttribute("debug", Boolean.TRUE);
-            }
-        }
 
         return factory.newTemplates(new StreamSource(new StringReader(style.getXmlContent())));
     }

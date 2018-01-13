@@ -1510,7 +1510,12 @@ public class DocumentTypeXmlParser {
         for (int j = 0; j < children.getLength(); j++) {
             Node c = children.item(j);
             if (c instanceof Element && !KNOWN_POLICY_ELEMENTS.contains(c.getNodeName())) {
-                root.appendChild(policyConfig.importNode(c, true));
+                // strip off any xsi:schemaLocation attributes to avoid issues with that namespace not being defined since this is a snippet of a larger XML document
+                // this is really only used for "recipients" on the RECALL_NOTIFICATION policy, not sure why it was implemented this generically
+                Element imported = (Element)policyConfig.importNode(c, true);
+                imported.removeAttribute("xsi:schemaLocation");
+                // now append the element
+                root.appendChild(imported);
             }
         }
         // if there are in-fact custom xml configuration nodes, then go ahead and save the config doc as XML

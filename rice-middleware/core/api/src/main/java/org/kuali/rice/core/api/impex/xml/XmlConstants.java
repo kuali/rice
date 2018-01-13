@@ -191,7 +191,10 @@ public final class XmlConstants {
     //style
     public static final String STYLE_STYLES = "styles";
     public static final String STYLE_STYLE = "style";
-    
+
+    public static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+    public static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
+
     private XmlConstants() {
     	throw new UnsupportedOperationException("do not call");
     }

@@ -583,18 +583,44 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
 
     @Test public void testLoadDocWithDocTypePolicyXMLConfig() throws Exception {
         List<DocumentType> docTypes = testDoc("DocumentTypePolicyConfig", null);
-        assertEquals(1, docTypes.size());
-        DocumentType docType = docTypes.get(0);
-        DocumentTypePolicy policy = docType.getRecallNotification();
+        assertEquals(2, docTypes.size());
+
+        DocumentType docType1 = null;
+        DocumentType docType2 = null;
+        for (DocumentType docType : docTypes) {
+            if (docType.getName().equals("DocumentTypeXmlParserTestDoc_DocumentTypePolicyConfig")) {
+                docType1 = docType;
+            } else if (docType.getName().equals("DocumentTypeXmlParserTestDoc_DocumentTypePolicyConfig2")) {
+                docType2 = docType;
+            }
+        }
+        assertNotNull(docType1);
+        assertNotNull(docType2);
+
+        // first document type
+        DocumentTypePolicy policy = docType1.getRecallNotification();
         assertNotNull(policy);
         assertNotNull(policy.getPolicyStringValue());
         assertEquals("<config>"
-                    + "<recipients xmlns:r=\"ns:workflow/Rule\" xsi:schemaLocation=\"ns:workflow/Rule resource:Rule\">"
-                    + "<r:principalName>quickstart</r:principalName>"
-                    + "<r:user>quickstart</r:user>"
-                    + "<role name=\"foobar\" namespace=\"KEW\"/>"
-                    + "</recipients>"
-                    + "</config>", policy.getPolicyStringValue().replaceAll("\\n*", ""));
+                + "<recipients xmlns:r=\"ns:workflow/Rule\">"
+                + "<r:principalName>quickstart</r:principalName>"
+                + "<r:user>quickstart</r:user>"
+                + "<role name=\"foobar\" namespace=\"KEW\"/>"
+                + "</recipients>"
+                + "</config>", policy.getPolicyStringValue().replaceAll("\\n*", ""));
+
+
+        // second document type
+        DocumentTypePolicy policy2 = docType2.getRecallNotification();
+        assertNotNull(policy2);
+        assertNotNull(policy2.getPolicyStringValue());
+        assertEquals("<config>"
+                + "<recipients xmlns:r=\"ns:workflow/Rule\">"
+                + "<r:principalName>quickstart</r:principalName>"
+                + "<r:user>quickstart</r:user>"
+                + "<role name=\"foobar\" namespace=\"KEW\"/>"
+                + "</recipients>"
+                + "</config>", policy2.getPolicyStringValue().replaceAll("\\n*", ""));
     }
 
     private boolean isActionCodeValidForDocument(WorkflowDocument document, String actionCode) {

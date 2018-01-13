@@ -120,6 +120,7 @@
     <commons-digester.version>2.1</commons-digester.version>
     <commons-validator.version>1.4.0</commons-validator.version>
     <cxf.version>2.7.18</cxf.version>
+    <db-ojb.version>1.0.4-patch9</db-ojb.version>
     <displaytag.version>1.2</displaytag.version>
     <dom4j.version>1.6.1</dom4j.version>
     <dwr.version>3.0.RC2</dwr.version>
@@ -179,7 +180,6 @@
     <sauce.rest.version>1.0.11</sauce.rest.version>
     <saucelabs.connect.version>3.1.32</saucelabs.connect.version>
     <selenium-java.version>2.53.1</selenium-java.version>
-    <serializer.version>2.7.2</serializer.version>
     <servlet-api.version>3.0.1</servlet-api.version>
     <slf4j.version>1.7.7</slf4j.version>
     <soa.model.core.version>1.5.4</soa.model.core.version>
@@ -192,11 +192,7 @@
     <velocity.version>1.7</velocity.version>
     <velocity.tools.version>2.0</velocity.tools.version>
     <wss4j.version>1.6.18</wss4j.version>
-    <xalan.version>2.7.2</xalan.version>
     <xapool.version>1.5.0-patch6</xapool.version>
-    <xercesImpl.version>2.11.0</xercesImpl.version>
-    <!-- need v. 1.4.01 of xml-apis with xercesImpl 2.11.0 -->
-    <xml-apis.version>1.4.01</xml-apis.version>
     <xmlunit.version>2.3.0</xmlunit.version>
     <xstream.version>1.4.9</xstream.version>
     <yuicompressor.version>2.4.7</yuicompressor.version>
@@ -908,7 +904,9 @@
 
                       <!-- These are repackaged parser apis - some of these apis are
                         included in jdk 6. The non-jdk parsers can be added indivually if needed. -->
-                      <exclude>xerces:xmlParserAPIs</exclude>
+                      <exclude>xalan</exclude>
+                      <exclude>xerces</exclude>
+                      <exclude>xml-apis</exclude>
 
                       <!-- group ids for many sun xml apis - in jdk 6 -->
                       <exclude>javax.xml</exclude>
@@ -1646,6 +1644,47 @@
       </dependency>
 
       <dependency>
+        <groupId>org.kuali.db.ojb</groupId>
+        <artifactId>db-ojb</artifactId>
+        <version>${db-ojb.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>commons-logging</artifactId>
+            <groupId>commons-logging</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>commons-beanutils</artifactId>
+            <groupId>commons-beanutils</groupId>
+          </exclusion>
+          <exclusion>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+          </exclusion>
+          <!--Removing the asm 1.5.3 version that comes with OJB -->
+          <exclusion>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>${commons-io.version}</version>
@@ -1774,6 +1813,12 @@
         <groupId>dom4j</groupId>
         <artifactId>dom4j</artifactId>
         <version>${dom4j.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
 
       <dependency>
@@ -2275,6 +2320,14 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-websocket</artifactId>
           </exclusion>
+          <exclusion>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+          </exclusion>
         </exclusions>
         <scope>test</scope>
       </dependency>
@@ -2438,41 +2491,10 @@
       </dependency>
 
       <dependency>
-        <groupId>xalan</groupId>
-        <artifactId>xalan</artifactId>
-        <version>${xalan.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>xalan</groupId>
-        <artifactId>serializer</artifactId>
-        <version>${serializer.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
         <!-- groupid was changed to com.experlog in later versions -->
         <groupId>xapool</groupId>
         <artifactId>xapool</artifactId>
         <version>${xapool.version}</version>
-      </dependency>
-
-      <!-- explicitly including xercesImpl to change version number from what maven would have resolved it to -->
-      <dependency>
-        <groupId>xerces</groupId>
-        <artifactId>xercesImpl</artifactId>
-        <version>${xercesImpl.version}</version>
-        <scope>runtime</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>xml-apis</groupId>
-        <artifactId>xml-apis</artifactId>
-        <version>${xml-apis.version}</version>
       </dependency>
 
       <dependency>

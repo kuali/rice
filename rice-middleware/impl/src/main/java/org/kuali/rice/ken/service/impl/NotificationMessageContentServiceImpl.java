@@ -66,7 +66,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * NotificationMessageContentService implementation - uses both Xalan and XStream in various places to manage the marshalling/unmarshalling of
+ * NotificationMessageContentService implementation - uses both XSLT and XStream in various places to manage the marshalling/unmarshalling of
  * Notification data for processing by various components in the system.
  * @see NotificationMessageContentService
  * @author Kuali Rice Team (rice.collab@kuali.org)

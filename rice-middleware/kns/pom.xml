@@ -120,12 +120,6 @@
       <artifactId>db-ojb</artifactId>
     </dependency>
 
-    <!-- ojb depends on this indirectly now that our xerces version has been bumped to >= 2.11.0 -->
-    <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
-    </dependency>
-
     <dependency>
       <groupId>org.springmodules</groupId>
       <artifactId>spring-modules-ojb</artifactId>
@@ -158,42 +152,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.kuali.db.ojb</groupId>
-        <artifactId>db-ojb</artifactId>
-        <version>${db-ojb.version}</version>
-        <exclusions>
-          <exclusion>
-            <artifactId>commons-logging</artifactId>
-            <groupId>commons-logging</groupId>
-          </exclusion>
-          <exclusion>
-            <artifactId>commons-beanutils</artifactId>
-            <groupId>commons-beanutils</groupId>
-          </exclusion>
-          <exclusion>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>xalan</groupId>
-            <artifactId>xalan</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-          </exclusion>
-          <!--Removing the asm 1.5.3 version that comes with OJB -->
-          <exclusion>
-            <groupId>asm</groupId>
-            <artifactId>asm</artifactId>
-          </exclusion>
-          <exclusion>
-            <groupId>hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
       <dependency>
         <groupId>org.springmodules</groupId>
         <artifactId>spring-modules-ojb</artifactId>

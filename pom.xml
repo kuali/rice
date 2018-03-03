@@ -139,7 +139,7 @@
          As of JDK 7, it's 2.2.4 -->
     <jaxb-impl.version>2.2.6</jaxb-impl.version>
 
-    <jackson.version>1.9.13</jackson.version>
+    <jackson.version>2.9.4</jackson.version>
     <javassist.version>3.18.2-GA</javassist.version>
     <javax.inject.version>1</javax.inject.version>
     <jaxen.version>1.1.6</jaxen.version>
@@ -2189,23 +2189,11 @@
       </dependency>
 
       <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-core-asl</artifactId>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
-        <scope>compile</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-jaxrs</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-mapper-asl</artifactId>
-        <version>${jackson.version}</version>
-        <scope>compile</scope>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
 
       <dependency>

@@ -105,7 +105,7 @@
     <aspectj.version>1.8.1</aspectj.version>
     <bcprov.version>1.55</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
-    <core-auth-servlet-filter.version>1.4</core-auth-servlet-filter.version>
+    <core-auth-servlet-filter.version>1.7</core-auth-servlet-filter.version>
     <closure.version>v20140730</closure.version>
     <cglib.version>3.1</cglib.version>
     <commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -208,7 +208,7 @@
     <plugin.selenium.version>2.3</plugin.selenium.version>
     <!-- Pin the tomcat7 plugin to an explicit version -->
     <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
-    <plugin.dependency-check.version>1.4.5</plugin.dependency-check.version>
+    <plugin.dependency-check.version>3.1.1</plugin.dependency-check.version>
 
     <!-- Saucelabs settings (aside from version, which is above): -->
 
@@ -1319,6 +1319,7 @@
           <artifactId>dependency-check-maven</artifactId>
           <version>${plugin.dependency-check.version}</version>
           <configuration>
+            <skipProvidedScope>true</skipProvidedScope>
             <suppressionFile>vulnerability-suppressions.xml</suppressionFile>
             <failBuildOnCVSS>7</failBuildOnCVSS>
           </configuration>

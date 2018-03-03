@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.web.health;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class HealthStatus {
     private String statusCode;
 
     @JsonProperty("Message")
-    @JsonSerialize(include=JsonSerialize.Inclusion.NON_EMPTY)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String message;
 
     @JsonProperty("Metrics")

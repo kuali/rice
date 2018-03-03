@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.web.health;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 

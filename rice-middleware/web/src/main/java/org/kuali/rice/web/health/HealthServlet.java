@@ -15,11 +15,22 @@
  */
 package org.kuali.rice.web.health;
 
-import com.codahale.metrics.*;
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.Metric;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.codahale.metrics.health.HealthCheck;
 import com.codahale.metrics.health.HealthCheckRegistry;
-import com.codahale.metrics.jvm.*;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.codahale.metrics.jvm.BufferPoolMetricSet;
+import com.codahale.metrics.jvm.ClassLoadingGaugeSet;
+import com.codahale.metrics.jvm.FileDescriptorRatioGauge;
+import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
+import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
+import com.codahale.metrics.jvm.ThreadStatesGaugeSet;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.api.util.RiceConstants;
@@ -41,7 +52,7 @@ import java.util.Map;
  * @author Eric Westfall
  */
 public class HealthServlet extends HttpServlet {
-    
+
     private MetricRegistry metricRegistry;
     private HealthCheckRegistry healthCheckRegistry;
     private Config config;
@@ -194,9 +205,9 @@ public class HealthServlet extends HttpServlet {
     }
 
     private void monitorDataSources() {
-        DataSource dataSource = (DataSource) ConfigContext.getCurrentContextConfig().getObject(RiceConstants.DATASOURCE_OBJ);
-        DataSource nonTransactionalDataSource = (DataSource) ConfigContext.getCurrentContextConfig().getObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ);
-        DataSource serverDataSource = (DataSource) ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SERVER_DATASOURCE_OBJ);
+        DataSource dataSource = (DataSource)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.DATASOURCE_OBJ);
+        DataSource nonTransactionalDataSource = (DataSource)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ);
+        DataSource serverDataSource = (DataSource)ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SERVER_DATASOURCE_OBJ);
         DatabasePlatform databasePlatform = GlobalResourceLoader.getService(RiceConstants.DB_PLATFORM);
         monitorDataSource("database.primary:", dataSource, databasePlatform, config.primaryConnectionPoolUsageThreshold());
         monitorDataSource("database.non-transactional:", nonTransactionalDataSource, databasePlatform, config.nonTransactionalConnectionPoolUsageThreshold());
@@ -283,7 +294,7 @@ public class HealthServlet extends HttpServlet {
             status.getMetrics().add(new HealthMetric(name, timer.getCount()));
         }
     }
-    
+
     public static final class Config {
 
         public static final String HEAP_MEMORY_THRESHOLD_PROPERTY = "rice.health.memory.heap.usageThreshold";
@@ -350,7 +361,7 @@ public class HealthServlet extends HttpServlet {
             }
             return defaultValue;
         }
-        
+
     }
 
 }

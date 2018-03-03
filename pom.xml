@@ -105,7 +105,7 @@
     <aspectj.version>1.8.1</aspectj.version>
     <bcprov.version>1.55</bcprov.version>
     <bitronix.version>2.1.4</bitronix.version>
-    <core-auth-servlet-filter.version>1.4</core-auth-servlet-filter.version>
+    <core-auth-servlet-filter.version>1.7</core-auth-servlet-filter.version>
     <closure.version>v20140730</closure.version>
     <cglib.version>3.1</cglib.version>
     <commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -139,7 +139,7 @@
          As of JDK 7, it's 2.2.4 -->
     <jaxb-impl.version>2.2.6</jaxb-impl.version>
 
-    <jackson.version>1.9.13</jackson.version>
+    <jackson.version>2.9.4</jackson.version>
     <javassist.version>3.18.2-GA</javassist.version>
     <javax.inject.version>1</javax.inject.version>
     <jaxen.version>1.1.6</jaxen.version>
@@ -208,7 +208,7 @@
     <plugin.selenium.version>2.3</plugin.selenium.version>
     <!-- Pin the tomcat7 plugin to an explicit version -->
     <plugin.tomcat7.version>2.1</plugin.tomcat7.version>
-    <plugin.dependency-check.version>1.4.5</plugin.dependency-check.version>
+    <plugin.dependency-check.version>3.1.1</plugin.dependency-check.version>
 
     <!-- Saucelabs settings (aside from version, which is above): -->
 
@@ -1319,6 +1319,7 @@
           <artifactId>dependency-check-maven</artifactId>
           <version>${plugin.dependency-check.version}</version>
           <configuration>
+            <skipProvidedScope>true</skipProvidedScope>
             <suppressionFile>vulnerability-suppressions.xml</suppressionFile>
             <failBuildOnCVSS>7</failBuildOnCVSS>
           </configuration>
@@ -2189,23 +2190,11 @@
       </dependency>
 
       <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-core-asl</artifactId>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
         <version>${jackson.version}</version>
-        <scope>compile</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-jaxrs</artifactId>
-        <version>${jackson.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.codehaus.jackson</groupId>
-        <artifactId>jackson-mapper-asl</artifactId>
-        <version>${jackson.version}</version>
-        <scope>compile</scope>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
 
       <dependency>

@@ -16,10 +16,10 @@
 package org.kuali.rice.web.health;
 
 import bitronix.tm.resource.jdbc.PoolingDataSource;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.enhydra.jdbc.pool.StandardXAPoolDataSource;
 import org.junit.After;
 import org.junit.Before;
@@ -42,11 +42,17 @@ import javax.xml.namespace.QName;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -350,7 +356,7 @@ public class HealthServletTest {
 
     private Map<String, String> loadMetricMap(JsonNode root) {
         Map<String, String> metricMap = new HashMap<>();
-        Iterator<JsonNode> metricsIt = root.get("Metrics").getElements();
+        Iterator<JsonNode> metricsIt = root.get("Metrics").elements();
         while (metricsIt.hasNext()) {
             JsonNode metricNode = metricsIt.next();
             String measure = metricNode.get("Measure").asText();

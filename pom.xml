@@ -1320,11 +1320,13 @@
           <version>${plugin.dependency-check.version}</version>
           <configuration>
             <skipProvidedScope>true</skipProvidedScope>
-            <suppressionFile>vulnerability-suppressions.xml</suppressionFile>
+            <skipTestScope>true</skipTestScope>
+            <suppressionFiles>
+              <suppressionFile>vulnerability-suppressions.xml</suppressionFile>
+            </suppressionFiles>
             <failBuildOnCVSS>7</failBuildOnCVSS>
           </configuration>
         </plugin>
-
       </plugins>
     </pluginManagement>
 

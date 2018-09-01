@@ -122,8 +122,8 @@
           <artifactId>jetty-http</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>org.eclipse.jetty</groupId>
-          <artifactId>jetty-websocket</artifactId>
+          <groupId>org.eclipse.jetty.websocket</groupId>
+          <artifactId>websocket-client</artifactId>
         </exclusion>
         <exclusion>
           <groupId>xalan</groupId>
